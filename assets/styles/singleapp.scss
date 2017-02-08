@@ -1,0 +1,49 @@
+@import "variables.scss";
+.singleApp {
+	.graph-title {
+		margin-top: 15px;
+		font-size: 1.5rem;
+		.summary {
+			color: $grey-font;
+			font-size: 1rem;
+		}
+	}
+	.graphView {
+		padding-left: 0;
+	}
+	.nav-tab {
+		list-style: none;
+		padding: 0;
+		float: left;
+		width: 100%;
+		position: relative;
+		&:before {
+			content: '';
+			border-bottom: 1px solid $grey-font;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 1px;
+		}
+		li {
+			display: inline-block;
+			float: left;
+			a {
+				display: inline-block;
+				padding: 5px 15px;
+				color: $grey-font;
+				cursor: pointer;
+				border-bottom: 1px solid $grey-font;
+				&.active {
+					color: $primary-color;
+					border-color: $primary-color;
+				}
+				&:hover {
+					color: $primary-color;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}

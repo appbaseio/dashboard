@@ -1,0 +1,128 @@
+@font-face {
+  font-family: 'Source Sans Pro Extra Light Italic';
+  src: url("/styles/fonts/source/sourcesanspro-extralightit.eot");
+  src: url("/styles/fonts/source/sourcesanspro-extralightit.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-extralightit.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-extralightit.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-extralightit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Light';
+  src: url("/styles/fonts/source/sourcesanspro-light.eot");
+  src: url("/styles/fonts/source/sourcesanspro-light.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-light.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-light.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Regular';
+  src: url("/styles/fonts/source/sourcesanspro-regular.eot");
+  src: url("/styles/fonts/source/sourcesanspro-regular.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-regular.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-regular.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Bold';
+  src: url("/styles/fonts/source/sourcesanspro-bold.eot");
+  src: url("/styles/fonts/source/sourcesanspro-bold.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-bold.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-bold.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Extra Light';
+  src: url("/styles/fonts/source/sourcesanspro-extralight.eot");
+  src: url("/styles/fonts/source/sourcesanspro-extralight.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-extralight.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-extralight.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-extralight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Semi Bold';
+  src: url("/styles/fonts/source/sourcesanspro-semibold.eot");
+  src: url("/styles/fonts/source/sourcesanspro-semibold.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-semibold.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-semibold.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-semibold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Light Italic';
+  src: url("/styles/fonts/source/sourcesanspro-lightit.eot");
+  src: url("/styles/fonts/source/sourcesanspro-lightit.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-lightit.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-lightit.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-lightit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Italic';
+  src: url("/styles/fonts/source/sourcesanspro-it.eot");
+  src: url("/styles/fonts/source/sourcesanspro-it.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-it.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-it.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-it.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Semibold Italic';
+  src: url("/styles/fonts/source/sourcesanspro-semiboldit.eot");
+  src: url("/styles/fonts/source/sourcesanspro-semiboldit.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-semiboldit.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-semiboldit.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-semiboldit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Black Italic';
+  src: url("/styles/fonts/source/sourcesanspro-blackit.eot");
+  src: url("/styles/fonts/source/sourcesanspro-blackit.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-blackit.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-blackit.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-blackit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Black';
+  src: url("/styles/fonts/source/sourcesanspro-black.eot");
+  src: url("/styles/fonts/source/sourcesanspro-black.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-black.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-black.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-black.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro Bold Italic';
+  src: url("/styles/fonts/source/sourcesanspro-boldit.eot");
+  src: url("/styles/fonts/source/sourcesanspro-boldit.eot?#iefix") format("embedded-opentype"), url("/styles/fonts/source/sourcesanspro-boldit.woff2") format("woff2"), url("/styles/fonts/source/sourcesanspro-boldit.woff") format("woff"), url("/styles/fonts/source/sourcesanspro-boldit.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+#dashboard nav.navbar {
+  background: #f7f7f7;
+  border-radius: 0;
+  border: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2; }
+  #dashboard nav.navbar .navbar-brand {
+    display: inline-block;
+    padding: 0;
+    width: 76px; }
+  #dashboard nav.navbar .userImg {
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+    padding: 15px;
+    margin-right: -15px;
+    width: 70px; }
+    #dashboard nav.navbar .userImg .img-container {
+      display: inline-block;
+      position: relative; }
+      #dashboard nav.navbar .userImg .img-container img {
+        border-radius: 50%; }
+      #dashboard nav.navbar .userImg .img-container .close {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 46px; }
+    #dashboard nav.navbar .userImg:hover .close {
+      border-radius: 50%;
+      background: rgba(205, 220, 57, 0.9);
+      display: inline-block;
+      color: #000; }
+  #dashboard nav.navbar li a {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    padding: 2rem 1rem;
+    color: #B3B3B3; }
