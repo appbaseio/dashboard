@@ -1,13 +1,18 @@
 import {
-	default as React, Component } from 'react';
+	default as React,
+	Component
+} from 'react';
 var ReactDOM = require('react-dom');
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 import { AppsList } from './apps/AppsList';
-import { App } from './apps/App';
+import { Dashboard } from './apps/Dashboard';
+import { AppRoute } from './apps/AppRoute'
+import { EsPlugin } from './apps/EsPlugin';
 import { Login } from './others/Login';
+import { Tutorial } from './tutorial';
 import { appbaseService } from './service/AppbaseService';
+import { dataOperation } from './service/tutorialService/DataOperation';
 import { Nav } from './others/Nav';
-import { Sidebar } from './others/Sidebar';
 
 class Main extends Component {
 	constructor(props) {
@@ -22,6 +27,7 @@ class Main extends Component {
 	getUser() {
 		var getUser = appbaseService.getUser()
 			.then((data) => {
+				dataOperation.updateUser(data.userInfo.body);
 				this.setState({
 					loggedIn: true,
 					loading: false,
@@ -48,7 +54,6 @@ class Main extends Component {
 		let dashboard = (
 			<div>
 				<Nav />
-				<Sidebar />
 				<div id="dashboard-container" className="container-fluid">
 					{this.props.children}
 				</div>
@@ -74,13 +79,31 @@ class Default extends Component {
 	}
 }
 
+const Inbox = React.createClass({
+	render() {
+		return (
+			<div>
+		<h2>Inbox</h2>
+		{this.props.children || "Welcome to your Inbox"}
+	  </div>
+		)
+	}
+})
+
+const Message = React.createClass({
+	render() {
+		return <h3>Message {this.props.params.id}</h3>
+	}
+})
+
 ReactDOM.render((
 	<Router history={browserHistory}>
 		<Route path="/" component={Main}>
 			<IndexRoute component={Default} />
 			<Route path="apps" component={AppsList} />
 			<Route path="login" component={Login} />
-			<Route path="app/:appId" component={App} />
+			<Route path="tutorial" component={Tutorial} />
+			<Route path="app/:appId" component={AppRoute} />
 		</Route>
 	</Router>
 ), document.getElementById('dashboard'));

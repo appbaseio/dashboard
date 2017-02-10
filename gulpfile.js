@@ -9,7 +9,12 @@ var files = {
 	css: {
 		vendor: [
 			'bower_components/bootstrap/dist/css/bootstrap.min.css',
-			'bower_components/font-awesome/css/font-awesome.min.css'
+			'bower_components/font-awesome/css/font-awesome.min.css',
+			'node_modules/@appbaseio/reactivemaps/dist/css/style.min.css',
+			'assets/vendor/hljs.css',
+			'node_modules/codemirror/lib/codemirror.css',
+			'node_modules/codemirror/addon/fold/foldgutter.css',
+			'node_modules/codemirror/addon/dialog/dialog.css'
 		],
 		custom: ['assets/css/*.css'],
 		sassFile: ['assets/styles/*.scss']
@@ -18,7 +23,10 @@ var files = {
 		vendor: [
 			'bower_components/jquery/dist/jquery.min.js',
 			'bower_components/bootstrap/dist/js/bootstrap.min.js',
-			'bower_components/lodash/dist/lodash.min.js'
+			'bower_components/lodash/dist/lodash.min.js',
+			'bower_components/lzma/src/lzma.js',
+			'bower_components/urlsafe-base64/app.js',
+			'bower_components/appbase-js/browser/appbase.min.js'
 		],
 		custom: [
 		]
@@ -40,6 +48,7 @@ gulp.task('customcss', ['sass'], function() {
 
 gulp.task('vendorjs', function() {
 	return gulp.src(files.js.vendor)
+		.pipe(uglify())
 		.pipe(concat('vendor.min.js'))
 		.pipe(gulp.dest('dist/js'));
 });
@@ -57,9 +66,18 @@ gulp.task('moveCss', function() {
 
 gulp.task('moveFonts', function() {
 	return gulp.src(['bower_components/bootstrap/dist/fonts/*', 
-		'bower_components/font-awesome/fonts/*'
+		'bower_components/font-awesome/fonts/*',
+		'node_modules/@appbaseio/reactivemaps/dist/fonts/**/*',
+		'assets/styles/fonts/**/*'
 		])
 		.pipe(gulp.dest('dist/fonts'));
+});
+
+// Include dependency in dist
+gulp.task('move_js_depends', function() {
+	return gulp.src(['bower_components/lzma/src/lzma_worker.js',
+		'assets/vendor/JSONURL.js'])
+		.pipe(gulp.dest('dist/vendor'));
 });
 
 gulp.task('compact', [
@@ -67,7 +85,8 @@ gulp.task('compact', [
 	'vendorcss', 
 	'vendorjs', 
 	'moveCss', 
-	'moveFonts'
+	'moveFonts',
+	'move_js_depends'
 ]);
 
 gulp.task('watchfiles', function() {

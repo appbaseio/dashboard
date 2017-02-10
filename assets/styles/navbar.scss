@@ -1,59 +1,59 @@
 @import "variables.scss";
-#dashboard {
-	nav.navbar {
-		background: $dark-grey;
-		border-radius: 0;
+nav.navbar {
+	background: $dark-grey;
+	border-radius: 0;
+	border: 0;
+	margin: 0;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	.navbar-brand {
+		display: inline-block;
+		padding: 0;
+		width: 76px;
+	}
+	.userImg {
 		border: 0;
-		margin: 0;
-		position: absolute;
-		width: 100%;
-		top: 0;
-		left: 0;
-		z-index: 2;
-		.navbar-brand {
+		background: transparent;
+		border-radius: 50%;
+		padding: 15px;
+		margin-right: -15px;
+		width: 70px;
+		max-height: 76px;
+		overflow: hidden;
+		.img-container {
 			display: inline-block;
-			padding: 0;
-			width: 76px;
+			position: relative;
+			img {
+				border-radius: 50%;
+			}
+			.close { 
+				display: none;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				line-height: 46px;
+			}
 		}
-		.userImg {
-			border: 0;
-			background: transparent;
-			border-radius: 50%;
-			padding: 15px;
-			margin-right: -15px;
-			width: 70px;
-			.img-container {
+		&:hover {
+			.close {
+				border-radius: 50%;
+				background: rgba($primary-color, 0.9);
 				display: inline-block;
-				position: relative;
-				img {
-					border-radius: 50%;
-				}
-				.close { 
-					display: none;
-					position: absolute;
-					left: 0;
-					top: 0;
-					width: 100%;
-					height: 100%;
-					line-height: 46px;
-				}
-			}
-			&:hover {
-				.close {
-					border-radius: 50%;
-					background: rgba($primary-color, 0.9);
-					display: inline-block;
-					color: #000;
-				}
+				color: #000;
 			}
 		}
-		li {
-			a {
-				font-size: 1.25rem;
-				text-transform: uppercase;
-				padding: 2rem 1rem;
-				color: $grey-font;
-			}
+	}
+	li {
+		a {
+			font-size: 1.25rem;
+			text-transform: uppercase;
+			padding: 2rem 1rem;
+			color: $grey-font;
 		}
 	}
 }

@@ -29,8 +29,10 @@ body {
 	}
 }
 
-.apps {
+.appList, .singleApp {
 	margin: 0;
+	position: relative;
+	padding: 30px;
 	.app-card-container {
 		padding: 15px 30px 15px 0;
 	}
@@ -109,7 +111,7 @@ body {
 }
 
 #dashboard-container {
-	padding: 121px 15px 15px 121px;
+	padding: 76px 0 0 0;
 	position: absolute;
 	right: 0;
 	top: 0;

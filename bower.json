@@ -9,6 +9,9 @@
   "dependencies": {
     "bootstrap": "~3.3.1",
     "font-awesome": "~4.2.0",
-    "lodash": "^4.15.0"
+    "lodash": "^4.15.0",
+    "lzma": "^2.3.0",
+    "appbase-js": "^0.10.8",
+    "urlsafe-base64": "https://github.com/farhan687/urlsafe-base64.git"
   }
 }

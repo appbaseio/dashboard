@@ -43,6 +43,14 @@ export class AppsList extends Component {
 		}, this.getAppInfo);
 	}
 
+	getApiCalls(data) {
+		let total = 0;
+		data.body.month.buckets.forEach((bucket) => {
+			total += bucket.apiCalls.value;
+		});
+		return total;
+	}
+
 	getBillingInfo() {
 		appbaseService.getBillingInfo().then((data) => {
 			this.setState({
@@ -55,8 +63,8 @@ export class AppsList extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' 
-			? (app.info && app.info.metrics && app.info.metrics.body.month.buckets  && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].apiCalls.value ? app.info.metrics.body.month.buckets[0].apiCalls.value : 0) 
-			: (app.info && app.info.metrics && app.info.metrics.body.month.buckets  && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].doc_count ? app.info.metrics.body.month.buckets[0].doc_count : 0);
+			? (app.info && app.info.apiCalls ? app.info.apiCalls : 0) 
+			: (app.info && app.info.metrics && app.info.metrics.body  && app.info.metrics.body.overall.numDocs ? app.info.metrics.body.overall.numDocs : 0);
 		return {
 			percentage: (100*count)/appbaseService.planLimits[this.state.plan][field],
 			count: count
@@ -74,6 +82,7 @@ export class AppsList extends Component {
 		var info = {};
 		appbaseService.getMetrics(appId).then((data) => {
 			info.metrics = data;
+			info.apiCalls = this.getApiCalls(data);
 			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
@@ -162,7 +171,7 @@ export class AppsList extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="appList">
 				<div className="page-info">
 					<h2 className="page-title">Welcome, {appbaseService.userInfo.body.details.name}!</h2>
 					<p className="page-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod quas dolores voluptates minima dignissimos repellendus placeat beatae dolorem totam? Facere animi totam, ipsum deleniti, aspernatur nostrum autem quibusdam ipsam sint!</p>

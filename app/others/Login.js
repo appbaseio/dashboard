@@ -46,7 +46,7 @@ export class Login extends Component {
 								</div>
 							</div>
 							<div className="modal-body text-center">
-								<button className="btn Login-button modal-btn mr15" onClick={() => this.login('github')} >Github</button>
+								<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
 								<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
 								<i className="fa hidden fa-refresh fa-spin fa-2x" id="login-loading"></i>
 								<div className="mt25">
