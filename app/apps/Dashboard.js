@@ -5,10 +5,10 @@ import {
 import { render } from 'react-dom';
 import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
-import { Highchart } from '../others/Highchart';
 import { Circle } from 'rc-progress';
 import Clipboard from 'Clipboard';
 import {Topbar} from './Topbar';
+import { HighChartView, ApiCallsView, CredentialsView } from './appComponents';
 
 export class Dashboard extends Component {
 
@@ -99,12 +99,6 @@ export class Dashboard extends Component {
 		return JSON.stringify(obj, null, 4);
 	}
 
-	graph(method) {
-		this.setState({
-			graphMethod: method
-		}, this.prepareGraph);
-	}
-
 	calcPercentage(app, field) {
 		let count = field === 'action' 
 			? (this.state.apiCalls ? this.state.apiCalls : 0) 
@@ -139,75 +133,19 @@ export class Dashboard extends Component {
 			case 'highchartView':
 				appCount = this.appCount();
 				generatedEle = (
-					<div className="col-xs-12 col-sm-8 graphView">
-						<div className="graph-title">
-							Usage <span className="summary">{this.state.apiCalls} API Calls</span>
-						</div>
-						<ul className="nav-tab">
-							<li>
-								<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
-							</li>
-							<li>
-								<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
-							</li>
-							<li>
-								<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
-							</li>
-						</ul>
-						<div className="graph">
-							<Highchart 
-								id="chart1" 
-								graphMethod={this.state.graphMethod}
-								info={this.state.info}>
-							</Highchart>
-						</div>
-					</div>
+					<HighChartView
+						apiCalls={this.state.apiCalls}
+						graphMethod={this.state.graphMethod}
+						info={this.state.info}
+					/>
 				);
 			break;
 			case 'apiCallsView':
 				appCount = this.appCount();
-				generatedEle = (
-					<div className="col-xs-12 app-card-container">
-						<div className="app-card col-xs-12">
-							<span className="col-sm-12 col-md-6 app-card-progress progress-api-calls">
-								<div className="app-card-progress-container">
-									<Circle percent={appCount.action.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-									<span className="appCount">
-										{appCount.action.count}
-									</span>
-								</div>
-								<p className="caption">
-									Api calls
-								</p>
-							</span>
-							<span className="col-sm-12 col-md-6 app-card-progress progress-storage-calls">
-								<div className="app-card-progress-container">
-									<Circle  percent={appCount.records.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-									<span className="appCount">
-										{appCount.records.count}
-									</span>
-								</div>
-								<p className="caption">
-									Storage
-								</p>
-							</span>
-						</div>
-					</div>
-				);
+				generatedEle = (<ApiCallsView appCount={appCount} />);
 			break;
 			case 'permissionView':
-				generatedEle = (
-					<div className="col-xs-12 app-card-container">
-						<div className="app-card permissionView col-xs-12">
-							<div className="col-xs-12 permission-row">
-								<span className="key">Username:&nbsp;</span><span className="value permission-username">{this.info && this.info.permission ? this.info.permission.body[0].username : ''}</span>
-							</div>
-							<div className="col-xs-12 permission-row">
-								<span className="key">Password:&nbsp;</span><span className="value permission-password">{this.info && this.info.permission ? this.info.permission.body[0].password : ''}</span>
-							</div>
-						</div>
-					</div>
-				);
+				generatedEle = (<CredentialsView info={this.info} />);
 			break;
 		}
 		return generatedEle;
