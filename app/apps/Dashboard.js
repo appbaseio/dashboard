@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 import { Highchart } from '../others/Highchart';
 import { Circle } from 'rc-progress';
+import Clipboard from 'Clipboard';
 import {Topbar} from './Topbar';
 
 export class Dashboard extends Component {
@@ -55,6 +56,7 @@ export class Dashboard extends Component {
 		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
 			this.setState({ info: this.info });
+			// this.setClipboard();
 		});
 		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data;
@@ -66,6 +68,19 @@ export class Dashboard extends Component {
 				info: this.info,
 				apiCalls: this.getApiCalls(data)
 			});
+		});
+	}
+
+	setClipboard() {
+		new Clipboard('.permission-username', {
+			text: (trigger) => {
+				return this.info.permission.body[0].username;
+			}
+		});
+		new Clipboard('.permission-password', {
+			text: (trigger) => {
+				return this.info.permission.body[0].password;
+			}
 		});
 	}
 
@@ -89,50 +104,58 @@ export class Dashboard extends Component {
 		};
 	}
 
+	appCount() {
+		return {
+			action: this.calcPercentage(this.state, 'action'),
+			records: this.calcPercentage(this.state, 'records')
+		};
+	}
+
 	renderElement(ele) {
 		let generatedEle = null;
+		let appCount;
 		switch (ele) {
 			case 'loading':
 				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
 			break;
-		}
-		return generatedEle;
-	}
-
-	render() {
-		let appCount = {
-			action: this.calcPercentage(this.state, 'action'),
-			records: this.calcPercentage(this.state, 'records')
-		};
-		return (
-			<div className="singleApp row">
-				<div className="page-info col-xs-12">
-					<h2 className="page-title">{this.appName}</h2>
-				</div>
-				<div className="col-xs-12 col-sm-8 graphView">
-					<div className="graph-title">
-						Usage <span className="summary">{this.state.apiCalls} API Calls</span>
+			case 'name':
+				generatedEle = (
+					<div className="page-info col-xs-12">
+						<h2 className="page-title">{this.appName}</h2>
 					</div>
-					<ul className="nav-tab">
-						<li>
-							<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
-						</li>
-						<li>
-							<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
-						</li>
-						<li>
-							<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
-						</li>
-					</ul>
-					<div className="graph">
-						<Highchart 
-							id="chart1" 
-							graphMethod={this.state.graphMethod}
-							info={this.state.info}>
-						</Highchart>
+				);
+			break;
+			case 'highchartView':
+				appCount = this.appCount();
+				generatedEle = (
+					<div className="col-xs-12 col-sm-8 graphView">
+						<div className="graph-title">
+							Usage <span className="summary">{this.state.apiCalls} API Calls</span>
+						</div>
+						<ul className="nav-tab">
+							<li>
+								<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
+							</li>
+							<li>
+								<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
+							</li>
+							<li>
+								<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
+							</li>
+						</ul>
+						<div className="graph">
+							<Highchart 
+								id="chart1" 
+								graphMethod={this.state.graphMethod}
+								info={this.state.info}>
+							</Highchart>
+						</div>
 					</div>
-				</div>
-				<div className="col-xs-12 col-sm-4 apiView">
+				);
+			break;
+			case 'apiCallsView':
+				appCount = this.appCount();
+				generatedEle = (
 					<div className="col-xs-12 app-card-container">
 						<div className="app-card col-xs-12">
 							<span className="col-sm-12 col-md-6 app-card-progress progress-api-calls">
@@ -159,6 +182,34 @@ export class Dashboard extends Component {
 							</span>
 						</div>
 					</div>
+				);
+			break;
+			case 'permissionView':
+				generatedEle = (
+					<div className="col-xs-12 app-card-container">
+						<div className="app-card permissionView col-xs-12">
+							<div className="col-xs-12 permission-row">
+								<span className="key">Username:&nbsp;</span><span className="value permission-username">{this.info && this.info.permission ? this.info.permission.body[0].username : ''}</span>
+							</div>
+							<div className="col-xs-12 permission-row">
+								<span className="key">Password:&nbsp;</span><span className="value permission-password">{this.info && this.info.permission ? this.info.permission.body[0].password : ''}</span>
+							</div>
+						</div>
+					</div>
+				);
+			break;
+		}
+		return generatedEle;
+	}
+
+	render() {
+		return (
+			<div className="singleApp row">
+				{this.renderElement('name')}
+				{this.renderElement('highchartView')}
+				<div className="col-xs-12 col-sm-4 apiView">
+					{this.renderElement('apiCallsView')}
+					{this.renderElement('permissionView')}
 				</div>
 			</div>
 		);

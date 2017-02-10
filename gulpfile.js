@@ -14,7 +14,9 @@ var files = {
 			'assets/vendor/hljs.css',
 			'node_modules/codemirror/lib/codemirror.css',
 			'node_modules/codemirror/addon/fold/foldgutter.css',
-			'node_modules/codemirror/addon/dialog/dialog.css'
+			'node_modules/codemirror/addon/dialog/dialog.css',
+			'node_modules/appbase-onboarding/dist/css/vendor.min.css',
+			'node_modules/appbase-onboarding/dist/css/style.min.css'
 		],
 		custom: ['assets/css/*.css'],
 		sassFile: ['assets/styles/*.scss']
