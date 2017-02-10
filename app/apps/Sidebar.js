@@ -14,13 +14,13 @@ export class Sidebar extends Component {
 			link: 'app/'+this.props.appName,
 			type: 'internal',
 			name: 'Dashboard',
-			img: (<i className="fa fa-table"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/Dashboard.svg"></img>)
 		}, {
 			label: 'Data Browser',
 			link: 'app/'+this.props.appName+'/dejavu',
 			type: 'internal',
 			name: 'dejavu',
-			img: (<i className="fa fa-tachometer"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/Databrowser.svg"></img>)
 		}, {
 			label: 'Data Mapper',
 			link: 'app/'+this.props.appName+'/gem',
@@ -29,7 +29,7 @@ export class Sidebar extends Component {
 			img: (<img className="img-responsive" src="../../assets/images/GEM.svg"></img>)
 		}, {
 			label: 'Query Explorer',
-			link: 'app/'+this.props.appName+'/gem',
+			link: 'app/'+this.props.appName+'/mirage',
 			type: 'internal',
 			name: 'mirage',
 			img: (<img className="img-responsive" src="../../assets/images/GEM.svg"></img>)

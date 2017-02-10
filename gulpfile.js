@@ -19,7 +19,8 @@ var files = {
 			'node_modules/appbase-onboarding/dist/css/style.min.css'
 		],
 		custom: ['assets/css/*.css'],
-		sassFile: ['assets/styles/*.scss']
+		sassFile: ['assets/styles/*.scss'],
+		sassPartials: ['assets/styles/partials/**/*.scss']
 	},
 	js: {
 		vendor: [
@@ -95,6 +96,10 @@ gulp.task('watchfiles', function() {
 	gulp.watch(files.css.sassFile, ['customcss']);
 });
 
+gulp.task('watchSassPartials', function() {
+	gulp.watch(files.css.sassPartials, ['customcss']);
+});
+
 gulp.task('default', ['compact']);
 
-gulp.task('watch', ['compact', 'watchfiles']);
+gulp.task('watch', ['compact', 'watchfiles', 'watchSassPartials']);

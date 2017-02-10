@@ -24,7 +24,12 @@ export class AppsList extends Component {
 	}
 
 	componentWillMount() {
+		this.stopUpdate = false;
 		this.initialize();
+	}
+
+	componentWillUnmount() {
+		this.stopUpdate = true;
 	}
 
 	initialize() {
@@ -90,7 +95,9 @@ export class AppsList extends Component {
 		function cb() {
 			var apps = this.state.apps;
 			apps[index].info = info;
-			this.setState({apps: apps});
+			if(!this.stopUpdate) {
+				this.setState({apps: apps});
+			}
 		}
 	}
 

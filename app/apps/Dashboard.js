@@ -28,7 +28,12 @@ export class Dashboard extends Component {
 	}
 
 	componentWillMount() {
+		this.stopUpdate = false;
 		this.initialize(this.props);
+	}
+
+	componentWillUnmount() {
+		this.stopUpdate = true;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -55,19 +60,25 @@ export class Dashboard extends Component {
 		this.info = {};
 		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
-			this.setState({ info: this.info });
+			if(!this.stopUpdate) {
+				this.setState({ info: this.info });
+			}
 			// this.setClipboard();
 		});
 		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data;
-			this.setState({ info: this.info });
+			if(!this.stopUpdate) {
+				this.setState({ info: this.info });
+			}
 		});
 		appbaseService.getMetrics(this.appId).then((data) => {
 			this.info.metrics = data;
-			this.setState({ 
-				info: this.info,
-				apiCalls: this.getApiCalls(data)
-			});
+			if(!this.stopUpdate) {
+				this.setState({ 
+					info: this.info,
+					apiCalls: this.getApiCalls(data)
+				});
+			}
 		});
 	}
 
@@ -96,7 +107,7 @@ export class Dashboard extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' 
-			? (app.info && app.info.metrics && app.info.metrics.body.month.buckets  && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].apiCalls.value ? app.info.metrics.body.month.buckets[0].apiCalls.value : 0) 
+			? (this.state.apiCalls ? this.state.apiCalls : 0) 
 			: (app.info && app.info.metrics && app.info.metrics.body.month.buckets  && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].doc_count ? app.info.metrics.body.month.buckets[0].doc_count : 0);
 		return {
 			percentage: (100*count)/appbaseService.planLimits[this.state.plan][field],
