@@ -126,6 +126,7 @@ body {
       line-height: 39px; }
     .appList .app-card .title, .singleApp .app-card .title {
       font-size: 1.5rem;
+      line-height: 2.5rem;
       marker-top: 15px; }
       .appList .app-card .title a, .singleApp .app-card .title a {
         width: 100%;

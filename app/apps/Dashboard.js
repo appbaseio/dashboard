@@ -135,7 +135,7 @@ export class Dashboard extends Component {
 				<div className="col-xs-12 col-sm-4 apiView">
 					<div className="col-xs-12 app-card-container">
 						<div className="app-card col-xs-12">
-							<span className="col-xs-6 app-card-progress progress-api-calls">
+							<span className="col-sm-12 col-md-6 app-card-progress progress-api-calls">
 								<div className="app-card-progress-container">
 									<Circle percent={appCount.action.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
 									<span className="appCount">
@@ -146,7 +146,7 @@ export class Dashboard extends Component {
 									Api calls
 								</p>
 							</span>
-							<span className="col-xs-6 app-card-progress progress-storage-calls">
+							<span className="col-sm-12 col-md-6 app-card-progress progress-storage-calls">
 								<div className="app-card-progress-container">
 									<Circle  percent={appCount.records.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
 									<span className="appCount">
