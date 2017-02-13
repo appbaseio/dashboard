@@ -1,9 +1,10 @@
 html,
 body {
-	background: $bg;
+	background: #fafafa;
 	color: $primary-font-color;
 	font-size: 14px;
 	height: 100%;
+	font-family: $font-regular;
 }
 
 .theme-btn {

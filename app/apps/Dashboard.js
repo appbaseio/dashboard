@@ -1,13 +1,9 @@
-import {
-	default as React,
-	Component
-} from 'react';
-import { render } from 'react-dom';
+import { default as React, Component } from 'react';
 import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 import { Circle } from 'rc-progress';
 import Clipboard from 'Clipboard';
-import {Topbar} from './Topbar';
+import { Topbar } from './Topbar';
 import { HighChartView, ApiCallsView, CredentialsView } from './appComponents';
 
 export class Dashboard extends Component {

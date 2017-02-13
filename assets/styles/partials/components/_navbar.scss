@@ -1,5 +1,5 @@
 nav.navbar {
-	background: $dark-grey;
+	background: $blue-color;
 	border-radius: 0;
 	border: 0;
 	margin: 0;
@@ -8,10 +8,12 @@ nav.navbar {
 	top: 0;
 	left: 0;
 	z-index: 99;
+	height: 60px;
 	.navbar-brand {
 		display: inline-block;
-		padding: 0;
-		width: 76px;
+		padding: 10px;
+		width: 60px;
+		height: 60px;
 	}
 	.userImg {
 		border: 0;
@@ -20,7 +22,7 @@ nav.navbar {
 		padding: 15px;
 		margin-right: -15px;
 		width: 70px;
-		max-height: 76px;
+		max-height: 60px;
 		overflow: hidden;
 		.img-container {
 			display: inline-block;
@@ -48,11 +50,13 @@ nav.navbar {
 		}
 	}
 	li {
+		height: 60px;
+
 		a {
 			font-size: 1.25rem;
 			text-transform: uppercase;
-			padding: 2rem 1rem;
-			color: $grey-font;
+			padding: 1.5rem 1rem;
+			color: #fff !important;
 		}
 	}
 }

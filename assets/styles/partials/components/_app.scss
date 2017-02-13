@@ -1,5 +1,4 @@
 .appList, .singleApp {
-	margin: 0;
 	position: relative;
 	padding: 30px;
 	.app-card-container {
@@ -93,11 +92,11 @@
 	padding: 0;
 	height: 100%;
 	position: relative;
-	padding: 76px 0 0 76px;
+	padding: 0;
 }
 
 #dashboard-container {
-	padding: 76px 0 0 0;
+	padding: 60px 0 0 0;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -146,5 +145,42 @@
 				line-height: 1rem;
 			}
 		}
+	}
+}
+
+
+.app-list-item {
+	display: flex;
+	align-items: stretch;
+	height: 64px;
+	line-height: 40px;
+	background: #fff;
+	border-radius: 2px;
+	font-size: 18px;
+	border-bottom: 1px solid #eee;
+	padding: 12px;
+	cursor: pointer;
+	transition: all .3s ease;
+	-webkit-transition: all .3s ease;
+
+	&:hover, &:focus {
+		background: #fcfcfc;
+	}
+
+	& > div {
+		width: 33.333%;
+		vertical-align: middle;
+		height: 40px;
+		display: inline-flex;
+	}
+
+	.text {
+		padding-left: 12px;
+	}
+
+	.progress-wrapper {
+		width: 40px;
+		height: 40px;
+		display: inline-block;
 	}
 }

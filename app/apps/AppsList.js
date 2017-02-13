@@ -4,7 +4,7 @@ import {
 } from 'react';
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
 import { appbaseService } from '../service/AppbaseService';
 
@@ -19,7 +19,7 @@ export class AppsList extends Component {
 			createAppError: null
 		};
 		this.themeColor = '#CDDC39';
-		this.trailColor = '#fff';
+		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
 	}
 
@@ -140,33 +140,19 @@ export class AppsList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<div key={index} className="col-xs-12 col-sm-6 col-md-4 col-lg-3 app-card-container">
-							<div className="app-card col-xs-12">
-								<span className="col-xs-6 app-card-progress progress-api-calls">
-									<div className="app-card-progress-container">
-										<Circle percent={appCount.action.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-										<span className="appCount">
-											{appCount.action.count}
-										</span>
-									</div>
-									<p className="caption">
-										Api calls
-									</p>
+						<div key={index} className="app-list-item" onClick={() => browserHistory.push(`/app/${app.name}`)}>
+							<div>{app.name}</div>
+							<div>
+								<span className="progress-wrapper">
+									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
-								<span className="col-xs-6 app-card-progress progress-storage-calls">
-									<div className="app-card-progress-container">
-										<Circle  percent={appCount.records.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-										<span className="appCount">
-											{appCount.records.count}
-										</span>
-									</div>
-									<p className="caption">
-										Storage
-									</p>
+								<span className="text">{appCount.action.percentage}%</span>
+							</div>
+							<div>
+								<span className="progress-wrapper">
+									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
-								<div className="col-xs-12 title">
-									<Link className="theme-btn" to={`/app/${app.name}`}>{app.name}</Link>
-								</div>
+								<span className="text">{appCount.records.count} MB</span>
 							</div>
 						</div>
 					);
@@ -178,10 +164,9 @@ export class AppsList extends Component {
 
 	render() {
 		return (
-			<div className="appList">
+			<div className="appList container">
 				<div className="page-info">
 					<h2 className="page-title">Welcome, {appbaseService.userInfo.body.details.name}!</h2>
-					<p className="page-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod quas dolores voluptates minima dignissimos repellendus placeat beatae dolorem totam? Facere animi totam, ipsum deleniti, aspernatur nostrum autem quibusdam ipsam sint!</p>
 				</div>
 				<div className="row apps">
 					<NewApp 
