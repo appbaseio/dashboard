@@ -108,12 +108,12 @@ class AppbaseService {
 	createApp(appName) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address+'app/'+appName,
+				url: this.address + 'app/' + appName,
 				type: 'PUT',
 				success: (result) => {
 					let id = JSON.stringify(result.body.id);
 					this.apps[id] = {};
-					if(this.userInfo.body.apps) {
+					if (this.userInfo.body.apps) {
 						this.userInfo.body.apps[appName] = id;
 					} else {
 						this.userInfo.body.apps = {
@@ -129,9 +129,54 @@ class AppbaseService {
 		});
 	}
 
+	updatePermission(username, info) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: this.address + 'permission/' + username,
+				type: 'PATCH',
+				data: info,
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
 	logout() {
 		var baseURL = window.location.protocol + "//" + window.location.host;
-		window.location.href = this.address + 'logout?next='+baseURL;
+		window.location.href = this.address + 'logout?next=' + baseURL;
+	}
+
+	computeMetrics(metrics) {
+		var totalRecords = 0;
+		var totalStorage = 0;
+		var totalCalls = 0;
+		var current_date = new Date();
+		// current_date.setMonth(current_date.getMonth() - 1);
+		current_date.setDate(1);
+
+		totalRecords += parseInt(metrics.body.overall.numDocs) || 0;
+		totalStorage += metrics.body.overall.storage / (Math.pow(1024, 2)) || 0; // in MB
+		//console.log(metrics.body);
+
+		metrics.body.month.buckets.forEach(function(bucket) {
+			if (bucket.key >= current_date.getTime())
+				totalCalls += bucket.apiCalls.value;
+		});
+
+		// for (var bucket in metrics.body.month.buckets) {
+		//   if (bucket.key >= current_date.getTime() && metrics.body.month.buckets[bucket].apiCalls)
+		//     totalCalls += metrics.body.month.buckets[bucket].apiCalls.value;
+		// }
+
+		return {
+			storage: totalStorage.toFixed(3),
+			records: totalRecords,
+			calls: totalCalls
+		};
 	}
 
 }

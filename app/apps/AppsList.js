@@ -48,14 +48,6 @@ export class AppsList extends Component {
 		}, this.getAppInfo);
 	}
 
-	getApiCalls(data) {
-		let total = 0;
-		data.body.month.buckets.forEach((bucket) => {
-			total += bucket.apiCalls.value;
-		});
-		return total;
-	}
-
 	getBillingInfo() {
 		appbaseService.getBillingInfo().then((data) => {
 			this.setState({
@@ -68,10 +60,12 @@ export class AppsList extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' 
-			? (app.info && app.info.apiCalls ? app.info.apiCalls : 0) 
-			: (app.info && app.info.metrics && app.info.metrics.body  && app.info.metrics.body.overall.numDocs ? app.info.metrics.body.overall.numDocs : 0);
+			? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) 
+			: (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
+		let percentage = (100*count)/appbaseService.planLimits[this.state.plan][field];
+		percentage = percentage < 100 ? percentage : 100;
 		return {
-			percentage: (100*count)/appbaseService.planLimits[this.state.plan][field],
+			percentage: percentage,
 			count: count
 		};
 	}
@@ -87,7 +81,8 @@ export class AppsList extends Component {
 		var info = {};
 		appbaseService.getMetrics(appId).then((data) => {
 			info.metrics = data;
-			info.apiCalls = this.getApiCalls(data);
+			info.appStats = appbaseService.computeMetrics(data);
+			// info.apiCalls = this.getApiCalls(data);
 			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
@@ -146,13 +141,13 @@ export class AppsList extends Component {
 								<span className="progress-wrapper">
 									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
-								<span className="text">{appCount.action.percentage}%</span>
+								<span className="text">{appCount.action.count}</span>
 							</div>
 							<div>
 								<span className="progress-wrapper">
 									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
-								<span className="text">{appCount.records.count} MB</span>
+								<span className="text">{appCount.records.count}</span>
 							</div>
 						</div>
 					);
