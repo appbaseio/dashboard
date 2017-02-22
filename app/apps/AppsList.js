@@ -135,15 +135,15 @@ export class AppsList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<div key={index} className="app-list-item" onClick={() => browserHistory.push(`/app/${app.name}`)}>
-							<div>{app.name}</div>
-							<div>
+						<div key={index} className="app-list-item row" onClick={() => browserHistory.push(`/app/${app.name}`)}>
+							<div className="col-xs-12 col-sm-4">{app.name}</div>
+							<div className="col-xs-12 col-sm-4">
 								<span className="progress-wrapper">
 									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
 								<span className="text">{appCount.action.count}</span>
 							</div>
-							<div>
+							<div className="col-xs-12 col-sm-4">
 								<span className="progress-wrapper">
 									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
@@ -164,7 +164,7 @@ export class AppsList extends Component {
 					<h2 className="page-title">Welcome, {appbaseService.userInfo.body.details.name}!</h2>
 				</div>
 				<div className="row apps">
-					<NewApp 
+					<NewApp
 						createApp={this.createApp} 
 						apps={this.state.apps}
 						createAppLoading={this.state.createAppLoading}

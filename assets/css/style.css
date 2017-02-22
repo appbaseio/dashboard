@@ -112,6 +112,8 @@ body {
   padding: 30px; }
   .appList .app-card-container, .singleApp .app-card-container {
     padding: 15px 30px 15px 0; }
+  .appList .new-app-container, .singleApp .new-app-container {
+    margin: 0; }
   .appList .app-card, .singleApp .app-card {
     border-radius: 8px;
     background: #f7f7f7;
@@ -119,6 +121,7 @@ body {
     text-align: center;
     border: 6px solid transparent; }
     .appList .app-card.new-app, .singleApp .app-card.new-app {
+      padding: 8px 0;
       border: 6px dotted #f7f7f7;
       background: #fff; }
     .appList .app-card .caption, .singleApp .app-card .caption {
@@ -228,15 +231,13 @@ body {
         line-height: 1rem; }
 
 .app-list-item {
-  display: flex;
-  align-items: stretch;
-  height: 64px;
   line-height: 40px;
   background: #fff;
   border-radius: 2px;
   font-size: 18px;
   border-bottom: 1px solid #eee;
   padding: 12px;
+  margin: 0;
   cursor: pointer;
   transition: all .3s ease;
   -webkit-transition: all .3s ease; }
