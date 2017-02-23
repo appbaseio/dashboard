@@ -164,7 +164,7 @@
 	cursor: pointer;
 	transition: all .3s ease;
 	-webkit-transition: all .3s ease;
-
+	position: relative;
 	&:hover, &:focus {
 		background: #fcfcfc;
 	}

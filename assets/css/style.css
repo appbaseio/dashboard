@@ -240,7 +240,8 @@ body {
   margin: 0;
   cursor: pointer;
   transition: all .3s ease;
-  -webkit-transition: all .3s ease; }
+  -webkit-transition: all .3s ease;
+  position: relative; }
   .app-list-item:hover, .app-list-item:focus {
     background: #fcfcfc; }
   .app-list-item > div {
@@ -528,3 +529,11 @@ nav.navbar {
           padding: 0.5rem; }
     .topbar nav.navbar .open > a, .topbar nav.navbar .open > a:focus, .topbar nav.navbar .open > a:hover {
       background: rgba(247, 247, 247, 0.5); }
+
+.ad-actionbuttons {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 100%;
+  z-index: 2; }

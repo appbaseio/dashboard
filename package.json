@@ -24,7 +24,8 @@
     "react-highcharts": "^11.5.0",
     "react-highlight": "^0.9.0",
     "react-router": "^2.8.1",
-    "recharts": "^0.20.5"
+    "recharts": "^0.20.5",
+    "toastr": "^2.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

@@ -6,6 +6,7 @@ import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
+import {ActionButtons} from './actionButtons';
 import { appbaseService } from '../service/AppbaseService';
 
 export class AppsList extends Component {
@@ -21,11 +22,20 @@ export class AppsList extends Component {
 		this.themeColor = '#CDDC39';
 		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
+		this.deleteApp = this.deleteApp.bind(this);
 	}
 
 	componentWillMount() {
 		this.stopUpdate = false;
 		this.initialize();
+	}
+
+	deleteApp(app) {
+		appbaseService.deleteApp(app.id).then((data) => {
+			this.setApps();
+		}).catch((e)=> {
+			console.log(e);
+		})
 	}
 
 	componentWillUnmount() {
@@ -34,8 +44,12 @@ export class AppsList extends Component {
 
 	initialize() {
 		this.getBillingInfo();
+		this.setApps();
+	}
+
+	setApps() {
 		let apps = appbaseService.userInfo.body.apps;
-		var storeApps = [];
+		let storeApps = [];
 		Object.keys(apps).forEach((app, index) => {
 			var obj = {
 				name: app,
@@ -149,6 +163,7 @@ export class AppsList extends Component {
 								</span>
 								<span className="text">{appCount.records.count}</span>
 							</div>
+							<ActionButtons key={index} app={app} deleteApp={this.deleteApp} />
 						</div>
 					);
 				});

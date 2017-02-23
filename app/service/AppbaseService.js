@@ -145,6 +145,26 @@ class AppbaseService {
 		});
 	}
 
+	deleteApp(id) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: this.address + 'app/' + id,
+				type: 'DELETE',
+				success: (result) => {
+					this.getUser().then((data) => {
+						resolve(result);
+					}).catch((e) =>{
+						console.log(e);
+						resolve(result);
+					});
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
 	logout() {
 		var baseURL = window.location.protocol + "//" + window.location.host;
 		window.location.href = this.address + 'logout?next=' + baseURL;

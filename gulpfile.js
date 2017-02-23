@@ -15,6 +15,7 @@ var files = {
 			'node_modules/codemirror/lib/codemirror.css',
 			'node_modules/codemirror/addon/fold/foldgutter.css',
 			'node_modules/codemirror/addon/dialog/dialog.css',
+			'node_modules/toastr/build/toastr.min.css',
 			'node_modules/appbase-onboarding/dist/css/vendor.min.css',
 			'node_modules/appbase-onboarding/dist/css/style.min.css'
 		],
@@ -29,7 +30,9 @@ var files = {
 			'bower_components/lodash/dist/lodash.min.js',
 			'bower_components/lzma/src/lzma.js',
 			'bower_components/urlsafe-base64/app.js',
-			'bower_components/appbase-js/browser/appbase.min.js'
+			'bower_components/appbase-js/browser/appbase.min.js',
+			'node_modules/clipboard/dist/clipboard.min.js',
+			'node_modules/toastr/build/toastr.min.js'
 		],
 		custom: [
 		]
