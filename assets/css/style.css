@@ -358,7 +358,6 @@ body {
   #ad-navbar.navbar .userImg {
     border: 0;
     background: transparent;
-    border-radius: 50%;
     padding: 15px;
     margin-right: -15px;
     width: 70px;
@@ -378,7 +377,6 @@ body {
         height: 100%;
         line-height: 46px; }
     #ad-navbar.navbar .userImg:hover .close {
-      border-radius: 50%;
       background: rgba(205, 220, 57, 0.9);
       display: inline-block;
       color: #000; }
