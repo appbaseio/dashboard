@@ -259,7 +259,7 @@ body {
     padding: 0; }
     .app-list-item.app-list-header .sortBy-container .sortBy {
       border: 0;
-      border-right: 1px solid #efefef;
+      border-right: 1px solid #dedede;
       box-shadow: none;
       width: 100%;
       background: #f7f7f7; }

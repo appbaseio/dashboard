@@ -168,15 +168,11 @@ export class AppsList extends Component {
 						<div key={index} className="app-list-item row" onClick={() => browserHistory.push(`/app/${app.name}`)}>
 							<div className="col-xs-12 col-sm-4">{app.name}</div>
 							<div className="col-xs-12 col-sm-4">
-								<span className="progress-wrapper">
-									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-								</span>
+								
 								<span className="text">{appCount.action.count}</span>
 							</div>
 							<div className="col-xs-12 col-sm-4">
-								<span className="progress-wrapper">
-									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-								</span>
+								
 								<span className="text">{appCount.records.count}</span>
 							</div>
 							<ActionButtons key={index} app={app} deleteApp={this.deleteApp} />

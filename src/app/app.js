@@ -12,6 +12,8 @@ import { dataOperation } from './service/tutorialService/DataOperation';
 import { Nav } from './others/Nav';
 import * as helper from './others/helper';
 
+require("../dist/css/style.min.css");
+
 class Main extends Component {
 	constructor(props) {
 		super(props);
