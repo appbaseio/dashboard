@@ -53,7 +53,10 @@ export class Nav extends Component {
 			case 'appLink':
 				generatedEle = (
 					<li>
-						<Link to={this.appLink.link}>{this.appLink.label}</Link>
+						<Link to={this.appLink.link}>
+							<i className="fa fa-cubes"></i>&nbsp;
+							{this.appLink.label}
+						</Link>
 					</li>
 				);
 			break;
@@ -76,8 +79,9 @@ export class Nav extends Component {
 				if(this.state.activeApp) {
 					generatedEle = (
 						<li role="presentation" className="dropdown">
-							<a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								{this.state.activeApp} <span className="caret"></span>
+							<a className="dropdown-toggle apps-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<i className="fa fa-chevron-right"></i>&nbsp;
+								{this.state.activeApp}
 							</a>
 							<ul className="dropdown-menu pull-right">
 								{this.renderElement('apps')}
@@ -134,6 +138,7 @@ export class Nav extends Component {
 						</button>
 						<a className="navbar-brand" href="#">
 							<img src="../../assets/images/logo.png" alt="" className="img-responsive"/>
+							<span>Reactive Maps</span>
 						</a>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

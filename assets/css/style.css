@@ -316,7 +316,7 @@ body {
     padding: 35px 15px 0 15px; }
 
 #ad-navbar.navbar {
-  background: #6065FF;
+  background: #5678FC;
   border-radius: 0;
   border: 0;
   margin: 0;
@@ -327,10 +327,21 @@ body {
   z-index: 99;
   height: 60px; }
   #ad-navbar.navbar .navbar-brand {
+    height: 60px;
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    padding: 1rem;
+    color: #fff;
     display: inline-block;
-    padding: 10px;
-    width: 60px;
-    height: 60px; }
+    position: relative;
+    max-width: 500px; }
+    #ad-navbar.navbar .navbar-brand img {
+      height: 100%;
+      display: inline-block;
+      float: left; }
+    #ad-navbar.navbar .navbar-brand span {
+      float: left;
+      padding: 0.5rem 0; }
   #ad-navbar.navbar .userImg {
     border: 0;
     background: transparent;
@@ -361,19 +372,72 @@ body {
   #ad-navbar.navbar li {
     height: 60px; }
     #ad-navbar.navbar li a {
-      font-size: 1.25rem;
+      font-size: 1rem;
       text-transform: uppercase;
       padding: 1.5rem 1rem;
       color: #fff; }
-    #ad-navbar.navbar li .dropdown-menu {
-      padding: 0;
-      margin: 0; }
-      #ad-navbar.navbar li .dropdown-menu li {
-        height: auto; }
-        #ad-navbar.navbar li .dropdown-menu li a {
-          font-size: 1rem;
-          padding: 0.5rem;
-          color: #6065FF; }
+    #ad-navbar.navbar li .apps-dropdown-toggle {
+      position: relative; }
+      #ad-navbar.navbar li .apps-dropdown-toggle i {
+        position: absolute;
+        left: -0.1rem;
+        top: 1.65rem; }
+  #ad-navbar.navbar li.dropdown > a {
+    position: relative;
+    padding-bottom: 8px; }
+    #ad-navbar.navbar li.dropdown > a:before {
+      content: " ";
+      position: absolute;
+      right: 1px;
+      bottom: 12px;
+      border-width: 4px;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent; }
+    #ad-navbar.navbar li.dropdown > a:hover {
+      background: transparent; }
+  #ad-navbar.navbar li.dropdown:hover > a:after {
+    content: " ";
+    position: absolute;
+    right: 1px;
+    bottom: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: transparent transparent #f7f7f7 transparent; }
+  #ad-navbar.navbar li.dropdown a {
+    margin-bottom: 0; }
+  #ad-navbar.navbar li.dropdown:hover .dropdown-menu {
+    display: block; }
+  #ad-navbar.navbar li.dropdown .dropdown-menu {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    left: 0;
+    margin-top: -11px;
+    right: auto;
+    background: #f7f7f7;
+    max-height: 500px;
+    overflow: auto; }
+    #ad-navbar.navbar li.dropdown .dropdown-menu li {
+      height: auto; }
+      #ad-navbar.navbar li.dropdown .dropdown-menu li a {
+        border-radius: 0;
+        margin: 0;
+        color: #5678FC;
+        padding: 0.75rem; }
+        #ad-navbar.navbar li.dropdown .dropdown-menu li a.withIcon {
+          padding-left: 42px; }
+          #ad-navbar.navbar li.dropdown .dropdown-menu li a.withIcon img {
+            position: absolute;
+            left: 10px;
+            margin-top: 3px;
+            max-width: 22px; }
+        #ad-navbar.navbar li.dropdown .dropdown-menu li a:hover {
+          background: #fff;
+          color: #5678FC !important; }
+      #ad-navbar.navbar li.dropdown .dropdown-menu li a:hover,
+      #ad-navbar.navbar li.dropdown .dropdown-menu li a:active,
+      #ad-navbar.navbar li.dropdown .dropdown-menu li a.active {
+        color: #5678FC; }
 
 #onboarding-container {
   display: block;
@@ -505,39 +569,6 @@ body {
           .singleApp-container .singleApp .nav-tab li a:hover {
             color: #CDDC39;
             text-decoration: none; }
-
-.topbar {
-  position: absolute;
-  width: 100%;
-  height: 50px;
-  left: 0;
-  top: 0; }
-  .topbar .container-fluid,
-  .topbar .navbar-collapse {
-    padding: 0; }
-  .topbar nav.navbar {
-    padding-left: 110px;
-    z-index: 2;
-    background: #F9F9F9; }
-    .topbar nav.navbar li {
-      position: relative; }
-      .topbar nav.navbar li .breadcrumb {
-        position: absolute;
-        right: -5px;
-        top: 0;
-        background: transparent;
-        padding: 1rem 0; }
-      .topbar nav.navbar li a {
-        font-size: 16px;
-        font-size: 1rem;
-        padding: 1rem;
-        text-transform: none; }
-      .topbar nav.navbar li.dropdown .dropdown-menu {
-        padding: 0; }
-        .topbar nav.navbar li.dropdown .dropdown-menu li a {
-          padding: 0.5rem; }
-    .topbar nav.navbar .open > a, .topbar nav.navbar .open > a:focus, .topbar nav.navbar .open > a:hover {
-      background: rgba(247, 247, 247, 0.5); }
 
 .ad-actionbuttons {
   position: absolute;

@@ -10,10 +10,23 @@
 	z-index: 99;
 	height: 60px;
 	.navbar-brand {
-		display: inline-block;
-		padding: 10px;
-		width: 60px;
 		height: 60px;
+		font-size: 1.75rem;
+		text-transform: uppercase;
+		padding: 1rem;
+		color: #fff;
+		display: inline-block;
+		position: relative;
+		max-width: 500px;
+		img {
+			height: 100%;
+			display: inline-block;
+			float: left;
+		}
+		span {
+			float: left;
+			padding: 0.5rem 0;
+		}
 	}
 	.userImg {
 		border: 0;
@@ -30,7 +43,7 @@
 			img {
 				border-radius: 50%;
 			}
-			.close { 
+			.close {
 				display: none;
 				position: absolute;
 				left: 0;
@@ -52,23 +65,93 @@
 	li {
 		height: 60px;
 		a {
-			font-size: 1.25rem;
+			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
 			color: #fff;
 		}
+		.apps-dropdown-toggle {
+			position: relative;
+			i {
+				position: absolute;
+				left: -0.1rem;
+				top: 1.65rem;
+			}
+		}
+	}
+	li.dropdown > a {
+		position: relative;
+		padding-bottom: 8px;
+		&:before {
+			content: " ";
+			position: absolute;
+			right: 1px;
+			bottom: 12px;
+			border-width: 4px;
+			border-style: solid;
+			border-color: #fff transparent transparent transparent;
+		}
+		&:hover {
+			background: transparent;
+		}
+	}
+	li.dropdown:hover > a {
+		&:after {
+			content: " ";
+			position: absolute;
+			right: 1px;
+			bottom: 0;
+			border-width: 4px;
+			border-style: solid;
+			border-color: transparent transparent $dark-grey transparent;
+		}
+	}
+	li.dropdown {
+		a {
+			margin-bottom: 0;
+		}
+		&:hover {
+			.dropdown-menu {
+				display: block;
+			}
+		}
 		.dropdown-menu {
+			border: none;
+			border-radius: 0;
 			padding: 0;
-			margin: 0;
+			left: 0;
+			margin-top: -11px;
+			right: auto;
+			background: $dark-grey;
+			max-height: 500px;
+			overflow: auto;
 			li {
 				height: auto;
 				a {
-					font-size: 1rem;
-					padding: 0.5rem;
+					border-radius: 0;
+					margin: 0;
+					color: $blue-color;
+					padding: 0.75rem;
+					&.withIcon {
+						padding-left: 42px;
+						img {
+							position: absolute;
+							left: 10px;
+							margin-top: 3px;
+							max-width: 22px;
+						}
+					}
+					&:hover {
+						background: #fff;
+						color: $blue-color !important;
+					}
+				}
+				a:hover,
+				a:active,
+				a.active {
 					color: $blue-color;
 				}
 			}
 		}
 	}
-
 }
