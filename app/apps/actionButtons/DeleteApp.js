@@ -22,7 +22,7 @@ export class DeleteApp extends Component {
 	render() {
 		return (
 		<div>
-			<a title="Delete app" className="delete pointer" onClick={() => this.open()}>
+			<a title="Delete app" className="delete pointer text-danger" onClick={() => this.open()}>
 				<i className="fa fa-trash"></i>
 			</a>
 			<Modal className="modal-info" show={this.state.showModal} onHide={() => this.close()}>

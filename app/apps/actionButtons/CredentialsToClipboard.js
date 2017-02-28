@@ -22,6 +22,12 @@ export class CredentialsToClipboard extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if(this.cp) {
+			this.cp.destroy();
+		}
+	}
+
 	getPermission() {
 		appbaseService.getPermission(this.props.app.id).then((data) => {
 			if (data && data.body && data.body.length) {
@@ -51,15 +57,15 @@ export class CredentialsToClipboard extends Component {
 	setClipboard() {
 		setTimeout(() => {
 			let credId = "#cred-" + this.props.app.id;
-			let cp = new Clipboard(credId);
-			cp.on('success', (e) => {
+			this.cp = new Clipboard(credId);
+			this.cp.on('success', (e) => {
 				toastr.success(this.state.singleCredential.description+' Credentials has been copied successully!');
 				if(this.state.singleCredential.write) {
 					toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
 				}
 
 			});
-			cp.on('error', (e) => {
+			this.cp.on('error', (e) => {
 				toastr.error('Error', e);
 			})
 		}, 300);

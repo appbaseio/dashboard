@@ -16,6 +16,7 @@
     "appbase-onboarding": "^0.1.0",
     "babel-preset-stage-0": "^6.5.0",
     "clipboard": "^1.6.0",
+    "fbemitter": "^2.1.1",
     "rc-progress": "^2.0.6",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
