@@ -1,4 +1,4 @@
-nav.navbar {
+#ad-navbar.navbar {
 	background: $blue-color;
 	border-radius: 0;
 	border: 0;
@@ -51,12 +51,24 @@ nav.navbar {
 	}
 	li {
 		height: 60px;
-
 		a {
 			font-size: 1.25rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
-			color: #fff !important;
+			color: #fff;
+		}
+		.dropdown-menu {
+			padding: 0;
+			margin: 0;
+			li {
+				height: auto;
+				a {
+					font-size: 1rem;
+					padding: 0.5rem;
+					color: $blue-color;
+				}
+			}
 		}
 	}
+
 }

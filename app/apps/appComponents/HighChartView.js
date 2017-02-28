@@ -9,6 +9,9 @@ export class HighChartView extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			graphMethod: 'all'
+		};
 	}
 
 	graph(method) {
@@ -25,19 +28,19 @@ export class HighChartView extends Component {
 				</div>
 				<ul className="nav-tab">
 					<li>
-						<a className={this.props.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
+						<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
 					</li>
 					<li>
-						<a className={this.props.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
+						<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
 					</li>
 					<li>
-						<a className={this.props.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
+						<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
 					</li>
 				</ul>
 				<div className="graph">
 					<Highchart 
 						id="chart1" 
-						graphMethod={this.props.graphMethod}
+						graphMethod={this.state.graphMethod}
 						info={this.props.info}>
 					</Highchart>
 				</div>

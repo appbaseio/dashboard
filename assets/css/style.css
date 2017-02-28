@@ -315,7 +315,7 @@ body {
   #login .modal-appbase#login_modal .modal-header, #login .modal-appbase#signup_modal .modal-header {
     padding: 35px 15px 0 15px; }
 
-nav.navbar {
+#ad-navbar.navbar {
   background: #6065FF;
   border-radius: 0;
   border: 0;
@@ -326,12 +326,12 @@ nav.navbar {
   left: 0;
   z-index: 99;
   height: 60px; }
-  nav.navbar .navbar-brand {
+  #ad-navbar.navbar .navbar-brand {
     display: inline-block;
     padding: 10px;
     width: 60px;
     height: 60px; }
-  nav.navbar .userImg {
+  #ad-navbar.navbar .userImg {
     border: 0;
     background: transparent;
     border-radius: 50%;
@@ -340,12 +340,12 @@ nav.navbar {
     width: 70px;
     max-height: 60px;
     overflow: hidden; }
-    nav.navbar .userImg .img-container {
+    #ad-navbar.navbar .userImg .img-container {
       display: inline-block;
       position: relative; }
-      nav.navbar .userImg .img-container img {
+      #ad-navbar.navbar .userImg .img-container img {
         border-radius: 50%; }
-      nav.navbar .userImg .img-container .close {
+      #ad-navbar.navbar .userImg .img-container .close {
         display: none;
         position: absolute;
         left: 0;
@@ -353,18 +353,27 @@ nav.navbar {
         width: 100%;
         height: 100%;
         line-height: 46px; }
-    nav.navbar .userImg:hover .close {
+    #ad-navbar.navbar .userImg:hover .close {
       border-radius: 50%;
       background: rgba(205, 220, 57, 0.9);
       display: inline-block;
       color: #000; }
-  nav.navbar li {
+  #ad-navbar.navbar li {
     height: 60px; }
-    nav.navbar li a {
+    #ad-navbar.navbar li a {
       font-size: 1.25rem;
       text-transform: uppercase;
       padding: 1.5rem 1rem;
-      color: #fff !important; }
+      color: #fff; }
+    #ad-navbar.navbar li .dropdown-menu {
+      padding: 0;
+      margin: 0; }
+      #ad-navbar.navbar li .dropdown-menu li {
+        height: auto; }
+        #ad-navbar.navbar li .dropdown-menu li a {
+          font-size: 1rem;
+          padding: 0.5rem;
+          color: #6065FF; }
 
 #onboarding-container {
   display: block;
@@ -420,7 +429,7 @@ nav.navbar {
 
 .singleApp-container {
   position: relative;
-  padding: 50px 0 0 76px;
+  padding: 0 0 0 76px;
   margin: 0;
   height: 100%; }
   .singleApp-container .plugin-view-container {
@@ -537,3 +546,10 @@ nav.navbar {
   width: auto;
   height: 100%;
   z-index: 2; }
+  .ad-actionbuttons .dropdown-menu {
+    min-width: 5px;
+    padding: 0;
+    margin: 0; }
+  .ad-actionbuttons .delete {
+    padding: 10px;
+    font-size: 18px; }

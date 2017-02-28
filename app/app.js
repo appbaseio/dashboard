@@ -10,6 +10,7 @@ import { Tutorial } from './tutorial';
 import { appbaseService } from './service/AppbaseService';
 import { dataOperation } from './service/tutorialService/DataOperation';
 import { Nav } from './others/Nav';
+import * as helper from './others/helper';
 
 class Main extends Component {
 	constructor(props) {
@@ -17,7 +18,8 @@ class Main extends Component {
 		this.state = {
 			loggedIn: false,
 			userInfo: null,
-			loading: true
+			loading: true,
+			currentApp: null
 		};
 		this.getUser();
 	}
@@ -81,7 +83,10 @@ render((
 			<Route path="apps" component={AppsList} />
 			<Route path="login" component={Login} />
 			<Route path="tutorial" component={Tutorial} />
-			<Route path="app/:appId" component={AppRoute} />
+			<Route path="app/:appId" component={AppRoute} 
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId)}
+				onLeave={helper.appDashboard.onLeave} 
+			/>
 		</Route>
 	</Router>
 ), document.getElementById('dashboard'));

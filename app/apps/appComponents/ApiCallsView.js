@@ -9,6 +9,8 @@ export class ApiCallsView extends Component {
 
 	constructor(props) {
 		super(props);
+		this.themeColor = '#CDDC39';
+		this.trailColor = '#eee';
 	}
 
 	render() {
@@ -17,7 +19,7 @@ export class ApiCallsView extends Component {
 				<div className="app-card col-xs-12">
 					<span className="col-sm-12 col-md-6 app-card-progress progress-api-calls">
 						<div className="app-card-progress-container">
-							<Circle percent={this.props.appCount.action.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
+							<Circle percent={this.props.appCount.action.percentage}  strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 							<span className="appCount">
 								{this.props.appCount.action.count}
 							</span>
@@ -28,7 +30,7 @@ export class ApiCallsView extends Component {
 					</span>
 					<span className="col-sm-12 col-md-6 app-card-progress progress-storage-calls">
 						<div className="app-card-progress-container">
-							<Circle  percent={this.props.appCount.records.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
+							<Circle  percent={this.props.appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 							<span className="appCount">
 								{this.props.appCount.records.count}
 							</span>
