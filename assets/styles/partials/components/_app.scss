@@ -185,4 +185,25 @@
 		height: 40px;
 		display: inline-block;
 	}
+	&.app-list-header {
+		.sortBy-container {
+			padding: 0;
+			.sortBy {
+					border: 0;
+					border-right: 1px solid darken($dark-grey, 3%);
+					box-shadow: none;
+					width: 100%;
+					background: $dark-grey;
+				&.active {
+					background: darken($dark-grey, 3%);
+					outline: none;
+				}
+			}
+			&:last-child {
+				.sortBy {
+					border: 0;
+				}
+			}
+		}
+	}
 }

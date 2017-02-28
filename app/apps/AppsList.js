@@ -7,6 +7,7 @@ import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
 import {ActionButtons} from './actionButtons';
+import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
 export class AppsList extends Component {
@@ -23,6 +24,7 @@ export class AppsList extends Component {
 		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);
+		this.registerApps = this.registerApps.bind(this);
 	}
 
 	componentWillMount() {
@@ -57,8 +59,12 @@ export class AppsList extends Component {
 			};
 			storeApps[index] = obj;
 		});
+		this.registerApps(storeApps);
+	}
+
+	registerApps(apps) {
 		this.setState({
-			apps: storeApps
+			apps: apps
 		}, this.getAppInfo);
 	}
 
@@ -86,25 +92,35 @@ export class AppsList extends Component {
 
 	getAppInfo() {
 		let apps = this.state.apps;
+		this.appsInfoCollected = 0;
 		apps.forEach((app, index) => {
 			this.getInfo(app.id, index);
 		});
 	}
 
 	getInfo(appId, index) {
+		var apps = this.state.apps;
 		var info = {};
 		appbaseService.getMetrics(appId).then((data) => {
 			info.metrics = data;
 			info.appStats = appbaseService.computeMetrics(data);
+			apps[index].apiCalls = info.appStats.calls;
+			apps[index].records = info.appStats.records;
 			// info.apiCalls = this.getApiCalls(data);
 			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
 		});
 		function cb() {
-			var apps = this.state.apps;
 			apps[index].info = info;
 			if(!this.stopUpdate) {
+				this.setState({apps: apps}, sortApps.bind(this));
+			}
+		}
+		function sortApps() {
+			this.appsInfoCollected++;
+			if(this.appsInfoCollected === this.state.apps.length) {
+				let apps = appbaseService.applySort(this.state.apps);
 				this.setState({apps: apps});
 			}
 		}
@@ -185,6 +201,7 @@ export class AppsList extends Component {
 						createAppLoading={this.state.createAppLoading}
 						createAppError={this.state.createAppError}
 						clearInput={this.state.clearInput} />
+					<AppListComponent.Header apps={this.state.apps} registerApps={this.registerApps} />
 					{this.renderElement('apps')}
 				</div>
 			</div>

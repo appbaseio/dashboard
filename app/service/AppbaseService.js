@@ -1,3 +1,4 @@
+const _ = require("lodash");
 class AppbaseService {
 	constructor() {
 		this.userInfo = null;
@@ -17,6 +18,10 @@ class AppbaseService {
 				action: 10000000,
 				records: 1000000
 			}
+		};
+		this.sortBy = {
+			field: "name",
+			order: 'asc'
 		};
 		$.ajaxSetup({
 			crossDomain: true,
@@ -199,6 +204,17 @@ class AppbaseService {
 		};
 	}
 
+	applySort(apps, field) {
+		if(field) {
+			this.sortBy.order = field === this.sortBy.field ? (this.sortBy.order === 'desc' ? 'asc' : 'desc') : 'asc';
+			this.sortBy.field = field;
+		}
+		apps =  _.sortBy(apps, this.sortBy.field);
+		if(this.sortBy.order === 'desc') {
+			apps = apps.reverse();
+		}
+		return apps;
+	}
 }
 
 export const appbaseService = new AppbaseService();
