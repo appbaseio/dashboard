@@ -29,8 +29,8 @@ export default class SortBy extends Component {
 		return (
 			<button className={`sortBy ${cx}`} onClick={this.applySort}>
 				{this.props.label}&nbsp;&nbsp;
-				{this.state.sortBy.field === this.props.field && this.state.sortBy.order === 'asc' ? (<i className="fa fa-sort-asc"></i>) : null}
-				{this.state.sortBy.field === this.props.field && this.state.sortBy.order === 'desc' ? (<i className="fa fa-sort-desc"></i>) : null}
+				{this.state.sortBy.field === this.props.field && this.state.sortBy.order === 'asc' ? (<i className="fa fa-arrow-up"></i>) : null}
+				{this.state.sortBy.field === this.props.field && this.state.sortBy.order === 'desc' ? (<i className="fa fa-arrow-down"></i>) : null}
 			</button>
 		);
 	}
