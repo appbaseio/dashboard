@@ -122,7 +122,7 @@ export class Dashboard extends Component {
 			case 'name':
 				generatedEle = (
 					<div className="page-info col-xs-12">
-						<h2 className="page-title">{this.appName}</h2>
+						<h2 className="page-title">Dashboard</h2>
 					</div>
 				);
 			break;

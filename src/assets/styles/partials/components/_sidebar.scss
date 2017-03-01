@@ -6,7 +6,7 @@
 		width: 76px;
 		height: 100%;
 		padding-top: 0;
-		background: $sidebar;
+		background: lighten($blue-color, 4%);
 		z-index: 2;
 		.sidebar {
 			list-style: none;
@@ -28,7 +28,7 @@
 						}
 					}
 					&:hover, &.active {
-						background: darken($sidebar, 10%);
+						background: $blue-color;
 						text-decoration: none;
 					}
 				}

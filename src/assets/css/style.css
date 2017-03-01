@@ -483,7 +483,7 @@ body {
   width: 76px;
   height: 100%;
   padding-top: 0;
-  background: #DDE4FE;
+  background: #6a88fc;
   z-index: 2; }
   #dashboard .sidebar-container .sidebar {
     list-style: none;
@@ -503,7 +503,7 @@ body {
           #dashboard .sidebar-container .sidebar li a .img-container img {
             margin: 0 auto 10px auto; }
         #dashboard .sidebar-container .sidebar li a:hover, #dashboard .sidebar-container .sidebar li a.active {
-          background: #abbdfd;
+          background: #5678FC;
           text-decoration: none; }
 
 .singleApp-container {

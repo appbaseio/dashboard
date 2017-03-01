@@ -23,6 +23,7 @@ export class CredentialsToClipboard extends Component {
 	}
 
 	componentWillUnmount() {
+		this.stopUpdate = true;
 		if(this.cp) {
 			this.cp.destroy();
 		}
@@ -33,10 +34,12 @@ export class CredentialsToClipboard extends Component {
 			if (data && data.body && data.body.length) {
 				let singleCredential = data.body[this.pickPermission(data.body)];
 				let justCredential = singleCredential.username + ':' + singleCredential.password;
-				this.setState({
-					credentials: justCredential,
-					singleCredential: singleCredential
-				}, this.setClipboard);
+				if(!this.stopUpdate) {
+					this.setState({
+						credentials: justCredential,
+						singleCredential: singleCredential
+					}, this.setClipboard);
+				}
 			}
 		});
 	}
