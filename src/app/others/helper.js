@@ -9,7 +9,9 @@ class AppDashboard {
 		});
 	}
 	onLeave() {
-		eventEmitter.emit('activeApp', null);
+		eventEmitter.emit('activeApp', {
+			activeApp: null
+		});
 	}
 }
 

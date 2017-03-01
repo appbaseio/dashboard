@@ -111,20 +111,19 @@ export class AppsList extends Component {
 			info.appStats = appbaseService.computeMetrics(data);
 			apps[index].apiCalls = info.appStats.calls;
 			apps[index].records = info.appStats.records;
-			// info.apiCalls = this.getApiCalls(data);
+			apps[index].info = info;
 			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
 		});
 		function cb() {
-			apps[index].info = info;
-			if(!this.stopUpdate) {
+			this.appsInfoCollected++;
+			if(!this.stopUpdate && this.appsInfoCollected === this.state.apps.length) {
 				this.setState({apps: apps}, sortApps.bind(this));
 			}
 		}
 		function sortApps() {
-			this.appsInfoCollected++;
-			if(this.appsInfoCollected === this.state.apps.length && this.setSort) {
+			if(this.setSort) {
 				this.setSort = false;
 				let apps = appbaseService.applySort(this.state.apps);
 				this.setState({apps: apps});
