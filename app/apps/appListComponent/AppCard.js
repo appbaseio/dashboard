@@ -21,9 +21,7 @@ export default class AppCard extends Component {
 	render() {
 		return (
 			<div className="col-xs-12 col-sm-6 col-md-4 appcard">
-				<div className="well">
-					{this.props.children}
-				</div>
+				{this.props.children}
 			</div>
 		);
 	}

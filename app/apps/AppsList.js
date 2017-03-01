@@ -211,7 +211,7 @@ export class AppsList extends Component {
 					};
 					return (
 						<AppListComponent.AppCard key={index}>
-							<div className="app-list-item" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
+							<div className="app-list-item well" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
 									<div className="row">
