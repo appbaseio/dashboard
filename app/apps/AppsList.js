@@ -10,6 +10,31 @@ import {ActionButtons} from './actionButtons';
 import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
+const AppIntro = (props) => {
+	return (
+		<AppListComponent.AppCard>
+			<h3 className="title">What is an app?</h3>
+			<p className="description">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+				Fugiat vero molestias reiciendis, iure hic, maxime aperiam assumenda ipsa 
+				temporibus neque numquam perferendis,
+				nostrum harum facere. Commodi incidunt rem assumenda, sed!
+			</p>
+		</AppListComponent.AppCard>
+	);
+}
+
+const AppTutorial = (props) => {
+	return (
+		<AppListComponent.AppCard>
+			<h3 className="title">InteractiveTutorial</h3>
+			<p className="description">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+			</p>
+		</AppListComponent.AppCard>
+	);
+}
+
 export class AppsList extends Component {
 
 	constructor(props) {
@@ -170,22 +195,38 @@ export class AppsList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<div key={index} className="app-list-item row" onClick={() => browserHistory.push(`/app/${app.name}`)}>
-							<div className="col-xs-12 col-sm-4">{app.name}</div>
-							<div className="col-xs-12 col-sm-4">
-								<span className="progress-wrapper">
-									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-								</span>
-								<span className="text">{appCount.action.count}</span>
+						<AppListComponent.AppCard key={index}>
+							<div className="app-list-item" onClick={() => browserHistory.push(`/Dashboard/app/${app.name}`)}>
+								<h3 className="title">{app.name}</h3>
+								<div className="description">
+									<div className="row">
+										<div className="col-xs-6">
+											<div className="col-xs-12 p-0">
+												<span className="progress-wrapper">
+													<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+												</span>
+												<span className="progress-text">
+													<strong>{appCount.action.count}</strong>
+													<p>/{appbaseService.planLimits[this.state.plan].action}</p>
+												</span>
+											</div>
+											<div className="sub-title">
+												Api calls
+											</div>
+										</div>
+										<div className="col-xs-6">
+											<span className="progress-wrapper">
+												<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+											</span>
+											<span className="progress-text">
+												<strong>{appCount.records.count}</strong>
+												<p>/{appbaseService.planLimits[this.state.plan].count}</p>
+											</span>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div className="col-xs-12 col-sm-4">
-								<span className="progress-wrapper">
-									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-								</span>
-								<span className="text">{appCount.records.count}</span>
-							</div>
-							<ActionButtons key={index} app={app} deleteApp={this.deleteApp} />
-						</div>
+						</AppListComponent.AppCard>
 					);
 				});
 			break;
@@ -195,18 +236,20 @@ export class AppsList extends Component {
 
 	render() {
 		return (
-			<div className="appList container">
-				<div className="page-info">
-					<h2 className="page-title">Welcome, {appbaseService.userInfo.body.details.name}!</h2>
+			<div className="appList">
+				<div className="head-row row">
+					<div className="container">
+						<AppIntro />
+						<AppTutorial />
+						<NewApp
+							createApp={this.createApp} 
+							apps={this.state.apps}
+							createAppLoading={this.state.createAppLoading}
+							createAppError={this.state.createAppError}
+							clearInput={this.state.clearInput} />
+					</div>
 				</div>
-				<div className="row apps">
-					<NewApp
-						createApp={this.createApp} 
-						apps={this.state.apps}
-						createAppLoading={this.state.createAppLoading}
-						createAppError={this.state.createAppError}
-						clearInput={this.state.clearInput} />
-					<AppListComponent.Header apps={this.state.apps} registerApps={this.registerApps} />
+				<div className="container apps-container">
 					{this.renderElement('apps')}
 				</div>
 			</div>

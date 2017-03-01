@@ -6,6 +6,9 @@ body {
   height: 100%;
   font-family: "Source Sans Pro Regular"; }
 
+.p-0 {
+  padding: 0; }
+
 .theme-btn {
   background: #dedede;
   color: #fff;
@@ -24,8 +27,7 @@ body {
     padding: 8px 16px; }
 
 .appList, .singleApp {
-  position: relative;
-  padding: 30px; }
+  position: relative; }
   .appList .app-card-container, .singleApp .app-card-container {
     padding: 15px 30px 15px 0; }
   .appList .new-app-container, .singleApp .new-app-container {
@@ -150,44 +152,28 @@ body {
         float: none;
         line-height: 1rem; }
 
-.app-list-item {
-  line-height: 40px;
+.appList .appcard {
+  margin-bottom: 15px; }
+  .appList .appcard .well {
+    margin: 0;
+    height: 100%;
+    background: #fff; }
+    .appList .appcard .well .app-list-item .progress-wrapper {
+      float: left;
+      width: 40px;
+      height: 40px;
+      display: inline-block; }
+    .appList .appcard .well .app-list-item .progress-text {
+      float: left;
+      padding-left: 5px; }
+
+.appList .head-row {
   background: #fff;
-  border-radius: 2px;
-  font-size: 18px;
-  border-bottom: 1px solid #eee;
-  padding: 12px;
-  margin: 0;
-  cursor: pointer;
-  transition: all .3s ease;
-  -webkit-transition: all .3s ease;
-  position: relative; }
-  .app-list-item:hover, .app-list-item:focus {
-    background: #fcfcfc; }
-  .app-list-item > div {
-    width: 33.333%;
-    vertical-align: middle;
-    height: 40px;
-    display: inline-flex; }
-  .app-list-item .text {
-    padding-left: 12px; }
-  .app-list-item .progress-wrapper {
-    width: 40px;
-    height: 40px;
-    display: inline-block; }
-  .app-list-item.app-list-header .sortBy-container {
-    padding: 0; }
-    .app-list-item.app-list-header .sortBy-container .sortBy {
-      border: 0;
-      border-right: 1px solid #dedede;
-      box-shadow: none;
-      width: 100%;
-      background: #f7f7f7; }
-      .app-list-item.app-list-header .sortBy-container .sortBy.active {
-        background: #efefef;
-        outline: none; }
-    .app-list-item.app-list-header .sortBy-container:last-child .sortBy {
-      border: 0; }
+  padding: 15px;
+  margin: 0 0 15px 0; }
+  .appList .head-row .well {
+    border: 0;
+    box-shadow: none; }
 
 #login h1 {
   margin-bottom: 45px; }
