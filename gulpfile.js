@@ -11,13 +11,17 @@ var files = {
 			'bower_components/bootstrap/dist/css/bootstrap.min.css',
 			'bower_components/font-awesome/css/font-awesome.min.css',
 			'node_modules/@appbaseio/reactivemaps/dist/css/style.min.css',
-			'assets/vendor/hljs.css',
 			'node_modules/codemirror/lib/codemirror.css',
 			'node_modules/codemirror/addon/fold/foldgutter.css',
-			'node_modules/codemirror/addon/dialog/dialog.css'
+			'node_modules/codemirror/addon/dialog/dialog.css',
+			'node_modules/toastr/build/toastr.min.css',
+			'node_modules/appbase-onboarding/dist/css/vendor.min.css',
+			'node_modules/appbase-onboarding/dist/css/style.min.css',
+			'assets/vendor/hljs.css'
 		],
 		custom: ['assets/css/*.css'],
-		sassFile: ['assets/styles/*.scss']
+		sassFile: ['assets/styles/*.scss'],
+		sassPartials: ['assets/styles/partials/**/*.scss']
 	},
 	js: {
 		vendor: [
@@ -26,7 +30,9 @@ var files = {
 			'bower_components/lodash/dist/lodash.min.js',
 			'bower_components/lzma/src/lzma.js',
 			'bower_components/urlsafe-base64/app.js',
-			'bower_components/appbase-js/browser/appbase.min.js'
+			'bower_components/appbase-js/browser/appbase.min.js',
+			'node_modules/clipboard/dist/clipboard.min.js',
+			'node_modules/toastr/build/toastr.min.js'
 		],
 		custom: [
 		]
@@ -60,7 +66,10 @@ gulp.task('sass', function() {
 });
 
 gulp.task('moveCss', function() {
-	return gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css.map'])
+	return gulp.src([
+			'bower_components/bootstrap/dist/css/bootstrap.min.css.map',
+			'assets/vendor/fonts.css'
+		])
 		.pipe(gulp.dest('dist/css'));
 });
 
@@ -93,6 +102,10 @@ gulp.task('watchfiles', function() {
 	gulp.watch(files.css.sassFile, ['customcss']);
 });
 
+gulp.task('watchSassPartials', function() {
+	gulp.watch(files.css.sassPartials, ['customcss']);
+});
+
 gulp.task('default', ['compact']);
 
-gulp.task('watch', ['compact', 'watchfiles']);
+gulp.task('watch', ['compact', 'watchfiles', 'watchSassPartials']);

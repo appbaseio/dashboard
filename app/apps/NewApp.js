@@ -82,7 +82,11 @@ export class NewApp extends Component {
 		switch(ele) {
 			case 'helpBlock':
 				if(this.state.validate.error || this.createAppError) {
-					generatedEle = (<span className="help-block">{this.state.validate.error || this.createAppError}</span>);
+					generatedEle = (
+						<div className="alert alert-warning" role="alert">
+							{this.state.validate.error || this.createAppError}
+						</div>
+					);
 				}
 			break;
 			case 'loading':
@@ -97,15 +101,8 @@ export class NewApp extends Component {
 	render() {
 		let disabled = !this.state.validate.value ? {disabled: true} : null;
 		return (
-			<div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 app-card-container">
+			<div className="row new-app-container">
 				<div className="app-card new-app col-xs-12" style={{'height': this.state.cardHeight}}>
-					<div className="app-card-progress">
-						<div className="plus-icon app-card-progress-container">
-							<div className="appCount">
-								+
-							</div>
-						</div>
-					</div>
 					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
 						<input type="text" placeholder="Create new app" value={this.state.value} className="form-control" onChange={this.handleChange} />
 						{this.renderElement('helpBlock')}

@@ -1,0 +1,215 @@
+.appList, .singleApp {
+	position: relative;
+	padding: 30px;
+	.app-card-container {
+		padding: 15px 30px 15px 0;
+	}
+	.new-app-container {
+		margin: 0;
+	}
+	.app-card {
+		border-radius: 8px;
+		background: $dark-grey;
+		padding: 12px;
+		text-align: center;
+		border: 6px solid transparent;
+		&.new-app {
+			padding: 8px 0;
+			background: #fff;
+			input {
+				border: none;
+				background-color: $dark-grey;
+			}
+			.alert {
+				margin: 15px 0 0 0;
+			}
+		}
+		.caption {
+			font-size: 1.2rem;
+			line-height: 39px;
+		}
+		.title {
+			font-size: 1.5rem;
+			line-height: 2.5rem;
+			marker-top: 15px;
+			a {
+				width: 100%;
+				display: block;
+				background: darken($dark-grey, 10%);
+				color: #fff;
+				&:hover {
+					background: $primary-color;
+					text-decoration: none;
+				}
+			}
+		}
+		.app-card-progress {
+			.app-card-progress-container {
+				height: 100px;
+				width: 100px;
+				margin: auto;
+				position: relative;
+				margin-bottom: 15px;
+				&.plus-icon {
+					border: 1px solid $grey-font;
+					border-radius: 50%;
+					color: $grey-font;
+					font-size: 70px;
+					font-family: $font-extra-light;
+				}
+				.appCount {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					display: flex;
+					left: 0;
+					top: 0;
+					margin: auto;
+					display: flex;
+					-webkit-box-align: center;
+					-webkit-align-items: center;
+					align-items: center;
+					-webkit-box-pack: center;
+					-webkit-justify-content: center;
+					justify-content: center;
+				}
+			}
+		}
+		&.permissionView {
+			.permission-row {
+				padding: 5px 0;
+				text-align: left;
+				.key {
+					text-transform: uppercase;
+				}
+				.value {
+					user-select: all;
+					-moz-user-select: all;
+					-khtml-user-select: all;
+					-webkit-user-select: all;
+					-o-user-select: all;
+				}
+			}
+		}
+	}
+}
+
+#dashboard {
+	height: 100%;
+}
+
+.app-container {
+	padding: 0;
+	height: 100%;
+	position: relative;
+	padding: 0;
+}
+
+#dashboard-container {
+	padding: 60px 0 0 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	.page-info {
+		margin: 0 0 15px 0;
+		.page-title {
+			margin: 0 0 5px 0;
+		}
+		.page-description {}
+	}
+}
+
+.loadingContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	.loading {
+		max-width: 50%;
+		padding: 15px;
+		background: $primary-color;
+		border-radius: 6px;
+		color: #fff;
+		font-size: 18px;
+		span {
+			float: right;
+			line-height: 60px;
+		}
+	}
+	&.normal {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		.loading {
+			width: 100%;
+			max-width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				float: none;
+				line-height: 1rem;
+			}
+		}
+	}
+}
+
+
+.app-list-item {
+	line-height: 40px;
+	background: #fff;
+	border-radius: 2px;
+	font-size: 18px;
+	border-bottom: 1px solid #eee;
+	padding: 12px;
+	margin: 0;
+	cursor: pointer;
+	transition: all .3s ease;
+	-webkit-transition: all .3s ease;
+	position: relative;
+	&:hover, &:focus {
+		background: #fcfcfc;
+	}
+
+	& > div {
+		width: 33.333%;
+		vertical-align: middle;
+		height: 40px;
+		display: inline-flex;
+	}
+
+	.text {
+		padding-left: 12px;
+	}
+
+	.progress-wrapper {
+		width: 40px;
+		height: 40px;
+		display: inline-block;
+	}
+	&.app-list-header {
+		.sortBy-container {
+			padding: 0;
+			.sortBy {
+					border: 0;
+					border-right: 1px solid darken($dark-grey, 10%);
+					box-shadow: none;
+					width: 100%;
+					background: $dark-grey;
+				&.active {
+					background: darken($dark-grey, 3%);
+					outline: none;
+				}
+			}
+			&:last-child {
+				.sortBy {
+					border: 0;
+				}
+			}
+		}
+	}
+}

@@ -4,6 +4,8 @@ import {
 } from 'react';
 import { Link } from 'react-router';
 import { render } from 'react-dom';
+import ReactTooltip from 'react-tooltip';
+import classNames from "classnames";
 
 export class Sidebar extends Component {
 
@@ -14,25 +16,19 @@ export class Sidebar extends Component {
 			link: 'app/'+this.props.appName,
 			type: 'internal',
 			name: 'Dashboard',
-			img: (<i className="fa fa-table"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/Dashboard.svg"></img>)
 		}, {
 			label: 'Data Browser',
 			link: 'app/'+this.props.appName+'/dejavu',
 			type: 'internal',
 			name: 'dejavu',
-			img: (<i className="fa fa-tachometer"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/dejavu.svg"></img>)
 		}, {
 			label: 'Data Mapper',
 			link: 'app/'+this.props.appName+'/gem',
 			type: 'internal',
 			name: 'gem',
-			img: (<img className="img-responsive" src="../../assets/images/GEM.svg"></img>)
-		}, {
-			label: 'Query Explorer',
-			link: 'app/'+this.props.appName+'/gem',
-			type: 'internal',
-			name: 'mirage',
-			img: (<img className="img-responsive" src="../../assets/images/GEM.svg"></img>)
+			img: (<img className="img-responsive" src="../../assets/images/gem.svg"></img>)
 		}];
 	}
 
@@ -45,11 +41,19 @@ export class Sidebar extends Component {
 		switch (ele) {
 			case 'links':
 				generatedEle = this.links.map((item, index) => {
-					let img = (<div className="img-container">{item.img}</div>);
-					let anchor = (<a className={this.props.currentView === item.name ? "active": ""} onClick={() => this.changeView(item.name)}>{img}{item.label}</a>);
+					const cx = classNames({
+						"active": this.props.currentView === item.name
+					});
+					const img = (<div className="img-container">{item.img}</div>);
+					const anchor = (
+						<a data-tip={item.label} className={cx} onClick={() => this.changeView(item.name)}>
+							{img}
+						</a>
+					);
 					return (
 						<li key={index}>
 							{anchor}
+							<ReactTooltip />
 						</li>
 					);
 				})

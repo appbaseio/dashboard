@@ -1,8 +1,5 @@
-import {
-	default as React,
-	Component
-} from 'react';
-var ReactDOM = require('react-dom');
+import { default as React, Component } from 'react';
+import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 import { AppsList } from './apps/AppsList';
 import { Dashboard } from './apps/Dashboard';
@@ -13,6 +10,9 @@ import { Tutorial } from './tutorial';
 import { appbaseService } from './service/AppbaseService';
 import { dataOperation } from './service/tutorialService/DataOperation';
 import { Nav } from './others/Nav';
+import * as helper from './others/helper';
+
+require("../dist/css/style.min.css");
 
 class Main extends Component {
 	constructor(props) {
@@ -20,10 +20,12 @@ class Main extends Component {
 		this.state = {
 			loggedIn: false,
 			userInfo: null,
-			loading: true
+			loading: true,
+			currentApp: null
 		};
 		this.getUser();
 	}
+
 	getUser() {
 		var getUser = appbaseService.getUser()
 			.then((data) => {
@@ -43,6 +45,7 @@ class Main extends Component {
 				browserHistory.push('/login');
 			});
 	}
+
 	render() {
 		let loading = (
 			<div className="loadingContainer">
@@ -67,28 +70,7 @@ class Main extends Component {
 	}
 }
 
-class NotFound extends Component {
-	render() {
-		return <h2>Not found</h2>
-	}
-}
-
-class Default extends Component {
-	render() {
-		return (<div></div>);
-	}
-}
-
-const Inbox = React.createClass({
-	render() {
-		return (
-			<div>
-		<h2>Inbox</h2>
-		{this.props.children || "Welcome to your Inbox"}
-	  </div>
-		)
-	}
-})
+const Default = () => (<div></div>);
 
 const Message = React.createClass({
 	render() {
@@ -96,14 +78,17 @@ const Message = React.createClass({
 	}
 })
 
-ReactDOM.render((
+render((
 	<Router history={browserHistory}>
 		<Route path="/" component={Main}>
 			<IndexRoute component={Default} />
 			<Route path="apps" component={AppsList} />
 			<Route path="login" component={Login} />
 			<Route path="tutorial" component={Tutorial} />
-			<Route path="app/:appId" component={AppRoute} />
+			<Route path="app/:appId" component={AppRoute} 
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId)}
+				onLeave={helper.appDashboard.onLeave} 
+			/>
 		</Route>
 	</Router>
 ), document.getElementById('dashboard'));

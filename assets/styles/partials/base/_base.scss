@@ -1,0 +1,30 @@
+html,
+body {
+	background: #fafafa;
+	color: $primary-font-color;
+	font-size: 14px;
+	height: 100%;
+	font-family: $font-regular;
+}
+
+.theme-btn {
+	background: darken($dark-grey, 10%);
+	color: #fff;
+	border: 0;
+	box-shadow: none;
+	border-radius: 6px;
+	padding: 4px 8px;
+	&:hover,
+	&.active {
+		background: $primary-color;
+		text-decoration: none;
+	}
+	&[disabled] {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+	&.bg-btn {
+		font-size: 2rem;
+		padding: 8px 16px;
+	}
+}

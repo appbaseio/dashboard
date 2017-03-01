@@ -5,16 +5,21 @@ import {
 import { Link, browserHistory } from 'react-router';
 import { render } from 'react-dom';
 import { appbaseService } from '../service/AppbaseService';
+import { eventEmitter } from '../others/helper';
 
 export class Nav extends Component {
 
 	constructor(props) {
 		super(props);
-		this.links = [{
+		this.state = {
+			activeApp: null
+		};
+		this.appLink = {
 			label: 'Apps',
 			link: '/apps',
 			type: 'internal'
-		}, {
+		};
+		this.links = [{
 			label: 'Document',
 			link: 'https://opensource.appbase.io/reactivemaps-manual',
 			type: 'external'
@@ -27,11 +32,64 @@ export class Nav extends Component {
 			link: '/billing',
 			type: 'internal'
 		}];
+		this.apps = appbaseService.userInfo.body.apps;
+	}
+
+	componentWillMount() {
+		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
+			this.setState(activeApp)
+		});
+	}
+
+	componentWillUnmount() {
+		if (this.listenEvent) {
+			this.listenEvent.remove();
+		}
 	}
 
 	renderElement(ele) {
 		let generatedEle = null;
 		switch (ele) {
+			case 'appLink':
+				generatedEle = (
+					<li>
+						<Link to={this.appLink.link}>
+							<i className="fa fa-cubes"></i>&nbsp;
+							{this.appLink.label}
+						</Link>
+					</li>
+				);
+			break;
+			case 'apps':
+				if(this.apps && this.state.activeApp) {
+					generatedEle = [];
+					Object.keys(this.apps).forEach((app, index) => {
+						let appLink = (
+							<li key ={index}>
+								<Link to={`/app/${app}`}>{app}</Link>
+							</li>
+						);
+						if(app !== this.state.activeApp) {
+							generatedEle.push(appLink);
+						}
+					});
+				}
+			break;
+			case 'currentApp': 
+				if(this.state.activeApp) {
+					generatedEle = (
+						<li role="presentation" className="dropdown">
+							<a className="dropdown-toggle apps-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<i className="fa fa-chevron-right"></i>&nbsp;
+								{this.state.activeApp}
+							</a>
+							<ul className="dropdown-menu pull-right">
+								{this.renderElement('apps')}
+							</ul>
+						</li>
+					);
+				}
+			break;
 			case 'links':
 				generatedEle = this.links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
@@ -69,7 +127,7 @@ export class Nav extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-default">
+			<nav className="navbar navbar-default" id="ad-navbar">
 				<div className="container-fluid">
 					<div className="navbar-header">
 						<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -80,9 +138,14 @@ export class Nav extends Component {
 						</button>
 						<a className="navbar-brand" href="#">
 							<img src="../../assets/images/logo.png" alt="" className="img-responsive"/>
+							<span>Reactive Maps</span>
 						</a>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul className="nav navbar-nav pull-left">
+							{this.renderElement('appLink')}
+							{this.renderElement('currentApp')}
+						</ul>
 						<ul className="nav navbar-nav pull-right">
 							{this.renderElement('links')}
 							{this.renderElement('userImg')}

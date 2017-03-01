@@ -17,7 +17,7 @@ export class Highchart extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(this.props.info && this.props.info.metrics && this.props.graphMethod) {
+		if(nextProps.info && nextProps.info.metrics && nextProps.graphMethod) {
 			setTimeout(() => {
 				this.prepareGraph();
 			}, 100);

@@ -5,7 +5,6 @@ import {
 import { render } from 'react-dom';
 import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
-import {Topbar} from './Topbar';
 import { Sidebar } from './Sidebar';
 import { Dashboard } from './Dashboard';
 import { EsPlugin } from './EsPlugin';
@@ -48,9 +47,6 @@ export class AppRoute extends Component {
 			case 'loading':
 				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
 			break;
-			case 'topbar':
-				generatedEle = (<Topbar appName={this.appName} appId={this.appId}></Topbar>);
-			break;
 			case 'sidebar':
 				generatedEle = (<Sidebar currentView={this.state.currentView} appName={this.appName} appId={this.appId} changeView={this.changeView.bind(this)} />);
 			break;
@@ -74,7 +70,6 @@ export class AppRoute extends Component {
 	render() {
 		return (
 			<div className="singleApp-container row">
-				{this.renderElement('topbar')}
 				{this.renderElement('sidebar')}
 				<div className="plugin-view-container">
 					<div className="plugin-view">

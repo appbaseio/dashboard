@@ -4,8 +4,10 @@ import {
 } from 'react';
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
+import {ActionButtons} from './actionButtons';
+import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
 export class AppsList extends Component {
@@ -19,18 +21,38 @@ export class AppsList extends Component {
 			createAppError: null
 		};
 		this.themeColor = '#CDDC39';
-		this.trailColor = '#fff';
+		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
+		this.deleteApp = this.deleteApp.bind(this);
+		this.registerApps = this.registerApps.bind(this);
 	}
 
 	componentWillMount() {
+		this.stopUpdate = false;
 		this.initialize();
+	}
+
+	deleteApp(app) {
+		appbaseService.deleteApp(app.id).then((data) => {
+			this.setApps();
+		}).catch((e)=> {
+			console.log(e);
+		})
+	}
+
+	componentWillUnmount() {
+		this.stopUpdate = true;
 	}
 
 	initialize() {
 		this.getBillingInfo();
+		this.setApps();
+	}
+
+	setApps() {
+		this.setSort = true;
 		let apps = appbaseService.userInfo.body.apps;
-		var storeApps = [];
+		let storeApps = [];
 		Object.keys(apps).forEach((app, index) => {
 			var obj = {
 				name: app,
@@ -38,17 +60,17 @@ export class AppsList extends Component {
 			};
 			storeApps[index] = obj;
 		});
-		this.setState({
-			apps: storeApps
-		}, this.getAppInfo);
+		this.registerApps(storeApps, true);
 	}
 
-	getApiCalls(data) {
-		let total = 0;
-		data.body.month.buckets.forEach((bucket) => {
-			total += bucket.apiCalls.value;
-		});
-		return total;
+	registerApps(apps, getInfo=false) {
+		this.setState({
+			apps: apps
+		}, function() {
+			if(getInfo) {
+				this.getAppInfo.call(this)
+			}
+		}.bind(this));
 	}
 
 	getBillingInfo() {
@@ -63,34 +85,49 @@ export class AppsList extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' 
-			? (app.info && app.info.apiCalls ? app.info.apiCalls : 0) 
-			: (app.info && app.info.metrics && app.info.metrics.body  && app.info.metrics.body.overall.numDocs ? app.info.metrics.body.overall.numDocs : 0);
+			? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) 
+			: (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
+		let percentage = (100*count)/appbaseService.planLimits[this.state.plan][field];
+		percentage = percentage < 100 ? percentage : 100;
 		return {
-			percentage: (100*count)/appbaseService.planLimits[this.state.plan][field],
+			percentage: percentage,
 			count: count
 		};
 	}
 
 	getAppInfo() {
 		let apps = this.state.apps;
+		this.appsInfoCollected = 0;
 		apps.forEach((app, index) => {
 			this.getInfo(app.id, index);
 		});
 	}
 
 	getInfo(appId, index) {
+		var apps = this.state.apps;
 		var info = {};
 		appbaseService.getMetrics(appId).then((data) => {
 			info.metrics = data;
-			info.apiCalls = this.getApiCalls(data);
+			info.appStats = appbaseService.computeMetrics(data);
+			apps[index].apiCalls = info.appStats.calls;
+			apps[index].records = info.appStats.records;
+			apps[index].info = info;
 			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
 		});
 		function cb() {
-			var apps = this.state.apps;
-			apps[index].info = info;
-			this.setState({apps: apps});
+			this.appsInfoCollected++;
+			if(!this.stopUpdate && this.appsInfoCollected === this.state.apps.length) {
+				this.setState({apps: apps}, sortApps.bind(this));
+			}
+		}
+		function sortApps() {
+			if(this.setSort) {
+				this.setSort = false;
+				let apps = appbaseService.applySort(this.state.apps);
+				this.setState({apps: apps});
+			}
 		}
 	}
 
@@ -133,34 +170,21 @@ export class AppsList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<div key={index} className="col-xs-12 col-sm-6 col-md-4 col-lg-3 app-card-container">
-							<div className="app-card col-xs-12">
-								<span className="col-xs-6 app-card-progress progress-api-calls">
-									<div className="app-card-progress-container">
-										<Circle percent={appCount.action.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-										<span className="appCount">
-											{appCount.action.count}
-										</span>
-									</div>
-									<p className="caption">
-										Api calls
-									</p>
+						<div key={index} className="app-list-item row" onClick={() => browserHistory.push(`/app/${app.name}`)}>
+							<div className="col-xs-12 col-sm-4">{app.name}</div>
+							<div className="col-xs-12 col-sm-4">
+								<span className="progress-wrapper">
+									<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 								</span>
-								<span className="col-xs-6 app-card-progress progress-storage-calls">
-									<div className="app-card-progress-container">
-										<Circle  percent={appCount.records.percentage} strokeWidth="4" trailWidth="6" trailColor={this.trailColor} strokeColor={this.themeColor} />
-										<span className="appCount">
-											{appCount.records.count}
-										</span>
-									</div>
-									<p className="caption">
-										Storage
-									</p>
-								</span>
-								<div className="col-xs-12 title">
-									<Link className="theme-btn" to={`/app/${app.name}`}>{app.name}</Link>
-								</div>
+								<span className="text">{appCount.action.count}</span>
 							</div>
+							<div className="col-xs-12 col-sm-4">
+								<span className="progress-wrapper">
+									<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+								</span>
+								<span className="text">{appCount.records.count}</span>
+							</div>
+							<ActionButtons key={index} app={app} deleteApp={this.deleteApp} />
 						</div>
 					);
 				});
@@ -171,18 +195,18 @@ export class AppsList extends Component {
 
 	render() {
 		return (
-			<div className="appList">
+			<div className="appList container">
 				<div className="page-info">
 					<h2 className="page-title">Welcome, {appbaseService.userInfo.body.details.name}!</h2>
-					<p className="page-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod quas dolores voluptates minima dignissimos repellendus placeat beatae dolorem totam? Facere animi totam, ipsum deleniti, aspernatur nostrum autem quibusdam ipsam sint!</p>
 				</div>
 				<div className="row apps">
-					<NewApp 
+					<NewApp
 						createApp={this.createApp} 
 						apps={this.state.apps}
 						createAppLoading={this.state.createAppLoading}
 						createAppError={this.state.createAppError}
 						clearInput={this.state.clearInput} />
+					<AppListComponent.Header apps={this.state.apps} registerApps={this.registerApps} />
 					{this.renderElement('apps')}
 				</div>
 			</div>
