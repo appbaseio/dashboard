@@ -5,10 +5,9 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack-server": "webpack-dev-server --hot --inline --progress --colors",
-    "web-server": "http-server -p 3000 .",
+    "webpack-server": "webpack-dev-server --progress --colors",
     "start": "concurrently \"npm run webpack-server\" \"gulp watch\"",
-    "build": "set NODE_ENV=production&& webpack -p && gulp"
+    "build": "cross-env NODE_ENV=production && gulp && webpack -p"
   },
   "author": "Farhan Chauhan",
   "dependencies": {
@@ -17,6 +16,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.6.0",
+    "cross-env": "^3.1.4",
     "fbemitter": "^2.1.1",
     "lodash": "^4.17.4",
     "rc-progress": "^2.0.6",
