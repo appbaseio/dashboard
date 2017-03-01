@@ -10,6 +10,8 @@ import {ActionButtons} from './actionButtons';
 import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
+const moment = require('moment');
+
 const AppIntro = (props) => {
 	return (
 		<AppListComponent.AppCard>
@@ -136,6 +138,15 @@ export class AppsList extends Component {
 			info.appStats = appbaseService.computeMetrics(data);
 			apps[index].apiCalls = info.appStats.calls;
 			apps[index].records = info.appStats.records;
+			apps[index].lastAciveOn = null;
+			apps[index].lastActiveDate = null;
+			if(info.metrics.body && info.metrics.body.month && info.metrics.body.month.buckets) {
+				const buckets = info.metrics.body.month.buckets;
+				if(buckets[buckets.length-1] && buckets[buckets.length-1].key_as_string) {
+					apps[index].lastAciveOn = buckets[buckets.length-1].key_as_string;
+					apps[index].lastActiveDate = buckets[buckets.length-1].key;
+				}
+			}
 			apps[index].info = info;
 			cb.call(this);
 		}).catch((e) => {
@@ -184,6 +195,10 @@ export class AppsList extends Component {
 		});
 	}
 
+	timeAgo(app) {
+		return app && app.lastAciveOn ? moment(app.lastAciveOn).fromNow() : null;
+	}
+
 	renderElement(ele) {
 		var generatedEle = null;
 		switch(ele) {
@@ -196,7 +211,7 @@ export class AppsList extends Component {
 					};
 					return (
 						<AppListComponent.AppCard key={index}>
-							<div className="app-list-item" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
+							<div className="app-list-item well" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
 									<div className="row">
@@ -210,19 +225,29 @@ export class AppsList extends Component {
 													<p>/{appbaseService.planLimits[this.state.plan].action}</p>
 												</span>
 											</div>
-											<div className="sub-title">
+											<div className="sub-title text-center">
 												Api calls
 											</div>
 										</div>
 										<div className="col-xs-6">
-											<span className="progress-wrapper">
-												<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-											</span>
-											<span className="progress-text">
-												<strong>{appCount.records.count}</strong>
-												<p>/{appbaseService.planLimits[this.state.plan].count}</p>
-											</span>
+											<div className="col-xs-12 p-0">
+												<span className="progress-wrapper">
+													<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+												</span>
+												<span className="progress-text">
+													<strong>{appCount.records.count}</strong>
+													<p>/{appbaseService.planLimits[this.state.plan].records}</p>
+												</span>
+											</div>
+											<div className="sub-title text-center">
+												Records
+											</div>
 										</div>
+									</div>
+									<div className="row">
+										<p className="col-xs-12 time">
+											<i className="fa fa-clock-o"></i> {this.timeAgo(app)}
+										</p>
 									</div>
 								</div>
 							</div>

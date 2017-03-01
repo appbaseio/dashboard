@@ -2,6 +2,8 @@ import { storageService } from './StorageService';
 import { urlShare } from './UrlShare';
 import { sampleCodeSnippet } from './SampleCodeSnippet';
 
+const $ = require('jquery');
+
 class DataOperation {
 	constructor() {
 		this.user = null;

@@ -6,6 +6,8 @@ import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 
+const $ = require('jquery');
+
 export class Login extends Component {
 
 	constructor(props) {

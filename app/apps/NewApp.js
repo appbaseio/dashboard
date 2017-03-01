@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 import { Loading } from '../others/Loading';
 import { AppCard } from './appListComponent';
+const $ = require('jquery');
 
 export class NewApp extends Component {
 

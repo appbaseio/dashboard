@@ -1,4 +1,6 @@
 const _ = require("lodash");
+const $ = require('jquery');
+
 class AppbaseService {
 	constructor() {
 		this.userInfo = null;
@@ -20,8 +22,8 @@ class AppbaseService {
 			}
 		};
 		this.sortBy = {
-			field: "name",
-			order: 'asc'
+			field: "lastActiveDate",
+			order: 'desc'
 		};
 		$.ajaxSetup({
 			crossDomain: true,
@@ -191,12 +193,7 @@ class AppbaseService {
 			if (bucket.key >= current_date.getTime())
 				totalCalls += bucket.apiCalls.value;
 		});
-
-		// for (var bucket in metrics.body.month.buckets) {
-		//   if (bucket.key >= current_date.getTime() && metrics.body.month.buckets[bucket].apiCalls)
-		//     totalCalls += metrics.body.month.buckets[bucket].apiCalls.value;
-		// }
-
+		
 		return {
 			storage: totalStorage.toFixed(3),
 			records: totalRecords,
@@ -212,6 +209,9 @@ class AppbaseService {
 		apps =  _.sortBy(apps, this.sortBy.field);
 		if(this.sortBy.order === 'desc') {
 			apps = apps.reverse();
+			const prefixArray = apps.filter(item => item[this.sortBy.field]);
+			const postfixArray = apps.filter(item => item[this.sortBy.field] === null);
+			apps = prefixArray.concat(postfixArray);
 		}
 		return apps;
 	}

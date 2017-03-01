@@ -156,24 +156,33 @@ body {
   margin-bottom: 15px; }
   .appList .appcard .well {
     margin: 0;
+    padding: 0;
     height: 100%;
     background: #fff; }
-    .appList .appcard .well .app-list-item .progress-wrapper {
-      float: left;
-      width: 40px;
-      height: 40px;
-      display: inline-block; }
-    .appList .appcard .well .app-list-item .progress-text {
-      float: left;
-      padding-left: 5px; }
+    .appList .appcard .well.app-list-item {
+      cursor: pointer;
+      padding: 15px; }
+      .appList .appcard .well.app-list-item .title {
+        margin-top: 0; }
+      .appList .appcard .well.app-list-item .progress-wrapper {
+        float: left;
+        width: 40px;
+        height: 40px;
+        display: inline-block; }
+      .appList .appcard .well.app-list-item .progress-text {
+        float: left;
+        padding-left: 5px; }
+      .appList .appcard .well.app-list-item:hover {
+        box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1); }
 
 .appList .head-row {
   background: #fff;
   padding: 15px;
-  margin: 0 0 15px 0; }
-  .appList .head-row .well {
-    border: 0;
-    box-shadow: none; }
+  margin: 0 0 15px 0;
+  border-bottom: 1px solid #e5e5e5;
+  box-shadow: 0 3px 2px -2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 3px 2px -2px rgba(0, 0, 0, 0.1); }
 
 #login h1 {
   margin-bottom: 45px; }
