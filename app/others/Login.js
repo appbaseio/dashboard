@@ -16,7 +16,7 @@ export class Login extends Component {
 	}
 
 	login(provider) {
-		var baseURL = window.location.protocol + "//" + window.location.host+'/Dashboard/';
+		var baseURL = window.location.protocol + "//" + window.location.host+'/dashboard/';
 		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + baseURL;
 		window.location.href = redirectTo;
 	}

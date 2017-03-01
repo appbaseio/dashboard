@@ -1,4 +1,5 @@
-import { default as React, Component } from 'react';
+import {
+	default as React, Component } from 'react';
 import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 import { AppsList } from './apps/AppsList';
@@ -35,14 +36,14 @@ class Main extends Component {
 					loading: false,
 					userInfo: data.userInfo
 				});
-				browserHistory.push('/Dashboard/apps');
+				browserHistory.push('/dashboard/apps');
 			}).catch((e) => {
 				console.log(e);
 				this.setState({
 					loggedIn: false,
 					loading: false
 				});
-				browserHistory.push('/Dashboard/login');
+				browserHistory.push('/dashboard/login');
 			});
 	}
 
@@ -72,15 +73,14 @@ class Main extends Component {
 
 const Default = () => (<div></div>);
 
-const Message = React.createClass({
-	render() {
-		return <h3>Message {this.props.params.id}</h3>
-	}
-})
+const NotFound = () => {
+	browserHistory.push('/dashboard/');
+	return (<div></div>)
+};
 
 render((
 	<Router history={browserHistory}>
-		<Route path="/Dashboard/" component={Main}>
+		<Route path="/dashboard/" component={Main}>
 			<IndexRoute component={Default} />
 			<Route path="apps" component={AppsList} />
 			<Route path="login" component={Login} />
@@ -90,5 +90,6 @@ render((
 				onLeave={helper.appDashboard.onLeave} 
 			/>
 		</Route>
+		<Route path="*" component={NotFound} />
 	</Router>
 ), document.getElementById('dashboard'));
