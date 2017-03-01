@@ -17,11 +17,11 @@ var files = {
 			'node_modules/toastr/build/toastr.min.css',
 			'node_modules/appbase-onboarding/dist/css/vendor.min.css',
 			'node_modules/appbase-onboarding/dist/css/style.min.css',
-			'src/assets/vendor/hljs.css'
+			'assets/vendor/hljs.css'
 		],
-		custom: ['src/assets/css/*.css'],
-		sassFile: ['src/assets/styles/*.scss'],
-		sassPartials: ['src/assets/styles/partials/**/*.scss']
+		custom: ['assets/css/*.css'],
+		sassFile: ['assets/styles/*.scss'],
+		sassPartials: ['assets/styles/partials/**/*.scss']
 	},
 	js: {
 		vendor: [
@@ -42,48 +42,51 @@ var files = {
 gulp.task('vendorcss', function() {
 	return gulp.src(files.css.vendor)
 		.pipe(concat('vendor.min.css'))
-		.pipe(gulp.dest('src/dist/css'));
+		.pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('customcss', ['sass'], function() {
 	return gulp.src(files.css.custom)
 		.pipe(minifyCSS())
 		.pipe(concat('style.min.css'))
-		.pipe(gulp.dest('src/dist/css'));
+		.pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('vendorjs', function() {
 	return gulp.src(files.js.vendor)
 		.pipe(uglify())
 		.pipe(concat('vendor.min.js'))
-		.pipe(gulp.dest('src/dist/js'));
+		.pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('sass', function() {
 	return gulp.src(files.css.sassFile)
 		.pipe(sass.sync().on('error', sass.logError))
-		.pipe(gulp.dest('src/assets/css'));
+		.pipe(gulp.dest('assets/css'));
 });
 
 gulp.task('moveCss', function() {
-	return gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css.map'])
-		.pipe(gulp.dest('src/dist/css'));
+	return gulp.src([
+			'bower_components/bootstrap/dist/css/bootstrap.min.css.map',
+			'assets/vendor/fonts.css'
+		])
+		.pipe(gulp.dest('dist/css'));
 });
 
 gulp.task('moveFonts', function() {
 	return gulp.src(['bower_components/bootstrap/dist/fonts/*', 
 		'bower_components/font-awesome/fonts/*',
 		'node_modules/@appbaseio/reactivemaps/dist/fonts/**/*',
-		'src/assets/styles/fonts/**/*'
+		'assets/styles/fonts/**/*'
 		])
-		.pipe(gulp.dest('src/dist/fonts'));
+		.pipe(gulp.dest('dist/fonts'));
 });
 
 // Include dependency in dist
 gulp.task('move_js_depends', function() {
 	return gulp.src(['bower_components/lzma/src/lzma_worker.js',
-		'src/assets/vendor/JSONURL.js'])
-		.pipe(gulp.dest('src/dist/vendor'));
+		'assets/vendor/JSONURL.js'])
+		.pipe(gulp.dest('dist/vendor'));
 });
 
 gulp.task('compact', [

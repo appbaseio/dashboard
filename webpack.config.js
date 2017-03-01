@@ -4,16 +4,16 @@ var webpack = require('webpack');
 const debug = process.env.NODE_ENV !== "production";
 
 module.exports = {
-	entry: path.join(__dirname, 'src', 'app/app.js'),
+	entry: path.join(__dirname, 'app/app.js'),
 	output: {
-		path: path.join(__dirname, 'src', 'src/dist/js'),
+		path: path.join(__dirname, 'dist/js'),
 		publicPath: '/dist/js/',
 		filename: 'app.js'
 	},
 	devServer: {
 		inline: true,
 		port: 8000,
-		contentBase: "src/",
+		contentBase: './',
 		historyApiFallback: {
 			index: '/index.html'
 		}
