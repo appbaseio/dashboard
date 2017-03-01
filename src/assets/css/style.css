@@ -122,8 +122,12 @@ body {
     border: 6px solid transparent; }
     .appList .app-card.new-app, .singleApp .app-card.new-app {
       padding: 8px 0;
-      border: 6px dotted #f7f7f7;
       background: #fff; }
+      .appList .app-card.new-app input, .singleApp .app-card.new-app input {
+        border: none;
+        background-color: #f7f7f7; }
+      .appList .app-card.new-app .alert, .singleApp .app-card.new-app .alert {
+        margin: 15px 0 0 0; }
     .appList .app-card .caption, .singleApp .app-card .caption {
       font-size: 1.2rem;
       line-height: 39px; }

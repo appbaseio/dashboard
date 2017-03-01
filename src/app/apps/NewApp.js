@@ -82,7 +82,11 @@ export class NewApp extends Component {
 		switch(ele) {
 			case 'helpBlock':
 				if(this.state.validate.error || this.createAppError) {
-					generatedEle = (<span className="help-block">{this.state.validate.error || this.createAppError}</span>);
+					generatedEle = (
+						<div className="alert alert-warning" role="alert">
+							{this.state.validate.error || this.createAppError}
+						</div>
+					);
 				}
 			break;
 			case 'loading':
