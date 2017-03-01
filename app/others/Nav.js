@@ -16,7 +16,7 @@ export class Nav extends Component {
 		};
 		this.appLink = {
 			label: 'Apps',
-			link: '/Dashboard/apps',
+			link: '/dashboard/apps',
 			type: 'internal'
 		};
 		this.links = [{
@@ -25,11 +25,11 @@ export class Nav extends Component {
 			type: 'external'
 		}, {
 			label: 'Tutorial',
-			link: '/Dashboard/tutorial',
+			link: '/dashboard/tutorial',
 			type: 'internal'
 		}, {
 			label: 'Billing',
-			link: '/Dashboard/billing',
+			link: '/dashboard/billing',
 			type: 'internal'
 		}];
 		this.apps = appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appbaseService.userInfo.body.apps : [];
@@ -66,7 +66,7 @@ export class Nav extends Component {
 					Object.keys(this.apps).forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`/Dashboard/app/${app}`}>{app}</Link>
+								<Link to={`/dashboard/app/${app}`}>{app}</Link>
 							</li>
 						);
 						if(app !== this.state.activeApp) {
