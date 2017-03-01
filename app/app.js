@@ -35,14 +35,14 @@ class Main extends Component {
 					loading: false,
 					userInfo: data.userInfo
 				});
-				browserHistory.push('/apps');
+				browserHistory.push('/Dashboard/apps');
 			}).catch((e) => {
 				console.log(e);
 				this.setState({
 					loggedIn: false,
 					loading: false
 				});
-				browserHistory.push('/login');
+				browserHistory.push('/Dashboard/login');
 			});
 	}
 
@@ -80,7 +80,7 @@ const Message = React.createClass({
 
 render((
 	<Router history={browserHistory}>
-		<Route path="/" component={Main}>
+		<Route path="/Dashboard/" component={Main}>
 			<IndexRoute component={Default} />
 			<Route path="apps" component={AppsList} />
 			<Route path="login" component={Login} />

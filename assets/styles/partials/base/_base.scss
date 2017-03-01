@@ -7,6 +7,10 @@ body {
 	font-family: $font-regular;
 }
 
+.p-0 {
+	padding: 0;
+}
+
 .theme-btn {
 	background: darken($dark-grey, 10%);
 	color: #fff;

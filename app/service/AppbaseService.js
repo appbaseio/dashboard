@@ -171,7 +171,7 @@ class AppbaseService {
 	}
 
 	logout() {
-		var baseURL = window.location.protocol + "//" + window.location.host;
+		var baseURL = window.location.protocol + "//" + window.location.host+'/Dashboard/';
 		window.location.href = this.address + 'logout?next=' + baseURL;
 	}
 

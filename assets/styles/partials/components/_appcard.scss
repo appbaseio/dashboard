@@ -1,0 +1,34 @@
+.appList {
+	.appcard {
+		margin-bottom: 15px;
+		.well {
+			margin: 0;
+			height: 100%;
+			background: #fff;
+			.app-list-item {
+				.progress-wrapper {
+					float: left;
+					width: 40px;
+					height: 40px;
+					display: inline-block;
+				}
+				.progress-text {
+					float: left;
+					padding-left: 5px;
+				}
+				.sub-title {
+
+				}
+			}
+		}
+	}
+	.head-row {
+		background: #fff;
+		padding: 15px;
+		margin: 0 0 15px 0;
+		.well {
+			border: 0;
+			box-shadow: none;
+		}
+	}
+}

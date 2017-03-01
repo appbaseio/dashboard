@@ -1,6 +1,5 @@
 .appList, .singleApp {
 	position: relative;
-	padding: 30px;
 	.app-card-container {
 		padding: 15px 30px 15px 0;
 	}
@@ -153,62 +152,6 @@
 			span {
 				float: none;
 				line-height: 1rem;
-			}
-		}
-	}
-}
-
-
-.app-list-item {
-	line-height: 40px;
-	background: #fff;
-	border-radius: 2px;
-	font-size: 18px;
-	border-bottom: 1px solid #eee;
-	padding: 12px;
-	margin: 0;
-	cursor: pointer;
-	transition: all .3s ease;
-	-webkit-transition: all .3s ease;
-	position: relative;
-	&:hover, &:focus {
-		background: #fcfcfc;
-	}
-
-	& > div {
-		width: 33.333%;
-		vertical-align: middle;
-		height: 40px;
-		display: inline-flex;
-	}
-
-	.text {
-		padding-left: 12px;
-	}
-
-	.progress-wrapper {
-		width: 40px;
-		height: 40px;
-		display: inline-block;
-	}
-	&.app-list-header {
-		.sortBy-container {
-			padding: 0;
-			.sortBy {
-					border: 0;
-					border-right: 1px solid darken($dark-grey, 10%);
-					box-shadow: none;
-					width: 100%;
-					background: $dark-grey;
-				&.active {
-					background: darken($dark-grey, 3%);
-					outline: none;
-				}
-			}
-			&:last-child {
-				.sortBy {
-					border: 0;
-				}
 			}
 		}
 	}

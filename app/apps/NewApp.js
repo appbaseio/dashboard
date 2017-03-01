@@ -5,7 +5,8 @@ import {
 import { render } from 'react-dom';
 import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
-import {Loading} from '../others/Loading';
+import { Loading } from '../others/Loading';
+import { AppCard } from './appListComponent';
 
 export class NewApp extends Component {
 
@@ -101,8 +102,8 @@ export class NewApp extends Component {
 	render() {
 		let disabled = !this.state.validate.value ? {disabled: true} : null;
 		return (
-			<div className="row new-app-container">
-				<div className="app-card new-app col-xs-12" style={{'height': this.state.cardHeight}}>
+			<AppCard>
+				<div className="app-card new-app">
 					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
 						<input type="text" placeholder="Create new app" value={this.state.value} className="form-control" onChange={this.handleChange} />
 						{this.renderElement('helpBlock')}
@@ -114,7 +115,7 @@ export class NewApp extends Component {
 						</button>
 					</div>
 				</div>
-			</div>
+			</AppCard>
 		);
 	}
 
