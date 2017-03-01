@@ -50,6 +50,7 @@ export class AppsList extends Component {
 	}
 
 	setApps() {
+		this.setSort = true;
 		let apps = appbaseService.userInfo.body.apps;
 		let storeApps = [];
 		Object.keys(apps).forEach((app, index) => {
@@ -59,13 +60,17 @@ export class AppsList extends Component {
 			};
 			storeApps[index] = obj;
 		});
-		this.registerApps(storeApps);
+		this.registerApps(storeApps, true);
 	}
 
-	registerApps(apps) {
+	registerApps(apps, getInfo=false) {
 		this.setState({
 			apps: apps
-		}, this.getAppInfo);
+		}, function() {
+			if(getInfo) {
+				this.getAppInfo.call(this)
+			}
+		}.bind(this));
 	}
 
 	getBillingInfo() {
@@ -119,7 +124,8 @@ export class AppsList extends Component {
 		}
 		function sortApps() {
 			this.appsInfoCollected++;
-			if(this.appsInfoCollected === this.state.apps.length) {
+			if(this.appsInfoCollected === this.state.apps.length && this.setSort) {
+				this.setSort = false;
 				let apps = appbaseService.applySort(this.state.apps);
 				this.setState({apps: apps});
 			}
