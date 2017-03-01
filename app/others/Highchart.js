@@ -4,6 +4,7 @@ import {
 } from 'react';
 import { render } from 'react-dom';
 import ReactHighcharts from 'react-highcharts';
+const $ = require('jquery');
 
 export class Highchart extends Component {
 
