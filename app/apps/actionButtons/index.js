@@ -1,12 +1,9 @@
-import {
-	default as React,
-	Component
-} from 'react';
-import { render } from 'react-dom';
+import React,{ Component } from 'react';
 import { appbaseService } from '../../service/AppbaseService';
-import {CredentialsToClipboard} from './CredentialsToClipboard';
-import {ConfigButton} from './ConfigButton';
-export class ActionButtons extends Component {
+import DeleteApp from './DeleteApp';
+import Credentials from './Credentials';
+
+export default class ActionButtons extends Component {
 
 	constructor(props) {
 		super(props);
@@ -19,10 +16,17 @@ export class ActionButtons extends Component {
 
 	render() {
 		return (
-			<span className="ad-actionbuttons" onClick={this.stopBubble}>
-				<CredentialsToClipboard {...this.props} />
-				<ConfigButton {...this.props} />
-			</span>
+			<aside className="options" onClick={this.stopBubble}>
+				<div className="options-item">
+					<Credentials {...this.props} type="readPermission" label="Read" icon="fa-clone" />
+				</div>
+				<div className="options-item">
+					<Credentials {...this.props} type="writePermission" label="Write" icon="fa-pencil" />
+				</div>
+				<div className="options-item bottom">
+					<DeleteApp {...this.props} />
+				</div>
+			</aside>
 		);
 	}
 

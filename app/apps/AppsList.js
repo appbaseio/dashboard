@@ -5,13 +5,11 @@ import {
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
-import {NewApp} from './NewApp';
-import {ActionButtons} from './actionButtons';
-import {DeleteApp} from './actionButtons/DeleteApp';
-import ReadCredentials from './actionButtons/ReadCredentials';
-import WriteCredentials from './actionButtons/WriteCredentials';
+import { NewApp } from './NewApp';
+import ActionButtons from './actionButtons';
 import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
+import { appListHelper } from '../others/helper';
 
 const moment = require('moment');
 
@@ -66,7 +64,7 @@ export class AppsList extends Component {
 	deleteApp(app) {
 		appbaseService.deleteApp(app.id).then((data) => {
 			this.setApps();
-		}).catch((e)=> {
+		}).catch((e) => {
 			console.log(e);
 		})
 	}
@@ -76,32 +74,19 @@ export class AppsList extends Component {
 	}
 
 	initialize() {
-		this.getBillingInfo();
-		this.setApps();
-	}
-
-	setApps() {
 		this.setSort = true;
-		let apps = appbaseService.userInfo.body.apps;
-		let storeApps = [];
-		Object.keys(apps).forEach((app, index) => {
-			var obj = {
-				name: app,
-				id: apps[app]
-			};
-			storeApps[index] = obj;
-		});
-		this.registerApps(storeApps, true);
+		this.getBillingInfo();
+		this.registerApps(appListHelper.normalizaApps(appbaseService.userInfo.body.apps), true);
 	}
 
-	registerApps(apps, getInfo=false) {
+	registerApps(apps, getInfo = false) {
 		this.setState({
 			apps: apps
-		}, function() {
-			if(getInfo) {
+		}, (() => {
+			if (getInfo) {
 				this.getAppInfo.call(this)
 			}
-		}.bind(this));
+		}));
 	}
 
 	getBillingInfo() {
@@ -109,16 +94,14 @@ export class AppsList extends Component {
 			this.setState({
 				billingInfo: data
 			});
-		}).catch((e)=> {
+		}).catch((e) => {
 			console.log(e);
 		})
 	}
 
 	calcPercentage(app, field) {
-		let count = field === 'action' 
-			? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) 
-			: (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
-		let percentage = (100*count)/appbaseService.planLimits[this.state.plan][field];
+		let count = field === 'action' ? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) : (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
+		let percentage = (100 * count) / appbaseService.planLimits[this.state.plan][field];
 		percentage = percentage < 100 ? percentage : 100;
 		return {
 			percentage: percentage,
@@ -128,46 +111,22 @@ export class AppsList extends Component {
 
 	getAppInfo() {
 		let apps = this.state.apps;
-		this.appsInfoCollected = 0;
-		apps.forEach((app, index) => {
-			this.getInfo(app.id, index);
-		});
-	}
-
-	getInfo(appId, index) {
-		var apps = this.state.apps;
-		var info = {};
-		appbaseService.getMetrics(appId).then((data) => {
-			info.metrics = data;
-			info.appStats = appbaseService.computeMetrics(data);
-			apps[index].apiCalls = info.appStats.calls;
-			apps[index].records = info.appStats.records;
-			apps[index].lastAciveOn = null;
-			apps[index].lastActiveDate = null;
-			if(info.metrics.body && info.metrics.body.month && info.metrics.body.month.buckets) {
-				const buckets = info.metrics.body.month.buckets;
-				if(buckets[buckets.length-1] && buckets[buckets.length-1].key_as_string) {
-					apps[index].lastAciveOn = buckets[buckets.length-1].key_as_string;
-					apps[index].lastActiveDate = buckets[buckets.length-1].key;
-				}
+		appListHelper.getAll(apps).then((apps) => {
+			if (this.setSort) {
+				this.setSort = false;
+				apps = appbaseService.applySort(apps);
+				this.updateApps(apps);
+			} else {
+				this.updateApps(apps);
 			}
-			apps[index].info = info;
-			cb.call(this);
 		}).catch((e) => {
 			console.log(e);
-		});
-		function cb() {
-			this.appsInfoCollected++;
-			if(!this.stopUpdate && this.appsInfoCollected === this.state.apps.length) {
-				this.setState({apps: apps}, sortApps.bind(this));
-			}
-		}
-		function sortApps() {
-			if(this.setSort) {
-				this.setSort = false;
-				let apps = appbaseService.applySort(this.state.apps);
-				this.setState({apps: apps});
-			}
+		})
+	}
+
+	updateApps(apps) {
+		if (!this.stopUpdate) {
+			this.setState({ apps: apps });
 		}
 	}
 
@@ -175,27 +134,10 @@ export class AppsList extends Component {
 		this.setState({
 			createAppLoading: true
 		});
-		appbaseService.createApp(appName).then((data) => {
-			let apps = this.state.apps;
-			apps.unshift({
-				name: appName,
-				id: data
-			});
-			this.setState({
-				createAppLoading: false,
-				apps: apps,
-				clearInput: true
-			});
+		appListHelper.createApp(appName, apps).then((data) => {
+			this.setState(data);
 		}).catch((e) => {
-			console.log(e);
-			let error = null;
-			try {
-				error = JSON.parse(e.responseText);
-			} catch(e) {}
-			this.setState({
-				createAppLoading: false,
-				createAppError: error
-			});
+			this.setState(e);
 		});
 	}
 
@@ -205,7 +147,7 @@ export class AppsList extends Component {
 
 	renderElement(ele) {
 		var generatedEle = null;
-		switch(ele) {
+		switch (ele) {
 			case 'apps':
 				let apps = this.state.apps;
 				generatedEle = apps.map((app, index) => {
@@ -254,23 +196,12 @@ export class AppsList extends Component {
 										</p>
 									</div>
 								</div>
-								
-								<aside className="options">
-									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
-										<ReadCredentials />
-									</div>
-									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
-										<WriteCredentials />
-									</div>
-									<div className="options-item bottom" onClick={(event) => {event.stopPropagation()}}>
-										<DeleteApp app={app} />
-									</div>
-								</aside>
+								<ActionButtons app={app} deleteApp={this.props.deleteApp} />
 							</div>
 						</AppListComponent.AppCard>
 					);
 				});
-			break;
+				break;
 		}
 		return generatedEle;
 	}

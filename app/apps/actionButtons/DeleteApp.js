@@ -1,8 +1,7 @@
-import { default as React, Component } from 'react';
-import { render } from 'react-dom';
+import React,{ Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
-export class DeleteApp extends Component {
+export default class DeleteApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
