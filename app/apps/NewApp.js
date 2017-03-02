@@ -105,8 +105,9 @@ export class NewApp extends Component {
 		return (
 			<AppCard>
 				<div className="app-card new-app">
+					<p>Get Started</p>
 					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
-						<input type="text" placeholder="Create new app" value={this.state.value} className="form-control" onChange={this.handleChange} />
+						<input type="text" placeholder="Enter app name" value={this.state.value} className="form-control" onChange={this.handleChange} />
 						{this.renderElement('helpBlock')}
 					</div>
 					<div className="col-xs-12 title">

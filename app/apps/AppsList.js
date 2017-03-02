@@ -7,6 +7,9 @@ import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
 import {ActionButtons} from './actionButtons';
+import {DeleteApp} from './actionButtons/DeleteApp';
+import ReadCredentials from './actionButtons/ReadCredentials';
+import WriteCredentials from './actionButtons/WriteCredentials';
 import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
@@ -15,12 +18,10 @@ const moment = require('moment');
 const AppIntro = (props) => {
 	return (
 		<AppListComponent.AppCard>
-			<h3 className="title">What is an app?</h3>
+			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-				Fugiat vero molestias reiciendis, iure hic, maxime aperiam assumenda ipsa 
-				temporibus neque numquam perferendis,
-				nostrum harum facere. Commodi incidunt rem assumenda, sed!
+				This is your dashboard. Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+				Ratione et voluptas fuga accusamus minima totam sequi impedit. Natus, placeat corporis.
 			</p>
 		</AppListComponent.AppCard>
 	);
@@ -29,10 +30,13 @@ const AppIntro = (props) => {
 const AppTutorial = (props) => {
 	return (
 		<AppListComponent.AppCard>
-			<h3 className="title">InteractiveTutorial</h3>
-			<p className="description">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-			</p>
+			<h3 className="title">Quick Links</h3>
+			<ul>
+				<li><a href="#">Documentation</a></li>
+				<li><a href="#">Tutorial</a></li>
+				<li><a href="#">Chat Support</a></li>
+				<li><a href="#">Report a bug</a></li>
+			</ul>
 		</AppListComponent.AppCard>
 	);
 }
@@ -214,18 +218,18 @@ export class AppsList extends Component {
 							<div className="app-list-item well" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
-									<div className="row">
+									<div className="row clearfix">
 										<div className="col-xs-6">
 											<div className="col-xs-12 p-0">
 												<span className="progress-wrapper">
 													<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
 												<span className="progress-text">
-													<strong>{appCount.action.count}</strong>
-													<p>/{appbaseService.planLimits[this.state.plan].action}</p>
+													<strong>{appCount.action.count}</strong> of
+													<p>{appbaseService.planLimits[this.state.plan].action}</p>
 												</span>
 											</div>
-											<div className="sub-title text-center">
+											<div className="sub-title col-xs-12">
 												Api calls
 											</div>
 										</div>
@@ -235,21 +239,33 @@ export class AppsList extends Component {
 													<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
 												<span className="progress-text">
-													<strong>{appCount.records.count}</strong>
-													<p>/{appbaseService.planLimits[this.state.plan].records}</p>
+													<strong>{appCount.records.count}</strong> of
+													<p>{appbaseService.planLimits[this.state.plan].records}</p>
 												</span>
 											</div>
-											<div className="sub-title text-center">
+											<div className="sub-title col-xs-12">
 												Records
 											</div>
 										</div>
 									</div>
 									<div className="row">
 										<p className="col-xs-12 time">
-											<i className="fa fa-clock-o"></i> {this.timeAgo(app)}
+											{this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : " "}
 										</p>
 									</div>
 								</div>
+								
+								<aside className="options">
+									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
+										<ReadCredentials />
+									</div>
+									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
+										<WriteCredentials />
+									</div>
+									<div className="options-item bottom" onClick={(event) => {event.stopPropagation()}}>
+										<DeleteApp app={app} />
+									</div>
+								</aside>
 							</div>
 						</AppListComponent.AppCard>
 					);
@@ -264,7 +280,7 @@ export class AppsList extends Component {
 			<div className="appList">
 				<div className="head-row row">
 					<div className="container">
-						<AppIntro />
+						<AppIntro name={appbaseService.userInfo.body.details.given_name} />
 						<AppTutorial />
 						<NewApp
 							createApp={this.createApp} 
