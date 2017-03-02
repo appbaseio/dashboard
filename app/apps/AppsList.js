@@ -7,6 +7,9 @@ import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import {NewApp} from './NewApp';
 import {ActionButtons} from './actionButtons';
+import {DeleteApp} from './actionButtons/DeleteApp';
+import ReadCredentials from './actionButtons/ReadCredentials';
+import WriteCredentials from './actionButtons/WriteCredentials';
 import * as AppListComponent from './appListComponent';
 import { appbaseService } from '../service/AppbaseService';
 
@@ -251,6 +254,18 @@ export class AppsList extends Component {
 										</p>
 									</div>
 								</div>
+								
+								<aside className="options">
+									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
+										<ReadCredentials />
+									</div>
+									<div className="options-item" onClick={(event) => {event.stopPropagation()}}>
+										<WriteCredentials />
+									</div>
+									<div className="options-item bottom" onClick={(event) => {event.stopPropagation()}}>
+										<DeleteApp app={app} />
+									</div>
+								</aside>
 							</div>
 						</AppListComponent.AppCard>
 					);

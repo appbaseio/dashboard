@@ -155,9 +155,11 @@ body {
 .appList .appcard {
   margin: 15px 0; }
   .appList .appcard .well {
+    position: relative;
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow: hidden;
     background: #fff;
     border: 0;
     border-left: 3px solid #CDDC39;
@@ -169,6 +171,8 @@ body {
     transition: all .3s ease; }
     .appList .appcard .well:hover {
       box-shadow: 2px 4px 8px 0px rgba(46, 61, 73, 0.2); }
+      .appList .appcard .well:hover aside.options {
+        right: 0; }
     .appList .appcard .well.app-list-item {
       cursor: pointer;
       padding: 25px; }
@@ -203,6 +207,32 @@ body {
         height: 20px;
         margin: 0;
         color: #999; }
+    .appList .appcard .well aside.options {
+      width: 25px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: -25px;
+      background-color: #f2f4f2;
+      text-align: center;
+      border-left: #ddd;
+      -webkit-transition: all .3s ease;
+      transition: all .3s ease; }
+      .appList .appcard .well aside.options .options-item {
+        padding: 5px 0;
+        border-bottom: 1px solid #ddd;
+        color: #666; }
+        .appList .appcard .well aside.options .options-item .card-icon {
+          color: #666; }
+          .appList .appcard .well aside.options .options-item .card-icon:hover {
+            color: #424242; }
+        .appList .appcard .well aside.options .options-item:hover {
+          background-color: #ccc; }
+        .appList .appcard .well aside.options .options-item.bottom {
+          position: absolute;
+          width: 100%;
+          border: 0;
+          bottom: 0; }
   .appList .appcard .new-app {
     padding: 0; }
     .appList .appcard .new-app div {

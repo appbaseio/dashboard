@@ -76,7 +76,7 @@ export class CredentialsToClipboard extends Component {
 
 	render() {
 		return (
-			<button id={"cred-"+this.props.app.id} className="ad-ctoc btn" data-clipboard-text={this.state.credentials}>
+			<button id={"cred-"+this.props.app.id} className="ad-ctoc" data-clipboard-text={this.state.credentials}>
 				<i className="fa fa-files-o"></i>
 			</button>
 		);
