@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { appbaseService } from '../../service/AppbaseService';
-import ConfirmBox from '../../others/ConfirmBox';
+import { appbaseService } from '../../../service/AppbaseService';
+import ConfirmBox from '../../../shared/ConfirmBox';
 import Description from './Description';
 
 export default class PermissionCard extends Component {

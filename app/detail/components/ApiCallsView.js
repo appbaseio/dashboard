@@ -1,11 +1,8 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
 
-export class ApiCallsView extends Component {
+export default class ApiCallsView extends Component {
 
 	constructor(props) {
 		super(props);

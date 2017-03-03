@@ -1,17 +1,14 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
-import { Sidebar } from './Sidebar';
-import { Dashboard } from './Dashboard';
-import { EsPlugin } from './EsPlugin';
-import CredentialsPage from './credentials';
-import CollabPage from './collaborators';
+import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
+import EsPlugin from './components/EsPlugin';
+import CredentialsPage from './components/credentials';
+import CollabPage from './components/collaborators';
 
-export class AppRoute extends Component {
+export default class Detail extends Component {
 
 	constructor(props) {
 		super(props);
@@ -48,28 +45,28 @@ export class AppRoute extends Component {
 		switch (ele) {
 			case 'loading':
 				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
-			break;
+				break;
 			case 'sidebar':
 				generatedEle = (<Sidebar currentView={this.state.currentView} appName={this.appName} appId={this.appId} changeView={this.changeView.bind(this)} />);
-			break;
+				break;
 			case 'view':
-				switch(this.state.currentView) {
+				switch (this.state.currentView) {
 					case 'Dashboard':
 						generatedEle = (<Dashboard appName={this.props.params.appId} />);
-					break;
+						break;
 					case 'credentials':
 						generatedEle = (<CredentialsPage appName={this.props.params.appId} />);
-					break;
+						break;
 					case 'collaborators':
 						generatedEle = (<CollabPage appName={this.props.params.appId} />);
-					break;
+						break;
 					case 'dejavu':
 					case 'gem':
 						generatedEle = (<EsPlugin appName={this.props.params.appId} appId={this.appId} pluginName={this.state.currentView} />);
-					break;
+						break;
 				}
-				
-			break;
+
+				break;
 		}
 		return generatedEle;
 	}

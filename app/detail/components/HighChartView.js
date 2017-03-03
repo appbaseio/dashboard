@@ -1,11 +1,8 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Highchart } from '../../others/Highchart';
+import { Highchart } from '../../shared/Highchart';
 
-export class HighChartView extends Component {
+export default class HighChartView extends Component {
 
 	constructor(props) {
 		super(props);

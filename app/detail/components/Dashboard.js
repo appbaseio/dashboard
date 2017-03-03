@@ -1,12 +1,12 @@
-import { default as React, Component } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { appbaseService } from '../service/AppbaseService';
+import { appbaseService } from '../../service/AppbaseService';
 import { Circle } from 'rc-progress';
 import Clipboard from 'Clipboard';
-import { Topbar } from './Topbar';
-import { HighChartView, ApiCallsView } from './appComponents';
+import HighChartView from './HighChartView';
+import ApiCallsView from './ApiCallsView';
 
-export class Dashboard extends Component {
+export default class Dashboard extends Component {
 
 	constructor(props) {
 		super(props);
@@ -56,21 +56,21 @@ export class Dashboard extends Component {
 		this.info = {};
 		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
-			if(!this.stopUpdate) {
+			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 			// this.setClipboard();
 		});
 		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data;
-			if(!this.stopUpdate) {
+			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
 		appbaseService.getMetrics(this.appId).then((data) => {
 			this.info.metrics = data;
-			if(!this.stopUpdate) {
-				this.setState({ 
+			if (!this.stopUpdate) {
+				this.setState({
 					info: this.info,
 					apiCalls: this.getApiCalls(data)
 				});
@@ -96,11 +96,9 @@ export class Dashboard extends Component {
 	}
 
 	calcPercentage(app, field) {
-		let count = field === 'action' 
-			? (this.state.apiCalls ? this.state.apiCalls : 0) 
-			: (app.info && app.info.metrics && app.info.metrics.body.month.buckets  && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].doc_count ? app.info.metrics.body.month.buckets[0].doc_count : 0);
+		let count = field === 'action' ? (this.state.apiCalls ? this.state.apiCalls : 0) : (app.info && app.info.metrics && app.info.metrics.body.month.buckets && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].doc_count ? app.info.metrics.body.month.buckets[0].doc_count : 0);
 		return {
-			percentage: (100*count)/appbaseService.planLimits[this.state.plan][field],
+			percentage: (100 * count) / appbaseService.planLimits[this.state.plan][field],
 			count: count
 		};
 	}
@@ -118,14 +116,14 @@ export class Dashboard extends Component {
 		switch (ele) {
 			case 'loading':
 				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
-			break;
+				break;
 			case 'name':
 				generatedEle = (
 					<div className="page-info col-xs-12">
 						<h2 className="page-title">Dashboard</h2>
 					</div>
 				);
-			break;
+				break;
 			case 'highchartView':
 				appCount = this.appCount();
 				generatedEle = (
@@ -135,11 +133,11 @@ export class Dashboard extends Component {
 						info={this.state.info}
 					/>
 				);
-			break;
+				break;
 			case 'apiCallsView':
 				appCount = this.appCount();
 				generatedEle = (<ApiCallsView appCount={appCount} />);
-			break;
+				break;
 		}
 		return generatedEle;
 	}

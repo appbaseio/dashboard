@@ -1,15 +1,12 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link } from 'react-router';
-import { appbaseService } from '../service/AppbaseService';
-import { Loading } from '../others/Loading';
-import { AppCard } from './appListComponent';
+import { appbaseService } from '../../service/AppbaseService';
+import { Loading } from '../../shared/Loading';
+import AppCard from './AppCard';
 const $ = require('jquery');
 
-export class NewApp extends Component {
+export default class NewApp extends Component {
 
 	constructor(props) {
 		super(props);
@@ -37,14 +34,13 @@ export class NewApp extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.createAppError && nextProps.createAppError.Message) {
-			if(nextProps.createAppError.Message.indexOf('duplicate') > -1) {
+		if (nextProps.createAppError && nextProps.createAppError.Message) {
+			if (nextProps.createAppError.Message.indexOf('duplicate') > -1) {
 				this.createAppError = this.errors['duplicate'];
 			} else {
 				this.createAppError = nextProps.createAppError;
 			}
-		}
-		else if(nextProps.clearInput) {
+		} else if (nextProps.clearInput) {
 			this.setState({
 				value: ''
 			});
@@ -58,13 +54,13 @@ export class NewApp extends Component {
 		};
 		this.createAppError = null;
 		appName = appName.trim();
-		if(!appName) {
-			validate.value =  false;
+		if (!appName) {
+			validate.value = false;
 			// validate.error = this.errors['required'];
 		} else {
 			let duplicateApp = this.props.apps.filter((app) => appName === app.name);
-			if(duplicateApp && duplicateApp.length) {
-				validate.value =  false;
+			if (duplicateApp && duplicateApp.length) {
+				validate.value = false;
 				validate.error = this.errors['duplicate'];
 			}
 		}
@@ -80,28 +76,28 @@ export class NewApp extends Component {
 	}
 
 	renderElement(ele) {
-		let generatedEle =  null;
-		switch(ele) {
+		let generatedEle = null;
+		switch (ele) {
 			case 'helpBlock':
-				if(this.state.validate.error || this.createAppError) {
+				if (this.state.validate.error || this.createAppError) {
 					generatedEle = (
 						<div className="alert alert-warning" role="alert">
 							{this.state.validate.error || this.createAppError}
 						</div>
 					);
 				}
-			break;
+				break;
 			case 'loading':
-				if(this.props.createAppLoading) {
+				if (this.props.createAppLoading) {
 					generatedEle = (<Loading></Loading>);
 				}
-			break;
+				break;
 		}
 		return generatedEle;
 	}
 
 	render() {
-		let disabled = !this.state.validate.value ? {disabled: true} : null;
+		let disabled = !this.state.validate.value ? { disabled: true } : null;
 		return (
 			<AppCard>
 				<div className="app-card new-app">

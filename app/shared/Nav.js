@@ -1,13 +1,10 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React,{Component} from 'react';
 import { Link, browserHistory } from 'react-router';
 import { render } from 'react-dom';
 import { appbaseService } from '../service/AppbaseService';
-import { eventEmitter } from '../others/helper';
+import { eventEmitter } from './helper';
 
-export class Nav extends Component {
+export default class Nav extends Component {
 
 	constructor(props) {
 		super(props);

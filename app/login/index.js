@@ -1,24 +1,21 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 
 const $ = require('jquery');
 
-export class Login extends Component {
+export default class Login extends Component {
 
 	constructor(props) {
 		super(props);
-		if(appbaseService.userInfo) {
+		if (appbaseService.userInfo) {
 			browserHistory.push('/apps');
 		}
 	}
 
 	login(provider) {
-		var baseURL = window.location.protocol + "//" + window.location.host+'/dashboard/';
+		var baseURL = window.location.protocol + "//" + window.location.host + '/dashboard/';
 		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + baseURL;
 		window.location.href = redirectTo;
 	}

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { appbaseService } from '../../service/AppbaseService';
-import ShareCard from './ShareCard';
-import NewShare from './NewShare';
+import { appbaseService } from '../../../service/AppbaseService';
+import PermissionCard from './PermissionCard';
+import NewPermission from './NewPermission';
 
-export default class CollabPage extends Component {
+export default class CredentialsPage extends Component {
 	constructor(props, context) {
 		super(props);
 		this.state = {
 			info: null
 		};
 		this.getInfo = this.getInfo.bind(this);
-		this.newShare = this.newShare.bind(this);
+		this.newPermission = this.newPermission.bind(this);
 	}
 
 	componentWillMount() {
@@ -36,16 +36,16 @@ export default class CollabPage extends Component {
 
 	getInfo() {
 		this.info = {};
-		appbaseService.getShare(this.appId).then((data) => {
-			this.info.share = data;
+		appbaseService.getPermission(this.appId).then((data) => {
+			this.info.permission = data;
 			if(!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
 	}
 
-	newShare(request) {
-		appbaseService.newShare(this.appId, request).then((data) => {
+	newPermission(request) {
+		appbaseService.newPermission(this.appId, request).then((data) => {
 			this.getInfo();
 		});
 	}
@@ -53,14 +53,14 @@ export default class CollabPage extends Component {
 	renderElement(method) {
 		let element = null;
 		switch(method) {
-			case 'share':
-				if(this.state.info && this.state.info.share) {
-					element = this.state.info.share.body.map((shareInfo, index) => {
+			case 'permissions':
+				if(this.state.info && this.state.info.permission) {
+					element = this.state.info.permission.body.map((permissionInfo, index) => {
 						return (
-							<ShareCard 
-								appId={this.appId}
-								key={index}
-								shareInfo={shareInfo}
+							<PermissionCard 
+								appId={this.appId} 
+								key={index} 
+								permissionInfo={permissionInfo}
 								getInfo={this.getInfo}
 							/>
 						);
@@ -75,11 +75,11 @@ export default class CollabPage extends Component {
 		return (
 			<section className="singleApp row">
 				<div className="page-info col-xs-12">
-					<h2 className="page-title">Collaborators</h2>
+					<h2 className="page-title">Credentials</h2>
 				</div>
-				<NewShare newShare={this.newShare} />
+				<NewPermission newPermission={this.newPermission} />
 				<div className="page-body col-xs-12">
-					{this.renderElement('share')}
+					{this.renderElement('permissions')}
 				</div>
 			</section>
 		);

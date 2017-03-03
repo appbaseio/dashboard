@@ -1,33 +1,30 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
-import { NewApp } from './NewApp';
-import ActionButtons from './actionButtons';
-import * as AppListComponent from './appListComponent';
+import NewApp from './components/NewApp';
+import ActionButtons from './components/ActionButtons';
+import AppCard from './components/AppCard';
 import { appbaseService } from '../service/AppbaseService';
-import { appListHelper } from '../others/helper';
+import { appListHelper } from '../shared/helper';
 
 const moment = require('moment');
 
 const AppIntro = (props) => {
 	return (
-		<AppListComponent.AppCard>
+		<AppCard>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
 				This is your dashboard. Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
 				Ratione et voluptas fuga accusamus minima totam sequi impedit. Natus, placeat corporis.
 			</p>
-		</AppListComponent.AppCard>
+		</AppCard>
 	);
 }
 
 const AppTutorial = (props) => {
 	return (
-		<AppListComponent.AppCard>
+		<AppCard>
 			<h3 className="title">Quick Links</h3>
 			<ul>
 				<li><a href="#">Documentation</a></li>
@@ -35,11 +32,11 @@ const AppTutorial = (props) => {
 				<li><a href="#">Chat Support</a></li>
 				<li><a href="#">Report a bug</a></li>
 			</ul>
-		</AppListComponent.AppCard>
+		</AppCard>
 	);
 }
 
-export class AppsList extends Component {
+export default class AppList extends Component {
 
 	constructor(props) {
 		super(props);
@@ -156,7 +153,7 @@ export class AppsList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<AppListComponent.AppCard key={index}>
+						<AppCard key={index}>
 							<div className="app-list-item well" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
@@ -198,7 +195,7 @@ export class AppsList extends Component {
 								</div>
 								<ActionButtons app={app} deleteApp={this.props.deleteApp} />
 							</div>
-						</AppListComponent.AppCard>
+						</AppCard>
 					);
 				});
 				break;

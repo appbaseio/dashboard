@@ -4,7 +4,7 @@ var webpack = require('webpack');
 const debug = process.env.NODE_ENV !== "production";
 
 module.exports = {
-	entry: path.join(__dirname, 'app/app.js'),
+	entry: path.join(__dirname, 'app/routes.js'),
 	output: {
 		path: path.join(__dirname, 'dist/js'),
 		publicPath: '/dist/js/',
