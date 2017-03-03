@@ -35,6 +35,12 @@ export class Sidebar extends Component {
 			type: 'internal',
 			name: 'credentials',
 			img: (<i className="fa fa-key"></i>)
+		}, {
+			label: 'Collaborators',
+			link: 'app/'+this.props.appName+'/collaborators',
+			type: 'internal',
+			name: 'collaborators',
+			img: (<i className="fa fa-share-alt"></i>)
 		}];
 	}
 

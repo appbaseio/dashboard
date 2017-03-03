@@ -9,6 +9,7 @@ import { Sidebar } from './Sidebar';
 import { Dashboard } from './Dashboard';
 import { EsPlugin } from './EsPlugin';
 import CredentialsPage from './credentials';
+import CollabPage from './collaborators';
 
 export class AppRoute extends Component {
 
@@ -58,6 +59,9 @@ export class AppRoute extends Component {
 					break;
 					case 'credentials':
 						generatedEle = (<CredentialsPage appName={this.props.params.appId} />);
+					break;
+					case 'collaborators':
+						generatedEle = (<CollabPage appName={this.props.params.appId} />);
 					break;
 					case 'dejavu':
 					case 'gem':

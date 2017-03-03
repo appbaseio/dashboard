@@ -80,6 +80,22 @@ class AppbaseService {
 		});
 	}
 
+	getShare(appId, cache=false) {
+		return new Promise((resolve, reject) => {
+			if (this.apps && this.apps[appId] && this.apps[appId].share && cache) {
+				resolve(this.apps[appId].share);
+			} else {
+				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
+				$.get(this.address + 'app/' + appId + '/share').done((data) => {
+					this.apps[appId].share = data;
+					resolve(data);
+				}).fail((e) => {
+					reject(e);
+				});
+			}
+		});
+	}
+
 	getAppInfo(appId) {
 		return new Promise((resolve, reject) => {
 			if (this.apps && this.apps[appId] && this.apps[appId].appInfo) {
@@ -179,6 +195,63 @@ class AppbaseService {
 				type: 'DELETE',
 				contentType: "application/json",
 				dataType: "json",
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	newShare(appId, info) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: `${this.address}app/${appId}/share`,
+				type: 'POST',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(info),
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	updateShare(appId, user, info) {
+		return new Promise((resolve, reject) => {
+			this.deleteShare(appId, user.username, {email: user.email}).then((data) => {
+				const request = {
+					email: user.email,
+					user: user.email,
+					read: info.read,
+					write: info.write,
+					description: 'Shared with '+user.email
+				};
+				this.newShare(appId, request).then((data) => {
+					resolve(data);
+				}).catch((e) => {
+					reject(e);
+				});
+			}).catch((e) => {
+				reject(e);
+			});
+		});
+	}
+
+	deleteShare(appId, username, request) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: `${this.address}app/${appId}/share/${username}`,
+				type: 'DELETE',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(request),
 				success: (result) => {
 					resolve(result);
 				},
