@@ -104,7 +104,7 @@ export default class Nav extends Component {
 				if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.details) {
 					generatedEle = (
 						<li>
-							<button className="userImg" onClick={()=>this.logout()}>
+							<button className="user-img" onClick={()=>this.logout()}>
 								<span className="img-container">
 									<img src={appbaseService.userInfo.body.details.picture} className="img-responsive" alt={appbaseService.userInfo.body.details.name} />
 									<div className="close"><i className="fa fa-times"></i></div>
@@ -124,7 +124,7 @@ export default class Nav extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-default" id="ad-navbar">
+			<nav className="navbar navbar-default">
 				<div className="container-fluid">
 					<div className="navbar-header">
 						<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">

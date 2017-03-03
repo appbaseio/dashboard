@@ -1,3 +1,106 @@
+#dashboard {
+	height: 100%;
+}
+
+.app-container {
+	padding: 0;
+	height: 100%;
+	position: relative;
+	padding: 0;
+}
+
+#dashboard-container {
+	padding: 60px 0 0 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	.page-info {
+		margin: 0 0 15px 0;
+		.page-title {
+			margin: 0 0 5px 0;
+		}
+		.page-description {}
+	}
+}
+
+.loadingContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	.loading {
+		max-width: 50%;
+		padding: 15px;
+		background: $primary-color;
+		border-radius: 6px;
+		color: #fff;
+		font-size: 18px;
+		span {
+			float: right;
+			line-height: 60px;
+		}
+	}
+	&.normal {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		.loading {
+			width: 100%;
+			max-width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				float: none;
+				line-height: 1rem;
+			}
+		}
+	}
+}
+
+#dashboard {
+	.sidebar-container {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 76px;
+		height: 100%;
+		padding-top: 0;
+		background: lighten($blue-color, 10%);
+		z-index: 2;
+		.sidebar {
+			list-style: none;
+			padding: 0;
+			li {
+				text-align: center;
+				font-size: 0.8rem;
+				text-transform: uppercase;
+				a {
+					padding: 15px 5px;
+					display: block;
+					color: $sidebar-font-color;
+					.img-container {
+						max-width: 70%;
+						margin: 0 auto;
+						font-size: 30px;
+						img {
+							margin: 0 auto 10px auto;
+						}
+					}
+					&:hover, &.active {
+						background: $blue-color;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+}
+
 .singleApp-container {
 	position: relative;
 	padding: 0 0 0 76px;

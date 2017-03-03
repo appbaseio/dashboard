@@ -2,6 +2,7 @@
 	h1 {
 		margin-bottom: 45px;
 	}
+
 	.modal-appbase {
 		.modal-content {
 			border-radius: 4px;
@@ -9,6 +10,7 @@
 			font-family: $font-light;
 			color: #fff;
 			background: $primary-color;
+	
 			.modal-header {
 				font-family: $font-light;
 				font-size: 18px;
@@ -16,19 +18,24 @@
 				border: 0;
 				padding: 5px 15px 0 15px;
 			}
+	
 			.modal-footer {
 				border: 0;
 				padding-top: 0;
 			}
+
 			.modal-body {
 				padding-top: 15px;
 			}
+			
 			.mr15 {
 				margin-right: 15px;
 			}
+			
 			.mt25 {
 				margin-top: 25px;
 			}
+			
 			.close {
 				width: 20px;
 				height: 20px;
@@ -46,6 +53,7 @@
 				opacity: 1;
 				font-family: $font-light;
 			}
+			
 			.modal-btn {
 				background: transparent;
 				color: inherit;
@@ -54,19 +62,23 @@
 				font-size: 16px;
 				padding: 4px 20px;
 			}
+			
 			.contact-link {
 				color: #fff;
 				border-bottom: 1px dotted;
 			}
 		}
+
 		.modal-sm {
 			.modal-body {
 				padding-top: 25px;
 			}
 		}
+		
 		&#login_modal,
 		&#signup_modal {
 			margin-top: 20vh;
+		
 			.modal-header {
 				padding: 35px 15px 0 15px;
 			}
