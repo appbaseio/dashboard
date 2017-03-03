@@ -8,6 +8,7 @@ import { appbaseService } from '../service/AppbaseService';
 import { Sidebar } from './Sidebar';
 import { Dashboard } from './Dashboard';
 import { EsPlugin } from './EsPlugin';
+import CredentialsPage from './credentials';
 
 export class AppRoute extends Component {
 
@@ -55,9 +56,11 @@ export class AppRoute extends Component {
 					case 'Dashboard':
 						generatedEle = (<Dashboard appName={this.props.params.appId} />);
 					break;
+					case 'credentials':
+						generatedEle = (<CredentialsPage appName={this.props.params.appId} />);
+					break;
 					case 'dejavu':
 					case 'gem':
-					case 'mirage':
 						generatedEle = (<EsPlugin appName={this.props.params.appId} appId={this.appId} pluginName={this.state.currentView} />);
 					break;
 				}

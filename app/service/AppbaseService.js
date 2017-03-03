@@ -64,9 +64,9 @@ class AppbaseService {
 		});
 	};
 
-	getPermission(appId) {
+	getPermission(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].permissions) {
+			if (this.apps && this.apps[appId] && this.apps[appId].permissions && cache) {
 				resolve(this.apps[appId].permissions);
 			} else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
@@ -136,12 +136,49 @@ class AppbaseService {
 		});
 	}
 
-	updatePermission(username, info) {
+	updatePermission(appId, username, info) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'permission/' + username,
+				url: `${this.address}app/${appId}/permission/${username}`,
 				type: 'PATCH',
-				data: info,
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(info),
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	newPermission(appId, info) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: `${this.address}app/${appId}/permissions`,
+				type: 'POST',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(info),
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
+	deletePermission(appId, username) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: `${this.address}app/${appId}/permission/${username}`,
+				type: 'DELETE',
+				contentType: "application/json",
+				dataType: "json",
 				success: (result) => {
 					resolve(result);
 				},

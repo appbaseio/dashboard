@@ -56,7 +56,7 @@ class AppListHelper {
 		}).catch((e) => {
 			console.log(e);
 		});
-		appbaseService.getPermission(appId).then((data) => {
+		appbaseService.getPermission(appId, true).then((data) => {
 			apps[index].permissions = {
 				permissions: data.body
 			};

@@ -4,7 +4,7 @@ import { appbaseService } from '../service/AppbaseService';
 import { Circle } from 'rc-progress';
 import Clipboard from 'Clipboard';
 import { Topbar } from './Topbar';
-import { HighChartView, ApiCallsView, CredentialsView } from './appComponents';
+import { HighChartView, ApiCallsView } from './appComponents';
 
 export class Dashboard extends Component {
 
@@ -140,9 +140,6 @@ export class Dashboard extends Component {
 				appCount = this.appCount();
 				generatedEle = (<ApiCallsView appCount={appCount} />);
 			break;
-			case 'permissionView':
-				generatedEle = (<CredentialsView info={this.info} />);
-			break;
 		}
 		return generatedEle;
 	}
@@ -154,7 +151,6 @@ export class Dashboard extends Component {
 				{this.renderElement('highchartView')}
 				<div className="col-xs-12 col-sm-4 apiView">
 					{this.renderElement('apiCallsView')}
-					{this.renderElement('permissionView')}
 				</div>
 			</div>
 		);

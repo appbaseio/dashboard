@@ -29,6 +29,12 @@ export class Sidebar extends Component {
 			type: 'internal',
 			name: 'gem',
 			img: (<img className="img-responsive" src="../../assets/images/gem.svg"></img>)
+		}, {
+			label: 'Credentials',
+			link: 'app/'+this.props.appName+'/credentials',
+			type: 'internal',
+			name: 'credentials',
+			img: (<i className="fa fa-key"></i>)
 		}];
 	}
 
