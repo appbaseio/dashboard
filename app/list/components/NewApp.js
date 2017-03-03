@@ -100,7 +100,7 @@ export default class NewApp extends Component {
 		let disabled = !this.state.validate.value ? { disabled: true } : null;
 		return (
 			<AppCard>
-				<div className="app-card new-app">
+				<div className="app-card new-app-container">
 					<p>Get Started</p>
 					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
 						<input type="text" placeholder="Enter app name" value={this.state.value} className="form-control" onChange={this.handleChange} />

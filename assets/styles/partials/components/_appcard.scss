@@ -1,11 +1,12 @@
-.appList {
+.app-list {
 	.appcard {
 		margin: 15px 0;
 
-		.well {
+		.app-list-item {
 			position: relative;
 			margin: 0;
-			padding: 0;
+			cursor: pointer;
+			padding: 25px;
 			height: 100%;
 			overflow: hidden;
 			background: #fff;
@@ -18,58 +19,45 @@
 			-webkit-transition: all .3s ease;
 			transition: all .3s ease;
 
-			&:hover {
-				box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
-
-				aside.options {
-					right: 0;
-				}
+			.title {
+				margin: 0 0 20px;
+				letter-spacing: 0.02em;
+				color: #666;
+				font-size: 22px;
+				font-family: $font-semi-bold;
 			}
 
-			&.app-list-item {
-				cursor: pointer;
-				padding: 25px;
+			.progress-wrapper {
+				float: left;
+				width: 40px;
+				height: 40px;
+				display: inline-block;
+			}
 
-				.title {
-					margin: 0 0 20px;
-					letter-spacing: 0.02em;
-					color: #666;
-					font-size: 22px;
-					font-family: $font-semi-bold;
-				}
+			.progress-text {
+				float: left;
+				padding-left: 12px;
+				letter-spacing: 0.02em;
+				word-spacing: 0.1em;
+				color: #888;
+				padding-top: 6px;
+				font-size: 11px;
+				line-height: 14px;
+			}
 
-				.progress-wrapper {
-					float: left;
-					width: 40px;
-					height: 40px;
-					display: inline-block;
-				}
+			.sub-title {
+				font-family: $font-semi-bold;
+				text-transform: uppercase;
+				color: #aaa;
+				font-size: 12px;
+				letter-spacing: 0.02em;
+				padding: 6px 3px 18px;
+			}
 
-				.progress-text {
-					float: left;
-					padding-left: 12px;
-					letter-spacing: 0.02em;
-					word-spacing: 0.1em;
-					color: #888;
-					padding-top: 6px;
-					font-size: 11px;
-					line-height: 14px;
-				}
-
-				.sub-title {
-					font-family: $font-semi-bold;
-					text-transform: uppercase;
-					color: #aaa;
-					font-size: 12px;
-					letter-spacing: 0.02em;
-					padding: 6px 3px 18px;
-				}
-
-				.time {
-					height: 20px;
-					margin: 0;
-					color: #999;
-				}
+			.time {
+				height: 20px;
+				margin: 0;
+				color: #999;
 			}
 
 			aside.options {
@@ -109,10 +97,19 @@
 					}
 				}
 			}
+
+			&:hover {
+				box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
+
+				aside.options {
+					right: 0;
+				}
+			}
 		}
 
-		.new-app {
+		.new-app-container {
 			padding: 0;
+			
 			div {
 				padding-left: 0;
 			}
@@ -121,6 +118,7 @@
 				text-transform: uppercase;
 				text-align: left;
 				color: #666;
+				padding-top: 10px;
 				font-family: $font-semi-bold;
 			}
 

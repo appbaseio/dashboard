@@ -154,7 +154,7 @@ export default class AppList extends Component {
 					};
 					return (
 						<AppCard key={index}>
-							<div className="app-list-item well" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
+							<div className="app-list-item" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
 									<div className="row clearfix">
@@ -205,7 +205,7 @@ export default class AppList extends Component {
 
 	render() {
 		return (
-			<div className="appList">
+			<div className="app-list">
 				<div className="head-row row">
 					<div className="container">
 						<AppIntro name={appbaseService.userInfo.body.details.given_name} />

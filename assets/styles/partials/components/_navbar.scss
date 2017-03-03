@@ -1,4 +1,4 @@
-#ad-navbar.navbar {
+.navbar.navbar-default {
 	background: $blue-color;
 	border-radius: 0;
 	border: 0;
@@ -9,6 +9,7 @@
 	left: 0;
 	z-index: 99;
 	height: 60px;
+
 	.navbar-brand {
 		height: 60px;
 		font-size: 1.75rem;
@@ -18,17 +19,20 @@
 		display: inline-block;
 		position: relative;
 		max-width: 500px;
+
 		img {
 			height: 100%;
 			display: inline-block;
 			float: left;
 		}
+
 		span {
 			float: left;
 			padding: 0.5rem 0;
 		}
 	}
-	.userImg {
+
+	.user-img {
 		border: 0;
 		background: transparent;
 		padding: 15px;
@@ -36,12 +40,15 @@
 		width: 70px;
 		max-height: 60px;
 		overflow: hidden;
+
 		.img-container {
 			display: inline-block;
 			position: relative;
+
 			img {
 				border-radius: 50%;
 			}
+
 			.close {
 				display: none;
 				position: absolute;
@@ -52,6 +59,7 @@
 				line-height: 46px;
 			}
 		}
+
 		&:hover {
 			.close {
 				background: rgba($primary-color, 0.9);
@@ -60,16 +68,24 @@
 			}
 		}
 	}
+
 	li {
 		height: 60px;
+
 		a {
 			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
 			color: #fff;
+
+			&:hover, &:focus {
+				color: #fafafa;
+			}
 		}
+
 		.apps-dropdown-toggle {
 			position: relative;
+
 			i {
 				position: absolute;
 				left: -0.1rem;
@@ -77,9 +93,11 @@
 			}
 		}
 	}
+
 	li.dropdown > a {
 		position: relative;
 		padding-bottom: 8px;
+
 		&:before {
 			content: " ";
 			position: absolute;
@@ -89,10 +107,12 @@
 			border-style: solid;
 			border-color: #fff transparent transparent transparent;
 		}
+
 		&:hover {
 			background: transparent;
 		}
 	}
+
 	li.dropdown:hover > a {
 		&:after {
 			content: " ";
@@ -104,15 +124,18 @@
 			border-color: transparent transparent $dark-grey transparent;
 		}
 	}
+
 	li.dropdown {
 		a {
 			margin-bottom: 0;
 		}
+
 		&:hover {
 			.dropdown-menu {
 				display: block;
 			}
 		}
+
 		.dropdown-menu {
 			border: none;
 			border-radius: 0;
@@ -123,15 +146,19 @@
 			background: $dark-grey;
 			max-height: 500px;
 			overflow: auto;
+			
 			li {
 				height: auto;
+				
 				a {
 					border-radius: 0;
 					margin: 0;
 					color: $blue-color;
 					padding: 0.75rem;
+					
 					&.withIcon {
 						padding-left: 42px;
+						
 						img {
 							position: absolute;
 							left: 10px;
@@ -139,11 +166,13 @@
 							max-width: 22px;
 						}
 					}
+					
 					&:hover {
 						background: #fff;
 						color: $blue-color !important;
 					}
 				}
+				
 				a:hover,
 				a:active,
 				a.active {
