@@ -67,12 +67,8 @@ export default class PermissionCard extends Component {
 					description={this.state.description} 
 					updatDescription={this.updatDescription} />
 				<div className="col-xs-12 permission-row">
-					<span className="key">Username:&nbsp;</span>
-					<span className="value permission-username">{this.props.permissionInfo.username}</span>
-				</div>
-				<div className="col-xs-12 permission-row">
-					<span className="key">Password:&nbsp;</span>
-					<span className="value permission-password">{this.props.permissionInfo.password}</span>
+					<span className="key">Key:&nbsp;</span>
+					<span className="value permission-username">{this.props.permissionInfo.username}:{this.props.permissionInfo.password}</span>
 				</div>
 				<div className="col-xs-12 permission-row">
 					<span className="checkbox">

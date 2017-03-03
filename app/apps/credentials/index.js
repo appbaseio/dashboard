@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { appbaseService } from '../../service/AppbaseService';
 import PermissionCard from './PermissionCard';
+import NewPermission from './NewPermission';
 
 export default class CredentialsPage extends Component {
 	constructor(props, context) {
@@ -9,6 +10,7 @@ export default class CredentialsPage extends Component {
 			info: null
 		};
 		this.getInfo = this.getInfo.bind(this);
+		this.newPermission = this.newPermission.bind(this);
 	}
 
 	componentWillMount() {
@@ -42,12 +44,8 @@ export default class CredentialsPage extends Component {
 		});
 	}
 
-	newPermission() {
-		const permission = {
-			read: true,
-			write: true
-		};
-		appbaseService.newPermission(this.appId, permission).then((data) => {
+	newPermission(request) {
+		appbaseService.newPermission(this.appId, request).then((data) => {
 			this.getInfo();
 		});
 	}
@@ -79,9 +77,7 @@ export default class CredentialsPage extends Component {
 				<div className="page-info col-xs-12">
 					<h2 className="page-title">Credentials</h2>
 				</div>
-				<a className="btn btn-success" onClick={() => this.newPermission()}>
-					<i className="fa fa-plus"></i> New
-				</a>
+				<NewPermission newPermission={this.newPermission} />
 				<div className="page-body col-xs-12">
 					{this.renderElement('permissions')}
 				</div>
