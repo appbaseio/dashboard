@@ -73,15 +73,26 @@ export default class CredentialsPage extends Component {
 
 	render() {
 		return (
-			<section className="singleApp row">
-				<div className="page-info col-xs-12">
-					<h2 className="page-title">Credentials</h2>
-				</div>
-				<NewPermission newPermission={this.newPermission} />
-				<div className="page-body col-xs-12">
-					{this.renderElement('permissions')}
-				</div>
-			</section>
+			<div className="ad-detail-page ad-dashboard row">
+				<header className="ad-detail-page-header col-xs-12">
+					<h2 className="ad-detail-page-title">Credentials</h2>
+					<aside className="ad-detail-page-header-sidebar">
+						<NewPermission newPermission={this.newPermission} />
+					</aside>
+				</header>
+				<main className="ad-detail-page-body col-xs-12">
+					<div className="page-body col-xs-12">
+						<section className="ad-detail-page-body-card">
+							<header className="ad-detail-page-body-card-title">
+								Personal Keys
+							</header>
+							<main className="ad-detail-page-body-card-body row">
+								{this.renderElement('permissions')}
+							</main>
+						</section>
+					</div>
+				</main>
+			</div>
 		);
 	}
 }

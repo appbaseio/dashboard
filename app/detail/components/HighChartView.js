@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Highchart } from '../../shared/Highchart';
+import Highchart from '../../shared/Highchart';
 
 export default class HighChartView extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			graphMethod: 'all'
+			graphMethod: 'month'
 		};
 	}
 
@@ -19,29 +19,29 @@ export default class HighChartView extends Component {
 
 	render() {
 		return (
-			<div className="col-xs-12 col-sm-8 graphView">
-				<div className="graph-title">
-					Usage <span className="summary">{this.props.apiCalls} API Calls</span>
-				</div>
-				<ul className="nav-tab">
-					<li>
-						<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
-					</li>
-					<li>
-						<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
-					</li>
-					<li>
-						<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
-					</li>
-				</ul>
-				<div className="graph">
+			<section className="ad-detail-page-body-card graph-view">
+				<header className="ad-detail-page-body-card-title body-card-title-highchart">
+					<span>Usage</span>
+					<ul className="nav-tab">
+						<li>
+							<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
+						</li>
+						<li>
+							<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
+						</li>
+						<li>
+							<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
+						</li>
+					</ul>
+				</header>
+				<main className="ad-detail-page-body-card-body">
 					<Highchart 
 						id="chart1" 
 						graphMethod={this.state.graphMethod}
 						info={this.props.info}>
 					</Highchart>
-				</div>
-			</div>
+				</main>
+			</section>
 		);
 	}
 

@@ -30,4 +30,4 @@ render((
 		</Route>
 		<Route path="*" component={NotFound} />
 	</Router>
-), document.getElementById('dashboard'));
+), document.getElementById('appbase-dashboard'));

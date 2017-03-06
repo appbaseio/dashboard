@@ -73,13 +73,13 @@ export default class Detail extends Component {
 
 	render() {
 		return (
-			<div className="singleApp-container row">
+			<div className="ad-detail row">
 				{this.renderElement('sidebar')}
-				<div className="plugin-view-container">
-					<div className="plugin-view">
+				<main className="ad-detail-view-container">
+					<div className="ad-detail-view">
 						{this.renderElement('view')}
 					</div>
-				</div>
+				</main>
 			</div>
 		);
 	}

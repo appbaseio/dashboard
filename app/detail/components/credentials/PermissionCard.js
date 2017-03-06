@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { appbaseService } from '../../../service/AppbaseService';
 import ConfirmBox from '../../../shared/ConfirmBox';
+import CopyToClipboard from '../../../shared/CopyToClipboard';
 import Description from './Description';
+import classNames from "classnames";
 
 export default class PermissionCard extends Component {
 	constructor(props) {
@@ -9,7 +11,9 @@ export default class PermissionCard extends Component {
 		this.state = {
 			read: this.props.permissionInfo.read,
 			write: this.props.permissionInfo.write,
-			description: this.props.permissionInfo.description
+			description: this.props.permissionInfo.description,
+			credentials: `${this.props.permissionInfo.username}:${this.props.permissionInfo.password}`,
+			showKey: false
 		};
 		this.confirmBoxInfo = {
 			title: (<span>Delete Permission?</span>),
@@ -24,17 +28,46 @@ export default class PermissionCard extends Component {
 				confirm: 'Yes'
 			}
 		};
+		this.keySummary = {
+			'admin': 'Admin credentials',
+			'read': 'Read credentials',
+			'write': 'Write credentials'
+		};
 		this.updatDescription = this.updatDescription.bind(this);
 		this.deletePermission = this.deletePermission.bind(this);
 	}
+	componentDidMount() {
+		this.setKeyType();
+	}
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.permissionInfo) {
+		if (nextProps.permissionInfo) {
 			this.setState({
 				read: nextProps.permissionInfo.read,
 				write: nextProps.permissionInfo.write,
-				description: nextProps.permissionInfo.description
-			});
+				description: nextProps.permissionInfo.description,
+				credentials: `${nextProps.permissionInfo.username}:${nextProps.permissionInfo.password}`
+			}, this.setKeyType);
 		}
+	}
+	componentWillUnmount() {
+		this.stopUpdate = true;
+		if(this.cp) {
+			this.cp.destroy();
+		}
+	}
+	setKeyType() {
+		this.setState({
+			keyType: this.detectKey()
+		});
+	}
+	ccSuccess() {
+		toastr.success(`${this.state.description} Credentials has been copied successully!`);
+		if (this.state.keyType === 'admin') {
+			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
+		}
+	}
+	ccError() {
+		toastr.error('Error', e);
 	}
 	changePermission(method) {
 		this.setState({
@@ -60,35 +93,72 @@ export default class PermissionCard extends Component {
 			console.log(e);
 		});
 	}
+	toggleKey() {
+		this.setState({
+			showKey: !this.state.showKey
+		});
+	}
+	detectKey() {
+		let keyType = null;
+		if (this.state.read && this.state.write) {
+			keyType = 'admin';
+		} else if (this.state.read) {
+			keyType = 'read';
+		} else if (this.state.write) {
+			keyType = 'write';
+		}
+		return keyType;
+	}
 	render() {
+		const cx = classNames({
+			"active": this.state.showKey
+		});
+		const lock = classNames({
+			"lock": !this.state.showKey,
+			"unlock-alt": this.state.showKey
+		});
 		return (
-			<div className="app-card permissionView col-xs-12">
-				<Description 
-					description={this.state.description} 
-					updatDescription={this.updatDescription} />
-				<div className="col-xs-12 permission-row">
-					<span className="key">Key:&nbsp;</span>
-					<span className="value permission-username">{this.props.permissionInfo.username}:{this.props.permissionInfo.password}</span>
-				</div>
-				<div className="col-xs-12 permission-row">
-					<span className="checkbox">
-						<label>
-							<input type="checkbox" checked={this.state.read} onChange={() => this.changePermission('read')} /> R
-						</label>
-					</span>
-					<span className="checkbox">
-						<label>
-							<input type="checkbox" checked={this.state.write} onChange={() => this.changePermission('write')} /> W
-						</label>
-					</span>
-				</div>
-				<ConfirmBox
-					info={this.confirmBoxInfo}
-					onConfirm={this.deletePermission} >
-					<a className="delete-permission text-danger">
-						<i className="fa fa-trash"></i>
-					</a>
-				</ConfirmBox>
+			<div className="permission-card col-xs-12">
+				<header className="permission-card-header col-xs-12">
+					<summary className="col-xs-10 p-0">
+						<Description
+							description={this.state.description} 
+							updatDescription={this.updatDescription} 
+						/>
+					</summary>
+					<aside className="col-xs-2 text-right pull-right">
+						<ConfirmBox
+							info={this.confirmBoxInfo}
+							onConfirm={this.deletePermission} >
+							<a className="ad-theme-btn danger permission-delete animation">
+								<i className="fa fa-trash"></i>
+							</a>
+						</ConfirmBox>
+					</aside>
+				</header>
+				<main className="permission-card-body col-xs-12">
+					<div className="col-xs-12 col-sm-6 permission-card-body-description">
+						{this.keySummary[this.state.keyType]}
+					</div>
+					<div className="col-xs-12 col-sm-6 permission-card-body-credential">
+						<div className={`ad-permission-key ${cx}`}>
+							<div className="ad-permission-key-value">
+								{this.state.credentials}
+							</div>
+							<div className="ad-permission-key-buttons">
+								<a className="ad-theme-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
+									<i className={`fa fa-${lock}`}></i>
+								</a>
+								<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
+									<a className="ad-theme-btn ad-permission-key-copy-btn"
+										data-clipboard-text={this.state.credentials}>
+										<i className={`fa fa-clone`}></i>
+									</a>
+								</CopyToClipboard>
+							</div>
+						</div>
+					</div>
+				</main>
 			</div>
 		);
 	}

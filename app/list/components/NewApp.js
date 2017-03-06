@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { appbaseService } from '../../service/AppbaseService';
 import { Loading } from '../../shared/Loading';
 import AppCard from './AppCard';
+
 const $ = require('jquery');
 
 export default class NewApp extends Component {
@@ -14,7 +15,7 @@ export default class NewApp extends Component {
 			value: '',
 			height: '100px',
 			validate: {
-				value: false,
+				value: true,
 				error: null
 			}
 		};
@@ -96,18 +97,27 @@ export default class NewApp extends Component {
 		return generatedEle;
 	}
 
+	handleSubmit() {
+		debugger
+		if(this.state.value.trim()) {
+			this.props.createApp(this.state.value);
+		} else {
+			$(this.inputboxRef).trigger('focus');
+		}
+	}
+
 	render() {
 		let disabled = !this.state.validate.value ? { disabled: true } : null;
 		return (
 			<AppCard>
-				<div className="app-card new-app-container">
+				<div className="ad-list-newapp">
 					<p>Get Started</p>
 					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
-						<input type="text" placeholder="Enter app name" value={this.state.value} className="form-control" onChange={this.handleChange} />
+						<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter app name" value={this.state.value} className="form-control" onChange={this.handleChange} />
 						{this.renderElement('helpBlock')}
 					</div>
 					<div className="col-xs-12 title">
-						<button {...disabled} className="col-xs-12 theme-btn active" onClick={() => this.props.createApp(this.state.value)} >
+						<button {...disabled} className="col-xs-12 theme-btn active" onClick={() => this.handleSubmit()} >
 							{this.renderElement('loading')}
 							Create a new app
 						</button>

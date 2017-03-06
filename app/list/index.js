@@ -6,7 +6,7 @@ import NewApp from './components/NewApp';
 import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
 import { appbaseService } from '../service/AppbaseService';
-import { appListHelper } from '../shared/helper';
+import { appListHelper, comman } from '../shared/helper';
 
 const moment = require('moment');
 
@@ -154,36 +154,36 @@ export default class AppList extends Component {
 					};
 					return (
 						<AppCard key={index}>
-							<div className="app-list-item" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
+							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
-									<div className="row clearfix">
+									<div className="row clearfix ad-metrics-summary">
 										<div className="col-xs-6">
+											<div className="sub-title col-xs-12">
+												Api calls
+											</div>
 											<div className="col-xs-12 p-0">
 												<span className="progress-wrapper">
 													<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
 												<span className="progress-text">
-													<strong>{appCount.action.count}</strong> of
-													<p>{appbaseService.planLimits[this.state.plan].action}</p>
+													<strong>{comman.compressNumber(appCount.action.count)}</strong> of
+													<p>{comman.compressNumber(appbaseService.planLimits[this.state.plan].action)}</p>
 												</span>
-											</div>
-											<div className="sub-title col-xs-12">
-												Api calls
 											</div>
 										</div>
 										<div className="col-xs-6">
+											<div className="sub-title col-xs-12">
+												Records
+											</div>
 											<div className="col-xs-12 p-0">
 												<span className="progress-wrapper">
 													<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
 												<span className="progress-text">
-													<strong>{appCount.records.count}</strong> of
-													<p>{appbaseService.planLimits[this.state.plan].records}</p>
+													<strong>{comman.compressNumber(appCount.records.count)}</strong> of
+													<p>{comman.compressNumber(appbaseService.planLimits[this.state.plan].records)}</p>
 												</span>
-											</div>
-											<div className="sub-title col-xs-12">
-												Records
 											</div>
 										</div>
 									</div>
@@ -205,8 +205,8 @@ export default class AppList extends Component {
 
 	render() {
 		return (
-			<div className="app-list">
-				<div className="head-row row">
+			<div className="ad-list">
+				<header className="ad-list-header row">
 					<div className="container">
 						<AppIntro name={appbaseService.userInfo.body.details.given_name} />
 						<AppTutorial />
@@ -217,10 +217,10 @@ export default class AppList extends Component {
 							createAppError={this.state.createAppError}
 							clearInput={this.state.clearInput} />
 					</div>
-				</div>
-				<div className="container apps-container">
+				</header>
+				<main className="ad-list-apps container">
 					{this.renderElement('apps')}
-				</div>
+				</main>
 			</div>
 		);
 	}

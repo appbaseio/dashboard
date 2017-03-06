@@ -13,31 +13,25 @@ export default class Sidebar extends Component {
 			link: 'app/'+this.props.appName,
 			type: 'internal',
 			name: 'Dashboard',
-			img: (<img className="img-responsive" src="../../assets/images/Dashboard.svg"></img>)
+			img: (<img className="img-responsive" src="../../assets/images/dashboard.svg"></img>)
 		}, {
-			label: 'Data Browser',
+			label: 'Browser',
 			link: 'app/'+this.props.appName+'/dejavu',
 			type: 'internal',
 			name: 'dejavu',
-			img: (<img className="img-responsive" src="../../assets/images/dejavu.svg"></img>)
-		}, {
-			label: 'Data Mapper',
-			link: 'app/'+this.props.appName+'/gem',
-			type: 'internal',
-			name: 'gem',
-			img: (<img className="img-responsive" src="../../assets/images/gem.svg"></img>)
+			img: (<img className="img-responsive" src="../../assets/images/browser.svg"></img>)
 		}, {
 			label: 'Credentials',
 			link: 'app/'+this.props.appName+'/credentials',
 			type: 'internal',
 			name: 'credentials',
-			img: (<i className="fa fa-key"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/key.svg"></img>)
 		}, {
-			label: 'Collaborators',
+			label: 'Team',
 			link: 'app/'+this.props.appName+'/collaborators',
 			type: 'internal',
 			name: 'collaborators',
-			img: (<i className="fa fa-share-alt"></i>)
+			img: (<img className="img-responsive" src="../../assets/images/team.svg"></img>)
 		}];
 	}
 
@@ -57,12 +51,14 @@ export default class Sidebar extends Component {
 					const anchor = (
 						<a data-tip={item.label} className={cx} onClick={() => this.changeView(item.name)}>
 							{img}
+							<span className="ad-detail-sidebar-item-label">
+								{item.label}
+							</span>
 						</a>
 					);
 					return (
-						<li key={index}>
+						<li className="ad-detail-sidebar-item" key={index}>
 							{anchor}
-							<ReactTooltip />
 						</li>
 					);
 				})
@@ -73,11 +69,11 @@ export default class Sidebar extends Component {
 
 	render() {
 		return (
-			<div className="sidebar-container">
-				<ul className="sidebar">
+			<aside className="ad-detail-sidebar">
+				<ul className="ad-detail-sidebar-container">
 					{this.renderElement('links')}
 				</ul>
-			</div>
+			</aside>
 		);
 	}
 

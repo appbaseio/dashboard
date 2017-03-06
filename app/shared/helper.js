@@ -119,8 +119,37 @@ class AppListHelper {
 	}
 }
 
+class Comman {
+	compressNumber(amount) {
+		let mAmount = amount;
+		let finalNum = null;
+		try {
+			let unit = '';
+			if (amount > 1000000) {
+				unit = 'M';
+			} else if (amount > 1000) {
+				unit = 'K';
+			}
+			if (unit === 'M') {
+				mAmount = parseFloat(amount / 1000000);
+				mAmount = mAmount.toFixed(0);
+			} else if (unit === 'K') {
+				mAmount = parseFloat(amount / 1000);
+				mAmount = mAmount.toFixed(0);
+			} else {
+				mAmount = amount;
+			}
+			finalNum = mAmount + unit;
+		} catch (e) {
+			console.log(e);
+		}
+		return finalNum;
+	}
+}
+
 module.exports = {
 	eventEmitter: eventEmitter,
 	appDashboard: new AppDashboard(),
-	appListHelper: new AppListHelper()
+	appListHelper: new AppListHelper(),
+	comman: new Comman()
 }

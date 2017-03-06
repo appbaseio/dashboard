@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import classNames from "classnames";
 
 export default class NewPermission extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			show: false
+			show: false,
+			selectedType: "read"
 		};
 		this.types = {
 			read: {
@@ -25,6 +27,7 @@ export default class NewPermission extends Component {
 		};
 		this.newPermission = this.newPermission.bind(this);
 		this.exapand = this.exapand.bind(this);
+		this.onSelect = this.onSelect.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.description) {
@@ -33,8 +36,8 @@ export default class NewPermission extends Component {
 			});
 		}
 	}
-	newPermission(type) {
-		this.props.newPermission(this.types[type]);
+	newPermission() {
+		this.props.newPermission(this.types[this.state.selectedType]);
 		this.exapand();
 	}
 	exapand() {
@@ -42,48 +45,64 @@ export default class NewPermission extends Component {
 			show: !this.state.show
 		});
 	}
+	onSelect(selectedType) {
+		this.setState({
+			selectedType
+		});
+	}
 	renderElement(method) {
 		let element = null;
 		switch(method) {
 			case 'buttonGroup':
-				let group = (
-					<div className="description-show col-xs-12">
-						{
-							Object.keys(this.types).map((type, index) => {
-								return (
-									<PermissionButton 
-										key={index}
-										type={type} 
-										description={this.types[type].description} 
-										onAction={this.newPermission}
-									/>
-								);
-							})
-						}
-					</div>
-				);
-				if(this.state.show) {
-					element = group;
-				}
-			break;
+					element = (
+						<span className="ad-create-button-group">
+							{
+								Object.keys(this.types).map((type, index) => {
+									return (
+										<PermissionButton 
+											key={index}
+											type={type}
+											selectedType={this.state.selectedType}
+											description={this.types[type].description} 
+											onSelect={this.onSelect}
+										/>
+									);
+								})
+							}
+						</span>
+					);
+				break;
 		}
 		return element;
 	}
 	render() {
+		const cx = classNames({
+			'active': this.state.show
+		});
 		return (
-			<div className="permission-description col-xs-12">
-				<a className="btn btn-primary" onClick={this.exapand}>
-					New Credentials
-				</a>
-				{this.renderElement('buttonGroup')}
+			<div className={`ad-create col-xs-12 ${cx}`}>
+				<div className="ad-create-collapse">
+					<a className="ad-theme-btn primary" onClick={this.exapand}>
+						New Credentials
+					</a>
+				</div>
+				<div className="ad-create-expand">
+					{this.renderElement('buttonGroup')}
+					<a className="ad-theme-btn primary" onClick={this.newPermission}>
+						Submit
+					</a>
+				</div>
 			</div>
 		);
 	}
 }
 
 const PermissionButton = (props) => {
+	const cx = classNames({
+		"active": props.selectedType === props.type
+	});
 	return (
-		<button className={`btn btn-success`} onClick={props.onAction && (() => props.onAction(props.type))}>
+		<button className={`ad-create-button-group-btn ad-theme-btn ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
 			{props.description}
 		</button>
 	);

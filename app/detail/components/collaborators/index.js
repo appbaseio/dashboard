@@ -73,15 +73,17 @@ export default class CollabPage extends Component {
 
 	render() {
 		return (
-			<section className="singleApp row">
-				<div className="page-info col-xs-12">
-					<h2 className="page-title">Collaborators</h2>
-				</div>
-				<NewShare newShare={this.newShare} />
-				<div className="page-body col-xs-12">
-					{this.renderElement('share')}
-				</div>
-			</section>
+			<div className="ad-detail-page ad-dashboard row">
+				<header className="ad-detail-page-header col-xs-12">
+					<h2 className="ad-detail-page-title">Collaborators</h2>
+					<NewShare newShare={this.newShare} />
+				</header>
+				<main className="ad-detail-page-body col-xs-12">
+					<div className="page-body col-xs-12">
+						{this.renderElement('share')}
+					</div>
+				</main>
+			</div>
 		);
 	}
 }

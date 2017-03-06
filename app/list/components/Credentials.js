@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CopyToClipboard from '../../shared/CopyToClipboard';
 
 export default class Credentials extends Component {
 	constructor(props) {
@@ -18,9 +19,6 @@ export default class Credentials extends Component {
 
 	componentWillUnmount() {
 		this.stopUpdate = true;
-		if(this.cp) {
-			this.cp.destroy();
-		}
 	}
 
 	getPermission() {
@@ -29,31 +27,26 @@ export default class Credentials extends Component {
 		this.setState({
 			singleCredential: singleCredential,
 			credentials: justCredential
-		}, this.setClipboard);
+		});
 	}
 
-	setClipboard() {
-		setTimeout(() => {
-			let credId = `#cred-${this.props.label}-${this.props.app.id}`;
-			this.cp = new Clipboard(credId);
-			this.cp.on('success', (e) => {
-				toastr.success(`${this.props.label} Credentials has been copied successully!`);
-				if(this.state.singleCredential.write) {
-					toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
-				}
-			});
-			this.cp.on('error', (e) => {
-				toastr.error('Error', e);
-			})
-		}, 300);
+	ccSuccess() {
+		toastr.success(`${this.props.label} Credentials has been copied successully!`);
+		if(this.state.singleCredential.write) {
+			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
+		}
 	}
-
+	ccError() {
+		toastr.error('Error', e);
+	}
 	render() {
 		return (
 			<div>
-				<a id={`cred-${this.props.label}-${this.props.app.id}`} title={`Copy ${this.props.label} Credentials`} className="card-icon pointer"  data-clipboard-text={this.state.credentials}>
-					<i className={`fa ${this.props.icon}`}></i>
-				</a>
+				<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
+					<a title={`Copy ${this.props.label} Credentials`} className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+						<i className={`fa ${this.props.icon}`}></i>
+					</a>
+				</CopyToClipboard>
 			</div>
 		)
 	}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+const $ = require('jquery');
 
 export default class Description extends Component {
 	constructor(props) {
@@ -8,59 +9,76 @@ export default class Description extends Component {
 			description: this.props.description
 		};
 		this.handleInput = this.handleInput.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.description) {
+		if (nextProps.description) {
 			this.setState({
 				description: this.props.description
 			});
 		}
+	}
+	componentDidMount() {
+		$(document).mouseup((e) => {
+			var container = $(this.inputRef);
+			if (!container.is(e.target) && container.has(e.target).length === 0) {
+				this.setEdit(false);
+			}
+		});
 	}
 	handleInput(event) {
 		this.setState({
 			description: event.target.value
 		});
 	}
+	handleKeyPress(event) {
+		if (event.key == 'Enter') {
+			this.setEdit(false);
+			this.props.updatDescription(this.state.description);
+		}
+	}
 	setEdit(value) {
 		this.setState({
 			edit: value
-		});
+		}, function() {
+			if (value) {
+				$(this.inputRef).trigger('focus');
+			}
+		}.bind(this));
 	}
 	renderElement(method) {
 		let element = null;
-		switch(method) {
+		switch (method) {
 			case 'input':
 				let descriptionNonEdit = (
-					<p  onClick={() => this.setEdit(true)}>
+					<p className="ad-editable-value" onClick={() => this.setEdit(true)}>
 						{this.props.description || 'No Description'}
 					</p>
 				);
 				let descriptionEdit = (
-					<div className="description-edit col-xs-12">
-						<input type="text" 
+					<div className="ad-editable-edit col-xs-12">
+						<input 
+							ref={(input) => this.inputRef=input}
+							type="text"
+							placeholder="Type and press enter"
 							defaultValue={this.state.description} 
 							className="form-control"
-							onChange={this.handleInput}  />
-						<a className="btn btn-success" onClick={() => {this.setEdit(false); this.props.updatDescription(this.state.description);} }>
-							<i className="fa fa-check"></i>
-						</a>
-						<a className="btn btn-default" onClick={() => this.setEdit(false)}>
-							<i className="fa fa-arrow-left"></i>
-						</a>
+							onChange={this.handleInput}
+							onKeyPress={this.handleKeyPress} />
 					</div>
 				);
-				if(this.state.edit) {
+				if (this.state.edit) {
 					element = descriptionEdit;
 				} else {
 					element = descriptionNonEdit;
 				}
-			break;
+				break;
 		}
 		return element;
 	}
 	render() {
 		return (
-			<div className="permission-description col-xs-12">
+			<div className="permission-editable ad-editable col-xs-12">
 				{this.renderElement('input')}
 			</div>
 		);

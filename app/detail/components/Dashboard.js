@@ -13,7 +13,7 @@ export default class Dashboard extends Component {
 		this.state = {
 			info: {},
 			plan: 'free',
-			graphMethod: 'all',
+			graphMethod: 'month',
 			config: {
 				chartConfig: {}
 			},
@@ -69,6 +69,7 @@ export default class Dashboard extends Component {
 		});
 		appbaseService.getMetrics(this.appId).then((data) => {
 			this.info.metrics = data;
+			this.info.appStats = appbaseService.computeMetrics(data);
 			if (!this.stopUpdate) {
 				this.setState({
 					info: this.info,
@@ -96,9 +97,11 @@ export default class Dashboard extends Component {
 	}
 
 	calcPercentage(app, field) {
-		let count = field === 'action' ? (this.state.apiCalls ? this.state.apiCalls : 0) : (app.info && app.info.metrics && app.info.metrics.body.month.buckets && app.info.metrics.body.month.buckets.length && app.info.metrics.body.month.buckets[0].doc_count ? app.info.metrics.body.month.buckets[0].doc_count : 0);
+		let count = field === 'action' ? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) : (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
+		let percentage = (100 * count) / appbaseService.planLimits[this.state.plan][field];
+		percentage = percentage < 100 ? percentage : 100;
 		return {
-			percentage: (100 * count) / appbaseService.planLimits[this.state.plan][field],
+			percentage: percentage,
 			count: count
 		};
 	}
@@ -119,9 +122,9 @@ export default class Dashboard extends Component {
 				break;
 			case 'name':
 				generatedEle = (
-					<div className="page-info col-xs-12">
-						<h2 className="page-title">Dashboard</h2>
-					</div>
+					<header className="ad-detail-page-header col-xs-12">
+						<h2 className="ad-detail-page-title">Dashboard</h2>
+					</header>
 				);
 				break;
 			case 'highchartView':
@@ -136,7 +139,7 @@ export default class Dashboard extends Component {
 				break;
 			case 'apiCallsView':
 				appCount = this.appCount();
-				generatedEle = (<ApiCallsView appCount={appCount} />);
+				generatedEle = (<ApiCallsView plan={this.state.plan} appCount={appCount} />);
 				break;
 		}
 		return generatedEle;
@@ -144,12 +147,16 @@ export default class Dashboard extends Component {
 
 	render() {
 		return (
-			<div className="singleApp row">
+			<div className="ad-detail-page ad-dashboard row">
 				{this.renderElement('name')}
-				{this.renderElement('highchartView')}
-				<div className="col-xs-12 col-sm-4 apiView">
-					{this.renderElement('apiCallsView')}
-				</div>
+				<main className='ad-detail-page-body col-xs-12'>
+					<section className="col-xs-12 col-sm-8">
+						{this.renderElement('highchartView')}
+					</section>
+					<section className="col-xs-12 col-sm-4">
+						{this.renderElement('apiCallsView')}
+					</section>
+				</main>
 			</div>
 		);
 	}

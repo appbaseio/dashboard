@@ -1,13 +1,9 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React,{Component} from 'react';
 import { render } from 'react-dom';
 import ReactHighcharts from 'react-highcharts';
 const $ = require('jquery');
 
-export class Highchart extends Component {
-
+export default class Highchart extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -75,7 +71,7 @@ export class Highchart extends Component {
 				timeFrame = utc.setDate(utc.getDate() - 7);
 			},
 			month: function() {
-				timeFrame = utc.setMonth(utc.getMonth() - 1);
+				timeFrame = utc.setDate(1);
 			},
 			all: function() {
 				timeFrame = 0;

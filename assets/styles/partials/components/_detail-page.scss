@@ -1,0 +1,45 @@
+.ad-detail-page {
+	margin: 0;
+	.ad-detail-page-header {
+		background: #fff;
+		padding: 22px 15px;
+		border-bottom: 1px solid darken($dark-grey, 10%);
+		position: relative;
+		.ad-detail-page-title {
+			font-size: 1.7rem;
+			line-height: 2.2rem;
+			font-family: $font-semi-bold;
+			margin: 0;
+			display: inline-block;
+		}
+		.ad-detail-page-header-sidebar {
+			float: right;
+		}
+	}
+	.ad-detail-page-body {
+		padding: 15px;
+		> [class*="col-"] {
+			padding-left: 0;
+			&:last-child {
+				padding-right: 0;
+			}
+			@media screen and (max-width: 768px) {
+				padding: 0;
+			}
+		}
+		.ad-detail-page-body-card {
+			background: #fff;
+			margin-bottom: 20px;
+			border: 1px solid transparent;
+			border-radius: 3px;
+			-webkit-box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
+			box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
+			.ad-detail-page-body-card-title {
+				background-color: #fff;
+				border-bottom: 1px solid darken($dark-grey, 10%);
+				padding: 10px 15px;
+				font-size: 1.5rem;
+			}
+		}
+	}
+}
