@@ -1,0 +1,39 @@
+.ad-dashboard {
+	.body-card-title-highchart {
+
+	}
+	.body-card-body-api-view {
+		margin: 0;
+	}
+	.nav-tab {
+		list-style: none;
+		padding: 0;
+		float: right;
+		width: auto;
+		position: relative;
+		font-size: 1rem;
+		margin: 0;
+		li {
+			display: inline-block;
+			float: left;
+			a {
+				display: inline-block;
+				padding: 5px 15px;
+				color: $grey-font;
+				position: relative;
+				cursor: pointer;
+				&.active {
+					color: $primary-color;
+					border-color: $primary-color;
+					&:before {
+						background: $primary-color;
+					}
+				}
+				&:hover {
+					color: $primary-color;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+}

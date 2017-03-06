@@ -1,17 +1,14 @@
-import {
-	default as React,
-	Component
-} from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
-import  Onboarding  from 'appbase-onboarding';
+import Onboarding from 'appbase-onboarding';
 import { appbaseService } from '../service/AppbaseService';
 import AppCreation from './steps/AppCreation';
 import UpdateMapping from './steps/UpdateMapping';
 import IndexData from './steps/IndexData';
 import LiveFiddle from './steps/LiveFiddle';
 
-export class Tutorial extends Component {
+export default class Tutorial extends Component {
 
 	constructor(props) {
 		super(props);

@@ -1,0 +1,105 @@
+.modal {
+	.modal-header {
+		border: 0;
+		padding: 5px 15px 0 15px;
+		color: $primary-color;
+		.modal-title {
+			color: $primary-color;
+			padding-top: 5px;
+			text-align: left;
+		}
+		.close {
+			width: 20px;
+			height: 20px;
+			border-radius: 100%;
+			border: 1px solid;
+			font-size: 14px;
+			line-height: 0px;
+			padding: 3px 0;
+			text-align: center;
+			position: absolute;
+			right: 5px;
+			top: 5px;
+			margin-top: 0;
+			background: transparent;
+			opacity: 1;
+			color: $primary-color;
+		}
+	}
+	.modal-content {
+		background: #fff;
+		border-radius: 4px;
+		border: 3px solid;
+		border-color: $primary-color;
+		p {
+			margin-bottom: 15px;
+		}
+	}
+	.btn {
+		border: 1px solid;
+	}
+	.ad-confirm-btn {
+		margin-right: 15px;
+		background: transparent;
+		color: $primary-color;
+		border-color: $primary-color;
+		&:hover {
+			background: $primary-color;
+			color: #fff;
+		}
+	}
+	.ad-cancel-btn {
+		background: transparent;
+		border-color: transparent;
+	}
+
+	&.modal-info {
+		.modal-content {
+			border-color: $primary-color;
+		}
+	}
+	&.modal-warning {
+		.modal-content {
+			border-color: $modal-warning;
+		}
+		.modal-header {
+			.modal-title {
+				color: $modal-warning;
+			}
+		}
+		.close {
+			color: $modal-warning;
+		}
+		.ad-confirm-btn {
+			background: transparent;
+			color: $modal-warning;
+			border-color: $modal-warning;
+			&:hover {
+				background: $modal-warning;
+				color: #fff;
+			}
+		}
+	}
+	&.modal-danger {
+		.modal-content {
+			border-color: $modal-danger;
+		}
+		.modal-header {
+			.modal-title {
+				color: $modal-danger;
+			}
+		}
+		.close {
+			color: $modal-danger;
+		}
+		.ad-confirm-btn {
+			background: transparent;
+			color: $modal-danger;
+			border-color: $modal-danger;
+			&:hover {
+				background: $modal-danger;
+				color: #fff;
+			}
+		}
+	}
+}

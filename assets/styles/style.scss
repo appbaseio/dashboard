@@ -1,11 +1,16 @@
 @import "partials/settings/variables",
 		"partials/base/base";
 
-@import "partials/components/app",
-		"partials/components/appcard",
-		"partials/components/login",
+@import "partials/components/login",
 		"partials/components/navbar",
+		"partials/components/buttons",
 		"partials/components/onboarding",
-		"partials/components/sidebar",
-		"partials/components/singleapp",
-		"partials/components/actionbuttons";
+		"partials/components/appcard",
+		"partials/components/dashboard",
+		"partials/components/list",
+		"partials/components/detail",
+		"partials/components/loading",
+		"partials/components/appbase-dashboard",
+		"partials/components/detail-page",
+		"partials/components/credentials",
+		"partials/components/modal";

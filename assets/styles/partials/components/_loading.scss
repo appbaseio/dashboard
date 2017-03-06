@@ -1,0 +1,35 @@
+.loadingContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	.loading {
+		max-width: 50%;
+		padding: 15px;
+		background: $primary-color;
+		border-radius: 6px;
+		color: #fff;
+		font-size: 18px;
+		span {
+			float: right;
+			line-height: 60px;
+		}
+	}
+	&.normal {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: 0;
+		.loading {
+			width: 100%;
+			max-width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				float: none;
+				line-height: 1rem;
+			}
+		}
+	}
+}

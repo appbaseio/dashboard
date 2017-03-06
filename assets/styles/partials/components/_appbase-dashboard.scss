@@ -1,0 +1,27 @@
+#appbase-dashboard {
+	height: 100%;
+}
+
+.app-container {
+	padding: 0;
+	height: 100%;
+	position: relative;
+	padding: 0;
+}
+
+#dashboard-container {
+	padding: 60px 0 0 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	.page-info {
+		margin: 0 0 15px 0;
+		.page-title {
+			margin: 0 0 5px 0;
+		}
+		.page-description {}
+	}
+}

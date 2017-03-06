@@ -32,3 +32,157 @@ body {
 		padding: 8px 16px;
 	}
 }
+
+.ad-theme-btn {
+	color: lighten($primary-font-color, 10%);
+	background: $dark-grey;
+	border: 1px solid;
+	border-color: darken($dark-grey, 10%);
+	padding: 4px 8px;
+	font-size: 1rem;
+	&:hover, &.active {
+		color: lighten($primary-font-color, 2%);
+		background: darken($dark-grey, 5%);
+		text-decoration: none;
+	}
+	&.primary {
+		background: $primary-color;
+		border-color: darken($primary-color, 10%);
+		color: #fff;
+		&:hover, &.active {
+			background: darken($primary-color, 10%);
+			text-decoration: none;
+		}
+	}
+	&.danger {
+		background: $danger-color;
+		border-color: darken($danger-color, 10%);
+		color: #fff;
+		&:hover, &.active {
+			background: darken($danger-color, 10%);
+			text-decoration: none;
+		}
+	}
+	&.danger-reverse {
+		color: $danger-color;
+		border-color: transparent;
+		background: transparent;
+		&:hover, &.active {
+			background: darken(#fff, 10%);
+			text-decoration: none;
+		}
+	}
+	&[disabled] {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
+.animation {
+	.fadein {
+		opacity: 1;
+		-webkit-animation: fadein 0.5s;
+		-moz-animation: fadein 0.5s;
+		-ms-animation: fadin 0.5s;
+		-o-animation: fadein 0.5s;
+		animation: fadein 0.5s;
+	}
+	.fadeout {
+		opacity: 0;
+		-webkit-animation: fadeout 0.5s;
+		-moz-animation: fadeout 0.5s;
+		-ms-animation: fadeout 0.5s;
+		-o-animation: fadeout 0.5s;
+		animation: fadeout 0.5s;
+	}
+}
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@-moz-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@-ms-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@-o-keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@-ms-keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@-o-keyframes fadeout {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
