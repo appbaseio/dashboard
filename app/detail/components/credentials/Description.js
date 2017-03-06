@@ -8,6 +8,7 @@ export default class Description extends Component {
 			edit: false,
 			description: this.props.description
 		};
+		this.stopUpdate = false;
 		this.handleInput = this.handleInput.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
@@ -20,11 +21,16 @@ export default class Description extends Component {
 	}
 	componentDidMount() {
 		$(document).mouseup((e) => {
-			var container = $(this.inputRef);
-			if (!container.is(e.target) && container.has(e.target).length === 0) {
-				this.setEdit(false);
+			if(!this.stopUpdate) {
+				var container = $(this.inputRef);
+				if (!container.is(e.target) && container.has(e.target).length === 0) {
+					this.setEdit(false);
+				}
 			}
 		});
+	}
+	componentWillUnmount() {
+		this.stopUpdate = true;
 	}
 	handleInput(event) {
 		this.setState({

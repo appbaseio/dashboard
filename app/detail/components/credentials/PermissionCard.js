@@ -127,7 +127,7 @@ export default class PermissionCard extends Component {
 						<ConfirmBox
 							info={this.confirmBoxInfo}
 							onConfirm={this.deletePermission} >
-							<a className="ad-theme-btn danger permission-delete animation">
+							<a className="ad-theme-btn danger-reverse permission-delete animation">
 								<i className="fa fa-trash"></i>
 							</a>
 						</ConfirmBox>
@@ -146,7 +146,7 @@ export default class PermissionCard extends Component {
 								<a className="ad-theme-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
 									<i className={`fa fa-${lock}`}></i>
 								</a>
-								<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
+								<CopyToClipboard type="danger" onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
 									<a className="ad-theme-btn ad-permission-key-copy-btn"
 										data-clipboard-text={this.state.credentials}>
 										<i className={`fa fa-clone`}></i>

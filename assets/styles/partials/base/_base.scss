@@ -63,6 +63,15 @@ body {
 			text-decoration: none;
 		}
 	}
+	&.danger-reverse {
+		color: $danger-color;
+		border-color: transparent;
+		background: transparent;
+		&:hover, &.active {
+			background: darken(#fff, 10%);
+			text-decoration: none;
+		}
+	}
 	&[disabled] {
 		opacity: 0.6;
 		cursor: not-allowed;

@@ -60,7 +60,7 @@ export default class AppList extends Component {
 
 	deleteApp(app) {
 		appbaseService.deleteApp(app.id).then((data) => {
-			this.setApps();
+			this.initialize();
 		}).catch((e) => {
 			console.log(e);
 		})
@@ -153,7 +153,7 @@ export default class AppList extends Component {
 						records: this.calcPercentage(app, 'records')
 					};
 					return (
-						<AppCard key={index}>
+						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
@@ -193,7 +193,7 @@ export default class AppList extends Component {
 										</p>
 									</div>
 								</div>
-								<ActionButtons app={app} deleteApp={this.props.deleteApp} />
+								<ActionButtons app={app} deleteApp={this.deleteApp} />
 							</div>
 						</AppCard>
 					);

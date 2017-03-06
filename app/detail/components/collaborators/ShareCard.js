@@ -110,8 +110,10 @@ export default class ShareCard extends Component {
 					<aside className="col-xs-2 text-right pull-right">
 						<ConfirmBox
 							info={this.confirmBoxInfo}
-							onConfirm={this.deleteShare} >
-							<a className="ad-theme-btn danger permission-delete animation">
+							onConfirm={this.deleteShare}
+							type="danger"
+						>
+							<a className="ad-theme-btn danger-reverse permission-delete animation">
 								<i className="fa fa-trash"></i>
 							</a>
 						</ConfirmBox>
