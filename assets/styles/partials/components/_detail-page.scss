@@ -14,6 +14,8 @@
 		}
 		.ad-detail-page-header-sidebar {
 			float: right;
+			text-align: right;
+			padding: 0;
 		}
 	}
 	.ad-detail-page-body {
@@ -36,9 +38,11 @@
 			box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
 			.ad-detail-page-body-card-title {
 				background-color: #fff;
-				border-bottom: 1px solid darken($dark-grey, 10%);
 				padding: 10px 15px;
 				font-size: 1.5rem;
+				&.with-border {
+					border-bottom: 1px solid darken($dark-grey, 10%);
+				}
 			}
 		}
 	}

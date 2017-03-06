@@ -83,7 +83,7 @@ export default class CredentialsPage extends Component {
 				<main className="ad-detail-page-body col-xs-12">
 					<div className="page-body col-xs-12">
 						<section className="ad-detail-page-body-card">
-							<header className="ad-detail-page-body-card-title">
+							<header className="ad-detail-page-body-card-title with-border">
 								Personal Keys
 							</header>
 							<main className="ad-detail-page-body-card-body row">

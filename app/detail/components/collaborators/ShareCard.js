@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
+import classNames from "classnames";
 import { appbaseService } from '../../../service/AppbaseService';
 import ConfirmBox from '../../../shared/ConfirmBox';
+import { comman } from '../../../shared/helper';
+import CopyToClipboard from '../../../shared/CopyToClipboard';
 
 export default class ShareCard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			read: this.props.shareInfo.read,
-			write: this.props.shareInfo.write
+			write: this.props.shareInfo.write,
+			credentials: `${this.props.shareInfo.username}:${this.props.shareInfo.password}`,
+			showKey: false
 		};
 		this.confirmBoxInfo = {
 			title: (<span>Delete Email?</span>),
@@ -21,15 +26,34 @@ export default class ShareCard extends Component {
 				confirm: 'Yes'
 			}
 		};
+		this.keySummary = comman.keySummary();
 		this.deleteShare = this.deleteShare.bind(this);
+	}
+	componentDidMount() {
+		this.setKeyType();
 	}
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.shareInfo) {
 			this.setState({
 				read: nextProps.shareInfo.read,
-				write: nextProps.shareInfo.write
-			});
+				write: nextProps.shareInfo.write,
+				credentials: `${nextProps.shareInfo.username}:${nextProps.shareInfo.password}`
+			}, this.setKeyType);
 		}
+	}
+	setKeyType() {
+		this.setState({
+			keyType: this.detectKey()
+		});
+	}
+	ccSuccess() {
+		toastr.success(`${this.props.shareInfo.email} Credentials has been copied successully!`);
+		if (this.state.keyType === 'admin') {
+			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
+		}
+	}
+	ccError() {
+		toastr.error('Error', e);
 	}
 	changePermission(method) {
 		this.setState({
@@ -53,36 +77,69 @@ export default class ShareCard extends Component {
 			console.log(e);
 		});
 	}
+	toggleKey() {
+		this.setState({
+			showKey: !this.state.showKey
+		});
+	}
+	detectKey() {
+		let keyType = null;
+		if (this.state.read && this.state.write) {
+			keyType = 'admin';
+		} else if (this.state.read) {
+			keyType = 'read';
+		} else if (this.state.write) {
+			keyType = 'write';
+		}
+		return keyType;
+	}
 	render() {
+		const cx = classNames({
+			"active": this.state.showKey
+		});
+		const lock = classNames({
+			"lock": !this.state.showKey,
+			"unlock-alt": this.state.showKey
+		});
 		return (
-			<div className="app-card permissionView col-xs-12">
-				<div className="col-xs-12 permission-row">
-					<span className="key">User:&nbsp;</span>
-					<span className="value permission-username">{this.props.shareInfo.email}</span>
-				</div>
-				<div className="col-xs-12 permission-row">
-					<span className="key">Key:&nbsp;</span>
-					<span className="value permission-username">{this.props.shareInfo.username}:{this.props.shareInfo.password}</span>
-				</div>
-				<div className="col-xs-12 permission-row">
-					<span className="checkbox">
-						<label>
-							<input type="checkbox" checked={this.state.read} onChange={() => this.changePermission('read')} /> R
-						</label>
-					</span>
-					<span className="checkbox">
-						<label>
-							<input type="checkbox" checked={this.state.write} onChange={() => this.changePermission('write')} /> W
-						</label>
-					</span>
-				</div>
-				<ConfirmBox
-					info={this.confirmBoxInfo}
-					onConfirm={this.deleteShare} >
-					<a className="delete-permission text-danger">
-						<i className="fa fa-trash"></i>
-					</a>
-				</ConfirmBox>
+			<div className="permission-card col-xs-12">
+				<header className="permission-card-header col-xs-12">
+					<summary className="col-xs-10">
+						{this.props.shareInfo.email}
+					</summary>
+					<aside className="col-xs-2 text-right pull-right">
+						<ConfirmBox
+							info={this.confirmBoxInfo}
+							onConfirm={this.deleteShare} >
+							<a className="ad-theme-btn danger permission-delete animation">
+								<i className="fa fa-trash"></i>
+							</a>
+						</ConfirmBox>
+					</aside>
+				</header>
+				<main className="permission-card-body col-xs-12">
+					<div className="col-xs-12 col-sm-6 permission-card-body-description">
+						{this.keySummary[this.state.keyType]}
+					</div>
+					<div className="col-xs-12 col-sm-6 permission-card-body-credential">
+						<div className={`ad-permission-key ${cx}`}>
+							<div className="ad-permission-key-value">
+								{this.state.credentials}
+							</div>
+							<div className="ad-permission-key-buttons">
+								<a className="ad-theme-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
+									<i className={`fa fa-${lock}`}></i>
+								</a>
+								<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
+									<a className="ad-theme-btn ad-permission-key-copy-btn"
+										data-clipboard-text={this.state.credentials}>
+										<i className={`fa fa-clone`}></i>
+									</a>
+								</CopyToClipboard>
+							</div>
+						</div>
+					</div>
+				</main>
 			</div>
 		);
 	}

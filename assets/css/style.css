@@ -51,6 +51,9 @@ body {
     .ad-theme-btn.danger:hover, .ad-theme-btn.danger.active {
       background: #c9302c;
       text-decoration: none; }
+  .ad-theme-btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed; }
 
 .animation .fadein {
   opacity: 1;
@@ -561,8 +564,8 @@ body {
             border-radius: 50%;
             padding: 10px;
             background: #fff;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border: 2px solid #242E44;
             margin: 0 auto 5px auto; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
@@ -637,7 +640,9 @@ body {
       margin: 0;
       display: inline-block; }
     .ad-detail-page .ad-detail-page-header .ad-detail-page-header-sidebar {
-      float: right; }
+      float: right;
+      text-align: right;
+      padding: 0; }
   .ad-detail-page .ad-detail-page-body {
     padding: 15px; }
     .ad-detail-page .ad-detail-page-body > [class*="col-"] {
@@ -656,19 +661,19 @@ body {
       box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3; }
       .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title {
         background-color: #fff;
-        border-bottom: 1px solid #dedede;
         padding: 10px 15px;
         font-size: 1.5rem; }
+        .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title.with-border {
+          border-bottom: 1px solid #dedede; }
 
 .permission-card {
   padding: 15px; }
   .permission-card .permission-card-header {
     font-size: 1.5rem;
-    padding: 0; }
-    .permission-card .permission-card-header .permission-editable {
-      margin-bottom: 5px; }
-      .permission-card .permission-card-header .permission-editable .ad-editable-edit {
-        padding: 0; }
+    padding: 0;
+    margin-bottom: 5px; }
+    .permission-card .permission-card-header .permission-editable .ad-editable-edit {
+      padding: 0; }
     .permission-card .permission-card-header .permission-delete {
       opacity: 0;
       -webkit-animation: fadeout 0.5s;
@@ -733,23 +738,33 @@ body {
   .ad-editable .ad-editable-edit input:focus {
     outline: none; }
 
-.ad-create .ad-create-collapse {
-  display: block; }
-
-.ad-create .ad-create-expand {
-  display: none; }
-
-.ad-create.active .ad-create-collapse {
-  display: none; }
-
-.ad-create.active .ad-create-expand {
-  display: block; }
-
-.ad-create .ad-create-button-group {
-  display: inline-block;
-  margin-right: 10px; }
-  .ad-create .ad-create-button-group .ad-theme-btn {
-    border-right: 0; }
-    .ad-create .ad-create-button-group .ad-theme-btn:last-child {
-      border-right: 1px solid;
-      border-color: #dedede; }
+.ad-create {
+  padding: 0; }
+  .ad-create .ad-create-collapse {
+    display: block; }
+  .ad-create .ad-create-expand {
+    display: none; }
+    .ad-create .ad-create-expand .ad-create-email {
+      margin-bottom: 10px; }
+    .ad-create .ad-create-expand .ad-create-button-group-container {
+      position: relative;
+      padding: 0; }
+  .ad-create.active .ad-create-collapse {
+    display: none; }
+  .ad-create.active .ad-create-expand {
+    display: block; }
+  .ad-create .ad-create-button-group {
+    display: inline-block;
+    margin-right: 10px; }
+    .ad-create .ad-create-button-group .ad-theme-btn {
+      border-right: 0; }
+      .ad-create .ad-create-button-group .ad-theme-btn:last-child {
+        border-right: 1px solid;
+        border-color: #dedede; }
+    .ad-create .ad-create-button-group.without-margin {
+      margin: 0;
+      padding-right: 0; }
+  .ad-create .ad-create-submit {
+    width: 100%;
+    text-align: center;
+    float: left; }

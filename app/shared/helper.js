@@ -145,6 +145,13 @@ class Comman {
 		}
 		return finalNum;
 	}
+	keySummary() {
+		return {
+			'admin': 'Admin credentials',
+			'read': 'Read credentials',
+			'write': 'Write credentials'
+		};
+	}
 }
 
 module.exports = {

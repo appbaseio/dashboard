@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import classNames from "classnames";
 
 export default class NewShare extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			show: false,
-			userEmail: null
+			userEmail: null,
+			selectedType: "read"
 		};
 		this.types = {
 			read: {
@@ -27,6 +29,7 @@ export default class NewShare extends Component {
 		this.newShare = this.newShare.bind(this);
 		this.exapand = this.exapand.bind(this);
 		this.updateUserEmail = this.updateUserEmail.bind(this);
+		this.onSelect = this.onSelect.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.description) {
@@ -35,8 +38,8 @@ export default class NewShare extends Component {
 			});
 		}
 	}
-	newShare(type) {
-		const request = this.types[type];
+	newShare() {
+		const request = this.types[this.state.selectedType];
 		request.email = this.state.userEmail;
 		request.user = this.state.userEmail;
 		request.description += '(shared with '+this.state.userEmail+')';
@@ -55,45 +58,72 @@ export default class NewShare extends Component {
 			});
 		}
 	}
+	onSelect(selectedType) {
+		this.setState({
+			selectedType
+		});
+	}
 	renderElement(method) {
 		let element = null;
 		switch (method) {
+			case 'email':
+				element = (
+					<div className="col-xs-12 ad-create-email">
+						<UserEmail updateUserEmail={this.updateUserEmail} />
+					</div>
+				);
+			break;
 			case 'buttonGroup':
-				if (this.state.show) {
-					element = (
-						<div className="row">
-							<div className="col-xs-12">
-								<UserEmail updateUserEmail={this.updateUserEmail} />
-							</div>
-							<div className="description-show col-xs-12">
-								{
-									Object.keys(this.types).map((type, index) => {
-										return (
-											<ShareButton 
-												key={index}
-												type={type} 
-												description={this.types[type].description} 
-												onAction={this.newShare}
-												userEmail={this.state.userEmail}
-											/>
-										);
-									})
-								}
-							</div>
-						</div>
-					);
-				}
+				element = (
+					<span className="ad-create-button-group without-margin col-xs-9">
+						{
+							Object.keys(this.types).map((type, index) => {
+								return (
+									<ShareButton
+										key={index}
+										type={type}
+										selectedType={this.state.selectedType}
+										description={this.types[type].description}
+										onSelect={this.onSelect}
+										userEmail={this.state.userEmail}
+									/>
+								);
+							})
+						}
+					</span>
+				);
 				break;
 		}
 		return element;
 	}
 	render() {
+		const cx = classNames({
+			'active': this.state.show
+		});
+		let disabled = null;
+		if(!this.state.userEmail) {
+			disabled = {
+				disabled: true
+			};
+		}
 		return (
-			<div className="permission-description col-xs-12">
-				<a className="btn btn-primary" onClick={this.exapand}>
-					Share app
-				</a>
-				{this.renderElement('buttonGroup')}
+			<div className={`ad-create col-xs-12 ${cx}`}>
+				<div className="ad-create-collapse">
+					<a className="ad-theme-btn primary" onClick={this.exapand}>
+						Share App
+					</a>
+				</div>
+				<div className="ad-create-expand row">
+					{this.renderElement('email')}
+					<div className="ad-create-button-group-container">
+						{this.renderElement('buttonGroup')}
+						<span className="col-xs-3">
+							<button {...disabled} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
+								Submit
+							</button>
+						</span>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -131,12 +161,11 @@ class UserEmail extends Component {
 };
 
 const ShareButton = (props) => {
-	let disabled = null;
-	if (!props.userEmail) {
-		disabled = { disabled: true };
-	}
+	const cx = classNames({
+		"active": props.selectedType === props.type
+	});
 	return (
-		<button className={`btn btn-success`} {...disabled} onClick={props.onAction && (() => props.onAction(props.type))}>
+		<button className={`ad-create-button-group-btn ad-theme-btn col-xs-4 ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
 			{props.description}
 		</button>
 	);

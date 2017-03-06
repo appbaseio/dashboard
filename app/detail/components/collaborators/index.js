@@ -57,7 +57,7 @@ export default class CollabPage extends Component {
 				if(this.state.info && this.state.info.share) {
 					element = this.state.info.share.body.map((shareInfo, index) => {
 						return (
-							<ShareCard 
+							<ShareCard
 								appId={this.appId}
 								key={index}
 								shareInfo={shareInfo}
@@ -75,12 +75,21 @@ export default class CollabPage extends Component {
 		return (
 			<div className="ad-detail-page ad-dashboard row">
 				<header className="ad-detail-page-header col-xs-12">
-					<h2 className="ad-detail-page-title">Collaborators</h2>
-					<NewShare newShare={this.newShare} />
+					<h2 className="ad-detail-page-title">Team</h2>
+					<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-6">
+						<NewShare newShare={this.newShare} />
+					</aside>
 				</header>
 				<main className="ad-detail-page-body col-xs-12">
 					<div className="page-body col-xs-12">
-						{this.renderElement('share')}
+						<section className="ad-detail-page-body-card">
+							<header className="ad-detail-page-body-card-title with-border">
+								Team Members
+							</header>
+							<main className="ad-detail-page-body-card-body row">
+								{this.renderElement('share')}
+							</main>
+						</section>
 					</div>
 				</main>
 			</div>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import classNames from "classnames";
 import { appbaseService } from '../../../service/AppbaseService';
 import ConfirmBox from '../../../shared/ConfirmBox';
 import CopyToClipboard from '../../../shared/CopyToClipboard';
+import { comman } from '../../../shared/helper';
 import Description from './Description';
-import classNames from "classnames";
 
 export default class PermissionCard extends Component {
 	constructor(props) {
@@ -28,11 +29,7 @@ export default class PermissionCard extends Component {
 				confirm: 'Yes'
 			}
 		};
-		this.keySummary = {
-			'admin': 'Admin credentials',
-			'read': 'Read credentials',
-			'write': 'Write credentials'
-		};
+		this.keySummary = comman.keySummary();
 		this.updatDescription = this.updatDescription.bind(this);
 		this.deletePermission = this.deletePermission.bind(this);
 	}

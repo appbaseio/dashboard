@@ -59,7 +59,7 @@ export default class NewPermission extends Component {
 							{
 								Object.keys(this.types).map((type, index) => {
 									return (
-										<PermissionButton 
+										<PermissionButton
 											key={index}
 											type={type}
 											selectedType={this.state.selectedType}
