@@ -29,14 +29,14 @@ export default class Main extends Component {
 					loading: false,
 					userInfo: data.userInfo
 				});
-				browserHistory.push('/dashboard/apps');
+				browserHistory.push('/apps');
 			}).catch((e) => {
 				console.log(e);
 				this.setState({
 					loggedIn: false,
 					loading: false
 				});
-				browserHistory.push('/dashboard/login');
+				browserHistory.push('/login');
 			});
 	}
 

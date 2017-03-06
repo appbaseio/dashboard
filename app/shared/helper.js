@@ -4,9 +4,10 @@ import { appbaseService } from '../service/AppbaseService';
 
 class AppDashboard {
 	constructor() {}
-	onEnter(appId) {
+	onEnter(activeApp, currentView) {
 		eventEmitter.emit('activeApp', {
-			activeApp: appId
+			activeApp,
+			currentView
 		});
 	}
 	onLeave() {

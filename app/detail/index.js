@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -14,9 +14,7 @@ export default class Detail extends Component {
 		super(props);
 		this.changeView = this.changeView.bind(this);
 		this.appName = null;
-		this.state = {
-			currentView: 'Dashboard'
-		};
+		this.currentView = null;
 	}
 
 	componentWillMount() {
@@ -24,7 +22,7 @@ export default class Detail extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.params.appId != this.appName) {
+		if (nextProps.params.appId != this.appName || nextProps.params.page != this.currentView) {
 			this.initialize(nextProps);
 		}
 	}
@@ -32,12 +30,15 @@ export default class Detail extends Component {
 	initialize(props) {
 		this.appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
+		if(props.params.page) {
+			this.currentView = props.params.page;
+		} else {
+			this.changeView('Dashboard');
+		}
 	}
 
 	changeView(view) {
-		this.setState({
-			currentView: view
-		});
+		browserHistory.push(`/dashboard/app/${this.appName}/${view}`);
 	}
 
 	renderElement(ele) {
@@ -47,22 +48,26 @@ export default class Detail extends Component {
 				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
 				break;
 			case 'sidebar':
-				generatedEle = (<Sidebar currentView={this.state.currentView} appName={this.appName} appId={this.appId} changeView={this.changeView.bind(this)} />);
+				generatedEle = (<Sidebar currentView={this.currentView} appName={this.appName} appId={this.appId} changeView={this.changeView.bind(this)} />);
 				break;
 			case 'view':
-				switch (this.state.currentView) {
+				switch (this.currentView) {
 					case 'Dashboard':
+					case 'dashboard':
+					default:
 						generatedEle = (<Dashboard appName={this.props.params.appId} />);
 						break;
 					case 'credentials':
+					case 'Credentials':
 						generatedEle = (<CredentialsPage appName={this.props.params.appId} />);
 						break;
 					case 'collaborators':
+					case 'Collaborators':
 						generatedEle = (<CollabPage appName={this.props.params.appId} />);
 						break;
-					case 'dejavu':
-					case 'gem':
-						generatedEle = (<EsPlugin appName={this.props.params.appId} appId={this.appId} pluginName={this.state.currentView} />);
+					case 'browser':
+					case 'Browser':
+						generatedEle = (<EsPlugin appName={this.props.params.appId} appId={this.appId} pluginName="dejavu" />);
 						break;
 				}
 

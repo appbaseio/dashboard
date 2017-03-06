@@ -9,7 +9,8 @@ export default class Nav extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeApp: null
+			activeApp: null,
+			currentView: null
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -63,7 +64,7 @@ export default class Nav extends Component {
 					Object.keys(this.apps).forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`/dashboard/app/${app}`}>{app}</Link>
+								<Link to={`/${this.state.currentView}/${app}`}>{app}</Link>
 							</li>
 						);
 						if(app !== this.state.activeApp) {
@@ -134,7 +135,7 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 						</button>
 						<a className="navbar-brand" href="#">
-							<img src="../../assets/images/logo.png" alt="" className="img-responsive"/>
+							<img src="../../../assets/images/logo.png" alt="" className="img-responsive"/>
 							<span>Reactive Maps</span>
 						</a>
 					</div>

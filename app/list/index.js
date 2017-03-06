@@ -154,7 +154,7 @@ export default class AppList extends Component {
 					};
 					return (
 						<AppCard key={app.name}>
-							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/app/${app.name}`)}>
+							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
 								<h3 className="title">{app.name}</h3>
 								<div className="description">
 									<div className="row clearfix ad-metrics-summary">

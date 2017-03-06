@@ -3,40 +3,61 @@ import { Link } from 'react-router';
 import { render } from 'react-dom';
 import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
+import { eventEmitter } from '../../shared/helper';
 
 export default class Sidebar extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			activeApp: this.props.appName,
+			currentView: null
+		};
+		this.stopUpdate = false;
 		this.links = [{
 			label: 'Dashboard',
-			link: 'app/'+this.props.appName,
+			link: `/dashboard/`,
 			type: 'internal',
-			name: 'Dashboard',
-			img: (<img className="img-responsive" src="../../assets/images/dashboard.svg"></img>)
+			name: 'dashboard',
+			img: (<img className="img-responsive" src="../../../assets/images/dashboard.svg"></img>)
 		}, {
 			label: 'Browser',
-			link: 'app/'+this.props.appName+'/dejavu',
+			link: `/browser/`,
 			type: 'internal',
-			name: 'dejavu',
-			img: (<img className="img-responsive" src="../../assets/images/browser.svg"></img>)
+			name: 'browser',
+			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
 		}, {
 			label: 'Credentials',
-			link: 'app/'+this.props.appName+'/credentials',
+			link: `/credentials/`,
 			type: 'internal',
 			name: 'credentials',
-			img: (<img className="img-responsive" src="../../assets/images/key.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/key.svg"></img>)
 		}, {
 			label: 'Team',
-			link: 'app/'+this.props.appName+'/collaborators',
+			link: `/team/`,
 			type: 'internal',
-			name: 'collaborators',
-			img: (<img className="img-responsive" src="../../assets/images/team.svg"></img>)
+			name: 'team',
+			img: (<img className="img-responsive" src="../../../assets/images/team.svg"></img>)
 		}];
 	}
 
 	changeView(name) {
 		this.props.changeView(name);
+	}
+
+	componentWillMount() {
+		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
+			if(!this.stopUpdate) {
+				this.setState(activeApp);
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		this.stopUpdate = true;
+		if (this.listenEvent) {
+			this.listenEvent.remove();
+		}
 	}
 
 	renderElement(ele) {
@@ -49,12 +70,12 @@ export default class Sidebar extends Component {
 					});
 					const img = (<div className="img-container">{item.img}</div>);
 					const anchor = (
-						<a data-tip={item.label} className={cx} onClick={() => this.changeView(item.name)}>
+						<Link className={cx} to={item.link+this.state.activeApp}>
 							{img}
 							<span className="ad-detail-sidebar-item-label">
 								{item.label}
 							</span>
-						</a>
+						</Link>
 					);
 					return (
 						<li className="ad-detail-sidebar-item" key={index}>
