@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
-import Sidebar from '../detail/components/Sidebar';
+import Sidebar from './Sidebar';
 
 export default class AppPage extends Component {
 	constructor(props) {
