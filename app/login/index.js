@@ -1,65 +1,72 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { Modal } from 'react-bootstrap';
 import { Link, browserHistory } from 'react-router';
 import { appbaseService } from '../service/AppbaseService';
 
-const $ = require('jquery');
-
 export default class Login extends Component {
-
 	constructor(props) {
 		super(props);
+		this.state = {
+			showModal: false
+		};
 		if (appbaseService.userInfo) {
 			browserHistory.push('/apps');
 		}
+		this.open = this.open.bind(this);
+		this.close = this.close.bind(this);
 	}
-
+	close() {
+		this.setState({ showModal: false });
+	}
+	open() {
+		this.setState({ showModal: true });
+	}
 	login(provider) {
 		var baseURL = window.location.protocol + "//" + window.location.host + '/dashboard/';
 		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + baseURL;
 		window.location.href = redirectTo;
 	}
-
-	openLoginModal() {
-		$('#login_modal').modal('show');
-	}
-
 	render() {
+		const childrenWithProps = React.Children.map(this.props.children,
+			(child) => React.cloneElement(child, {
+				onClick: this.open
+			})
+		);
 		return (
 			<section id="login" className="text-center">
 				<h1>
 					Login to Appbase or create an account to access your Dashboard.
 				</h1>
 				<div>
-					<button className="theme-btn bg-btn active" onClick={() => this.openLoginModal()}>Login</button>
+					<button className="theme-btn bg-btn active" onClick={this.open}>Login</button>
 				</div>
-				<div id="login_modal" className="modal fade modal-appbase modal-white">
-					<div className="modal-dialog modal-sm" id="login-modal">
-						<div className="modal-content">
-							<div className="modal-header">
-								<h4 className="modal-title" id="myModalLabel">
-									Login with your Github or Google ID.
-								</h4>
-								<div className="bootstrap-dialog-close-button">
-									<button className="close" data-dismiss="modal">×</button>
-								</div>
-							</div>
-							<div className="modal-body text-center">
-								<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
-								<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
-								<i className="fa hidden fa-refresh fa-spin fa-2x" id="login-loading"></i>
-								<div className="mt25">
-									<p className="no-margin">
-										Having issues logging in? Write to us&nbsp;
-										<a className="contact-link" href="mailto:info@appbase.io?subject=Login+issues" target="_blank">here</a>.
-									</p>
-								</div>
-							</div>
+				<Modal className="modal-appbase modal-white" id="login_modal" show={this.state.showModal} onHide={() => this.close()}>
+					<Modal.Header closeButton>
+						<Modal.Title>
+							Login with your Github or Google ID.
+						</Modal.Title>
+						<div className="bootstrap-dialog-close-button">
+							<button className="close" onClick={this.close}>×</button>
 						</div>
-					</div>
-				</div>
+					</Modal.Header>
+					<Modal.Body>
+						<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
+						<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
+						<i className="fa hidden fa-refresh fa-spin fa-2x" id="login-loading"></i>
+						<div className="mt25">
+							<p className="no-margin">
+								Having issues logging in? Write to us&nbsp;
+								<a className="contact-link" href="mailto:info@appbase.io?subject=Login+issues" target="_blank">here</a>.
+							</p>
+						</div>
+					</Modal.Body>
+				</Modal>
 			</section>
-		);
+		)
 	}
-
 }
+
+Login.propTypes = {};
+
+// Default props value
+Login.defaultProps = {}
