@@ -28,7 +28,7 @@ export default class Main extends Component {
 					loading: false,
 					userInfo: data.userInfo
 				});
-				browserHistory.push('/apps');
+				this.redirectToPath();
 			}).catch((e) => {
 				console.log(e);
 				this.setState({
@@ -37,6 +37,14 @@ export default class Main extends Component {
 				});
 				browserHistory.push('/login');
 			});
+	}
+
+	redirectToPath() {
+		if(!(window.location.pathname === '/apps' || window.location.pathname === '/')) {
+			browserHistory.push(window.location.pathname);
+		} else {
+			browserHistory.push('/apps');
+		}
 	}
 
 	render() {

@@ -15,7 +15,7 @@ module.exports = {
 		port: 8000,
 		contentBase: './',
 		historyApiFallback: {
-			index: '/index.html'
+			index: './index.html'
 		}
 	},
 	module: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, Link, IndexLink, useRouterHistory, browserHistory } from 'react-router';
 import { createHistory, useBasename } from 'history';
 import Main from './index';
 
@@ -13,6 +13,13 @@ import Tutorial from './views/tutorial';
 import Browser from './views/browser';
 import Billing from './views/billing';
 import * as helper from './shared/helper';
+
+const $ = require('jquery');
+
+// const baseName = $('#appbase-dashboard').attr('data-basename') ? $('#appbase-dashboard').attr('data-basename') : './';
+// const browserHistory = useRouterHistory(useBasename(createHistory))({
+// 	basename: baseName
+// });
 
 const Default = () => (<div></div>);
 
