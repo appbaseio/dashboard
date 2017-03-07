@@ -141,28 +141,36 @@ body {
 #login h1 {
   margin-bottom: 45px; }
 
-#login .modal-appbase .modal-content {
+#login_modal.modal .modal-dialog {
+  width: 350px; }
+
+#login_modal.modal .modal-content {
   border-radius: 4px;
   border: 3px solid;
   font-family: "Source Sans Pro Light";
   color: #fff;
   background: #CDDC39; }
-  #login .modal-appbase .modal-content .modal-header {
+  #login_modal.modal .modal-content .modal-header {
     font-family: "Source Sans Pro Light";
     font-size: 18px;
     background-color: inherit;
     border: 0;
-    padding: 5px 15px 0 15px; }
-  #login .modal-appbase .modal-content .modal-footer {
+    padding: 5px 15px 0 15px;
+    text-align: center; }
+    #login_modal.modal .modal-content .modal-header .modal-title {
+      text-align: center;
+      color: #fff; }
+  #login_modal.modal .modal-content .modal-footer {
     border: 0;
     padding-top: 0; }
-  #login .modal-appbase .modal-content .modal-body {
-    padding-top: 15px; }
-  #login .modal-appbase .modal-content .mr15 {
+  #login_modal.modal .modal-content .modal-body {
+    padding-top: 15px;
+    text-align: center; }
+  #login_modal.modal .modal-content .mr15 {
     margin-right: 15px; }
-  #login .modal-appbase .modal-content .mt25 {
+  #login_modal.modal .modal-content .mt25 {
     margin-top: 25px; }
-  #login .modal-appbase .modal-content .close {
+  #login_modal.modal .modal-content .close {
     width: 20px;
     height: 20px;
     border-radius: 100%;
@@ -178,23 +186,23 @@ body {
     background: transparent;
     opacity: 1;
     font-family: "Source Sans Pro Light"; }
-  #login .modal-appbase .modal-content .modal-btn {
+  #login_modal.modal .modal-content .modal-btn {
     background: transparent;
     color: inherit;
     border: 1px solid;
     font-family: "Source Sans Pro Light";
     font-size: 16px;
     padding: 4px 20px; }
-  #login .modal-appbase .modal-content .contact-link {
+  #login_modal.modal .modal-content .contact-link {
     color: #fff;
     border-bottom: 1px dotted; }
 
-#login .modal-appbase .modal-sm .modal-body {
+#login_modal.modal .modal-sm .modal-body {
   padding-top: 25px; }
 
-#login .modal-appbase#login_modal, #login .modal-appbase#signup_modal {
+#login_modal.modal#login_modal, #login_modal.modal#signup_modal {
   margin-top: 20vh; }
-  #login .modal-appbase#login_modal .modal-header, #login .modal-appbase#signup_modal .modal-header {
+  #login_modal.modal#login_modal .modal-header, #login_modal.modal#signup_modal .modal-header {
     padding: 35px 15px 0 15px; }
 
 .navbar.navbar-default {

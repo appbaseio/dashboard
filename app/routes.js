@@ -3,14 +3,13 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
 import Main from './index';
 
-import AppList from './list';
-import Detail from './detail';
-import Dashboard from './dashboard';
-import Credentials from './credentials';
-import Team from './team';
-import Login from './login';
-import Tutorial from './tutorial';
-import Browser from './browser';
+import AppList from './views/list';
+import Dashboard from './views/dashboard';
+import Credentials from './views/credentials';
+import Team from './views/team';
+import Login from './views/login';
+import Tutorial from './views/tutorial';
+import Browser from './views/browser';
 import * as helper from './shared/helper';
 
 const Default = () => (<div></div>);
