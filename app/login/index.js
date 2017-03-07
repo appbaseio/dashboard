@@ -22,7 +22,7 @@ export default class Login extends Component {
 		this.setState({ showModal: true });
 	}
 	login(provider) {
-		var baseURL = window.location.protocol + "//" + window.location.host + '/dashboard/';
+		var baseURL = window.location.protocol + "//" + window.location.host + '/';
 		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + baseURL;
 		window.location.href = redirectTo;
 	}
