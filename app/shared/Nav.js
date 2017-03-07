@@ -23,7 +23,7 @@ export default class Nav extends Component {
 			type: 'external'
 		}, {
 			label: 'Tutorial',
-			link: '/tutorial',
+			link: 'tutorial',
 			type: 'internal'
 		}, {
 			label: 'Billing',
@@ -49,9 +49,10 @@ export default class Nav extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'appLink':
+				const tempLink = this.state.activeApp ? '../'+this.appLink.link : this.appLink.link;
 				generatedEle = (
 					<li>
-						<Link to={this.appLink.link}>
+						<Link to={tempLink}>
 							<i className="fa fa-cubes"></i>&nbsp;
 							{this.appLink.label}
 						</Link>
@@ -92,7 +93,8 @@ export default class Nav extends Component {
 				generatedEle = this.links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
-						anchor = (<Link to={item.link}>{item.label}</Link>);
+						const tempLink = this.state.activeApp ? '../'+item.link : item.link;
+						anchor = (<Link to={tempLink}>{item.label}</Link>);
 					}
 					return (
 						<li key={index}>
