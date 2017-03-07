@@ -14,7 +14,7 @@ export default class Nav extends Component {
 		};
 		this.appLink = {
 			label: 'Apps',
-			link: '/dashboard/apps',
+			link: 'apps',
 			type: 'internal'
 		};
 		this.links = [{
@@ -23,11 +23,11 @@ export default class Nav extends Component {
 			type: 'external'
 		}, {
 			label: 'Tutorial',
-			link: '/dashboard/tutorial',
+			link: '/tutorial',
 			type: 'internal'
 		}, {
 			label: 'Billing',
-			link: '/dashboard/billing',
+			link: 'billing',
 			type: 'internal'
 		}];
 		this.apps = appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appbaseService.userInfo.body.apps : [];

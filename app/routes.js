@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'react-router';
+import { createHistory, useBasename } from 'history';
 import Main from './index';
 
 import AppList from './views/list';
@@ -10,6 +11,7 @@ import Team from './views/team';
 import Login from './views/login';
 import Tutorial from './views/tutorial';
 import Browser from './views/browser';
+import Billing from './views/billing';
 import * as helper from './shared/helper';
 
 const Default = () => (<div></div>);
@@ -30,6 +32,7 @@ render((
 			<Route path="apps" component={AppList} />
 			<Route path="login" component={Login} />
 			<Route path="tutorial" component={Tutorial} />
+			<Route path="billing" component={Billing} />
 			<Route path="dashboard/:appId" component={Dashboard} 
 				{...appChangesEvent}
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'dashboard')}

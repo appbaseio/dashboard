@@ -869,3 +869,447 @@ body {
   .modal.modal-danger .ad-confirm-btn:hover {
     background: #FF8484;
     color: #fff; }
+
+#pricing-page .toggleButton .btn {
+  border-radius: 20px;
+  background: #55869E;
+  color: #232E44;
+  font-family: "Source Sans Pro Regular";
+  font-size: 1.4em;
+  padding: 0.5em 1em;
+  outline: none; }
+  #pricing-page .toggleButton .btn.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+  #pricing-page .toggleButton .btn.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; }
+  #pricing-page .toggleButton .btn.active {
+    background: #B6EF7E;
+    font-size: 1.8em; }
+
+#pricing-page .plan-bottomline {
+  margin-top: 15px;
+  color: #86DDF8; }
+
+#pricing-page .new-btn {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 1.6em;
+  text-transform: uppercase;
+  background: #B6EF7E;
+  color: #232E44;
+  padding: 4px 30px;
+  height: auto;
+  letter-spacing: 2px;
+  border-radius: 5px;
+  font-family: "Source Sans Pro Regular";
+  border: 0;
+  outline: none; }
+  #pricing-page .new-btn:active, #pricing-page .new-btn:focus, #pricing-page .new-btn:hover, #pricing-page .new-btn:link, #pricing-page .new-btn:visited {
+    color: #232E44 !important; }
+  #pricing-page .new-btn.subscribed {
+    background: #232E44;
+    color: #fff; }
+    #pricing-page .new-btn.subscribed:active, #pricing-page .new-btn.subscribed:focus, #pricing-page .new-btn.subscribed:hover, #pricing-page .new-btn.subscribed:link, #pricing-page .new-btn.subscribed:visited {
+      color: #fff !important; }
+
+#pricing-page #top-container {
+  background: #232E44;
+  padding-bottom: 170px; }
+
+#pricing-page #cards {
+  margin-top: -160px;
+  margin-bottom: 40px; }
+  #pricing-page #cards .cards-container {
+    display: flex; }
+    #pricing-page #cards .cards-container #free-card .price-card {
+      background: #C2EEFB; }
+      #pricing-page #cards .cards-container #free-card .price-card .title {
+        background: #86DDF8; }
+    #pricing-page #cards .cards-container #bootstrap-card .price-card {
+      background: #9DE3FA; }
+      #pricing-page #cards .cards-container #bootstrap-card .price-card .title {
+        background: #3BC7F6; }
+    #pricing-page #cards .cards-container #growth-card .price-card {
+      background: #91EBF1; }
+      #pricing-page #cards .cards-container #growth-card .price-card .title {
+        background: #24D8E4; }
+    #pricing-page #cards .cards-container .single-card-container {
+      padding-left: 26px;
+      padding-right: 26px; }
+      #pricing-page #cards .cards-container .single-card-container .price-card {
+        border-radius: 10px;
+        height: 100%;
+        padding-bottom: 110px; }
+        #pricing-page #cards .cards-container .single-card-container .price-card .title {
+          background: #3BC7F6;
+          color: #fff;
+          font-size: 100px;
+          line-height: 100px;
+          font-family: "Source Sans Pro Extra Light";
+          padding: 46px 15px;
+          text-align: center;
+          height: 160px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          position: relative; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .title .unit {
+            font-size: 60px; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .title .superscript {
+            font-size: 20px;
+            text-transform: uppercase;
+            position: absolute;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            top: -26px;
+            left: 0;
+            font-family: "Source Sans Pro Regular"; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .title .subscript {
+            font-size: 14px;
+            text-transform: lowercase;
+            position: absolute;
+            bottom: -30px;
+            right: 80px;
+            height: auto;
+            text-align: center; }
+        #pricing-page #cards .cards-container .single-card-container .price-card .description {
+          color: #232E44;
+          list-style: none;
+          padding-left: 0; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .description li {
+            position: relative;
+            padding: 50px;
+            padding-top: 30px;
+            padding-bottom: 40px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link {
+              padding-bottom: 3px;
+              border-bottom: 1px solid;
+              color: #232E44; }
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link:hover {
+                color: #232E44; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li.with-icon {
+              padding-left: 100px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
+              margin: 0 auto;
+              padding: 0 30px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li .icon-container {
+              position: absolute;
+              left: 50px;
+              top: 18px;
+              width: 40px;
+              height: 70px;
+              padding: 15px 0; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container {
+              font-family: "Source Sans Pro Light"; }
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .big-description {
+                font-size: 1.8em;
+                line-height: 1em;
+                font-family: "Source Sans Pro Regular"; }
+                #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .big-description.list-bottom-gap {
+                  margin-bottom: 20px; }
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .figure {
+                font-size: 1.8em;
+                line-height: 1.4em;
+                font-family: "Source Sans Pro Regular"; }
+                #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .figure.light {
+                  font-family: "Source Sans Pro Extra Light"; }
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .summary {
+                font-size: 1.5em;
+                line-height: 1em; }
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .small-fonts {
+                position: absolute;
+                font-size: 1em; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li.subscribe-li {
+              position: absolute;
+              bottom: 15px;
+              left: 0;
+              width: 100%;
+              padding-left: 60px;
+              padding-right: 60px; }
+        #pricing-page #cards .cards-container .single-card-container .price-card .new-btn {
+          color: #232E44;
+          font-family: "Source Sans Pro Regular";
+          width: 100%;
+          display: inline-block; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .new-btn.subscribed {
+            color: #fff; }
+    @media screen and (max-width: 767px) {
+      #pricing-page #cards .cards-container {
+        display: block; }
+        #pricing-page #cards .cards-container .single-card-container {
+          margin-bottom: 30px;
+          padding: 0 80px; }
+          #pricing-page #cards .cards-container .single-card-container#free-card .price-card .title {
+            padding-top: 40px; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .title {
+            line-height: 86px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .title .superscript {
+              top: -14px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .title .subscript {
+              right: 35%;
+              bottom: -20px; }
+          #pricing-page #cards .cards-container .single-card-container .price-card .description {
+            position: relative; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li.subscribe-li {
+              bottom: -120px; }
+            #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
+              max-width: 250px; } }
+    @media screen and (max-width: 480px) {
+      #pricing-page #cards .cards-container .single-card-container {
+        padding: 0 15px; } }
+
+#pricing-page #dedicated-card {
+  background: #BBDEFB;
+  color: #232E44;
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  #pricing-page #dedicated-card h3 {
+    font-size: 4em;
+    font-family: "Source Sans Pro Extra Light";
+    padding-bottom: 30px; }
+    #pricing-page #dedicated-card h3 .figure {
+      font-size: 2em; }
+    #pricing-page #dedicated-card h3 .unit {
+      font-size: 14px; }
+  #pricing-page #dedicated-card .orange-btn {
+    font-family: "Source Sans Pro Regular";
+    background: #FFB74D; }
+  #pricing-page #dedicated-card .description {
+    color: #232E44;
+    list-style: none;
+    padding-left: 0; }
+    #pricing-page #dedicated-card .description.right-description {
+      padding-top: 5px; }
+      #pricing-page #dedicated-card .description.right-description li {
+        padding: 5px 20px; }
+    #pricing-page #dedicated-card .description li {
+      position: relative;
+      padding: 10px 20px; }
+      #pricing-page #dedicated-card .description li.with-icon {
+        padding-left: 80px; }
+      #pricing-page #dedicated-card .description li .img-center {
+        margin: 0 auto; }
+      #pricing-page #dedicated-card .description li .icon-container {
+        position: absolute;
+        left: 8px;
+        top: 14px;
+        width: 70px;
+        height: 40px;
+        padding: 0 15px; }
+      #pricing-page #dedicated-card .description li .text-container {
+        font-family: "Source Sans Pro Extra Light"; }
+        #pricing-page #dedicated-card .description li .text-container .figure {
+          font-size: 1.8em;
+          font-family: "Source Sans Pro Bold"; }
+          #pricing-page #dedicated-card .description li .text-container .figure.regular {
+            font-family: "Source Sans Pro Regular"; }
+        #pricing-page #dedicated-card .description li .text-container .summary {
+          font-family: "Source Sans Pro Extra Light";
+          font-size: 1em; }
+
+#pricing-page #how {
+  background: #fff;
+  color: #232E44;
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  #pricing-page #how h3 {
+    font-size: 3em;
+    font-family: "Source Sans Pro Semi Bold";
+    padding-bottom: 30px;
+    text-transform: uppercase; }
+  #pricing-page #how .single-point {
+    font-family: "Source Sans Pro Bold";
+    margin-bottom: 80px; }
+    #pricing-page #how .single-point h4.title {
+      font-size: 2em;
+      font-family: "Source Sans Pro Regular"; }
+    #pricing-page #how .single-point .img-container img {
+      max-width: 130px;
+      padding: 15px;
+      margin: 0 auto; }
+      #pricing-page #how .single-point .img-container img.special-img {
+        max-width: 300px;
+        width: 300px; }
+        #pricing-page #how .single-point .img-container img.special-img.node-img {
+          padding-bottom: 20px; }
+
+.pricing-top {
+  margin-top: 0;
+  padding-top: 110px;
+  text-align: center;
+  color: white;
+  padding-top: 60px;
+  padding-bottom: 80px;
+  color: #86DDF8; }
+  .pricing-top p {
+    margin-bottom: 0;
+    font-size: 24px;
+    font-family: "Source Sans Pro Extra Light"; }
+  .pricing-top h1 {
+    padding-bottom: 40px;
+    font-family: "Source Sans Pro Semi Bold";
+    color: #86DDF8;
+    font-size: 6em; }
+  .pricing-top .signup-row {
+    padding-top: 30px; }
+    .pricing-top .signup-row .new-btn {
+      color: #232E44 !important;
+      font-family: "Source Sans Pro Semi Bold"; }
+
+#pricing-container section {
+  padding-top: 80px; }
+
+#pricing-container #pricing-table .title {
+  text-transform: uppercase;
+  color: #232E44;
+  font-family: "Source Sans Pro Semi Bold";
+  margin-bottom: 15px;
+  font-size: 2.5em;
+  letter-spacing: 2px; }
+
+#pricing-container #pricing-table .pricing .line .plan-title b {
+  color: #232E44;
+  font-family: "Source Sans Pro Semi Bold"; }
+
+#pricing-container #faq-container {
+  background: #f9f9f9;
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  #pricing-container #faq-container .btitle {
+    text-transform: uppercase;
+    color: #232E44;
+    font-family: "Source Sans Pro Semi Bold";
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 0; }
+  #pricing-container #faq-container #feature-body .faq h2 {
+    color: #232E44;
+    font-family: "Source Sans Pro Regular";
+    font-size: 2em; }
+
+#paymentModal .modal-dialog {
+  width: 300px;
+  top: 20px; }
+  #paymentModal .modal-dialog .modal-content {
+    display: inline-block;
+    border-radius: 6px;
+    width: 300px;
+    position: relative;
+    background-color: #f5f5f7;
+    box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.65);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden; }
+    #paymentModal .modal-dialog .modal-content .modal-header {
+      padding: 12px 36px;
+      text-align: center;
+      background-color: #e8e9eb;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px; }
+      #paymentModal .modal-dialog .modal-content .modal-header h4 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #000;
+        text-shadow: 0 1px 0 #fff; }
+      #paymentModal .modal-dialog .modal-content .modal-header .bottomline {
+        font-size: 13px;
+        font-weight: 500;
+        color: #5b5b65;
+        text-shadow: 0 1px 0 #fff;
+        padding-bottom: 6px; }
+      #paymentModal .modal-dialog .modal-content .modal-header .close {
+        background: #222;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        color: #f5f5f7;
+        font-size: 12px;
+        line-height: 18px;
+        position: absolute;
+        right: 10px;
+        text-align: center;
+        padding-left: 1px;
+        z-index: 1; }
+      #paymentModal .modal-dialog .modal-content .modal-header .Header-logo {
+        position: relative;
+        margin-bottom: 6px;
+        height: 35px; }
+        #paymentModal .modal-dialog .modal-content .modal-header .Header-logo .Header-logoWrap {
+          position: absolute;
+          top: -38px;
+          right: 0;
+          left: 0;
+          width: 70px;
+          height: 70px;
+          margin: 0 auto; }
+        #paymentModal .modal-dialog .modal-content .modal-header .Header-logo .Header-logoBevel {
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          width: 64px;
+          height: 64px;
+          border-radius: 100%;
+          box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+          position: absolute;
+          top: 3px;
+          left: 3px; }
+        #paymentModal .modal-dialog .modal-content .modal-header .Header-logo .Header-logoBorder {
+          border: 3px solid #fff;
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+          box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18), 0 2px 2px 0 rgba(0, 0, 0, 0.08);
+          position: absolute;
+          top: 0;
+          left: 0; }
+        #paymentModal .modal-dialog .modal-content .modal-header .Header-logo .Header-logoImage {
+          width: 64px;
+          height: 64px;
+          margin: 3px;
+          border-radius: 100%;
+          background: #fff;
+          background-position: 50% 50%;
+          background-size: cover;
+          display: inline-block; }
+    #paymentModal .modal-dialog .modal-content .seprator-container {
+      width: 100%;
+      position: relative;
+      background-color: #e8e9eb; }
+      #paymentModal .modal-dialog .modal-content .seprator-container .seprator {
+        border-top: 1px solid #fff;
+        box-shadow: 0 -1px 0 0 #d2d2d3;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        width: 100%;
+        height: 4px;
+        background-color: #f5f5f7;
+        margin-bottom: -3px; }
+    #paymentModal .modal-dialog .modal-content .modal-body .final-amount {
+      font-size: 14px;
+      color: #000;
+      text-shadow: 0 1px 0 #fff; }
+    #paymentModal .modal-dialog .modal-content .modal-body .breakdown h4 {
+      font-size: 14px; }
+    #paymentModal .modal-dialog .modal-content .modal-body .breakdown h5 {
+      font-size: 11px;
+      margin-bottom: 0px; }
+    #paymentModal .modal-dialog .modal-content .modal-body .breakdown p.description {
+      font-size: 9px; }
+    #paymentModal .modal-dialog .modal-content .saveBtn {
+      position: relative;
+      border-radius: 4px;
+      background-color: #3ea8e5;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#44b1e8), to(#3098de));
+      background-image: -webkit-linear-gradient(top, #44b1e8, #3098de);
+      background-image: linear-gradient(-180deg, #44b1e8, #3098de);
+      box-shadow: 0 1px 0 0 rgba(46, 86, 153, 0.15), inset 0 1px 0 0 rgba(46, 86, 153, 0.1), inset 0 -1px 0 0 rgba(46, 86, 153, 0.4);
+      font-size: 17px;
+      line-height: 21px;
+      height: 37px;
+      font-weight: 700;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+      color: #fff;
+      cursor: pointer;
+      -webkit-transition: all .2s ease-in-out;
+      transition: all .2s ease-in-out; }

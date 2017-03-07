@@ -1,4 +1,5 @@
 const { EventEmitter } = require("fbemitter");
+const $ = require('jquery');
 const eventEmitter = new EventEmitter();
 import { appbaseService } from '../service/AppbaseService';
 
@@ -155,9 +156,46 @@ class Comman {
 	}
 }
 
+class AjaxHttp {
+	constructor() {
+		$.ajaxSetup({
+			crossDomain: true,
+			xhrFields: {
+				withCredentials: true
+			}
+		});
+	}
+	start(req) {
+		let query = null;
+		if(req) {
+			query = new Promise((resolve, reject) => {
+				req.method = req.method ? req.method : "GET";
+				const requestObj = {
+					url: req.url,
+					type: req.method,
+					contentType: "application/json",
+					dataType: "json",
+					success: (result) => {
+						resolve(result);
+					},
+					error: (error) => {
+						reject(error.responseJSON);
+					}
+				};
+				if(req.data) {
+					requestObj.data = JSON.stringify(req.data);
+				}
+				$.ajax(requestObj);
+			});
+		}
+		return query;
+	}
+}
+
 module.exports = {
 	eventEmitter: eventEmitter,
 	appDashboard: new AppDashboard(),
 	appListHelper: new AppListHelper(),
-	comman: new Comman()
+	comman: new Comman(),
+	$http: new AjaxHttp()
 }

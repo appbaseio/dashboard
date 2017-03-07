@@ -4,7 +4,7 @@ import PermissionCard from './PermissionCard';
 import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';
 
-export default class CredentialsPage extends Component {
+export default class Credentials extends Component {
 	constructor(props, context) {
 		super(props);
 		this.state = {

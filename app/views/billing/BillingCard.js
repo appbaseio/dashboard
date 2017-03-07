@@ -1,0 +1,152 @@
+import React, { Component } from "react";
+import classNames from 'classnames';
+import { billingService } from "../../service/BillingService";
+import * as CardContent from "./CardContent";
+
+export default class BillingCard extends Component {
+	constructor(props) {
+		super(props);
+		this.cardInfo = billingService.planLimits[this.props.plan];
+		this.changeSubscribe = this.changeSubscribe.bind(this);
+		this.updateCustomer = this.updateCustomer.bind(this);
+	}
+
+	renderElement(method) {
+		let generatedEle = null;
+		switch(method) {
+			case "freeHeader":
+				generatedEle = (<CardContent.FreeHeader {...this.props} cardInfo={this.cardInfo} />)
+			break;
+			case "freeDescription":
+				generatedEle = (<CardContent.FreeDescription {...this.props} cardInfo={this.cardInfo} />)
+			break;
+			case "bootstrapHeader":
+				generatedEle = (<CardContent.BootstrapHeader {...this.props} cardInfo={this.cardInfo} />)
+			break;
+			case "bootstrapDescription":
+				generatedEle = (<CardContent.BootstrapDescription {...this.props} cardInfo={this.cardInfo} />)
+			break;
+			case "growthHeader":
+				generatedEle = (<CardContent.GrowthHeader {...this.props} cardInfo={this.cardInfo} />)
+			break;
+			case "growthDescription":
+				generatedEle = (<CardContent.GrowthDescription {...this.props} cardInfo={this.cardInfo} />)
+			break;
+		}
+		return generatedEle;
+	}
+
+	changeSubscribe() {
+		this.customerCopy = JSON.parse(JSON.stringify(this.props.customer));
+		if(this.props.plan === 'free') {
+			this.updateCustomer();
+		}
+		else {
+			if(this.customerCopy.hasOwnProperty('stripeKey') && this.customerCopy.stripeKey) {
+				if(this.customerCopy.subscriptionId) {
+					this.updateCustomer();
+				} else {
+					this.props.checkoutInit(this.props.plan, this.updateText());
+				}
+			} else {
+				this.props.checkoutInit(this.props.plan);
+			}
+		}
+	}
+
+	updateText() {
+		return 'Your old plan amount will be adjust in new plan.';
+	}
+
+	updateCustomer() {
+		const loading = 'show';
+		this.customerCopy.plan = this.props.plan;
+		this.customerCopy.mode = this.props.mode;
+		billingService.paymentInfo(this.customerCopy).then((resData) => {
+			console.log(resData);
+			var data = resData.message;
+			data.invoice.total = (data.invoice.total/100)
+			data.invoice.total = (data.invoice.total).toFixed(2);
+			
+			this.billingText = {
+				finalMode: data.invoice.total < 0 ? 'Your net refund amount will be ' : 'Your net payment due will be ',
+				refund: this.setRefund(data),
+				payment: this.setPayment(data)
+			};
+			var finalAmount = this.billingText.payment.amount - this.billingText.refund.amount;
+			this.billingText.finalAmount = finalAmount < 0 ? (-finalAmount) : (finalAmount);
+			this.props.changePlanModal(this.billingText, this.customerCopy, this.props.plan);
+			// $('#paymentModal').modal('show');
+			// this.loading[this.tempPlan] = 'hide';
+		}).catch(function(data) {
+			// this.loading[this.tempPlan] = 'hide';
+		});
+	}
+
+	setRefund(paymentInfo) {
+		var obj = {
+			amount: 0,
+			explain: null
+		};
+		paymentInfo.current_prorations.forEach((info) => {
+			if(info.plan.id === this.props.activePlan+'-'+this.props.activeMode) {
+				obj.amount = (info.amount/100);
+				obj.amount = obj.amount < 0 ? (-obj.amount) : (obj.amount)
+				obj.explain = info.description;
+			} 
+		});
+		return obj;
+	}
+
+	setPayment(paymentInfo) {
+		var obj = {
+			amount: 0,
+			explain: null
+		};
+		if(this.customerCopy.plan != 'free') {
+			var found = false;
+			paymentInfo.invoice.lines.data.forEach((info) => {
+				if(!found && info.plan.id === this.customerCopy.plan+'-'+this.customerCopy.mode) {
+					found = true;
+					obj.amount = (info.amount/100);
+					obj.explain = 'The charge for '+
+									(this.customerCopy.mode == 'annually' ? 'annual' : 'month')+
+									' '+this.customerCopy.plan+' plan'+
+									' is $'+((this.customerCopy.mode==="annually") ? (obj.amount/12).toFixed(2)+'x12': obj.amount);
+				}
+			});
+		}
+		return obj;
+	}
+
+	render() {
+		const cx = classNames({
+			subscribed: this.props.plan === this.props.activePlan && this.props.mode === this.props.activeMode
+		});
+		let disabled = null;
+		if(this.props.plan === this.props.activePlan && this.props.mode === this.props.activeMode) {
+			disabled = {
+				disabled: true
+			};
+		}
+		return (
+			<div className="col-xs-12 col-sm-4 single-card-container" id="free-card">
+				<div className="price-card">
+					{this.renderElement(`${this.props.plan}Header`)}
+					{this.renderElement(`${this.props.plan}Description`)}
+					<ul className="description">
+						<li className="subscribe-li">
+							<div className="button text-center">
+								<button className={`new-btn get-started ${cx}`} onClick={this.changeSubscribe} {...disabled}>
+									<loading className="loading {{loading['free']}}" placeholder="Processing"></loading>
+									<span data-ng-if="plan === 'free'">Current plan</span>
+									<span data-ng-if="plan !== 'free'" data-ng-bind="planText"></span>
+								</button>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		);
+	}
+};
