@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import ConfirmBox from '../../../shared/ConfirmBox';
+import ReactTooltip from 'react-tooltip';
 
 export default class DeleteApp extends Component {
 	constructor(props) {
@@ -29,8 +30,9 @@ export default class DeleteApp extends Component {
 				onConfirm={this.deleteApp}
 				type="danger"
 			>
-				<a className="ad-theme-btn danger-reverse permission-delete animation">
+				<a data-tip="Delete app" data-place="right" className="ad-theme-btn danger-reverse permission-delete animation">
 					<i className="fa fa-trash"></i>
+					<ReactTooltip />
 				</a>
 			</ConfirmBox>
 		)

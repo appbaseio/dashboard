@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CopyToClipboard from '../../../shared/CopyToClipboard';
+import ReactTooltip from 'react-tooltip';
 
 export default class Credentials extends Component {
 	constructor(props) {
@@ -43,8 +44,9 @@ export default class Credentials extends Component {
 		return (
 			<div>
 				<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-					<a title={`Copy ${this.props.label} Credentials`} className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+					<a data-tip={`Copy ${this.props.label} Credentials`} data-place="right" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
 						<i className={`fa ${this.props.icon}`}></i>
+						<ReactTooltip />
 					</a>
 				</CopyToClipboard>
 			</div>

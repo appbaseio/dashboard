@@ -384,10 +384,10 @@ body {
   .ad-dashboard .nav-tab li {
     display: inline-block;
     float: left;
-    padding: 2px 6px; }
+    padding: 4px 8px; }
     .ad-dashboard .nav-tab li a {
       display: inline-block;
-      padding: 2px 4px;
+      padding: 0;
       color: #B3B3B3;
       position: relative;
       cursor: pointer;
