@@ -1,35 +1,27 @@
-.loadingContainer {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	.loading {
-		max-width: 50%;
-		padding: 15px;
-		background: $primary-color;
-		border-radius: 6px;
-		color: #fff;
-		font-size: 18px;
-		span {
-			float: right;
-			line-height: 60px;
-		}
+.loadingBar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	z-index: 800;
+	background: $primary-color;
+	transform: translateX(100%);
+	display: block;
+	animation: shift-rightwards 0.5s ease-in-out infinite;
+	animation-delay: .2s
+}
+@keyframes shift-rightwards {
+	0% {
+		transform: translateX(-100%)
 	}
-	&.normal {
-		position: absolute;
-		width: 100%;
-		left: 0;
-		top: 0;
-		.loading {
-			width: 100%;
-			max-width: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			span {
-				float: none;
-				line-height: 1rem;
-			}
-		}
+	40% {
+		transform: translateX(0)
+	}
+	60% {
+		transform: translateX(0)
+	}
+	100% {
+		transform: translateX(100%)
 	}
 }

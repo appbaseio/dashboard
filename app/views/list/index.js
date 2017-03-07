@@ -155,42 +155,46 @@ export default class AppList extends Component {
 					return (
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
-								<h3 className="title">{app.name}</h3>
+								<header className="ad-list-app-header">
+									<h3 className="title">{app.name}</h3>
+									<p className="time">
+										{this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : " "}
+									</p>
+								</header>
 								<div className="description">
 									<div className="row clearfix ad-metrics-summary">
 										<div className="col-xs-6">
-											<div className="sub-title col-xs-12">
-												Api calls
-											</div>
-											<div className="col-xs-12 p-0">
+											<div className="col-xs-12 p-0 progress-container">
 												<span className="progress-wrapper">
 													<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
-												<span className="progress-text">
-													<strong>{comman.compressNumber(appCount.action.count)}</strong> of
-													<p>{comman.compressNumber(appbaseService.planLimits[this.state.plan].action)}</p>
-												</span>
+												<div className="progress-text">
+													<div className="sub-title">
+														Api calls
+													</div>
+													<div>
+														<strong>{comman.compressNumber(appCount.action.count)}</strong>/
+														<span>{comman.compressNumber(appbaseService.planLimits[this.state.plan].action)}</span>
+													</div>
+												</div>
 											</div>
 										</div>
 										<div className="col-xs-6">
-											<div className="sub-title col-xs-12">
-												Records
-											</div>
-											<div className="col-xs-12 p-0">
+											<div className="col-xs-12 p-0 progress-container">
 												<span className="progress-wrapper">
 													<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
 												</span>
-												<span className="progress-text">
-													<strong>{comman.compressNumber(appCount.records.count)}</strong> of
-													<p>{comman.compressNumber(appbaseService.planLimits[this.state.plan].records)}</p>
-												</span>
+												<div className="progress-text">
+													<div className="sub-title">
+														Records
+													</div>
+													<div>
+														<strong>{comman.compressNumber(appCount.records.count)}</strong> /
+														<span>{comman.compressNumber(appbaseService.planLimits[this.state.plan].records)}</span>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div className="row">
-										<p className="col-xs-12 time">
-											{this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : " "}
-										</p>
 									</div>
 								</div>
 								<ActionButtons app={app} deleteApp={this.deleteApp} />

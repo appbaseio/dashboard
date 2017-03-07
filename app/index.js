@@ -41,11 +41,7 @@ export default class Main extends Component {
 
 	render() {
 		let loading = (
-			<div className="loadingContainer">
-				<div className="loading">
-					<i className="fa fa-spinner fa-spin fa-3x fa-fw"></i> <span>Loading</span>
-				</div>
-			</div>
+			<div className="loadingBar"></div>
 		);
 		let dashboard = (
 			<div>

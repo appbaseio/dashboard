@@ -67,17 +67,20 @@
 		border-bottom-right-radius: 0.375rem;
 		-webkit-transition: all .3s ease;
 		transition: all .3s ease;
-		.title {
-			margin: 0 0 20px;
-			letter-spacing: 0.02em;
-			color: #666;
-			font-size: 22px;
-			font-family: $font-semi-bold;
-		}
-		.time {
-			height: 20px;
-			margin: 0;
-			color: #999;
+		.ad-list-app-header {
+			margin: 0 0 25px;
+			.title {
+				margin: 0;
+				letter-spacing: 0.02em;
+				color: #666;
+				font-size: 22px;
+				font-family: $font-semi-bold;
+			}
+			.time {
+				height: 20px;
+				margin: 0;
+				color: #999;
+			}
 		}
 		aside.options {
 			width: 25px;
@@ -121,28 +124,35 @@
 }
 
 .ad-metrics-summary {
-	.progress-wrapper {
-		float: left;
-		width: 40px;
-		height: 40px;
-		display: inline-block;
+	> [class*="col-"] {
+		padding-right: 0;
 	}
-	.progress-text {
-		float: left;
-		padding-left: 12px;
-		letter-spacing: 0.02em;
-		word-spacing: 0.1em;
-		color: #888;
-		padding-top: 6px;
-		font-size: 11px;
-		line-height: 14px;
-	}
-	.sub-title {
-		font-family: $font-semi-bold;
-		text-transform: uppercase;
-		color: #aaa;
-		font-size: 12px;
-		letter-spacing: 0.02em;
-		padding: 6px 3px 18px;
+	.progress-container {
+		position: relative;
+		padding-left: 48px;
+		.progress-wrapper {
+			position: absolute;
+			left: 0;
+			width: 40px;
+			height: 40px;
+			display: inline-block;
+		}
+		.progress-text {
+			float: left;
+			letter-spacing: 0.02em;
+			word-spacing: 0.1em;
+			color: #888;
+			font-size: 11px;
+			line-height: 14px;
+			padding: 3px 0 0 0;
+		}
+		.sub-title {
+			font-family: $font-semi-bold;
+			text-transform: uppercase;
+			color: #aaa;
+			font-size: 12px;
+			letter-spacing: 0.02em;
+			padding: 0 0 5px 0;
+		}
 	}
 }
