@@ -11,23 +11,18 @@ export default class NewShare extends Component {
 		};
 		this.types = {
 			read: {
-				description: "Read only key",
+				description: "Read Access",
 				read: true,
 				write: false
 			},
-			write: {
-				description: "Write only key",
-				read: false,
-				write: true
-			},
 			admin: {
-				description: "Admin key",
+				description: "Read-Write Access",
 				read: true,
 				write: true
 			}
 		};
 		this.newShare = this.newShare.bind(this);
-		this.exapand = this.exapand.bind(this);
+		this.expand = this.expand.bind(this);
 		this.updateUserEmail = this.updateUserEmail.bind(this);
 		this.onSelect = this.onSelect.bind(this);
 	}
@@ -44,9 +39,9 @@ export default class NewShare extends Component {
 		request.user = this.state.userEmail;
 		request.description += '(shared with '+this.state.userEmail+')';
 		this.props.newShare(request);
-		this.exapand();
+		this.expand();
 	}
-	exapand() {
+	expand() {
 		this.setState({
 			show: !this.state.show
 		});
@@ -109,8 +104,8 @@ export default class NewShare extends Component {
 		return (
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.exapand}>
-						Share App
+					<a className="ad-theme-btn primary" onClick={this.expand}>
+						Add Team Member
 					</a>
 				</div>
 				<div className="ad-create-expand row">
@@ -119,7 +114,7 @@ export default class NewShare extends Component {
 						{this.renderElement('buttonGroup')}
 						<span className="col-xs-3">
 							<button {...disabled} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
-								Submit
+								Share
 							</button>
 						</span>
 					</div>

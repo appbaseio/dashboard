@@ -84,6 +84,7 @@ export default class Team extends Component {
 				<div className="ad-detail-page ad-dashboard row">
 					<header className="ad-detail-page-header col-xs-12">
 						<h2 className="ad-detail-page-title">Team</h2>
+						<p>Create team members to share your app with.</p>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-6">
 							<NewShare newShare={this.newShare} />
 						</aside>

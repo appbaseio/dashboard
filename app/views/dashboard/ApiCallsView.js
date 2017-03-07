@@ -16,7 +16,7 @@ export default class ApiCallsView extends Component {
 		return (
 			<section className="ad-detail-page-body-card api-view">
 				<header className="ad-detail-page-body-card-title">
-					<span>Api calls</span>
+					<span>Usage this month</span>
 				</header>
 				<main className="ad-detail-page-body-card-body body-card-body-api-view row ad-metrics-summary">
 					<div className="col-xs-12">
