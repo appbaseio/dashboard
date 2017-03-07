@@ -58,9 +58,9 @@ export default class CredentialsPage extends Component {
 				if(this.state.info && this.state.info.permission) {
 					element = this.state.info.permission.body.map((permissionInfo, index) => {
 						return (
-							<PermissionCard 
-								appId={this.appId} 
-								key={index} 
+							<PermissionCard
+								appId={this.appId}
+								key={index}
 								permissionInfo={permissionInfo}
 								getInfo={this.getInfo}
 							/>
@@ -83,7 +83,8 @@ export default class CredentialsPage extends Component {
 			>
 				<div className="ad-detail-page ad-dashboard row">
 					<header className="ad-detail-page-header col-xs-12">
-						<h2 className="ad-detail-page-title">Credentials</h2>
+						<h2 className="ad-detail-page-title">API Credentials</h2>
+						<p>Credentials are required for accessing app data.</p>
 						<aside className="ad-detail-page-header-sidebar">
 							<NewPermission newPermission={this.newPermission} />
 						</aside>
@@ -91,9 +92,6 @@ export default class CredentialsPage extends Component {
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
 							<section className="ad-detail-page-body-card">
-								<header className="ad-detail-page-body-card-title with-border">
-									Personal Keys
-								</header>
 								<main className="ad-detail-page-body-card-body row">
 									{this.renderElement('permissions')}
 								</main>

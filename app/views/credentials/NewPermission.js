@@ -10,12 +10,12 @@ export default class NewPermission extends Component {
 		};
 		this.types = {
 			read: {
-				description: "Read only key",
+				description: "Read-only key",
 				read: true,
 				write: false
 			},
 			write: {
-				description: "Write only key",
+				description: "Write-only key",
 				read: false,
 				write: true
 			},
@@ -26,7 +26,7 @@ export default class NewPermission extends Component {
 			}
 		};
 		this.newPermission = this.newPermission.bind(this);
-		this.exapand = this.exapand.bind(this);
+		this.expand = this.expand.bind(this);
 		this.onSelect = this.onSelect.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
@@ -38,9 +38,9 @@ export default class NewPermission extends Component {
 	}
 	newPermission() {
 		this.props.newPermission(this.types[this.state.selectedType]);
-		this.exapand();
+		this.expand();
 	}
-	exapand() {
+	expand() {
 		this.setState({
 			show: !this.state.show
 		});
@@ -63,7 +63,7 @@ export default class NewPermission extends Component {
 											key={index}
 											type={type}
 											selectedType={this.state.selectedType}
-											description={this.types[type].description} 
+											description={this.types[type].description}
 											onSelect={this.onSelect}
 										/>
 									);
@@ -82,14 +82,14 @@ export default class NewPermission extends Component {
 		return (
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.exapand}>
+					<a className="ad-theme-btn primary" onClick={this.expand}>
 						New Credentials
 					</a>
 				</div>
 				<div className="ad-create-expand">
 					{this.renderElement('buttonGroup')}
 					<a className="ad-theme-btn primary" onClick={this.newPermission}>
-						Submit
+						Create Credentials
 					</a>
 				</div>
 			</div>

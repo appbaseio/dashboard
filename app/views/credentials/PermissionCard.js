@@ -58,7 +58,7 @@ export default class PermissionCard extends Component {
 		});
 	}
 	ccSuccess() {
-		toastr.success(`${this.state.description} Credentials has been copied successully!`);
+		toastr.success(`${this.state.description} Credentials have been copied successully!`);
 		if (this.state.keyType === 'admin') {
 			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
 		}
@@ -119,8 +119,8 @@ export default class PermissionCard extends Component {
 				<header className="permission-card-header col-xs-12">
 					<summary className="col-xs-10 p-0">
 						<Description
-							description={this.state.description} 
-							updatDescription={this.updatDescription} 
+							description={this.state.description}
+							updatDescription={this.updatDescription}
 						/>
 					</summary>
 					<aside className="col-xs-2 text-right pull-right">
