@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from "classnames";
+import { common } from "../../shared/helper";
 
 export default class NewShare extends Component {
 	constructor(props) {
@@ -95,12 +96,6 @@ export default class NewShare extends Component {
 		const cx = classNames({
 			'active': this.state.show
 		});
-		let disabled = null;
-		if(!this.state.userEmail) {
-			disabled = {
-				disabled: true
-			};
-		}
 		return (
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
@@ -113,7 +108,7 @@ export default class NewShare extends Component {
 					<div className="ad-create-button-group-container">
 						{this.renderElement('buttonGroup')}
 						<span className="col-xs-3">
-							<button {...disabled} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
+							<button {...common.isDisabled(!this.state.userEmail)} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
 								Share
 							</button>
 						</span>

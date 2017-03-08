@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
+import { Loading } from "../../shared/SharedComponents";
+import { common } from "../../shared/helper";
 
 export default class ConfirmPlanChange extends Component {
 	constructor(props) {
@@ -58,8 +60,12 @@ export default class ConfirmPlanChange extends Component {
 				</div>
 				{this.renderBody()}
 				<Modal.Footer>
-					<button type="button" className="btn btn-primary col-xs-12 saveBtn" data-ng-disabled="loading['confirmingPlan'] === 'show'" onClick={this.props.confirmPlan}>
-						<loading className="loading {{loading['confirmingPlan']}}" placeholder="Processing"></loading>
+					<button {...common.isDisabled(this.props.loadingModal)} type="button" className="btn btn-primary col-xs-12 saveBtn" onClick={this.props.confirmPlan}>
+						{
+							this.props.loadingModal ? (
+								<Loading></Loading>
+							) : null
+						}
 						Confirm plan change
 					</button>
 				</Modal.Footer>

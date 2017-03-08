@@ -6,7 +6,8 @@ import NewApp from './components/NewApp';
 import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
 import { appbaseService } from '../../service/AppbaseService';
-import { appListHelper, comman } from '../../shared/helper';
+import { billingService } from '../../service/BillingService';
+import { appListHelper, common } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
 
@@ -93,13 +94,18 @@ export default class AppList extends Component {
 	}
 
 	getBillingInfo() {
-		appbaseService.getBillingInfo().then((data) => {
-			this.setState({
-				billingInfo: data
-			});
-		}).catch((e) => {
-			console.log(e);
-		})
+		if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.c_id) {
+			const requestData = {
+				c_id: appbaseService.userInfo.body.c_id
+			};
+			billingService.getCustomer(requestData).then((data) => {
+				this.setState({
+					billingInfo: data
+				});
+			}).catch((e) => {
+				console.log(e);
+			})
+		}
 	}
 
 	calcPercentage(app, field) {
@@ -183,8 +189,8 @@ export default class AppList extends Component {
 														Api calls
 													</div>
 													<div>
-														<strong>{comman.compressNumber(appCount.action.count)}</strong>/
-														<span>{comman.compressNumber(appbaseService.planLimits[this.state.plan].action)}</span>
+														<strong>{common.compressNumber(appCount.action.count)}</strong>/
+														<span>{common.compressNumber(appbaseService.planLimits[this.state.plan].action)}</span>
 													</div>
 												</div>
 											</div>
@@ -199,8 +205,8 @@ export default class AppList extends Component {
 														Records
 													</div>
 													<div>
-														<strong>{comman.compressNumber(appCount.records.count)}</strong> /
-														<span>{comman.compressNumber(appbaseService.planLimits[this.state.plan].records)}</span>
+														<strong>{common.compressNumber(appCount.records.count)}</strong> /
+														<span>{common.compressNumber(appbaseService.planLimits[this.state.plan].records)}</span>
 													</div>
 												</div>
 											</div>

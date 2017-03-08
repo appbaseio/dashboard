@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
+import { common } from "./helper";
 
 export default class ConfirmBox extends Component {
 	constructor(props) {
@@ -48,10 +49,6 @@ export default class ConfirmBox extends Component {
 				onClick: this.open
 			})
 		);
-		let disabled = null;
-		if (this.props.info.validate && !this.state.validate) {
-			disabled = { disabled: true };
-		}
 		return (
 			<div>
 				{childrenWithProps}
@@ -74,7 +71,7 @@ export default class ConfirmBox extends Component {
 						}
 					</div>
 					<div className="col-xs-12 p-0">
-						<button className="ad-theme-btn ad-confirm-btn" {...disabled} onClick={this.onConfirm}>
+						<button className="ad-theme-btn ad-confirm-btn" {...common.isDisabled(this.props.info.validate && !this.state.validate)} onClick={this.onConfirm}>
 							{this.props.info.buttons.confirm}
 						</button>
 						<button className="ad-theme-btn ad-cancel-btn" onClick={this.onCancel}>

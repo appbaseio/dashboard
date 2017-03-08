@@ -46,25 +46,6 @@ class AppbaseService {
 		});
 	}
 
-	getBillingInfo() {
-		return new Promise((resolve, reject) => {
-			if (this.billingInfo) {
-				resolve(this.billingInfo);
-			} else {
-				let requestData = {
-					c_id: this.userInfo.body.c_id
-				};
-				$.post(this.billingAddress + '/api/me', requestData)
-					.done((data) => {
-						this.billingInfo = data;
-						resolve(data);
-					}).fail((e) => {
-						reject(e);
-					});
-			}
-		});
-	};
-
 	getPermission(appId, cache=false) {
 		return new Promise((resolve, reject) => {
 			if (this.apps && this.apps[appId] && this.apps[appId].permissions && cache) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from "classnames";
 import { appbaseService } from '../../service/AppbaseService';
 import ConfirmBox from '../../shared/ConfirmBox';
-import { comman } from '../../shared/helper';
+import { common } from '../../shared/helper';
 import CopyToClipboard from '../../shared/CopyToClipboard';
 
 export default class ShareCard extends Component {
@@ -26,7 +26,7 @@ export default class ShareCard extends Component {
 				confirm: 'Yes'
 			}
 		};
-		this.keySummary = comman.keySummary();
+		this.keySummary = common.keySummary();
 		this.deleteShare = this.deleteShare.bind(this);
 	}
 	componentDidMount() {

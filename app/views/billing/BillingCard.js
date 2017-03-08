@@ -2,10 +2,15 @@ import React, { Component } from "react";
 import classNames from 'classnames';
 import { billingService } from "../../service/BillingService";
 import * as CardContent from "./CardContent";
+import { Loading } from "../../shared/SharedComponents";
+import { common } from "../../shared/helper";
 
 export default class BillingCard extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			localLoading: false
+		};
 		this.cardInfo = billingService.planLimits[this.props.plan];
 		this.changeSubscribe = this.changeSubscribe.bind(this);
 		this.updateCustomer = this.updateCustomer.bind(this);
@@ -59,9 +64,11 @@ export default class BillingCard extends Component {
 	}
 
 	updateCustomer() {
-		const loading = 'show';
 		this.customerCopy.plan = this.props.plan;
 		this.customerCopy.mode = this.props.mode;
+		this.setState({
+			localLoading: true
+		});
 		billingService.paymentInfo(this.customerCopy).then((resData) => {
 			console.log(resData);
 			var data = resData.message;
@@ -75,11 +82,16 @@ export default class BillingCard extends Component {
 			};
 			var finalAmount = this.billingText.payment.amount - this.billingText.refund.amount;
 			this.billingText.finalAmount = finalAmount < 0 ? (-finalAmount) : (finalAmount);
+			this.billingText.finalAmount = this.billingText.finalAmount.toFixed(2);
 			this.props.changePlanModal(this.billingText, this.customerCopy, this.props.plan);
-			// $('#paymentModal').modal('show');
-			// this.loading[this.tempPlan] = 'hide';
+			this.setState({
+				localLoading: false
+			});
 		}).catch(function(data) {
-			// this.loading[this.tempPlan] = 'hide';
+			this.setState({
+				localLoading: false
+			});
+			console.log(data);
 		});
 	}
 
@@ -123,12 +135,7 @@ export default class BillingCard extends Component {
 		const cx = classNames({
 			subscribed: this.props.plan === this.props.activePlan && this.props.mode === this.props.activeMode
 		});
-		let disabled = null;
-		if(this.props.plan === this.props.activePlan && this.props.mode === this.props.activeMode) {
-			disabled = {
-				disabled: true
-			};
-		}
+		const loadingCondition = this.props.loading === this.props.plan || this.state.localLoading;
 		return (
 			<div className="col-xs-12 col-sm-4 single-card-container" id="free-card">
 				<div className="price-card">
@@ -137,8 +144,12 @@ export default class BillingCard extends Component {
 					<ul className="description">
 						<li className="subscribe-li">
 							<div className="button text-center">
-								<button className={`new-btn get-started ${cx}`} onClick={this.changeSubscribe} {...disabled}>
-									<loading className="loading {{loading['free']}}" placeholder="Processing"></loading>
+								<button {...common.isDisabled(loadingCondition)} className={`pos-relative new-btn get-started ${cx}`} onClick={this.changeSubscribe}>
+									{
+										loadingCondition ? (
+											<Loading></Loading>
+										) : null
+									}
 									<span data-ng-if="plan === 'free'">Current plan</span>
 									<span data-ng-if="plan !== 'free'" data-ng-bind="planText"></span>
 								</button>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
 import { render } from 'react-dom';
 import { appbaseService } from '../../service/AppbaseService';
-import { comman } from '../../shared/helper';
+import { common } from '../../shared/helper';
 
 export default class ApiCallsView extends Component {
 
@@ -29,8 +29,8 @@ export default class ApiCallsView extends Component {
 									Api calls
 								</div>
 								<div>
-									<strong>{comman.compressNumber(this.props.appCount.action.count)}</strong>/
-									<span>{comman.compressNumber(appbaseService.planLimits[this.props.plan].action)}</span>
+									<strong>{common.compressNumber(this.props.appCount.action.count)}</strong>/
+									<span>{common.compressNumber(appbaseService.planLimits[this.props.plan].action)}</span>
 								</div>
 							</div>
 						</div>
@@ -43,8 +43,8 @@ export default class ApiCallsView extends Component {
 									Records
 								</div>
 								<div>
-									<strong>{comman.compressNumber(this.props.appCount.records.count)}</strong> /
-									<span>{comman.compressNumber(appbaseService.planLimits[this.props.plan].records)}</span>
+									<strong>{common.compressNumber(this.props.appCount.records.count)}</strong> /
+									<span>{common.compressNumber(appbaseService.planLimits[this.props.plan].records)}</span>
 								</div>
 							</div>
 						</div>

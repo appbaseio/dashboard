@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
+import {Loader} from 'react-loaders';
 import { appbaseService } from '../service/AppbaseService';
 
 export const AppOwner =(props) => {
@@ -16,6 +17,14 @@ export const AppOwner =(props) => {
 					</span>
 				) : null
 			}
+		</span>
+	);
+}
+
+export const Loading =(props) => {
+	return (
+		<span className="ad-loading">
+			<Loader type="ball-clip-rotate-multiple" active={true} />
 		</span>
 	);
 }

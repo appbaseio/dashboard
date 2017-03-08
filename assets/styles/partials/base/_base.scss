@@ -11,6 +11,10 @@ body {
 	padding: 0;
 }
 
+.pos-relative {
+	position: relative;
+}
+
 .theme-btn {
 	background: darken($dark-grey, 10%);
 	color: #fff;
