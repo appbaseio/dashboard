@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Link, browserHistory } from 'react-router';
-import { render } from 'react-dom';
+
 import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter, appListHelper } from './helper';
 import { AppOwner } from './SharedComponents';

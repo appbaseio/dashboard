@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { appbaseService } from '../../service/AppbaseService';
+import { billingService } from '../../service/BillingService';
 import HighChartView from './HighChartView';
 import ApiCallsView from './ApiCallsView';
 import AppPage from '../../shared/AppPage';
+import Upgrade from './Upgrade';
 
 export default class Dashboard extends Component {
 
@@ -11,7 +13,7 @@ export default class Dashboard extends Component {
 		super(props);
 		this.state = {
 			info: {},
-			plan: 'free',
+			plan: null,
 			graphMethod: 'month',
 			config: {
 				chartConfig: {}
@@ -41,6 +43,24 @@ export default class Dashboard extends Component {
 		this.appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
 		this.getInfo();
+		this.getBillingInfo();
+	}
+
+	getBillingInfo() {
+		if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.c_id) {
+			const requestData = {
+				c_id: appbaseService.userInfo.body.c_id
+			};
+			billingService.getCustomer(requestData).then((data) => {
+				const plan = Object.keys(billingService.planLimits).indexOf(data.plan) > -1 ? data.plan : "free";
+				this.setState({
+					billingInfo: data,
+					plan
+				});
+			}).catch((e) => {
+				console.log(e);
+			})
+		}
 	}
 
 	getApiCalls(data) {
@@ -84,7 +104,7 @@ export default class Dashboard extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' ? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) : (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
-		let percentage = (100 * count) / appbaseService.planLimits[this.state.plan][field];
+		let percentage = (100 * count) / billingService.planLimits[this.state.plan][field];
 		percentage = percentage < 100 ? percentage : 100;
 		return {
 			percentage: percentage,
@@ -93,42 +113,23 @@ export default class Dashboard extends Component {
 	}
 
 	appCount() {
-		return {
-			action: this.calcPercentage(this.state, 'action'),
-			records: this.calcPercentage(this.state, 'records')
+		let obj = {
+			action: {
+				percentage: 0,
+				count: 0
+			},
+			records: {
+				percentage: 0,
+				count: 0
+			}
 		};
-	}
-
-	renderElement(ele) {
-		let generatedEle = null;
-		let appCount;
-		switch (ele) {
-			case 'loading':
-				generatedEle = (<i className="fa fa-spinner fa-spin fa-1x fa-fw"></i>);
-				break;
-			case 'name':
-				generatedEle = (
-					<header className="ad-detail-page-header col-xs-12">
-						<h2 className="ad-detail-page-title">Dashboard</h2>
-					</header>
-				);
-				break;
-			case 'highchartView':
-				appCount = this.appCount();
-				generatedEle = (
-					<HighChartView
-						apiCalls={this.state.apiCalls}
-						graphMethod={this.state.graphMethod}
-						info={this.state.info}
-					/>
-				);
-				break;
-			case 'apiCallsView':
-				appCount = this.appCount();
-				generatedEle = (<ApiCallsView plan={this.state.plan} appCount={appCount} />);
-				break;
+		if(this.state.plan) {
+			obj = {
+				action: this.calcPercentage(this.state, 'action'),
+				records: this.calcPercentage(this.state, 'records')
+			};
 		}
-		return generatedEle;
+		return obj;
 	}
 
 	render() {
@@ -141,13 +142,20 @@ export default class Dashboard extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-					{this.renderElement('name')}
+					<header className="ad-detail-page-header col-xs-12">
+						<h2 className="ad-detail-page-title">Dashboard</h2>
+					</header>
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
-							{this.renderElement('highchartView')}
+							<HighChartView
+								apiCalls={this.state.apiCalls}
+								graphMethod={this.state.graphMethod}
+								info={this.state.info}
+							/>
 						</section>
 						<section className="col-xs-12 col-sm-4">
-							{this.renderElement('apiCallsView')}
+							<ApiCallsView plan={this.state.plan} appCount={this.appCount()} />
+							<Upgrade plan={this.state.plan} appCount={this.appCount()} />
 						</section>
 					</main>
 				</div>

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { appbaseService } from '../../service/AppbaseService';
 import ConfirmBox from '../../shared/ConfirmBox';
 import CopyToClipboard from '../../shared/CopyToClipboard';
-import { comman } from '../../shared/helper';
+import { common } from '../../shared/helper';
 import Description from './Description';
 
 export default class PermissionCard extends Component {
@@ -29,7 +29,7 @@ export default class PermissionCard extends Component {
 				confirm: 'Yes'
 			}
 		};
-		this.keySummary = comman.keySummary();
+		this.keySummary = common.keySummary();
 		this.updatDescription = this.updatDescription.bind(this);
 		this.deletePermission = this.deletePermission.bind(this);
 	}

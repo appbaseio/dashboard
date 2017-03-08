@@ -11,6 +11,10 @@ body {
 	padding: 0;
 }
 
+.pos-relative {
+	position: relative;
+}
+
 .theme-btn {
 	background: darken($dark-grey, 10%);
 	color: #fff;
@@ -62,6 +66,31 @@ body {
 			background: darken($danger-color, 10%);
 			text-decoration: none;
 		}
+		&.transparent {
+			background: #fff;
+			color: $danger-color;
+			&:hover, &.active {
+				background: darken($danger-color, 10%);
+				color: #fff;
+			}
+		}
+	}
+	&.warning {
+		background: $modal-warning;
+		border-color: darken($modal-warning, 10%);
+		color: #fff;
+		&:hover, &.active {
+			background: darken($modal-warning, 10%);
+			text-decoration: none;
+		}
+		&.transparent {
+			background: #fff;
+			color: $modal-warning;
+			&:hover, &.active {
+				background: darken($modal-warning, 10%);
+				color: #fff;
+			}
+		}
 	}
 	&.danger-reverse {
 		color: $danger-color;
@@ -75,6 +104,10 @@ body {
 	&[disabled] {
 		opacity: 0.6;
 		cursor: not-allowed;
+	}
+	&.lg-btn {
+		font-size: 1.2rem;
+		padding: 6px 12px;
 	}
 }
 

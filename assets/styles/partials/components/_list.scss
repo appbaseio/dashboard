@@ -73,11 +73,13 @@
 				height: 20px;
 				margin: 0;
 				color: #999;
+				i {
+					padding-right: 2px;
+				}
 			}
 			.ad-list-title-container {
-				position: relative;
-				padding-right: 30px;
 				.title {
+					display: inline-block;
 					margin: 0;
 					letter-spacing: 0.02em;
 					color: #666;
@@ -85,9 +87,7 @@
 					font-family: $font-semi-bold;
 				}
 				.ad-list-app-header-owner {
-					position: absolute;
-					right: 0;
-					top: 0;
+					padding-right: 5px;
 				}
 			}
 		}

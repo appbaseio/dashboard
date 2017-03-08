@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
+import { common } from "./helper";
 
 export default class ConfirmBox extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showModal: false
+			showModal: false,
+			validate: false,
+			inputValue: null
 		};
 		this.open = this.open.bind(this);
 		this.onConfirm = this.onConfirm.bind(this);
 		this.onCancel = this.onCancel.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 	close() {
 		this.setState({ showModal: false });
@@ -33,6 +37,12 @@ export default class ConfirmBox extends Component {
 		const modaltype = this.props.type ? this.props.type : 'info';
 		return `modal-${modaltype}`;
 	}
+	handleInputChange(event) {
+		this.setState({
+			inputValue: event.target.value,
+			validate: event.target.value === this.props.info.validate.value ? true : false
+		});
+	}
 	render() {
 		const childrenWithProps = React.Children.map(this.props.children,
 			(child) => React.cloneElement(child, {
@@ -51,9 +61,17 @@ export default class ConfirmBox extends Component {
 						<div className="col-xs-12">
 							{this.props.info.description}
 						</div>
+						{
+							this.props.info.validate ?
+							(
+								<div className={`col-xs-12 form-group`}>
+									<input placeholder={this.props.info.validate.placeholder} type="text" className="form-control" defaultValue={this.state.inputValue} onChange={this.handleInputChange} />
+								</div>
+							) : null
+						}
 					</div>
 					<div className="col-xs-12 p-0">
-						<button className="ad-theme-btn ad-confirm-btn" onClick={this.onConfirm}>
+						<button className="ad-theme-btn ad-confirm-btn" {...common.isDisabled(this.props.info.validate && !this.state.validate)} onClick={this.onConfirm}>
 							{this.props.info.buttons.confirm}
 						</button>
 						<button className="ad-theme-btn ad-cancel-btn" onClick={this.onCancel}>

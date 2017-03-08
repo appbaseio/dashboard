@@ -11,6 +11,18 @@
 	animation: shift-rightwards 0.5s ease-in-out infinite;
 	animation-delay: .2s
 }
+.ad-loading {
+	background: rgba($primary-color, 0.8);
+	overflow: hidden;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+}
 @keyframes shift-rightwards {
 	0% {
 		transform: translateX(-100%)

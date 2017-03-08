@@ -9,6 +9,9 @@ body {
 .p-0 {
   padding: 0; }
 
+.pos-relative {
+  position: relative; }
+
 .theme-btn {
   background: #dedede;
   color: #fff;
@@ -51,6 +54,25 @@ body {
     .ad-theme-btn.danger:hover, .ad-theme-btn.danger.active {
       background: #c9302c;
       text-decoration: none; }
+    .ad-theme-btn.danger.transparent {
+      background: #fff;
+      color: #d9534f; }
+      .ad-theme-btn.danger.transparent:hover, .ad-theme-btn.danger.transparent.active {
+        background: #c9302c;
+        color: #fff; }
+  .ad-theme-btn.warning {
+    background: #F5E79E;
+    border-color: #f0dc70;
+    color: #fff; }
+    .ad-theme-btn.warning:hover, .ad-theme-btn.warning.active {
+      background: #f0dc70;
+      text-decoration: none; }
+    .ad-theme-btn.warning.transparent {
+      background: #fff;
+      color: #F5E79E; }
+      .ad-theme-btn.warning.transparent:hover, .ad-theme-btn.warning.transparent.active {
+        background: #f0dc70;
+        color: #fff; }
   .ad-theme-btn.danger-reverse {
     color: #d9534f;
     border-color: transparent;
@@ -61,6 +83,9 @@ body {
   .ad-theme-btn[disabled] {
     opacity: 0.6;
     cursor: not-allowed; }
+  .ad-theme-btn.lg-btn {
+    font-size: 1.2rem;
+    padding: 6px 12px; }
 
 .animation .fadein {
   opacity: 1;
@@ -142,7 +167,8 @@ body {
   margin-bottom: 45px; }
 
 #login_modal.modal .modal-dialog {
-  width: 350px; }
+  width: 350px;
+  margin: 0 auto; }
 
 #login_modal.modal .modal-content {
   border-radius: 4px;
@@ -470,19 +496,17 @@ body {
       height: 20px;
       margin: 0;
       color: #999; }
-    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container {
-      position: relative;
-      padding-right: 30px; }
-      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
-        margin: 0;
-        letter-spacing: 0.02em;
-        color: #666;
-        font-size: 22px;
-        font-family: "Source Sans Pro Semi Bold"; }
-      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
-        position: absolute;
-        right: 0;
-        top: 0; }
+      .ad-list .ad-list-app .ad-list-app-header .time i {
+        padding-right: 2px; }
+    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
+      display: inline-block;
+      margin: 0;
+      letter-spacing: 0.02em;
+      color: #666;
+      font-size: 22px;
+      font-family: "Source Sans Pro Semi Bold"; }
+    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
+      padding-right: 5px; }
   .ad-list .ad-list-app aside.options {
     width: 25px;
     height: 100%;
@@ -620,6 +644,18 @@ body {
   animation: shift-rightwards 0.5s ease-in-out infinite;
   animation-delay: .2s; }
 
+.ad-loading {
+  background: rgba(205, 220, 57, 0.8);
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center; }
+
 @keyframes shift-rightwards {
   0% {
     transform: translateX(-100%); }
@@ -714,7 +750,7 @@ body {
     .permission-card .permission-card-body .permission-card-body-description {
       font-size: 0.9rem;
       color: #B3B3B3; }
-  .permission-card:hover .permission-card-header .permission-delete {
+  .permission-card:hover .permission-card-header .permission-delete, .permission-card.delete-active .permission-card-header .permission-delete {
     opacity: 1;
     -webkit-animation: fadein 0.5s;
     -moz-animation: fadein 0.5s;
@@ -753,23 +789,38 @@ body {
       border: 0;
       border-left: 1px solid #dedede; }
 
-.ad-editable .ad-editable-value {
-  cursor: pointer;
-  margin: 0; }
-
-.ad-editable .ad-editable-edit input {
-  border: 0;
-  border-bottom: 1px solid #dedede;
-  outline: none;
-  box-shadow: none;
-  width: auto; }
-  .ad-editable .ad-editable-edit input:focus {
-    outline: none; }
+.ad-editable-container {
+  height: 2.3rem;
+  margin-bottom: 10px; }
+  .ad-editable-container .ad-editable {
+    width: auto;
+    display: inline-block;
+    border-bottom: 1px dashed;
+    height: 2.3rem; }
+    .ad-editable-container .ad-editable .ad-editable-value {
+      cursor: pointer;
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      height: 2rem; }
+    .ad-editable-container .ad-editable .ad-editable-edit input {
+      border: 0;
+      outline: none;
+      box-shadow: none;
+      width: auto;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      height: 2rem;
+      padding: 0; }
+      .ad-editable-container .ad-editable .ad-editable-edit input:focus {
+        outline: none; }
 
 .ad-create {
   padding: 0; }
   .ad-create .ad-create-collapse {
     display: block; }
+    .ad-create .ad-create-collapse .ad-theme-btn {
+      display: inline-block; }
   .ad-create .ad-create-expand {
     display: none; }
     .ad-create .ad-create-expand .ad-create-email {
@@ -790,6 +841,9 @@ body {
       .ad-create .ad-create-button-group .ad-theme-btn:last-child {
         border-right: 1px solid;
         border-color: #dedede; }
+      .ad-create .ad-create-button-group .ad-theme-btn.active {
+        background: #cedd3d;
+        color: #fff; }
       .ad-create .ad-create-button-group .ad-theme-btn:hover, .ad-create .ad-create-button-group .ad-theme-btn:focus, .ad-create .ad-create-button-group .ad-theme-btn:active {
         outline: none; }
     .ad-create .ad-create-button-group.without-margin {
@@ -1221,7 +1275,8 @@ body {
     background-color: #f5f5f7;
     box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.65);
     -webkit-backface-visibility: hidden;
-    backface-visibility: hidden; }
+    backface-visibility: hidden;
+    border: 0; }
     #paymentModal .modal-dialog .modal-content .modal-header {
       padding: 12px 36px;
       text-align: center;
@@ -1232,7 +1287,8 @@ body {
         font-size: 17px;
         font-weight: 700;
         color: #000;
-        text-shadow: 0 1px 0 #fff; }
+        text-shadow: 0 1px 0 #fff;
+        text-align: center; }
       #paymentModal .modal-dialog .modal-content .modal-header .bottomline {
         font-size: 13px;
         font-weight: 500;
@@ -1246,11 +1302,11 @@ body {
         border-radius: 50%;
         color: #f5f5f7;
         font-size: 12px;
-        line-height: 18px;
+        line-height: 14px;
         position: absolute;
         right: 10px;
         text-align: center;
-        padding-left: 1px;
+        padding-left: 0;
         z-index: 1; }
       #paymentModal .modal-dialog .modal-content .modal-header .Header-logo {
         position: relative;
@@ -1330,5 +1386,6 @@ body {
       text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
       color: #fff;
       cursor: pointer;
+      width: 100%;
       -webkit-transition: all .2s ease-in-out;
       transition: all .2s ease-in-out; }

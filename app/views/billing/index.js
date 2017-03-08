@@ -9,8 +9,8 @@ import { StripeSetup, checkoutCb} from "../../shared/utils/StripeSetup";
 export default class Billing extends Component {
 	constructor(props, context) {
 		super(props);
-		this.stripeKey = 'pk_test_s0n1Ls5xPnChuOdxjcYkBQc6';
-		// this.stripeKey = 'pk_XCCvCuWKPx07ODJUXqFr7K4cdHvAS';
+		// this.stripeKey = 'pk_test_s0n1Ls5xPnChuOdxjcYkBQc6';
+		this.stripeKey = 'pk_XCCvCuWKPx07ODJUXqFr7K4cdHvAS';
 		var localBillingMode = localStorage.getItem('billingMode');
 		this.allowedPlan = ['free', 'bootstrap', 'growth', 'dedicated'];
 		this.modeText = {
@@ -33,13 +33,8 @@ export default class Billing extends Component {
 				show: false,
 				text: ''
 			},
-			loading: {
-				free: 'hide',
-				bootstrap: 'hide',
-				growth: 'hide',
-				dedicated: 'hide',
-				confirmingPlan: 'hide'
-			},
+			loading: null,
+			loadingModal: false,
 			showPlanChange: false,
 			customerCopy: null,
 			billingText: null
@@ -126,6 +121,10 @@ export default class Billing extends Component {
 	}
 
 	stripeCb(response) {
+		this.setState({
+			loading: this.checkoutPlan,
+			loadingModal: true
+		});
 		checkoutCb(this.state.customer, this.userProfile, response).then((data) => {
 			this.setState({
 				customerCopy: this.state.customer,
@@ -133,38 +132,43 @@ export default class Billing extends Component {
 				mode: this.checkoutMode
 			}, this.confirmPlan.bind(this));
 		}).catch((e) => {
+			this.setState({
+				loading: null,
+				loadingModal: false
+			});
 		})
 	}
 
 	confirmPlan() {
-		this.loading = this.state.loading;
-		this.loading[this.state.tempPlan] = 'show';
 		this.customerCopy = this.state.customerCopy;
 		this.customerCopy.plan = this.state.tempPlan;
 		this.customerCopy.mode = this.state.mode;
-		this.loading['confirmingPlan'] = 'show';
 		this.pricingError = {
 			show: false,
 			text: ''
 		};
+		this.setState({
+			loading: this.customerCopy.plan,
+			loadingModal: true
+		})
 		billingService.updateCustomer(this.customerCopy, 'planChange').then((data) => {
 			this.customer = data;
 			this.plan = data.plan;
 			this.setState({
 				customer: this.customer,
 				activePlan: data.plan,
-				activeMode: data.mode
+				activeMode: data.mode,
+				loading: null,
+				loadingModal: false
 			});
-			this.loading['confirmingPlan'] = 'hide';
 			this.closeModal();
-			this.loading[this.state.tempPlan] = 'hide';
 		}).catch((data) => {
-			this.loading['confirmingPlan'] = 'hide';
-			this.loading[this.state.tempPlan] = 'hide';
-			this.pricingError = {
+			this.setState({
 				show: true,
-				text: data && data.message && data.message.raw && data.message.raw.message ? data.message.raw.message : data
-			};
+				text: data && data.message && data.message.raw && data.message.raw.message ? data.message.raw.message : data,
+				loading: null,
+				loadingModal: false
+			})
 		});
 	}
 
@@ -183,6 +187,7 @@ export default class Billing extends Component {
 							activeMode={this.state.activeMode}
 							changePlanModal={this.changePlanModal}
 							checkoutInit={this.checkoutInit}
+							loading={this.state.loading}
 						/>
 					)
 				});
@@ -211,6 +216,7 @@ export default class Billing extends Component {
 					closeModal={() => this.closeModal()}
 					activePlan={this.state.plan}
 					confirmPlan={this.confirmPlan}
+					loadingModal={this.state.loadingModal}
 				/>
 			</div>
 		);

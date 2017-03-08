@@ -440,6 +440,7 @@
 			box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
 			-webkit-backface-visibility: hidden;
 			backface-visibility: hidden;
+			border: 0;
 			.modal-header {
 				padding: 12px 36px;
 				text-align: center;
@@ -451,6 +452,7 @@
 					font-weight: 700;
 					color: #000;
 					text-shadow: 0 1px 0 #fff;
+					text-align: center;
 				}
 				.bottomline {
 					font-size: 13px;
@@ -466,11 +468,11 @@
 					border-radius: 50%;
 					color: #f5f5f7;
 					font-size: 12px;
-					line-height: 18px;
+					line-height: 14px;
 					position: absolute;
 					right: 10px;
 					text-align: center;
-					padding-left: 1px;
+					padding-left: 0;
 					z-index: 1;
 				}
 				.Header-logo {
@@ -567,6 +569,7 @@
 				text-shadow: 0 -1px 0 rgba(0,0,0,.12);
 				color: #fff;
 				cursor: pointer;
+				width: 100%;
 				-webkit-transition: all .2s ease-in-out;
 				transition: all .2s ease-in-out;
 			}

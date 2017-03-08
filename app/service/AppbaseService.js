@@ -46,25 +46,6 @@ class AppbaseService {
 		});
 	}
 
-	getBillingInfo() {
-		return new Promise((resolve, reject) => {
-			if (this.billingInfo) {
-				resolve(this.billingInfo);
-			} else {
-				let requestData = {
-					c_id: this.userInfo.body.c_id
-				};
-				$.post(this.billingAddress + '/api/me', requestData)
-					.done((data) => {
-						this.billingInfo = data;
-						resolve(data);
-					}).fail((e) => {
-						reject(e);
-					});
-			}
-		});
-	};
-
 	getPermission(appId, cache=false) {
 		return new Promise((resolve, reject) => {
 			if (this.apps && this.apps[appId] && this.apps[appId].permissions && cache) {
@@ -314,17 +295,42 @@ class AppbaseService {
 
 	applySort(apps, field) {
 		if(field) {
-			this.sortBy.order = field === this.sortBy.field ? (this.sortBy.order === 'desc' ? 'asc' : 'desc') : 'asc';
+			// this.sortBy.order = field === this.sortBy.field ? (this.sortBy.order === 'desc' ? 'asc' : 'desc') : 'asc';
+			this.sortBy.order = 'desc';
 			this.sortBy.field = field;
 		}
 		apps =  _.sortBy(apps, this.sortBy.field);
 		if(this.sortBy.order === 'desc') {
 			apps = apps.reverse();
-			const prefixArray = apps.filter(item => item[this.sortBy.field]);
-			const postfixArray = apps.filter(item => item[this.sortBy.field] === null);
-			apps = prefixArray.concat(postfixArray);
+			if(this.sortBy.field === 'lastActiveDate') {
+				const prefixArray = apps.filter(item => item[this.sortBy.field]);
+				const postfixArray = apps.filter(item => item[this.sortBy.field] === null);
+				apps = prefixArray.concat(postfixArray);
+			}
 		}
 		return apps;
+	}
+
+	applyFilter(apps, field) {
+		let filteredApps = apps;
+		if(this.extra.allApps) {
+			if(field === "all") {
+				filteredApps = this.extra.allApps;
+			} else if(field === "myapps") {
+				filteredApps = this.extra.allApps.filter((app) => {
+					return this.isMyApp(app);
+				});
+			} else if(field === "shared") {
+				filteredApps = this.extra.allApps.filter((app) => {
+					return !this.isMyApp(app);
+				});
+			}
+		}
+		return filteredApps;
+	}
+
+	isMyApp(app) {
+		return app && app.appInfo && app.appInfo.owner === this.userInfo.body.email;
 	}
 
 	setExtra(key, value) {

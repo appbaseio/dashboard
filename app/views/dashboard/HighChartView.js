@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+
 import Highchart from '../../shared/Highchart';
 
 export default class HighChartView extends Component {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { render } from 'react-dom';
 import { appbaseService } from '../../service/AppbaseService';
 import { urlShare } from '../../service/tutorialService/UrlShare';
-import { Loading } from '../../shared/Loading';
 import AppPage from '../../shared/AppPage';
 
 export default class Browser extends Component {

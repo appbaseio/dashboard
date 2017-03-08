@@ -22,19 +22,20 @@ class AppDashboard {
 }
 
 class AppListHelper {
-	getAll(apps, metrics=true, permission=true, appInfo=true) {
+	getAll(apps, metrics = true, permission = true, appInfo = true) {
 		this.apps = apps;
 		return new Promise((resolve, reject) => {
 			this.appsInfoCollected = 0;
 			apps.forEach((app, index) => {
 				this.getInfo(app.id, index, cb, metrics, permission, appInfo);
+
 				function cb(apps) {
 					resolve(apps);
 				}
 			});
 		});
 	}
-	getInfo(appId, index, resolveApps, metrics=true, permission=true, appInfo=true) {
+	getInfo(appId, index, resolveApps, metrics = true, permission = true, appInfo = true) {
 		let apps = this.apps;
 		let info = {};
 		let count = {
@@ -43,13 +44,13 @@ class AppListHelper {
 			appInfo: !appInfo ? true : false
 		};
 		const init = () => {
-			if(!count.metrics) {
+			if (!count.metrics) {
 				getMetrics.call(this);
 			}
-			if(!count.permission) {
+			if (!count.permission) {
 				getPermission.call(this);
 			}
-			if(!count.appInfo) {
+			if (!count.appInfo) {
 				getAppInfo.call(this);
 			}
 		}
@@ -61,11 +62,11 @@ class AppListHelper {
 				apps[index].records = info.appStats.records;
 				apps[index].lastAciveOn = null;
 				apps[index].lastActiveDate = null;
-				if(info.metrics.body && info.metrics.body.month && info.metrics.body.month.buckets) {
+				if (info.metrics.body && info.metrics.body.month && info.metrics.body.month.buckets) {
 					const buckets = info.metrics.body.month.buckets;
-					if(buckets[buckets.length-1] && buckets[buckets.length-1].key_as_string) {
-						apps[index].lastAciveOn = buckets[buckets.length-1].key_as_string;
-						apps[index].lastActiveDate = buckets[buckets.length-1].key;
+					if (buckets[buckets.length - 1] && buckets[buckets.length - 1].key_as_string) {
+						apps[index].lastAciveOn = buckets[buckets.length - 1].key_as_string;
+						apps[index].lastActiveDate = buckets[buckets.length - 1].key;
 					}
 				}
 				apps[index].info = info;
@@ -83,10 +84,9 @@ class AppListHelper {
 					permissions: data.body
 				};
 				data.body.forEach((item) => {
-					if(item.write) {
+					if (item.write) {
 						apps[index].permissions.writePermission = item;
-					}
-					else if(item.read) {
+					} else if (item.read) {
 						apps[index].permissions.readPermission = item;
 					}
 				});
@@ -111,10 +111,10 @@ class AppListHelper {
 		}
 
 		const cb = () => {
-			if(count.permission && count.metrics && count.appInfo) {
+			if (count.permission && count.metrics && count.appInfo) {
 				this.appsInfoCollected++;
 			}
-			if(this.appsInfoCollected === this.apps.length) {
+			if (this.appsInfoCollected === this.apps.length) {
 				resolveApps(apps);
 			}
 		}
@@ -158,7 +158,7 @@ class AppListHelper {
 	}
 }
 
-class Comman {
+class Common {
 	compressNumber(amount) {
 		let mAmount = amount;
 		let finalNum = null;
@@ -191,6 +191,9 @@ class Comman {
 			'write': 'Write credentials'
 		};
 	}
+	isDisabled(flag) {
+		return flag ? { disabled: true } : null;
+	}
 }
 
 class AjaxHttp {
@@ -204,7 +207,7 @@ class AjaxHttp {
 	}
 	start(req) {
 		let query = null;
-		if(req) {
+		if (req) {
 			query = new Promise((resolve, reject) => {
 				req.method = req.method ? req.method : "GET";
 				const requestObj = {
@@ -219,7 +222,7 @@ class AjaxHttp {
 						reject(error.responseJSON);
 					}
 				};
-				if(req.data) {
+				if (req.data) {
 					requestObj.data = JSON.stringify(req.data);
 				}
 				$.ajax(requestObj);
@@ -233,6 +236,6 @@ module.exports = {
 	eventEmitter: eventEmitter,
 	appDashboard: new AppDashboard(),
 	appListHelper: new AppListHelper(),
-	comman: new Comman(),
+	common: new Common(),
 	$http: new AjaxHttp()
 }

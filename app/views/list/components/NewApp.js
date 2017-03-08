@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import { Link } from 'react-router';
 import { appbaseService } from '../../../service/AppbaseService';
-import { Loading } from '../../../shared/Loading';
+import { Loading } from "../../../shared/SharedComponents";
+import { common } from "../../../shared/helper";
 import AppCard from './AppCard';
 
 const $ = require('jquery');
@@ -88,17 +88,11 @@ export default class NewApp extends Component {
 					);
 				}
 				break;
-			case 'loading':
-				if (this.props.createAppLoading) {
-					generatedEle = (<Loading></Loading>);
-				}
-				break;
 		}
 		return generatedEle;
 	}
 
 	handleSubmit() {
-		debugger
 		if(this.state.value.trim()) {
 			this.props.createApp(this.state.value);
 		} else {
@@ -107,7 +101,6 @@ export default class NewApp extends Component {
 	}
 
 	render() {
-		let disabled = !this.state.validate.value ? { disabled: true } : null;
 		return (
 			<AppCard>
 				<div className="ad-list-newapp">
@@ -117,8 +110,8 @@ export default class NewApp extends Component {
 						{this.renderElement('helpBlock')}
 					</div>
 					<div className="col-xs-12 title">
-						<button {...disabled} className="col-xs-12 theme-btn active" onClick={() => this.handleSubmit()} >
-							{this.renderElement('loading')}
+						<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 theme-btn active" onClick={() => this.handleSubmit()} >
+							{this.props.createAppLoading ? (<Loading></Loading>) : null}
 							Create a new app
 						</button>
 					</div>
