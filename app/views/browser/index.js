@@ -42,7 +42,7 @@ export default class Browser extends Component {
 		this.permission = this.state.permission;
 		let obj = {
 			url: 'https://' + this.permission.body[0].username + ':' + this.permission.body[0].password + '@scalr.api.appbase.io',
-			appname: this.props.appName
+			appname: this.appName
 		};
 		urlShare.compressInputState(obj).then((url) => {
 			this.applyUrl(url);
@@ -64,7 +64,7 @@ export default class Browser extends Component {
 				if (this.state[this.plugin]) {
 					generatedEle = (<iframe src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>);
 				} else {
-					generatedEle = (<span className="col-xs-4 plugin-loading-container" ><Loading text="Loading"></Loading></span>);
+					generatedEle = (<div className="loadingBar"></div>);
 				}
 				break;
 		}
