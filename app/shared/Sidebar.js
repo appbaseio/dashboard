@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router';
-import { render } from 'react-dom';
+
 import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
 import { eventEmitter } from './helper';

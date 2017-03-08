@@ -54,6 +54,25 @@ body {
     .ad-theme-btn.danger:hover, .ad-theme-btn.danger.active {
       background: #c9302c;
       text-decoration: none; }
+    .ad-theme-btn.danger.transparent {
+      background: #fff;
+      color: #d9534f; }
+      .ad-theme-btn.danger.transparent:hover, .ad-theme-btn.danger.transparent.active {
+        background: #c9302c;
+        color: #fff; }
+  .ad-theme-btn.warning {
+    background: #F5E79E;
+    border-color: #f0dc70;
+    color: #fff; }
+    .ad-theme-btn.warning:hover, .ad-theme-btn.warning.active {
+      background: #f0dc70;
+      text-decoration: none; }
+    .ad-theme-btn.warning.transparent {
+      background: #fff;
+      color: #F5E79E; }
+      .ad-theme-btn.warning.transparent:hover, .ad-theme-btn.warning.transparent.active {
+        background: #f0dc70;
+        color: #fff; }
   .ad-theme-btn.danger-reverse {
     color: #d9534f;
     border-color: transparent;
@@ -64,6 +83,9 @@ body {
   .ad-theme-btn[disabled] {
     opacity: 0.6;
     cursor: not-allowed; }
+  .ad-theme-btn.lg-btn {
+    font-size: 1.2rem;
+    padding: 6px 12px; }
 
 .animation .fadein {
   opacity: 1;
@@ -145,7 +167,8 @@ body {
   margin-bottom: 45px; }
 
 #login_modal.modal .modal-dialog {
-  width: 350px; }
+  width: 350px;
+  margin: 0 auto; }
 
 #login_modal.modal .modal-content {
   border-radius: 4px;

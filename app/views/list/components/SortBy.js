@@ -10,9 +10,9 @@ export default class SortBy extends Component {
 			value: appbaseService.SortBy
 		};
 		this.options = {
-			lastActiveDate: "Last activity",
+			lastActiveDate: "Last Activity",
 			"info.appStats.records": "Records",
-			"info.appStats.calls": "Api Calls"
+			"info.appStats.calls": "API Calls"
 		};
 	}
 

@@ -2,7 +2,7 @@ import {
 	default as React,
 	Component
 } from 'react';
-import { render } from 'react-dom';
+
 import { dataOperation } from '../../../service/tutorialService/DataOperation';
 import {
 	ReactiveBase,

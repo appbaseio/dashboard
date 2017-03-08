@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { render } from 'react-dom';
+
 
 var Codemirror = require('react-codemirror');
 require('codemirror/mode/javascript/javascript');

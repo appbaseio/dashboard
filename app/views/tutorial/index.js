@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+
 import { Link, browserHistory } from 'react-router';
 import Onboarding from 'appbase-onboarding';
 import { appbaseService } from '../../service/AppbaseService';

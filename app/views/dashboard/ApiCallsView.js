@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
-import { render } from 'react-dom';
 import { appbaseService } from '../../service/AppbaseService';
+import { billingService } from '../../service/BillingService';
 import { common } from '../../shared/helper';
 
 export default class ApiCallsView extends Component {
@@ -28,10 +28,14 @@ export default class ApiCallsView extends Component {
 								<div className="sub-title">
 									Api calls
 								</div>
-								<div>
-									<strong>{common.compressNumber(this.props.appCount.action.count)}</strong>/
-									<span>{common.compressNumber(appbaseService.planLimits[this.props.plan].action)}</span>
-								</div>
+								{
+									this.props.plan ? (
+										<div>
+											<strong>{common.compressNumber(this.props.appCount.action.count)}</strong>/
+											<span>{common.compressNumber(billingService.planLimits[this.props.plan].action)}</span>
+										</div>
+									) : null
+								}
 							</div>
 						</div>
 						<div className="col-xs-12 col-sm-6 progress-container">
@@ -42,10 +46,14 @@ export default class ApiCallsView extends Component {
 								<div className="sub-title">
 									Records
 								</div>
-								<div>
-									<strong>{common.compressNumber(this.props.appCount.records.count)}</strong> /
-									<span>{common.compressNumber(appbaseService.planLimits[this.props.plan].records)}</span>
-								</div>
+								{
+									this.props.plan ? (
+										<div>
+											<strong>{common.compressNumber(this.props.appCount.records.count)}</strong> /
+											<span>{common.compressNumber(billingService.planLimits[this.props.plan].records)}</span>
+										</div>
+									) : null
+								}
 							</div>
 						</div>
 					</div>

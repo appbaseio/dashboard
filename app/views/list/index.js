@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
-import { render } from 'react-dom';
 import { Link, browserHistory } from 'react-router';
 import NewApp from './components/NewApp';
 import ActionButtons from './components/ActionButtons';
@@ -10,6 +9,7 @@ import { billingService } from '../../service/BillingService';
 import { appListHelper, common } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
+import Upgrade from './components/Upgrade';
 
 const moment = require('moment');
 
@@ -99,8 +99,10 @@ export default class AppList extends Component {
 				c_id: appbaseService.userInfo.body.c_id
 			};
 			billingService.getCustomer(requestData).then((data) => {
+				const plan = Object.keys(billingService.planLimits).indexOf(data.plan) > -1 ? data.plan : "free";
 				this.setState({
-					billingInfo: data
+					billingInfo: data,
+					plan
 				});
 			}).catch((e) => {
 				console.log(e);
@@ -110,7 +112,7 @@ export default class AppList extends Component {
 
 	calcPercentage(app, field) {
 		let count = field === 'action' ? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) : (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
-		let percentage = (100 * count) / appbaseService.planLimits[this.state.plan][field];
+		let percentage = (100 * count) / billingService.planLimits[this.state.plan][field];
 		percentage = percentage < 100 ? percentage : 100;
 		return {
 			percentage: percentage,
@@ -174,7 +176,7 @@ export default class AppList extends Component {
 										<h3 className="title">{app.name}</h3>
 									</div>
 									<p className="time">
-										<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : ""}
+										<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? this.timeAgo(app) : ""}
 									</p>
 								</header>
 								<div className="description">
@@ -189,8 +191,8 @@ export default class AppList extends Component {
 														Api calls
 													</div>
 													<div>
-														<strong>{common.compressNumber(appCount.action.count)}</strong>/
-														<span>{common.compressNumber(appbaseService.planLimits[this.state.plan].action)}</span>
+														<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
+														<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
 													</div>
 												</div>
 											</div>
@@ -205,8 +207,8 @@ export default class AppList extends Component {
 														Records
 													</div>
 													<div>
-														<strong>{common.compressNumber(appCount.records.count)}</strong> /
-														<span>{common.compressNumber(appbaseService.planLimits[this.state.plan].records)}</span>
+														<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
+														<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
 													</div>
 												</div>
 											</div>
@@ -243,6 +245,7 @@ export default class AppList extends Component {
 								</div>
 							</header>
 							<main className="ad-list-container container">
+								<Upgrade apps={this.state.apps} plan={this.state.plan} />
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 								</div>
