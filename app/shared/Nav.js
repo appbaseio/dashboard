@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import { Link, browserHistory } from 'react-router';
 import { render } from 'react-dom';
 import { appbaseService } from '../service/AppbaseService';
-import { eventEmitter } from './helper';
+import { eventEmitter, appListHelper } from './helper';
+import { AppOwner } from './SharedComponents';
 
 export default class Nav extends Component {
 
@@ -10,7 +11,8 @@ export default class Nav extends Component {
 		super(props);
 		this.state = {
 			activeApp: null,
-			currentView: null
+			currentView: null,
+			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : []
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -30,21 +32,35 @@ export default class Nav extends Component {
 			link: 'billing',
 			type: 'internal'
 		}];
-		this.apps = appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appbaseService.userInfo.body.apps : [];
+		this.currentActiveApp = null;
 	}
 
 	componentWillMount() {
 		if(appbaseService.extra.nav) {
-			this.setState(appbaseService.extra.nav);
+			this.setState(appbaseService.extra.nav, this.checkApps.bind(this));
 		}
 		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
-			this.setState(activeApp)
+			this.setState(activeApp, this.checkApps.bind(this));
 		});
 	}
 
 	componentWillUnmount() {
 		if (this.listenEvent) {
 			this.listenEvent.remove();
+		}
+	}
+
+	checkApps() {
+		if(this.state.activeApp && this.state.activeApp !== this.currentActiveApp) {
+			this.currentActiveApp = this.state.activeApp;
+			let apps = this.state.apps;
+			appListHelper.getAll(apps, false, false, true).then((apps) => {
+				this.setState({
+					apps
+				});
+			}).catch((e) => {
+				console.log(e);
+			});
 		}
 	}
 
@@ -63,12 +79,15 @@ export default class Nav extends Component {
 				);
 			break;
 			case 'apps':
-				if(this.apps && this.state.activeApp) {
+				if(this.state.apps && this.state.activeApp) {
 					generatedEle = [];
-					Object.keys(this.apps).forEach((app, index) => {
+					this.state.apps.forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`/${this.state.currentView}/${app}`}>{app}</Link>
+								<Link to={`/${this.state.currentView}/${app.name}`}>
+									{app.name}
+									<AppOwner app={app} />
+								</Link>
 							</li>
 						);
 						if(app !== this.state.activeApp) {

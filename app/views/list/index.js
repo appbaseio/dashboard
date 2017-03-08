@@ -7,6 +7,7 @@ import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
 import { appbaseService } from '../../service/AppbaseService';
 import { appListHelper, comman } from '../../shared/helper';
+import { AppOwner } from '../../shared/SharedComponents';
 
 const moment = require('moment');
 
@@ -118,7 +119,7 @@ export default class AppList extends Component {
 			}
 		}).catch((e) => {
 			console.log(e);
-		})
+		});
 	}
 
 	updateApps(apps) {
@@ -156,7 +157,10 @@ export default class AppList extends Component {
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
 								<header className="ad-list-app-header">
-									<h3 className="title">{app.name}</h3>
+									<div className="ad-list-title-container">
+										<h3 className="title">{app.name}</h3>
+										<AppOwner app={app} />
+									</div>
 									<p className="time">
 										{this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : " "}
 									</p>

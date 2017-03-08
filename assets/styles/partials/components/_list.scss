@@ -69,17 +69,26 @@
 		transition: all .3s ease;
 		.ad-list-app-header {
 			margin: 0 0 25px;
-			.title {
-				margin: 0;
-				letter-spacing: 0.02em;
-				color: #666;
-				font-size: 22px;
-				font-family: $font-semi-bold;
-			}
 			.time {
 				height: 20px;
 				margin: 0;
 				color: #999;
+			}
+			.ad-list-title-container {
+				position: relative;
+				padding-right: 30px;
+				.title {
+					margin: 0;
+					letter-spacing: 0.02em;
+					color: #666;
+					font-size: 22px;
+					font-family: $font-semi-bold;
+				}
+				.ad-list-app-header-owner {
+					position: absolute;
+					right: 0;
+					top: 0;
+				}
 			}
 		}
 		aside.options {
