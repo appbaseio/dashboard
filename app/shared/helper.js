@@ -6,10 +6,12 @@ import { appbaseService } from '../service/AppbaseService';
 class AppDashboard {
 	constructor() {}
 	onEnter(activeApp, currentView) {
-		eventEmitter.emit('activeApp', {
+		const appObj = {
 			activeApp,
 			currentView
-		});
+		};
+		appbaseService.setExtra("nav", appObj);
+		eventEmitter.emit('activeApp', appObj);
 	}
 	onLeave() {
 		eventEmitter.emit('activeApp', {

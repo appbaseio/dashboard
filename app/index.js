@@ -40,9 +40,7 @@ export default class Main extends Component {
 	}
 
 	redirectToPath() {
-		if(!(window.location.pathname === '/apps' || window.location.pathname === '/')) {
-			browserHistory.push(window.location.pathname);
-		} else {
+		if(window.location.pathname === '/apps' || window.location.pathname === '/') {
 			browserHistory.push('/apps');
 		}
 	}

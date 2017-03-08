@@ -34,6 +34,9 @@ export default class Nav extends Component {
 	}
 
 	componentWillMount() {
+		if(appbaseService.extra.nav) {
+			this.setState(appbaseService.extra.nav);
+		}
 		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
 			this.setState(activeApp)
 		});
@@ -49,7 +52,7 @@ export default class Nav extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'appLink':
-				const tempLink = this.state.activeApp ? '../'+this.appLink.link : this.appLink.link;
+				const tempLink = this.state.activeApp ? '/'+this.appLink.link : this.appLink.link;
 				generatedEle = (
 					<li>
 						<Link to={tempLink}>
@@ -93,7 +96,7 @@ export default class Nav extends Component {
 				generatedEle = this.links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
-						const tempLink = this.state.activeApp ? '../'+item.link : item.link;
+						const tempLink = this.state.activeApp ? '/'+item.link : item.link;
 						anchor = (<Link to={tempLink}>{item.label}</Link>);
 					}
 					return (

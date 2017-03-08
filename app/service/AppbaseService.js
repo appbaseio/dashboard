@@ -25,6 +25,7 @@ class AppbaseService {
 			field: "lastActiveDate",
 			order: 'desc'
 		};
+		this.extra = {};
 		$.ajaxSetup({
 			crossDomain: true,
 			xhrFields: {
@@ -324,6 +325,10 @@ class AppbaseService {
 			apps = prefixArray.concat(postfixArray);
 		}
 		return apps;
+	}
+
+	setExtra(key, value) {
+		this.extra[key] = value;
 	}
 }
 
