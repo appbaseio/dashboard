@@ -139,10 +139,10 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<a className="navbar-brand" href="#">
+						<Link to="/apps" className="navbar-brand" >
 							<img src="../../../assets/images/logo.png" alt="" className="img-responsive"/>
 							<span>Reactive Maps</span>
-						</a>
+						</Link>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul className="nav navbar-nav pull-left">
