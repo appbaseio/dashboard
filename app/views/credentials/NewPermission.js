@@ -6,6 +6,7 @@ export default class NewPermission extends Component {
 		super(props);
 		this.state = {
 			show: false,
+			description: null,
 			selectedType: "read"
 		};
 		this.types = {
@@ -28,6 +29,7 @@ export default class NewPermission extends Component {
 		this.newPermission = this.newPermission.bind(this);
 		this.expand = this.expand.bind(this);
 		this.onSelect = this.onSelect.bind(this);
+		this.updateDescription = this.updateDescription.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.description) {
@@ -37,13 +39,24 @@ export default class NewPermission extends Component {
 		}
 	}
 	newPermission() {
-		this.props.newPermission(this.types[this.state.selectedType]);
+		const request = this.types[this.state.selectedType];
+		if(this.state.description) {
+			request.description = this.state.description;
+		}
+		this.props.newPermission(request);
 		this.expand();
 	}
 	expand() {
 		this.setState({
 			show: !this.state.show
 		});
+	}
+	updateDescription(description) {
+		if (description !== this.state.description) {
+			this.setState({
+				description
+			});
+		}
 	}
 	onSelect(selectedType) {
 		this.setState({
@@ -53,9 +66,16 @@ export default class NewPermission extends Component {
 	renderElement(method) {
 		let element = null;
 		switch(method) {
+			case 'description':
+				element = (
+					<div className="col-xs-12 ad-create-email">
+						<Description updateDescription={this.updateDescription} />
+					</div>
+				);
+			break;
 			case 'buttonGroup':
 					element = (
-						<span className="ad-create-button-group">
+						<span className="ad-create-button-group without-margin col-xs-9">
 							{
 								Object.keys(this.types).map((type, index) => {
 									return (
@@ -86,23 +106,55 @@ export default class NewPermission extends Component {
 						New Credentials
 					</a>
 				</div>
-				<div className="ad-create-expand">
-					{this.renderElement('buttonGroup')}
-					<a className="ad-theme-btn primary" onClick={this.newPermission}>
-						Create Credentials
-					</a>
+				<div className="ad-create-expand row">
+					{this.renderElement('description')}
+					<div className="ad-create-button-group-container">
+						{this.renderElement('buttonGroup')}
+						<span className="col-xs-3">
+							<button className="ad-theme-btn primary ad-create-submit" onClick={this.newPermission}>
+								Create Credentials
+							</button>
+						</span>
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
 
+class Description extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			description: null
+		};
+		this.handleInput = this.handleInput.bind(this);
+	}
+	handleInput(event) {
+		this.setState({
+			description: event.target.value
+		}, this.validateDescription);
+	}
+	validateDescription() {
+		if (this.state.description && this.state.description.trim()) {
+			this.props.updateDescription(this.state.description);
+		} else {
+			this.props.updateDescription(null);
+		}
+	}
+	render() {
+		return (
+			<input type="text" placeholder="Type description.." className="form-control" defaultValue={this.state.description} onChange={this.handleInput} />
+		);
+	}
+};
+
 const PermissionButton = (props) => {
 	const cx = classNames({
 		"active": props.selectedType === props.type
 	});
 	return (
-		<button className={`ad-create-button-group-btn ad-theme-btn ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
+		<button className={`ad-create-button-group-btn ad-theme-btn col-xs-4 ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
 			{props.description}
 		</button>
 	);
