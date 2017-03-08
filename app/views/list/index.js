@@ -8,7 +8,6 @@ import AppCard from './components/AppCard';
 import { appbaseService } from '../../service/AppbaseService';
 import { appListHelper, comman } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
-import FilterByOwner from './components/FilterByOwner';
 import SortBy from './components/SortBy';
 
 const moment = require('moment');
@@ -239,7 +238,6 @@ export default class AppList extends Component {
 							</header>
 							<main className="ad-list-container container">
 								<div className="ad-list-filters row">
-									<FilterByOwner apps={this.state.apps} registerApps={this.registerApps} />
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 								</div>
 								<div className="ad-list-apps row">
