@@ -785,10 +785,13 @@ body {
     display: inline-block;
     margin-right: 10px; }
     .ad-create .ad-create-button-group .ad-theme-btn {
-      border-right: 0; }
+      border-right: 0;
+      outline: none; }
       .ad-create .ad-create-button-group .ad-theme-btn:last-child {
         border-right: 1px solid;
         border-color: #dedede; }
+      .ad-create .ad-create-button-group .ad-theme-btn:hover, .ad-create .ad-create-button-group .ad-theme-btn:focus, .ad-create .ad-create-button-group .ad-theme-btn:active {
+        outline: none; }
     .ad-create .ad-create-button-group.without-margin {
       margin: 0;
       padding-right: 0; }
