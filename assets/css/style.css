@@ -789,18 +789,31 @@ body {
       border: 0;
       border-left: 1px solid #dedede; }
 
-.ad-editable .ad-editable-value {
-  cursor: pointer;
-  margin: 0; }
-
-.ad-editable .ad-editable-edit input {
-  border: 0;
-  border-bottom: 1px solid #dedede;
-  outline: none;
-  box-shadow: none;
-  width: auto; }
-  .ad-editable .ad-editable-edit input:focus {
-    outline: none; }
+.ad-editable-container {
+  height: 2.3rem;
+  margin-bottom: 10px; }
+  .ad-editable-container .ad-editable {
+    width: auto;
+    display: inline-block;
+    border-bottom: 1px dashed;
+    height: 2.3rem; }
+    .ad-editable-container .ad-editable .ad-editable-value {
+      cursor: pointer;
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      height: 2rem; }
+    .ad-editable-container .ad-editable .ad-editable-edit input {
+      border: 0;
+      outline: none;
+      box-shadow: none;
+      width: auto;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      height: 2rem;
+      padding: 0; }
+      .ad-editable-container .ad-editable .ad-editable-edit input:focus {
+        outline: none; }
 
 .ad-create {
   padding: 0; }

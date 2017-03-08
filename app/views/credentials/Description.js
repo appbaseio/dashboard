@@ -84,8 +84,10 @@ export default class Description extends Component {
 	}
 	render() {
 		return (
-			<div className="permission-editable ad-editable col-xs-12">
-				{this.renderElement('input')}
+			<div className="col-xs-12 ad-editable-container">
+				<div className="permission-editable ad-editable">
+					{this.renderElement('input')}
+				</div>
 			</div>
 		);
 	}
