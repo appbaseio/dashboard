@@ -714,7 +714,7 @@ body {
     .permission-card .permission-card-body .permission-card-body-description {
       font-size: 0.9rem;
       color: #B3B3B3; }
-  .permission-card:hover .permission-card-header .permission-delete {
+  .permission-card:hover .permission-card-header .permission-delete, .permission-card.delete-active .permission-card-header .permission-delete {
     opacity: 1;
     -webkit-animation: fadein 0.5s;
     -moz-animation: fadein 0.5s;

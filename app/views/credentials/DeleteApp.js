@@ -13,6 +13,10 @@ export default class DeleteApp extends Component {
 					Are you sure you want to delete <strong>{this.props.appName}</strong>?
 				</p>
 			),
+			validate: {
+				value: this.props.appName,
+				placeholder: 'Type appname...'
+			},
 			buttons: {
 				cancel: 'Cancel',
 				confirm: 'Yes'
@@ -32,7 +36,7 @@ export default class DeleteApp extends Component {
 	}
 	render() {
 		return (
-			<div className="permission-card delete-card col-xs-12">
+			<div className="permission-card delete-card delete-active col-xs-12">
 				<header className="permission-card-header col-xs-12">
 					<summary className="col-xs-10">
 						Delete App
@@ -41,9 +45,10 @@ export default class DeleteApp extends Component {
 						<ConfirmBox
 							info={this.confirmBoxInfo}
 							onConfirm={this.deleteApp}
-							type="danger" >
-							<a className="ad-theme-btn danger-reverse permission-delete animation">
-								<i className="fa fa-trash"></i>
+							type="danger"
+						>
+							<a className="ad-theme-btn danger permission-delete">
+								<i className="fa fa-trash"></i>&nbsp;&nbsp;Delete App
 							</a>
 						</ConfirmBox>
 					</aside>
