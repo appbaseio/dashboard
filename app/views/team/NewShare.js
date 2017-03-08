@@ -105,7 +105,7 @@ export default class NewShare extends Component {
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.expand}>
-						Add Team Member
+						<i className="fa fa-plus"></i>&nbsp;&nbsp;Add Team Member
 					</a>
 				</div>
 				<div className="ad-create-expand row">

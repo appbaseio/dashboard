@@ -770,6 +770,8 @@ body {
   padding: 0; }
   .ad-create .ad-create-collapse {
     display: block; }
+    .ad-create .ad-create-collapse .ad-theme-btn {
+      display: inline-block; }
   .ad-create .ad-create-expand {
     display: none; }
     .ad-create .ad-create-expand .ad-create-email {
@@ -790,6 +792,9 @@ body {
       .ad-create .ad-create-button-group .ad-theme-btn:last-child {
         border-right: 1px solid;
         border-color: #dedede; }
+      .ad-create .ad-create-button-group .ad-theme-btn.active {
+        background: #cedd3d;
+        color: #fff; }
       .ad-create .ad-create-button-group .ad-theme-btn:hover, .ad-create .ad-create-button-group .ad-theme-btn:focus, .ad-create .ad-create-button-group .ad-theme-btn:active {
         outline: none; }
     .ad-create .ad-create-button-group.without-margin {

@@ -103,7 +103,7 @@ export default class NewPermission extends Component {
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.expand}>
-						New Credentials
+						<i className="fa fa-plus"></i>&nbsp;&nbsp;New Credentials
 					</a>
 				</div>
 				<div className="ad-create-expand row">
@@ -112,7 +112,7 @@ export default class NewPermission extends Component {
 						{this.renderElement('buttonGroup')}
 						<span className="col-xs-3">
 							<button className="ad-theme-btn primary ad-create-submit" onClick={this.newPermission}>
-								Create Credentials
+								Create
 							</button>
 						</span>
 					</div>
