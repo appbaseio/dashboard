@@ -9,8 +9,8 @@ import { StripeSetup, checkoutCb} from "../../shared/utils/StripeSetup";
 export default class Billing extends Component {
 	constructor(props, context) {
 		super(props);
-		this.stripeKey = 'pk_test_s0n1Ls5xPnChuOdxjcYkBQc6';
-		// this.stripeKey = 'pk_XCCvCuWKPx07ODJUXqFr7K4cdHvAS';
+		// this.stripeKey = 'pk_test_s0n1Ls5xPnChuOdxjcYkBQc6';
+		this.stripeKey = 'pk_XCCvCuWKPx07ODJUXqFr7K4cdHvAS';
 		var localBillingMode = localStorage.getItem('billingMode');
 		this.allowedPlan = ['free', 'bootstrap', 'growth', 'dedicated'];
 		this.modeText = {

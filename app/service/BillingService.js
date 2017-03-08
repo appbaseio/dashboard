@@ -4,8 +4,8 @@ import { $http } from "../shared/helper";
 class BillingService {
 	constructor() {
 		this.address = 'https://accapi.appbase.io/';
-		// this.billingAddress = 'https://transactions.appbase.io';
-		this.billingAddress = 'http://127.0.0.1:8080';
+		this.billingAddress = 'https://transactions.appbase.io';
+		// this.billingAddress = 'http://127.0.0.1:8080';
 		this.planLimits = {
 			'free': {
 				action: 100000,
