@@ -44,6 +44,12 @@ export default class Credentials extends Component {
 				this.setState({ info: this.info });
 			}
 		});
+		appbaseService.getAppInfo(this.appId).then((data) => {
+			this.info.appInfo = data.body;
+			if(!this.stopUpdate) {
+				this.setState({ info: this.info });
+			}
+		});
 	}
 
 	newPermission(request) {
@@ -67,6 +73,21 @@ export default class Credentials extends Component {
 							/>
 						);
 					})
+				}
+			break;
+			case 'deleteApp':
+				if(this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email) {
+					element = (
+						<footer className="ad-detail-page-body other-page-body col-xs-12">
+							<div className="page-body col-xs-12">
+								<section className="ad-detail-page-body-card">
+									<main className="ad-detail-page-body-card-body row">
+										<DeleteApp appName={this.appName} appId={this.appId} />
+									</main>
+								</section>
+							</div>
+						</footer>
+					);
 				}
 			break;
 		}
@@ -103,15 +124,7 @@ export default class Credentials extends Component {
 							</section>
 						</div>
 					</main>
-					<footer className="ad-detail-page-body other-page-body col-xs-12">
-						<div className="page-body col-xs-12">
-							<section className="ad-detail-page-body-card">
-								<main className="ad-detail-page-body-card-body row">
-									<DeleteApp appName={this.appName} appId={this.appId} />
-								</main>
-							</section>
-						</div>
-					</footer>
+					{this.renderElement('deleteApp')}
 				</div>
 			</AppPage>
 		);
