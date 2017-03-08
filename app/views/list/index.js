@@ -56,7 +56,11 @@ export default class AppList extends Component {
 
 	componentWillMount() {
 		this.stopUpdate = false;
-		this.initialize();
+		if(appbaseService.userInfo) {
+			this.initialize();
+		} else {
+			browserHistory.push('/');
+		}
 	}
 
 	deleteApp(app) {
@@ -214,21 +218,28 @@ export default class AppList extends Component {
 	render() {
 		return (
 			<div className="ad-list">
-				<header className="ad-list-header row">
-					<div className="container">
-						<AppIntro name={appbaseService.userInfo.body.details.given_name} />
-						<AppTutorial />
-						<NewApp
-							createApp={this.createApp} 
-							apps={this.state.apps}
-							createAppLoading={this.state.createAppLoading}
-							createAppError={this.state.createAppError}
-							clearInput={this.state.clearInput} />
-					</div>
-				</header>
-				<main className="ad-list-apps container">
-					{this.renderElement('apps')}
-				</main>
+				{
+					appbaseService.userInfo ? 
+					(
+						<div>
+							<header className="ad-list-header row">
+								<div className="container">
+									<AppIntro name={appbaseService.userInfo.body.details.given_name} />
+									<AppTutorial />
+									<NewApp
+										createApp={this.createApp} 
+										apps={this.state.apps}
+										createAppLoading={this.state.createAppLoading}
+										createAppError={this.state.createAppError}
+										clearInput={this.state.clearInput} />
+								</div>
+							</header>
+							<main className="ad-list-apps container">
+								{this.renderElement('apps')}
+							</main>
+						</div>
+					) : null
+				}
 			</div>
 		);
 	}
