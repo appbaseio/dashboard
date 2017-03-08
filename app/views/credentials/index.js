@@ -3,6 +3,7 @@ import { appbaseService } from '../../service/AppbaseService';
 import PermissionCard from './PermissionCard';
 import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';
+import DeleteApp from './DeleteApp';
 
 export default class Credentials extends Component {
 	constructor(props, context) {
@@ -81,7 +82,7 @@ export default class Credentials extends Component {
 					appId: this.appId
 				}}
 			>
-				<div className="ad-detail-page ad-dashboard row">
+				<div id="permission-page" className="ad-detail-page ad-dashboard row">
 					<header className="ad-detail-page-header col-xs-12">
 						<h2 className="ad-detail-page-title">API Credentials</h2>
 						<p>Credentials are required for accessing app data.</p>
@@ -98,6 +99,15 @@ export default class Credentials extends Component {
 							</section>
 						</div>
 					</main>
+					<footer className="ad-detail-page-body other-page-body col-xs-12">
+						<div className="page-body col-xs-12">
+							<section className="ad-detail-page-body-card">
+								<main className="ad-detail-page-body-card-body row">
+									<DeleteApp appName={this.appName} appId={this.appId} />
+								</main>
+							</section>
+						</div>
+					</footer>
 				</div>
 			</AppPage>
 		);

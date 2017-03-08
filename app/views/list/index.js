@@ -63,7 +63,7 @@ export default class AppList extends Component {
 			this.initialize();
 		}).catch((e) => {
 			console.log(e);
-		})
+		});
 	}
 
 	componentWillUnmount() {

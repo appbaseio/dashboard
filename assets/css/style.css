@@ -682,6 +682,8 @@ body {
         font-size: 1.5rem; }
         .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title.with-border {
           border-bottom: 1px solid #dedede; }
+    .ad-detail-page .ad-detail-page-body.other-page-body {
+      padding-top: 0; }
 
 .permission-card {
   padding: 15px; }
@@ -785,6 +787,9 @@ body {
     width: 100%;
     text-align: center;
     float: left; }
+
+#permission-page .ad-detail-page-body-card {
+  margin-bottom: 0; }
 
 .modal .modal-header {
   border: 0;
