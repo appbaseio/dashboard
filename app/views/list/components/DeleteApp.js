@@ -13,6 +13,10 @@ export default class DeleteApp extends Component {
 					Are you sure you want to delete <strong>{this.props.app.name}</strong>?
 				</p>
 			),
+			validate: {
+				value: this.props.app.name,
+				placeholder: 'Type appname...'
+			},
 			buttons: {
 				cancel: 'Cancel',
 				confirm: 'Yes'

@@ -470,19 +470,17 @@ body {
       height: 20px;
       margin: 0;
       color: #999; }
-    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container {
-      position: relative;
-      padding-right: 30px; }
-      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
-        margin: 0;
-        letter-spacing: 0.02em;
-        color: #666;
-        font-size: 22px;
-        font-family: "Source Sans Pro Semi Bold"; }
-      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
-        position: absolute;
-        right: 0;
-        top: 0; }
+      .ad-list .ad-list-app .ad-list-app-header .time i {
+        padding-right: 2px; }
+    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
+      display: inline-block;
+      margin: 0;
+      letter-spacing: 0.02em;
+      color: #666;
+      font-size: 22px;
+      font-family: "Source Sans Pro Semi Bold"; }
+    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
+      padding-right: 5px; }
   .ad-list .ad-list-app aside.options {
     width: 25px;
     height: 100%;

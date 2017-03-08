@@ -9,11 +9,16 @@ export default class SortBy extends Component {
 		this.state = {
 			value: appbaseService.SortBy
 		};
+		this.options = {
+			lastActiveDate: "Last activity",
+			"info.appStats.records": "Records",
+			"info.appStats.calls": "Api Calls"
+		};
 	}
 
-	handleChange(event) {
+	handleChange(value) {
 		this.setState({
-			value: event.target.value
+			value
 		}, this.applySort);
 	}
 
@@ -23,13 +28,18 @@ export default class SortBy extends Component {
 
 	render() {
 		return (
-			<div className="col-xs-4 col-sm-3 dropdown dropdown-sortby">
-				<select defaultValue={this.state.value} onChange={this.handleChange} className="form-control">
-					<option value="lastActiveDate">Last activity</option>
-					<option value="info.appStats.records">Records</option>
-					<option value="info.appStats.calls">Api Calls</option>
-				</select>
-			</div>
+			<span className="ad-dropdown dropdown">
+				<button className="ad-theme-btn primary dropdown-toggle" type="button" id="sortby-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					Sort by {this.options[this.state.value] || this.options["lastActiveDate"]}&nbsp;&nbsp;<span className="caret"></span>
+				</button>
+				<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="sortby-menu">
+					{
+						Object.keys(this.options).map((item) => (
+							<li key={item}><a onClick={() => this.handleChange(item)}>{this.options[item]}</a></li>
+						))
+					}
+				</ul>
+			</span>
 		);
 	}
 

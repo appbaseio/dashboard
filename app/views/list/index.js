@@ -164,11 +164,11 @@ export default class AppList extends Component {
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
 								<header className="ad-list-app-header">
 									<div className="ad-list-title-container">
-										<h3 className="title">{app.name}</h3>
 										<AppOwner app={app} />
+										<h3 className="title">{app.name}</h3>
 									</div>
 									<p className="time">
-										{this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : " "}
+										<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? `Last activity ${this.timeAgo(app)}` : ""}
 									</p>
 								</header>
 								<div className="description">
@@ -237,7 +237,7 @@ export default class AppList extends Component {
 								</div>
 							</header>
 							<main className="ad-list-container container">
-								<div className="ad-list-filters row">
+								<div className="ad-list-filters col-xs-12 p-0 text-right">
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 								</div>
 								<div className="ad-list-apps row">
