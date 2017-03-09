@@ -94,8 +94,11 @@ export default class Browser extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-						<header className="ad-detail-page-header col-xs-12">
+						<header className="ad-detail-page-header header-inline-summary col-xs-12">
 							<h2 className="ad-detail-page-title">Data Browser</h2>
+							<p>
+								Check the app data over here.
+							</p>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
 							<div className="plugin-container">

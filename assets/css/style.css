@@ -645,7 +645,7 @@ body {
   animation-delay: .2s; }
 
 .ad-loading {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   border: 1px solid #CDDC39;
   overflow: hidden;
   display: flex;
@@ -708,6 +708,9 @@ body {
       float: right;
       text-align: right;
       padding: 0; }
+    .ad-detail-page .ad-detail-page-header.header-inline-summary p {
+      display: inline;
+      padding-left: 10px; }
   .ad-detail-page .ad-detail-page-body {
     padding: 15px; }
     .ad-detail-page .ad-detail-page-body > [class*="col-"] {
