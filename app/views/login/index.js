@@ -50,9 +50,10 @@ export default class Login extends Component {
 						</div>
 					</Modal.Header>
 					<Modal.Body>
-						<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
-						<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
-						<i className="fa hidden fa-refresh fa-spin fa-2x" id="login-loading"></i>
+						<div>
+							<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
+							<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
+						</div>
 						<div className="mt25">
 							<p className="no-margin">
 								Having issues logging in? Write to us&nbsp;

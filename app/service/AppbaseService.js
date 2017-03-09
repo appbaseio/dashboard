@@ -125,7 +125,24 @@ class AppbaseService {
 							[appName]: id
 						}
 					}
-					resolve(result);
+					this.getMetrics(id).then((data) => {
+						result.metrics = data;
+						cb();
+					}).catch((e) => {
+						resolve(result);
+					});
+					this.getPermission(id).then((permissionData) => {
+						result.permissions = permissionData;
+						cb();
+					}).catch((e) => {
+						resolve(result);
+					});
+
+					const cb = () => {
+						if(result.metrics && result.permissions) {
+							resolve(result);
+						}
+					}
 				},
 				error: (error) => {
 					reject(error);

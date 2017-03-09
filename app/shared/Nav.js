@@ -1,18 +1,23 @@
 import React,{Component} from 'react';
 import { Link, browserHistory } from 'react-router';
-
+import classNames from 'classnames';
+import { getConfig } from '../config';
 import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter, appListHelper } from './helper';
 import { AppOwner } from './SharedComponents';
+
+const defaultImg = "../../../assets/images/userImg.png";
 
 export default class Nav extends Component {
 
 	constructor(props) {
 		super(props);
+		this.config = getConfig();
 		this.state = {
 			activeApp: null,
 			currentView: null,
-			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : []
+			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : [],
+			userImg: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details ? appbaseService.userInfo.body.details.picture : defaultImg
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -21,7 +26,7 @@ export default class Nav extends Component {
 		};
 		this.links = [{
 			label: 'Document',
-			link: 'https://opensource.appbase.io/reactivemaps-manual',
+			link: this.config.document,
 			type: 'external'
 		}, {
 			label: 'Tutorial',
@@ -62,6 +67,12 @@ export default class Nav extends Component {
 				console.log(e);
 			});
 		}
+	}
+
+	onUserImgFailed() {
+		this.setState({
+			userImg: defaultImg
+		});
 	}
 
 	renderElement(ele) {
@@ -129,12 +140,15 @@ export default class Nav extends Component {
 				if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.details) {
 					generatedEle = (
 						<li>
-							<button className="user-img" onClick={()=>this.logout()}>
-								<span className="img-container">
-									<img src={appbaseService.userInfo.body.details.picture} className="img-responsive" alt={appbaseService.userInfo.body.details.name} />
-									<div className="close"><i className="fa fa-times"></i></div>
-								</span>
-							</button>
+							<a className="user-img-container">
+								<span>{appbaseService.userInfo.body.details.name}</span>
+								<button className="user-img" onClick={()=>this.logout()}>
+									<span className="img-container">
+										<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
+										<div className="close"><i className="fa fa-times"></i></div>
+									</span>
+								</button>
+							</a>
 						</li>
 					);
 				}
@@ -148,6 +162,9 @@ export default class Nav extends Component {
 	}
 
 	render() {
+		const cx = classNames({
+			"brand-with-text": this.config.logoText
+		});
 		return (
 			<nav className="navbar navbar-default">
 				<div className="container-fluid">
@@ -158,13 +175,15 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<Link to="/apps" className="navbar-brand" >
-							<img src="../../../assets/images/logo.png" alt="" className="img-responsive"/>
-							<span>Reactive Maps</span>
+						<Link to="/apps" className={`navbar-brand ${cx}`}>
+							<img src={this.config.logo} alt="" className="img-responsive"/>
+							{
+								this.config.logoText ? (<span>Reactive Maps</span>) : null
+							}
 						</Link>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul className="nav navbar-nav pull-left">
+						<ul className="nav navbar-nav nav-app pull-left">
 							{this.renderElement('appLink')}
 							{this.renderElement('currentApp')}
 						</ul>

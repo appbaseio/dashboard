@@ -11,6 +11,8 @@ import Team from './views/team';
 import Login from './views/login';
 import Tutorial from './views/tutorial';
 import Browser from './views/browser';
+import Gem from './views/gem';
+import Mirage from './views/mirage';
 import Billing from './views/billing';
 import * as helper from './shared/helper';
 
@@ -46,6 +48,12 @@ render((
 			/>
 			<Route path="browser/:appId" component={Browser} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
+			/>
+			<Route path="gem/:appId" component={Gem} {...appChangesEvent} 
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'gem')}
+			/>
+			<Route path="mirage/:appId" component={Mirage} {...appChangesEvent} 
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mirage')}
 			/>
 			<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'credentials')}

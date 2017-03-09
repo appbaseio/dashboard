@@ -1,14 +1,15 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router';
-
 import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
 import { eventEmitter } from './helper';
+import { getConfig } from '../config';
 
 export default class Sidebar extends Component {
 
 	constructor(props) {
 		super(props);
+		this.config = getConfig();
 		this.state = {
 			activeApp: this.props.appName,
 			currentView: null
@@ -25,6 +26,18 @@ export default class Sidebar extends Component {
 			link: `/browser/`,
 			type: 'internal',
 			name: 'browser',
+			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
+		}, {
+			label: 'Gem',
+			link: `/gem/`,
+			type: 'internal',
+			name: 'gem',
+			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
+		},{
+			label: 'Mirage',
+			link: `/mirage/`,
+			type: 'internal',
+			name: 'mirage',
 			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
 		}, {
 			label: 'Credentials',
@@ -64,7 +77,8 @@ export default class Sidebar extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'links':
-				generatedEle = this.links.map((item, index) => {
+				const filteredList = this.links.filter((item) => this.config.appDashboard.indexOf(item.name) > -1);
+				generatedEle = filteredList.map((item, index) => {
 					const cx = classNames({
 						"active": this.props.currentView === item.name
 					});
