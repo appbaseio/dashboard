@@ -129,12 +129,15 @@ export default class Nav extends Component {
 				if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.details) {
 					generatedEle = (
 						<li>
-							<button className="user-img" onClick={()=>this.logout()}>
-								<span className="img-container">
-									<img src={appbaseService.userInfo.body.details.picture} className="img-responsive" alt={appbaseService.userInfo.body.details.name} />
-									<div className="close"><i className="fa fa-times"></i></div>
-								</span>
-							</button>
+							<a className="user-img-container">
+								<span>{appbaseService.userInfo.body.details.name}</span>
+								<button className="user-img" onClick={()=>this.logout()}>
+									<span className="img-container">
+										<img src={appbaseService.userInfo.body.details.picture} className="img-responsive" alt={appbaseService.userInfo.body.details.name} />
+										<div className="close"><i className="fa fa-times"></i></div>
+									</span>
+								</button>
+							</a>
 						</li>
 					);
 				}
