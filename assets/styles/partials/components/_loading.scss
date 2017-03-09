@@ -12,7 +12,8 @@
 	animation-delay: .2s
 }
 .ad-loading {
-	background: rgba($primary-color, 0.8);
+	background: rgba(0, 0, 0, 0.8);
+	border: 1px solid $primary-color;
 	overflow: hidden;
 	display: flex;
 	width: 100%;
@@ -22,6 +23,9 @@
 	left: 0;
 	align-items: center;
 	justify-content: center;
+	.ball-clip-rotate-multiple>div {
+		border-color : transparent $primary-color;
+	}
 }
 @keyframes shift-rightwards {
 	0% {

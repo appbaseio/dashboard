@@ -3,16 +3,38 @@ import { Link } from 'react-router';
 import { appbaseService } from '../../service/AppbaseService';
 import { urlShare } from '../../service/tutorialService/UrlShare';
 import AppPage from '../../shared/AppPage';
+const $ = require('jquery');
 
 export default class Browser extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			loadActive: true
+		};
 	}
 
 	componentWillMount() {
 		this.initialize(this.props);
+	}
+
+	componentDidMount() {
+		this.setPageHeight();
+	}
+
+	componentWillUnmount() {
+		$(window).unbind("resize");
+	}
+
+	setPageHeight() {
+		const setPage = () => {
+			const bodyHeight = $('.ad-detail').height() - $('.ad-detail-page-header').outerHeight();
+			$(this.pageRef).css('height', bodyHeight);
+		}
+		setTimeout(setPage, 1000);
+		$(window).resize(() => {
+			setTimeout(setPage, 1000);
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -26,7 +48,8 @@ export default class Browser extends Component {
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
 		this.plugin = 'dejavu';
 		this.setState({
-			[this.plugin]: null
+			[this.plugin]: null,
+			loadActive: true
 		}, this.getPermission);
 	}
 
@@ -55,18 +78,10 @@ export default class Browser extends Component {
 		});
 	}
 
-	renderElement(ele) {
-		let generatedEle = null;
-		switch (ele) {
-			case 'iframe':
-				if (this.state[this.plugin]) {
-					generatedEle = (<iframe src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>);
-				} else {
-					generatedEle = (<div className="loadingBar"></div>);
-				}
-				break;
-		}
-		return generatedEle;
+	onIfreamLoad() {
+		this.setState({
+			loadActive: false
+		});
 	}
 
 	render() {
@@ -78,8 +93,23 @@ export default class Browser extends Component {
 					appId: this.appId
 				}}
 			>
-				<div className="plugin-container">
-					{this.renderElement('iframe')}
+				<div className="ad-detail-page ad-dashboard row">
+						<header className="ad-detail-page-header header-inline-summary col-xs-12">
+							<h2 className="ad-detail-page-title">Data Browser</h2>
+							<p>
+								Check the app data over here.
+							</p>
+						</header>
+						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
+							<div className="plugin-container">
+								{this.state.loadActive ? (<div className="loadingBar"></div>) : null}
+								{
+									this.state[this.plugin] ? (
+										<iframe onLoad={() => this.onIfreamLoad()} src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>
+									) : null
+								}
+							</div>
+						</main>
 				</div>
 			</AppPage>
 		);

@@ -15,7 +15,7 @@ const moment = require('moment');
 
 const AppIntro = (props) => {
 	return (
-		<AppCard>
+		<AppCard {...props}>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
 				This is your dashboard. Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
@@ -27,7 +27,7 @@ const AppIntro = (props) => {
 
 const AppTutorial = (props) => {
 	return (
-		<AppCard>
+		<AppCard {...props}>
 			<h3 className="title">Quick Links</h3>
 			<ul>
 				<li><a href="#">Documentation</a></li>
@@ -146,7 +146,7 @@ export default class AppList extends Component {
 		this.setState({
 			createAppLoading: true
 		});
-		appListHelper.createApp(appName, apps).then((data) => {
+		appListHelper.createApp(appName, this.state.apps).then((data) => {
 			this.setState(data);
 		}).catch((e) => {
 			this.setState(e);
@@ -234,8 +234,8 @@ export default class AppList extends Component {
 						<div>
 							<header className="ad-list-header row">
 								<div className="container">
-									<AppIntro name={appbaseService.userInfo.body.details.given_name} />
-									<AppTutorial />
+									<AppIntro setClassName="hidden-xs" name={appbaseService.userInfo.body.details.given_name} />
+									<AppTutorial setClassName="hidden-xs hidden-sm" />
 									<NewApp
 										createApp={this.createApp} 
 										apps={this.state.apps}

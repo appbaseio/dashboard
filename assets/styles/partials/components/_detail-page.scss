@@ -17,6 +17,12 @@
 			text-align: right;
 			padding: 0;
 		}
+		&.header-inline-summary {
+			p {
+				display: inline;
+				padding-left: 10px;
+			}
+		}
 	}
 	.ad-detail-page-body {
 		padding: 15px;

@@ -139,6 +139,7 @@
 	.progress-container {
 		position: relative;
 		padding-left: 48px;
+		min-height: 40px;
 		.progress-wrapper {
 			position: absolute;
 			left: 0;
@@ -162,6 +163,9 @@
 			font-size: 12px;
 			letter-spacing: 0.02em;
 			padding: 0 0 5px 0;
+		}
+		@media screen and (max-width: 768px) {
+			margin-bottom: 15px;
 		}
 	}
 }
