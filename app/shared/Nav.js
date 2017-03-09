@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Link, browserHistory } from 'react-router';
-
+import classNames from 'classnames';
+import { getConfig } from '../config';
 import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter, appListHelper } from './helper';
 import { AppOwner } from './SharedComponents';
@@ -11,6 +12,7 @@ export default class Nav extends Component {
 
 	constructor(props) {
 		super(props);
+		this.config = getConfig();
 		this.state = {
 			activeApp: null,
 			currentView: null,
@@ -24,7 +26,7 @@ export default class Nav extends Component {
 		};
 		this.links = [{
 			label: 'Document',
-			link: 'https://opensource.appbase.io/reactivemaps-manual',
+			link: this.config.document,
 			type: 'external'
 		}, {
 			label: 'Tutorial',
@@ -160,6 +162,9 @@ export default class Nav extends Component {
 	}
 
 	render() {
+		const cx = classNames({
+			"brand-with-text": this.config.logoText
+		});
 		return (
 			<nav className="navbar navbar-default">
 				<div className="container-fluid">
@@ -170,9 +175,11 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<Link to="/apps" className="navbar-brand" >
-							<img src="../../../assets/images/logo.png" alt="" className="img-responsive"/>
-							<span>Reactive Maps</span>
+						<Link to="/apps" className={`navbar-brand ${cx}`}>
+							<img src={this.config.logo} alt="" className="img-responsive"/>
+							{
+								this.config.logoText ? (<span>Reactive Maps</span>) : null
+							}
 						</Link>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

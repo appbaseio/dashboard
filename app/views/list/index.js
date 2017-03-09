@@ -10,6 +10,7 @@ import { appListHelper, common } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
 import Upgrade from './components/Upgrade';
+import { getConfig } from '../../config';
 
 const moment = require('moment');
 
@@ -54,6 +55,7 @@ export default class AppList extends Component {
 		this.createApp = this.createApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);
 		this.registerApps = this.registerApps.bind(this);
+		this.config = getConfig();
 	}
 
 	componentWillMount() {
@@ -171,7 +173,7 @@ export default class AppList extends Component {
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
 								<span className="ad-list-app-bg-container">
-									<i className="fa fa-globe ad-list-app-bg"></i>
+									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>
 								<main className="ad-list-app-content">
 									<header className="ad-list-app-header">
