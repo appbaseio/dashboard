@@ -543,7 +543,8 @@ body {
 
 .ad-metrics-summary .progress-container {
   position: relative;
-  padding-left: 48px; }
+  padding-left: 48px;
+  min-height: 40px; }
   .ad-metrics-summary .progress-container .progress-wrapper {
     position: absolute;
     left: 0;
@@ -565,6 +566,9 @@ body {
     font-size: 12px;
     letter-spacing: 0.02em;
     padding: 0 0 5px 0; }
+  @media screen and (max-width: 768px) {
+    .ad-metrics-summary .progress-container {
+      margin-bottom: 15px; } }
 
 .ad-detail {
   position: relative;

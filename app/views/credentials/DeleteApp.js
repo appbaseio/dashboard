@@ -38,10 +38,10 @@ export default class DeleteApp extends Component {
 		return (
 			<div className="permission-card delete-card delete-active col-xs-12">
 				<header className="permission-card-header col-xs-12">
-					<summary className="col-xs-10">
+					<summary className="col-xs-12 col-sm-6">
 						Delete App
 					</summary>
-					<aside className="col-xs-2 text-right pull-right">
+					<aside className="col-xs-12 col-sm-6 text-right pull-right">
 						<ConfirmBox
 							info={this.confirmBoxInfo}
 							onConfirm={this.deleteApp}

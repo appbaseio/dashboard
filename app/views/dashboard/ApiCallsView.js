@@ -31,7 +31,7 @@ export default class ApiCallsView extends Component {
 								{
 									this.props.plan ? (
 										<div>
-											<strong>{common.compressNumber(this.props.appCount.action.count)}</strong>/
+											<strong>{common.compressNumber(this.props.appCount.action.count)}</strong>&nbsp;/&nbsp;
 											<span>{common.compressNumber(billingService.planLimits[this.props.plan].action)}</span>
 										</div>
 									) : null
@@ -49,7 +49,7 @@ export default class ApiCallsView extends Component {
 								{
 									this.props.plan ? (
 										<div>
-											<strong>{common.compressNumber(this.props.appCount.records.count)}</strong> /
+											<strong>{common.compressNumber(this.props.appCount.records.count)}</strong>&nbsp;/&nbsp;
 											<span>{common.compressNumber(billingService.planLimits[this.props.plan].records)}</span>
 										</div>
 									) : null
