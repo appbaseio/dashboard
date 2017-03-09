@@ -1,4 +1,6 @@
-# Appbase Dashboard
+# Appbase.io Universal Dashboard
+
+A universal dashboard app for Appbase.io, Reactive Maps, Reactive Search, et al.
 
 ### For development
 
