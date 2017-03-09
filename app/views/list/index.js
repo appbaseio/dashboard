@@ -146,7 +146,7 @@ export default class AppList extends Component {
 		this.setState({
 			createAppLoading: true
 		});
-		appListHelper.createApp(appName, apps).then((data) => {
+		appListHelper.createApp(appName, this.state.apps).then((data) => {
 			this.setState(data);
 		}).catch((e) => {
 			this.setState(e);

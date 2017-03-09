@@ -17,6 +17,7 @@ var files = {
 			'node_modules/toastr/build/toastr.min.css',
 			'node_modules/appbase-onboarding/dist/css/vendor.min.css',
 			'node_modules/appbase-onboarding/dist/css/style.min.css',
+			'node_modules/loaders.css/loaders.min.css',
 			'assets/vendor/hljs.css'
 		],
 		custom: ['assets/css/*.css'],

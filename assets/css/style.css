@@ -645,7 +645,8 @@ body {
   animation-delay: .2s; }
 
 .ad-loading {
-  background: rgba(205, 220, 57, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #CDDC39;
   overflow: hidden;
   display: flex;
   width: 100%;
@@ -655,6 +656,8 @@ body {
   left: 0;
   align-items: center;
   justify-content: center; }
+  .ad-loading .ball-clip-rotate-multiple > div {
+    border-color: transparent #CDDC39; }
 
 @keyframes shift-rightwards {
   0% {
