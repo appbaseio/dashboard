@@ -519,6 +519,16 @@ body {
   border-bottom-right-radius: 0.375rem;
   -webkit-transition: all .3s ease;
   transition: all .3s ease; }
+  .ad-list .ad-list-app .ad-list-app-content {
+    z-index: 2; }
+  .ad-list .ad-list-app .ad-list-app-bg-container {
+    z-index: 1;
+    position: absolute;
+    color: #e3eb90;
+    font-size: 130px;
+    opacity: .5;
+    top: -48px;
+    right: -20px; }
   .ad-list .ad-list-app .ad-list-app-header {
     margin: 0 0 25px; }
     .ad-list .ad-list-app .ad-list-app-header .time {
@@ -546,7 +556,8 @@ body {
     text-align: center;
     border-left: #ddd;
     -webkit-transition: all .3s ease;
-    transition: all .3s ease; }
+    transition: all .3s ease;
+    z-index: 3; }
     .ad-list .ad-list-app aside.options .options-item {
       padding: 5px 0;
       border-bottom: 1px solid #ddd;

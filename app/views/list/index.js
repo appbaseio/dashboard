@@ -170,52 +170,57 @@ export default class AppList extends Component {
 					return (
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
-								<header className="ad-list-app-header">
-									<div className="ad-list-title-container">
-										<AppOwner app={app} />
-										<h3 className="title">{app.name}</h3>
-									</div>
-									<p className="time">
-										<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? this.timeAgo(app) : ""}
-									</p>
-								</header>
-								<div className="description">
-									<div className="row clearfix ad-metrics-summary">
-										<div className="col-xs-6">
-											<div className="col-xs-12 p-0 progress-container">
-												<span className="progress-wrapper">
-													<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-												</span>
-												<div className="progress-text">
-													<div className="sub-title">
-														Api calls
+								<span className="ad-list-app-bg-container">
+									<i className="fa fa-globe ad-list-app-bg"></i>
+								</span>
+								<main className="ad-list-app-content">
+									<header className="ad-list-app-header">
+										<div className="ad-list-title-container">
+											<AppOwner app={app} />
+											<h3 className="title">{app.name}</h3>
+										</div>
+										<p className="time">
+											<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? this.timeAgo(app) : ""}
+										</p>
+									</header>
+									<div className="description">
+										<div className="row clearfix ad-metrics-summary">
+											<div className="col-xs-6">
+												<div className="col-xs-12 p-0 progress-container">
+													<span className="progress-wrapper">
+														<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+													</span>
+													<div className="progress-text">
+														<div className="sub-title">
+															Api calls
+														</div>
+														<div>
+															<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
+															<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
+														</div>
 													</div>
-													<div>
-														<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
-														<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
+												</div>
+											</div>
+											<div className="col-xs-6">
+												<div className="col-xs-12 p-0 progress-container">
+													<span className="progress-wrapper">
+														<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+													</span>
+													<div className="progress-text">
+														<div className="sub-title">
+															Records
+														</div>
+														<div>
+															<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
+															<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div className="col-xs-6">
-											<div className="col-xs-12 p-0 progress-container">
-												<span className="progress-wrapper">
-													<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
-												</span>
-												<div className="progress-text">
-													<div className="sub-title">
-														Records
-													</div>
-													<div>
-														<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
-														<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
-													</div>
-												</div>
-											</div>
-										</div>
 									</div>
-								</div>
-								<ActionButtons app={app} deleteApp={this.deleteApp} />
+									<ActionButtons app={app} deleteApp={this.deleteApp} />
+								</main>
 							</div>
 						</AppCard>
 					);

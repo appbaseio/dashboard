@@ -136,7 +136,9 @@ class AppListHelper {
 			appbaseService.createApp(appName).then((data) => {
 				apps.unshift({
 					name: appName,
-					id: data
+					id: data.body.id,
+					lastAciveOn: new Date(),
+					lastActiveDate: (new Date()).getTime()
 				});
 				resolve({
 					createAppLoading: false,

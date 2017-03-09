@@ -67,6 +67,18 @@
 		border-bottom-right-radius: 0.375rem;
 		-webkit-transition: all .3s ease;
 		transition: all .3s ease;
+		.ad-list-app-content {
+			z-index: 2;
+		}
+		.ad-list-app-bg-container {
+			z-index: 1;
+			position: absolute;
+			color: lighten($primary-color, 20%);
+			font-size: 130px;
+			opacity: .5;
+			top: -48px;
+			right: -20px;
+		}
 		.ad-list-app-header {
 			margin: 0 0 25px;
 			.time {
@@ -102,6 +114,7 @@
 			border-left: #ddd;
 			-webkit-transition: all .3s ease;
 			transition: all .3s ease;
+			z-index: 3;
 			.options-item {
 				padding: 5px 0;
 				border-bottom: 1px solid #ddd;
