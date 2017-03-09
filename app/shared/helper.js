@@ -134,7 +134,7 @@ class AppListHelper {
 	createApp(appName, apps) {
 		return new Promise((resolve, reject) => {
 			appbaseService.createApp(appName).then((data) => {
-				apps.push({
+				apps.unshift({
 					name: appName,
 					id: data
 				});

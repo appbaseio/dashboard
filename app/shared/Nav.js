@@ -5,6 +5,8 @@ import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter, appListHelper } from './helper';
 import { AppOwner } from './SharedComponents';
 
+const defaultImg = "../../../assets/images/userImg.png";
+
 export default class Nav extends Component {
 
 	constructor(props) {
@@ -12,7 +14,8 @@ export default class Nav extends Component {
 		this.state = {
 			activeApp: null,
 			currentView: null,
-			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : []
+			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : [],
+			userImg: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details ? appbaseService.userInfo.body.details.picture : defaultImg
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -62,6 +65,12 @@ export default class Nav extends Component {
 				console.log(e);
 			});
 		}
+	}
+
+	onUserImgFailed() {
+		this.setState({
+			userImg: defaultImg
+		});
 	}
 
 	renderElement(ele) {
@@ -133,7 +142,7 @@ export default class Nav extends Component {
 								<span>{appbaseService.userInfo.body.details.name}</span>
 								<button className="user-img" onClick={()=>this.logout()}>
 									<span className="img-container">
-										<img src={appbaseService.userInfo.body.details.picture} className="img-responsive" alt={appbaseService.userInfo.body.details.name} />
+										<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
 										<div className="close"><i className="fa fa-times"></i></div>
 									</span>
 								</button>
@@ -167,7 +176,7 @@ export default class Nav extends Component {
 						</Link>
 					</div>
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul className="nav navbar-nav pull-left">
+						<ul className="nav navbar-nav nav-app pull-left">
 							{this.renderElement('appLink')}
 							{this.renderElement('currentApp')}
 						</ul>
