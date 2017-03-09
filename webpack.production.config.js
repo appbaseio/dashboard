@@ -1,8 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 
-const debug = process.env.NODE_ENV !== "production";
-
 module.exports = {
 	entry: path.join(__dirname, 'app/routes.js'),
 	output: {
@@ -10,7 +8,7 @@ module.exports = {
 		publicPath: '/dist/js/',
 		filename: 'app.js'
 	},
-	devtool: 'inline-sourcemap',
+	devtool: null,
 	devServer: {
 		inline: true,
 		port: 8000,
@@ -37,5 +35,16 @@ module.exports = {
 			{ test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
 			{ test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
 		]
-	}
+	},
+	plugins: [
+		new webpack.optimize.DedupePlugin(),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.optimize.UglifyJsPlugin({
+			compress: { warnings: false },
+			mangle: true,
+			sourcemap: false,
+			beautify: false,
+			dead_code: true
+		}),
+	]
 };
