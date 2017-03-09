@@ -8,7 +8,9 @@ export default class Browser extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			loadActive: true
+		};
 	}
 
 	componentWillMount() {
@@ -26,7 +28,8 @@ export default class Browser extends Component {
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
 		this.plugin = 'dejavu';
 		this.setState({
-			[this.plugin]: null
+			[this.plugin]: null,
+			loadActive: true
 		}, this.getPermission);
 	}
 
@@ -55,16 +58,20 @@ export default class Browser extends Component {
 		});
 	}
 
+	onIfreamLoad() {
+		this.setState({
+			loadActive: false
+		});
+	}
+
 	renderElement(ele) {
 		let generatedEle = null;
 		switch (ele) {
 			case 'iframe':
 				if (this.state[this.plugin]) {
-					generatedEle = (<iframe src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>);
-				} else {
-					generatedEle = (<div className="loadingBar"></div>);
+					generatedEle = (<iframe onLoad={() => this.onIfreamLoad()} src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>);
 				}
-				break;
+			break;
 		}
 		return generatedEle;
 	}
@@ -79,6 +86,7 @@ export default class Browser extends Component {
 				}}
 			>
 				<div className="plugin-container">
+					{this.state.loadActive ? (<div className="loadingBar"></div>) : null}
 					{this.renderElement('iframe')}
 				</div>
 			</AppPage>
