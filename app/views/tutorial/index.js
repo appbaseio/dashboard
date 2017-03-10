@@ -1,37 +1,63 @@
 import React, { Component } from 'react';
-
-import { Link, browserHistory } from 'react-router';
-import Onboarding from 'appbase-onboarding';
-import { appbaseService } from '../../service/AppbaseService';
-import AppCreation from './steps/AppCreation';
-import UpdateMapping from './steps/UpdateMapping';
-import IndexData from './steps/IndexData';
-import LiveFiddle from './steps/LiveFiddle';
+import { getConfig } from '../../config';
 
 export default class Tutorial extends Component {
 
 	constructor(props) {
 		super(props);
-		this.steps = [
-			'Create an app',
-			'Define data model',
-			'Index data',
-			'Live APP',
-			'App UI'
-		];
+		this.config = getConfig();
+		this.state = {
+			url: this.config.tutorial.url,
+			loadActive: true
+		};
+	}
+
+	componentDidMount() {
+		this.setPageHeight();
+	}
+
+	componentWillUnmount() {
+		$(window).unbind("resize");
+	}
+
+	setPageHeight() {
+		const setPage = () => {
+			const bodyHeight = $('.ad-tutorial').height() - $('.ad-detail-page-header').outerHeight();
+			$(this.pageRef).css('height', bodyHeight);
+		}
+		setTimeout(setPage, 1000);
+		$(window).resize(() => {
+			setTimeout(setPage, 1000);
+		});
+	}
+
+	onIfreamLoad() {
+		this.setState({
+			loadActive: false
+		});
 	}
 
 	render() {
 		return (
-			<section id="onboarding-container" className="text-center">
-				<Onboarding
-					brandImage='../../assets/images/logo.png'
-					steps={this.steps}>
-						<AppCreation key={3} />
-						<UpdateMapping key={1} />
-						<IndexData key={2} />
-						<LiveFiddle key={0} />
-				</Onboarding>
+			<section className="ad-tutorial">
+				<div className="ad-detail-page ad-dashboard row">
+						<header className="ad-detail-page-header header-inline-summary col-xs-12">
+							<h2 className="ad-detail-page-title">
+								{this.config.tutorial.title}
+							</h2>
+							<p>
+								{this.config.tutorial.description}
+							</p>
+						</header>
+						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
+							{this.state.loadActive ? (<div className="loadingBar"></div>) : null}
+							{
+								this.state.url ? (
+									<iframe onLoad={() => this.onIfreamLoad()} src={this.state.url} height="100%" width="100%" frameBorder="0"></iframe>
+								) : null
+							}
+						</main>
+				</div>
 			</section>
 		);
 	}

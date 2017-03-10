@@ -78,9 +78,9 @@ class AppbaseService {
 		});
 	}
 
-	getAppInfo(appId) {
+	getAppInfo(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].appInfo) {
+			if (this.apps && this.apps[appId] && this.apps[appId].appInfo && cache) {
 				resolve(this.apps[appId].appInfo);
 			} else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
@@ -94,9 +94,9 @@ class AppbaseService {
 		});
 	}
 
-	getMetrics(appId) {
+	getMetrics(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].metrics) {
+			if (this.apps && this.apps[appId] && this.apps[appId].metrics && cache) {
 				resolve(this.apps[appId].metrics);
 			} else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};

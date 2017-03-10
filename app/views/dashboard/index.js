@@ -60,6 +60,9 @@ export default class Dashboard extends Component {
 					plan
 				});
 			}).catch((e) => {
+				this.setState({
+					plan: "free"
+				});
 				console.log(e);
 			})
 		}
@@ -90,7 +93,7 @@ export default class Dashboard extends Component {
 		});
 		appbaseService.getMetrics(this.appId).then((data) => {
 			this.info.metrics = data;
-			const totalApiCalls = this.getApiCalls(data);
+			const totalApiCalls = this.getTotalApiCalls(data);
 			this.info.appStats = appbaseService.computeMetrics(data);
 			if (!this.stopUpdate) {
 				this.setState({
@@ -102,7 +105,7 @@ export default class Dashboard extends Component {
 		});
 	}
 
-	getApiCalls(data) {
+	getTotalApiCalls(data) {
 		let apiCalls = 0;
 		const buckets = data.body && data.body.month && data.body.month.buckets ? data.body.month.buckets : [];
 		buckets.forEach((bucket) => {

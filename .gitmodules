@@ -1,0 +1,6 @@
+[submodule "app/views/tutorial/appbase-tutorial"]
+	path = app/views/tutorial/appbase-tutorial
+	url = https://github.com/appbaseio-apps/appbase-tutorial.git
+[submodule "app/views/tutorial/reactive-maps-onboarding"]
+	path = app/views/tutorial/reactive-maps-onboarding
+	url = https://github.com/appbaseio/reactive-maps-onboarding.git

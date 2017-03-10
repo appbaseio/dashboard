@@ -80,8 +80,8 @@ export default class Credentials extends Component {
 					element = (
 						<footer className="ad-detail-page-body other-page-body col-xs-12">
 							<div className="page-body col-xs-12">
-								<section className="ad-detail-page-body-card">
-									<main className="ad-detail-page-body-card-body row">
+								<section className="ad-detail-page-body-card col-xs-12 p-0">
+									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
 										<DeleteApp appName={this.appName} appId={this.appId} />
 									</main>
 								</section>
@@ -115,8 +115,8 @@ export default class Credentials extends Component {
 					</header>
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
-							<section className="ad-detail-page-body-card">
-								<main className="ad-detail-page-body-card-body row">
+							<section className="ad-detail-page-body-card col-xs-12 p-0">
+								<main className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
 								</main>
 							</section>

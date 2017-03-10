@@ -48,13 +48,15 @@ export default class NewPermission extends Component {
 	}
 	expand() {
 		this.setState({
-			show: !this.state.show
+			show: !this.state.show,
+			clearInput: true
 		});
 	}
 	updateDescription(description) {
 		if (description !== this.state.description) {
 			this.setState({
-				description
+				description,
+				clearInput: false
 			});
 		}
 	}
@@ -69,7 +71,7 @@ export default class NewPermission extends Component {
 			case 'description':
 				element = (
 					<div className="col-xs-12 ad-create-email">
-						<Description updateDescription={this.updateDescription} />
+						<Description updateDescription={this.updateDescription} clearInput={this.state.clearInput} />
 					</div>
 				);
 			break;
@@ -126,9 +128,16 @@ class Description extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			description: null
+			description: ""
 		};
 		this.handleInput = this.handleInput.bind(this);
+	}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.clearInput) {
+			this.setState({
+				description: ""
+			});
+		}
 	}
 	handleInput(event) {
 		this.setState({
@@ -144,7 +153,7 @@ class Description extends Component {
 	}
 	render() {
 		return (
-			<input type="text" placeholder="Type description.." className="form-control" defaultValue={this.state.description} onChange={this.handleInput} />
+			<input type="text" placeholder="Type description.." className="form-control" value={this.state.description} onChange={this.handleInput} />
 		);
 	}
 };

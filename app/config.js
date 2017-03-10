@@ -6,14 +6,24 @@ const config = {
 		"logoText": null,
 		"cardIcon": "fa-database",
 		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
-		"document": "https://docs.appbase.io"
+		"document": "https://docs.appbase.io",
+		"tutorial": {
+			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
+			title: "Appbase Dashboard",
+			description: "Try appbase dashboard over here"
+		}
 	},
 	"reactivemaps": {
 		"logo": "../../../assets/images/logo.png",
 		"logoText": "Reactive Maps",
 		"cardIcon": "fa-globe",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],
-		"document": "https://docs.appbase.io"
+		"document": "https://docs.appbase.io",
+		"tutorial": {
+			url: "../../../app/views/tutorial/reactive-maps-onboarding/index.html",
+			title: "Appbase Dashboard",
+			description: "Try appbase dashboard over here"
+		}
 	}
 }
 

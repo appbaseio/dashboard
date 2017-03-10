@@ -20,7 +20,7 @@ export default class Main extends Component {
 	}
 
 	getUser() {
-		var getUser = appbaseService.getUser()
+		appbaseService.getUser()
 			.then(this.onGetUserSuccess.bind(this))
 			.catch(this.onGetUserCatch.bind(this));
 	}
@@ -46,7 +46,9 @@ export default class Main extends Component {
 	}
 
 	redirectToPath() {
-		if(window.location.pathname === '/apps' || window.location.pathname === '/') {
+		if(Object.keys(appbaseService.userInfo.body.apps).length === 0) {
+			browserHistory.push('/tutorial');
+		} else if(window.location.pathname === '/apps' || window.location.pathname === '/') {
 			browserHistory.push('/apps');
 		}
 	}

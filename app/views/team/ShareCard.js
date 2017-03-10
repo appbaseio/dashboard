@@ -107,17 +107,6 @@ export default class ShareCard extends Component {
 					<summary className="col-xs-10">
 						{this.props.shareInfo.email}
 					</summary>
-					<aside className="col-xs-2 text-right pull-right">
-						<ConfirmBox
-							info={this.confirmBoxInfo}
-							onConfirm={this.deleteShare}
-							type="danger"
-						>
-							<a className="ad-theme-btn danger-reverse permission-delete animation">
-								<i className="fa fa-trash"></i>
-							</a>
-						</ConfirmBox>
-					</aside>
 				</header>
 				<main className="permission-card-body col-xs-12">
 					<div className="col-xs-12 col-sm-6 permission-card-body-description">
@@ -140,6 +129,17 @@ export default class ShareCard extends Component {
 								</CopyToClipboard>
 							</div>
 						</div>
+						<aside className="permission-key-delete">
+							<ConfirmBox
+								info={this.confirmBoxInfo}
+								onConfirm={this.deleteShare}
+								type="danger"
+							>
+								<a className="ad-theme-btn danger-reverse permission-delete animation">
+									<i className="fa fa-trash"></i>
+								</a>
+							</ConfirmBox>
+						</aside>
 					</div>
 				</main>
 			</div>

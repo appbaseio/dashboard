@@ -93,11 +93,11 @@ export default class Team extends Component {
 					</header>
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
-							<section className="ad-detail-page-body-card">
+							<section className="ad-detail-page-body-card col-xs-12 p-0">
 								<header className="ad-detail-page-body-card-title with-border">
 									Team Members
 								</header>
-								<main className="ad-detail-page-body-card-body row">
+								<main className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('share')}
 								</main>
 							</section>

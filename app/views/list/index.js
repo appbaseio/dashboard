@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
 import { Link, browserHistory } from 'react-router';
+import classNames from 'classnames';
 import NewApp from './components/NewApp';
 import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
@@ -19,8 +20,7 @@ const AppIntro = (props) => {
 		<AppCard {...props}>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
-				This is your dashboard. Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-				Ratione et voluptas fuga accusamus minima totam sequi impedit. Natus, placeat corporis.
+				This is your dashboard.
 			</p>
 		</AppCard>
 	);
@@ -82,17 +82,31 @@ export default class AppList extends Component {
 	initialize() {
 		this.setSort = true;
 		this.getBillingInfo();
-		this.registerApps(appListHelper.normalizaApps(appbaseService.userInfo.body.apps), true);
+		this.getApps();
+	}
+
+	getApps() {
+		appbaseService.getUser()
+		.then((data) => {
+			this.registerApps(appListHelper.normalizaApps(data.userInfo.body.apps), true);
+		}).catch((e) => {
+			console.log(e);
+			browserHistory.push('/login');
+		});
 	}
 
 	registerApps(apps, getInfo = false) {
-		this.setState({
-			apps: apps
-		}, (() => {
-			if (getInfo) {
-				this.getAppInfo.call(this)
-			}
-		}));
+		if(apps.length === 0) {
+			browserHistory.push('/tutorial');
+		} else {
+			this.setState({
+				apps: apps
+			}, (() => {
+				if (getInfo) {
+					this.getAppInfo.call(this)
+				}
+			}));
+		}
 	}
 
 	getBillingInfo() {
@@ -159,6 +173,10 @@ export default class AppList extends Component {
 		return app && app.lastAciveOn ? moment(app.lastAciveOn).fromNow() : null;
 	}
 
+	isShared(app) {
+		return app && app.appInfo && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.appInfo.owner !== appbaseService.userInfo.body.email ? true : false;
+	}
+
 	renderElement(ele) {
 		var generatedEle = null;
 		switch (ele) {
@@ -169,6 +187,9 @@ export default class AppList extends Component {
 						action: this.calcPercentage(app, 'action'),
 						records: this.calcPercentage(app, 'records')
 					};
+					const cx = classNames({
+						"with-owner": this.isShared(app)
+					});
 					return (
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
@@ -176,7 +197,7 @@ export default class AppList extends Component {
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>
 								<main className="ad-list-app-content">
-									<header className="ad-list-app-header">
+									<header className={`ad-list-app-header ${cx}`}>
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
 											<h3 className="title">{app.name}</h3>

@@ -115,7 +115,7 @@ export default class PermissionCard extends Component {
 			"unlock-alt": this.state.showKey
 		});
 		return (
-			<div className="permission-card col-xs-12">
+			<div className="permission-card col-xs-12 p-0">
 				<header className="permission-card-header col-xs-12">
 					<summary className="col-xs-10 p-0">
 						<Description
@@ -123,16 +123,6 @@ export default class PermissionCard extends Component {
 							updatDescription={this.updatDescription}
 						/>
 					</summary>
-					<aside className="col-xs-2 text-right pull-right">
-						<ConfirmBox
-							info={this.confirmBoxInfo}
-							onConfirm={this.deletePermission}
-							type="danger" >
-							<a className="ad-theme-btn danger-reverse permission-delete animation">
-								<i className="fa fa-trash"></i>
-							</a>
-						</ConfirmBox>
-					</aside>
 				</header>
 				<main className="permission-card-body col-xs-12">
 					<div className="col-xs-12 col-sm-6 permission-card-body-description">
@@ -155,6 +145,16 @@ export default class PermissionCard extends Component {
 								</CopyToClipboard>
 							</div>
 						</div>
+						<aside className="permission-key-delete">
+							<ConfirmBox
+								info={this.confirmBoxInfo}
+								onConfirm={this.deletePermission}
+								type="danger" >
+								<a className="ad-theme-btn danger-reverse permission-delete animation">
+									<i className="fa fa-trash"></i>
+								</a>
+							</ConfirmBox>
+						</aside>
 					</div>
 				</main>
 			</div>

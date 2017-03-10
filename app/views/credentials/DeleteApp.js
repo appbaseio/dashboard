@@ -55,9 +55,7 @@ export default class DeleteApp extends Component {
 				</header>
 				<main className="permission-card-body col-xs-12">
 					<div className="col-xs-12 col-sm-6 permission-card-body-description">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-						Debitis soluta ex quia cum et facere temporibus similique harum maxime architecto, 
-						quod quos veniam quaerat, minus eveniet eos magnam, reprehenderit corrupti.
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 					</div>
 				</main>
 			</div>
