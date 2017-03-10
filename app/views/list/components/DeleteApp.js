@@ -34,7 +34,7 @@ export default class DeleteApp extends Component {
 				onConfirm={this.deleteApp}
 				type="danger"
 			>
-				<a data-tip="Delete app" data-place="right" className="ad-theme-btn danger-reverse permission-delete animation">
+				<a data-tip="Delete app" data-effect="solid" data-place="right" className="ad-theme-btn danger-reverse permission-delete animation">
 					<i className="fa fa-trash"></i>
 					<ReactTooltip />
 				</a>
