@@ -20,37 +20,37 @@ export default class Sidebar extends Component {
 			link: `/dashboard/`,
 			type: 'internal',
 			name: 'dashboard',
-			img: (<img className="img-responsive" src="../../../assets/images/dashboard.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_1.svg"></img>)
 		}, {
 			label: 'Browser',
 			link: `/browser/`,
 			type: 'internal',
 			name: 'browser',
-			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_2.svg"></img>)
 		}, {
 			label: 'Gem',
 			link: `/gem/`,
 			type: 'internal',
 			name: 'gem',
-			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_3.svg"></img>)
 		},{
 			label: 'Mirage',
 			link: `/mirage/`,
 			type: 'internal',
 			name: 'mirage',
-			img: (<img className="img-responsive" src="../../../assets/images/browser.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_4.svg"></img>)
 		}, {
 			label: 'Credentials',
 			link: `/credentials/`,
 			type: 'internal',
 			name: 'credentials',
-			img: (<img className="img-responsive" src="../../../assets/images/key.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_5.svg"></img>)
 		}, {
 			label: 'Team',
 			link: `/team/`,
 			type: 'internal',
 			name: 'team',
-			img: (<img className="img-responsive" src="../../../assets/images/team.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_6.svg"></img>)
 		}];
 	}
 

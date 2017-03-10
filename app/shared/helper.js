@@ -55,7 +55,7 @@ class AppListHelper {
 			}
 		}
 		const getMetrics = () => {
-			appbaseService.getMetrics(appId).then((data) => {
+			appbaseService.getMetrics(appId, true).then((data) => {
 				info.metrics = data;
 				info.appStats = appbaseService.computeMetrics(data);
 				apps[index].apiCalls = info.appStats.calls;
@@ -99,7 +99,7 @@ class AppListHelper {
 			});
 		}
 		const getAppInfo = () => {
-			appbaseService.getAppInfo(appId).then((data) => {
+			appbaseService.getAppInfo(appId, true).then((data) => {
 				apps[index].appInfo = data.body;
 				count.appInfo = true;
 				cb.call(this);

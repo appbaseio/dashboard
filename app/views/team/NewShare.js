@@ -8,7 +8,8 @@ export default class NewShare extends Component {
 		this.state = {
 			show: false,
 			userEmail: null,
-			selectedType: "read"
+			selectedType: "read",
+			clearInput: false
 		};
 		this.types = {
 			read: {
@@ -35,7 +36,7 @@ export default class NewShare extends Component {
 		}
 	}
 	newShare() {
-		const request = this.types[this.state.selectedType];
+		const request = JSON.parse(JSON.stringify(this.types[this.state.selectedType]));
 		request.email = this.state.userEmail;
 		request.user = this.state.userEmail;
 		request.description += '(shared with '+this.state.userEmail+')';
@@ -44,13 +45,15 @@ export default class NewShare extends Component {
 	}
 	expand() {
 		this.setState({
-			show: !this.state.show
+			show: !this.state.show,
+			clearInput: true
 		});
 	}
 	updateUserEmail(email) {
 		if (email !== this.state.userEmail) {
 			this.setState({
-				userEmail: email
+				userEmail: email,
+				clearInput: false
 			});
 		}
 	}
@@ -65,7 +68,7 @@ export default class NewShare extends Component {
 			case 'email':
 				element = (
 					<div className="col-xs-12 ad-create-email">
-						<UserEmail updateUserEmail={this.updateUserEmail} />
+						<UserEmail updateUserEmail={this.updateUserEmail} clearInput={this.state.clearInput} />
 					</div>
 				);
 			break;
@@ -123,9 +126,16 @@ class UserEmail extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			userEmail: null
+			userEmail: ""
 		};
 		this.handleInput = this.handleInput.bind(this);
+	}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.clearInput) {
+			this.setState({
+				userEmail: ""
+			});
+		}
 	}
 	handleInput(event) {
 		this.setState({
@@ -145,7 +155,7 @@ class UserEmail extends Component {
 	}
 	render() {
 		return (
-			<input type="text" placeholder="Type email.." className="form-control" defaultValue={this.state.userEmail} onChange={this.handleInput} />
+			<input type="text" placeholder="Type email.." className="form-control" value={this.state.userEmail} onChange={this.handleInput} />
 		);
 	}
 };

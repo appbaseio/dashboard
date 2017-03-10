@@ -12,6 +12,9 @@ body {
 .pos-relative {
   position: relative; }
 
+.text-danger {
+  color: #d9534f; }
+
 .theme-btn {
   background: #dedede;
   color: #fff;
@@ -164,7 +167,8 @@ body {
     opacity: 0; } }
 
 #login h1 {
-  margin-bottom: 45px; }
+  margin-bottom: 45px;
+  font-size: 2rem; }
 
 #login_modal.modal {
   margin-top: 20vh; }
@@ -186,7 +190,8 @@ body {
       text-align: center; }
       #login_modal.modal .modal-content .modal-header .modal-title {
         color: #555;
-        text-transform: inherit; }
+        text-transform: inherit;
+        text-align: center; }
     #login_modal.modal .modal-content .modal-footer {
       border: 0;
       padding-top: 0; }
@@ -685,7 +690,6 @@ body {
             background: #fff;
             width: 40px;
             height: 40px;
-            border: 2px solid #242E44;
             margin: 0 auto 5px auto; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
             background: #5678FC;
@@ -799,26 +803,36 @@ body {
       padding-top: 0; }
 
 .permission-card {
-  padding: 15px; }
+  padding: 15px 0;
+  border-bottom: 1px solid #dedede; }
   .permission-card .permission-card-header {
     font-size: 1.5rem;
     padding: 0;
     margin-bottom: 5px; }
     .permission-card .permission-card-header .permission-editable .ad-editable-edit {
       padding: 0; }
-    .permission-card .permission-card-header .permission-delete {
+  .permission-card .permission-card-body {
+    padding: 0; }
+    .permission-card .permission-card-body .permission-card-body-description {
+      font-size: 0.9rem;
+      color: #B3B3B3; }
+    .permission-card .permission-card-body .permission-card-body-credential {
+      margin-top: -13px;
+      position: relative;
+      padding-right: 30px; }
+    .permission-card .permission-card-body .permission-key-delete {
+      position: absolute;
+      right: 0;
+      top: 5px;
+      padding: 0; }
+    .permission-card .permission-card-body .permission-delete {
       opacity: 0;
       -webkit-animation: fadeout 0.5s;
       -moz-animation: fadeout 0.5s;
       -ms-animation: fadeout 0.5s;
       -o-animation: fadeout 0.5s;
       animation: fadeout 0.5s; }
-  .permission-card .permission-card-body {
-    padding: 0; }
-    .permission-card .permission-card-body .permission-card-body-description {
-      font-size: 0.9rem;
-      color: #B3B3B3; }
-  .permission-card:hover .permission-card-header .permission-delete, .permission-card.delete-active .permission-card-header .permission-delete {
+  .permission-card:hover .permission-card-body .permission-delete, .permission-card.delete-active .permission-card-body .permission-delete {
     opacity: 1;
     -webkit-animation: fadein 0.5s;
     -moz-animation: fadein 0.5s;
@@ -859,7 +873,7 @@ body {
 
 .ad-editable-container {
   height: 2.3rem;
-  margin-bottom: 10px; }
+  margin-bottom: 5px; }
   .ad-editable-container .ad-editable {
     width: auto;
     display: inline-block;

@@ -20,8 +20,7 @@ const AppIntro = (props) => {
 		<AppCard {...props}>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
-				This is your dashboard. Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-				Ratione et voluptas fuga accusamus minima totam sequi impedit. Natus, placeat corporis.
+				This is your dashboard.
 			</p>
 		</AppCard>
 	);
@@ -83,7 +82,17 @@ export default class AppList extends Component {
 	initialize() {
 		this.setSort = true;
 		this.getBillingInfo();
-		this.registerApps(appListHelper.normalizaApps(appbaseService.userInfo.body.apps), true);
+		this.getApps();
+	}
+
+	getApps() {
+		appbaseService.getUser()
+		.then((data) => {
+			this.registerApps(appListHelper.normalizaApps(data.userInfo.body.apps), true);
+		}).catch((e) => {
+			console.log(e);
+			browserHistory.push('/login');
+		});
 	}
 
 	registerApps(apps, getInfo = false) {

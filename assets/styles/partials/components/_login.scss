@@ -1,6 +1,7 @@
 #login {
 	h1 {
 		margin-bottom: 45px;
+		font-size: 2rem;
 	}
 }
 
@@ -26,6 +27,7 @@
 			.modal-title {
 				color: $login-color;
 				text-transform: inherit;
+				text-align: center;
 			}
 		}
 		.modal-footer {

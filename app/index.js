@@ -20,7 +20,7 @@ export default class Main extends Component {
 	}
 
 	getUser() {
-		var getUser = appbaseService.getUser()
+		appbaseService.getUser()
 			.then(this.onGetUserSuccess.bind(this))
 			.catch(this.onGetUserCatch.bind(this));
 	}
