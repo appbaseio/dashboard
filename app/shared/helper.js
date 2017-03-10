@@ -234,10 +234,20 @@ class AjaxHttp {
 	}
 }
 
+class IntercomService {
+	loggingIn(userInfo) {
+		window.Intercom('boot', {
+			app_id: 'jnzcgdd7',
+			email: userInfo.email
+		});
+	}
+}
+
 module.exports = {
 	eventEmitter: eventEmitter,
 	appDashboard: new AppDashboard(),
 	appListHelper: new AppListHelper(),
 	common: new Common(),
-	$http: new AjaxHttp()
+	$http: new AjaxHttp(),
+	intercomService: new IntercomService()
 }

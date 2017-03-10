@@ -6,6 +6,7 @@ import HighChartView from './HighChartView';
 import ApiCallsView from './ApiCallsView';
 import AppPage from '../../shared/AppPage';
 import Upgrade from './Upgrade';
+import DashboardGettingStarted from './DashboardGettingStarted';
 
 export default class Dashboard extends Component {
 
@@ -18,6 +19,7 @@ export default class Dashboard extends Component {
 			config: {
 				chartConfig: {}
 			},
+			totalApiCalls: 0,
 			apiCalls: 0
 		};
 		this.themeColor = '#CDDC39';
@@ -88,14 +90,25 @@ export default class Dashboard extends Component {
 		});
 		appbaseService.getMetrics(this.appId).then((data) => {
 			this.info.metrics = data;
+			const totalApiCalls = this.getApiCalls(data);
 			this.info.appStats = appbaseService.computeMetrics(data);
 			if (!this.stopUpdate) {
 				this.setState({
 					info: this.info,
-					apiCalls: this.getApiCalls(data)
+					apiCalls: this.getApiCalls(data),
+					totalApiCalls
 				});
 			}
 		});
+	}
+
+	getApiCalls(data) {
+		let apiCalls = 0;
+		const buckets = data.body && data.body.month && data.body.month.buckets ? data.body.month.buckets : [];
+		buckets.forEach((bucket) => {
+			apiCalls += bucket.apiCalls.value;
+		});
+		return apiCalls;
 	}
 
 	pretify(obj) {
@@ -148,11 +161,18 @@ export default class Dashboard extends Component {
 					</header>
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
-							<HighChartView
-								apiCalls={this.state.apiCalls}
-								graphMethod={this.state.graphMethod}
-								info={this.state.info}
-							/>
+							{
+								this.state.totalApiCalls ? (
+									<HighChartView
+										apiCalls={this.state.apiCalls}
+										graphMethod={this.state.graphMethod}
+										info={this.state.info}
+									>
+									</HighChartView>
+								) : (
+									<DashboardGettingStarted appName={this.appName} appId={this.appId}></DashboardGettingStarted>
+								)
+							}
 						</section>
 						<section className="col-xs-12 col-sm-4">
 							<ApiCallsView plan={this.state.plan} appCount={this.appCount()} />

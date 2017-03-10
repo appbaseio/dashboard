@@ -83,10 +83,16 @@ gulp.task('moveFonts', function() {
 		.pipe(gulp.dest('dist/fonts'));
 });
 
+gulp.task('404page', function() {
+	return gulp.src('index.html')
+	.pipe(rename('404.html'))
+	.pipe(gulp.dest('./'));
+});
+
 // Include dependency in dist
 gulp.task('move_js_depends', function() {
 	return gulp.src(['bower_components/lzma/src/lzma_worker.js',
-		'assets/vendor/JSONURL.js'])
+		'assets/vendor/*.js'])
 		.pipe(gulp.dest('dist/vendor'));
 });
 
@@ -107,6 +113,6 @@ gulp.task('watchSassPartials', function() {
 	gulp.watch(files.css.sassPartials, ['customcss']);
 });
 
-gulp.task('default', ['compact']);
+gulp.task('default', ['compact', '404page']);
 
 gulp.task('watch', ['compact', 'watchfiles', 'watchSassPartials']);

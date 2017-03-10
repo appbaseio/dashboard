@@ -44,7 +44,7 @@ export default class Credentials extends Component {
 		return (
 			<div>
 				<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-					<a data-tip={`Copy ${this.props.label} Credentials`} data-place="right" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+					<a data-tip={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="right" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
 						<i className={`fa ${this.props.icon}`}></i>
 						<ReactTooltip />
 					</a>

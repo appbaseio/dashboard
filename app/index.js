@@ -3,6 +3,7 @@ import { Router, Route, IndexRoute, Link, IndexLink, browserHistory } from 'reac
 import { appbaseService } from './service/AppbaseService';
 import { dataOperation } from './service/tutorialService/DataOperation';
 import Nav from './shared/Nav';
+import { intercomService } from './shared/helper';
 
 require("../dist/css/style.min.css");
 
@@ -20,22 +21,28 @@ export default class Main extends Component {
 
 	getUser() {
 		var getUser = appbaseService.getUser()
-			.then((data) => {
-				dataOperation.updateUser(data.userInfo.body);
-				this.setState({
-					loggedIn: true,
-					loading: false,
-					userInfo: data.userInfo
-				});
-				this.redirectToPath();
-			}).catch((e) => {
-				console.log(e);
-				this.setState({
-					loggedIn: false,
-					loading: false
-				});
-				browserHistory.push('/login');
-			});
+			.then(this.onGetUserSuccess.bind(this))
+			.catch(this.onGetUserCatch.bind(this));
+	}
+
+	onGetUserSuccess(data) {
+		dataOperation.updateUser(data.userInfo.body);
+		this.setState({
+			loggedIn: true,
+			loading: false,
+			userInfo: data.userInfo
+		});
+		intercomService.loggingIn(data.userInfo.body);
+		this.redirectToPath();
+	}
+
+	onGetUserCatch(e) {
+		console.log(e);
+		this.setState({
+			loggedIn: false,
+			loading: false
+		});
+		browserHistory.push('/login');
 	}
 
 	redirectToPath() {

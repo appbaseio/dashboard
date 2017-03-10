@@ -430,6 +430,12 @@ body {
   margin: 0;
   padding-bottom: 15px; }
 
+.ad-dashboard .ad-dashboard-getting-started-container > div:first-child {
+  padding-right: 0; }
+  @media screen and (max-width: 768px) {
+    .ad-dashboard .ad-dashboard-getting-started-container > div:first-child {
+      padding-right: 15px; } }
+
 .ad-dashboard .nav-tab {
   list-style: none;
   padding: 0;
