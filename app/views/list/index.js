@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Circle } from 'rc-progress';
 import { Link, browserHistory } from 'react-router';
+import classNames from 'classnames';
 import NewApp from './components/NewApp';
 import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
@@ -159,6 +160,10 @@ export default class AppList extends Component {
 		return app && app.lastAciveOn ? moment(app.lastAciveOn).fromNow() : null;
 	}
 
+	isShared(app) {
+		return app && app.appInfo && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.appInfo.owner !== appbaseService.userInfo.body.email ? true : false;
+	}
+
 	renderElement(ele) {
 		var generatedEle = null;
 		switch (ele) {
@@ -169,6 +174,9 @@ export default class AppList extends Component {
 						action: this.calcPercentage(app, 'action'),
 						records: this.calcPercentage(app, 'records')
 					};
+					const cx = classNames({
+						"with-owner": this.isShared(app)
+					});
 					return (
 						<AppCard key={app.name}>
 							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
@@ -176,7 +184,7 @@ export default class AppList extends Component {
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>
 								<main className="ad-list-app-content">
-									<header className="ad-list-app-header">
+									<header className={`ad-list-app-header ${cx}`}>
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
 											<h3 className="title">{app.name}</h3>

@@ -55,7 +55,7 @@
 		position: relative;
 		margin: 0;
 		cursor: pointer;
-		padding: 25px;
+		padding-left: 80px;
 		height: 100%;
 		overflow: hidden;
 		background: #fff;
@@ -69,18 +69,21 @@
 		transition: all .3s ease;
 		.ad-list-app-content {
 			z-index: 2;
+			position: relative;
+			padding: 25px 25px 25px 0;
 		}
 		.ad-list-app-bg-container {
 			z-index: 1;
 			position: absolute;
 			color: lighten($primary-color, 20%);
-			font-size: 130px;
+			font-size: 100px;
 			opacity: .5;
-			top: -48px;
-			right: -20px;
+			top: -24px;
+			left: -24px;
 		}
 		.ad-list-app-header {
 			margin: 0 0 25px;
+			position: relative;
 			.time {
 				height: 20px;
 				margin: 0;
@@ -97,9 +100,22 @@
 					color: #666;
 					font-size: 22px;
 					font-family: $font-semi-bold;
+					max-height: 24px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					max-width: 100%;
 				}
 				.ad-list-app-header-owner {
-					padding-right: 5px;
+					top: 2px;
+					left: 0;
+					position: absolute;
+
+				}
+			}
+			&.with-owner {
+				.ad-list-title-container {
+					padding-left: 20px;
 				}
 			}
 		}
