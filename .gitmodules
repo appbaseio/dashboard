@@ -1,0 +1,3 @@
+[submodule "app/views/tutorial/appbase-tutorial"]
+	path = app/views/tutorial/appbase-tutorial
+	url = https://github.com/appbaseio-apps/appbase-tutorial.git
