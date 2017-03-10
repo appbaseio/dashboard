@@ -87,13 +87,17 @@ export default class AppList extends Component {
 	}
 
 	registerApps(apps, getInfo = false) {
-		this.setState({
-			apps: apps
-		}, (() => {
-			if (getInfo) {
-				this.getAppInfo.call(this)
-			}
-		}));
+		if(apps.length === 0) {
+			browserHistory.push('/tutorial');
+		} else {
+			this.setState({
+				apps: apps
+			}, (() => {
+				if (getInfo) {
+					this.getAppInfo.call(this)
+				}
+			}));
+		}
 	}
 
 	getBillingInfo() {
