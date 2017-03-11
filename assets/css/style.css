@@ -258,7 +258,9 @@ body {
       float: left; }
     .navbar.navbar-default .navbar-brand span {
       float: left;
-      padding: 0.5rem 0; }
+      padding: 0.5rem 0;
+      font-family: "Source Sans Pro Black";
+      text-transform: uppercase; }
   .navbar.navbar-default .user-img-container {
     position: relative;
     padding-right: 40px; }

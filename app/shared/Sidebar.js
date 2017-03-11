@@ -4,12 +4,14 @@ import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
 import { eventEmitter } from './helper';
 import { getConfig } from '../config';
+import { appbaseService } from '../service/AppbaseService';
 
 export default class Sidebar extends Component {
 
 	constructor(props) {
 		super(props);
 		this.config = getConfig();
+		this.contextPath = appbaseService.getContextPath();
 		this.state = {
 			activeApp: this.props.appName,
 			currentView: null
@@ -17,37 +19,37 @@ export default class Sidebar extends Component {
 		this.stopUpdate = false;
 		this.links = [{
 			label: 'Dashboard',
-			link: `/dashboard/`,
+			link: `${this.contextPath}dashboard/`,
 			type: 'internal',
 			name: 'dashboard',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_1.svg"></img>)
 		}, {
 			label: 'Browser',
-			link: `/browser/`,
+			link: `${this.contextPath}browser/`,
 			type: 'internal',
 			name: 'browser',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_2.svg"></img>)
 		}, {
 			label: 'Gem',
-			link: `/gem/`,
+			link: `${this.contextPath}gem/`,
 			type: 'internal',
 			name: 'gem',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_3.svg"></img>)
 		},{
 			label: 'Mirage',
-			link: `/mirage/`,
+			link: `${this.contextPath}mirage/`,
 			type: 'internal',
 			name: 'mirage',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_4.svg"></img>)
 		}, {
 			label: 'Credentials',
-			link: `/credentials/`,
+			link: `${this.contextPath}credentials/`,
 			type: 'internal',
 			name: 'credentials',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_5.svg"></img>)
 		}, {
 			label: 'Team',
-			link: `/team/`,
+			link: `${this.contextPath}team/`,
 			type: 'internal',
 			name: 'team',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_6.svg"></img>)

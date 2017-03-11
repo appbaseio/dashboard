@@ -32,7 +32,7 @@ export default class Tutorial extends Component {
 	listenEvent() {
 		this.iframeRef.contentDocument.addEventListener('click', function (e) {
 			if($(e.target).hasClass('go-to-dashboard')) {
-				browserHistory.push('/apps');
+				appbaseService.pushUrl('/apps');
 			}
 			if($(e.target).hasClass('go-to-document')) {
 				window.open('http://docs.appbase.io');

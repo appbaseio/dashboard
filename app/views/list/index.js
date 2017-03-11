@@ -63,7 +63,7 @@ export default class AppList extends Component {
 		if(appbaseService.userInfo) {
 			this.initialize();
 		} else {
-			browserHistory.push('/');
+			appbaseService.pushUrl();
 		}
 	}
 
@@ -91,7 +91,7 @@ export default class AppList extends Component {
 			this.registerApps(appListHelper.normalizaApps(data.userInfo.body.apps), true);
 		}).catch((e) => {
 			console.log(e);
-			browserHistory.push('/login');
+			appbaseService.pushUrl('/login');
 		});
 	}
 
@@ -192,7 +192,7 @@ export default class AppList extends Component {
 					});
 					return (
 						<AppCard key={app.name}>
-							<div className="ad-list-app" onClick={() => browserHistory.push(`/dashboard/${app.name}`)}>
+							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.name}`)}>
 								<span className="ad-list-app-bg-container">
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>

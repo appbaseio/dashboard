@@ -10,7 +10,7 @@ export default class Login extends Component {
 			showModal: false
 		};
 		if (appbaseService.userInfo) {
-			browserHistory.push('/apps');
+			appbaseService.pushUrl('/apps');
 		}
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);

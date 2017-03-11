@@ -13,6 +13,7 @@ export default class Nav extends Component {
 	constructor(props) {
 		super(props);
 		this.config = getConfig();
+		this.contextPath = appbaseService.getContextPath();
 		this.state = {
 			activeApp: null,
 			currentView: null,
@@ -21,7 +22,7 @@ export default class Nav extends Component {
 		};
 		this.appLink = {
 			label: 'Apps',
-			link: 'apps',
+			link: `${this.contextPath}apps`,
 			type: 'internal'
 		};
 		this.links = [{
@@ -30,11 +31,11 @@ export default class Nav extends Component {
 			type: 'external'
 		}, {
 			label: 'Tutorial',
-			link: 'tutorial',
+			link: `${this.contextPath}tutorial`,
 			type: 'internal'
 		}, {
 			label: 'Billing',
-			link: 'billing',
+			link: `${this.contextPath}billing`,
 			type: 'internal'
 		}];
 		this.options = ['name', 'email', 'logout'];
@@ -80,10 +81,9 @@ export default class Nav extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'appLink':
-				const tempLink = this.state.activeApp ? '/'+this.appLink.link : this.appLink.link;
 				generatedEle = (
 					<li>
-						<Link to={tempLink}>
+						<Link to={this.appLink.link}>
 							<i className="fa fa-cubes"></i>&nbsp;
 							{this.appLink.label}
 						</Link>
@@ -127,8 +127,7 @@ export default class Nav extends Component {
 				generatedEle = this.links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
-						const tempLink = this.state.activeApp ? '/'+item.link : item.link;
-						anchor = (<Link to={tempLink}>{item.label}</Link>);
+						anchor = (<Link to={item.link}>{item.label}</Link>);
 					}
 					return (
 						<li key={index}>

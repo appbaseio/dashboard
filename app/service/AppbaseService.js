@@ -1,3 +1,5 @@
+import { browserHistory } from 'react-router';
+
 const _ = require("lodash");
 const $ = require('jquery');
 
@@ -26,6 +28,7 @@ class AppbaseService {
 			order: 'desc'
 		};
 		this.extra = {};
+		this.context = '/';
 		$.ajaxSetup({
 			crossDomain: true,
 			xhrFields: {
@@ -352,6 +355,16 @@ class AppbaseService {
 
 	setExtra(key, value) {
 		this.extra[key] = value;
+	}
+
+	pushUrl(url=null) {
+		const context = this.context === '/' ? '' : this.context;
+		const finalRoute = url ? context+url : this.context;
+		browserHistory.push(finalRoute);
+	}
+
+	getContextPath() {
+		return this.context === '/' ? '/' : this.context+'/';
 	}
 }
 
