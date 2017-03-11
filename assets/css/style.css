@@ -263,7 +263,7 @@ body {
       text-transform: uppercase; }
   .navbar.navbar-default .user-img-container {
     position: relative;
-    padding-right: 40px; }
+    padding-right: 15px; }
     .navbar.navbar-default .user-img-container .user-img {
       border: 0;
       background: transparent;
