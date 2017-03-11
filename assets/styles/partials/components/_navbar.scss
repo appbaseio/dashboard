@@ -75,7 +75,7 @@
 	}
 	li {
 		height: 60px;
-		a {
+		a, .extra-link {
 			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
@@ -91,6 +91,20 @@
 				position: absolute;
 				left: -0.1rem;
 				top: 1.65rem;
+			}
+		}
+		.ad-user-info-list {
+			padding: 0;
+			list-style: none;
+			&.visible-xs {
+				> li {
+					float: left;
+					width: 100%;
+					a {
+						float: left;
+						width: 100%;
+					}
+				}
 			}
 		}
 	}
@@ -118,7 +132,7 @@
 		}
 		&.logout-dropdown {
 			.dropdown-menu {
-				left: -126px;
+				left: -100px;
 				max-width: 160px;
 			}
 			li a {

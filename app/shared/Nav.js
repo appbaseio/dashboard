@@ -140,28 +140,44 @@ export default class Nav extends Component {
 			case 'userImg':
 				if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.details) {
 					generatedEle = (
-						<li className="ad-dropdown dropdown without-icon logout-dropdown">
-							<a className="dropdown-toggle user-img-container" type="button" id="userimg-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								<button className="user-img">
-									<span className="img-container">
-										<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
-									</span>
-								</button>
-							</a>
-							<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="userimg-menu">
-								{
-									this.options.map((item) => (
-										<li key={item}>
-											<a onClick={() => this.logout(item)}>
-												{
-													item === 'logout' ? 
-													(<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>) :
-													appbaseService.userInfo.body.details[item]
-												}
-											</a>
-										</li>
-									))
-								}
+						<li>
+							<ul className="ad-user-info-list hidden-xs">
+								<li className="ad-dropdown dropdown without-icon logout-dropdown extra-link">
+									<a className="dropdown-toggle user-img-container" type="button" id="userimg-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										<button className="user-img">
+											<span className="img-container">
+												<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
+											</span>
+										</button>
+									</a>
+									<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="userimg-menu">
+										{
+											this.options.map((item) => (
+												<li key={item}>
+													<a onClick={() => this.logout(item)}>
+														{
+															item === 'logout' ? 
+															(<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>) :
+															appbaseService.userInfo.body.details[item]
+														}
+													</a>
+												</li>
+											))
+										}
+									</ul>
+								</li>
+							</ul>
+							<ul className="visible-xs ad-user-info-list">
+								<li>
+									<a>
+										{appbaseService.userInfo.body.details.name} ({appbaseService.userInfo.body.details.email})
+									</a>
+								</li>
+								<li>
+									<a onClick={() => this.logout('logout')}>
+										<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>
+									</a>
+								</li>
 							</ul>
 						</li>
 					);

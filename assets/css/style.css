@@ -297,12 +297,12 @@ body {
           display: none; } }
   .navbar.navbar-default li {
     height: 60px; }
-    .navbar.navbar-default li a {
+    .navbar.navbar-default li a, .navbar.navbar-default li .extra-link {
       font-size: 1rem;
       text-transform: uppercase;
       padding: 1.5rem 1rem;
       color: #fff; }
-      .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus {
+      .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus, .navbar.navbar-default li .extra-link:hover, .navbar.navbar-default li .extra-link:focus {
         color: #fafafa; }
     .navbar.navbar-default li .apps-dropdown-toggle {
       position: relative; }
@@ -310,6 +310,15 @@ body {
         position: absolute;
         left: -0.1rem;
         top: 1.65rem; }
+    .navbar.navbar-default li .ad-user-info-list {
+      padding: 0;
+      list-style: none; }
+      .navbar.navbar-default li .ad-user-info-list.visible-xs > li {
+        float: left;
+        width: 100%; }
+        .navbar.navbar-default li .ad-user-info-list.visible-xs > li a {
+          float: left;
+          width: 100%; }
   .navbar.navbar-default li.dropdown > a {
     position: relative;
     padding-bottom: 8px; }
@@ -326,7 +335,7 @@ body {
   .navbar.navbar-default li.dropdown.without-icon > a:before, .navbar.navbar-default li.dropdown.without-icon > a:after {
     display: none; }
   .navbar.navbar-default li.dropdown.logout-dropdown .dropdown-menu {
-    left: -126px;
+    left: -100px;
     max-width: 160px; }
   .navbar.navbar-default li.dropdown.logout-dropdown li a {
     overflow: hidden;
