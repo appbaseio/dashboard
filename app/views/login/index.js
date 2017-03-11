@@ -10,7 +10,7 @@ export default class Login extends Component {
 			showModal: false
 		};
 		if (appbaseService.userInfo) {
-			browserHistory.push('/apps');
+			appbaseService.pushUrl('/apps');
 		}
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
@@ -33,12 +33,12 @@ export default class Login extends Component {
 			})
 		);
 		return (
-			<section id="login" className="text-center">
+			<section id="login" className="text-center col-xs-12">
 				<h1>
 					Login to Appbase or create an account to access your Dashboard.
 				</h1>
 				<div>
-					<button className="ad-theme-btn primary lg-btn active" onClick={this.open}>Login</button>
+					<button className="ad-theme-btn primary lg-btn" onClick={this.open}>Login</button>
 				</div>
 				<Modal className="modal-appbase modal-white" id="login_modal" show={this.state.showModal} onHide={() => this.close()}>
 					<Modal.Header closeButton>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
 import Sidebar from './Sidebar';
 import { getConfig } from '../config';
+import { appbaseService } from '../service/AppbaseService';
 
 export default class AppPage extends Component {
 	constructor(props) {
@@ -10,7 +11,7 @@ export default class AppPage extends Component {
 	}
 	isAllowed() {
 		if(this.config.appDashboard.indexOf(this.props.pageInfo.currentView) < 0) {
-			browserHistory.push('./apps');
+			appbaseService.pushUrl('./apps');
 		}
 	}
 	render() {

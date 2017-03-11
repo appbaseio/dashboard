@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classNames from "classnames";
 import { common } from "../../shared/helper";
 
+const $ = require('jquery');
+
 export default class NewShare extends Component {
 	constructor(props) {
 		super(props);
@@ -33,6 +35,12 @@ export default class NewShare extends Component {
 			this.setState({
 				description: this.props.description
 			});
+		}
+		if(nextProps.newShareExpand !== this.newShareExpand) {
+			this.newShareExpand = nextProps.newShareExpand;
+			if(this.newShareExpand) {
+				this.expand();
+			}
 		}
 	}
 	newShare() {
@@ -134,6 +142,8 @@ class UserEmail extends Component {
 		if(nextProps.clearInput) {
 			this.setState({
 				userEmail: ""
+			}, () => {
+				$(this.emailRef).trigger('focus');
 			});
 		}
 	}
@@ -155,7 +165,7 @@ class UserEmail extends Component {
 	}
 	render() {
 		return (
-			<input type="text" placeholder="Type email.." className="form-control" value={this.state.userEmail} onChange={this.handleInput} />
+			<input ref={(input) => this.emailRef = input} type="text" placeholder="Type email.." className="form-control" value={this.state.userEmail} onChange={this.handleInput} />
 		);
 	}
 };

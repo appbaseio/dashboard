@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, IndexLink, useRouterHistory, browserHistory } from 'react-router';
 import { createHistory, useBasename } from 'history';
 import Main from './index';
-
+import { appbaseService } from './service/AppbaseService';
 import AppList from './views/list';
 import Dashboard from './views/dashboard';
 import Credentials from './views/credentials';
@@ -15,6 +15,7 @@ import Gem from './views/gem';
 import Mirage from './views/mirage';
 import Billing from './views/billing';
 import * as helper from './shared/helper';
+import { contextConfig } from './config';
 
 const $ = require('jquery');
 
@@ -26,7 +27,7 @@ const $ = require('jquery');
 const Default = () => (<div></div>);
 
 const NotFound = () => {
-	browserHistory.push('/');
+	appbaseService.pushUrl();
 	return (<div></div>)
 };
 
@@ -34,9 +35,16 @@ const appChangesEvent = {
 	onLeave: helper.appDashboard.onLeave
 };
 
+const getContext = () => {
+	const pathname = window.location.pathname.split('/');
+	const context = Object.keys(contextConfig).indexOf(pathname[1]) > -1 ? `/${pathname[1]}` : '/';
+	appbaseService.context = context;
+	return context;
+}
+
 render((
 	<Router history={browserHistory}>
-		<Route path="/" component={Main}>
+		<Route path={getContext()} component={Main}>
 			<IndexRoute component={Default} />
 			<Route path="apps" component={AppList} />
 			<Route path="login" component={Login} />

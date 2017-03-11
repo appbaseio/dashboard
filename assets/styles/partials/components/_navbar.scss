@@ -26,11 +26,13 @@
 		span {
 			float: left;
 			padding: 0.5rem 0;
+			font-family: $font-black;
+			text-transform: uppercase;
 		}
 	}
 	.user-img-container {
 		position: relative;
-		padding-right: 40px;
+		padding-right: 15px;
 		.user-img {
 			border: 0;
 			background: transparent;
@@ -75,7 +77,7 @@
 	}
 	li {
 		height: 60px;
-		a {
+		a, .extra-link {
 			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
@@ -93,21 +95,54 @@
 				top: 1.65rem;
 			}
 		}
-	}
-	li.dropdown > a {
-		position: relative;
-		padding-bottom: 8px;
-		&:before {
-			content: " ";
-			position: absolute;
-			right: 1px;
-			bottom: 12px;
-			border-width: 4px;
-			border-style: solid;
-			border-color: #fff transparent transparent transparent;
+		.ad-user-info-list {
+			padding: 0;
+			list-style: none;
+			&.visible-xs {
+				> li {
+					float: left;
+					width: 100%;
+					a {
+						float: left;
+						width: 100%;
+					}
+				}
+			}
 		}
-		&:hover {
-			background: transparent;
+	}
+	li.dropdown {
+		> a {
+			position: relative;
+			padding-bottom: 8px;
+			&:before {
+				content: " ";
+				position: absolute;
+				right: 1px;
+				bottom: 12px;
+				border-width: 4px;
+				border-style: solid;
+				border-color: #fff transparent transparent transparent;
+			}
+			&:hover {
+				background: transparent;
+			}
+		}
+		&.without-icon {
+			> a:before, > a:after {
+				display: none;
+			}
+		}
+		&.logout-dropdown {
+			.dropdown-menu {
+				left: -100px;
+				max-width: 160px;
+			}
+			li a {
+				overflow: hidden;
+				max-width: 100%;
+				max-height: 40px;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 	li.dropdown:hover > a {

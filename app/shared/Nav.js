@@ -13,6 +13,7 @@ export default class Nav extends Component {
 	constructor(props) {
 		super(props);
 		this.config = getConfig();
+		this.contextPath = appbaseService.getContextPath();
 		this.state = {
 			activeApp: null,
 			currentView: null,
@@ -21,7 +22,7 @@ export default class Nav extends Component {
 		};
 		this.appLink = {
 			label: 'Apps',
-			link: 'apps',
+			link: `${this.contextPath}apps`,
 			type: 'internal'
 		};
 		this.links = [{
@@ -30,13 +31,14 @@ export default class Nav extends Component {
 			type: 'external'
 		}, {
 			label: 'Tutorial',
-			link: 'tutorial',
+			link: `${this.contextPath}tutorial`,
 			type: 'internal'
 		}, {
 			label: 'Billing',
-			link: 'billing',
+			link: `${this.contextPath}billing`,
 			type: 'internal'
 		}];
+		this.options = ['name', 'email', 'logout'];
 		this.currentActiveApp = null;
 	}
 
@@ -79,10 +81,9 @@ export default class Nav extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'appLink':
-				const tempLink = this.state.activeApp ? '/'+this.appLink.link : this.appLink.link;
 				generatedEle = (
 					<li>
-						<Link to={tempLink}>
+						<Link to={this.appLink.link}>
 							<i className="fa fa-cubes"></i>&nbsp;
 							{this.appLink.label}
 						</Link>
@@ -126,8 +127,7 @@ export default class Nav extends Component {
 				generatedEle = this.links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
-						const tempLink = this.state.activeApp ? '/'+item.link : item.link;
-						anchor = (<Link to={tempLink}>{item.label}</Link>);
+						anchor = (<Link to={item.link}>{item.label}</Link>);
 					}
 					return (
 						<li key={index}>
@@ -140,15 +140,44 @@ export default class Nav extends Component {
 				if(appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.details) {
 					generatedEle = (
 						<li>
-							<a className="user-img-container">
-								<span>{appbaseService.userInfo.body.details.name}</span>
-								<button className="user-img" onClick={()=>this.logout()}>
-									<span className="img-container">
-										<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
-										<div className="close"><i className="fa fa-times"></i></div>
-									</span>
-								</button>
-							</a>
+							<ul className="ad-user-info-list hidden-xs">
+								<li className="ad-dropdown dropdown without-icon logout-dropdown extra-link">
+									<a className="dropdown-toggle user-img-container" type="button" id="userimg-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										<button className="user-img">
+											<span className="img-container">
+												<img src={this.state.userImg} className="img-responsive" alt={appbaseService.userInfo.body.details.name} onError={() => this.onUserImgFailed()} />
+											</span>
+										</button>
+									</a>
+									<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="userimg-menu">
+										{
+											this.options.map((item) => (
+												<li key={item}>
+													<a onClick={() => this.logout(item)}>
+														{
+															item === 'logout' ? 
+															(<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>) :
+															appbaseService.userInfo.body.details[item]
+														}
+													</a>
+												</li>
+											))
+										}
+									</ul>
+								</li>
+							</ul>
+							<ul className="visible-xs ad-user-info-list">
+								<li>
+									<a>
+										{appbaseService.userInfo.body.details.name} ({appbaseService.userInfo.body.details.email})
+									</a>
+								</li>
+								<li>
+									<a onClick={() => this.logout('logout')}>
+										<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>
+									</a>
+								</li>
+							</ul>
 						</li>
 					);
 				}
@@ -157,8 +186,10 @@ export default class Nav extends Component {
 		return generatedEle;
 	}
 
-	logout() {
-		appbaseService.logout();
+	logout(item) {
+		if(item === 'logout') {
+			appbaseService.logout();
+		}
 	}
 
 	render() {

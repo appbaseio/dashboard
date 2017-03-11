@@ -42,14 +42,14 @@ export default class Main extends Component {
 			loggedIn: false,
 			loading: false
 		});
-		browserHistory.push('/login');
+		appbaseService.pushUrl('/login');
 	}
 
 	redirectToPath() {
 		if(Object.keys(appbaseService.userInfo.body.apps).length === 0) {
-			browserHistory.push('/tutorial');
+			appbaseService.pushUrl('/tutorial');
 		} else if(window.location.pathname === '/apps' || window.location.pathname === '/') {
-			browserHistory.push('/apps');
+			appbaseService.pushUrl('/apps');
 		}
 	}
 

@@ -26,7 +26,7 @@ export default class DeleteApp extends Component {
 	}
 	deleteApp() {
 		appbaseService.deleteApp(this.props.appId).then((data) => {
-			browserHistory.push('/apps');
+			appbaseService.pushUrl('/apps');
 		}).catch((e) => {
 			console.log(e);
 		})

@@ -38,7 +38,7 @@ export default class HighChartView extends Component {
 					<Highchart 
 						id="chart1" 
 						graphMethod={this.state.graphMethod}
-						{...this.props}
+						info={this.props.info}
 					>
 					</Highchart>
 				</main>
