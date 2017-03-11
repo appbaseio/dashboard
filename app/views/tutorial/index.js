@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { getConfig } from '../../config';
+import { browserHistory } from 'react-router';
+
+const $ = require('jquery');
 
 export default class Tutorial extends Component {
 
@@ -16,8 +19,25 @@ export default class Tutorial extends Component {
 		this.setPageHeight();
 	}
 
+	componentDidUpdate() {
+		if(this.state.url && this.iframeRef) {
+			setTimeout(this.listenEvent.bind(this), 300);
+		}
+	}
+
 	componentWillUnmount() {
 		$(window).unbind("resize");
+	}
+
+	listenEvent() {
+		this.iframeRef.contentDocument.addEventListener('click', function (e) {
+			if($(e.target).hasClass('go-to-dashboard')) {
+				browserHistory.push('/apps');
+			}
+			if($(e.target).hasClass('go-to-document')) {
+				window.open('http://docs.appbase.io');
+			}
+		});
 	}
 
 	setPageHeight() {
@@ -53,7 +73,7 @@ export default class Tutorial extends Component {
 							{this.state.loadActive ? (<div className="loadingBar"></div>) : null}
 							{
 								this.state.url ? (
-									<iframe onLoad={() => this.onIfreamLoad()} src={this.state.url} height="100%" width="100%" frameBorder="0"></iframe>
+									<iframe ref={(iframe) => this.iframeRef = iframe} onLoad={() => this.onIfreamLoad()} src={this.state.url} height="100%" width="100%" frameBorder="0"></iframe>
 								) : null
 							}
 						</main>

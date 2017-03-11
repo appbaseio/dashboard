@@ -48,9 +48,9 @@ class AppbaseService {
 
 	getPermission(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].permissions && cache) {
-				resolve(this.apps[appId].permissions);
-			} else {
+			// if (this.apps && this.apps[appId] && this.apps[appId].permissions && cache) {
+			// 	resolve(this.apps[appId].permissions);
+			// } else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
 				$.get(this.address + 'app/' + appId + '/permissions').done((data) => {
 					this.apps[appId].permissions = data;
@@ -58,15 +58,15 @@ class AppbaseService {
 				}).fail((e) => {
 					reject(e);
 				});
-			}
+			// }
 		});
 	}
 
 	getShare(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].share && cache) {
-				resolve(this.apps[appId].share);
-			} else {
+			// if (this.apps && this.apps[appId] && this.apps[appId].share && cache) {
+			// 	resolve(this.apps[appId].share);
+			// } else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
 				$.get(this.address + 'app/' + appId + '/share').done((data) => {
 					this.apps[appId].share = data;
@@ -74,15 +74,15 @@ class AppbaseService {
 				}).fail((e) => {
 					reject(e);
 				});
-			}
+			// }
 		});
 	}
 
 	getAppInfo(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].appInfo && cache) {
-				resolve(this.apps[appId].appInfo);
-			} else {
+			// if (this.apps && this.apps[appId] && this.apps[appId].appInfo && cache) {
+			// 	resolve(this.apps[appId].appInfo);
+			// } else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
 				$.get(this.address + 'app/' + appId).done((data) => {
 					this.apps[appId].appInfo = data;
@@ -90,15 +90,15 @@ class AppbaseService {
 				}).fail((e) => {
 					reject(e);
 				});
-			}
+			// }
 		});
 	}
 
 	getMetrics(appId, cache=false) {
 		return new Promise((resolve, reject) => {
-			if (this.apps && this.apps[appId] && this.apps[appId].metrics && cache) {
-				resolve(this.apps[appId].metrics);
-			} else {
+			// if (this.apps && this.apps[appId] && this.apps[appId].metrics && cache) {
+			// 	resolve(this.apps[appId].metrics);
+			// } else {
 				this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
 				$.get(this.address + 'app/' + appId + '/metrics').done((data) => {
 					this.apps[appId].metrics = data;
@@ -106,7 +106,7 @@ class AppbaseService {
 				}).fail((e) => {
 					reject(e);
 				});
-			}
+			// }
 		});
 	}
 
