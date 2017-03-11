@@ -102,15 +102,15 @@ export default class NewApp extends Component {
 
 	render() {
 		return (
-			<AppCard>
-				<div className="ad-list-newapp">
+			<AppCard setClassName="appcard-newapp">
+				<div className="ad-list-newapp col-xs-12 p-0">
 					<p>Get Started</p>
-					<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
+					<div className={"col-xs-12 p-0 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
 						<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter app name" value={this.state.value} className="form-control" onChange={this.handleChange} />
 						{this.renderElement('helpBlock')}
 					</div>
-					<div className="col-xs-12 title">
-						<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 theme-btn active" onClick={() => this.handleSubmit()} >
+					<div className="col-xs-12 p-0 title">
+						<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
 							{this.props.createAppLoading ? (<Loading></Loading>) : null}
 							Create a new app
 						</button>

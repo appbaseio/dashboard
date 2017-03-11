@@ -1,3 +1,6 @@
 .appcard {
-		margin: 15px 0;
+	margin: 15px 0;
+	&.appcard-newapp {
+		padding-right: 0;
+	}
 }

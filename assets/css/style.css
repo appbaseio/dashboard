@@ -320,6 +320,16 @@ body {
       border-color: #fff transparent transparent transparent; }
     .navbar.navbar-default li.dropdown > a:hover {
       background: transparent; }
+  .navbar.navbar-default li.dropdown.without-icon > a:before, .navbar.navbar-default li.dropdown.without-icon > a:after {
+    display: none; }
+  .navbar.navbar-default li.dropdown.logout-dropdown .dropdown-menu {
+    left: -126px;
+    max-width: 160px; }
+  .navbar.navbar-default li.dropdown.logout-dropdown li a {
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 40px;
+    text-overflow: ellipsis; }
   .navbar.navbar-default li.dropdown:hover > a:after {
     content: " ";
     position: absolute;
@@ -430,6 +440,8 @@ body {
 
 .appcard {
   margin: 15px 0; }
+  .appcard.appcard-newapp {
+    padding-right: 0; }
 
 .ad-dashboard .body-card-body-api-view {
   margin: 0;
@@ -485,6 +497,11 @@ body {
     margin: 0;
     line-height: 24px;
     padding: 0 2px; }
+
+@media screen and (max-width: 768px) {
+  .ad-list .ad-list-container {
+    max-width: 500px;
+    margin: 0 auto; } }
 
 .ad-list .ad-list-newapp {
   padding: 0; }
