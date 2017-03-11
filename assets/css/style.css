@@ -9,6 +9,9 @@ body {
 .p-0 {
   padding: 0; }
 
+.m-tb-15 {
+  margin: 15px 0; }
+
 .pos-relative {
   position: relative; }
 
@@ -728,7 +731,7 @@ body {
   animation-delay: .2s; }
 
 .ad-loading {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid #CDDC39;
   overflow: hidden;
   display: flex;
@@ -955,6 +958,11 @@ body {
 
 #permission-page .ad-detail-page-body-card {
   margin-bottom: 0; }
+
+#team-page .ad-initial-share {
+  margin: 15px 0;
+  font-size: 1.2rem;
+  text-align: center; }
 
 .modal .modal-header {
   border: 0;

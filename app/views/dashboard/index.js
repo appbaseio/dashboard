@@ -20,7 +20,8 @@ export default class Dashboard extends Component {
 				chartConfig: {}
 			},
 			totalApiCalls: 0,
-			apiCalls: 0
+			apiCalls: 0,
+			waitingForApiCalls: true
 		};
 		this.themeColor = '#CDDC39';
 		this.trailColor = '#fff';
@@ -37,7 +38,9 @@ export default class Dashboard extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.params.appId != this.appName) {
-			this.initialize(nextProps);
+			this.setState({
+				waitingForApiCalls: true
+			}, this.initialize.bind(this, nextProps));
 		}
 	}
 
@@ -83,7 +86,6 @@ export default class Dashboard extends Component {
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
-			// this.setClipboard();
 		});
 		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data;
@@ -99,7 +101,8 @@ export default class Dashboard extends Component {
 				this.setState({
 					info: this.info,
 					apiCalls: this.getApiCalls(data),
-					totalApiCalls
+					totalApiCalls,
+					waitingForApiCalls: false
 				});
 			}
 		});
@@ -165,7 +168,7 @@ export default class Dashboard extends Component {
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
 							{
-								this.state.totalApiCalls ? (
+								this.state.totalApiCalls || this.state.waitingForApiCalls ? (
 									<HighChartView
 										apiCalls={this.state.apiCalls}
 										graphMethod={this.state.graphMethod}

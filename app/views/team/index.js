@@ -4,14 +4,24 @@ import ShareCard from './ShareCard';
 import NewShare from './NewShare';
 import AppPage from '../../shared/AppPage';
 
+const InitialShare = (props) => {
+	return (
+		<p className="col-xs-12 ad-initial-share">
+			You don't have team members yet <a onClick={props.newShareInit}>add team members.</a>
+		</p>
+	);
+}
+
 export default class Team extends Component {
 	constructor(props, context) {
 		super(props);
 		this.state = {
-			info: null
+			info: null,
+			newShareExpand: false
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newShare = this.newShare.bind(this);
+		this.newShareInit = this.newShareInit.bind(this);
 	}
 
 	componentWillMount() {
@@ -45,6 +55,12 @@ export default class Team extends Component {
 		});
 	}
 
+	newShareInit() {
+		this.setState({
+			newShareExpand: true
+		});
+	}
+
 	newShare(request) {
 		appbaseService.newShare(this.appId, request).then((data) => {
 			this.getInfo();
@@ -56,16 +72,20 @@ export default class Team extends Component {
 		switch(method) {
 			case 'share':
 				if(this.state.info && this.state.info.share) {
-					element = this.state.info.share.body.map((shareInfo, index) => {
-						return (
-							<ShareCard
-								appId={this.appId}
-								key={index}
-								shareInfo={shareInfo}
-								getInfo={this.getInfo}
-							/>
-						);
-					})
+					if(this.state.info.share.body.length) {
+						element = this.state.info.share.body.map((shareInfo, index) => {
+							return (
+								<ShareCard
+									appId={this.appId}
+									key={index}
+									shareInfo={shareInfo}
+									getInfo={this.getInfo}
+								/>
+							);
+						})
+					} else {
+						element = (<InitialShare newShareInit={this.newShareInit}></InitialShare>);
+					}
 				}
 			break;
 		}
@@ -81,14 +101,14 @@ export default class Team extends Component {
 					appId: this.appId
 				}}
 			>
-				<div className="ad-detail-page ad-dashboard row">
+				<div className="ad-detail-page row" id="team-page">
 					<header className="ad-detail-page-header col-xs-12">
 						<div className="col-xs-12 col-sm-4 col-md-4 col-lg-6 p-0">
 							<h2 className="ad-detail-page-title">Team</h2>
 							<p>Create team members to share your app with.</p>
 						</div>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-8 col-lg-6">
-							<NewShare newShare={this.newShare} />
+							<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />
 						</aside>
 					</header>
 					<main className="ad-detail-page-body col-xs-12">
