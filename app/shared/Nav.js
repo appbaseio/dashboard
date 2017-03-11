@@ -84,7 +84,9 @@ export default class Nav extends Component {
 				generatedEle = (
 					<li>
 						<Link to={this.appLink.link}>
-							<i className="fa fa-cubes"></i>&nbsp;
+							<span className="icon-container">
+								<img src="../../../assets/images/newapp.svg" alt="" className="img-responsive"/>
+							</span>
 							{this.appLink.label}
 						</Link>
 					</li>

@@ -26,7 +26,7 @@
 		span {
 			float: left;
 			padding: 0.5rem 0;
-			font-family: $font-black;
+			font-family: $font-regular;
 			text-transform: uppercase;
 		}
 	}
@@ -85,6 +85,11 @@
 			&:hover,
 			&:focus {
 				color: #fafafa;
+			}
+			.icon-container {
+				display: inline-block;
+				max-width: 0.9rem;
+				margin-right: 5px;
 			}
 		}
 		.apps-dropdown-toggle {

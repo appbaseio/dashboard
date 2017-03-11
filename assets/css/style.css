@@ -259,7 +259,7 @@ body {
     .navbar.navbar-default .navbar-brand span {
       float: left;
       padding: 0.5rem 0;
-      font-family: "Source Sans Pro Black";
+      font-family: "Source Sans Pro Regular";
       text-transform: uppercase; }
   .navbar.navbar-default .user-img-container {
     position: relative;
@@ -306,6 +306,10 @@ body {
       color: #fff; }
       .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus, .navbar.navbar-default li .extra-link:hover, .navbar.navbar-default li .extra-link:focus {
         color: #fafafa; }
+      .navbar.navbar-default li a .icon-container, .navbar.navbar-default li .extra-link .icon-container {
+        display: inline-block;
+        max-width: 0.9rem;
+        margin-right: 5px; }
     .navbar.navbar-default li .apps-dropdown-toggle {
       position: relative; }
       .navbar.navbar-default li .apps-dropdown-toggle i {

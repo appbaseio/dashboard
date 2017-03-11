@@ -22,37 +22,37 @@ export default class Sidebar extends Component {
 			link: `${this.contextPath}dashboard/`,
 			type: 'internal',
 			name: 'dashboard',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_1.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/dashboard.svg"></img>)
 		}, {
 			label: 'Browser',
 			link: `${this.contextPath}browser/`,
 			type: 'internal',
 			name: 'browser',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_2.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/browser.svg"></img>)
 		}, {
 			label: 'Gem',
 			link: `${this.contextPath}gem/`,
 			type: 'internal',
 			name: 'gem',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_3.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/gem.svg"></img>)
 		},{
 			label: 'Mirage',
 			link: `${this.contextPath}mirage/`,
 			type: 'internal',
 			name: 'mirage',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_4.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/mirage.svg"></img>)
 		}, {
 			label: 'Credentials',
 			link: `${this.contextPath}credentials/`,
 			type: 'internal',
 			name: 'credentials',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_5.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/credentials.svg"></img>)
 		}, {
 			label: 'Team',
 			link: `${this.contextPath}team/`,
 			type: 'internal',
 			name: 'team',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/icon_6.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/team.svg"></img>)
 		}];
 	}
 
