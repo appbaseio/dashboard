@@ -305,14 +305,15 @@ body {
       padding: 1.5rem 1rem;
       color: #fff; }
       .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus, .navbar.navbar-default li .extra-link:hover, .navbar.navbar-default li .extra-link:focus {
-        color: #fafafa; }
+        color: #fafafa;
+        outline: none; }
       .navbar.navbar-default li a .icon-container, .navbar.navbar-default li .extra-link .icon-container {
         display: inline-block;
         max-width: 0.9rem;
         margin-right: 5px; }
     .navbar.navbar-default li .apps-dropdown-toggle {
       position: relative; }
-      .navbar.navbar-default li .apps-dropdown-toggle i {
+      .navbar.navbar-default li .apps-dropdown-toggle .dropdown-chevron {
         position: absolute;
         left: -0.1rem;
         top: 1.65rem; }
@@ -348,6 +349,11 @@ body {
     max-width: 100%;
     max-height: 40px;
     text-overflow: ellipsis; }
+  .navbar.navbar-default li.dropdown.open > a {
+    color: #fff;
+    background: transparent; }
+  .navbar.navbar-default li.dropdown:hover {
+    outline: none; }
   .navbar.navbar-default li.dropdown:hover > a:after {
     content: " ";
     position: absolute;

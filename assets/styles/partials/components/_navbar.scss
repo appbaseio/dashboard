@@ -85,6 +85,7 @@
 			&:hover,
 			&:focus {
 				color: #fafafa;
+				outline: none;
 			}
 			.icon-container {
 				display: inline-block;
@@ -94,7 +95,7 @@
 		}
 		.apps-dropdown-toggle {
 			position: relative;
-			i {
+			.dropdown-chevron {
 				position: absolute;
 				left: -0.1rem;
 				top: 1.65rem;
@@ -148,6 +149,15 @@
 				max-height: 40px;
 				text-overflow: ellipsis;
 			}
+		}
+		&.open {
+			> a {
+				color: #fff;
+				background: transparent;
+			}
+		}
+		&:hover {
+			outline: none;
 		}
 	}
 	li.dropdown:hover > a {

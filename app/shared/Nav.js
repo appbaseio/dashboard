@@ -98,7 +98,7 @@ export default class Nav extends Component {
 					this.state.apps.forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`/${this.state.currentView}/${app.name}`}>
+								<Link to={`${this.contextPath}${this.state.currentView}/${app.name}`}>
 									{app.name}
 									<AppOwner app={app} />
 								</Link>
@@ -112,11 +112,12 @@ export default class Nav extends Component {
 			break;
 			case 'currentApp': 
 				if(this.state.activeApp) {
+					const apps = this.state.apps.filter((app) => app.name === this.state.activeApp);
 					generatedEle = (
 						<li role="presentation" className="dropdown">
 							<a className="dropdown-toggle apps-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								<i className="fa fa-chevron-right"></i>&nbsp;
-								{this.state.activeApp}
+								<i className="fa fa-chevron-right dropdown-chevron"></i>&nbsp;
+								{apps[0].name} <AppOwner app={apps[0]} />
 							</a>
 							<ul className="dropdown-menu pull-right">
 								{this.renderElement('apps')}
