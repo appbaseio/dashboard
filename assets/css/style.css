@@ -546,7 +546,8 @@ body {
     border: 0;
     border-bottom: 2px solid #ccc;
     box-shadow: none;
-    background-color: #f4f4f4; }
+    background-color: transparent;
+    border-radius: 0; }
     .ad-list .ad-list-newapp input:focus {
       box-shadow: 0 0.3125em 1.25em 0 rgba(46, 61, 73, 0.06);
       background-color: #fafafa; }
