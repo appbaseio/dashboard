@@ -820,7 +820,11 @@ body {
       padding: 0; }
     .ad-detail-page .ad-detail-page-header.header-inline-summary p {
       display: inline;
-      padding-left: 10px; }
+      padding-left: 10px;
+      margin: 0px 0 3px 0; }
+    .ad-detail-page .ad-detail-page-header.header-align-end {
+      display: flex;
+      align-items: flex-end; }
   .ad-detail-page .ad-detail-page-body {
     padding: 15px; }
     .ad-detail-page .ad-detail-page-body > [class*="col-"] {

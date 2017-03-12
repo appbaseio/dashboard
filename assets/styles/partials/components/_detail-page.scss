@@ -21,7 +21,12 @@
 			p {
 				display: inline;
 				padding-left: 10px;
+				margin: 0px 0 3px 0;
 			}
+		}
+		&.header-align-end {
+			display: flex;
+			align-items: flex-end;
 		}
 	}
 	.ad-detail-page-body {
