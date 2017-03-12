@@ -54,7 +54,8 @@ export default class Highchart extends Component {
 			loading: true,
 			title: {
 				text: ''
-			}
+			},
+			credits: false
 		};
 		return obj;
 	}

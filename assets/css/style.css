@@ -499,6 +499,9 @@ body {
         color: #CDDC39;
         text-decoration: none; }
 
+.ad-dashboard .highcharts-credits {
+  display: none !important; }
+
 .ad-list .ad-list-header {
   background: #fff;
   padding: 15px 15px 25px;
