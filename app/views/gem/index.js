@@ -94,7 +94,7 @@ export default class Gem extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-						<header className="ad-detail-page-header header-inline-summary col-xs-12">
+						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
 							<h2 className="ad-detail-page-title">Gem</h2>
 							<p>
 								Check the app mapping over here.

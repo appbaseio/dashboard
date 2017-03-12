@@ -7,7 +7,13 @@ import AppPage from '../../shared/AppPage';
 const InitialShare = (props) => {
 	return (
 		<p className="col-xs-12 ad-initial-share">
-			You don't have team members yet <a onClick={props.newShareInit}>add team members.</a>
+			You don't have team members yet 
+			{
+				appbaseService.isMyApp(props.info) ? (
+					<a onClick={props.newShareInit}>add team members</a>
+				) : null
+			}
+			.
 		</p>
 	);
 }
@@ -53,6 +59,12 @@ export default class Team extends Component {
 				this.setState({ info: this.info });
 			}
 		});
+		appbaseService.getAppInfo(this.appId).then((data) => {
+			this.info.appInfo = data.body;
+			if (!this.stopUpdate) {
+				this.setState({ info: this.info });
+			}
+		});
 	}
 
 	newShareInit() {
@@ -84,7 +96,7 @@ export default class Team extends Component {
 							);
 						})
 					} else {
-						element = (<InitialShare newShareInit={this.newShareInit}></InitialShare>);
+						element = (<InitialShare info={this.state.info} newShareInit={this.newShareInit}></InitialShare>);
 					}
 				}
 			break;
@@ -108,7 +120,11 @@ export default class Team extends Component {
 							<p>Create team members to share your app with.</p>
 						</div>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-8 col-lg-6">
-							<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />
+							{
+								appbaseService.isMyApp(this.state.info) ? (
+									<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />
+								) : null
+							}
 						</aside>
 					</header>
 					<main className="ad-detail-page-body col-xs-12">

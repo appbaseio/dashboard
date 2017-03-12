@@ -262,7 +262,7 @@ export default class AppList extends Component {
 						<div>
 							<header className="ad-list-header row">
 								<div className="container">
-									<AppIntro setClassName="hidden-xs" name={appbaseService.userInfo.body.details.given_name} />
+									<AppIntro setClassName="hidden-xs" name={appbaseService.userInfo.body.details.name} />
 									<AppTutorial setClassName="hidden-xs hidden-sm" />
 									<NewApp
 										createApp={this.createApp} 

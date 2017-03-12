@@ -259,7 +259,7 @@ body {
     .navbar.navbar-default .navbar-brand span {
       float: left;
       padding: 0.5rem 0;
-      font-family: "Source Sans Pro Black";
+      font-family: "Source Sans Pro Regular";
       text-transform: uppercase; }
   .navbar.navbar-default .user-img-container {
     position: relative;
@@ -305,10 +305,15 @@ body {
       padding: 1.5rem 1rem;
       color: #fff; }
       .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus, .navbar.navbar-default li .extra-link:hover, .navbar.navbar-default li .extra-link:focus {
-        color: #fafafa; }
+        color: #fafafa;
+        outline: none; }
+      .navbar.navbar-default li a .icon-container, .navbar.navbar-default li .extra-link .icon-container {
+        display: inline-block;
+        max-width: 0.9rem;
+        margin-right: 5px; }
     .navbar.navbar-default li .apps-dropdown-toggle {
       position: relative; }
-      .navbar.navbar-default li .apps-dropdown-toggle i {
+      .navbar.navbar-default li .apps-dropdown-toggle .dropdown-chevron {
         position: absolute;
         left: -0.1rem;
         top: 1.65rem; }
@@ -344,6 +349,13 @@ body {
     max-width: 100%;
     max-height: 40px;
     text-overflow: ellipsis; }
+  .navbar.navbar-default li.dropdown.open > a {
+    color: #fff;
+    background: transparent; }
+  .navbar.navbar-default li.dropdown:hover {
+    outline: none; }
+  .navbar.navbar-default li.dropdown a {
+    text-transform: inherit; }
   .navbar.navbar-default li.dropdown:hover > a:after {
     content: " ";
     position: absolute;
@@ -495,6 +507,9 @@ body {
         color: #CDDC39;
         text-decoration: none; }
 
+.ad-dashboard .highcharts-credits {
+  display: none !important; }
+
 .ad-list .ad-list-header {
   background: #fff;
   padding: 15px 15px 25px;
@@ -533,7 +548,8 @@ body {
     border: 0;
     border-bottom: 2px solid #ccc;
     box-shadow: none;
-    background-color: #f4f4f4; }
+    background-color: transparent;
+    border-radius: 0; }
     .ad-list .ad-list-newapp input:focus {
       box-shadow: 0 0.3125em 1.25em 0 rgba(46, 61, 73, 0.06);
       background-color: #fafafa; }
@@ -807,7 +823,11 @@ body {
       padding: 0; }
     .ad-detail-page .ad-detail-page-header.header-inline-summary p {
       display: inline;
-      padding-left: 10px; }
+      padding-left: 10px;
+      margin: 0px 0 3px 0; }
+    .ad-detail-page .ad-detail-page-header.header-align-end {
+      display: flex;
+      align-items: flex-end; }
   .ad-detail-page .ad-detail-page-body {
     padding: 15px; }
     .ad-detail-page .ad-detail-page-body > [class*="col-"] {

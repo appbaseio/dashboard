@@ -18,7 +18,7 @@ export default class Nav extends Component {
 			activeApp: null,
 			currentView: null,
 			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : [],
-			userImg: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details ? appbaseService.userInfo.body.details.picture : defaultImg
+			userImg: this.getUserImg()
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -40,6 +40,12 @@ export default class Nav extends Component {
 		}];
 		this.options = ['name', 'email', 'logout'];
 		this.currentActiveApp = null;
+	}
+
+	getUserImg() {
+		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details 
+		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url) 
+		: defaultImg;
 	}
 
 	componentWillMount() {
@@ -84,7 +90,9 @@ export default class Nav extends Component {
 				generatedEle = (
 					<li>
 						<Link to={this.appLink.link}>
-							<i className="fa fa-cubes"></i>&nbsp;
+							<span className="icon-container">
+								<img src="../../../assets/images/newapp.svg" alt="" className="img-responsive"/>
+							</span>
 							{this.appLink.label}
 						</Link>
 					</li>
@@ -96,7 +104,7 @@ export default class Nav extends Component {
 					this.state.apps.forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`/${this.state.currentView}/${app.name}`}>
+								<Link to={`${this.contextPath}${this.state.currentView}/${app.name}`}>
 									{app.name}
 									<AppOwner app={app} />
 								</Link>
@@ -110,11 +118,12 @@ export default class Nav extends Component {
 			break;
 			case 'currentApp': 
 				if(this.state.activeApp) {
+					const apps = this.state.apps.filter((app) => app.name === this.state.activeApp);
 					generatedEle = (
 						<li role="presentation" className="dropdown">
 							<a className="dropdown-toggle apps-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-								<i className="fa fa-chevron-right"></i>&nbsp;
-								{this.state.activeApp}
+								<i className="fa fa-chevron-right dropdown-chevron"></i>&nbsp;
+								{apps[0].name} <AppOwner app={apps[0]} />
 							</a>
 							<ul className="dropdown-menu pull-right">
 								{this.renderElement('apps')}
