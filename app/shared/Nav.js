@@ -18,7 +18,7 @@ export default class Nav extends Component {
 			activeApp: null,
 			currentView: null,
 			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : [],
-			userImg: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details ? appbaseService.userInfo.body.details.picture : defaultImg
+			userImg: this.getUserImg()
 		};
 		this.appLink = {
 			label: 'Apps',
@@ -40,6 +40,12 @@ export default class Nav extends Component {
 		}];
 		this.options = ['name', 'email', 'logout'];
 		this.currentActiveApp = null;
+	}
+
+	getUserImg() {
+		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details 
+		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url) 
+		: defaultImg;
 	}
 
 	componentWillMount() {
