@@ -159,6 +159,9 @@
 		&:hover {
 			outline: none;
 		}
+		a {
+			text-transform: inherit;
+		}
 	}
 	li.dropdown:hover > a {
 		&:after {

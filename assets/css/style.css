@@ -354,6 +354,8 @@ body {
     background: transparent; }
   .navbar.navbar-default li.dropdown:hover {
     outline: none; }
+  .navbar.navbar-default li.dropdown a {
+    text-transform: inherit; }
   .navbar.navbar-default li.dropdown:hover > a:after {
     content: " ";
     position: absolute;
