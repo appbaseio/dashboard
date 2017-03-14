@@ -8,16 +8,16 @@ export default class Upgrade extends Component {
 
 	render() {
 		let billingClass = null;
-		if(this.props.appCount.action.percentage >= 100) {
+		if(this.props.appCount.action.percentage >= 100 || this.props.appCount.records.percentage >= 100) {
 			billingClass = 'danger';
 		}
-		else if(this.props.appCount.action.percentage >= 80) {
+		else if(this.props.appCount.action.percentage >= 80 || this.props.appCount.records.percentage >= 80) {
 			billingClass = 'warning';
 		}
 		return (
 			<div>
 				{
-					this.props.appCount.action.percentage > 80 ? (
+					this.props.appCount.action.percentage > 80 || this.props.appCount.records.percentage > 80 ? (
 						<section className="ad-detail-page-body-card api-view">
 							<header className="ad-detail-page-body-card-title">
 								<span>This app requires a plan upgrade.</span>
