@@ -113,6 +113,37 @@ class AppbaseService {
 		});
 	}
 
+	allApps() {
+		return new Promise((resolve, reject) => {
+			$.get(this.address + 'user/apps').done((data) => {
+				this.userApps = data.body;
+				resolve(data);
+			}).fail((e) => {
+				reject(e);
+			});
+		});
+	}
+
+	allMetrics() {
+		return new Promise((resolve, reject) => {
+			$.get(this.address + 'user/apps/metrics').done((data) => {
+				resolve(data);
+			}).fail((e) => {
+				reject(e);
+			});
+		});
+	}
+
+	allPermissions() {
+		return new Promise((resolve, reject) => {
+			$.get(this.address + 'user/apps/permissions').done((data) => {
+				resolve(data);
+			}).fail((e) => {
+				reject(e);
+			});
+		});
+	}
+
 	createApp(appName) {
 		return new Promise((resolve, reject) => {
 			$.ajax({

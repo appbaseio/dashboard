@@ -80,16 +80,7 @@ class AppListHelper {
 		}
 		const getPermission = () => {
 			appbaseService.getPermission(appId, true).then((data) => {
-				apps[index].permissions = {
-					permissions: data.body
-				};
-				data.body.forEach((item) => {
-					if (item.write) {
-						apps[index].permissions.writePermission = item;
-					} else if (item.read) {
-						apps[index].permissions.readPermission = item;
-					}
-				});
+				apps[index].permissions = this.filterPermissions(data.body);
 				count.permission = true;
 				cb.call(this);
 			}).catch((e) => {
@@ -119,6 +110,19 @@ class AppListHelper {
 			}
 		}
 		init.call(this);
+	}
+	filterPermissions(permissions) {
+		let permObj = {
+			permissions: permissions
+		};
+		permissions.forEach((item) => {
+			if (item.write) {
+				permObj.writePermission = item;
+			} else if (item.read) {
+				permObj.readPermission = item;
+			}
+		});
+		return permObj;
 	}
 	normalizaApps(apps) {
 		let storeApps = [];

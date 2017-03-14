@@ -11,8 +11,8 @@ export default class SortBy extends Component {
 		};
 		this.options = {
 			lastActiveDate: "Last Activity",
-			"info.appStats.records": "Records",
-			"info.appStats.calls": "API Calls"
+			"records": "Records",
+			"api_calls": "API Calls"
 		};
 	}
 

@@ -12,7 +12,7 @@ export default class Credentials extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.app && this.props.app.permissions && this.props.app.permissions[this.props.type] && !this.cset) {
+		if (this.props.app && this.props.app.permissions && this.props.app[this.props.type] && !this.cset) {
 			this.cset = true;
 			this.getPermission();
 		}
