@@ -862,6 +862,9 @@ body {
     margin-bottom: 5px; }
     .permission-card .permission-card-header .permission-editable .ad-editable-edit {
       padding: 0; }
+    .permission-card .permission-card-header .permission-card-header-description {
+      font-size: 1rem;
+      padding-left: 5px; }
   .permission-card .permission-card-body {
     padding: 0; }
     .permission-card .permission-card-body .permission-card-body-description {
@@ -876,14 +879,14 @@ body {
       right: 0;
       top: 5px;
       padding: 0; }
-    .permission-card .permission-card-body .permission-delete {
-      opacity: 0;
-      -webkit-animation: fadeout 0.5s;
-      -moz-animation: fadeout 0.5s;
-      -ms-animation: fadeout 0.5s;
-      -o-animation: fadeout 0.5s;
-      animation: fadeout 0.5s; }
-  .permission-card:hover .permission-card-body .permission-delete, .permission-card.delete-active .permission-card-body .permission-delete {
+  .permission-card .permission-delete {
+    opacity: 0;
+    -webkit-animation: fadeout 0.5s;
+    -moz-animation: fadeout 0.5s;
+    -ms-animation: fadeout 0.5s;
+    -o-animation: fadeout 0.5s;
+    animation: fadeout 0.5s; }
+  .permission-card:hover .permission-delete, .permission-card.delete-active .permission-delete {
     opacity: 1;
     -webkit-animation: fadein 0.5s;
     -moz-animation: fadein 0.5s;
