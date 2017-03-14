@@ -22,7 +22,7 @@ const InitialShare = (props) => {
 const ShareOwner = (props) => {
 	return (
 		<p>
-			This app is shared by {props.owner}.
+			This app has been shared by {props.owner}.
 		</p>
 	);
 }
