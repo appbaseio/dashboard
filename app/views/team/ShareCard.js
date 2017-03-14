@@ -105,43 +105,25 @@ export default class ShareCard extends Component {
 			<div className="permission-card col-xs-12">
 				<header className="permission-card-header col-xs-12">
 					<summary className="col-xs-10">
-						{this.props.shareInfo.email}
+						<span className="permission-card-title">
+							{this.props.shareInfo.email}
+						</span>
+						<span className="permission-card-header-description">
+							({this.keySummary[this.state.keyType]})
+						</span>
 					</summary>
+					<aside className="permission-key-delete col-xs-2 pull-right text-right">
+						<ConfirmBox
+							info={this.confirmBoxInfo}
+							onConfirm={this.deleteShare}
+							type="danger"
+						>
+							<a className="ad-theme-btn danger-reverse permission-delete animation">
+								<i className="fa fa-trash"></i>
+							</a>
+						</ConfirmBox>
+					</aside>
 				</header>
-				<main className="permission-card-body col-xs-12">
-					<div className="col-xs-12 col-sm-6 permission-card-body-description">
-						{this.keySummary[this.state.keyType]}
-					</div>
-					<div className="col-xs-12 col-sm-6 permission-card-body-credential">
-						<div className={`ad-permission-key ${cx}`}>
-							<div className="ad-permission-key-value">
-								{this.state.credentials}
-							</div>
-							<div className="ad-permission-key-buttons">
-								<a className="ad-theme-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
-									<i className={`fa fa-${lock}`}></i>
-								</a>
-								<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-									<a className="ad-theme-btn ad-permission-key-copy-btn"
-										data-clipboard-text={this.state.credentials}>
-										<i className={`fa fa-clone`}></i>
-									</a>
-								</CopyToClipboard>
-							</div>
-						</div>
-						<aside className="permission-key-delete">
-							<ConfirmBox
-								info={this.confirmBoxInfo}
-								onConfirm={this.deleteShare}
-								type="danger"
-							>
-								<a className="ad-theme-btn danger-reverse permission-delete animation">
-									<i className="fa fa-trash"></i>
-								</a>
-							</ConfirmBox>
-						</aside>
-					</div>
-				</main>
 			</div>
 		);
 	}
