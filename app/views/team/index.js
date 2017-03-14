@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import { appbaseService } from '../../service/AppbaseService';
 import ShareCard from './ShareCard';
 import NewShare from './NewShare';
@@ -14,6 +15,14 @@ const InitialShare = (props) => {
 				) : null
 			}
 			.
+		</p>
+	);
+}
+
+const ShareOwner = (props) => {
+	return (
+		<p>
+			This app is shared by {props.owner}.
 		</p>
 	);
 }
@@ -105,6 +114,9 @@ export default class Team extends Component {
 	}
 
 	render() {
+		const cx = classNames({
+			"col-sm-4 col-md-4 col-lg-6": this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email
+		});
 		return (
 			<AppPage
 				pageInfo={{
@@ -115,9 +127,13 @@ export default class Team extends Component {
 			>
 				<div className="ad-detail-page row" id="team-page">
 					<header className="ad-detail-page-header col-xs-12">
-						<div className="col-xs-12 col-sm-4 col-md-4 col-lg-6 p-0">
+						<div className={`col-xs-12 p-0 ${cx}`}>
 							<h2 className="ad-detail-page-title">Team</h2>
-							<p>Create team members to share your app with.</p>
+							{
+								this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner !== appbaseService.userInfo.body.email ? (
+									<ShareOwner owner={this.state.info.appInfo.owner}></ShareOwner>
+								) : (<p>Create team members to share your app with.</p>)
+							}
 						</div>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-8 col-lg-6">
 							{
@@ -129,14 +145,18 @@ export default class Team extends Component {
 					</header>
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
-							<section className="ad-detail-page-body-card col-xs-12 p-0">
-								<header className="ad-detail-page-body-card-title with-border">
-									Team Members
-								</header>
-								<main className="ad-detail-page-body-card-body col-xs-12 p-0">
-									{this.renderElement('share')}
-								</main>
-							</section>
+						{
+							this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email ? (
+								<section className="ad-detail-page-body-card col-xs-12 p-0">
+									<header className="ad-detail-page-body-card-title with-border">
+										Team Members
+									</header>
+									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
+										{this.renderElement('share')}
+									</main>
+								</section>
+							) : null
+						}
 						</div>
 					</main>
 				</div>
