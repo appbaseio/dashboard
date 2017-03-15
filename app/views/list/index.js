@@ -197,7 +197,7 @@ export default class AppList extends Component {
 					});
 					return (
 						<AppCard key={app.id}>
-							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.name}`)}>
+							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
 								<span className="ad-list-app-bg-container">
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>
