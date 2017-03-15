@@ -115,7 +115,7 @@ export default class Team extends Component {
 
 	render() {
 		const cx = classNames({
-			"col-sm-4 col-md-4 col-lg-6": this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email
+			"col-sm-4 col-md-6 col-lg-6": this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email
 		});
 		return (
 			<AppPage
@@ -126,7 +126,7 @@ export default class Team extends Component {
 				}}
 			>
 				<div className="ad-detail-page row" id="team-page">
-					<header className="ad-detail-page-header col-xs-12">
+					<header className="ad-detail-page-header header-inline-summary col-xs-12">
 						<div className={`col-xs-12 p-0 ${cx}`}>
 							<h2 className="ad-detail-page-title">Team</h2>
 							{
@@ -135,7 +135,7 @@ export default class Team extends Component {
 								) : (<p>Create team members to share your app with.</p>)
 							}
 						</div>
-						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-8 col-lg-6">
+						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
 							{
 								appbaseService.isMyApp(this.state.info) ? (
 									<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />

@@ -23,10 +23,19 @@
 				padding-left: 10px;
 				margin: 0px 0 3px 0;
 			}
+			@media (max-width: 992px) {
+				p {
+					display: block;
+					padding-left: 0;
+				}
+			}
 		}
 		&.header-align-end {
 			display: flex;
 			align-items: flex-end;
+			@media (max-width: 992px) {
+				display: block;
+			}
 		}
 	}
 	.ad-detail-page-body {
