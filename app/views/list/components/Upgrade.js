@@ -53,9 +53,9 @@ export default class Upgrade extends Component {
 					this.state.showAlert ? (
 						<div className="alert alert-warning alert-dismissible">
 							<button type="button" className="close" onClick={() => this.close()}><span aria-hidden="true">&times;</span></button>
-							Your {this.state.exceedsApps.length} {this.state.exceedsApps.length === 1 ? 'app is' : 'apps are'} exceed the usage limit for {this.props.plan}&nbsp;
+							{this.state.exceedsApps.length === 1 ? 'One of your apps is' : 'More than one of your apps are'} exceeding the usage limit for {this.props.plan}&nbsp;
 							<Link to ="/billing" className="">
-								Upgrade to higher plan.
+								Upgrade your plan to keep accessing the data.
 							</Link>
 						</div>
 					) :  null

@@ -6,13 +6,11 @@ const DashboardGettingStarted = (props) => {
 			<div className="col-xs-12 col-sm-6">
 				<section className="ad-detail-page-body-card getting-started col-xs-12 p-0">
 					<header className="ad-detail-page-body-card-title col-xs-12">
-						Getting Started
+						Tutorial
 					</header>
 					<main className="ad-detail-page-body-card-body col-xs-12">
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-							Quos ipsam beatae odit veniam unde dolorem vitae debitis quasi, 
-							natus similique alias ducimus id ipsa labore provident inventore saepe eveniet neque.
+							Try out the interactive tutorial for adding your first data to the app.
 						</p>
 					</main>
 				</section>
@@ -20,13 +18,11 @@ const DashboardGettingStarted = (props) => {
 			<div className="col-xs-12 col-sm-6">
 				<section className="ad-detail-page-body-card getting-started col-xs-12 p-0">
 					<header className="ad-detail-page-body-card-title col-xs-12">
-						Tutorial
+						Onboarding Guides
 					</header>
 					<main className="ad-detail-page-body-card-body col-xs-12">
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-							Quos ipsam beatae odit veniam unde dolorem vitae debitis quasi, 
-							natus similique alias ducimus id ipsa labore provident inventore saepe eveniet neque.
+							Check out our onboarding guides for how to use the APIs for adding data.
 						</p>
 					</main>
 				</section>

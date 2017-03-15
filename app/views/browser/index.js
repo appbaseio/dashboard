@@ -97,7 +97,7 @@ export default class Browser extends Component {
 						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
 							<h2 className="ad-detail-page-title">Data Browser</h2>
 							<p>
-								Check the app data over here.
+								GUI for creating, updating, reading or deleting app data.
 							</p>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>

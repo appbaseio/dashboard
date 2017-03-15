@@ -107,7 +107,7 @@ export default class Credentials extends Component {
 					<header className="ad-detail-page-header header-inline-summary col-xs-12">
 						<div className="col-xs-12 col-sm-4 col-md-6 col-lg-6 p-0">
 							<h2 className="ad-detail-page-title">API Credentials</h2>
-							<p>Credentials are required for accessing app data.</p>
+							<p>Manage your app's access credentials.</p>
 						</div>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
 							<NewPermission newPermission={this.newPermission} />
