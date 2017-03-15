@@ -5,7 +5,9 @@ import { appbaseService } from '../service/AppbaseService';
 import { AppOwner } from '../shared/SharedComponents';
 
 class AppDashboard {
-	constructor() {}
+	constructor() {
+		this.allowedView = ['dashboard', 'browser', 'gem', 'mirage', 'credentials', 'team'];
+	}
 	onEnter(activeApp, currentView) {
 		const appObj = {
 			activeApp,
@@ -13,11 +15,45 @@ class AppDashboard {
 		};
 		appbaseService.setExtra("nav", appObj);
 		eventEmitter.emit('activeApp', appObj);
+		localStorage.setItem('appbaseDashboardApp', activeApp);
 	}
 	onLeave() {
 		eventEmitter.emit('activeApp', {
 			activeApp: null
 		});
+	}
+	onNotFound() {
+		const currentView = window.location.pathname.replace(/\//g, '').toLowerCase();
+		if(this.allowedView.indexOf(currentView) > -1) {
+			const lastActiveApp = localStorage.getItem('appbaseDashboardApp');
+			if(lastActiveApp) {
+				this.getAppsAndRedirect(currentView, lastActiveApp);
+			} else {
+				this.getAppsAndRedirect(currentView);
+			}
+		} else {
+			appbaseService.pushUrl();
+		}
+	}
+	getAppsAndRedirect(currentView, lastActiveApp) {
+		this.contextPath = appbaseService.getContextPath();
+		appbaseService.getUser()
+			.then((data) => {
+				const apps = Object.keys(data.userInfo.body.apps);
+				if(!lastActiveApp) {
+					lastActiveApp = apps.length ? apps[0] : null;
+				} else {
+					lastActiveApp = (apps.indexOf(lastActiveApp) > -1) ? lastActiveApp : null;
+				}
+				if(lastActiveApp) {
+					appbaseService.pushUrl(`${this.contextPath}${currentView}/${lastActiveApp}`);
+				} else {
+					appbaseService.pushUrl();
+				}
+			})
+			.catch((e) => {
+				appbaseService.pushUrl('/login');
+			});
 	}
 }
 
@@ -80,16 +116,7 @@ class AppListHelper {
 		}
 		const getPermission = () => {
 			appbaseService.getPermission(appId, true).then((data) => {
-				apps[index].permissions = {
-					permissions: data.body
-				};
-				data.body.forEach((item) => {
-					if (item.write) {
-						apps[index].permissions.writePermission = item;
-					} else if (item.read) {
-						apps[index].permissions.readPermission = item;
-					}
-				});
+				apps[index].permissions = this.filterPermissions(data.body);
 				count.permission = true;
 				cb.call(this);
 			}).catch((e) => {
@@ -119,6 +146,19 @@ class AppListHelper {
 			}
 		}
 		init.call(this);
+	}
+	filterPermissions(permissions) {
+		let permObj = {
+			permissions: permissions
+		};
+		permissions.forEach((item) => {
+			if (item.write) {
+				permObj.writePermission = item;
+			} else if (item.read) {
+				permObj.readPermission = item;
+			}
+		});
+		return permObj;
 	}
 	normalizaApps(apps) {
 		let storeApps = [];

@@ -20,7 +20,7 @@ const AppIntro = (props) => {
 		<AppCard {...props}>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
-				This is your dashboard.
+				This is your apps manager view. Here, you can create a new app and manage your existing apps.
 			</p>
 		</AppCard>
 	);
@@ -86,9 +86,9 @@ export default class AppList extends Component {
 	}
 
 	getApps() {
-		appbaseService.getUser()
+		appbaseService.allApps()
 		.then((data) => {
-			this.registerApps(appListHelper.normalizaApps(data.userInfo.body.apps), true);
+			this.registerApps(data.body, true);
 		}).catch((e) => {
 			console.log(e);
 			appbaseService.pushUrl('/login');
@@ -100,7 +100,7 @@ export default class AppList extends Component {
 			browserHistory.push('/tutorial');
 		} else {
 			this.setState({
-				apps: apps
+				apps
 			}, (() => {
 				if (getInfo) {
 					this.getAppInfo.call(this)
@@ -127,7 +127,7 @@ export default class AppList extends Component {
 	}
 
 	calcPercentage(app, field) {
-		let count = field === 'action' ? (app.info && app.info.appStats && app.info.appStats.calls ? app.info.appStats.calls : 0) : (app.info && app.info.appStats && app.info.appStats.records ? app.info.appStats.records : 0);
+		let count = field === 'action' ? (app && app.api_calls ? app.api_calls : 0) : (app && app.records ? app.records : 0);
 		let percentage = (100 * count) / billingService.planLimits[this.state.plan][field];
 		percentage = percentage < 100 ? percentage : 100;
 		return {
@@ -138,14 +138,19 @@ export default class AppList extends Component {
 
 	getAppInfo() {
 		let apps = this.state.apps;
-		appListHelper.getAll(apps).then((apps) => {
-			if (this.setSort) {
-				this.setSort = false;
-				apps = appbaseService.applySort(apps);
-				this.updateApps(apps);
-			} else {
-				this.updateApps(apps);
-			}
+		appbaseService.allMetrics().then((data) => {
+			apps = apps.map((app) => {
+				return Object.assign(app, data.body[app.id]);
+			});
+			this.registerApps(apps);
+		}).catch((e) => {
+			console.log(e);
+		});
+		appbaseService.allPermissions().then((data) => {
+			apps = apps.map((app) => {
+				return Object.assign(app, appListHelper.filterPermissions(data.body[app.id]));
+			});
+			this.registerApps(apps);
 		}).catch((e) => {
 			console.log(e);
 		});
@@ -158,15 +163,18 @@ export default class AppList extends Component {
 		}
 	}
 
-	createApp(appName) {
+	createApp(appname) {
 		this.setState({
 			createAppLoading: true
 		});
-		appListHelper.createApp(appName, this.state.apps).then((data) => {
-			this.setState(data);
+		appbaseService.createApp(appname).then((data) => {
+			this.setState({
+				createAppLoading: false
+			});
+			appbaseService.pushUrl(`/dashboard/${appname}`);
 		}).catch((e) => {
-			this.setState(e);
-		});
+			console.log(e);
+		})
 	}
 
 	timeAgo(app) {
@@ -174,7 +182,7 @@ export default class AppList extends Component {
 	}
 
 	isShared(app) {
-		return app && app.appInfo && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.appInfo.owner !== appbaseService.userInfo.body.email ? true : false;
+		return app && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.owner !== appbaseService.userInfo.body.email ? true : false;
 	}
 
 	renderElement(ele) {
@@ -191,8 +199,8 @@ export default class AppList extends Component {
 						"with-owner": this.isShared(app)
 					});
 					return (
-						<AppCard key={app.name}>
-							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.name}`)}>
+						<AppCard key={app.id}>
+							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
 								<span className="ad-list-app-bg-container">
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
 								</span>
@@ -200,11 +208,8 @@ export default class AppList extends Component {
 									<header className={`ad-list-app-header ${cx}`}>
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
-											<h3 className="title">{app.name}</h3>
+											<h3 className="title">{app.appname}</h3>
 										</div>
-										<p className="time">
-											<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? this.timeAgo(app) : ""}
-										</p>
 									</header>
 									<div className="description">
 										<div className="row clearfix ad-metrics-summary">

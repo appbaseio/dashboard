@@ -30,13 +30,13 @@ export default class Sidebar extends Component {
 			name: 'browser',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/browser.svg"></img>)
 		}, {
-			label: 'Gem',
+			label: 'Mappings',
 			link: `${this.contextPath}gem/`,
 			type: 'internal',
 			name: 'gem',
 			img: (<img className="img-responsive" src="../../../assets/images/sidebar/gem.svg"></img>)
 		},{
-			label: 'Mirage',
+			label: 'Builder',
 			link: `${this.contextPath}mirage/`,
 			type: 'internal',
 			name: 'mirage',

@@ -7,19 +7,19 @@ export default class DeleteApp extends Component {
 	constructor(props) {
 		super(props);
 		this.confirmBoxInfo = {
-			title: (<span>Delete App?</span>),
+			title: (<span>Delete App</span>),
 			description: (
 				<p>
-					Are you sure you want to delete <strong>{this.props.appName}</strong>?
+					Type the app name <strong>{this.props.appName}</strong> below to delete the app. This action cannot be undone.
 				</p>
 			),
 			validate: {
 				value: this.props.appName,
-				placeholder: 'Type appname...'
+				placeholder: 'Type app name'
 			},
 			buttons: {
-				cancel: 'Cancel',
-				confirm: 'Yes'
+				cancel: 'Go back',
+				confirm: 'Confirm'
 			}
 		};
 		this.deleteApp = this.deleteApp.bind(this);
@@ -37,7 +37,7 @@ export default class DeleteApp extends Component {
 	render() {
 		return (
 			<div className="permission-card delete-card delete-active col-xs-12">
-				<header className="permission-card-header col-xs-12">
+				<header className="permission-card-header col-xs-12 delete-title">
 					<summary className="col-xs-12 col-sm-6">
 						Delete App
 					</summary>
@@ -54,8 +54,8 @@ export default class DeleteApp extends Component {
 					</aside>
 				</header>
 				<main className="permission-card-body col-xs-12">
-					<div className="col-xs-12 col-sm-6 permission-card-body-description">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+					<div className="col-xs-12 col-sm-6 permission-delete-card-description">
+						Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings.
 					</div>
 				</main>
 			</div>

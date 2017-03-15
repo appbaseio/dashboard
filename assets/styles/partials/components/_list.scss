@@ -144,6 +144,10 @@
 				color: #666;
 				.card-icon {
 					color: #666;
+					border: 0;
+					box-shadow: none;
+					background: transparent;
+					margin: 0;
 					&:hover {
 						color: #424242;
 					}

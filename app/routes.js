@@ -27,7 +27,7 @@ const $ = require('jquery');
 const Default = () => (<div></div>);
 
 const NotFound = () => {
-	appbaseService.pushUrl();
+	helper.appDashboard.onNotFound();
 	return (<div></div>)
 };
 
@@ -57,10 +57,10 @@ render((
 			<Route path="browser/:appId" component={Browser} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
 			/>
-			<Route path="gem/:appId" component={Gem} {...appChangesEvent} 
+			<Route path="mappings/:appId" component={Gem} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'gem')}
 			/>
-			<Route path="mirage/:appId" component={Mirage} {...appChangesEvent} 
+			<Route path="builder/:appId" component={Mirage} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mirage')}
 			/>
 			<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 

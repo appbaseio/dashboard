@@ -78,7 +78,7 @@ export default class Credentials extends Component {
 			case 'deleteApp':
 				if(this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email) {
 					element = (
-						<footer className="ad-detail-page-body other-page-body col-xs-12">
+						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
 							<div className="page-body col-xs-12">
 								<section className="ad-detail-page-body-card col-xs-12 p-0">
 									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
@@ -104,12 +104,12 @@ export default class Credentials extends Component {
 				}}
 			>
 				<div id="permission-page" className="ad-detail-page ad-dashboard row">
-					<header className="ad-detail-page-header col-xs-12">
-						<div className="col-xs-12 col-sm-4 col-md-4 col-lg-6 p-0">
+					<header className="ad-detail-page-header header-inline-summary col-xs-12">
+						<div className="col-xs-12 col-sm-4 col-md-6 col-lg-6 p-0">
 							<h2 className="ad-detail-page-title">API Credentials</h2>
-							<p>Credentials are required for accessing app data.</p>
+							<p>Manage your app's access credentials.</p>
 						</div>
-						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-8 col-lg-6">
+						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
 							<NewPermission newPermission={this.newPermission} />
 						</aside>
 					</header>

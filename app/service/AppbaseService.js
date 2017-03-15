@@ -24,7 +24,7 @@ class AppbaseService {
 			}
 		};
 		this.sortBy = {
-			field: "lastActiveDate",
+			field: "api_calls",
 			order: 'desc'
 		};
 		this.extra = {};
@@ -113,44 +113,75 @@ class AppbaseService {
 		});
 	}
 
+	allApps(cached=false) {
+		return new Promise((resolve, reject) => {
+			if(cached && this.userApps) {
+				resolve(this.userApps);
+			} else {
+				$.get(this.address + 'user/apps').done((data) => {
+					this.userApps = data;
+					resolve(data);
+				}).fail((e) => {
+					reject(e);
+				});
+			}
+		});
+	}
+
+	allMetrics() {
+		return new Promise((resolve, reject) => {
+			$.get(this.address + 'user/apps/metrics').done((data) => {
+				resolve(data);
+			}).fail((e) => {
+				reject(e);
+			});
+		});
+	}
+
+	allPermissions() {
+		return new Promise((resolve, reject) => {
+			$.get(this.address + 'user/apps/permissions').done((data) => {
+				resolve(data);
+			}).fail((e) => {
+				reject(e);
+			});
+		});
+	}
+
 	createApp(appName) {
+		let appsObj = {
+			allApps: null,
+			user: null
+		};
 		return new Promise((resolve, reject) => {
 			$.ajax({
 				url: this.address + 'app/' + appName,
 				type: 'PUT',
 				success: (result) => {
-					let id = JSON.stringify(result.body.id);
-					this.apps[id] = {};
-					if (this.userInfo.body.apps) {
-						this.userInfo.body.apps[appName] = id;
-					} else {
-						this.userInfo.body.apps = {
-							[appName]: id
-						}
-					}
-					this.getMetrics(id).then((data) => {
-						result.metrics = data;
-						cb();
+					this.allApps().then((data) => {
+						appsObj.allApps =data;
+						cb(result);
 					}).catch((e) => {
-						resolve(result);
+						appsObj.allApps = e;
+						cb(result);
 					});
-					this.getPermission(id).then((permissionData) => {
-						result.permissions = permissionData;
-						cb();
+					this.getUser().then((data) => {
+						appsObj.user =data;
+						cb(result);
 					}).catch((e) => {
-						resolve(result);
+						appsObj.user = e;
+						cb(result);
 					});
-
-					const cb = () => {
-						if(result.metrics && result.permissions) {
-							resolve(result);
-						}
-					}
 				},
 				error: (error) => {
 					reject(error);
 				}
 			});
+			const cb = (result) => {
+				if(appsObj.user && appsObj.allApps) {
+					resolve(result);
+				}
+			}
 		});
 	}
 

@@ -95,9 +95,9 @@ export default class Gem extends Component {
 			>
 				<div className="ad-detail-page ad-dashboard row">
 						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
-							<h2 className="ad-detail-page-title">Gem</h2>
+							<h2 className="ad-detail-page-title">Data Mappings</h2>
 							<p>
-								Check the app mapping over here.
+								View current data mappings or add new ones.
 							</p>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>

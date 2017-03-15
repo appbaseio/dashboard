@@ -17,7 +17,6 @@ export default class Nav extends Component {
 		this.state = {
 			activeApp: null,
 			currentView: null,
-			apps: appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body.apps ? appListHelper.normalizaApps(appbaseService.userInfo.body.apps) : [],
 			userImg: this.getUserImg()
 		};
 		this.appLink = {
@@ -26,7 +25,7 @@ export default class Nav extends Component {
 			type: 'internal'
 		};
 		this.links = [{
-			label: 'Document',
+			label: 'Documentation',
 			link: this.config.document,
 			type: 'external'
 		}, {
@@ -42,6 +41,18 @@ export default class Nav extends Component {
 		this.currentActiveApp = null;
 	}
 
+	getAllApps(cb) {
+		appbaseService.allApps(true).then((data) => {
+			this.setState({
+				apps: data.body
+			}, () => {
+				if(cb) {
+					cb.call(this);
+				}
+			});
+		})
+	}
+
 	getUserImg() {
 		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details 
 		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url) 
@@ -50,30 +61,20 @@ export default class Nav extends Component {
 
 	componentWillMount() {
 		if(appbaseService.extra.nav) {
-			this.setState(appbaseService.extra.nav, this.checkApps.bind(this));
+			this.getAllApps(() => {
+				this.setState(appbaseService.extra.nav);
+			});
 		}
 		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
-			this.setState(activeApp, this.checkApps.bind(this));
+			this.getAllApps(() => {
+				this.setState(activeApp);
+			});
 		});
 	}
 
 	componentWillUnmount() {
 		if (this.listenEvent) {
 			this.listenEvent.remove();
-		}
-	}
-
-	checkApps() {
-		if(this.state.activeApp && this.state.activeApp !== this.currentActiveApp) {
-			this.currentActiveApp = this.state.activeApp;
-			let apps = this.state.apps;
-			appListHelper.getAll(apps, false, false, true).then((apps) => {
-				this.setState({
-					apps
-				});
-			}).catch((e) => {
-				console.log(e);
-			});
 		}
 	}
 
@@ -104,8 +105,8 @@ export default class Nav extends Component {
 					this.state.apps.forEach((app, index) => {
 						let appLink = (
 							<li key ={index}>
-								<Link to={`${this.contextPath}${this.state.currentView}/${app.name}`}>
-									{app.name}
+								<Link to={`${this.contextPath}${this.state.currentView}/${app.appname}`}>
+									{app.appname}
 									<AppOwner app={app} />
 								</Link>
 							</li>
@@ -117,13 +118,13 @@ export default class Nav extends Component {
 				}
 			break;
 			case 'currentApp': 
-				if(this.state.activeApp) {
-					const apps = this.state.apps.filter((app) => app.name === this.state.activeApp);
+				if(this.state.activeApp && this.state.apps) {
+					const apps = this.state.apps.filter((app) => app.appname === this.state.activeApp);
 					generatedEle = (
 						<li role="presentation" className="dropdown">
 							<a className="dropdown-toggle apps-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 								<i className="fa fa-chevron-right dropdown-chevron"></i>&nbsp;
-								{apps[0].name} <AppOwner app={apps[0]} />
+								{apps[0].appname} <AppOwner app={apps[0]} />
 							</a>
 							<ul className="dropdown-menu pull-right">
 								{this.renderElement('apps')}

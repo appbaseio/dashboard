@@ -10,9 +10,8 @@ export default class SortBy extends Component {
 			value: appbaseService.SortBy
 		};
 		this.options = {
-			lastActiveDate: "Last Activity",
-			"info.appStats.records": "Records",
-			"info.appStats.calls": "API Calls"
+			"api_calls": "API Calls",
+			"records": "Records"
 		};
 	}
 
@@ -30,7 +29,7 @@ export default class SortBy extends Component {
 		return (
 			<span className="ad-dropdown dropdown">
 				<button className="ad-theme-btn primary dropdown-toggle" type="button" id="sortby-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-					Sort by {this.options[this.state.value] || this.options["lastActiveDate"]}&nbsp;&nbsp;<span className="caret"></span>
+					Sort by {this.options[this.state.value] || this.options["api_calls"]}&nbsp;&nbsp;<span className="caret"></span>
 				</button>
 				<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="sortby-menu">
 					{

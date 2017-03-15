@@ -15,7 +15,7 @@ export default class ActionButtons extends Component {
 	}
 
 	isDifferentOwner() {
-		return this.props.app && this.props.app.appInfo && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && this.props.app.appInfo.owner !== appbaseService.userInfo.body.email ? true : false;
+		return this.props.app && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && this.props.app.owner !== appbaseService.userInfo.body.email ? true : false;
 	}
 
 	render() {

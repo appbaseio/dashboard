@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CopyToClipboard from '../../../shared/CopyToClipboard';
 import ReactTooltip from 'react-tooltip';
+import { common } from "../../../shared/helper";
 
 export default class Credentials extends Component {
 	constructor(props) {
@@ -12,7 +13,7 @@ export default class Credentials extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.app && this.props.app.permissions && this.props.app.permissions[this.props.type] && !this.cset) {
+		if (this.props.app && this.props.app && this.props.app[this.props.type] && !this.cset) {
 			this.cset = true;
 			this.getPermission();
 		}
@@ -23,12 +24,14 @@ export default class Credentials extends Component {
 	}
 
 	getPermission() {
-		const singleCredential = this.props.app.permissions[this.props.type];
-		let justCredential = singleCredential.username + ':' + singleCredential.password;
-		this.setState({
-			singleCredential: singleCredential,
-			credentials: justCredential
-		});
+		const singleCredential = this.props.app[this.props.type];
+		if(singleCredential && singleCredential.username) {
+			let justCredential = singleCredential.username + ':' + singleCredential.password;
+			this.setState({
+				singleCredential: singleCredential,
+				credentials: justCredential
+			});
+		}
 	}
 
 	ccSuccess() {
@@ -44,10 +47,10 @@ export default class Credentials extends Component {
 		return (
 			<div>
 				<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-					<a data-tip={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': -10, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+					<button {...common.isDisabled(!this.state.credentials)} data-tip={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
 						<i className={`fa ${this.props.icon}`}></i>
 						<ReactTooltip />
-					</a>
+					</button>
 				</CopyToClipboard>
 			</div>
 		)
