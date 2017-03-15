@@ -867,6 +867,12 @@ body {
     font-size: 1.5rem;
     padding: 0;
     margin-bottom: 5px; }
+    .permission-card .permission-card-header.delete-title {
+      font-size: 1.7rem;
+      line-height: 2.2rem;
+      font-family: "Source Sans Pro Semi Bold";
+      margin: 0;
+      display: inline-block; }
     .permission-card .permission-card-header .permission-editable .ad-editable-edit {
       padding: 0; }
     .permission-card .permission-card-header .permission-card-header-description {

@@ -37,7 +37,7 @@ export default class DeleteApp extends Component {
 	render() {
 		return (
 			<div className="permission-card delete-card delete-active col-xs-12">
-				<header className="permission-card-header col-xs-12">
+				<header className="permission-card-header col-xs-12 delete-title">
 					<summary className="col-xs-12 col-sm-6">
 						Delete App
 					</summary>
