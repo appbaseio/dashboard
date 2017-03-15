@@ -113,14 +113,18 @@ class AppbaseService {
 		});
 	}
 
-	allApps() {
+	allApps(cached=false) {
 		return new Promise((resolve, reject) => {
-			$.get(this.address + 'user/apps').done((data) => {
-				this.userApps = data.body;
-				resolve(data);
-			}).fail((e) => {
-				reject(e);
-			});
+			if(cached && this.userApps) {
+				resolve(this.userApps);
+			} else {
+				$.get(this.address + 'user/apps').done((data) => {
+					this.userApps = data;
+					resolve(data);
+				}).fail((e) => {
+					reject(e);
+				});
+			}
 		});
 	}
 
