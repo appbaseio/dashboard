@@ -24,7 +24,7 @@ class AppbaseService {
 			}
 		};
 		this.sortBy = {
-			field: "lastActiveDate",
+			field: "api_calls",
 			order: 'desc'
 		};
 		this.extra = {};

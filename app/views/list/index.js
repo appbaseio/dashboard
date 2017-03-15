@@ -207,9 +207,6 @@ export default class AppList extends Component {
 											<AppOwner app={app} />
 											<h3 className="title">{app.appname}</h3>
 										</div>
-										<p className="time">
-											<i className="fa fa-clock-o"></i> {this.timeAgo(app) ? this.timeAgo(app) : ""}
-										</p>
 									</header>
 									<div className="description">
 										<div className="row clearfix ad-metrics-summary">

@@ -633,7 +633,11 @@ body {
       border-bottom: 1px solid #ddd;
       color: #666; }
       .ad-list .ad-list-app aside.options .options-item .card-icon {
-        color: #666; }
+        color: #666;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        margin: 0; }
         .ad-list .ad-list-app aside.options .options-item .card-icon:hover {
           color: #424242; }
       .ad-list .ad-list-app aside.options .options-item:hover {
