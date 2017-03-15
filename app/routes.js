@@ -27,7 +27,7 @@ const $ = require('jquery');
 const Default = () => (<div></div>);
 
 const NotFound = () => {
-	appbaseService.pushUrl();
+	helper.appDashboard.onNotFound();
 	return (<div></div>)
 };
 
