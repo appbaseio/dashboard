@@ -149,43 +149,39 @@ class AppbaseService {
 	}
 
 	createApp(appName) {
+		let appsObj = {
+			allApps: null,
+			user: null
+		};
 		return new Promise((resolve, reject) => {
 			$.ajax({
 				url: this.address + 'app/' + appName,
 				type: 'PUT',
 				success: (result) => {
-					let id = JSON.stringify(result.body.id);
-					this.apps[id] = {};
-					if (this.userInfo.body.apps) {
-						this.userInfo.body.apps[appName] = id;
-					} else {
-						this.userInfo.body.apps = {
-							[appName]: id
-						}
-					}
-					this.getMetrics(id).then((data) => {
-						result.metrics = data;
-						cb();
+					this.allApps().then((data) => {
+						appsObj.allApps =data;
+						cb(result);
 					}).catch((e) => {
-						resolve(result);
+						appsObj.allApps = e;
+						cb(result);
 					});
-					this.getPermission(id).then((permissionData) => {
-						result.permissions = permissionData;
-						cb();
+					this.getUser().then((data) => {
+						appsObj.user =data;
+						cb(result);
 					}).catch((e) => {
-						resolve(result);
+						appsObj.user = e;
+						cb(result);
 					});
-
-					const cb = () => {
-						if(result.metrics && result.permissions) {
-							resolve(result);
-						}
-					}
 				},
 				error: (error) => {
 					reject(error);
 				}
 			});
+			const cb = (result) => {
+				if(appsObj.user && appsObj.allApps) {
+					resolve(result);
+				}
+			}
 		});
 	}
 

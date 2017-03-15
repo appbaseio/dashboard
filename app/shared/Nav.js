@@ -39,13 +39,16 @@ export default class Nav extends Component {
 		}];
 		this.options = ['name', 'email', 'logout'];
 		this.currentActiveApp = null;
-		this.getAllApps();
 	}
 
-	getAllApps() {
+	getAllApps(cb) {
 		appbaseService.allApps(true).then((data) => {
 			this.setState({
 				apps: data.body
+			}, () => {
+				if(cb) {
+					cb.call(this);
+				}
 			});
 		})
 	}
@@ -58,10 +61,14 @@ export default class Nav extends Component {
 
 	componentWillMount() {
 		if(appbaseService.extra.nav) {
-			this.setState(appbaseService.extra.nav);
+			this.getAllApps(() => {
+				this.setState(appbaseService.extra.nav);
+			});
 		}
 		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
-			this.setState(activeApp);
+			this.getAllApps(() => {
+				this.setState(activeApp);
+			});
 		});
 	}
 

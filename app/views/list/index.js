@@ -163,15 +163,18 @@ export default class AppList extends Component {
 		}
 	}
 
-	createApp(appName) {
+	createApp(appname) {
 		this.setState({
 			createAppLoading: true
 		});
-		appListHelper.createApp(appName, this.state.apps).then((data) => {
-			this.setState(data);
+		appbaseService.createApp(appname).then((data) => {
+			this.setState({
+				createAppLoading: false
+			});
+			appbaseService.pushUrl(`/dashboard/${appname}`);
 		}).catch((e) => {
-			this.setState(e);
-		});
+			console.log(e);
+		})
 	}
 
 	timeAgo(app) {
