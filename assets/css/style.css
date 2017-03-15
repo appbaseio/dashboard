@@ -887,6 +887,8 @@ body {
       padding-left: 5px; }
   .permission-card .permission-card-body {
     padding: 0; }
+    .permission-card .permission-card-body .permission-delete-card-description {
+      font-size: 1rem; }
     .permission-card .permission-card-body .permission-card-body-description {
       font-size: 0.9rem;
       color: #B3B3B3; }

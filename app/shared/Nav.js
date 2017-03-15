@@ -25,7 +25,7 @@ export default class Nav extends Component {
 			type: 'internal'
 		};
 		this.links = [{
-			label: 'Document',
+			label: 'Documentation',
 			link: this.config.document,
 			type: 'external'
 		}, {

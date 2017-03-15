@@ -8,13 +8,12 @@ import AppPage from '../../shared/AppPage';
 const InitialShare = (props) => {
 	return (
 		<p className="col-xs-12 ad-initial-share">
-			You don't have team members yet 
+			You don't have team members yet.
 			{
 				appbaseService.isMyApp(props.info) ? (
-					<a onClick={props.newShareInit}>add team members</a>
+					<a onClick={props.newShareInit}> <i className="fa fa-plus"></i> Add</a>
 				) : null
 			}
-			.
 		</p>
 	);
 }
@@ -132,7 +131,7 @@ export default class Team extends Component {
 							{
 								this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner !== appbaseService.userInfo.body.email ? (
 									<ShareOwner owner={this.state.info.appInfo.owner}></ShareOwner>
-								) : (<p>Create team members to share your app with.</p>)
+								) : (<p>Manage who can access your app data.</p>)
 							}
 						</div>
 						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">

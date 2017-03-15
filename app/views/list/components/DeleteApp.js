@@ -7,10 +7,10 @@ export default class DeleteApp extends Component {
 	constructor(props) {
 		super(props);
 		this.confirmBoxInfo = {
-			title: (<span>Delete App?</span>),
+			title: (<span>Delete App</span>),
 			description: (
 				<p>
-					Are you sure you want to delete <strong>{this.props.app.appname}</strong>?
+					Type the app name <strong>{this.props.app.appname}</strong> below to delete the app. This action cannot be undone.
 				</p>
 			),
 			validate: {
@@ -18,8 +18,8 @@ export default class DeleteApp extends Component {
 				placeholder: 'Type appname...'
 			},
 			buttons: {
-				cancel: 'Cancel',
-				confirm: 'Yes'
+				cancel: 'Go back',
+				confirm: 'Confirm'
 			}
 		};
 		this.deleteApp = this.deleteApp.bind(this);

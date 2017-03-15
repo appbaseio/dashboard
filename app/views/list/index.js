@@ -20,7 +20,7 @@ const AppIntro = (props) => {
 		<AppCard {...props}>
 			<h3 className="title">Hi {props.name},</h3>
 			<p className="description">
-				This is your dashboard.
+				This is your apps manager view. Here, you can create a new app and manage your existing apps.
 			</p>
 		</AppCard>
 	);

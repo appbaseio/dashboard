@@ -111,8 +111,8 @@ export default class PermissionCard extends Component {
 			"active": this.state.showKey
 		});
 		const lock = classNames({
-			"lock": !this.state.showKey,
-			"unlock-alt": this.state.showKey
+			"eye": !this.state.showKey,
+			"eye-slash": this.state.showKey
 		});
 		return (
 			<div className="permission-card col-xs-12 p-0">
