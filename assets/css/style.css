@@ -856,6 +856,9 @@ body {
           border-bottom: 1px solid #dedede; }
     .ad-detail-page .ad-detail-page-body.other-page-body {
       padding-top: 0; }
+    .ad-detail-page .ad-detail-page-body.delete-app-body {
+      padding: 0;
+      margin-top: 15px; }
 
 .permission-card {
   padding: 15px 0;
@@ -1001,6 +1004,9 @@ body {
   margin: 15px 0;
   font-size: 1.2rem;
   text-align: center; }
+
+.ad-detail-page-body-card-body .permission-card:last-child {
+  border: 0; }
 
 .modal .modal-header {
   border: 0;

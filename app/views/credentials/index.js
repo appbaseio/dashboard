@@ -78,7 +78,7 @@ export default class Credentials extends Component {
 			case 'deleteApp':
 				if(this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email) {
 					element = (
-						<footer className="ad-detail-page-body other-page-body col-xs-12">
+						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
 							<div className="page-body col-xs-12">
 								<section className="ad-detail-page-body-card col-xs-12 p-0">
 									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
