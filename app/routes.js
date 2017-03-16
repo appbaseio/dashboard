@@ -58,10 +58,10 @@ render((
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
 			/>
 			<Route path="mappings/:appId" component={Gem} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'gem')}
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mappings')}
 			/>
 			<Route path="builder/:appId" component={Mirage} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mirage')}
+				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'builder')}
 			/>
 			<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'credentials')}
