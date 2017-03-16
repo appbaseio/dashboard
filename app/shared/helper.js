@@ -6,7 +6,7 @@ import { AppOwner } from '../shared/SharedComponents';
 
 class AppDashboard {
 	constructor() {
-		this.allowedView = ['dashboard', 'browser', 'gem', 'mirage', 'credentials', 'team'];
+		this.allowedView = ['dashboard', 'browser', 'mappings', 'builder', 'credentials', 'team'];
 	}
 	onEnter(activeApp, currentView) {
 		const appObj = {
