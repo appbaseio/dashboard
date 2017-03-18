@@ -2,7 +2,7 @@ html,
 body {
   background: #F3F8F9;
   color: #555;
-  font-size: 14px;
+  font-size: 15px;
   height: 100%;
   font-family: "Source Sans Pro Regular"; }
 
@@ -526,6 +526,9 @@ body {
     margin: 0;
     line-height: 24px;
     padding: 0 2px; }
+  .ad-list .ad-list-header p.description {
+    font-size: 1rem;
+    padding-top: 10px; }
 
 @media screen and (max-width: 768px) {
   .ad-list .ad-list-container {
@@ -718,7 +721,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 76px;
+    width: 84px;
     height: 100%;
     padding-top: 0;
     background: #88a0fd;
@@ -737,11 +740,14 @@ body {
           border-left: 5px solid transparent; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a .img-container {
             border-radius: 50%;
-            padding: 10px;
             background: #fff;
             width: 40px;
             height: 40px;
             margin: 0 auto 5px auto; }
+            .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a .img-container .img-responsive {
+              padding: 10px; }
+            .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a .img-container .img-responsive.mappings {
+              padding: 5px; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
             background: #5678FC;
             text-decoration: none; }
