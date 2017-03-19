@@ -38,26 +38,23 @@ export default class DeleteApp extends Component {
 		return (
 			<div className="permission-card delete-card delete-active col-xs-12">
 				<header className="permission-card-header col-xs-12 delete-title">
-					<summary className="col-xs-12 col-sm-6">
-						Delete App
-					</summary>
-					<aside className="col-xs-12 col-sm-6 text-right pull-right">
+					<summary className="">
 						<ConfirmBox
 							info={this.confirmBoxInfo}
 							onConfirm={this.deleteApp}
 							type="danger"
 						>
-							<a className="ad-theme-btn danger permission-delete">
-								<i className="fa fa-trash"></i>&nbsp;&nbsp;Delete App
+							<a className="ad-theme-btn danger-inverse permission-delete">
+								<i className="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;Delete this app
 							</a>
 						</ConfirmBox>
+					</summary>
+					<aside className="permission-card-body">
+						<span className="permission-delete-card-description">
+						Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings.
+						</span>
 					</aside>
 				</header>
-				<main className="permission-card-body col-xs-12">
-					<div className="col-xs-12 col-sm-6 permission-delete-card-description">
-						Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings.
-					</div>
-				</main>
 			</div>
 		);
 	}

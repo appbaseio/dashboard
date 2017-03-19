@@ -16,7 +16,7 @@ body {
   position: relative; }
 
 .text-danger {
-  color: #d9534f; }
+  color: #FF8484; }
 
 .theme-btn {
   background: #dedede;
@@ -24,7 +24,7 @@ body {
   border: 0;
   box-shadow: none;
   border-radius: 6px;
-  padding: 4px 8px; }
+  padding: 3px 8px; }
   .theme-btn:hover, .theme-btn.active {
     background: #CDDC39;
     text-decoration: none; }
@@ -40,7 +40,7 @@ body {
   background: #f7f7f7;
   border: 1px solid;
   border-color: #dedede;
-  padding: 4px 8px;
+  padding: 3px 8px;
   font-size: 1rem; }
   .ad-theme-btn:hover, .ad-theme-btn.active {
     color: #5a5a5a;
@@ -80,11 +80,19 @@ body {
         background: #f0dc70;
         color: #fff; }
   .ad-theme-btn.danger-reverse {
-    color: #d9534f;
+    color: #FF8484;
     border-color: transparent;
     background: transparent; }
     .ad-theme-btn.danger-reverse:hover, .ad-theme-btn.danger-reverse.active {
       background: #e6e6e6;
+      text-decoration: none; }
+  .ad-theme-btn.danger-inverse {
+    color: #FF8484;
+    border-color: #FF8484;
+    background: transparent; }
+    .ad-theme-btn.danger-inverse:hover, .ad-theme-btn.danger-inverse.active {
+      color: #fff;
+      background: #FF8484;
       text-decoration: none; }
   .ad-theme-btn[disabled] {
     opacity: 0.6;
@@ -469,6 +477,9 @@ body {
   .appcard.appcard-newapp {
     padding-right: 0; }
 
+header .appcard {
+  text-align: center; }
+
 .ad-dashboard .body-card-body-api-view {
   margin: 0;
   padding-bottom: 15px; }
@@ -689,7 +700,7 @@ body {
 
 .ad-detail {
   position: relative;
-  padding: 0 0 0 76px;
+  padding: 0 0 0 84px;
   margin: 0;
   height: 100%; }
   .ad-detail .ad-detail-view-container {
@@ -886,6 +897,8 @@ body {
       font-family: "Source Sans Pro Semi Bold";
       margin: 0;
       display: inline-block; }
+      .permission-card .permission-card-header.delete-title .ad-theme-btn {
+        font-family: "Source Sans Pro Regular"; }
     .permission-card .permission-card-header .permission-editable .ad-editable-edit {
       padding: 0; }
     .permission-card .permission-card-header .permission-card-header-description {
@@ -894,7 +907,8 @@ body {
   .permission-card .permission-card-body {
     padding: 0; }
     .permission-card .permission-card-body .permission-delete-card-description {
-      font-size: 1rem; }
+      font-size: 1rem;
+      font-family: "Source Sans Pro Regular"; }
     .permission-card .permission-card-body .permission-card-body-description {
       font-size: 0.9rem;
       color: #B3B3B3; }
@@ -921,11 +935,14 @@ body {
     -ms-animation: fadin 0.5s;
     -o-animation: fadein 0.5s;
     animation: fadein 0.5s; }
+  .permission-card.delete-card {
+    padding: 15px 15px; }
 
 .ad-permission-key {
   position: relative;
   padding-left: 5px;
   padding-right: 59px;
+  margin-right: 5px;
   background: #f7f7f7;
   border: 1px solid #dedede; }
   .ad-permission-key .ad-permission-key-value {

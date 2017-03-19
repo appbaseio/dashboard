@@ -15,15 +15,15 @@ export default class ShareCard extends Component {
 			showKey: false
 		};
 		this.confirmBoxInfo = {
-			title: (<span>Delete Email?</span>),
+			title: (<span>Remove user access</span>),
 			description: (
 				<p>
-					Are you sure you want to delete {this.props.shareInfo.email}?
+					This will remove all app access from the user with e-mail <strong>{this.props.shareInfo.email}</strong>. They will no longer be able to use their shared credentials.
 				</p>
 			),
 			buttons: {
-				cancel: 'Cancel',
-				confirm: 'Yes'
+				cancel: 'Go back',
+				confirm: 'Confirm'
 			}
 		};
 		this.keySummary = common.keySummary();

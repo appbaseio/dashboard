@@ -20,7 +20,7 @@ body {
 }
 
 .text-danger {
-	color: $danger-color;
+	color: $modal-danger;
 }
 
 .theme-btn {
@@ -29,7 +29,7 @@ body {
 	border: 0;
 	box-shadow: none;
 	border-radius: 6px;
-	padding: 4px 8px;
+	padding: 3px 8px;
 	&:hover,
 	&.active {
 		background: $primary-color;
@@ -50,7 +50,7 @@ body {
 	background: $dark-grey;
 	border: 1px solid;
 	border-color: darken($dark-grey, 10%);
-	padding: 4px 8px;
+	padding: 3px 8px;
 	font-size: 1rem;
 	&:hover, &.active {
 		color: lighten($primary-font-color, 2%);
@@ -101,11 +101,21 @@ body {
 		}
 	}
 	&.danger-reverse {
-		color: $danger-color;
+		color: $modal-danger;
 		border-color: transparent;
 		background: transparent;
 		&:hover, &.active {
 			background: darken(#fff, 10%);
+			text-decoration: none;
+		}
+	}
+	&.danger-inverse {
+		color: $modal-danger;
+		border-color: $modal-danger;
+		background: transparent;
+		&:hover, &.active {
+			color: #fff;
+			background: $modal-danger;
 			text-decoration: none;
 		}
 	}
