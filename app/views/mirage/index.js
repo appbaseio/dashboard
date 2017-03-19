@@ -97,7 +97,7 @@ export default class Mirage extends Component {
 						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
 							<h2 className="ad-detail-page-title">Query Builder</h2>
 							<p>
-								GUI query composer (full-text search, range, geolocation, terms, compound queries, sorting).
+								Create and save queries with a GUI.
 							</p>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>

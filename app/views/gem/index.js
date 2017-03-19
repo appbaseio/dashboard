@@ -97,7 +97,7 @@ export default class Gem extends Component {
 						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
 							<h2 className="ad-detail-page-title">Data Mappings</h2>
 							<p>
-								View current data mappings or add new ones.
+								Create, view and manage data mappings (aka schema).
 							</p>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
