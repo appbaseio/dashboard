@@ -5,7 +5,7 @@ import * as QuickLinks from './shared/QuickLinks';
 export const contextConfig = {
 	"appbase": {
 		"name": "appbase",
-		"logo": "../../../assets/images/appbase/logo.svg",
+		"logo": "../../../assets/images/appbase/logo.png",
 		"logoText": null,
 		"cardIcon": "fa-database",
 		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
