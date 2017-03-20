@@ -44,15 +44,18 @@ export default class Credentials extends Component {
 		toastr.error('Error', e);
 	}
 	render() {
-		return (
-			<div>
-				<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-					<button {...common.isDisabled(!this.state.credentials)} data-tip={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
-						<i className={`fa ${this.props.icon}`}></i>
-						<ReactTooltip />
-					</button>
-				</CopyToClipboard>
-			</div>
-		)
+		if (this.state.credentials) {
+			return (
+				<div>
+					<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
+						<button {...common.isDisabled(!this.state.credentials)} data-tip={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+							{this.props.I}<i className={`fa ${this.props.icon}`}></i>
+							<ReactTooltip />
+						</button>
+					</CopyToClipboard>
+				</div>
+			)
+		}
+		return (<span/>)
 	}
 }

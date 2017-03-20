@@ -22,10 +22,10 @@ export default class ActionButtons extends Component {
 		return (
 			<aside className="options" onClick={this.stopBubble}>
 				<div className="options-item">
-					<Credentials data-tip="Copy read Credentials" {...this.props} type="readPermission" label="Read" icon="fa-clone" />
+					<Credentials data-tip="Copy read Credentials" {...this.props} type="readPermission" label="Read" icon="fa-clone" I="R" />
 				</div>
 				<div className="options-item">
-					<Credentials data-tip="Copy write Credentials" {...this.props} type="writePermission" label="Write" icon="fa-pencil" />
+					<Credentials data-tip="Copy write Credentials" {...this.props} type="writePermission" label="Write" icon="fa-clone" I="W" />
 				</div>
 				{
 					!this.isDifferentOwner() ? (
