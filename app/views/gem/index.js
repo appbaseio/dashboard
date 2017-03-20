@@ -72,9 +72,7 @@ export default class Gem extends Component {
 
 	applyUrl(url) {
 		this.setState({
-			gem: 'https://opensource.appbase.io/gem/#?input_state=' + url + '&hf=false&subscribe=false',
-			dejavu: 'https://opensource.appbase.io/dejavu/live/#?input_state=' + url + '&hf=false&subscribe=false',
-			mirage: 'https://opensource.appbase.io/mirage/#?input_state=' + url + '&hf=false&subscribe=false'
+			gem: 'https://opensource.appbase.io/gem/#?input_state=' + url + '&hf=false&subscribe=false'
 		});
 	}
 
