@@ -176,7 +176,7 @@ body {
   .context-appbase .ad-detail .ad-detail-sidebar li a:hover, .context-appbase .ad-detail .ad-detail-sidebar li a.active {
     background: #3BC7F6; }
   .context-appbase .ad-detail .ad-detail-sidebar li a.active {
-    border-color: accent; }
+    border-color: #CDDC39; }
 
 .context-appbase .navbar.navbar-default {
   background: #3BC7F6; }
@@ -264,7 +264,7 @@ body {
   .context-reactivemaps .ad-detail .ad-detail-sidebar li a:hover, .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
     background: #5678FC; }
   .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
-    border-color: accent; }
+    border-color: #CDDC39; }
 
 .context-reactivemaps .navbar.navbar-default {
   background: #5678FC; }

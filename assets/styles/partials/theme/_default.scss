@@ -14,7 +14,7 @@ $map in $themes {
 						background: map-get($map, primary);
 					}
 					&.active {
-						border-color: accent;
+						border-color: map-get($map, accent);
 					}
 				}
 			}
