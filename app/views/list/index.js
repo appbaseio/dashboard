@@ -172,6 +172,10 @@ export default class AppList extends Component {
 			});
 			appbaseService.pushUrl(`/dashboard/${appname}`);
 		}).catch((e) => {
+			this.setState({
+				createAppError: e.responseJSON,
+				createAppLoading: false
+			});
 			console.log(e);
 		})
 	}

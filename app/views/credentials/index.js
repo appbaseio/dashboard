@@ -5,6 +5,19 @@ import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';
 import DeleteApp from './DeleteApp';
 
+const InitialCredentials = (props) => {
+	return (
+		<p className="col-xs-12 ad-initial-share">
+			You do not have any team members yet.&nbsp;&nbsp;
+			{
+				appbaseService.isMyApp(props.info) ? (
+					<a ><i className="fa fa-plus"></i>&nbsp;Add</a>
+				) : null
+			}
+		</p>
+	);
+}
+
 export default class Credentials extends Component {
 	constructor(props, context) {
 		super(props);
