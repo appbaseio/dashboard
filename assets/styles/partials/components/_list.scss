@@ -5,6 +5,10 @@
 		font-size: 14px;
 		margin: 0 0 15px 0;
 		border-bottom: 1px solid darken($dark-grey, 10%);
+		.flexcontainer {
+			display: flex;
+			align-items: center;
+		}
 		h3 {
 			font-size: 22px;
 			letter-spacing: 0.01em;
