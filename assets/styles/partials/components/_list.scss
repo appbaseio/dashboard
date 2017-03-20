@@ -142,7 +142,7 @@
 			-webkit-transition: all .3s ease;
 			transition: all .3s ease;
 			z-index: 3;
-			.options-item {
+			.options-item div {
 				padding: 5px 0;
 				border-bottom: 1px solid #ddd;
 				color: #666;
@@ -159,12 +159,12 @@
 				&:hover {
 					background-color: #ccc;
 				}
-				&.bottom {
-					position: absolute;
-					width: 100%;
-					border: 0;
-					bottom: 0
-				}
+			}
+			.options-item.bottom div {
+				position: absolute;
+				width: 100%;
+				border: 0;
+				bottom: 0
 			}
 		}
 		&:hover {

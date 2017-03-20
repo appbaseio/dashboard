@@ -642,25 +642,25 @@ header .appcard {
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
     z-index: 3; }
-    .ad-list .ad-list-app aside.options .options-item {
+    .ad-list .ad-list-app aside.options .options-item div {
       padding: 5px 0;
       border-bottom: 1px solid #ddd;
       color: #666; }
-      .ad-list .ad-list-app aside.options .options-item .card-icon {
+      .ad-list .ad-list-app aside.options .options-item div .card-icon {
         color: #666;
         border: 0;
         box-shadow: none;
         background: transparent;
         margin: 0; }
-        .ad-list .ad-list-app aside.options .options-item .card-icon:hover {
+        .ad-list .ad-list-app aside.options .options-item div .card-icon:hover {
           color: #424242; }
-      .ad-list .ad-list-app aside.options .options-item:hover {
+      .ad-list .ad-list-app aside.options .options-item div:hover {
         background-color: #ccc; }
-      .ad-list .ad-list-app aside.options .options-item.bottom {
-        position: absolute;
-        width: 100%;
-        border: 0;
-        bottom: 0; }
+    .ad-list .ad-list-app aside.options .options-item.bottom div {
+      position: absolute;
+      width: 100%;
+      border: 0;
+      bottom: 0; }
   .ad-list .ad-list-app:hover {
     box-shadow: 2px 4px 8px 0px rgba(46, 61, 73, 0.2); }
     .ad-list .ad-list-app:hover aside.options {
