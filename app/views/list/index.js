@@ -45,7 +45,7 @@ export default class AppList extends Component {
 			createAppLoading: false,
 			createAppError: null
 		};
-		this.themeColor = '#CDDC39';
+		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);

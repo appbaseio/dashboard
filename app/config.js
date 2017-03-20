@@ -4,6 +4,7 @@ import * as QuickLinks from './shared/QuickLinks';
 
 export const contextConfig = {
 	"appbase": {
+		"name": "appbase",
 		"logo": "../../../assets/images/appbase/logo.svg",
 		"logoText": null,
 		"cardIcon": "fa-database",
@@ -14,9 +15,12 @@ export const contextConfig = {
 			title: "Appbase Dashboard",
 			description: "Try appbase dashboard over here"
 		},
+		"primary": "#3BC7F6",
+		"accent": "#CDDC39",
 		"quickLinks": QuickLinks.AppbaseQuickLinks()
 	},
 	"reactivemaps": {
+		"name": "reactivemaps",
 		"logo": "../../../assets/images/logo.png",
 		"logoText": "Reactive Maps",
 		"cardIcon": "fa-globe",
@@ -27,6 +31,8 @@ export const contextConfig = {
 			title: "Appbase Dashboard",
 			description: "Try appbase dashboard over here"
 		},
+		"primary": "#5678FC",
+		"accent": "#CDDC39",
 		"quickLinks": QuickLinks.ReactiveMapsQuickLinks()
 	}
 }

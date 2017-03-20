@@ -15,7 +15,7 @@ import Gem from './views/gem';
 import Mirage from './views/mirage';
 import Billing from './views/billing';
 import * as helper from './shared/helper';
-import { contextConfig } from './config';
+import { contextConfig, getConfig } from './config';
 
 const $ = require('jquery');
 
@@ -38,6 +38,7 @@ const appChangesEvent = {
 const getContext = () => {
 	const pathname = window.location.pathname.split('/');
 	const context = Object.keys(contextConfig).indexOf(pathname[1]) > -1 ? `/${pathname[1]}` : '/';
+	$('#appbase-dashboard').addClass(`context-${getConfig().name}`);
 	appbaseService.context = context;
 	return context;
 }
