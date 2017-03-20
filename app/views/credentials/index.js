@@ -76,7 +76,7 @@ export default class Credentials extends Component {
 				}
 			break;
 			case 'deleteApp':
-				if(this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email) {
+				if(this.isOwner()) {
 					element = (
 						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
 							<div className="page-body col-xs-12">
@@ -94,6 +94,10 @@ export default class Credentials extends Component {
 		return element;
 	}
 
+	isOwner() {
+		return this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email;
+	}
+
 	render() {
 		return (
 			<AppPage
@@ -109,9 +113,13 @@ export default class Credentials extends Component {
 							<h2 className="ad-detail-page-title">API Credentials</h2>
 							<p>View and manage API access credentials.</p>
 						</div>
-						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
-							<NewPermission newPermission={this.newPermission} />
-						</aside>
+						{
+							this.isOwner() ? (
+								<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
+									<NewPermission newPermission={this.newPermission} />
+								</aside>
+							) : null
+						}
 					</header>
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">

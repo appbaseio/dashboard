@@ -59,11 +59,11 @@ export default class NewApp extends Component {
 			validate.value = false;
 			// validate.error = this.errors['required'];
 		} else {
-			let duplicateApp = this.props.apps.filter((app) => appName === app.name);
-			if (duplicateApp && duplicateApp.length) {
-				validate.value = false;
-				validate.error = this.errors['duplicate'];
-			}
+			// let duplicateApp = this.props.apps.filter((app) => appName === app.appname);
+			// if (duplicateApp && duplicateApp.length) {
+			// 	validate.value = false;
+			// 	validate.error = this.errors['duplicate'];
+			// }
 		}
 		return validate;
 	}
