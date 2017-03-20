@@ -3,12 +3,13 @@ import { Circle } from 'rc-progress';
 import { appbaseService } from '../../service/AppbaseService';
 import { billingService } from '../../service/BillingService';
 import { common } from '../../shared/helper';
+import { getConfig } from '../../config';
 
 export default class ApiCallsView extends Component {
 
 	constructor(props) {
 		super(props);
-		this.themeColor = '#CDDC39';
+		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
 	}
 

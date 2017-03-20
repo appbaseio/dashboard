@@ -1,5 +1,4 @@
 .navbar.navbar-default {
-	background: $blue-color;
 	border-radius: 0;
 	border: 0;
 	margin: 0;
@@ -198,7 +197,6 @@
 				a {
 					border-radius: 0;
 					margin: 0;
-					color: $blue-color;
 					padding: 0.75rem;
 					.ad-list-app-header-owner {
 						padding-left: 5px;
@@ -212,21 +210,11 @@
 							max-width: 22px;
 						}
 					}
-					&:hover {
-						background: #fff;
-						color: $blue-color !important;
-					}
-				}
-				a:hover,
-				a:active,
-				a.active {
-					color: $blue-color;
 				}
 			}
 		}
 	}
 	.navbar-collapse {
-		background: $blue-color;
 		padding: 0;
 		&.in {
 			.navbar-nav {
@@ -251,18 +239,6 @@
 						left: 0;
 					}
 				}
-			}
-		}
-	}
-	.navbar-toggle {
-		.icon-bar {
-			background-color: #fff;
-		}
-		&:hover,
-		&:focus {
-			background-color: #fff;
-			.icon-bar {
-				background-color: $blue-color;
 			}
 		}
 	}

@@ -36,7 +36,6 @@ body {
     padding: 8px 16px; }
 
 .ad-theme-btn {
-  color: #6f6f6f;
   background: #f7f7f7;
   border: 1px solid;
   border-color: #dedede;
@@ -46,13 +45,8 @@ body {
     color: #5a5a5a;
     background: #eaeaea;
     text-decoration: none; }
-  .ad-theme-btn.primary {
-    background: #CDDC39;
-    border-color: #b2c022;
-    color: #fff; }
-    .ad-theme-btn.primary:hover, .ad-theme-btn.primary.active {
-      background: #b2c022;
-      text-decoration: none; }
+  .ad-theme-btn.primary:hover, .ad-theme-btn.primary.active {
+    text-decoration: none; }
   .ad-theme-btn.danger {
     background: #d9534f;
     border-color: #c9302c;
@@ -177,6 +171,182 @@ body {
   to {
     opacity: 0; } }
 
+.context-appbase .ad-detail .ad-detail-sidebar {
+  background: #6cd5f8; }
+  .context-appbase .ad-detail .ad-detail-sidebar li a:hover, .context-appbase .ad-detail .ad-detail-sidebar li a.active {
+    background: #3BC7F6; }
+  .context-appbase .ad-detail .ad-detail-sidebar li a.active {
+    border-color: accent; }
+
+.context-appbase .navbar.navbar-default {
+  background: #3BC7F6; }
+  .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a {
+    color: #3BC7F6; }
+    .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
+      background: #fff;
+      color: #3BC7F6 !important; }
+  .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
+  .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
+  .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
+    color: #3BC7F6; }
+  .context-appbase .navbar.navbar-default .navbar-collapse {
+    background: #3BC7F6; }
+  .context-appbase .navbar.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff; }
+  .context-appbase .navbar.navbar-default .navbar-toggle:hover, .context-appbase .navbar.navbar-default .navbar-toggle:focus {
+    background-color: #fff; }
+    .context-appbase .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-appbase .navbar.navbar-default .navbar-toggle:focus .icon-bar {
+      background-color: #3BC7F6; }
+
+.context-appbase .ad-create .ad-create-button-group .ad-theme-btn:last-child {
+  border-color: #dedede; }
+
+.context-appbase .ad-create .ad-create-button-group .ad-theme-btn.active {
+  background: #cedd3d;
+  color: #fff; }
+
+.context-appbase .ad-dashboard .nav-tab li a.active {
+  color: #CDDC39;
+  border-color: #CDDC39; }
+  .context-appbase .ad-dashboard .nav-tab li a.active:before {
+    background: #CDDC39; }
+
+.context-appbase .ad-dashboard .nav-tab li a:hover {
+  color: #CDDC39;
+  text-decoration: none; }
+
+.context-appbase .ad-list .ad-list-app {
+  border-left: 3px solid #CDDC39; }
+
+.context-appbase .ad-list .ad-list-app-bg-container {
+  color: #e3eb90; }
+
+.context-appbase .loadingBar {
+  background: #CDDC39; }
+
+.context-appbase .ad-loading {
+  border: 1px solid #CDDC39; }
+  .context-appbase .ad-loading .ball-clip-rotate-multiple > div {
+    border-color: transparent #CDDC39; }
+
+.context-appbase .modal .modal-header {
+  color: #CDDC39; }
+  .context-appbase .modal .modal-header .modal-title {
+    color: #CDDC39; }
+  .context-appbase .modal .modal-header .close {
+    color: #CDDC39; }
+
+.context-appbase .modal .modal-content {
+  border-color: #CDDC39; }
+
+.context-appbase .modal .ad-confirm-btn {
+  color: #CDDC39;
+  border-color: #CDDC39; }
+  .context-appbase .modal .ad-confirm-btn:hover {
+    background: #CDDC39;
+    color: #fff; }
+
+.context-appbase .modal.modal-info .modal-content {
+  border-color: #CDDC39; }
+
+.context-appbase .theme-btn:hover, .context-appbase .theme-btn.active {
+  background: #CDDC39; }
+
+.context-appbase .ad-theme-btn.primary {
+  color: #fff;
+  background: #CDDC39;
+  border-color: #b2c022; }
+  .context-appbase .ad-theme-btn.primary:hover, .context-appbase .ad-theme-btn.primary.active {
+    background: #b2c022; }
+
+.context-reactivemaps .ad-detail .ad-detail-sidebar {
+  background: #88a0fd; }
+  .context-reactivemaps .ad-detail .ad-detail-sidebar li a:hover, .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
+    background: #5678FC; }
+  .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
+    border-color: accent; }
+
+.context-reactivemaps .navbar.navbar-default {
+  background: #5678FC; }
+  .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a {
+    color: #5678FC; }
+    .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
+      background: #fff;
+      color: #5678FC !important; }
+  .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
+  .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
+  .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
+    color: #5678FC; }
+  .context-reactivemaps .navbar.navbar-default .navbar-collapse {
+    background: #5678FC; }
+  .context-reactivemaps .navbar.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff; }
+  .context-reactivemaps .navbar.navbar-default .navbar-toggle:hover, .context-reactivemaps .navbar.navbar-default .navbar-toggle:focus {
+    background-color: #fff; }
+    .context-reactivemaps .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-reactivemaps .navbar.navbar-default .navbar-toggle:focus .icon-bar {
+      background-color: #5678FC; }
+
+.context-reactivemaps .ad-create .ad-create-button-group .ad-theme-btn:last-child {
+  border-color: #dedede; }
+
+.context-reactivemaps .ad-create .ad-create-button-group .ad-theme-btn.active {
+  background: #cedd3d;
+  color: #fff; }
+
+.context-reactivemaps .ad-dashboard .nav-tab li a.active {
+  color: #CDDC39;
+  border-color: #CDDC39; }
+  .context-reactivemaps .ad-dashboard .nav-tab li a.active:before {
+    background: #CDDC39; }
+
+.context-reactivemaps .ad-dashboard .nav-tab li a:hover {
+  color: #CDDC39;
+  text-decoration: none; }
+
+.context-reactivemaps .ad-list .ad-list-app {
+  border-left: 3px solid #CDDC39; }
+
+.context-reactivemaps .ad-list .ad-list-app-bg-container {
+  color: #e3eb90; }
+
+.context-reactivemaps .loadingBar {
+  background: #CDDC39; }
+
+.context-reactivemaps .ad-loading {
+  border: 1px solid #CDDC39; }
+  .context-reactivemaps .ad-loading .ball-clip-rotate-multiple > div {
+    border-color: transparent #CDDC39; }
+
+.context-reactivemaps .modal .modal-header {
+  color: #CDDC39; }
+  .context-reactivemaps .modal .modal-header .modal-title {
+    color: #CDDC39; }
+  .context-reactivemaps .modal .modal-header .close {
+    color: #CDDC39; }
+
+.context-reactivemaps .modal .modal-content {
+  border-color: #CDDC39; }
+
+.context-reactivemaps .modal .ad-confirm-btn {
+  color: #CDDC39;
+  border-color: #CDDC39; }
+  .context-reactivemaps .modal .ad-confirm-btn:hover {
+    background: #CDDC39;
+    color: #fff; }
+
+.context-reactivemaps .modal.modal-info .modal-content {
+  border-color: #CDDC39; }
+
+.context-reactivemaps .theme-btn:hover, .context-reactivemaps .theme-btn.active {
+  background: #CDDC39; }
+
+.context-reactivemaps .ad-theme-btn.primary {
+  color: #fff;
+  background: #CDDC39;
+  border-color: #b2c022; }
+  .context-reactivemaps .ad-theme-btn.primary:hover, .context-reactivemaps .ad-theme-btn.primary.active {
+    background: #b2c022; }
+
 #login h1 {
   margin-bottom: 45px;
   font-size: 2rem; }
@@ -241,7 +411,6 @@ body {
       padding: 35px 15px 0 15px; }
 
 .navbar.navbar-default {
-  background: #5678FC;
   border-radius: 0;
   border: 0;
   margin: 0;
@@ -391,7 +560,6 @@ body {
       .navbar.navbar-default li.dropdown .dropdown-menu li a {
         border-radius: 0;
         margin: 0;
-        color: #5678FC;
         padding: 0.75rem; }
         .navbar.navbar-default li.dropdown .dropdown-menu li a .ad-list-app-header-owner {
           padding-left: 5px; }
@@ -402,15 +570,7 @@ body {
             left: 10px;
             margin-top: 3px;
             max-width: 22px; }
-        .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
-          background: #fff;
-          color: #5678FC !important; }
-      .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
-      .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
-      .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
-        color: #5678FC; }
   .navbar.navbar-default .navbar-collapse {
-    background: #5678FC;
     padding: 0; }
     .navbar.navbar-default .navbar-collapse.in .navbar-nav {
       width: 100%;
@@ -428,12 +588,6 @@ body {
         display: inline-block; }
         .navbar.navbar-default .navbar-collapse.in .navbar-nav .user-img-container .user-img {
           left: 0; }
-  .navbar.navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff; }
-  .navbar.navbar-default .navbar-toggle:hover, .navbar.navbar-default .navbar-toggle:focus {
-    background-color: #fff; }
-    .navbar.navbar-default .navbar-toggle:hover .icon-bar, .navbar.navbar-default .navbar-toggle:focus .icon-bar {
-      background-color: #5678FC; }
 
 .ad-actionbuttons {
   position: absolute;
@@ -509,13 +663,7 @@ header .appcard {
       position: relative;
       cursor: pointer;
       border-bottom: 2px solid transparent; }
-      .ad-dashboard .nav-tab li a.active {
-        color: #CDDC39;
-        border-color: #CDDC39; }
-        .ad-dashboard .nav-tab li a.active:before {
-          background: #CDDC39; }
       .ad-dashboard .nav-tab li a:hover {
-        color: #CDDC39;
         text-decoration: none; }
 
 .ad-dashboard .highcharts-credits {
@@ -584,7 +732,6 @@ header .appcard {
   overflow: hidden;
   background: #fff;
   border: 0;
-  border-left: 3px solid #CDDC39;
   box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
   border-radius: 0;
   border-top-right-radius: 0.375rem;
@@ -598,7 +745,6 @@ header .appcard {
   .ad-list .ad-list-app .ad-list-app-bg-container {
     z-index: 1;
     position: absolute;
-    color: #e3eb90;
     font-size: 100px;
     opacity: .5;
     top: -24px;
@@ -735,7 +881,6 @@ header .appcard {
     width: 84px;
     height: 100%;
     padding-top: 0;
-    background: #88a0fd;
     z-index: 2; }
     .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container {
       list-style: none;
@@ -760,10 +905,7 @@ header .appcard {
             .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a .img-container .img-responsive.mappings {
               padding: 5px; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
-            background: #5678FC;
             text-decoration: none; }
-          .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
-            border-color: #CDDC39; }
 
 .loadingBar {
   position: fixed;
@@ -772,7 +914,6 @@ header .appcard {
   right: 0;
   height: 4px;
   z-index: 800;
-  background: #CDDC39;
   transform: translateX(100%);
   display: block;
   animation: shift-rightwards 0.5s ease-in-out infinite;
@@ -780,7 +921,6 @@ header .appcard {
 
 .ad-loading {
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid #CDDC39;
   overflow: hidden;
   display: flex;
   width: 100%;
@@ -790,8 +930,6 @@ header .appcard {
   left: 0;
   align-items: center;
   justify-content: center; }
-  .ad-loading .ball-clip-rotate-multiple > div {
-    border-color: transparent #CDDC39; }
 
 @keyframes shift-rightwards {
   0% {
@@ -1020,11 +1158,7 @@ header .appcard {
       border-right: 0;
       outline: none; }
       .ad-create .ad-create-button-group .ad-theme-btn:last-child {
-        border-right: 1px solid;
-        border-color: #dedede; }
-      .ad-create .ad-create-button-group .ad-theme-btn.active {
-        background: #cedd3d;
-        color: #fff; }
+        border-right: 1px solid; }
       .ad-create .ad-create-button-group .ad-theme-btn:hover, .ad-create .ad-create-button-group .ad-theme-btn:focus, .ad-create .ad-create-button-group .ad-theme-btn:active {
         outline: none; }
     .ad-create .ad-create-button-group.without-margin {
@@ -1048,10 +1182,8 @@ header .appcard {
 
 .modal .modal-header {
   border: 0;
-  padding: 5px 15px 0 15px;
-  color: #CDDC39; }
+  padding: 5px 15px 0 15px; }
   .modal .modal-header .modal-title {
-    color: #CDDC39;
     padding-top: 5px;
     text-align: left; }
   .modal .modal-header .close {
@@ -1068,14 +1200,12 @@ header .appcard {
     top: 5px;
     margin-top: 0;
     background: transparent;
-    opacity: 1;
-    color: #CDDC39; }
+    opacity: 1; }
 
 .modal .modal-content {
   background: #fff;
   border-radius: 4px;
-  border: 3px solid;
-  border-color: #CDDC39; }
+  border: 3px solid; }
   .modal .modal-content p {
     margin-bottom: 15px; }
 
@@ -1084,19 +1214,11 @@ header .appcard {
 
 .modal .ad-confirm-btn {
   margin-right: 15px;
-  background: transparent;
-  color: #CDDC39;
-  border-color: #CDDC39; }
-  .modal .ad-confirm-btn:hover {
-    background: #CDDC39;
-    color: #fff; }
+  background: transparent; }
 
 .modal .ad-cancel-btn {
   background: transparent;
   border-color: transparent; }
-
-.modal.modal-info .modal-content {
-  border-color: #CDDC39; }
 
 .modal.modal-warning .modal-content {
   border-color: #F5E79E; }

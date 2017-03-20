@@ -5,7 +5,6 @@
 	right: 0;
 	height: 4px;
 	z-index: 800;
-	background: $primary-color;
 	transform: translateX(100%);
 	display: block;
 	animation: shift-rightwards 0.5s ease-in-out infinite;
@@ -13,7 +12,6 @@
 }
 .ad-loading {
 	background: rgba(255,255,255,.9);
-	border: 1px solid $primary-color;
 	overflow: hidden;
 	display: flex;
 	width: 100%;
@@ -23,9 +21,6 @@
 	left: 0;
 	align-items: center;
 	justify-content: center;
-	.ball-clip-rotate-multiple>div {
-		border-color : transparent $primary-color;
-	}
 }
 @keyframes shift-rightwards {
 	0% {

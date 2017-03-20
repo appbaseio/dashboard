@@ -353,11 +353,9 @@ class AppbaseService {
 		apps =  _.sortBy(apps, this.sortBy.field);
 		if(this.sortBy.order === 'desc') {
 			apps = apps.reverse();
-			if(this.sortBy.field === 'lastActiveDate') {
-				const prefixArray = apps.filter(item => item[this.sortBy.field]);
-				const postfixArray = apps.filter(item => item[this.sortBy.field] === null);
-				apps = prefixArray.concat(postfixArray);
-			}
+			const prefixArray = apps.filter(item => item.owner === this.userInfo.body.email);
+			const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
+			apps = prefixArray.concat(postfixArray);
 		}
 		return apps;
 	}
