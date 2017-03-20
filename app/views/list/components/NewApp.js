@@ -17,7 +17,8 @@ export default class NewApp extends Component {
 			validate: {
 				value: true,
 				error: null
-			}
+			},
+			showInput: false
 		};
 		this.errors = {
 			'duplicate': 'Duplicate app',
@@ -100,21 +101,37 @@ export default class NewApp extends Component {
 		}
 	}
 
+	showInput() {
+		this.setState({
+			showInput: true
+		});
+	}
+
 	render() {
 		return (
 			<AppCard setClassName="appcard-newapp">
-				<div className="ad-list-newapp col-xs-12 p-0">
-					<div className={"col-xs-12 p-0 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
-						<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter an app name (no spaces)" value={this.state.value} className="form-control" onChange={this.handleChange} />
-						{this.renderElement('helpBlock')}
+					<div className="ad-list-newapp">
+						{
+							this.state.showInput ? (
+								<div className="col-xs-12 p-0">
+									<div className={"col-xs-12 p-0 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
+										<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter an app name (no spaces)" value={this.state.value} className="form-control" onChange={this.handleChange} />
+										{this.renderElement('helpBlock')}
+									</div>
+									<div className="col-xs-12 p-0 title">
+										<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
+											{this.props.createAppLoading ? (<Loading></Loading>) : null}
+											<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+										</button>
+									</div>
+								</div>
+							) : (
+								<button className="col-xs-12 ad-theme-btn primary" onClick={() => this.showInput()} >
+									<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+								</button>
+							)
+						}
 					</div>
-					<div className="col-xs-12 p-0 title">
-						<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
-							{this.props.createAppLoading ? (<Loading></Loading>) : null}
-							<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
-						</button>
-					</div>
-				</div>
 			</AppCard>
 		);
 	}
