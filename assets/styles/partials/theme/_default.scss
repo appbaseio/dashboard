@@ -1,0 +1,149 @@
+$themes: (
+	context-appbase: (primary: #3BC7F6, accent: #CDDC39),
+	context-reactivemaps: (primary: #5678FC, accent: #CDDC39)
+);
+@each $theme,
+$map in $themes {
+	.#{$theme} {
+		.ad-detail {
+			.ad-detail-sidebar {
+				background: lighten(map-get($map, primary), 10%);
+				li a {
+					&:hover,
+					&.active {
+						background: map-get($map, primary);
+					}
+					&.active {
+						border-color: accent;
+					}
+				}
+			}
+		}
+		.navbar.navbar-default {
+			background: map-get($map, primary);
+			li.dropdown {
+				.dropdown-menu {
+					li {
+						a {
+							color: map-get($map, primary);
+							&:hover {
+								background: #fff;
+								color: map-get($map, primary) !important;
+							}
+						}
+						a:hover,
+						a:active,
+						a.active {
+							color: map-get($map, primary);
+						}
+					}
+				}
+			}
+			.navbar-collapse {
+				background: map-get($map, primary);
+			}
+			.navbar-toggle {
+				.icon-bar {
+					background-color: #fff;
+				}
+				&:hover,
+				&:focus {
+					background-color: #fff;
+					.icon-bar {
+						background-color: map-get($map, primary);
+					}
+				}
+			}
+		}
+		.ad-create {
+			.ad-create-button-group {
+				.ad-theme-btn {
+					&:last-child {
+						border-color: darken($dark-grey, 10%);
+					}
+					&.active {
+						background: lighten(map-get($map, accent), 1%);
+						color: #fff;
+					}
+				}
+			}
+		}
+		.ad-dashboard {
+			.nav-tab {
+				li a {
+					&.active {
+						color: map-get($map, accent);
+						border-color: map-get($map, accent);
+						&:before {
+							background: map-get($map, accent);
+						}
+					}
+					&:hover {
+						color: map-get($map, accent);
+						text-decoration: none;
+					}
+				}
+			}
+		}
+		.ad-list {
+			.ad-list-app {
+				border-left: 3px solid map-get($map, accent);
+			}
+			.ad-list-app-bg-container {
+				color: lighten(map-get($map, accent), 20%);
+			}
+		}
+		.loadingBar {
+			background: map-get($map, accent);
+		}
+		.ad-loading {
+			border: 1px solid map-get($map, accent);
+			.ball-clip-rotate-multiple>div {
+				border-color : transparent map-get($map, accent);
+			}
+		}
+		.modal {
+			.modal-header {
+				color: map-get($map, accent);
+				.modal-title {
+					color: map-get($map, accent);
+				}
+				.close {
+					color: map-get($map, accent);
+				}
+			}
+			.modal-content {
+				border-color: map-get($map, accent);
+			}
+			.ad-confirm-btn {
+				color: map-get($map, accent);
+				border-color: map-get($map, accent);
+				&:hover {
+					background: map-get($map, accent);
+					color: #fff;
+				}
+			}
+			&.modal-info {
+				.modal-content {
+					border-color: map-get($map, accent);
+				}
+			}
+		}
+		.theme-btn {
+			&:hover,
+			&.active {
+				background: map-get($map, accent);
+			}
+		}
+		.ad-theme-btn {
+			&.primary {
+				color: #fff;
+				background: map-get($map, accent);
+				border-color: darken(map-get($map, accent), 10%);
+				&:hover, &.active {
+					background: darken(map-get($map, accent), 10%);
+				}
+			}
+		}
+	}
+}

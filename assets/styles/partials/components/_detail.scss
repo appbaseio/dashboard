@@ -40,7 +40,6 @@
 		width: 84px;
 		height: 100%;
 		padding-top: 0;
-		background: lighten($blue-color, 10%);
 		z-index: 2;
 		.ad-detail-sidebar-container {
 			list-style: none;
@@ -69,11 +68,9 @@
 					}
 					&:hover,
 					&.active {
-						background: $blue-color;
 						text-decoration: none;
 					}
 					&.active {
-						border-color: $primary-color;
 					}
 					.ad-detail-sidebar-item-label {
 

@@ -46,7 +46,6 @@ body {
 }
 
 .ad-theme-btn {
-	color: lighten($primary-font-color, 10%);
 	background: $dark-grey;
 	border: 1px solid;
 	border-color: darken($dark-grey, 10%);
@@ -58,11 +57,7 @@ body {
 		text-decoration: none;
 	}
 	&.primary {
-		background: $primary-color;
-		border-color: darken($primary-color, 10%);
-		color: #fff;
 		&:hover, &.active {
-			background: darken($primary-color, 10%);
 			text-decoration: none;
 		}
 	}
