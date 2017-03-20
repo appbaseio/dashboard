@@ -8,10 +8,10 @@ import AppPage from '../../shared/AppPage';
 const InitialShare = (props) => {
 	return (
 		<p className="col-xs-12 ad-initial-share">
-			You don't have team members yet.
+			You do not have any team members yet.&nbsp;&nbsp;
 			{
 				appbaseService.isMyApp(props.info) ? (
-					<a onClick={props.newShareInit}> <i className="fa fa-plus"></i> Add</a>
+					<a onClick={props.newShareInit}><i className="fa fa-plus"></i>&nbsp;Add</a>
 				) : null
 			}
 		</p>

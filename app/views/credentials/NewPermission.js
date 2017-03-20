@@ -114,7 +114,7 @@ export default class NewPermission extends Component {
 						{this.renderElement('buttonGroup')}
 						<span className="col-xs-3">
 							<button className="ad-theme-btn primary ad-create-submit" onClick={this.newPermission}>
-								Create
+								<i className="fa fa-plus"></i>&nbsp;&nbsp;Create
 							</button>
 						</span>
 					</div>
@@ -153,7 +153,7 @@ class Description extends Component {
 	}
 	render() {
 		return (
-			<input type="text" placeholder="Type description.." className="form-control" value={this.state.description} onChange={this.handleInput} />
+			<input type="text" placeholder="Frontend key" className="form-control" value={this.state.description} onChange={this.handleInput} />
 		);
 	}
 };

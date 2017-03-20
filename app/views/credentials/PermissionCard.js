@@ -17,16 +17,15 @@ export default class PermissionCard extends Component {
 			showKey: false
 		};
 		this.confirmBoxInfo = {
-			title: (<span>Delete Permission?</span>),
+			title: (<span>Delete Credentials</span>),
 			description: (
 				<p>
-					Do you want to permanently delete this credential?
-					If this is the only credential, you will lose access to the app.
+					This action will permanently <strong>delete</strong> the selected credentials. If these are the only credentials, you may lose access to other GUI views.
 				</p>
 			),
 			buttons: {
-				cancel: 'Cancel',
-				confirm: 'Yes'
+				cancel: 'Go back',
+				confirm: 'Confirm'
 			}
 		};
 		this.keySummary = common.keySummary();

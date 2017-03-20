@@ -34,13 +34,13 @@ export default class Sidebar extends Component {
 			link: `${this.contextPath}mappings/`,
 			type: 'internal',
 			name: 'gem',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/gem.svg"></img>)
+			img: (<img className="img-responsive mappings" src="../../../assets/images/sidebar/mapping.svg"></img>)
 		},{
 			label: 'Builder',
 			link: `${this.contextPath}builder/`,
 			type: 'internal',
 			name: 'mirage',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/mirage.svg"></img>)
+			img: (<img className="img-responsive" src="../../../assets/images/sidebar/builder.svg"></img>)
 		}, {
 			label: 'Credentials',
 			link: `${this.contextPath}credentials/`,

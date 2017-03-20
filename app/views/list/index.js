@@ -18,7 +18,7 @@ const moment = require('moment');
 const AppIntro = (props) => {
 	return (
 		<AppCard {...props}>
-			<h3 className="title">Hi {props.name},</h3>
+			<h3 className="title">Hi {props.name.split(" ")[0]},</h3>
 			<p className="description">
 				This is your apps manager view. Here, you can create a new app and manage your existing apps.
 			</p>
@@ -28,13 +28,12 @@ const AppIntro = (props) => {
 
 const AppTutorial = (props) => {
 	return (
-		<AppCard {...props}>
+		<AppCard style={{"textAlign":"center"}} {...props}>
 			<h3 className="title">Quick Links</h3>
-			<ul>
-				<li><a href="#">Documentation</a></li>
-				<li><a href="#">Tutorial</a></li>
-				<li><a href="#">Chat Support</a></li>
-				<li><a href="#">Report a bug</a></li>
+			<ul style={{"fontSize":"1.1rem"}}>
+				<li><a href="/tutorial">Interactive Tutorial</a></li>
+				<li><a href="http://docs.appbase.io/scalr/javascript/javascript-intro.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;JS Quick Start</a></li>
+				<li><a href="http://docs.appbase.io/scalr/rest/intro.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;REST Quick Start</a></li>
 			</ul>
 		</AppCard>
 	);
@@ -262,7 +261,7 @@ export default class AppList extends Component {
 		return (
 			<div className="ad-list">
 				{
-					appbaseService.userInfo ? 
+					appbaseService.userInfo ?
 					(
 						<div>
 							<header className="ad-list-header row">
@@ -270,7 +269,7 @@ export default class AppList extends Component {
 									<AppIntro setClassName="hidden-xs" name={appbaseService.userInfo.body.details.name} />
 									<AppTutorial setClassName="hidden-xs hidden-sm" />
 									<NewApp
-										createApp={this.createApp} 
+										createApp={this.createApp}
 										apps={this.state.apps}
 										createAppLoading={this.state.createAppLoading}
 										createAppError={this.state.createAppError}

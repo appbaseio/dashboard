@@ -21,7 +21,7 @@ export default class HighChartView extends Component {
 		return (
 			<section className="ad-detail-page-body-card graph-view">
 				<header className="ad-detail-page-body-card-title body-card-title-highchart">
-					<span>Usage</span>
+					<span>API Calls</span>
 					<ul className="nav-tab">
 						<li>
 							<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
@@ -35,8 +35,8 @@ export default class HighChartView extends Component {
 					</ul>
 				</header>
 				<main className="ad-detail-page-body-card-body">
-					<Highchart 
-						id="chart1" 
+					<Highchart
+						id="chart1"
 						graphMethod={this.state.graphMethod}
 						info={this.props.info}
 					>
