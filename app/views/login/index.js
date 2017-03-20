@@ -35,7 +35,7 @@ export default class Login extends Component {
 		return (
 			<section id="login" className="text-center col-xs-12">
 				<h1>
-					Login to Appbase or create an account to access your Dashboard.
+					Login to Appbase.io to access your dashboard.
 				</h1>
 				<div>
 					<button className="ad-theme-btn primary lg-btn" onClick={this.open}>Login</button>
