@@ -6,6 +6,7 @@ import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter, appListHelper } from './helper';
 import { AppOwner } from './SharedComponents';
 
+const _ = require("lodash");
 const defaultImg = "../../../assets/images/userImg.png";
 
 export default class Nav extends Component {
@@ -44,7 +45,7 @@ export default class Nav extends Component {
 	getAllApps(cb) {
 		appbaseService.allApps(true).then((data) => {
 			this.setState({
-				apps: data.body
+				apps: _.sortBy(data.body, 'appname')
 			}, () => {
 				if(cb) {
 					cb.call(this);
