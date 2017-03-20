@@ -26,13 +26,13 @@ export default class Nav extends Component {
 			type: 'internal'
 		};
 		this.links = [{
-			label: 'Documentation',
-			link: this.config.document,
-			type: 'external'
-		}, {
 			label: 'Tutorial',
 			link: `${this.contextPath}tutorial`,
 			type: 'internal'
+		}, {
+			label: 'Docs',
+			link: this.config.document,
+			type: 'external'
 		}, {
 			label: 'Billing',
 			link: `${this.contextPath}billing`,
@@ -55,8 +55,8 @@ export default class Nav extends Component {
 	}
 
 	getUserImg() {
-		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details 
-		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url) 
+		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details
+		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url)
 		: defaultImg;
 	}
 
@@ -118,7 +118,7 @@ export default class Nav extends Component {
 					});
 				}
 			break;
-			case 'currentApp': 
+			case 'currentApp':
 				if(this.state.activeApp && this.state.apps) {
 					const apps = this.state.apps.filter((app) => app.appname === this.state.activeApp);
 					generatedEle = (
@@ -166,7 +166,7 @@ export default class Nav extends Component {
 												<li key={item}>
 													<a onClick={() => this.logout(item)}>
 														{
-															item === 'logout' ? 
+															item === 'logout' ?
 															(<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>) :
 															appbaseService.userInfo.body.details[item]
 														}

@@ -692,10 +692,12 @@ header .appcard {
     font-size: 1rem;
     padding-top: 10px; }
 
-@media screen and (max-width: 768px) {
-  .ad-list .ad-list-container {
-    max-width: 500px;
-    margin: 0 auto; } }
+.ad-list .ad-list-container {
+  padding-bottom: 50px; }
+  @media screen and (max-width: 768px) {
+    .ad-list .ad-list-container {
+      max-width: 500px;
+      margin: 0 auto; } }
 
 .ad-list .ad-list-newapp {
   padding: 0; }
@@ -730,7 +732,7 @@ header .appcard {
   position: relative;
   margin: 0;
   cursor: pointer;
-  padding-left: 80px;
+  padding-left: 30px;
   height: 100%;
   overflow: hidden;
   background: #fff;

@@ -7,7 +7,7 @@ export const contextConfig = {
 		"name": "appbase",
 		"logo": "../../../assets/images/appbase/logo.svg",
 		"logoText": null,
-		"cardIcon": "fa-database",
+		"cardIcon": "",
 		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
