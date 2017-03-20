@@ -1,4 +1,6 @@
+import React from 'react';
 import { appbaseService } from './service/AppbaseService';
+import * as QuickLinks from './shared/QuickLinks';
 
 export const contextConfig = {
 	"appbase": {
@@ -11,7 +13,8 @@ export const contextConfig = {
 			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
 			title: "Appbase Dashboard",
 			description: "Try appbase dashboard over here"
-		}
+		},
+		"quickLinks": QuickLinks.AppbaseQuickLinks()
 	},
 	"reactivemaps": {
 		"logo": "../../../assets/images/logo.png",
@@ -23,7 +26,8 @@ export const contextConfig = {
 			url: "../../../app/views/tutorial/reactive-maps-onboarding/index.html",
 			title: "Appbase Dashboard",
 			description: "Try appbase dashboard over here"
-		}
+		},
+		"quickLinks": QuickLinks.ReactiveMapsQuickLinks()
 	}
 }
 

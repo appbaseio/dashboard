@@ -30,11 +30,7 @@ const AppTutorial = (props) => {
 	return (
 		<AppCard style={{"textAlign":"center"}} {...props}>
 			<h3 className="title">Quick Links</h3>
-			<ul style={{"fontSize":"1.1rem"}}>
-				<li><a href="/tutorial">Interactive Tutorial</a></li>
-				<li><a href="http://docs.appbase.io/scalr/javascript/javascript-intro.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;JS Quick Start</a></li>
-				<li><a href="http://docs.appbase.io/scalr/rest/intro.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;REST Quick Start</a></li>
-			</ul>
+			{getConfig().quickLinks}
 		</AppCard>
 	);
 }
