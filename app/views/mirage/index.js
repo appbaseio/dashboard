@@ -72,7 +72,7 @@ export default class Mirage extends Component {
 
 	applyUrl(url) {
 		this.setState({
-			mirage: 'http://opensource.appbase.io/mirage/#?input_state=' + url + '&hf=false&subscribe=false'
+			mirage: 'https://opensource.appbase.io/mirage/#?input_state=' + url + '&hf=false&subscribe=false'
 		});
 	}
 
