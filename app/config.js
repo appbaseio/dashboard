@@ -12,8 +12,8 @@ export const contextConfig = {
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
-			title: "Appbase Dashboard",
-			description: "Try appbase dashboard over here"
+			title: "Appbase.io Interactive Tutorial",
+			description: "Make your first API call in 2 mins."
 		},
 		"primary": "#3BC7F6",
 		"accent": "#CDDC39",
