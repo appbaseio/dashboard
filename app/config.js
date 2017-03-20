@@ -16,7 +16,7 @@ export const contextConfig = {
 			description: "Make your first API call in 2 mins."
 		},
 		"primary": "#3BC7F6",
-		"accent": "#CDDC39",
+		"accent": "#B6EF7E",
 		"quickLinks": QuickLinks.AppbaseQuickLinks()
 	},
 	"reactivemaps": {
