@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getConfig } from '../../config';
 import { browserHistory } from 'react-router';
+import { appbaseService } from '../../service/AppbaseService';
 
 const $ = require('jquery');
 
@@ -32,7 +33,7 @@ export default class Tutorial extends Component {
 	listenEvent() {
 		this.iframeRef.contentDocument.addEventListener('click', function (e) {
 			if($(e.target).hasClass('go-to-dashboard')) {
-				window.top.location.href = "/apps";
+				appbaseService.pushUrl('/apps');
 			}
 			if($(e.target).hasClass('go-to-document')) {
 				window.open('http://docs.appbase.io');
