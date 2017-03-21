@@ -176,7 +176,7 @@ body {
   .context-appbase .ad-detail .ad-detail-sidebar li a:hover, .context-appbase .ad-detail .ad-detail-sidebar li a.active {
     background: #3BC7F6; }
   .context-appbase .ad-detail .ad-detail-sidebar li a.active {
-    border-color: #CDDC39; }
+    border-color: #B6EF7E; }
 
 .context-appbase .navbar.navbar-default {
   background: #3BC7F6; }
@@ -202,62 +202,62 @@ body {
   border-color: #dedede; }
 
 .context-appbase .ad-create .ad-create-button-group .ad-theme-btn.active {
-  background: #cedd3d;
+  background: #b9f083;
   color: #fff; }
 
 .context-appbase .ad-dashboard .nav-tab li a.active {
-  color: #CDDC39;
-  border-color: #CDDC39; }
+  color: #B6EF7E;
+  border-color: #B6EF7E; }
   .context-appbase .ad-dashboard .nav-tab li a.active:before {
-    background: #CDDC39; }
+    background: #B6EF7E; }
 
 .context-appbase .ad-dashboard .nav-tab li a:hover {
-  color: #CDDC39;
+  color: #B6EF7E;
   text-decoration: none; }
 
 .context-appbase .ad-list .ad-list-app {
-  border-left: 3px solid #CDDC39; }
+  border-left: 3px solid #B6EF7E; }
 
 .context-appbase .ad-list .ad-list-app-bg-container {
-  color: #e3eb90; }
+  color: #e9fad9; }
 
 .context-appbase .loadingBar {
-  background: #CDDC39; }
+  background: #B6EF7E; }
 
 .context-appbase .ad-loading {
-  border: 1px solid #CDDC39; }
+  border: 1px solid #B6EF7E; }
   .context-appbase .ad-loading .ball-clip-rotate-multiple > div {
-    border-color: transparent #CDDC39; }
+    border-color: transparent #B6EF7E; }
 
 .context-appbase .modal .modal-header {
-  color: #CDDC39; }
+  color: #B6EF7E; }
   .context-appbase .modal .modal-header .modal-title {
-    color: #CDDC39; }
+    color: #B6EF7E; }
   .context-appbase .modal .modal-header .close {
-    color: #CDDC39; }
+    color: #B6EF7E; }
 
 .context-appbase .modal .modal-content {
-  border-color: #CDDC39; }
+  border-color: #B6EF7E; }
 
 .context-appbase .modal .ad-confirm-btn {
-  color: #CDDC39;
-  border-color: #CDDC39; }
+  color: #B6EF7E;
+  border-color: #B6EF7E; }
   .context-appbase .modal .ad-confirm-btn:hover {
-    background: #CDDC39;
+    background: #B6EF7E;
     color: #fff; }
 
 .context-appbase .modal.modal-info .modal-content {
-  border-color: #CDDC39; }
+  border-color: #B6EF7E; }
 
 .context-appbase .theme-btn:hover, .context-appbase .theme-btn.active {
-  background: #CDDC39; }
+  background: #B6EF7E; }
 
 .context-appbase .ad-theme-btn.primary {
   color: #fff;
-  background: #CDDC39;
-  border-color: #b2c022; }
+  background: #B6EF7E;
+  border-color: #9ce951; }
   .context-appbase .ad-theme-btn.primary:hover, .context-appbase .ad-theme-btn.primary.active {
-    background: #b2c022; }
+    background: #9ce951; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar {
   background: #88a0fd; }

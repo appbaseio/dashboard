@@ -62,9 +62,12 @@ export default class AppList extends Component {
 		}
 	}
 
-	deleteApp(app) {
-		appbaseService.deleteApp(app.id).then((data) => {
-			this.initialize();
+	deleteApp(selectedApp) {
+		appbaseService.deleteApp(selectedApp.id).then((data) => {
+			const apps = this.state.apps.filter(app => app.id !== selectedApp.id);
+			this.setState({
+				apps
+			});
 		}).catch((e) => {
 			console.log(e);
 		});
