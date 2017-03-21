@@ -5,23 +5,25 @@ import * as QuickLinks from './shared/QuickLinks';
 export const contextConfig = {
 	"appbase": {
 		"name": "appbase",
-		"logo": "../../../assets/images/appbase/logo.png",
+		"logo": "../../../assets/images/appbase/logo.svg",
+		"favicon": "../../../assets/images/appbase/favicon.ico",
 		"logoText": null,
-		"cardIcon": "fa-database",
+		"cardIcon": "",
 		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
-			title: "Appbase Dashboard",
-			description: "Try appbase dashboard over here"
+			title: "Appbase.io Interactive Tutorial",
+			description: "Make your first API call in 2 mins."
 		},
 		"primary": "#3BC7F6",
-		"accent": "#CDDC39",
+		"accent": "#B6EF7E",
 		"quickLinks": QuickLinks.AppbaseQuickLinks()
 	},
 	"reactivemaps": {
 		"name": "reactivemaps",
 		"logo": "../../../assets/images/logo.png",
+		"favicon": "../../../assets/images/favicon.ico",
 		"logoText": "Reactive Maps",
 		"cardIcon": "fa-globe",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],

@@ -121,7 +121,7 @@ export default class NewApp extends Component {
 									<div className="col-xs-12 p-0 title">
 										<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
 											{this.props.createAppLoading ? (<Loading></Loading>) : null}
-											<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+											<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
 										</button>
 									</div>
 								</div>
