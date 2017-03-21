@@ -6,6 +6,7 @@ export const contextConfig = {
 	"appbase": {
 		"name": "appbase",
 		"logo": "../../../assets/images/appbase/logo.svg",
+		"favicon": "../../../assets/images/appbase/favicon.ico",
 		"logoText": null,
 		"cardIcon": "",
 		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
@@ -22,6 +23,7 @@ export const contextConfig = {
 	"reactivemaps": {
 		"name": "reactivemaps",
 		"logo": "../../../assets/images/logo.png",
+		"favicon": "../../../assets/images/favicon.ico",
 		"logoText": "Reactive Maps",
 		"cardIcon": "fa-globe",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],
