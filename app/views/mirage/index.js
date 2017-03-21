@@ -3,6 +3,9 @@ import { Link } from 'react-router';
 import { appbaseService } from '../../service/AppbaseService';
 import { urlShare } from '../../service/tutorialService/UrlShare';
 import AppPage from '../../shared/AppPage';
+import EsAlert from '../../shared/EsAlert';
+import { common } from '../../shared/helper';
+
 const $ = require('jquery');
 
 export default class Mirage extends Component {
@@ -54,20 +57,31 @@ export default class Mirage extends Component {
 	}
 
 	getPermission() {
-		appbaseService.getPermission(this.appId).then((data) => {
-			this.setState({ permission: data }, this.createUrl);
+		appbaseService.getPermission(this.appId).then((permission) => {
+			this.setState({ 
+				permission,
+				loadActive: true,
+				showAlert: false,
+				adminPermission: common.getPermission(permission.body, "admin")
+			}, this.createUrl);
 		});
 	}
 
 	createUrl() {
-		this.permission = this.state.permission;
-		let obj = {
-			url: 'https://' + this.permission.body[0].username + ':' + this.permission.body[0].password + '@scalr.api.appbase.io',
-			appname: this.appName
-		};
-		urlShare.compressInputState(obj).then((url) => {
-			this.applyUrl(url);
-		}).catch((error) => console.log(error));
+		if(this.state.adminPermission) {
+			let obj = {
+				url: 'https://' + this.state.adminPermission.username + ':' + this.state.adminPermission.password + '@scalr.api.appbase.io',
+				appname: this.appName
+			};
+			urlShare.compressInputState(obj).then((url) => {
+				this.applyUrl(url);
+			}).catch((error) => console.log(error));
+		} else if(this.state.adminPermission === null) {
+			this.setState({
+				showAlert: true,
+				loadActive: false
+			});
+		}
 	}
 
 	applyUrl(url) {
@@ -83,13 +97,14 @@ export default class Mirage extends Component {
 	}
 
 	render() {
+		this.pageInfo = {
+			currentView: 'mirage',
+			appName: this.appName,
+			appId: this.appId
+		};
 		return (
 			<AppPage
-				pageInfo={{
-					currentView: 'mirage',
-					appName: this.appName,
-					appId: this.appId
-				}}
+				pageInfo={this.pageInfo}
 			>
 				<div className="ad-detail-page ad-dashboard row">
 						<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
@@ -106,6 +121,7 @@ export default class Mirage extends Component {
 										<iframe onLoad={() => this.onIfreamLoad()} src={this.state[this.plugin]} height="100%" width="100%" frameBorder="0"></iframe>
 									) : null
 								}
+								{this.state.showAlert ? (<EsAlert {...this.pageInfo} ></EsAlert>) : null}
 							</div>
 						</main>
 				</div>

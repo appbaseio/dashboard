@@ -236,6 +236,25 @@ class Common {
 	isDisabled(flag) {
 		return flag ? { disabled: true } : null;
 	}
+	getPermission(permissions, role="admin") {
+		const conditions = (permission) => {
+			let flag =false;
+			switch(role) {
+				case "admin":
+					flag = permission.read && permission.write;
+				break;
+				case "read":
+					flag = permission.read;
+				break;
+				case "write":
+					flag = permission.write;
+				break;
+			}
+			return flag;
+		}
+		const perm = permissions.filter(permission => conditions(permission));
+		return perm && perm.length ? perm[0] : null;
+	}
 }
 
 class AjaxHttp {
