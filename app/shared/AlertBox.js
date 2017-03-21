@@ -44,5 +44,4 @@ AlertBox.propTypes = {
 
 // Default props value
 AlertBox.defaultProps = {
-	closeBtn: "close"
 }
