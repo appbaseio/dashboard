@@ -6,7 +6,7 @@ export default class ConfirmBox extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showModal: false,
+			showModal: this.props.showModal ? this.props.showModal : false,
 			validate: false,
 			inputValue: null
 		};
@@ -54,7 +54,7 @@ export default class ConfirmBox extends Component {
 				{childrenWithProps}
 				<Modal className={this.getType()} show={this.state.showModal} onHide={() => this.close()}>
 				<Modal.Header closeButton>
-					<Modal.Title>{this.props.info.title}</Modal.Title>
+					{this.props.info && this.props.info.title ? (<Modal.Title>{this.props.info.title}</Modal.Title>) : null}
 				</Modal.Header>
 				<Modal.Body>
 					<div className="row">
@@ -62,7 +62,7 @@ export default class ConfirmBox extends Component {
 							{this.props.info.description}
 						</div>
 						{
-							this.props.info.validate ?
+							this.props.info && this.props.info.validate ?
 							(
 								<div className={`col-xs-12 form-group`}>
 									<input placeholder={this.props.info.validate.placeholder} type="text" className="form-control" defaultValue={this.state.inputValue} onChange={this.handleInputChange} />
@@ -71,12 +71,20 @@ export default class ConfirmBox extends Component {
 						}
 					</div>
 					<div className="col-xs-12 p-0">
-						<button className="ad-theme-btn ad-confirm-btn" {...common.isDisabled(this.props.info.validate && !this.state.validate)} onClick={this.onConfirm}>
-							{this.props.info.buttons.confirm}
-						</button>
-						<button className="ad-theme-btn ad-cancel-btn" onClick={this.onCancel}>
-							{this.props.info.buttons.cancel}
-						</button>
+						{
+							this.props.info.buttons.confirm ? (
+								<button className="ad-theme-btn ad-confirm-btn" {...common.isDisabled(this.props.info.validate && !this.state.validate)} onClick={this.onConfirm}>
+									{this.props.info.buttons.confirm}
+								</button>
+								) : null
+						}
+						{
+							this.props.info.buttons.cancel ? (
+								<button className="ad-theme-btn ad-cancel-btn" onClick={this.onCancel}>
+									{this.props.info.buttons.cancel}
+								</button>
+							) : null
+						}
 					</div>
 					</Modal.Body>
 				</Modal>
