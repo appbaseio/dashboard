@@ -7,7 +7,16 @@ import { appbaseService } from '../service/AppbaseService';
 const Page404 = (props) => {
 	return (
 		<div className="page404">
-			<i className="fa fa-exclamation-triangle"></i>&nbsp; App not found!
+			<div className="row">
+				<div className="col s12">
+				<i className="fa fa-exclamation-triangle"></i>&nbsp; Seems like this app view doesn't exist or you don't have access to it.
+				</div>
+			</div>
+			<div className="row">
+				<div className="col s12">
+					Go to <a href="/apps">/apps<i className="fa fa-cursor"></i></a>
+				</div>
+			</div>
 		</div>
 	);
 };

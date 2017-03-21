@@ -153,7 +153,7 @@ class Description extends Component {
 	}
 	render() {
 		return (
-			<input type="text" placeholder="Frontend key" className="form-control" value={this.state.description} onChange={this.handleInput} />
+			<input type="text" placeholder="Optional description text" className="form-control" value={this.state.description} onChange={this.handleInput} />
 		);
 	}
 };
