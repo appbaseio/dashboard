@@ -879,6 +879,14 @@ header .appcard {
           .ad-detail .ad-detail-view-container .ad-detail-view .plugin-container .plugin-loading-container .loadingContainer {
             max-width: 200px;
             left: auto; }
+      .ad-detail .ad-detail-view-container .ad-detail-view .page404 {
+        font-size: 3rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        justify-content: center;
+        color: #B3B3B3; }
   .ad-detail .ad-detail-sidebar {
     position: absolute;
     left: 0;

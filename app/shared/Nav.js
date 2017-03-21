@@ -54,6 +54,11 @@ export default class Nav extends Component {
 		})
 	}
 
+	isValidApp() {
+		const app = this.state.apps.filter(app => this.state.activeApp === app.appname);
+		return app && app.length;
+	}
+
 	getUserImg() {
 		return appbaseService.userInfo && appbaseService.userInfo.body && appbaseService.userInfo.body && appbaseService.userInfo.body.details
 		? ( appbaseService.userInfo.body.details.picture ? appbaseService.userInfo.body.details.picture : appbaseService.userInfo.body.details.avatar_url)
@@ -119,7 +124,7 @@ export default class Nav extends Component {
 				}
 			break;
 			case 'currentApp':
-				if(this.state.activeApp && this.state.apps) {
+				if(this.state.activeApp && this.state.apps && this.isValidApp()) {
 					const apps = this.state.apps.filter((app) => app.appname === this.state.activeApp);
 					generatedEle = (
 						<li role="presentation" className="dropdown">

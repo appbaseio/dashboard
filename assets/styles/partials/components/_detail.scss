@@ -31,6 +31,15 @@
 					}
 				}
 			}
+			.page404 {
+				font-size: 3rem;
+				text-align: center;
+				display: flex;
+				align-items: center;
+				height: 100%;
+				justify-content: center;
+				color: $grey-font;
+			}
 		}
 	}
 	.ad-detail-sidebar {
@@ -70,11 +79,8 @@
 					&.active {
 						text-decoration: none;
 					}
-					&.active {
-					}
-					.ad-detail-sidebar-item-label {
-
-					}
+					&.active {}
+					.ad-detail-sidebar-item-label {}
 				}
 			}
 		}
