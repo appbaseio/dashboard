@@ -12,7 +12,7 @@ export const AppOwner =(props) => {
 			{
 				isDifferentOwner() ? (
 					<span>
-						<i data-tip={`Owned by ${props.app.owner}`} data-effect="solid" data-place="right" className="fa fa-share-alt app-owner-i"></i>
+						<i data-tip={`Shared by ${props.app.owner}`} data-effect="solid" data-place="right" className="fa fa-share-alt app-owner-i"></i>
 						<ReactTooltip />
 					</span>
 				) : null

@@ -7,7 +7,7 @@ import ActionButtons from './components/ActionButtons';
 import AppCard from './components/AppCard';
 import { appbaseService } from '../../service/AppbaseService';
 import { billingService } from '../../service/BillingService';
-import { appListHelper, common } from '../../shared/helper';
+import { appListHelper, common, intercomService } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
 import Upgrade from './components/Upgrade';
@@ -142,6 +142,7 @@ export default class AppList extends Component {
 			});
 			apps = appbaseService.applySort(apps);
 			this.registerApps(apps);
+			this.setIntercomData(data.body);
 		}).catch((e) => {
 			console.log(e);
 		});
@@ -153,6 +154,21 @@ export default class AppList extends Component {
 		}).catch((e) => {
 			console.log(e);
 		});
+	}
+
+	setIntercomData(metrics) {
+		const userInfo = {
+			email: appbaseService.userInfo.body.email,
+			calls: 0,
+			records: 0,
+			apps: Object.keys(metrics).length,
+			[getConfig().name]: true
+		};
+		Object.keys(metrics).forEach((item) => {
+			userInfo.calls += metrics[item].api_calls;
+			userInfo.records += metrics[item].records;
+		});
+		intercomService.update(userInfo);
 	}
 
 	updateApps(apps) {
