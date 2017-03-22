@@ -162,7 +162,7 @@ export default class AppList extends Component {
 			calls: 0,
 			records: 0,
 			apps: Object.keys(metrics).length,
-			context: getConfig().name
+			[getConfig().name]: true
 		};
 		Object.keys(metrics).forEach((item) => {
 			userInfo.calls += metrics[item].api_calls;
