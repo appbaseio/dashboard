@@ -300,6 +300,9 @@ class IntercomService {
 			email: userInfo.email
 		});
 	}
+	update(userInfo) {
+		window.Intercom('update', userInfo);
+	}
 }
 
 module.exports = {
