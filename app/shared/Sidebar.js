@@ -22,37 +22,37 @@ export default class Sidebar extends Component {
 			link: `${this.contextPath}dashboard/`,
 			type: 'internal',
 			name: 'dashboard',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/dashboard.svg"></img>)
+			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}></img>)
 		}, {
 			label: 'Browser',
 			link: `${this.contextPath}browser/`,
 			type: 'internal',
 			name: 'browser',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/browser.svg"></img>)
+			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/browser.svg`}></img>)
 		}, {
 			label: 'Mappings',
 			link: `${this.contextPath}mappings/`,
 			type: 'internal',
 			name: 'gem',
-			img: (<img className="img-responsive mappings" src="../../../assets/images/sidebar/mapping.svg"></img>)
+			img: (<img className="img-responsive mappings" src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}></img>)
 		},{
 			label: 'Builder',
 			link: `${this.contextPath}builder/`,
 			type: 'internal',
 			name: 'mirage',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/builder.svg"></img>)
+			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/builder.svg`}></img>)
 		}, {
 			label: 'Credentials',
 			link: `${this.contextPath}credentials/`,
 			type: 'internal',
 			name: 'credentials',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/credentials.svg"></img>)
+			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/credentials.svg`}></img>)
 		}, {
 			label: 'Team',
 			link: `${this.contextPath}team/`,
 			type: 'internal',
 			name: 'team',
-			img: (<img className="img-responsive" src="../../../assets/images/sidebar/team.svg"></img>)
+			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/team.svg`}></img>)
 		}];
 	}
 
