@@ -4,3 +4,6 @@
 [submodule "app/views/tutorial/reactive-maps-onboarding"]
 	path = app/views/tutorial/reactive-maps-onboarding
 	url = https://github.com/appbaseio/reactive-maps-onboarding.git
+[submodule "app/views/tutorial/reactivesearch-onboarding"]
+	path = app/views/tutorial/reactivesearch-onboarding
+	url = https://github.com/appbaseio-apps/reactivesearch-onboarding.git

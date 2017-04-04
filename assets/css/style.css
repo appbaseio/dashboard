@@ -347,6 +347,94 @@ body {
   .context-reactivemaps .ad-theme-btn.primary:hover, .context-reactivemaps .ad-theme-btn.primary.active {
     background: #b2c022; }
 
+.context-reactivesearch .ad-detail .ad-detail-sidebar {
+  background: #bce1fa; }
+  .context-reactivesearch .ad-detail .ad-detail-sidebar li a:hover, .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
+    background: #8ccbf7; }
+  .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
+    border-color: #1893e7; }
+
+.context-reactivesearch .navbar.navbar-default {
+  background: #8ccbf7; }
+  .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a {
+    color: #8ccbf7; }
+    .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
+      background: #fff;
+      color: #8ccbf7 !important; }
+  .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
+  .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
+  .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
+    color: #8ccbf7; }
+  .context-reactivesearch .navbar.navbar-default .navbar-collapse {
+    background: #8ccbf7; }
+  .context-reactivesearch .navbar.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff; }
+  .context-reactivesearch .navbar.navbar-default .navbar-toggle:hover, .context-reactivesearch .navbar.navbar-default .navbar-toggle:focus {
+    background-color: #fff; }
+    .context-reactivesearch .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-reactivesearch .navbar.navbar-default .navbar-toggle:focus .icon-bar {
+      background-color: #8ccbf7; }
+
+.context-reactivesearch .ad-create .ad-create-button-group .ad-theme-btn:last-child {
+  border-color: #dedede; }
+
+.context-reactivesearch .ad-create .ad-create-button-group .ad-theme-btn.active {
+  background: #1d95e7;
+  color: #fff; }
+
+.context-reactivesearch .ad-dashboard .nav-tab li a.active {
+  color: #1893e7;
+  border-color: #1893e7; }
+  .context-reactivesearch .ad-dashboard .nav-tab li a.active:before {
+    background: #1893e7; }
+
+.context-reactivesearch .ad-dashboard .nav-tab li a:hover {
+  color: #1893e7;
+  text-decoration: none; }
+
+.context-reactivesearch .ad-list .ad-list-app {
+  border-left: 3px solid #1893e7; }
+
+.context-reactivesearch .ad-list .ad-list-app-bg-container {
+  color: #74bef1; }
+
+.context-reactivesearch .loadingBar {
+  background: #1893e7; }
+
+.context-reactivesearch .ad-loading {
+  border: 1px solid #1893e7; }
+  .context-reactivesearch .ad-loading .ball-clip-rotate-multiple > div {
+    border-color: transparent #1893e7; }
+
+.context-reactivesearch .modal .modal-header {
+  color: #1893e7; }
+  .context-reactivesearch .modal .modal-header .modal-title {
+    color: #1893e7; }
+  .context-reactivesearch .modal .modal-header .close {
+    color: #1893e7; }
+
+.context-reactivesearch .modal .modal-content {
+  border-color: #1893e7; }
+
+.context-reactivesearch .modal .ad-confirm-btn {
+  color: #1893e7;
+  border-color: #1893e7; }
+  .context-reactivesearch .modal .ad-confirm-btn:hover {
+    background: #1893e7;
+    color: #fff; }
+
+.context-reactivesearch .modal.modal-info .modal-content {
+  border-color: #1893e7; }
+
+.context-reactivesearch .theme-btn:hover, .context-reactivesearch .theme-btn.active {
+  background: #1893e7; }
+
+.context-reactivesearch .ad-theme-btn.primary {
+  color: #fff;
+  background: #1893e7;
+  border-color: #1376b9; }
+  .context-reactivesearch .ad-theme-btn.primary:hover, .context-reactivesearch .ad-theme-btn.primary.active {
+    background: #1376b9; }
+
 #login h1 {
   margin-bottom: 45px;
   font-size: 2rem; }

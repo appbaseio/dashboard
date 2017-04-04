@@ -225,7 +225,7 @@ export default class Nav extends Component {
 						<Link to="/apps" className={`navbar-brand ${cx}`}>
 							<img src={this.config.logo} alt="" className="img-responsive"/>
 							{
-								this.config.logoText ? (<span>Reactive Maps</span>) : null
+								this.config.logoText ? (<span>{this.config.logoText}</span>) : null
 							}
 						</Link>
 					</div>

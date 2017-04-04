@@ -1,6 +1,7 @@
 $themes: (
 	context-appbase: (primary: #3BC7F6, accent: #B6EF7E),
-	context-reactivemaps: (primary: #5678FC, accent: #CDDC39)
+	context-reactivemaps: (primary: #5678FC, accent: #CDDC39),
+	context-reactivesearch: (accent: #1893e7, primary: #8ccbf7)
 );
 @each $theme,
 $map in $themes {

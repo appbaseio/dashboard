@@ -36,6 +36,23 @@ export const contextConfig = {
 		"primary": "#5678FC",
 		"accent": "#CDDC39",
 		"quickLinks": QuickLinks.ReactiveMapsQuickLinks()
+	},
+	"reactivesearch": {
+		"name": "reactivesearch",
+		"logo": "../../../assets/images/reactivesearch/logo.png",
+		"favicon": "../../../assets/images/reactivesearch/favicon.ico",
+		"logoText": "Reactive Search",
+		"cardIcon": "fa-search",
+		"appDashboard": ["dashboard", "browser", "credentials", "team"],
+		"document": "https://docs.appbase.io",
+		"tutorial": {
+			url: "../../../app/views/tutorial/reactivesearch-onboarding/index.html",
+			title: "Reactivesearch Dashboard",
+			description: "Try Reactivesearch over here"
+		},
+		"primary": "#1893e7",
+		"accent": "#8ccbf7",
+		"quickLinks": QuickLinks.ReactiveSearchQuickLinks()
 	}
 }
 
