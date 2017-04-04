@@ -144,7 +144,7 @@ export default class AppList extends Component {
 			apps = apps.map((app) => {
 				return Object.assign(app, data.body[app.id]);
 			});
-			apps = appbaseService.applySort(apps);
+			apps = appbaseService.applySort(apps, appbaseService.sortBy.field);
 			this.registerApps(apps);
 			this.setIntercomData(data.body);
 		}).catch((e) => {
