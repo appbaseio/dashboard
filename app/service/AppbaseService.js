@@ -27,6 +27,8 @@ class AppbaseService {
 			field: "api_calls",
 			order: 'desc'
 		};
+		this.filterAppName = "";
+		this.preservedApps = [];
 		this.extra = {};
 		this.context = '/';
 		$.ajaxSetup({
@@ -357,6 +359,8 @@ class AppbaseService {
 			const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
 			apps = prefixArray.concat(postfixArray);
 		}
+		const preservedApps = this.filterAppName === "" ? apps : this.preservedApps;
+		this.setPreservedApps(preservedApps);
 		return apps;
 	}
 
@@ -378,7 +382,29 @@ class AppbaseService {
 		return filteredApps;
 	}
 
+	getPreservedApps(apps) {
+		let preservedApps = localStorage.getItem("ai-apps");
+		preservedApps = preservedApps ? JSON.parse(preservedApps) : [];
+		let finalApps = [];
+		const appInFinalApps = [];
+		preservedApps.forEach((item) => {
+			const isAppExists = apps.filter(app => item.appname === app.appname);
+			if(isAppExists && isAppExists.length) {
+				finalApps.push(isAppExists[0]);
+				appInFinalApps.push(isAppExists[0].appname);
+			}
+		});
+		const otherApps = apps.filter(app => appInFinalApps.indexOf(app.appname) < 0);
+		return finalApps.concat(otherApps);
+	}
+
+	setPreservedApps(apps) {
+		this.preservedApps = apps;
+		localStorage.setItem("ai-apps", JSON.stringify(this.preservedApps));
+	}
+
 	filterByAppname(appname) {
+		this.filterAppName = appname;
 		return appbaseService.preservedApps.filter(app => app.appname.indexOf(appname) > -1);
 	}
 

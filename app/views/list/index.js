@@ -88,8 +88,9 @@ export default class AppList extends Component {
 	getApps() {
 		appbaseService.allApps()
 		.then((data) => {
-			appbaseService.preservedApps = data.body;
-			this.registerApps(data.body, true);
+			const apps = appbaseService.getPreservedApps(data.body);
+			appbaseService.setPreservedApps(apps);
+			this.registerApps(apps, true);
 		}).catch((e) => {
 			console.log(e);
 			appbaseService.pushUrl('/login');
