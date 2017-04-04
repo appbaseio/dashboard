@@ -23,8 +23,14 @@ class AppbaseService {
 				records: 1000000
 			}
 		};
+		this.sortOptions = {
+			"api_calls": "API Calls",
+			"records": "Records",
+			"appname": "Appname"
+		};
+		this.defaultSortBy ="api_calls";
 		this.sortBy = {
-			field: "api_calls",
+			field: this.getSortBy(),
 			order: 'desc'
 		};
 		this.filterAppName = "";
@@ -37,6 +43,11 @@ class AppbaseService {
 				withCredentials: true
 			}
 		});
+	}
+
+	getSortBy() {
+		const sortby = localStorage.getItem("ai-sortby");
+		return sortby ? ( Object.keys(this.sortOptions).indexOf(sortby) > -1 ? sortby : this.defaultSortBy ) : this.defaultSortBy;
 	}
 
 	getUser() {
@@ -348,19 +359,22 @@ class AppbaseService {
 
 	applySort(apps, field) {
 		if(field) {
-			// this.sortBy.order = field === this.sortBy.field ? (this.sortBy.order === 'desc' ? 'asc' : 'desc') : 'asc';
-			this.sortBy.order = 'desc';
+			if(field !== "appname") {
+				this.sortBy.order = 'desc';
+			} else {
+				this.sortBy.order = 'asc';
+			}
 			this.sortBy.field = field;
+			apps = _.sortBy(apps, this.sortBy.field);
+			if(this.sortBy.order === 'desc') {
+				apps = apps.reverse();
+				const prefixArray = apps.filter(item => item.owner === this.userInfo.body.email);
+				const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
+				apps = prefixArray.concat(postfixArray);
+			}
+			const preservedApps = this.filterAppName === "" ? apps : this.preservedApps;
+			this.setPreservedApps(preservedApps);
 		}
-		apps =  _.sortBy(apps, this.sortBy.field);
-		if(this.sortBy.order === 'desc') {
-			apps = apps.reverse();
-			const prefixArray = apps.filter(item => item.owner === this.userInfo.body.email);
-			const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
-			apps = prefixArray.concat(postfixArray);
-		}
-		const preservedApps = this.filterAppName === "" ? apps : this.preservedApps;
-		this.setPreservedApps(preservedApps);
 		return apps;
 	}
 
@@ -401,6 +415,7 @@ class AppbaseService {
 	setPreservedApps(apps) {
 		this.preservedApps = apps;
 		localStorage.setItem("ai-apps", JSON.stringify(this.preservedApps));
+		localStorage.setItem("ai-sortby", this.sortBy.field);
 	}
 
 	filterByAppname(appname) {

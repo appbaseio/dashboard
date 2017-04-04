@@ -7,12 +7,9 @@ export default class SortBy extends Component {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.state = {
-			value: appbaseService.SortBy
+			value: appbaseService.sortBy.field
 		};
-		this.options = {
-			"api_calls": "API Calls",
-			"records": "Records"
-		};
+		this.options = appbaseService.sortOptions;
 	}
 
 	handleChange(value) {
