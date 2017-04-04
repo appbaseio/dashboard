@@ -387,14 +387,8 @@ class AppbaseService {
 			$.ajax({
 				url: this.address + 'apps/' + appname,
 				type: 'GET',
-				success: reject,
-				error: (error) => {
-					if(error.status === 404) {
-						resolve(error);
-					} else {
-						reject(error);
-					}
-				}
+				success: resolve,
+				error: reject
 			});
 		});
 	}

@@ -102,21 +102,28 @@ export default class NewApp extends Component {
 			});
 			appbaseService.isAppNameAvailable(appname)
 				.then((data) => {
-					this.props.createApp(this.state.value);
-					this.setState({
-						createAppLoading: false
-					});
-				})
-				.catch((e) => {
-					const validate = {
-						value: false,
-						error: this.errors.notavailable
-					};
-					this.setState({
-						validate,
-						createAppLoading: false
-					});
+					this.checkAppValidation(data);
+				}).catch((e) => {
+					this.checkAppValidation(e);
 				});
+		}
+	}
+
+	checkAppValidation(data) {
+		if(data && data.status && data.status === 404) {
+			this.props.createApp(this.state.value);
+			this.setState({
+				createAppLoading: false
+			});
+		} else {
+			const validate = {
+				value: false,
+				error: this.errors.notavailable
+			};
+			this.setState({
+				validate,
+				createAppLoading: false
+			});
 		}
 	}
 
