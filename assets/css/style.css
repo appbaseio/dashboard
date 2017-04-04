@@ -701,7 +701,7 @@ header .appcard {
 
 .ad-list .ad-list-newapp {
   padding: 0; }
-  .ad-list .ad-list-newapp div {
+  .ad-list .ad-list-newapp > div {
     padding-left: 0; }
   .ad-list .ad-list-newapp p {
     text-transform: uppercase;

@@ -22,7 +22,8 @@ export default class NewApp extends Component {
 		};
 		this.errors = {
 			'duplicate': 'Duplicate app',
-			'required': 'Appname is required!'
+			'required': 'Appname is required!',
+			notavailable: "Appname is not available, please choose different name."
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -58,13 +59,13 @@ export default class NewApp extends Component {
 		appName = appName.trim();
 		if (!appName) {
 			validate.value = false;
-			// validate.error = this.errors['required'];
+			validate.error = this.errors['required'];
 		} else {
-			// let duplicateApp = this.props.apps.filter((app) => appName === app.appname);
-			// if (duplicateApp && duplicateApp.length) {
-			// 	validate.value = false;
-			// 	validate.error = this.errors['duplicate'];
-			// }
+			let duplicateApp = this.props.apps.filter((app) => appName === app.appname);
+			if (duplicateApp && duplicateApp.length) {
+				validate.value = false;
+				validate.error = this.errors['duplicate'];
+			}
 		}
 		return validate;
 	}
@@ -94,10 +95,28 @@ export default class NewApp extends Component {
 	}
 
 	handleSubmit() {
-		if(this.state.value.trim()) {
-			this.props.createApp(this.state.value);
-		} else {
-			$(this.inputboxRef).trigger('focus');
+		const appname = this.state.value.trim();
+		if (appname) {
+			this.setState({
+				createAppLoading: true
+			});
+			appbaseService.isAppNameAvailable(appname)
+				.then((data) => {
+					this.props.createApp(this.state.value);
+					this.setState({
+						createAppLoading: false
+					});
+				})
+				.catch((e) => {
+					const validate = {
+						value: false,
+						error: this.errors.notavailable
+					};
+					this.setState({
+						validate,
+						createAppLoading: false
+					});
+				});
 		}
 	}
 
@@ -120,7 +139,7 @@ export default class NewApp extends Component {
 									</div>
 									<div className="col-xs-12 p-0 title">
 										<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
-											{this.props.createAppLoading ? (<Loading></Loading>) : null}
+											{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
 											<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
 										</button>
 									</div>

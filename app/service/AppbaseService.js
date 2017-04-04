@@ -382,6 +382,23 @@ class AppbaseService {
 		return app && app.appInfo && app.appInfo.owner === this.userInfo.body.email;
 	}
 
+	isAppNameAvailable(appname) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: this.address + 'apps/' + appname,
+				type: 'GET',
+				success: reject,
+				error: (error) => {
+					if(error.status === 404) {
+						resolve(error);
+					} else {
+						reject(error);
+					}
+				}
+			});
+		});
+	}
+
 	setExtra(key, value) {
 		this.extra[key] = value;
 	}
