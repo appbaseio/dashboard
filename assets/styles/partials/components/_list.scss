@@ -177,6 +177,13 @@
 			}
 		}
 	}
+	.ad-filterbyappname {
+		display: inline-block;
+		margin-right: 10px;
+		input {
+			height: 30px;
+		}
+	}
 }
 
 .ad-metrics-summary {

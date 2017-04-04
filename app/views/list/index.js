@@ -10,6 +10,7 @@ import { billingService } from '../../service/BillingService';
 import { appListHelper, common, intercomService } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
+import FilterByAppname from './components/FilterByAppname';
 import Upgrade from './components/Upgrade';
 import { getConfig } from '../../config';
 
@@ -65,6 +66,7 @@ export default class AppList extends Component {
 	deleteApp(selectedApp) {
 		appbaseService.deleteApp(selectedApp.id).then((data) => {
 			const apps = this.state.apps.filter(app => app.id !== selectedApp.id);
+			appbaseService.preservedApps = apps;
 			this.setState({
 				apps
 			});
@@ -86,6 +88,7 @@ export default class AppList extends Component {
 	getApps() {
 		appbaseService.allApps()
 		.then((data) => {
+			appbaseService.preservedApps = data.body;
 			this.registerApps(data.body, true);
 		}).catch((e) => {
 			console.log(e);
@@ -299,6 +302,7 @@ export default class AppList extends Component {
 							<main className="ad-list-container container">
 								<Upgrade apps={this.state.apps} plan={this.state.plan} />
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
+									<FilterByAppname registerApps={this.registerApps} />
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 								</div>
 								<div className="ad-list-apps row">

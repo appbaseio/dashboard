@@ -378,6 +378,10 @@ class AppbaseService {
 		return filteredApps;
 	}
 
+	filterByAppname(appname) {
+		return appbaseService.preservedApps.filter(app => app.appname.indexOf(appname) > -1);
+	}
+
 	isMyApp(app) {
 		return app && app.appInfo && app.appInfo.owner === this.userInfo.body.email;
 	}

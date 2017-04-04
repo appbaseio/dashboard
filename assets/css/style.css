@@ -817,6 +817,12 @@ header .appcard {
     .ad-list .ad-list-app:hover aside.options {
       right: 0; }
 
+.ad-list .ad-filterbyappname {
+  display: inline-block;
+  margin-right: 10px; }
+  .ad-list .ad-filterbyappname input {
+    height: 30px; }
+
 .ad-metrics-summary > [class*="col-"] {
   padding-right: 0; }
 
