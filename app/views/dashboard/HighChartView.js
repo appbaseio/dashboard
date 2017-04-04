@@ -6,8 +6,9 @@ export default class HighChartView extends Component {
 
 	constructor(props) {
 		super(props);
+		const now = new Date();
 		this.state = {
-			graphMethod: 'month'
+			graphMethod: now.getDate() < 3 ? "week" : "month"
 		};
 	}
 

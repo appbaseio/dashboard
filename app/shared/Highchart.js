@@ -72,7 +72,8 @@ export default class Highchart extends Component {
 				timeFrame = utc.setDate(utc.getDate() - 7);
 			},
 			month: function() {
-				timeFrame = utc.setDate(1);
+				timeFrame = new Date(`${utc.getFullYear()}-${utc.getMonth()+1}-1`);
+				timeFrame = timeFrame.getTime();
 			},
 			all: function() {
 				timeFrame = 0;
@@ -123,7 +124,7 @@ export default class Highchart extends Component {
 		for (var bucket in callBuckets) {
 			if (callBuckets[bucket].hasOwnProperty('apiCalls')) {
 				var date = parseInt(callBuckets[bucket].key);
-				if (date > timeFrame) {
+				if (date >= timeFrame) {
 					if (xAxis[xAxis.length - 1] != date) {
 						xAxis.push(date);
 					}
