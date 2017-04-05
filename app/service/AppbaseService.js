@@ -26,7 +26,7 @@ class AppbaseService {
 		this.sortOptions = {
 			"api_calls": "API Calls",
 			"records": "Records",
-			"appname": "Appname"
+			"appname": "Name"
 		};
 		this.defaultSortBy ="api_calls";
 		this.sortBy = {
