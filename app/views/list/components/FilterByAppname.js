@@ -24,7 +24,7 @@ export default class FilterByAppname extends Component {
 	render() {
 		return (
 			<span className="ad-filterbyappname pull-right">
-				<input type="text" className="form-control" value={this.state.value} onChange={this.handleChange} placeholder="Search by appname" />
+				<input type="text" className="form-control" value={this.state.value} onChange={this.handleChange} placeholder="Filter cards by app name" />
 			</span>
 		);
 	}

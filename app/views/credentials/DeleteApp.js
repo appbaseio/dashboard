@@ -44,7 +44,7 @@ export default class DeleteApp extends Component {
 							onConfirm={this.deleteApp}
 							type="danger"
 						>
-							<a className="ad-theme-btn danger-inverse permission-delete">
+							<a className="ad-theme-btn danger-inverse ad-confirm-btn">
 								<i className="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;Delete this app
 							</a>
 						</ConfirmBox>
