@@ -171,6 +171,7 @@ class AppbaseService {
 				url: this.address + 'app/' + appName,
 				type: 'PUT',
 				success: (result) => {
+					this.preservedApps = [];
 					this.allApps().then((data) => {
 						appsObj.allApps =data;
 						cb(result);
@@ -368,10 +369,10 @@ class AppbaseService {
 			apps = _.sortBy(apps, this.sortBy.field);
 			if(this.sortBy.order === 'desc') {
 				apps = apps.reverse();
-				const prefixArray = apps.filter(item => item.owner === this.userInfo.body.email);
-				const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
-				apps = prefixArray.concat(postfixArray);
 			}
+			const prefixArray = apps.filter(item => item.owner === this.userInfo.body.email);
+			const postfixArray = apps.filter(item => item.owner !== this.userInfo.body.email);
+			apps = prefixArray.concat(postfixArray);
 			const preservedApps = this.filterAppName === "" ? apps : this.preservedApps;
 			this.setPreservedApps(preservedApps);
 		}

@@ -6,6 +6,8 @@ import { eventEmitter } from './helper';
 import { getConfig } from '../config';
 import { appbaseService } from '../service/AppbaseService';
 
+const $ = require("jquery");
+
 export default class Sidebar extends Component {
 
 	constructor(props) {
@@ -68,6 +70,16 @@ export default class Sidebar extends Component {
 		});
 	}
 
+	componentDidMount() {
+		const seSidebarHeight = () => {
+			$(".ad-detail").css({
+				"min-height": $(this.sidebarRef).height()+30
+			});
+		};
+		setTimeout(seSidebarHeight.bind(this), 1000);
+		$(window).resize(seSidebarHeight.bind(this));
+	}
+
 	componentWillUnmount() {
 		this.stopUpdate = true;
 		if (this.listenEvent) {
@@ -107,7 +119,7 @@ export default class Sidebar extends Component {
 	render() {
 		return (
 			<aside className="ad-detail-sidebar">
-				<ul className="ad-detail-sidebar-container">
+				<ul className="ad-detail-sidebar-container" ref={(aside) => this.sidebarRef = aside}>
 					{this.renderElement('links')}
 				</ul>
 			</aside>

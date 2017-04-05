@@ -144,7 +144,7 @@ export default class AppList extends Component {
 			apps = apps.map((app) => {
 				return Object.assign(app, data.body[app.id]);
 			});
-			apps = appbaseService.applySort(apps);
+			apps = appbaseService.applySort(apps, appbaseService.sortBy.field);
 			this.registerApps(apps);
 			this.setIntercomData(data.body);
 		}).catch((e) => {
@@ -303,8 +303,8 @@ export default class AppList extends Component {
 							<main className="ad-list-container container">
 								<Upgrade apps={this.state.apps} plan={this.state.plan} />
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
-									<FilterByAppname registerApps={this.registerApps} />
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
+									<FilterByAppname registerApps={this.registerApps} />
 								</div>
 								<div className="ad-list-apps row">
 									{this.renderElement('apps')}

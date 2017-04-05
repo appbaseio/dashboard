@@ -24,7 +24,7 @@ export default class SortBy extends Component {
 
 	render() {
 		return (
-			<span className="ad-dropdown dropdown">
+			<span className="ad-dropdown dropdown pull-right">
 				<button className="ad-theme-btn primary dropdown-toggle" type="button" id="sortby-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					Sort by {this.options[this.state.value] || this.options["api_calls"]}&nbsp;&nbsp;<span className="caret"></span>
 				</button>

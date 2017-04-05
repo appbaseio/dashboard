@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 
 import ReactHighcharts from 'react-highcharts';
 const $ = require('jquery');
+const moment = require('moment');
 
 export default class Highchart extends Component {
 	constructor(props) {
@@ -72,7 +73,7 @@ export default class Highchart extends Component {
 				timeFrame = utc.setDate(utc.getDate() - 7);
 			},
 			month: function() {
-				timeFrame = new Date(`${utc.getFullYear()}-${utc.getMonth()+1}-1`);
+				timeFrame = new Date(`${moment(utc).format("YYYY-MM")}-01`);
 				timeFrame = timeFrame.getTime();
 			},
 			all: function() {

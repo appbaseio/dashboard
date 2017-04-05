@@ -9,7 +9,7 @@ export const contextConfig = {
 		"favicon": "../../../assets/images/appbase/favicon.ico",
 		"logoText": null,
 		"cardIcon": "",
-		"appDashboard": ["dashboard", "browser", "gem", "mirage", "credentials", "team"],
+		"appDashboard": ["dashboard", "browser", "mirage", "credentials", "team"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
@@ -42,7 +42,6 @@ export const contextConfig = {
 		"logo": "../../../assets/images/reactivesearch/logo.png",
 		"favicon": "../../../assets/images/reactivesearch/favicon.ico",
 		"logoText": "Reactive Search",
-		"cardIcon": "fa-search",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
