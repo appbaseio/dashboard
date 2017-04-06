@@ -26,7 +26,7 @@ class AppbaseService {
 		this.sortOptions = {
 			"api_calls": "API Calls",
 			"records": "Records",
-			"appname": "Appname"
+			"appname": "Name"
 		};
 		this.defaultSortBy ="api_calls";
 		this.sortBy = {
@@ -37,6 +37,7 @@ class AppbaseService {
 		this.preservedApps = [];
 		this.extra = {};
 		this.context = '/';
+		this.sharedApps = this.getShareApps();
 		$.ajaxSetup({
 			crossDomain: true,
 			xhrFields: {
@@ -48,6 +49,11 @@ class AppbaseService {
 	getSortBy() {
 		const sortby = localStorage.getItem("ai-sortby");
 		return sortby ? ( Object.keys(this.sortOptions).indexOf(sortby) > -1 ? sortby : this.defaultSortBy ) : this.defaultSortBy;
+	}
+
+	getShareApps() {
+		const sharedApps = localStorage.getItem("ai-sharedApps");
+		return sharedApps === "false" ? false : true;
 	}
 
 	getUser() {
@@ -331,7 +337,7 @@ class AppbaseService {
 
 	logout() {
 		var baseURL = window.location.protocol + "//" + window.location.host+'/';
-		window.location.href = this.address + 'logout?next=' + baseURL;
+		window.location.href = this.address + 'logout?next=https://appbase.io';
 	}
 
 	computeMetrics(metrics) {
@@ -422,6 +428,11 @@ class AppbaseService {
 	filterByAppname(appname) {
 		this.filterAppName = appname;
 		return appbaseService.preservedApps.filter(app => app.appname.indexOf(appname) > -1);
+	}
+
+	filterBySharedApps(sharedApps=this.sharedApps) {
+		localStorage.setItem("ai-sharedApps", sharedApps);
+		return appbaseService.preservedApps.filter(app => sharedApps ? true : (app.owner === appbaseService.userInfo.body.email) );
 	}
 
 	isMyApp(app) {

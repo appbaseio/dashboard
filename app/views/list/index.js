@@ -11,6 +11,7 @@ import { appListHelper, common, intercomService } from '../../shared/helper';
 import { AppOwner } from '../../shared/SharedComponents';
 import SortBy from './components/SortBy';
 import FilterByAppname from './components/FilterByAppname';
+import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
 import { getConfig } from '../../config';
 
@@ -145,6 +146,7 @@ export default class AppList extends Component {
 				return Object.assign(app, data.body[app.id]);
 			});
 			apps = appbaseService.applySort(apps, appbaseService.sortBy.field);
+			apps = appbaseService.filterBySharedApps();
 			this.registerApps(apps);
 			this.setIntercomData(data.body);
 		}).catch((e) => {
@@ -305,6 +307,7 @@ export default class AppList extends Component {
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 									<FilterByAppname registerApps={this.registerApps} />
+									<FilterByOwner registerApps={this.registerApps} />
 								</div>
 								<div className="ad-list-apps row">
 									{this.renderElement('apps')}

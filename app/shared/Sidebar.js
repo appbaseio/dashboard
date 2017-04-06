@@ -85,6 +85,7 @@ export default class Sidebar extends Component {
 		if (this.listenEvent) {
 			this.listenEvent.remove();
 		}
+		$(window).unbind("resize");
 	}
 
 	renderElement(ele) {

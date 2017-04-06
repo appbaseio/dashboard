@@ -51,13 +51,15 @@ body {
 	border-color: darken($dark-grey, 10%);
 	padding: 3px 8px;
 	font-size: 1rem;
-	&:hover, &.active {
+	&:hover,
+	&.active {
 		color: lighten($primary-font-color, 2%);
 		background: darken($dark-grey, 5%);
 		text-decoration: none;
 	}
 	&.primary {
-		&:hover, &.active {
+		&:hover,
+		&.active {
 			text-decoration: none;
 		}
 	}
@@ -65,14 +67,16 @@ body {
 		background: $danger-color;
 		border-color: darken($danger-color, 10%);
 		color: #fff;
-		&:hover, &.active {
+		&:hover,
+		&.active {
 			background: darken($danger-color, 10%);
 			text-decoration: none;
 		}
 		&.transparent {
 			background: #fff;
 			color: $danger-color;
-			&:hover, &.active {
+			&:hover,
+			&.active {
 				background: darken($danger-color, 10%);
 				color: #fff;
 			}
@@ -82,14 +86,16 @@ body {
 		background: $modal-warning;
 		border-color: darken($modal-warning, 10%);
 		color: #fff;
-		&:hover, &.active {
+		&:hover,
+		&.active {
 			background: darken($modal-warning, 10%);
 			text-decoration: none;
 		}
 		&.transparent {
 			background: #fff;
 			color: $modal-warning;
-			&:hover, &.active {
+			&:hover,
+			&.active {
 				background: darken($modal-warning, 10%);
 				color: #fff;
 			}
@@ -99,7 +105,8 @@ body {
 		color: $modal-danger;
 		border-color: transparent;
 		background: transparent;
-		&:hover, &.active {
+		&:hover,
+		&.active {
 			background: darken(#fff, 10%);
 			text-decoration: none;
 		}
@@ -108,7 +115,8 @@ body {
 		color: $modal-danger;
 		border-color: $modal-danger;
 		background: transparent;
-		&:hover, &.active {
+		&:hover,
+		&.active {
 			color: #fff;
 			background: $modal-danger;
 			text-decoration: none;
@@ -119,8 +127,11 @@ body {
 		cursor: not-allowed;
 	}
 	&.lg-btn {
-		font-size: 1.2rem;
-		padding: 6px 12px;
+		font-size: 2rem;
+		margin: 2%;
+		padding-left: 50px;
+		padding-right: 50px;
+		border: 2px solid;
 	}
 }
 

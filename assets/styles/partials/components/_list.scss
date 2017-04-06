@@ -155,6 +155,9 @@
 					box-shadow: none;
 					background: transparent;
 					margin: 0;
+					&.text-danger {
+						color: $danger-color;
+					}
 					&:hover {
 						color: #424242;
 					}
@@ -182,6 +185,7 @@
 		margin-right: 10px;
 		input {
 			height: 30px;
+			width: 300px;
 		}
 	}
 }
