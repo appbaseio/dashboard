@@ -337,7 +337,7 @@ class AppbaseService {
 
 	logout() {
 		var baseURL = window.location.protocol + "//" + window.location.host+'/';
-		window.location.href = this.address + 'logout?next=' + baseURL;
+		window.location.href = this.address + 'logout?next=https://appbase.io';
 	}
 
 	computeMetrics(metrics) {

@@ -1,7 +1,15 @@
 #login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	flex-direction: column;
 	h1 {
-		margin-bottom: 45px;
-		font-size: 2rem;
+		padding: 5vh 10vw;
+		color: #888;
+		margin: 0;
+		font-size: 3.5em;
+		font-family: $font-light;
 	}
 }
 

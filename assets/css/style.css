@@ -92,8 +92,11 @@ body {
     opacity: 0.6;
     cursor: not-allowed; }
   .ad-theme-btn.lg-btn {
-    font-size: 1.2rem;
-    padding: 6px 12px; }
+    font-size: 2rem;
+    margin: 2%;
+    padding-left: 50px;
+    padding-right: 50px;
+    border: 2px solid; }
 
 .animation .fadein {
   opacity: 1;
@@ -258,6 +261,12 @@ body {
   border-color: #9ce951; }
   .context-appbase .ad-theme-btn.primary:hover, .context-appbase .ad-theme-btn.primary.active {
     background: #9ce951; }
+  .context-appbase .ad-theme-btn.primary.transparent {
+    background: #fff;
+    color: #B6EF7E; }
+    .context-appbase .ad-theme-btn.primary.transparent:hover, .context-appbase .ad-theme-btn.primary.transparent.active {
+      background: #9ce951;
+      color: #fff; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar {
   background: #88a0fd; }
@@ -346,6 +355,12 @@ body {
   border-color: #b2c022; }
   .context-reactivemaps .ad-theme-btn.primary:hover, .context-reactivemaps .ad-theme-btn.primary.active {
     background: #b2c022; }
+  .context-reactivemaps .ad-theme-btn.primary.transparent {
+    background: #fff;
+    color: #CDDC39; }
+    .context-reactivemaps .ad-theme-btn.primary.transparent:hover, .context-reactivemaps .ad-theme-btn.primary.transparent.active {
+      background: #b2c022;
+      color: #fff; }
 
 .context-reactivesearch .ad-detail .ad-detail-sidebar {
   background: #bce1fa; }
@@ -434,10 +449,25 @@ body {
   border-color: #1376b9; }
   .context-reactivesearch .ad-theme-btn.primary:hover, .context-reactivesearch .ad-theme-btn.primary.active {
     background: #1376b9; }
+  .context-reactivesearch .ad-theme-btn.primary.transparent {
+    background: #fff;
+    color: #1893e7; }
+    .context-reactivesearch .ad-theme-btn.primary.transparent:hover, .context-reactivesearch .ad-theme-btn.primary.transparent.active {
+      background: #1376b9;
+      color: #fff; }
 
-#login h1 {
-  margin-bottom: 45px;
-  font-size: 2rem; }
+#login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column; }
+  #login h1 {
+    padding: 5vh 10vw;
+    color: #888;
+    margin: 0;
+    font-size: 3.5em;
+    font-family: "Source Sans Pro Light"; }
 
 #login_modal.modal {
   margin-top: 20vh; }
