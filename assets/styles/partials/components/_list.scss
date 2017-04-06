@@ -155,6 +155,9 @@
 					box-shadow: none;
 					background: transparent;
 					margin: 0;
+					&.text-danger {
+						color: $danger-color;
+					}
 					&:hover {
 						color: #424242;
 					}

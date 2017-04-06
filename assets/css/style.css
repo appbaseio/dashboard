@@ -891,6 +891,8 @@ header .appcard {
         box-shadow: none;
         background: transparent;
         margin: 0; }
+        .ad-list .ad-list-app aside.options .options-item div .card-icon.text-danger {
+          color: #d9534f; }
         .ad-list .ad-list-app aside.options .options-item div .card-icon:hover {
           color: #424242; }
       .ad-list .ad-list-app aside.options .options-item div:hover {

@@ -34,10 +34,10 @@ export default class DeleteApp extends Component {
 				onConfirm={this.deleteApp}
 				type="danger"
 			>
-				<a data-tip="Delete app" data-effect="solid" data-place="left" data-offset="{'top': -10, 'left': 0}" className="text-danger">
+				<button data-tip="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="text-danger card-icon pointer">
 					<i className="fa fa-trash"></i>
 					<ReactTooltip />
-				</a>
+				</button>
 			</ConfirmBox>
 		)
 	}
