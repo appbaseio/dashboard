@@ -23,7 +23,8 @@ export default class NewApp extends Component {
 		this.errors = {
 			'duplicate': 'Duplicate app',
 			'required': 'Appname is required!',
-			notavailable: "Appname is not available, please choose different name."
+			notavailable: "Appname is not available, please choose different name.",
+			format: "Only use a-z,A-Z,0-9 and any of -._+$@ chars for the app name."
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -61,10 +62,17 @@ export default class NewApp extends Component {
 			validate.value = false;
 			validate.error = this.errors['required'];
 		} else {
-			let duplicateApp = this.props.apps.filter((app) => appName === app.appname);
-			if (duplicateApp && duplicateApp.length) {
+			const patt = /^[a-zA-Z0-9_+-@$\.]+$/;
+			if (!patt.test(appName)) {
 				validate.value = false;
-				validate.error = this.errors['duplicate'];
+				validate.error = this.errors.format
+			}
+			else {
+				let duplicateApp = this.props.apps.filter((app) => appName === app.appname);
+				if (duplicateApp && duplicateApp.length) {
+					validate.value = false;
+					validate.error = this.errors['duplicate'];
+				}
 			}
 		}
 		return validate;
