@@ -99,7 +99,7 @@ export default class AppList extends Component {
 	}
 
 	registerApps(apps, getInfo = false) {
-		if(apps.length === 0) {
+		if(apps.length === 0 && !appbaseService.filterAppName.trim().length) {
 			browserHistory.push('/tutorial');
 		} else {
 			this.setState({
