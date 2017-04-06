@@ -24,7 +24,7 @@ export default class NewApp extends Component {
 			'duplicate': 'Duplicate app',
 			'required': 'Appname is required!',
 			notavailable: "Appname is not available, please choose different name.",
-			format: "Only use a-z,A-Z,0-9 and any of -._+$@ chars for the app name."
+			format: "Only use a-z,A-Z,0-9 and -._+$@ chars for the name."
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}

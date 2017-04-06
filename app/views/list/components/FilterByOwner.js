@@ -26,7 +26,7 @@ export default class FilterByOwner extends Component {
 			<span className="ad-filterbyowner pull-left">
 				<label htmlFor="filterowner" className="ad-filter-shareapps checkbox-inline">
 					<input type="checkbox" id="filterowner" checked={this.state.sharedApps} onChange={this.handleChange} />
-					Shared Apps
+					Show shared apps
 				</label>
 			</span>
 		);

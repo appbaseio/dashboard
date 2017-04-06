@@ -1,7 +1,7 @@
 $themes: (
-	context-appbase: (primary: #3BC7F6, accent: #B6EF7E),
-	context-reactivemaps: (primary: #5678FC, accent: #CDDC39),
-	context-reactivesearch: (accent: #1893e7, primary: #8ccbf7)
+	context-appbase: (primary: #3BC7F6, accent: #B6EF7E, primaryfont: #fff, dropdownfont: #3BC7F6),
+	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #5678FC),
+	context-reactivesearch: (accent: #FFE94D, primary: #FECABA, primaryfont: #333, dropdownfont: #333)
 );
 @each $theme,
 $map in $themes {
@@ -20,16 +20,44 @@ $map in $themes {
 				}
 			}
 		}
+		.ad-detail {
+			.ad-detail-sidebar {
+				.ad-detail-sidebar-container {
+					li {
+						a {
+							color: map-get($map, primaryfont);
+						}
+					}
+				}
+			}
+		}
 		.navbar.navbar-default {
 			background: map-get($map, primary);
+			.navbar-brand {
+				color: map-get($map, primaryfont);
+			}
+			li {
+				a, .extra-link {
+					color: map-get($map, primaryfont);
+					&:hover,
+					&:focus {
+						color: darken(map-get($map, primaryfont), 10%);
+					}
+				}
+			}
 			li.dropdown {
+				> a {
+					&:before {
+						border-color: map-get($map, primaryfont) transparent transparent transparent;
+					}
+				}
 				.dropdown-menu {
 					li {
 						a {
-							color: map-get($map, primary);
+							color: map-get($map, dropdownfont);
 							&:hover {
 								background: #fff;
-								color: map-get($map, primary) !important;
+								color: map-get($map, dropdownfont) !important;
 							}
 						}
 						a:hover,

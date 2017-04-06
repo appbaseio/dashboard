@@ -13,7 +13,6 @@
 		font-size: 1.75rem;
 		text-transform: uppercase;
 		padding: 1rem;
-		color: #fff;
 		display: inline-block;
 		position: relative;
 		max-width: 500px;
@@ -80,10 +79,8 @@
 			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
-			color: #fff;
 			&:hover,
 			&:focus {
-				color: #fafafa;
 				outline: none;
 			}
 			.icon-container {
@@ -126,7 +123,6 @@
 				bottom: 12px;
 				border-width: 4px;
 				border-style: solid;
-				border-color: #fff transparent transparent transparent;
 			}
 			&:hover {
 				background: transparent;
