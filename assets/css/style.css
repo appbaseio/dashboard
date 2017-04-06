@@ -911,7 +911,8 @@ header .appcard {
   display: inline-block;
   margin-right: 10px; }
   .ad-list .ad-filterbyappname input {
-    height: 30px; }
+    height: 30px;
+    width: 300px; }
 
 .ad-metrics-summary > [class*="col-"] {
   padding-right: 0; }
