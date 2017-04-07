@@ -33,16 +33,18 @@ export default class Main extends Component {
 			userInfo: data.userInfo
 		});
 		intercomService.loggingIn(data.userInfo.body);
+		localStorage.removeItem("ad-login");
 		this.redirectToPath();
 	}
 
 	onGetUserCatch(e) {
+		localStorage.setItem("ad-login", window.location.href);
+		appbaseService.pushUrl('/login');
 		console.log(e);
 		this.setState({
 			loggedIn: false,
 			loading: false
 		});
-		appbaseService.pushUrl('/login');
 	}
 
 	redirectToPath() {
