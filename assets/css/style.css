@@ -972,6 +972,16 @@ header .appcard {
   .ad-list .ad-filterbyappname input {
     height: 30px;
     width: 300px; }
+    @media screen and (max-width: 768px) {
+      .ad-list .ad-filterbyappname input {
+        width: auto; } }
+
+.ad-list .ad-filterbyowner {
+  padding-top: 5px; }
+  @media screen and (max-width: 768px) {
+    .ad-list .ad-filterbyowner {
+      display: inline-block;
+      width: 100%; } }
 
 .ad-metrics-summary > [class*="col-"] {
   padding-right: 0; }
