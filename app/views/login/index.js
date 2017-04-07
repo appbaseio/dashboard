@@ -21,9 +21,12 @@ export default class Login extends Component {
 	open() {
 		this.setState({ showModal: true });
 	}
+	getNexturl() {
+		return localStorage.getItem("ad-login") ? localStorage.getItem("ad-login") : window.location.href;
+	}
 	login(provider) {
 		var baseURL = window.location.protocol + "//" + window.location.host + '/';
-		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + baseURL;
+		var redirectTo = 'https://accapi.appbase.io/login/' + provider + '?next=' + this.getNexturl();
 		window.location.href = redirectTo;
 	}
 	render() {
