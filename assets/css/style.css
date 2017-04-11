@@ -264,8 +264,7 @@ body {
   border-color: #B6EF7E; }
 
 .context-appbase .theme-btn:hover, .context-appbase .theme-btn.active {
-  background: #B6EF7E;
-  color: #fff; }
+  background: #B6EF7E; }
 
 .context-appbase .ad-theme-btn.primary {
   color: #fff;
@@ -370,8 +369,7 @@ body {
   border-color: #CDDC39; }
 
 .context-reactivemaps .theme-btn:hover, .context-reactivemaps .theme-btn.active {
-  background: #CDDC39;
-  color: #fff; }
+  background: #CDDC39; }
 
 .context-reactivemaps .ad-theme-btn.primary {
   color: #fff;
@@ -476,8 +474,7 @@ body {
   border-color: #FFFDE7; }
 
 .context-reactivesearch .theme-btn:hover, .context-reactivesearch .theme-btn.active {
-  background: #FFFDE7;
-  color: #333; }
+  background: #FFFDE7; }
 
 .context-reactivesearch .ad-theme-btn.primary {
   color: #333;
@@ -490,7 +487,7 @@ body {
     color: #FFFDE7; }
     .context-reactivesearch .ad-theme-btn.primary.transparent:hover, .context-reactivesearch .ad-theme-btn.primary.transparent.active {
       background: #fff9b4;
-      color: #fff; }
+      color: #333; }
 
 #login {
   display: flex;
