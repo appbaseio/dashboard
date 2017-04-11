@@ -49,8 +49,8 @@ export const contextConfig = {
 			title: "Reactivesearch Dashboard",
 			description: "Try Reactivesearch over here"
 		},
-		"primary": "#FECABA",
-		"accent": "#FFE94D",
+		"primary": "#2251D1",
+		"accent": "#FFFDE7",
 		"quickLinks": QuickLinks.ReactiveSearchQuickLinks()
 	}
 }

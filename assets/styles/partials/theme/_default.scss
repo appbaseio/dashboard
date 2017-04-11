@@ -1,7 +1,7 @@
 $themes: (
-	context-appbase: (primary: #3BC7F6, accent: #B6EF7E, primaryfont: #fff, dropdownfont: #3BC7F6),
-	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #5678FC),
-	context-reactivesearch: (accent: #FFE94D, primary: #FECABA, primaryfont: #333, dropdownfont: #333)
+	context-appbase: (primary: #3BC7F6, accent: #B6EF7E, primaryfont: #fff, dropdownfont: #3BC7F6, buttoncolor: #fff),
+	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #5678FC, buttoncolor: #fff),
+	context-reactivesearch: (accent: #FFFDE7, primary: #2251D1, primaryfont: #fff, dropdownfont: #FFFDE7, buttoncolor: #333)
 );
 @each $theme,
 $map in $themes {
@@ -166,7 +166,7 @@ $map in $themes {
 		}
 		.ad-theme-btn {
 			&.primary {
-				color: #fff;
+				color: map-get($map, buttoncolor);
 				background: map-get($map, accent);
 				border-color: darken(map-get($map, accent), 10%);
 				&:hover, &.active {
@@ -178,7 +178,7 @@ $map in $themes {
 					&:hover,
 					&.active {
 						background: darken(map-get($map, accent), 10%);
-						color: #fff;
+						color: map-get($map, buttoncolor);
 					}
 				}
 			}
