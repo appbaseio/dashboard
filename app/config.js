@@ -22,7 +22,8 @@ export const contextConfig = {
 		},
 		"primary": "#3BC7F6",
 		"accent": "#B6EF7E",
-		"quickLinks": QuickLinks.AppbaseQuickLinks()
+		"quickLinks": QuickLinks.AppbaseQuickLinks(),
+		"dashboardGettingStarted": QuickLinks.AppbaseDashboardGettingStarted()
 	},
 	"reactivemaps": {
 		"name": "reactivemaps",
@@ -43,7 +44,8 @@ export const contextConfig = {
 		},
 		"primary": "#5678FC",
 		"accent": "#CDDC39",
-		"quickLinks": QuickLinks.ReactiveMapsQuickLinks()
+		"quickLinks": QuickLinks.ReactiveMapsQuickLinks(),
+		"dashboardGettingStarted": QuickLinks.ReactiveMapsDashboardGettingStarted()
 	},
 	"reactivesearch": {
 		"name": "reactivesearch",
@@ -63,7 +65,8 @@ export const contextConfig = {
 		},
 		"primary": "#2251D1",
 		"accent": "#FFD600",
-		"quickLinks": QuickLinks.ReactiveSearchQuickLinks()
+		"quickLinks": QuickLinks.ReactiveSearchQuickLinks(),
+		"dashboardGettingStarted": QuickLinks.ReactiveSearchDashboardGettingStarted()
 	}
 }
 
