@@ -501,6 +501,12 @@ body {
     margin: 0;
     font-size: 3.5em;
     font-family: "Source Sans Pro Light"; }
+  #login h2 {
+    padding: 5vh 10vw;
+    color: #999;
+    margin: 0;
+    font-size: 2.5rem;
+    font-family: "Source Sans Pro Light"; }
 
 #login_modal.modal {
   margin-top: 20vh; }

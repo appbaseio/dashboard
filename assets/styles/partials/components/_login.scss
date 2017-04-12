@@ -11,6 +11,13 @@
 		font-size: 3.5em;
 		font-family: $font-light;
 	}
+	h2 {
+		padding: 5vh 10vw;
+		color: #999;
+		margin: 0;
+		font-size: 2.5rem;
+		font-family: $font-light;
+	}
 }
 
 #login_modal.modal {

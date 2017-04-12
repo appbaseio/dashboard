@@ -57,11 +57,11 @@ export const contextConfig = {
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/reactivesearch-onboarding/index.html",
-			title: "Reactivesearch Dashboard",
-			description: "Try Reactivesearch over here"
+			title: "Interactive Tutorial",
+			description: "Build a Hacker News search app in 5 mins"
 		},
 		"login": {
-			description: "Login to ReactiveSearch or create an account to access your Dashboard."
+			description: "Sign up or Login to access the ReactiveSearch interactive tutorial."
 		},
 		"primary": "#2251D1",
 		"accent": "#FFD600",
