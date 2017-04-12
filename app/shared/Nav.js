@@ -223,7 +223,7 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<Link to="/apps" className={`navbar-brand ${cx}`}>
+						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`}>
 							<img src={this.config.logo} alt="" className="img-responsive"/>
 							{
 								this.config.logoText ? (<span>{this.config.logoText}</span>) : null
