@@ -1,7 +1,7 @@
 $themes: (
 	context-appbase: (primary: #3BC7F6, accent: #B6EF7E, primaryfont: #fff, dropdownfont: #3BC7F6, buttoncolor: #fff),
 	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #5678FC, buttoncolor: #fff),
-	context-reactivesearch: (accent: #FFFDE7, primary: #2251D1, primaryfont: #fff, dropdownfont: #FFFDE7, buttoncolor: #333)
+	context-reactivesearch: (accent: #FFD600, primary: #2251D1, primaryfont: #fff, dropdownfont: #FFD600, buttoncolor: #333)
 );
 @each $theme,
 $map in $themes {

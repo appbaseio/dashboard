@@ -16,6 +16,9 @@ export const contextConfig = {
 			title: "Appbase.io Interactive Tutorial",
 			description: "Make your first API call in 2 mins."
 		},
+		"login": {
+			description: "Login to Appbase or create an account to access your Dashboard."
+		},
 		"primary": "#3BC7F6",
 		"accent": "#B6EF7E",
 		"quickLinks": QuickLinks.AppbaseQuickLinks()
@@ -33,6 +36,9 @@ export const contextConfig = {
 			title: "Appbase Dashboard",
 			description: "Try appbase dashboard over here"
 		},
+		"login": {
+			description: "Login to Appbase or create an account to access your Dashboard."
+		},
 		"primary": "#5678FC",
 		"accent": "#CDDC39",
 		"quickLinks": QuickLinks.ReactiveMapsQuickLinks()
@@ -49,8 +55,11 @@ export const contextConfig = {
 			title: "Reactivesearch Dashboard",
 			description: "Try Reactivesearch over here"
 		},
+		"login": {
+			description: "Login to ReactiveSearch or create an account to access your Dashboard."
+		},
 		"primary": "#2251D1",
-		"accent": "#FFFDE7",
+		"accent": "#FFD600",
 		"quickLinks": QuickLinks.ReactiveSearchQuickLinks()
 	}
 }
