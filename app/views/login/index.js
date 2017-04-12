@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { Link, browserHistory } from 'react-router';
+import { getConfig } from '../../config';
 import { appbaseService } from '../../service/AppbaseService';
 
 export default class Login extends Component {
@@ -12,6 +13,7 @@ export default class Login extends Component {
 		if (appbaseService.userInfo) {
 			appbaseService.pushUrl('/apps');
 		}
+		this.config = getConfig();
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 	}
@@ -38,7 +40,7 @@ export default class Login extends Component {
 		return (
 			<section id="login" className="text-center container">
 				<h1>
-					Login to Appbase or create an account to access your Dashboard.
+					{this.config.login.description}
 				</h1>
 				<div>
 					<button className="ad-theme-btn primary transparent lg-btn" onClick={this.open}>Login</button>

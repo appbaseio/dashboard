@@ -195,10 +195,10 @@ body {
   .context-appbase .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #3BC7F6; }
+    color: #333; }
     .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #3BC7F6 !important; }
+      color: #333 !important; }
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
@@ -300,10 +300,10 @@ body {
   .context-reactivemaps .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #5678FC; }
+    color: #333; }
     .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #5678FC !important; }
+      color: #333 !important; }
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
@@ -389,7 +389,7 @@ body {
   .context-reactivesearch .ad-detail .ad-detail-sidebar li a:hover, .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
     background: #2251D1; }
   .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
-    border-color: #FFFDE7; }
+    border-color: #FFD600; }
 
 .context-reactivesearch .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a {
   color: #fff; }
@@ -405,10 +405,10 @@ body {
   .context-reactivesearch .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #FFFDE7; }
+    color: #333; }
     .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #FFFDE7 !important; }
+      color: #333 !important; }
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
@@ -426,67 +426,67 @@ body {
   border-color: #dedede; }
 
 .context-reactivesearch .ad-create .ad-create-button-group .ad-theme-btn.active {
-  background: #fffdec;
+  background: #ffd705;
   color: #fff; }
 
 .context-reactivesearch .ad-dashboard .nav-tab li a.active {
-  color: #FFFDE7;
-  border-color: #FFFDE7; }
+  color: #FFD600;
+  border-color: #FFD600; }
   .context-reactivesearch .ad-dashboard .nav-tab li a.active:before {
-    background: #FFFDE7; }
+    background: #FFD600; }
 
 .context-reactivesearch .ad-dashboard .nav-tab li a:hover {
-  color: #FFFDE7;
+  color: #FFD600;
   text-decoration: none; }
 
 .context-reactivesearch .ad-list .ad-list-app {
-  border-left: 3px solid #FFFDE7; }
+  border-left: 3px solid #FFD600; }
 
 .context-reactivesearch .ad-list .ad-list-app-bg-container {
-  color: white; }
+  color: #ffe666; }
 
 .context-reactivesearch .loadingBar {
-  background: #FFFDE7; }
+  background: #FFD600; }
 
 .context-reactivesearch .ad-loading {
-  border: 1px solid #FFFDE7; }
+  border: 1px solid #FFD600; }
   .context-reactivesearch .ad-loading .ball-clip-rotate-multiple > div {
-    border-color: transparent #FFFDE7; }
+    border-color: transparent #FFD600; }
 
 .context-reactivesearch .modal .modal-header {
-  color: #FFFDE7; }
+  color: #FFD600; }
   .context-reactivesearch .modal .modal-header .modal-title {
-    color: #FFFDE7; }
+    color: #FFD600; }
   .context-reactivesearch .modal .modal-header .close {
-    color: #FFFDE7; }
+    color: #FFD600; }
 
 .context-reactivesearch .modal .modal-content {
-  border-color: #FFFDE7; }
+  border-color: #FFD600; }
 
 .context-reactivesearch .modal .ad-confirm-btn {
-  color: #FFFDE7;
-  border-color: #FFFDE7; }
+  color: #FFD600;
+  border-color: #FFD600; }
   .context-reactivesearch .modal .ad-confirm-btn:hover {
-    background: #FFFDE7;
+    background: #FFD600;
     color: #fff; }
 
 .context-reactivesearch .modal.modal-info .modal-content {
-  border-color: #FFFDE7; }
+  border-color: #FFD600; }
 
 .context-reactivesearch .theme-btn:hover, .context-reactivesearch .theme-btn.active {
-  background: #FFFDE7; }
+  background: #FFD600; }
 
 .context-reactivesearch .ad-theme-btn.primary {
   color: #333;
-  background: #FFFDE7;
-  border-color: #fff9b4; }
+  background: #FFD600;
+  border-color: #ccab00; }
   .context-reactivesearch .ad-theme-btn.primary:hover, .context-reactivesearch .ad-theme-btn.primary.active {
-    background: #fff9b4; }
+    background: #ccab00; }
   .context-reactivesearch .ad-theme-btn.primary.transparent {
     background: #fff;
-    color: #FFFDE7; }
+    color: #FFD600; }
     .context-reactivesearch .ad-theme-btn.primary.transparent:hover, .context-reactivesearch .ad-theme-btn.primary.transparent.active {
-      background: #fff9b4;
+      background: #ccab00;
       color: #333; }
 
 #login {
@@ -587,7 +587,8 @@ body {
       float: left;
       padding: 0.5rem 0;
       font-family: "Source Sans Pro Regular";
-      text-transform: uppercase; }
+      text-transform: none;
+      padding-left: 8px; }
   .navbar.navbar-default .user-img-container {
     position: relative;
     padding-right: 15px; }

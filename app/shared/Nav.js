@@ -140,7 +140,8 @@ export default class Nav extends Component {
 				}
 			break;
 			case 'links':
-				generatedEle = this.links.map((item, index) => {
+				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1);
+				generatedEle = links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
 						anchor = (<Link to={item.link}>{item.label}</Link>);
@@ -222,7 +223,7 @@ export default class Nav extends Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<Link to="/apps" className={`navbar-brand ${cx}`}>
+						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`}>
 							<img src={this.config.logo} alt="" className="img-responsive"/>
 							{
 								this.config.logoText ? (<span>{this.config.logoText}</span>) : null
