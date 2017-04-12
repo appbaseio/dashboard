@@ -195,10 +195,10 @@ body {
   .context-appbase .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #3BC7F6; }
+    color: #333; }
     .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #3BC7F6 !important; }
+      color: #333 !important; }
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
@@ -300,10 +300,10 @@ body {
   .context-reactivemaps .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #5678FC; }
+    color: #333; }
     .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #5678FC !important; }
+      color: #333 !important; }
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
@@ -405,10 +405,10 @@ body {
   .context-reactivesearch .navbar.navbar-default li.dropdown > a:before {
     border-color: #fff transparent transparent transparent; }
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a {
-    color: #FFD600; }
+    color: #333; }
     .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
       background: #fff;
-      color: #FFD600 !important; }
+      color: #333 !important; }
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:hover,
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a:active,
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a.active {

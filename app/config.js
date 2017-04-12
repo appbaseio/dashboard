@@ -10,6 +10,7 @@ export const contextConfig = {
 		"logoText": null,
 		"cardIcon": "",
 		"appDashboard": ["dashboard", "browser", "mirage", "credentials", "team"],
+		"navbar": ["Tutorial", "Docs", "Billing"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/appbase-tutorial/index.html",
@@ -30,6 +31,7 @@ export const contextConfig = {
 		"logoText": "Reactive Maps",
 		"cardIcon": "fa-globe",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],
+		"navbar": ["Tutorial", "Docs"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/reactive-maps-onboarding/index.html",
@@ -49,6 +51,7 @@ export const contextConfig = {
 		"favicon": "../../../assets/images/reactivesearch/favicon.ico",
 		"logoText": "Reactive Search",
 		"appDashboard": ["dashboard", "browser", "credentials", "team"],
+		"navbar": ["Tutorial", "Docs"],
 		"document": "https://docs.appbase.io",
 		"tutorial": {
 			url: "../../../app/views/tutorial/reactivesearch-onboarding/index.html",

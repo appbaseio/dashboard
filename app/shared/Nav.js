@@ -140,7 +140,8 @@ export default class Nav extends Component {
 				}
 			break;
 			case 'links':
-				generatedEle = this.links.map((item, index) => {
+				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1);
+				generatedEle = links.map((item, index) => {
 					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
 					if(item.type === 'internal') {
 						anchor = (<Link to={item.link}>{item.label}</Link>);
