@@ -25,7 +25,8 @@
 			float: left;
 			padding: 0.5rem 0;
 			font-family: $font-regular;
-			text-transform: uppercase;
+			text-transform: none;
+			padding-left: 8px;
 		}
 	}
 	.user-img-container {
