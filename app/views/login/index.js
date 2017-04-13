@@ -39,9 +39,9 @@ export default class Login extends Component {
 		);
 		return (
 			<section id="login" className="text-center container">
-				<h1>
+				<h2>
 					{this.config.login.description}
-				</h1>
+				</h2>
 				<div>
 					<button className="ad-theme-btn primary transparent lg-btn" onClick={this.open}>Login</button>
 				</div>
