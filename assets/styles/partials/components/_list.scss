@@ -185,8 +185,12 @@
 		input {
 			height: 30px;
 			width: 300px;
-			@media screen and (max-width: 768px) {
+		}
+		@media screen and (max-width: 768px) {
+			max-width: calc(50% - 15px);
+			input {
 				width: auto;
+				max-width: 100%;
 			}
 		}
 	}
