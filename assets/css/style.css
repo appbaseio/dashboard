@@ -1913,3 +1913,21 @@ header .appcard {
 
 .ad-tutorial {
   height: 100%; }
+
+.ad-importer {
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 60px);
+  top: 60px;
+  left: 0; }
+  .ad-importer .ad-importer-iframe {
+    position: relative;
+    height: 100%;
+    width: 100%; }
+  .ad-importer .ad-importer-close {
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    background: #fff; }
+    .ad-importer .ad-importer-close:hover {
+      background: #FF8484; }
