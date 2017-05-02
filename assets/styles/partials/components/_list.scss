@@ -240,3 +240,15 @@
 		}
 	}
 }
+.ad-list-newapp-modal {
+	.ad-list-newapp-footer {
+		.ad-list-newapp-footer-toolbar {
+			display: inline-block;
+			float: left;
+			margin-left: 15px;
+			&:first-child {
+				margin-left: 0;
+			}
+		}
+	}
+}

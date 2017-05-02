@@ -38,7 +38,7 @@ const appChangesEvent = {
 
 const contextDomSetup = () => {
 	const config = getConfig();
-	$('#appbase-dashboard').addClass(`context-${config.name}`);
+	$('#appbase-dashboard, body').addClass(`context-${config.name}`);
 	$('link[data-icon="favicon"]').attr({href: config.favicon});
 }
 

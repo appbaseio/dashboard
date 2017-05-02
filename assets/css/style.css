@@ -1048,6 +1048,13 @@ header .appcard {
     .ad-metrics-summary .progress-container {
       margin-bottom: 15px; } }
 
+.ad-list-newapp-modal .ad-list-newapp-footer .ad-list-newapp-footer-toolbar {
+  display: inline-block;
+  float: left;
+  margin-left: 15px; }
+  .ad-list-newapp-modal .ad-list-newapp-footer .ad-list-newapp-footer-toolbar:first-child {
+    margin-left: 0; }
+
 .ad-detail {
   position: relative;
   padding: 0 0 0 84px;

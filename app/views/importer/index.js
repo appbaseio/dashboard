@@ -49,7 +49,7 @@ export default class Importer extends Component {
 					onConfirm={this.close}
 					type="danger"
 				>
-					<a title="back" className="btn ad-theme-btn danger transparent ad-importer-close">
+					<a title="back" className="ad-theme-btn danger transparent ad-importer-close">
 						Switch to Dashboard
 					</a>
 				</ConfirmBox>
