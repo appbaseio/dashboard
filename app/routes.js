@@ -14,6 +14,7 @@ import Browser from './views/browser';
 import Gem from './views/gem';
 import Mirage from './views/mirage';
 import Billing from './views/billing';
+import Importer from './views/importer';
 import * as helper from './shared/helper';
 import { contextConfig, getConfig } from './config';
 
@@ -37,7 +38,7 @@ const appChangesEvent = {
 
 const contextDomSetup = () => {
 	const config = getConfig();
-	$('#appbase-dashboard').addClass(`context-${config.name}`);
+	$('#appbase-dashboard, body').addClass(`context-${config.name}`);
 	$('link[data-icon="favicon"]').attr({href: config.favicon});
 }
 
@@ -57,6 +58,7 @@ render((
 			<Route path="login" component={Login} />
 			<Route path="tutorial" component={Tutorial} />
 			<Route path="billing" component={Billing} />
+			<Route path="importer" component={Importer} />
 			<Route path="dashboard/:appId" component={Dashboard} 
 				{...appChangesEvent}
 				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'dashboard')}

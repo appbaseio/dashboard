@@ -45,7 +45,8 @@ export default class AppList extends Component {
 			apps: [],
 			plan: 'free',
 			createAppLoading: false,
-			createAppError: null
+			createAppError: null,
+			clearInput: false
 		};
 		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
@@ -185,12 +186,10 @@ export default class AppList extends Component {
 	}
 
 	createApp(appname) {
-		this.setState({
-			createAppLoading: true
-		});
 		appbaseService.createApp(appname).then((data) => {
 			this.setState({
-				createAppLoading: false
+				createAppLoading: false,
+				clearInput: true
 			});
 			appbaseService.pushUrl(`/dashboard/${appname}`);
 		}).catch((e) => {
@@ -199,7 +198,7 @@ export default class AppList extends Component {
 				createAppLoading: false
 			});
 			console.log(e);
-		})
+		});
 	}
 
 	timeAgo(app) {
@@ -299,7 +298,8 @@ export default class AppList extends Component {
 										apps={this.state.apps}
 										createAppLoading={this.state.createAppLoading}
 										createAppError={this.state.createAppError}
-										clearInput={this.state.clearInput} />
+										clearInput={this.state.clearInput}
+									/>
 								</div>
 							</header>
 							<main className="ad-list-container container">

@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Modal } from 'react-bootstrap';
 import { appbaseService } from '../../../service/AppbaseService';
 import { Loading } from "../../../shared/SharedComponents";
 import { common } from "../../../shared/helper";
 import AppCard from './AppCard';
 
-const $ = require('jquery');
-
 export default class NewApp extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: '',
-			height: '100px',
+			showModal: this.props.showModal ? this.props.showModal : false,
 			validate: {
 				value: true,
 				error: null
 			},
+			value: "",
+			selectedEs: "es2.x",
 			showInput: false
 		};
 		this.errors = {
@@ -27,16 +25,17 @@ export default class NewApp extends Component {
 			format: "Only use a-z,A-Z,0-9 and -._+$@ chars for the name."
 		};
 		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.open = this.open.bind(this);
+		this.close = this.close.bind(this);
+		this.gotoImporter = this.gotoImporter.bind(this);
 	}
-
-	componentDidMount() {
-		// var appCard = $('.apps .app-card-container');
-		// var height = $(appCard[appCard.length-1]).height();
-		// this.setState({
-		// 	height: height+'px'
-		// });
+	close() {
+		this.setState({ showModal: false });
 	}
-
+	open() {
+		this.setState({ showModal: true });
+	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.createAppError && nextProps.createAppError.Message) {
 			if (nextProps.createAppError.Message.indexOf('duplicate') > -1) {
@@ -48,9 +47,9 @@ export default class NewApp extends Component {
 			this.setState({
 				value: ''
 			});
+			this.close();
 		}
 	}
-
 	validateApp(appName) {
 		let validate = {
 			value: true,
@@ -103,6 +102,7 @@ export default class NewApp extends Component {
 	}
 
 	handleSubmit() {
+		this.inputboxRef.focus();
 		const appname = this.state.value.trim();
 		if (appname) {
 			this.setState({
@@ -116,7 +116,6 @@ export default class NewApp extends Component {
 				});
 		}
 	}
-
 	checkAppValidation(data) {
 		if(data && data.status && data.status === 404) {
 			this.props.createApp(this.state.value);
@@ -134,40 +133,61 @@ export default class NewApp extends Component {
 			});
 		}
 	}
-
-	showInput() {
+	chooseEs(selectedEs) {
 		this.setState({
-			showInput: true
+			selectedEs
 		});
+	}
+	gotoImporter() {
+		appbaseService.pushUrl("/importer");
 	}
 
 	render() {
 		return (
 			<AppCard setClassName="appcard-newapp">
-					<div className="ad-list-newapp">
-						{
-							this.state.showInput ? (
-								<div className="col-xs-12 p-0">
-									<div className={"col-xs-12 p-0 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
-										<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter an app name (no spaces)" value={this.state.value} className="form-control" onChange={this.handleChange} />
-										{this.renderElement('helpBlock')}
-									</div>
-									<div className="col-xs-12 p-0 title">
-										<button {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} className="col-xs-12 ad-theme-btn primary" onClick={() => this.handleSubmit()} >
-											{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
-											<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
-										</button>
-									</div>
+				<div className="ad-list-newapp">
+					<button className="col-xs-12 ad-theme-btn primary" onClick={this.open} >
+						<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+					</button>
+					<Modal className="modal-info ad-list-newapp-modal" show={this.state.showModal} onHide={this.close}>
+						<Modal.Header closeButton>
+							<Modal.Title>New App</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<div className="row">
+								<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
+									<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter an app name (no spaces)" value={this.state.value} className="form-control" onChange={this.handleChange} />
+									{this.renderElement('helpBlock')}
 								</div>
-							) : (
-								<button className="col-xs-12 ad-theme-btn primary" onClick={() => this.showInput()} >
-									<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
-								</button>
-							)
-						}
-					</div>
+							</div>
+							<div className="col-xs-12 p-0 ad-list-newapp-footer">
+								<span className="btn-toolbar ad-list-newapp-footer-toolbar" role="toolbar">
+									<button className="ad-theme-btn" {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} onClick={this.handleSubmit}>
+										{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
+										<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
+									</button>
+									<button className="ad-theme-btn" onClick={this.gotoImporter}>
+										importer
+									</button>
+								</span>
+								<span className="btn-toolbar ad-list-newapp-footer-toolbar" role="toolbar">
+									<button className={"ad-theme-btn "+(this.state.selectedEs === "es2.x" ? "primary" : "")} onClick={() => this.chooseEs("es2.x")}>
+										ES 2.x
+									</button>
+									<button className={"ad-theme-btn "+(this.state.selectedEs === "es5.x" ? "primary" : "")} onClick={() => this.chooseEs("es5.x")}>
+										ES 5.x
+									</button>
+								</span>
+							</div>
+						</Modal.Body>
+					</Modal>
+				</div>
 			</AppCard>
-		);
+		)
 	}
-
 }
+
+NewApp.propTypes = {};
+
+// Default props value
+NewApp.defaultProps = {}

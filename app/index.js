@@ -4,6 +4,7 @@ import { appbaseService } from './service/AppbaseService';
 import { dataOperation } from './service/tutorialService/DataOperation';
 import Nav from './shared/Nav';
 import { intercomService } from './shared/helper';
+import { OldDashboard } from './shared/SharedComponents';
 
 require("../dist/css/style.min.css");
 
@@ -63,6 +64,7 @@ export default class Main extends Component {
 			<div>
 				<Nav />
 				<div id="dashboard-container" className="container-fluid">
+					<OldDashboard />
 					{this.props.children}
 				</div>
 			</div>

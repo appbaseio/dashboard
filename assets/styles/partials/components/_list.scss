@@ -185,8 +185,12 @@
 		input {
 			height: 30px;
 			width: 300px;
-			@media screen and (max-width: 768px) {
+		}
+		@media screen and (max-width: 768px) {
+			max-width: calc(50% - 15px);
+			input {
 				width: auto;
+				max-width: 100%;
 			}
 		}
 	}
@@ -233,6 +237,18 @@
 		}
 		@media screen and (max-width: 768px) {
 			margin-bottom: 15px;
+		}
+	}
+}
+.ad-list-newapp-modal {
+	.ad-list-newapp-footer {
+		.ad-list-newapp-footer-toolbar {
+			display: inline-block;
+			float: left;
+			margin-left: 15px;
+			&:first-child {
+				margin-left: 0;
+			}
 		}
 	}
 }
