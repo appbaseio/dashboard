@@ -4,7 +4,6 @@ import { appbaseService } from '../../service/AppbaseService';
 import ConfirmBox from '../../shared/ConfirmBox';
 
 export default class Importer extends Component {
-
 	constructor(props) {
 		super(props);
 		this.importerUrl = "https://appbaseio-confidential.github.io/importer/?header=false";
@@ -16,18 +15,15 @@ export default class Importer extends Component {
 			}
 		}
 	}
-
 	componentDidMount() {
 		this.handleLogout();
 		if (this.props.directImporter) {
 			this.open();
 		}
 	}
-
 	handleLogout() {
 		window.addEventListener("message", this.onLogout.bind(this), false);
 	}
-
 	onLogout(params) {
 		setTimeout(function() {
 			if (params.data === "loggedOut") {
@@ -35,15 +31,25 @@ export default class Importer extends Component {
 			}
 		}.bind(this), 1000);
 	}
-
 	close() {
 		appbaseService.pushUrl('/apps');
 	}
-
+	getImporterUrl() {
+		let importerUrl = this.importerUrl;
+		if(appbaseService.importerApp) {
+			const config = {
+				platform: "appbase",
+				appname: appbaseService.importerApp
+			};
+			importerUrl = `${importerUrl}&app=${JSON.stringify(config)}`;
+			appbaseService.importerApp = null;
+		}
+		return importerUrl;
+	}
 	render() {
 		return (
 			<div className="ad-importer">
-				<iframe src={this.importerUrl} frameBorder="0" className="ad-importer-iframe" />
+				<iframe src={this.getImporterUrl()} frameBorder="0" className="ad-importer-iframe" />
 				<ConfirmBox
 					info={this.confirmInfo}
 					onConfirm={this.close}

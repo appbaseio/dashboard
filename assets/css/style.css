@@ -1055,6 +1055,9 @@ header .appcard {
   .ad-list-newapp-modal .ad-list-newapp-footer .ad-list-newapp-footer-toolbar:first-child {
     margin-left: 0; }
 
+.ad-list-newapp-modal .ad-list-newapp-form label {
+  font-family: "Source Sans Pro Light"; }
+
 .ad-detail {
   position: relative;
   padding: 0 0 0 84px;
