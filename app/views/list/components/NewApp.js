@@ -16,7 +16,8 @@ export default class NewApp extends Component {
 			},
 			value: "",
 			selectedEs: "es2.x",
-			showInput: false
+			showInput: false,
+			importer: false
 		};
 		this.errors = {
 			'duplicate': 'Duplicate app',
@@ -118,7 +119,12 @@ export default class NewApp extends Component {
 	}
 	checkAppValidation(data) {
 		if(data && data.status && data.status === 404) {
-			this.props.createApp(this.state.value);
+			if(this.state.importer) {
+				appbaseService.importerApp = this.state.value;
+				this.gotoImporter();
+			} else {
+				this.props.createApp(this.state.value);
+			}
 			this.setState({
 				createAppLoading: false
 			});
@@ -141,7 +147,11 @@ export default class NewApp extends Component {
 	gotoImporter() {
 		appbaseService.pushUrl("/importer");
 	}
-
+	changeImporter(importer) {
+		this.setState({
+			importer
+		});
+	}
 	render() {
 		return (
 			<AppCard setClassName="appcard-newapp">
@@ -154,30 +164,29 @@ export default class NewApp extends Component {
 							<Modal.Title>New App</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
-							<div className="row">
+							<div className="row ad-list-newapp-form">
 								<div className={"col-xs-12 form-group "+ (this.state.validate.error ? 'has-error' : '')}>
+									<label>App name</label>
 									<input ref={(input) => this.inputboxRef = input} type="text" placeholder="Enter an app name (no spaces)" value={this.state.value} className="form-control" onChange={this.handleChange} />
 									{this.renderElement('helpBlock')}
 								</div>
+								<div className="col-xs-12 form-group">
+									<label>Do you have a JSON or CSV dataset that you would like to import into the app?</label>
+									<div>
+										<label className="radio-inline">
+											<input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked={this.state.importer} onChange={() => this.changeImporter(true)} /> Yes
+										</label>
+										<label className="radio-inline">
+											<input type="radio" name="inlineRadioOptions" id="inlineRadio2" checked={!this.state.importer} onChange={() => this.changeImporter(false)} /> No
+										</label>
+									</div>
+								</div>
 							</div>
 							<div className="col-xs-12 p-0 ad-list-newapp-footer">
-								<span className="btn-toolbar ad-list-newapp-footer-toolbar" role="toolbar">
-									<button className="ad-theme-btn" {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} onClick={this.handleSubmit}>
-										{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
-										<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
-									</button>
-									<button className="ad-theme-btn" onClick={this.gotoImporter}>
-										importer
-									</button>
-								</span>
-								<span className="btn-toolbar ad-list-newapp-footer-toolbar" role="toolbar">
-									<button className={"ad-theme-btn "+(this.state.selectedEs === "es2.x" ? "primary" : "")} onClick={() => this.chooseEs("es2.x")}>
-										ES 2.x
-									</button>
-									<button className={"ad-theme-btn "+(this.state.selectedEs === "es5.x" ? "primary" : "")} onClick={() => this.chooseEs("es5.x")}>
-										ES 5.x
-									</button>
-								</span>
+								<button className="ad-theme-btn  ad-confirm-btn " {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} onClick={this.handleSubmit}>
+									{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
+									<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
+								</button>
 							</div>
 						</Modal.Body>
 					</Modal>
