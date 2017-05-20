@@ -180,7 +180,8 @@ body {
   top: 70px;
   padding: 2px 10px;
   font-size: 0.8rem;
-  border-radius: 6px; }
+  border-radius: 6px;
+  z-index: 9; }
   .ad-olddashboard button.close {
     font-size: 1rem;
     line-height: 1.3rem;
@@ -656,13 +657,17 @@ body {
           display: none; } }
   .navbar.navbar-default li {
     height: 60px; }
-    .navbar.navbar-default li a, .navbar.navbar-default li .extra-link {
+    .navbar.navbar-default li a,
+    .navbar.navbar-default li .extra-link {
       font-size: 1rem;
       text-transform: uppercase;
       padding: 1.5rem 1rem; }
-      .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus, .navbar.navbar-default li .extra-link:hover, .navbar.navbar-default li .extra-link:focus {
+      .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus,
+      .navbar.navbar-default li .extra-link:hover,
+      .navbar.navbar-default li .extra-link:focus {
         outline: none; }
-      .navbar.navbar-default li a .icon-container, .navbar.navbar-default li .extra-link .icon-container {
+      .navbar.navbar-default li a .icon-container,
+      .navbar.navbar-default li .extra-link .icon-container {
         display: inline-block;
         max-width: 0.9rem;
         margin-right: 5px; }
@@ -693,16 +698,20 @@ body {
       border-style: solid; }
     .navbar.navbar-default li.dropdown > a:hover {
       background: transparent; }
-  .navbar.navbar-default li.dropdown.without-icon > a:before, .navbar.navbar-default li.dropdown.without-icon > a:after {
+  .navbar.navbar-default li.dropdown.without-icon > a:before,
+  .navbar.navbar-default li.dropdown.without-icon > a:after {
     display: none; }
   .navbar.navbar-default li.dropdown.logout-dropdown .dropdown-menu {
     left: -100px;
     max-width: 160px; }
   .navbar.navbar-default li.dropdown.logout-dropdown li a {
-    overflow: hidden;
-    max-width: 100%;
-    max-height: 40px;
-    text-overflow: ellipsis; }
+    font-size: 0.8rem;
+    white-space: inherit;
+    word-break: break-all;
+    display: block;
+    max-height: inherit; }
+    .navbar.navbar-default li.dropdown.logout-dropdown li a .ai-dropdown-logout {
+      font-size: 1rem; }
   .navbar.navbar-default li.dropdown.open > a {
     color: #fff;
     background: transparent; }

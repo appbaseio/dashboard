@@ -173,7 +173,7 @@ export default class Nav extends Component {
 													<a onClick={() => this.logout(item)}>
 														{
 															item === 'logout' ?
-															(<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>) :
+															(<span className="text-danger ai-dropdown-logout"><i className="fa fa-sign-out"></i> Logout</span>) :
 															appbaseService.userInfo.body.details[item]
 														}
 													</a>
