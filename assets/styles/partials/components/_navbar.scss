@@ -76,7 +76,8 @@
 	}
 	li {
 		height: 60px;
-		a, .extra-link {
+		a,
+		.extra-link {
 			font-size: 1rem;
 			text-transform: uppercase;
 			padding: 1.5rem 1rem;
@@ -130,7 +131,8 @@
 			}
 		}
 		&.without-icon {
-			> a:before, > a:after {
+			> a:before,
+			> a:after {
 				display: none;
 			}
 		}
@@ -140,10 +142,14 @@
 				max-width: 160px;
 			}
 			li a {
-				overflow: hidden;
-				max-width: 100%;
-				max-height: 40px;
-				text-overflow: ellipsis;
+				font-size: 0.8rem;
+				white-space: inherit;
+				word-break: break-all;
+				display: block;
+				max-height: inherit;
+				.ai-dropdown-logout {
+					font-size: 1rem;
+				}
 			}
 		}
 		&.open {
