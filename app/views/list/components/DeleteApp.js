@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import ConfirmBox from '../../../shared/ConfirmBox';
 import ReactTooltip from 'react-tooltip';
+const $ = require("jquery");
 
 export default class DeleteApp extends Component {
 	constructor(props) {
@@ -23,9 +24,16 @@ export default class DeleteApp extends Component {
 			}
 		};
 		this.deleteApp = this.deleteApp.bind(this);
+		this.setAside = this.setAside.bind(this);
 	}
 	deleteApp() {
 		this.props.deleteApp(this.props.app);
+	}
+	setAside() {
+		$(".ad-list-app-content aside").hide();
+		setTimeout(function() {
+			$(".ad-list-app-content aside").show();
+		}, 1000);
 	}
 	render() {
 		return (
@@ -33,6 +41,7 @@ export default class DeleteApp extends Component {
 				info={this.confirmBoxInfo}
 				onConfirm={this.deleteApp}
 				type="danger"
+				onClose={this.setAside}
 			>
 				<button data-tip="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="text-danger card-icon pointer">
 					<i className="fa fa-trash"></i>

@@ -16,9 +16,15 @@ export default class ConfirmBox extends Component {
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 	close() {
+		if (this.props.onClose) {
+			this.props.onClose();
+		}
 		this.setState({ showModal: false });
 	}
 	open() {
+		if (this.props.onOpen) {
+			this.props.onOpen();
+		}
 		this.setState({ showModal: true });
 	}
 	onConfirm() {
