@@ -7,7 +7,8 @@ class AppbaseService {
 	constructor() {
 		this.userInfo = null;
 		this.apps = {};
-		this.address = 'https://accapi.appbase.io/';
+		// this.address = 'https://accapi.appbase.io/';
+		this.address = 'http://accapi-staging.appbase.io/';
 		this.billingAddress = 'https://transactions.appbase.io';
 		this.planLimits = {
 			'free': {

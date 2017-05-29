@@ -12,28 +12,23 @@ export default class Highchart extends Component {
 				chartConfig: {}
 			}
 		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if(nextProps.info && nextProps.info.metrics && nextProps.graphMethod) {
-			setTimeout(() => {
-				this.prepareGraph();
-			}, 100);
-		}
-	}
-
-	defaultValues(metrics, obj, infoStatus) {
-		obj.strike = {};
-		let callsData = metrics.body.month.buckets;
-		obj.noData = callsData.length === 0;
-		let height = infoStatus == 'closeIng' ? 500 : 200;
-		let width = $('.graph-part').width() - 30;
-		obj.cap = 100000;
-
-		obj.chart = {};
-		obj.chart.month = 0;
-
-		obj.chartConfig = {
+		this.columns = {
+			"indexCalls": [],
+			"miscAggregation": [],
+			"searchCalls": [],
+			"settingsCalls": [],
+			"streamCalls": []
+		};
+		this.columnLabels = {
+			indexCalls: "index",
+			"miscAggregation": "aggregation",
+			"searchCalls": "searh0",
+			"settingsCalls": "settings",
+			"streamCalls": "stream"
+		};
+		this.columnColors = ["red", "#9F9F9F", "#13C4A5", "#50BAEF", "yellow"];
+		this.chartConfig = {};
+		this.chartConfig.overview = {
 			chart: {
 				type: 'spline'
 			},
@@ -58,6 +53,80 @@ export default class Highchart extends Component {
 			},
 			credits: false
 		};
+		this.chartConfig.breakdown = {
+			colors: this.columnColors,
+			chart: {
+				type: 'column'
+			},
+			tooltip: {
+				style: {
+					padding: 10,
+					fontWeight: 'bold'
+				},
+				headerFormat: '<b>{point.x}</b><br/>',
+				pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+			},
+			symbols: ["circle"],
+			series: [],
+			xAxis: {
+				categories: []
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: true
+					}
+				}
+			},
+			yAxis: {
+				title: '',
+				floor: 0,
+				stackLabels: {
+					enabled: true,
+					style: {
+						fontWeight: 'bold'
+					}
+				}
+			},
+			legend: {
+				align: 'right',
+				x: -30,
+				verticalAlign: 'top',
+				y: 25,
+				floating: true,
+				backgroundColor: 'white',
+				borderColor: '#CCC',
+				borderWidth: 1,
+				shadow: false
+			},
+			loading: true,
+			title: {
+				text: ''
+			},
+			credits: false
+		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.info && nextProps.info.metrics && nextProps.graphMethod && nextProps.infoType) {
+			setTimeout(() => {
+				this.prepareGraph();
+			}, 100);
+		}
+	}
+
+	defaultValues(metrics, obj, infoStatus) {
+		obj.strike = {};
+		let callsData = metrics.body.month.buckets;
+		obj.noData = callsData.length === 0;
+		let height = infoStatus == 'closeIng' ? 500 : 200;
+		let width = $('.graph-part').width() - 30;
+		obj.cap = 100000;
+
+		obj.chart = {};
+		obj.chart.month = 0;
+		obj.chartConfig = this.chartConfig[this.props.infoType];
 		return obj;
 	}
 
@@ -87,22 +156,25 @@ export default class Highchart extends Component {
 		}
 		let retVal = this.getGraphData(timeFrame, this.props.info.metrics);
 		var data = retVal.data;
-
 		if (!$.isEmptyObject(data)) {
 			config.chart.month = config.chart.month || retVal.month;
 			config.chartConfig.xAxis.categories = retVal.xAxis;
-			config.chartConfig.series = [];
-			if (config.graphActive === 'month') {
-				config.chartConfig.colors = ["#50BAEF"];
-			} else if (config.graphActive === 'all') {
-				config.chartConfig.colors = ["#9F9F9F"];
+			if(this.props.infoType === "overview") {
+				config.chartConfig.series = [];
+				if (config.graphActive === 'month') {
+					config.chartConfig.colors = ["#50BAEF"];
+				} else if (config.graphActive === 'all') {
+					config.chartConfig.colors = ["#9F9F9F"];
+				} else {
+					config.chartConfig.colors = ["#13C4A5"];
+				}
+				config.chartConfig.series.push({
+					data: data['apiCalls'],
+					name: "API Calls"
+				});
 			} else {
-				config.chartConfig.colors = ["#13C4A5"];
+				config.chartConfig.series = data;
 			}
-			config.chartConfig.series.push({
-				data: data['apiCalls'],
-				name: "API Calls"
-			});
 		} else {
 			if (timeLabel && timeLabel !== 'all') {
 				config.strike[timeLabel] = true;
@@ -117,10 +189,10 @@ export default class Highchart extends Component {
 
 	getGraphData(timeFrame, metrics) {
 		var callBuckets = metrics.body.month.buckets;
-		var month = 0;
-		var metrics = {};
 		var xAxis = [];
-		metrics.apiCalls = [];
+		var month = 0;
+		const finalMetrics = [];
+		var metrics = this.props.infoType === "overview" ? {apiCalls: []} : Object.assign(this.getColumns(), {});
 
 		for (var bucket in callBuckets) {
 			if (callBuckets[bucket].hasOwnProperty('apiCalls')) {
@@ -129,9 +201,17 @@ export default class Highchart extends Component {
 					if (xAxis[xAxis.length - 1] != date) {
 						xAxis.push(date);
 					}
+					if(this.props.infoType === "overview") {
+						var value = callBuckets[bucket].apiCalls.value;
+						metrics['apiCalls'].push(value);
+					} else {
+						Object.keys(this.columns).forEach(column => {
+							var value = callBuckets[bucket][column].value;
+							metrics[column].push(value);
+						});
+					}
 					var value = callBuckets[bucket].apiCalls.value;
 					month += value;
-					metrics['apiCalls'].push(value);
 				}
 			}
 		}
@@ -143,11 +223,31 @@ export default class Highchart extends Component {
 			xAxisLabels.push(formated);
 		});
 
-		return {
-			data: metrics,
+		if(this.props.infoType === "breakdown") {
+			Object.keys(metrics).forEach((item, index) => {
+				const obj = {
+					id: index,
+					name: this.columnLabels[item],
+					data: metrics[item]
+				};
+				finalMetrics.push(obj);
+			});
+		}
+
+		const finaldata = {
+			data: this.props.infoType === "breakdown" ? finalMetrics : metrics,
 			xAxis: xAxisLabels,
 			month: month
 		};
+		return finaldata;
+	}
+
+	getColumns() {
+		const columns = {};
+		Object.keys(this.columns).forEach(item => {
+			columns[item] = [];
+		});
+		return columns;
 	}
 
 	render() {

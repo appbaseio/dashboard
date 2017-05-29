@@ -8,13 +8,20 @@ export default class HighChartView extends Component {
 		super(props);
 		const now = new Date();
 		this.state = {
-			graphMethod: now.getDate() < 3 ? "week" : "month"
+			graphMethod: now.getDate() < 3 ? "week" : "month",
+			infoType: "overview"
 		};
 	}
 
 	graph(method) {
 		this.setState({
 			graphMethod: method
+		});
+	}
+
+	info(infoType) {
+		this.setState({
+			infoType
 		});
 	}
 
@@ -36,10 +43,21 @@ export default class HighChartView extends Component {
 					</ul>
 				</header>
 				<main className="ad-detail-page-body-card-body">
+					<header>
+						<ul className="nav-tab">
+							<li>
+								<a className={this.state.infoType === 'overview' ? 'active' : ''} onClick={() => this.info('overview')}>Overview</a>
+							</li>
+							<li>
+								<a className={this.state.infoType === 'breakdown' ? 'active' : ''} onClick={() => this.info('breakdown')}>Breakdown</a>
+							</li>
+						</ul>
+					</header>
 					<Highchart
 						id="chart1"
 						graphMethod={this.state.graphMethod}
 						info={this.props.info}
+						infoType={this.state.infoType}
 					>
 					</Highchart>
 				</main>
