@@ -14,6 +14,7 @@ import FilterByAppname from './components/FilterByAppname';
 import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
 import { getConfig } from '../../config';
+import { OldDashboard } from '../../shared/SharedComponents';
 
 const moment = require('moment');
 
@@ -285,6 +286,7 @@ export default class AppList extends Component {
 	render() {
 		return (
 			<div className="ad-list">
+				<OldDashboard />
 				{
 					appbaseService.userInfo ?
 					(
