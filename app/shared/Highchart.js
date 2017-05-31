@@ -22,7 +22,7 @@ export default class Highchart extends Component {
 		this.columnLabels = {
 			indexCalls: "index",
 			"miscAggregation": "aggregation",
-			"searchCalls": "searh0",
+			"searchCalls": "search",
 			"settingsCalls": "settings",
 			"streamCalls": "stream"
 		};
@@ -56,12 +56,13 @@ export default class Highchart extends Component {
 		this.chartConfig.breakdown = {
 			colors: this.columnColors,
 			chart: {
-				type: 'column'
+				type: 'column',
+				spacingBottom: 50
 			},
 			tooltip: {
 				style: {
 					padding: 10,
-					fontWeight: 'bold'
+					fontWeight: 'lighter'
 				},
 				headerFormat: '<b>{point.x}</b><br/>',
 				pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
@@ -75,7 +76,7 @@ export default class Highchart extends Component {
 				column: {
 					stacking: 'normal',
 					dataLabels: {
-						enabled: true
+						enabled: false
 					}
 				}
 			},
@@ -91,9 +92,8 @@ export default class Highchart extends Component {
 			},
 			legend: {
 				align: 'right',
-				x: -30,
-				verticalAlign: 'top',
-				y: 25,
+				verticalAlign: 'bottom',
+				y: 40,
 				floating: true,
 				backgroundColor: 'white',
 				borderColor: '#CCC',
