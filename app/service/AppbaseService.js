@@ -168,19 +168,22 @@ class AppbaseService {
 		});
 	}
 
-	createApp(appName) {
+	createApp(appData) {
 		let appsObj = {
 			allApps: null,
 			user: null
 		};
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'app/' + appName,
+				url: this.address + 'app/' + appData.appname,
 				type: 'PUT',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify({ category: appData.category, es_version: appData.es_version }),
 				success: (result) => {
 					this.preservedApps = [];
 					this.allApps().then((data) => {
-						appsObj.allApps =data;
+						appsObj.allApps = data;
 						cb(result);
 					}).catch((e) => {
 						appsObj.allApps = e;
