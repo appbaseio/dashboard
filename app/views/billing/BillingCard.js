@@ -150,8 +150,9 @@ export default class BillingCard extends Component {
 											<Loading></Loading>
 										) : null
 									}
-									<span data-ng-if="plan === 'free'">Current plan</span>
-									<span data-ng-if="plan !== 'free'" data-ng-bind="planText"></span>
+									<span> {
+										this.props.activePlan === this.props.plan ? "Current plan" : "Subscribe plan"
+									} </span>
 								</button>
 							</div>
 						</li>
