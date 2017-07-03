@@ -11,7 +11,7 @@ module.exports = {
 	devtool: null,
 	devServer: {
 		inline: true,
-		port: 8000,
+		port: 1357,
 		contentBase: './',
 		historyApiFallback: {
 			index: './index.html'
