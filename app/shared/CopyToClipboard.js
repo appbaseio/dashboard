@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Clipboard from 'Clipboard';
+import Clipboard from 'clipboard';
 
 export default class CopyToClipboard extends Component {
 	constructor(props) {
