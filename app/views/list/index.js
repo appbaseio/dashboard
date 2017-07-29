@@ -71,7 +71,7 @@ export default class AppList extends Component {
 			const apps = this.state.apps.filter(app => app.id !== selectedApp.id);
 			appbaseService.preservedApps = appbaseService.preservedApps.filter(app => app.id !== selectedApp.id);
 			if(appbaseService.preservedApps.length === 0) {
-				browserHistory.push('/tutorial');
+				appbaseService.pushUrl('/tutorial');
 			}
 			this.setState({
 				apps
@@ -105,7 +105,7 @@ export default class AppList extends Component {
 
 	registerApps(apps, getInfo = false) {
 		if(appbaseService.preservedApps.length === 0 && !appbaseService.filterAppName.trim().length) {
-			browserHistory.push('/tutorial');
+			appbaseService.pushUrl('/tutorial');
 		} else {
 			this.setState({
 				apps
