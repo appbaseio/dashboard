@@ -107,6 +107,8 @@
 				}
 			}
 			.ad-list-title-container {
+				position: relative;
+				padding-right: 20px;
 				.title {
 					display: inline-block;
 					margin: 0;
@@ -123,6 +125,12 @@
 				.ad-list-app-header-owner {
 					top: 2px;
 					left: 0;
+					position: absolute;
+				}
+				.ad-list-app-header-clone {
+					display: inline-block;
+					right: 0;
+					top: 2px;
 					position: absolute;
 				}
 			}

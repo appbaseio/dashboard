@@ -135,6 +135,15 @@ body {
 	}
 }
 
+.ad-theme-btn-transparent {
+	background: transparent;
+	border: 0;
+	color: $primary-font-color;
+	&:hover {
+		background: $dark-grey;
+	}
+}
+
 .animation {
 	.fadein {
 		opacity: 1;

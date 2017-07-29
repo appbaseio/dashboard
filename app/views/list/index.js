@@ -13,6 +13,7 @@ import SortBy from './components/SortBy';
 import FilterByAppname from './components/FilterByAppname';
 import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
+import CloneApp from './components/CloneApp';
 import { getConfig } from '../../config';
 import { OldDashboard } from '../../shared/SharedComponents';
 
@@ -237,6 +238,7 @@ export default class AppList extends Component {
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
 											<h3 className="title">{app.appname}</h3>
+											<CloneApp app={app} />
 										</div>
 									</header>
 									<div className="description">

@@ -98,6 +98,13 @@ body {
     padding-right: 50px;
     border: 2px solid; }
 
+.ad-theme-btn-transparent {
+  background: transparent;
+  border: 0;
+  color: #555; }
+  .ad-theme-btn-transparent:hover {
+    background: #f7f7f7; }
+
 .animation .fadein {
   opacity: 1;
   -webkit-animation: fadein 0.5s;
@@ -949,22 +956,30 @@ header .appcard {
       color: #999; }
       .ad-list .ad-list-app .ad-list-app-header .time i {
         padding-right: 2px; }
-    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
-      display: inline-block;
-      margin: 0;
-      letter-spacing: 0.02em;
-      color: #666;
-      font-size: 22px;
-      font-family: "Source Sans Pro Semi Bold";
-      max-height: 24px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 100%; }
-    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
-      top: 2px;
-      left: 0;
-      position: absolute; }
+    .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container {
+      position: relative;
+      padding-right: 20px; }
+      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .title {
+        display: inline-block;
+        margin: 0;
+        letter-spacing: 0.02em;
+        color: #666;
+        font-size: 22px;
+        font-family: "Source Sans Pro Semi Bold";
+        max-height: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%; }
+      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-owner {
+        top: 2px;
+        left: 0;
+        position: absolute; }
+      .ad-list .ad-list-app .ad-list-app-header .ad-list-title-container .ad-list-app-header-clone {
+        display: inline-block;
+        right: 0;
+        top: 2px;
+        position: absolute; }
     .ad-list .ad-list-app .ad-list-app-header.with-owner .ad-list-title-container {
       padding-left: 20px; }
   .ad-list .ad-list-app aside.options {
