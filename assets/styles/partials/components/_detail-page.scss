@@ -40,7 +40,7 @@
 	}
 	.ad-detail-page-body {
 		padding: 15px;
-		> [class*="col-"] {
+		>[class*="col-"] {
 			padding-left: 0;
 			&:last-child {
 				padding-right: 0;
@@ -71,6 +71,20 @@
 		&.delete-app-body {
 			padding: 0;
 			margin-top: 15px;
+		}
+		.ad-change-ownership {
+			padding: 0;
+			label {
+				padding-right: 10px;
+				font-size: 1.5rem;
+				font-family: $font-light;
+			}
+			#ownershipEmail {
+				margin-right: 10px;
+				padding: 0px 10px;
+				line-height: 29px;
+				height: 29px;
+			}
 		}
 	}
 }

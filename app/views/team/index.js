@@ -4,6 +4,7 @@ import { appbaseService } from '../../service/AppbaseService';
 import ShareCard from './ShareCard';
 import NewShare from './NewShare';
 import AppPage from '../../shared/AppPage';
+import TransferOwnership from './TransferOwnership';
 
 const InitialShare = (props) => {
 	return (
@@ -148,7 +149,12 @@ export default class Team extends Component {
 							this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner === appbaseService.userInfo.body.email ? (
 								<section className="ad-detail-page-body-card col-xs-12 p-0">
 									<header className="ad-detail-page-body-card-title with-border">
-										Team Members
+										<span>
+											Team Members
+										</span>
+										<span className="pull-right">
+											<TransferOwnership appId={this.appId} appName={this.appName} />
+										</span>
 									</header>
 									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
 										{this.renderElement('share')}
