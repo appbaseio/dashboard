@@ -276,6 +276,24 @@ class AppbaseService {
 		});
 	}
 
+	transferOwnership(appId, info) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: `${this.address}app/${appId}/changeowner`,
+				type: 'POST',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(info),
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
+	}
+
 	updateShare(appId, user, info) {
 		return new Promise((resolve, reject) => {
 			this.deleteShare(appId, user.username, {email: user.email}).then((data) => {

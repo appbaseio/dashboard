@@ -151,7 +151,7 @@ export default class BillingCard extends Component {
 										) : null
 									}
 									<span> {
-										this.props.activePlan === this.props.plan ? "Current plan" : "Subscribe plan"
+										this.props.activePlan === this.props.plan && this.props.mode === this.props.activeMode ? "Current plan" : "Subscribe plan"
 									} </span>
 								</button>
 							</div>

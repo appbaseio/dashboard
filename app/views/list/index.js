@@ -13,6 +13,7 @@ import SortBy from './components/SortBy';
 import FilterByAppname from './components/FilterByAppname';
 import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
+import CloneApp from './components/CloneApp';
 import { getConfig } from '../../config';
 import { OldDashboard } from '../../shared/SharedComponents';
 
@@ -69,7 +70,10 @@ export default class AppList extends Component {
 	deleteApp(selectedApp) {
 		appbaseService.deleteApp(selectedApp.id).then((data) => {
 			const apps = this.state.apps.filter(app => app.id !== selectedApp.id);
-			appbaseService.preservedApps = apps;
+			appbaseService.preservedApps = appbaseService.preservedApps.filter(app => app.id !== selectedApp.id);
+			if(appbaseService.preservedApps.length === 0) {
+				appbaseService.pushUrl('/tutorial');
+			}
 			this.setState({
 				apps
 			});
@@ -101,8 +105,8 @@ export default class AppList extends Component {
 	}
 
 	registerApps(apps, getInfo = false) {
-		if(apps.length === 0 && !appbaseService.filterAppName.trim().length) {
-			browserHistory.push('/tutorial');
+		if(appbaseService.preservedApps.length === 0 && !appbaseService.filterAppName.trim().length) {
+			appbaseService.pushUrl('/tutorial');
 		} else {
 			this.setState({
 				apps
@@ -234,6 +238,7 @@ export default class AppList extends Component {
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
 											<h3 className="title">{app.appname}</h3>
+											<CloneApp app={app} />
 										</div>
 									</header>
 									<div className="description">

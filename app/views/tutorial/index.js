@@ -14,6 +14,7 @@ export default class Tutorial extends Component {
 			url: this.config.tutorial.url,
 			loadActive: true
 		};
+		this.goToDashbord = this.goToDashbord.bind(this);
 	}
 
 	componentDidMount() {
@@ -58,6 +59,10 @@ export default class Tutorial extends Component {
 		});
 	}
 
+	goToDashbord() {
+		appbaseService.pushUrl('/apps');
+	}
+
 	render() {
 		return (
 			<section className="ad-tutorial">
@@ -69,6 +74,9 @@ export default class Tutorial extends Component {
 							<p>
 								{this.config.tutorial.description}
 							</p>
+							<button className="pull-right btn ad-theme-btn primary" onClick={this.goToDashbord}>
+								Continue to Dashboard
+							</button>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
 							{this.state.loadActive ? (<div className="loadingBar"></div>) : null}
