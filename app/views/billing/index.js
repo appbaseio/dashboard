@@ -64,7 +64,7 @@ export default class Billing extends Component {
 			this.customer.mode = data.mode ? data.mode : this.state.mode;
 			this.plan = this.allowedPlan.indexOf(data.plan) > -1 ? data.plan : 'free';
 			this.stripeExists = ("stripeKey" in data) ? true : false;
-			if(!this.stripeExists) {
+			if(!this.stripeExists || !data.subscriptionId) {
 				this.stripeSetup = new StripeSetup(this.stripeKey, this.stripeCb.bind(this));
 			}
 			this.setState({
