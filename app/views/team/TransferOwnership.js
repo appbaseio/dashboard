@@ -55,7 +55,7 @@ export default class TransferOwnership extends Component {
 			});
 		} else {
 			this.setState({
-				error: 'Email is not valid.'
+				error: 'This e-mail does not seem correct.'
 			});
 		}
 	}
@@ -64,7 +64,7 @@ export default class TransferOwnership extends Component {
 			title: (<span>Transfer ownership</span>),
 			description: (
 				<p>
-					Type the app name <strong>{this.props.appName}</strong> below to transfer ownership to new owner <i>{this.state.ownershipEmail}</i>. This action cannot be undone.
+					Type the app name <strong>{this.props.appName}</strong> below to transfer its ownership to <i>{this.state.ownershipEmail}</i>. This action is final and cannot be undone.
 				</p>
 			),
 			validate: {
@@ -88,19 +88,18 @@ export default class TransferOwnership extends Component {
 			</ConfirmBox>
 		);
 		const ownershipButton = (
-			<button className="ad-theme-btn primary" onClick={this.toggleOwnership}>
-				Change ownership
+			<button className="ad-theme-btn danger-inverse warning" onClick={this.toggleOwnership}>
+				Transfer App Ownership
 			</button>
 		);
 		const ownershipForm = (
 			<form onSubmit={ this.handleSubmit } className="form-inline" noValidate>
 				{this.state.loading && (<Loading />)}
 				<div className="form-group pull-left">
-					<label htmlFor="ownershipEmail">New owner</label>
-					<input type="email" value={this.state.ownershipEmail} onChange={this.ownershipUpdate} className="form-control" id="ownershipEmail" placeholder="Type email.." />
+					<input type="email" value={this.state.ownershipEmail} onChange={this.ownershipUpdate} className="form-control" id="ownershipEmail" placeholder="Type valid email" />
 				</div>
 				<span className=" pull-left">
-					<button type="submit" className="ad-theme-btn primary">Submit</button>
+					<button type="submit" className="ad-theme-btn danger-inverse warning">Transfer</button>
 					<button className="ad-theme-btn" onClick={this.toggleOwnership}>Go back</button>
 				</span>
 			</form>

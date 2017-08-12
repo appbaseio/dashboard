@@ -6,8 +6,8 @@ export default function Header(props) {
 		monthly: classNames({
 			active: props.mode === "monthly"
 		}),
-		annually: classNames({
-			active: props.mode === "annually"
+		annual: classNames({
+			active: props.mode === "annual"
 		})
 	};
 	return (
@@ -23,14 +23,14 @@ export default function Header(props) {
 								<button className={`btn left monthly ${cx.monthly}`} onClick={() => props.changePlan("monthly")}>
 									Monthly
 								</button>
-								<button className={`btn right monthly ${cx.annually}`} onClick={() => props.changePlan("annually")}>
-									Annually
+								<button className={`btn right monthly ${cx.annual}`} onClick={() => props.changePlan("annual")}>
+									Annual
 								</button>
 							</div>
 							{
 								props.customer ? (
 									<p className="col-xs-12 plan-bottomline">
-										You are currently subscribed to the {props.customer.plan} {props.customer.mode} plan.
+										You are currently subscribed to the {props.customer.mode} {props.customer.plan} plan.
 									</p>
 								) : null
 							}

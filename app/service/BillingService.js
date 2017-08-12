@@ -27,7 +27,7 @@ class BillingService {
 				'growth': 89,
 				'dedicated': 499
 			},
-			'annually': {
+			'annual': {
 				'bootstrap': 19,
 				'growth': 59,
 				'dedicated': 299

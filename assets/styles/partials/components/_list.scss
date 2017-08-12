@@ -1,3 +1,9 @@
+.__react_component_tooltip.type-dark {
+	color: #fff !important;
+	padding-left: 2px !important;
+	padding-right: 2px !important;
+	background-color: #666 !important;
+}
 .ad-list {
 	.ad-list-header {
 		background: #fff;
@@ -130,7 +136,6 @@
 				.ad-list-app-header-clone {
 					display: inline-block;
 					right: 0;
-					top: 2px;
 					position: absolute;
 				}
 			}

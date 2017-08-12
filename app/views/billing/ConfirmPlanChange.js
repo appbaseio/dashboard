@@ -52,7 +52,7 @@ export default class ConfirmPlanChange extends Component {
 					</div>
 					<Modal.Title>appbase.io {this.props.plan} plan</Modal.Title>
 					<span className="bottomline">
-						charged {this.props.mode}
+						charged {(this.props.mode === 'annual' ? 'annually' : 'monthly')}
 					</span>
 				</Modal.Header>
 				<div className="seprator-container">

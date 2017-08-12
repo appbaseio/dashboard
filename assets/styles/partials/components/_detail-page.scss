@@ -63,6 +63,11 @@
 				&.with-border {
 					border-bottom: 1px solid darken($dark-grey, 10%);
 				}
+				.text-danger {
+					font-size: 1rem;
+					font-weight: normal;
+					padding-top: 50px;
+				}
 			}
 		}
 		&.other-page-body {
