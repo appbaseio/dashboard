@@ -20,7 +20,7 @@ export default class Billing extends Component {
 			'annually': 'annual'
 		};
 		this.planText = 'Choose plan';
-		const mode = localBillingMode && (localBillingMode == 'monthly' || localBillingMode == 'annually') ? localBillingMode : 'annually';
+		const mode = localBillingMode && (localBillingMode == 'monthly' || localBillingMode == 'annual') ? localBillingMode : 'annual';
 		
 		this.state = {
 			mode: mode,
@@ -29,7 +29,7 @@ export default class Billing extends Component {
 			activePlan: 'free',
 			customer: {
 				plan: 'free',
-				mode: 'annually'
+				mode: 'annual'
 			},
 			pricingError: {
 				show: false,

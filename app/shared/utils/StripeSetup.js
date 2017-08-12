@@ -30,7 +30,7 @@ class StripeSetup {
 		});
 	}
 	getAmount(mode, plan) {
-		var months = mode === 'annually' ?12 : 1;
+		var months = mode === 'annual' ? 12 : 1;
 		return billingService.prices[mode][plan]*100*months;
 	}
 }

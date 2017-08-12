@@ -122,9 +122,9 @@ export default class BillingCard extends Component {
 					found = true;
 					obj.amount = (info.amount/100);
 					obj.explain = 'The charge for '+
-									(this.customerCopy.mode == 'annually' ? 'annual' : 'month')+
+									(this.customerCopy.mode == 'annual' ? 'annual' : 'month')+
 									' '+this.customerCopy.plan+' plan'+
-									' is $'+((this.customerCopy.mode==="annually") ? (obj.amount/12).toFixed(2)+'x12': obj.amount);
+									' is $'+((this.customerCopy.mode==="annual") ? (obj.amount/12).toFixed(2)+'x12': obj.amount);
 				}
 			});
 		}

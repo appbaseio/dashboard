@@ -18,6 +18,7 @@
 			}
 			&.active {
 				background: $n-green;
+				color: $n-navy;
 				font-size: 1.8em;
 			}
 		}
@@ -468,7 +469,6 @@
 					border-radius: 50%;
 					color: #f5f5f7;
 					font-size: 12px;
-					line-height: 14px;
 					position: absolute;
 					right: 10px;
 					text-align: center;
