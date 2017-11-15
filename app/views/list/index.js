@@ -22,7 +22,7 @@ const moment = require('moment');
 const AppIntro = (props) => {
 	return (
 		<AppCard {...props}>
-			<h3 className="title">Hi {props.name.split(" ")[0]},</h3>
+			<h3 className="title">Hi {props.name ? props.name.split(" ")[0] : null},</h3>
 			<p className="description">
 				This is your apps manager view. Here, you can create a new app and manage your existing apps.
 			</p>
