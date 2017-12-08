@@ -190,13 +190,13 @@ export default class AppList extends Component {
 		}
 	}
 
-	createApp(appname) {
-		appbaseService.createApp(appname).then((data) => {
+	createApp(appData) {
+		appbaseService.createApp(appData).then((data) => {
 			this.setState({
 				createAppLoading: false,
 				clearInput: true
 			});
-			appbaseService.pushUrl(`/dashboard/${appname}`);
+			appbaseService.pushUrl(`/dashboard/${appData.appname}`);
 		}).catch((e) => {
 			this.setState({
 				createAppError: e.responseJSON,
