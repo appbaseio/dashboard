@@ -3,11 +3,18 @@ import { Modal } from 'react-bootstrap';
 import { appbaseService } from '../../../service/AppbaseService';
 import { Loading } from "../../../shared/SharedComponents";
 import { common } from "../../../shared/helper";
+import { getConfig } from '../../../config';
 import AppCard from './AppCard';
 
 export default class NewApp extends Component {
 	constructor(props) {
 		super(props);
+		this.config = getConfig();
+		this.categories = {
+			appbase: "general",
+			reactivemaps: "reactivemaps",
+			reactivesearch: "reactivesearch"
+		};
 		this.state = {
 			showModal: this.props.showModal ? this.props.showModal : false,
 			validate: {
@@ -15,9 +22,10 @@ export default class NewApp extends Component {
 				error: null
 			},
 			value: "",
-			selectedEs: "es2.x",
 			showInput: false,
-			importer: false
+			importer: false,
+			category: this.categories[this.config.name],
+			es_version: 5
 		};
 		this.errors = {
 			'duplicate': 'Duplicate app',
@@ -30,6 +38,7 @@ export default class NewApp extends Component {
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this.gotoImporter = this.gotoImporter.bind(this);
+		this.chooseCategory = this.chooseCategory.bind(this);
 	}
 	close() {
 		this.setState({ showModal: false });
@@ -50,6 +59,11 @@ export default class NewApp extends Component {
 			});
 			this.close();
 		}
+	}
+	chooseCategory(event) {
+		this.setState({
+			category: event.target.value
+		});
 	}
 	validateApp(appName) {
 		let validate = {
@@ -101,7 +115,6 @@ export default class NewApp extends Component {
 		}
 		return generatedEle;
 	}
-
 	handleSubmit() {
 		this.inputboxRef.focus();
 		const appname = this.state.value.trim();
@@ -119,11 +132,16 @@ export default class NewApp extends Component {
 	}
 	checkAppValidation(data) {
 		if(data && data.status && data.status === 404) {
+			const appData = {
+				appname: this.state.value,
+				es_version: this.state.es_version,
+				category: this.state.category
+			};
 			if(this.state.importer) {
-				appbaseService.importerApp = this.state.value;
+				appbaseService.importerConfig = appData;
 				this.gotoImporter();
 			} else {
-				this.props.createApp(this.state.value);
+				this.props.createApp(appData);
 			}
 			this.setState({
 				createAppLoading: false
@@ -139,9 +157,9 @@ export default class NewApp extends Component {
 			});
 		}
 	}
-	chooseEs(selectedEs) {
+	chooseEs(es_version) {
 		this.setState({
-			selectedEs
+			es_version
 		});
 	}
 	gotoImporter() {
@@ -179,6 +197,31 @@ export default class NewApp extends Component {
 										<label className="radio-inline">
 											<input type="radio" name="inlineRadioOptions" id="inlineRadio2" checked={!this.state.importer} onChange={() => this.changeImporter(false)} /> No
 										</label>
+									</div>
+								</div>
+								<div className="col-xs-12 p-0">
+									<div className="col-xs-12 col-sm-6 form-group">
+										<label>Elasticsearch version</label>
+										<div>
+											<label className="radio-inline">
+												<input type="radio" name="inlineRadioOptions3" id="inlineRadio3" checked={this.state.es_version === 2} onChange={() => this.chooseEs(2)} /> 2
+											</label>
+											<label className="radio-inline">
+												<input type="radio" name="inlineRadioOptions4" id="inlineRadio4" checked={this.state.es_version === 5} onChange={() => this.chooseEs(5)} /> 5
+											</label>
+										</div>
+									</div>
+									<div className="col-xs-12 col-sm-6 form-group">
+										<label>Category</label>
+										<div>
+											<select value={this.state.category} onChange={this.chooseCategory} className="form-control">
+												{
+													Object.keys(this.categories).map(item => (
+														<option key={item} value={this.categories[item]}>{this.categories[item]}</option>
+													))
+												}
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>

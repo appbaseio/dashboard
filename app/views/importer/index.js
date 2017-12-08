@@ -36,11 +36,8 @@ export default class Importer extends Component {
 	}
 	getImporterUrl() {
 		let importerUrl = this.importerUrl;
-		if(appbaseService.importerApp) {
-			const config = {
-				platform: "appbase",
-				appname: appbaseService.importerApp
-			};
+		if(appbaseService.importerConfig) {
+			const config = Object.assign(appbaseService.importerConfig, { platform: "appbase" });
 			importerUrl = `${importerUrl}&app=${JSON.stringify(config)}`;
 			appbaseService.importerApp = null;
 		}

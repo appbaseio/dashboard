@@ -827,6 +827,10 @@ body {
 header .appcard {
   text-align: center; }
 
+.ad-dashboard .ad-detail-page-body-card-body .tab-container {
+  padding: 0 4px;
+  margin: 0 0 15px 0; }
+
 .ad-dashboard .body-card-body-api-view {
   margin: 0;
   padding-bottom: 15px; }
