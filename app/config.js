@@ -18,7 +18,7 @@ export const contextConfig = {
 			description: "Make your first API call in 2 mins."
 		},
 		"login": {
-			description: "Login to Appbase or create an account to access your Dashboard."
+			description: "Hello, before starting you need to login."
 		},
 		"primary": "#3BC7F6",
 		"accent": "#B6EF7E",
