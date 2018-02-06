@@ -28,13 +28,19 @@
 
 #login_modal.modal {
 	margin-top: 20vh;
+	.flex {
+		display: flex;
+	}
+	.flex-column {
+		flex-direction: column;
+	}
 	.modal-dialog {
-		width: 350px;
+		width: 430px;
 		margin: 30px auto;
 	}
 	.modal-content {
 		border-radius: 4px;
-		border: 3px solid;
+		border: none;
 		font-family: $font-light;
 		color: $login-color;
 		background: $login-bg;
@@ -43,12 +49,16 @@
 			font-size: 18px;
 			background-color: inherit;
 			border: 0;
+			border-radius: 4px;
 			padding: 5px 15px 0 15px;
 			text-align: center;
 			.modal-title {
-				color: $login-color;
+				color: $navy;
+				font-size: 1.2rem;
+				font-family: $font-semi-bold;
 				text-transform: inherit;
 				text-align: center;
+				padding-top: 0;
 			}
 		}
 		.modal-footer {
@@ -56,7 +66,7 @@
 			padding-top: 0;
 		}
 		.modal-body {
-			padding: 15px;
+			padding: 20px;
 			text-align: center;
 		}
 		.mr15 {
@@ -64,30 +74,50 @@
 		}
 		.mt25 {
 			margin-top: 25px;
+			font-family: $font-light;
+			color: $navy;
 		}
 		.close {
-			border-color: $login-color;
-			color: $login-color;
+			color: $navy;
+			border: none;
+			background-color: rgba(217, 216, 228, 0.25);
+			width: 25px;
+			height: 25px;
+			font-size: 20px;
+			font-family: $font-light;
 		}
 		.modal-btn {
-			background: transparent;
-			color: inherit;
-			border: 1px solid;
-			font-family: $font-light;
-			font-size: 16px;
-			padding: 4px 20px;
-			display: inline-block;
-			width: auto;
-			margin-right: 15px;
+			box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+			font-size: 1rem;
+			border: none;
+			border-radius: 3px;
+			padding-top: 10px;
+			padding-bottom: 10px;
 			height: auto;
+			svg {
+				font-size: 1.2rem;
+				margin-right: 20px;
+			}
 			&:hover {
-				background-color: $login-color;
-				color: $login-bg;
+				box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+			}
+			&.github-btn {
+				background: $github-color;
+				&:hover {
+					background: lighten($github-color, 5%);
+				}
+			}
+			&.google-btn {
+				background: $google-color;
+				&:hover {
+					background: lighten($google-color, 5%);
+				}
 			}
 		}
 		.contact-link {
-			color: $login-color;
+			color: $navy;
 			border-bottom: 1px dotted;
+			text-decoration: none;
 		}
 	}
 	.modal-sm {

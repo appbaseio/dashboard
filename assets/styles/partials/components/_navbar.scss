@@ -118,6 +118,9 @@
 		.login-nav {
 			border: 1px solid $navy;
 			border-radius: 3px;
+			@media all and (max-width: 768px) {
+				border: none;
+			}
 		}
 	}
 	li.dropdown {

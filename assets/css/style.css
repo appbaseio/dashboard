@@ -554,12 +554,16 @@ body {
 
 #login_modal.modal {
   margin-top: 20vh; }
+  #login_modal.modal .flex {
+    display: flex; }
+  #login_modal.modal .flex-column {
+    flex-direction: column; }
   #login_modal.modal .modal-dialog {
-    width: 350px;
+    width: 430px;
     margin: 30px auto; }
   #login_modal.modal .modal-content {
     border-radius: 4px;
-    border: 3px solid;
+    border: none;
     font-family: "Open Sans Light";
     color: #555;
     background: #fff; }
@@ -568,42 +572,61 @@ body {
       font-size: 18px;
       background-color: inherit;
       border: 0;
+      border-radius: 4px;
       padding: 5px 15px 0 15px;
       text-align: center; }
       #login_modal.modal .modal-content .modal-header .modal-title {
-        color: #555;
+        color: #242E44;
+        font-size: 1.2rem;
+        font-family: "Open Sans Semi Bold";
         text-transform: inherit;
-        text-align: center; }
+        text-align: center;
+        padding-top: 0; }
     #login_modal.modal .modal-content .modal-footer {
       border: 0;
       padding-top: 0; }
     #login_modal.modal .modal-content .modal-body {
-      padding: 15px;
+      padding: 20px;
       text-align: center; }
     #login_modal.modal .modal-content .mr15 {
       margin-right: 15px; }
     #login_modal.modal .modal-content .mt25 {
-      margin-top: 25px; }
-    #login_modal.modal .modal-content .close {
-      border-color: #555;
-      color: #555; }
-    #login_modal.modal .modal-content .modal-btn {
-      background: transparent;
-      color: inherit;
-      border: 1px solid;
+      margin-top: 25px;
       font-family: "Open Sans Light";
-      font-size: 16px;
-      padding: 4px 20px;
-      display: inline-block;
-      width: auto;
-      margin-right: 15px;
+      color: #242E44; }
+    #login_modal.modal .modal-content .close {
+      color: #242E44;
+      border: none;
+      background-color: rgba(217, 216, 228, 0.25);
+      width: 25px;
+      height: 25px;
+      font-size: 20px;
+      font-family: "Open Sans Light"; }
+    #login_modal.modal .modal-content .modal-btn {
+      box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+      border: none;
+      border-radius: 3px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       height: auto; }
+      #login_modal.modal .modal-content .modal-btn svg {
+        font-size: 1.2rem;
+        margin-right: 20px; }
       #login_modal.modal .modal-content .modal-btn:hover {
-        background-color: #555;
-        color: #fff; }
+        box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
+      #login_modal.modal .modal-content .modal-btn.github-btn {
+        background: #2A2A2A; }
+        #login_modal.modal .modal-content .modal-btn.github-btn:hover {
+          background: #373737; }
+      #login_modal.modal .modal-content .modal-btn.google-btn {
+        background: #DC4E41; }
+        #login_modal.modal .modal-content .modal-btn.google-btn:hover {
+          background: #e06257; }
     #login_modal.modal .modal-content .contact-link {
-      color: #555;
-      border-bottom: 1px dotted; }
+      color: #242E44;
+      border-bottom: 1px dotted;
+      text-decoration: none; }
   #login_modal.modal .modal-sm .modal-body {
     padding-top: 25px; }
   #login_modal.modal#login_modal, #login_modal.modal#signup_modal {
@@ -710,6 +733,9 @@ body {
     .navbar.navbar-default li .login-nav {
       border: 1px solid #242E44;
       border-radius: 3px; }
+      @media all and (max-width: 768px) {
+        .navbar.navbar-default li .login-nav {
+          border: none; } }
   .navbar.navbar-default li.dropdown > a {
     position: relative;
     padding-bottom: 8px; }

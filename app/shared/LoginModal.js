@@ -8,13 +8,23 @@ const LoginModal = ({ showModal, close, login }) => (
                 Login with your Github or Google ID.
             </Modal.Title>
             <div className="bootstrap-dialog-close-button">
-                <button className="close" onClick={close}>×</button>
+                <button className="close" onClick={close}>&times;</button>
             </div>
         </Modal.Header>
         <Modal.Body>
-            <div>
-                <button className="btn Login-button modal-btn" onClick={() => login('github')} >Github</button>
-                <button className="btn Login-button modal-btn" onClick={() => login('google')} >Google</button>
+            <div className="flex flex-column">
+                <button
+                    className="btn Login-button modal-btn github-btn"
+                    onClick={() => login('github')}
+                >
+                    <i className="fab fa-github" />Sign in with GitHub
+                </button>
+                <button
+                    className="btn Login-button modal-btn google-btn"
+                    onClick={() => login('google')}
+                >
+                    <i className="fab fa-google-plus-g" />Sign in with Google
+                </button>
             </div>
             <div className="mt25">
                 <p className="no-margin">
