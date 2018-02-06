@@ -36,14 +36,15 @@ body {
     padding: 8px 16px; }
 
 .ad-theme-btn {
-  background: #f7f7f7;
-  border: 1px solid;
-  border-color: #dedede;
-  padding: 3px 8px;
-  font-size: 1rem; }
+  color: #759352;
+  border-radius: 3px;
+  padding: 15px 20px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-family: "Open Sans Semi Bold";
+  border: none; }
   .ad-theme-btn:hover, .ad-theme-btn.active {
-    color: #5a5a5a;
-    background: #eaeaea;
+    background: white;
     text-decoration: none; }
   .ad-theme-btn.primary:hover, .ad-theme-btn.primary.active {
     text-decoration: none; }
@@ -92,11 +93,9 @@ body {
     opacity: 0.6;
     cursor: not-allowed; }
   .ad-theme-btn.lg-btn {
-    font-size: 2rem;
     margin: 2%;
     padding-left: 50px;
-    padding-right: 50px;
-    border: 2px solid; }
+    padding-right: 50px; }
 
 .ad-theme-btn-transparent {
   background: transparent;
@@ -298,17 +297,19 @@ body {
   background: #B6EF7E; }
 
 .context-appbase .ad-theme-btn.primary {
-  color: #fff;
+  color: #759352;
   background: #B6EF7E;
-  border-color: #9ce951; }
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out; }
   .context-appbase .ad-theme-btn.primary:hover, .context-appbase .ad-theme-btn.primary.active {
-    background: #9ce951; }
+    background: #c3f295;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
   .context-appbase .ad-theme-btn.primary.transparent {
     background: #fff;
     color: #B6EF7E; }
     .context-appbase .ad-theme-btn.primary.transparent:hover, .context-appbase .ad-theme-btn.primary.transparent.active {
       background: #9ce951;
-      color: #fff; }
+      color: #759352; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar {
   background: #88a0fd; }
@@ -405,9 +406,11 @@ body {
 .context-reactivemaps .ad-theme-btn.primary {
   color: #fff;
   background: #CDDC39;
-  border-color: #b2c022; }
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out; }
   .context-reactivemaps .ad-theme-btn.primary:hover, .context-reactivemaps .ad-theme-btn.primary.active {
-    background: #b2c022; }
+    background: #d2e04f;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
   .context-reactivemaps .ad-theme-btn.primary.transparent {
     background: #fff;
     color: #CDDC39; }
@@ -510,9 +513,11 @@ body {
 .context-reactivesearch .ad-theme-btn.primary {
   color: #333;
   background: #FFD600;
-  border-color: #ccab00; }
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out; }
   .context-reactivesearch .ad-theme-btn.primary:hover, .context-reactivesearch .ad-theme-btn.primary.active {
-    background: #ccab00; }
+    background: #ffda1a;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
   .context-reactivesearch .ad-theme-btn.primary.transparent {
     background: #fff;
     color: #FFD600; }
@@ -533,11 +538,16 @@ body {
     font-size: 3.5em;
     font-family: "Open Sans Light"; }
   #login h2 {
-    padding: 5vh 10vw;
-    color: #999;
+    padding: 5vh 10vw 10px 10vw;
+    color: #242E44;
     margin: 0;
     font-size: 2.5rem;
-    font-family: "Open Sans Light"; }
+    font-family: "Open Sans Bold"; }
+  #login p {
+    font-family: "Open Sans Regular";
+    font-size: 1.2rem;
+    color: #242E44;
+    margin-bottom: 50px; }
 
 #login_modal.modal {
   margin-top: 20vh; }
@@ -1791,7 +1801,7 @@ header .appcard {
 
 .pricing-top {
   margin-top: 0;
-  padding-top: 110px;
+  padding-top: 150px;
   text-align: center;
   color: white;
   padding-top: 60px;

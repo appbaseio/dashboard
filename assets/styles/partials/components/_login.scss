@@ -12,11 +12,17 @@
 		font-family: $font-light;
 	}
 	h2 {
-		padding: 5vh 10vw;
-		color: #999;
+		padding: 5vh 10vw 10px 10vw;
+		color: $navy;
 		margin: 0;
 		font-size: 2.5rem;
-		font-family: $font-light;
+		font-family: $font-bold;
+	}
+	p {
+		font-family: $font-black;
+		font-size: 1.2rem;
+		color: $navy;
+		margin-bottom: 50px;
 	}
 }
 

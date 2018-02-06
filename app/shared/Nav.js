@@ -197,6 +197,8 @@ export default class Nav extends Component {
 							</ul>
 						</li>
 					);
+				} else {
+					generatedEle = <div>Login</div>
 				}
 			break;
 		}

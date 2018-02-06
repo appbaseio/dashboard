@@ -1,5 +1,5 @@
 $themes: (
-	context-appbase: (primary: #C7F4FF, accent: #B6EF7E, primaryfont: #232E44, dropdownfont: #333, buttoncolor: #fff),
+	context-appbase: (primary: #C7F4FF, accent: #B6EF7E, primaryfont: #232E44, dropdownfont: #333, buttoncolor: $d-green),
 	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #333, buttoncolor: #fff),
 	context-reactivesearch: (accent: #FFD600, primary: #2251D1, primaryfont: #fff, dropdownfont: #333, buttoncolor: #333)
 );
@@ -168,9 +168,11 @@ $map in $themes {
 			&.primary {
 				color: map-get($map, buttoncolor);
 				background: map-get($map, accent);
-				border-color: darken(map-get($map, accent), 10%);
+				box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+				transition: all 0.3s ease-in-out;
 				&:hover, &.active {
-					background: darken(map-get($map, accent), 10%);
+					background: lighten(map-get($map, accent), 5%);
+					box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
 				}
 				&.transparent {
 					background: #fff;

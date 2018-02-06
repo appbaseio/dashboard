@@ -50,35 +50,82 @@ const getContext = () => {
 	return context;
 }
 
-render((
-	<Router history={browserHistory}>
-		<Route path={getContext()} component={Main}>
-			<IndexRoute component={Default} />
-			<Route path="apps" component={AppList} />
-			<Route path="login" component={Login} />
-			<Route path="tutorial" component={Tutorial} />
-			<Route path="billing" component={Billing} />
-			<Route path="importer" component={Importer} />
-			<Route path="dashboard/:appId" component={Dashboard} 
-				{...appChangesEvent}
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'dashboard')}
-			/>
-			<Route path="browser/:appId" component={Browser} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
-			/>
-			<Route path="mappings/:appId" component={Gem} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mappings')}
-			/>
-			<Route path="builder/:appId" component={Mirage} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'builder')}
-			/>
-			<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'credentials')}
-			/>
-			<Route path="team/:appId" component={Team} {...appChangesEvent}
-				onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'team')}
-			/>
-		</Route>
-		<Route path="*" component={NotFound} />
-	</Router>
-), document.getElementById('appbase-dashboard'));
+class MainApp extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showModal: false
+		};
+		this.open = this.open.bind(this);
+		this.close = this.close.bind(this);
+		this.getNexturl = this.getNexturl.bind(this);
+		this.login = this.login.bind(this);
+	}
+
+	close() {
+		this.setState({ showModal: false });
+	}
+
+	open() {
+		this.setState({ showModal: true });
+	}
+
+	getNexturl() {
+		return localStorage.getItem("ad-login") ? localStorage.getItem("ad-login") : window.location.href;
+	}
+
+	login(provider) {
+		var baseURL = window.location.protocol + "//" + window.location.host + '/';
+		var redirectTo = appbaseService.address+'login/' + provider + '?next=' + this.getNexturl();
+		window.location.href = redirectTo;
+	}
+
+	/* React router throws a warning, should update to v4 */
+	render() {
+		return (
+			<Router history={browserHistory}>
+				<Route path={getContext()} component={Main}>
+					<IndexRoute component={Default} />
+					<Route path="apps" component={AppList} />
+					<Route
+						path="login"
+						component={
+							() =>
+								<Login
+									showModal={this.state.showModal}
+									close={this.close}
+									open={this.open}
+									login={this.login}
+								/>
+						}
+					/>
+					<Route path="tutorial" component={Tutorial} />
+					<Route path="billing" component={Billing} />
+					<Route path="importer" component={Importer} />
+					<Route path="dashboard/:appId" component={Dashboard} 
+						{...appChangesEvent}
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'dashboard')}
+					/>
+					<Route path="browser/:appId" component={Browser} {...appChangesEvent} 
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
+					/>
+					<Route path="mappings/:appId" component={Gem} {...appChangesEvent} 
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mappings')}
+					/>
+					<Route path="builder/:appId" component={Mirage} {...appChangesEvent} 
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'builder')}
+					/>
+					<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'credentials')}
+					/>
+					<Route path="team/:appId" component={Team} {...appChangesEvent}
+						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'team')}
+					/>
+				</Route>
+				<Route path="*" component={NotFound} />
+			</Router>
+		);
+	}
+}
+
+render(<MainApp />, document.getElementById('appbase-dashboard'));
