@@ -198,7 +198,7 @@ export default class Nav extends Component {
 						</li>
 					);
 				} else {
-					generatedEle = <div>Login</div>
+					generatedEle = <li><a onClick={this.props.open} className="login-nav">Login</a></li>
 				}
 			break;
 		}

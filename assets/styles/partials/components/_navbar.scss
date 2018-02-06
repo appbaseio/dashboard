@@ -82,7 +82,7 @@
 		a,
 		.extra-link {
 			font-size: 1rem;
-			padding: 1.5rem 25px;
+			padding: 0.8rem 25px;
 			&:hover,
 			&:focus {
 				outline: none;
@@ -114,6 +114,10 @@
 					}
 				}
 			}
+		}
+		.login-nav {
+			border: 1px solid $navy;
+			border-radius: 3px;
 		}
 	}
 	li.dropdown {

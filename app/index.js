@@ -61,7 +61,7 @@ export default class Main extends Component {
 		);
 		let dashboard = (
 			<div>
-				<Nav />
+				<Nav open={this.props.route.open} />
 				<div id="dashboard-container" className="container-fluid">
 					{this.props.children}
 				</div>

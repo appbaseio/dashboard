@@ -84,7 +84,7 @@ class MainApp extends React.Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
-				<Route path={getContext()} component={Main}>
+				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute component={Default} />
 					<Route path="apps" component={AppList} />
 					<Route

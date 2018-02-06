@@ -234,7 +234,8 @@ body {
   .context-appbase .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
     color: #C7F4FF; }
   .context-appbase .navbar.navbar-default .navbar-collapse {
-    background: #C7F4FF; }
+    background: #C7F4FF;
+    padding-top: 8px; }
   .context-appbase .navbar.navbar-default .navbar-toggle .icon-bar {
     background-color: #fff; }
   .context-appbase .navbar.navbar-default .navbar-toggle:hover, .context-appbase .navbar.navbar-default .navbar-toggle:focus {
@@ -341,7 +342,8 @@ body {
   .context-reactivemaps .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
     color: #5678FC; }
   .context-reactivemaps .navbar.navbar-default .navbar-collapse {
-    background: #5678FC; }
+    background: #5678FC;
+    padding-top: 8px; }
   .context-reactivemaps .navbar.navbar-default .navbar-toggle .icon-bar {
     background-color: #fff; }
   .context-reactivemaps .navbar.navbar-default .navbar-toggle:hover, .context-reactivemaps .navbar.navbar-default .navbar-toggle:focus {
@@ -448,7 +450,8 @@ body {
   .context-reactivesearch .navbar.navbar-default li.dropdown .dropdown-menu li a.active {
     color: #2251D1; }
   .context-reactivesearch .navbar.navbar-default .navbar-collapse {
-    background: #2251D1; }
+    background: #2251D1;
+    padding-top: 8px; }
   .context-reactivesearch .navbar.navbar-default .navbar-toggle .icon-bar {
     background-color: #fff; }
   .context-reactivesearch .navbar.navbar-default .navbar-toggle:hover, .context-reactivesearch .navbar.navbar-default .navbar-toggle:focus {
@@ -679,7 +682,7 @@ body {
     .navbar.navbar-default li a,
     .navbar.navbar-default li .extra-link {
       font-size: 1rem;
-      padding: 1.5rem 25px; }
+      padding: 0.8rem 25px; }
       .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus,
       .navbar.navbar-default li .extra-link:hover,
       .navbar.navbar-default li .extra-link:focus {
@@ -704,6 +707,9 @@ body {
         .navbar.navbar-default li .ad-user-info-list.visible-xs > li a {
           float: left;
           width: 100%; }
+    .navbar.navbar-default li .login-nav {
+      border: 1px solid #242E44;
+      border-radius: 3px; }
   .navbar.navbar-default li.dropdown > a {
     position: relative;
     padding-bottom: 8px; }

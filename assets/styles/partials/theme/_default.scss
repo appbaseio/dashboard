@@ -70,6 +70,7 @@ $map in $themes {
 			}
 			.navbar-collapse {
 				background: map-get($map, primary);
+				padding-top: 8px;
 			}
 			.navbar-toggle {
 				.icon-bar {
