@@ -32,6 +32,9 @@ $map in $themes {
 			}
 		}
 		.navbar.navbar-default {
+			.navbar-toggle {
+				border-color: $navy;
+			}
 			background: map-get($map, primary);
 			.navbar-brand {
 				color: map-get($map, primaryfont);
@@ -71,14 +74,15 @@ $map in $themes {
 			.navbar-collapse {
 				background: map-get($map, primary);
 				padding-top: 8px;
+				border-color: $navy;
 			}
 			.navbar-toggle {
 				.icon-bar {
-					background-color: #fff;
+					background-color: $navy;
 				}
 				&:hover,
 				&:focus {
-					background-color: #fff;
+					background-color: $navy;
 					.icon-bar {
 						background-color: map-get($map, primary);
 					}

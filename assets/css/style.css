@@ -216,6 +216,8 @@ body {
 
 .context-appbase .navbar.navbar-default {
   background: #C7F4FF; }
+  .context-appbase .navbar.navbar-default .navbar-toggle {
+    border-color: #242E44; }
   .context-appbase .navbar.navbar-default .navbar-brand {
     color: #232E44; }
   .context-appbase .navbar.navbar-default li a, .context-appbase .navbar.navbar-default li .extra-link {
@@ -235,11 +237,12 @@ body {
     color: #C7F4FF; }
   .context-appbase .navbar.navbar-default .navbar-collapse {
     background: #C7F4FF;
-    padding-top: 8px; }
+    padding-top: 8px;
+    border-color: #242E44; }
   .context-appbase .navbar.navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff; }
+    background-color: #242E44; }
   .context-appbase .navbar.navbar-default .navbar-toggle:hover, .context-appbase .navbar.navbar-default .navbar-toggle:focus {
-    background-color: #fff; }
+    background-color: #242E44; }
     .context-appbase .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-appbase .navbar.navbar-default .navbar-toggle:focus .icon-bar {
       background-color: #C7F4FF; }
 
@@ -324,6 +327,8 @@ body {
 
 .context-reactivemaps .navbar.navbar-default {
   background: #5678FC; }
+  .context-reactivemaps .navbar.navbar-default .navbar-toggle {
+    border-color: #242E44; }
   .context-reactivemaps .navbar.navbar-default .navbar-brand {
     color: #fff; }
   .context-reactivemaps .navbar.navbar-default li a, .context-reactivemaps .navbar.navbar-default li .extra-link {
@@ -343,11 +348,12 @@ body {
     color: #5678FC; }
   .context-reactivemaps .navbar.navbar-default .navbar-collapse {
     background: #5678FC;
-    padding-top: 8px; }
+    padding-top: 8px;
+    border-color: #242E44; }
   .context-reactivemaps .navbar.navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff; }
+    background-color: #242E44; }
   .context-reactivemaps .navbar.navbar-default .navbar-toggle:hover, .context-reactivemaps .navbar.navbar-default .navbar-toggle:focus {
-    background-color: #fff; }
+    background-color: #242E44; }
     .context-reactivemaps .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-reactivemaps .navbar.navbar-default .navbar-toggle:focus .icon-bar {
       background-color: #5678FC; }
 
@@ -432,6 +438,8 @@ body {
 
 .context-reactivesearch .navbar.navbar-default {
   background: #2251D1; }
+  .context-reactivesearch .navbar.navbar-default .navbar-toggle {
+    border-color: #242E44; }
   .context-reactivesearch .navbar.navbar-default .navbar-brand {
     color: #fff; }
   .context-reactivesearch .navbar.navbar-default li a, .context-reactivesearch .navbar.navbar-default li .extra-link {
@@ -451,11 +459,12 @@ body {
     color: #2251D1; }
   .context-reactivesearch .navbar.navbar-default .navbar-collapse {
     background: #2251D1;
-    padding-top: 8px; }
+    padding-top: 8px;
+    border-color: #242E44; }
   .context-reactivesearch .navbar.navbar-default .navbar-toggle .icon-bar {
-    background-color: #fff; }
+    background-color: #242E44; }
   .context-reactivesearch .navbar.navbar-default .navbar-toggle:hover, .context-reactivesearch .navbar.navbar-default .navbar-toggle:focus {
-    background-color: #fff; }
+    background-color: #242E44; }
     .context-reactivesearch .navbar.navbar-default .navbar-toggle:hover .icon-bar, .context-reactivesearch .navbar.navbar-default .navbar-toggle:focus .icon-bar {
       background-color: #2251D1; }
 
