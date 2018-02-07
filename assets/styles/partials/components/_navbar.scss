@@ -42,8 +42,6 @@
 			top: -3px;
 			position: absolute;
 			width: 65px;
-			max-height: 60px;
-			overflow: hidden;
 			.img-container {
 				display: inline-block;
 				position: relative;
@@ -103,6 +101,19 @@
 		.ad-user-info-list {
 			padding: 0;
 			list-style: none;
+			&:hover {
+				.user-img:before {
+					content: ' ';
+					position: absolute;
+					width: 0;
+					height: 0;
+					right: 0;
+					border: 32px solid;
+					border-color: white transparent transparent transparent;
+					transform: rotate(180deg);
+					margin-top: 23px;
+				}
+			}
 			&.visible-xs {
 				> li {
 					float: left;
@@ -110,6 +121,27 @@
 					a {
 						float: left;
 						width: 100%;
+					}
+				}
+			}
+			.ad-dropdown-menu {
+				.user-name {
+					color: $n-navy;
+					font-size: 1rem;
+					font-family: $font-light;
+				}
+				.user-email {
+					color: $n-navy;
+					font-size: 0.8rem;
+					font-family: $font-extra-light;
+				}
+				li:not(:first-child) {
+					border-top: 1px solid $separator-color;
+				}
+				li:hover {
+					background: $dark-grey;
+					a:hover {
+						background: $dark-grey;
 					}
 				}
 			}
@@ -146,8 +178,8 @@
 		}
 		&.logout-dropdown {
 			.dropdown-menu {
+				top: 75px;
 				left: -100px;
-				max-width: 160px;
 			}
 			li a {
 				font-size: 0.8rem;
@@ -156,7 +188,9 @@
 				display: block;
 				max-height: inherit;
 				.ai-dropdown-logout {
+					color: $alert-color;
 					font-size: 1rem;
+					font-family: $font-light;
 				}
 			}
 		}
@@ -200,9 +234,9 @@
 			left: 0;
 			margin-top: -11px;
 			right: auto;
-			background: $dark-grey;
 			max-height: 500px;
 			overflow: auto;
+			box-shadow: 0 6px 6px 0 rgba(0,0,0,0.1);
 			li {
 				height: auto;
 				a {

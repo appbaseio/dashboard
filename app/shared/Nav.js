@@ -38,7 +38,7 @@ export default class Nav extends Component {
 			link: `${this.contextPath}billing`,
 			type: 'internal'
 		}];
-		this.options = ['name', 'email', 'logout'];
+		this.options = ['name', 'logout'];
 		this.currentActiveApp = null;
 	}
 
@@ -172,9 +172,20 @@ export default class Nav extends Component {
 												<li key={item}>
 													<a onClick={() => this.logout(item)}>
 														{
+															item === 'name' &&
+															<div>
+																<div className="user-name">
+																	{appbaseService.userInfo.body.details.name}
+																</div>
+																<div className="user-email">
+																	{appbaseService.userInfo.body.details.email}
+																</div>
+															</div>
+														}
+														{
 															item === 'logout' ?
-															(<span className="text-danger ai-dropdown-logout"><i className="fa fa-sign-out"></i> Logout</span>) :
-															appbaseService.userInfo.body.details[item]
+															(<span className="text-danger ai-dropdown-logout">Logout</span>) :
+															null
 														}
 													</a>
 												</li>
@@ -191,7 +202,7 @@ export default class Nav extends Component {
 								</li>
 								<li>
 									<a onClick={() => this.logout('logout')}>
-										<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>
+										<span className="text-danger">Logout</span>
 									</a>
 								</li>
 							</ul>
