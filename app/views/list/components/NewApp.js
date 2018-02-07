@@ -172,10 +172,10 @@ export default class NewApp extends Component {
 	}
 	render() {
 		return (
-			<AppCard setClassName="appcard-newapp">
+			<AppCard setClassName="appcard-newapp col-md-3">
 				<div className="ad-list-newapp">
 					<button className="col-xs-12 ad-theme-btn primary" onClick={this.open} >
-						<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+						Create a New App
 					</button>
 					<Modal className="modal-info ad-list-newapp-modal" show={this.state.showModal} onHide={this.close}>
 						<Modal.Header closeButton>

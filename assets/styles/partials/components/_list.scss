@@ -10,7 +10,7 @@
 		padding: 15px 15px 25px;
 		font-size: 14px;
 		margin: 0 0 15px 0;
-		border-bottom: 1px solid darken($dark-grey, 10%);
+		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
 		.flexcontainer {
 			display: flex;
 			align-items: center;
@@ -19,7 +19,15 @@
 			font-size: 22px;
 			letter-spacing: 0.01em;
 			margin-top: 10px;
-			font-family: $font-semi-bold;
+			font-family: $font-bold;
+			color: $n-navy;
+			&.name {
+				font-size: 2.5rem;
+			}
+			&.quick-links {
+				font-size: 1.6rem;
+				font-family: $font-bold;
+			}
 		}
 		ul {
 			list-style: none;
@@ -28,8 +36,28 @@
 			padding: 0 2px;
 		}
 		p.description {
-			font-size: 1rem;
+			font-size: 1.2rem;
+			color: $n-navy;
 			padding-top: 10px;
+			padding-right: 20px;
+		}
+		.quick-links-list {
+			li {
+				margin: 2px 0;
+				color: $external-link-color;
+				&:first-child {
+					margin-left: 22px;
+				}
+			}
+			svg {
+				margin-right: 5px;
+			}
+			a {
+				color: $external-link-color;
+				text-decoration: none;
+				font-family: $font-black;
+				border-bottom: 1px solid $external-link-color;
+			}
 		}
 	}
 	.ad-list-container {

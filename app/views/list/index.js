@@ -21,8 +21,8 @@ const moment = require('moment');
 
 const AppIntro = (props) => {
 	return (
-		<AppCard {...props}>
-			<h3 className="title">Hi {props.name ? props.name.split(" ")[0] : null},</h3>
+		<AppCard {...props} setClassName="col-md-6">
+			<h3 className="title name">Hi {props.name ? props.name.split(" ")[0] : null},</h3>
 			<p className="description">
 				This is your apps manager view. Here, you can create a new app and manage your existing apps.
 			</p>
@@ -32,8 +32,8 @@ const AppIntro = (props) => {
 
 const AppTutorial = (props) => {
 	return (
-		<AppCard style={{"textAlign":"center"}} {...props}>
-			<h3 className="title">Quick Links</h3>
+		<AppCard style={{"textAlign":"center"}} {...props} setClassName="col-md-3">
+			<h3 className="title quick-links">Quick Links</h3>
 			{getConfig().quickLinks}
 		</AppCard>
 	);
@@ -228,7 +228,7 @@ export default class AppList extends Component {
 						"with-owner": this.isShared(app)
 					});
 					return (
-						<AppCard key={app.id}>
+						<AppCard key={app.id} setClassName="col-md-4">
 							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
 								<span className="ad-list-app-bg-container">
 									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
