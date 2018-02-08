@@ -5,6 +5,7 @@
 	background-color: #666 !important;
 }
 .ad-list {
+	background: rgba(237, 241, 242, 0.2);
 	.ad-list-header {
 		background: #fff;
 		padding: 15px 15px 25px;
@@ -62,6 +63,24 @@
 	}
 	.ad-list-container {
 		padding-bottom: 50px;
+		margin-top: 50px;
+		.ad-list-filters {
+			margin-bottom: 50px;
+		}
+		#sortby-menu {
+			padding: 5px 10px;
+			border-radius: 3px;
+			font-size: 1rem;
+			font-family: $font-black;
+			color: $n-navy;
+			background: white;
+			border: 1px solid #D9D8E4;
+			box-shadow: none;
+		}
+		.open #sortby-menu {
+			border-color: $external-link-color;
+			box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+		}
 		@media screen and (max-width: 768px) {
 			max-width: 500px;
 			margin: 0 auto;
@@ -224,8 +243,16 @@
 		display: inline-block;
 		margin-right: 10px;
 		input {
-			height: 30px;
-			width: 300px;
+			height: 35px;
+			width: 350px;
+			border: 1px solid #D9D8E4;
+			border-radius: 3px;
+			margin-right: 25px;
+			box-shadow: none;
+			&:focus {
+				border-color: $external-link-color;
+			box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+			}
 		}
 		@media screen and (max-width: 768px) {
 			max-width: calc(50% - 15px);
