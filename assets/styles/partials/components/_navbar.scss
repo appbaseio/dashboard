@@ -31,6 +31,12 @@
 			text-transform: none;
 			padding-left: 8px;
 		}
+		@media all and (max-width: 880px) {
+			display: none;
+		}
+		@media all and (max-width: 768px) {
+			display: inline-block;
+		}
 	}
 	.user-img-container {
 		position: relative;

@@ -1,14 +1,48 @@
 .ad-detail-page {
 	margin: 0;
+	.flex {
+		display: flex;
+	}
+	.flex-column {
+		flex-direction: column;
+	}
 	.ad-detail-page-header {
 		background: #fff;
-		padding: 22px 15px;
+		padding: 35px 70px;
 		border-bottom: 1px solid darken($dark-grey, 10%);
 		position: relative;
-		.ad-detail-page-title {
-			font-size: 1.7rem;
-			line-height: 2.2rem;
+		color: $n-navy;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		border: none;
+		@media all and (max-width: 768px) {
+			flex-direction: column;
+			align-items: flex-start;
+			padding: 40px 20px;
+			div {
+				margin: 10px 0;
+			}
+			.ad-theme-btn {
+				margin: 10px 0;
+			}
+		}
+		.ad-theme-btn {
+			font-size: 0.9rem;
+			letter-spacing: 1px;
+			text-decoration: none;
 			font-family: $font-semi-bold;
+			padding: 15px 30px;
+			margin-right: 120px;
+			@media all and (max-width: 1200px) {
+				margin-right: 0;
+			}
+		}
+		.ad-detail-page-title {
+			font-size: 2.5rem;
+			line-height: 2.2rem;
+			font-family: $font-bold;
 			margin: 0;
 			display: inline-block;
 		}
@@ -20,8 +54,8 @@
 		&.header-inline-summary {
 			p {
 				display: inline;
-				padding-left: 10px;
-				margin: 0px 0 3px 0;
+				margin: 12px 0;
+				font-size: 1.2rem;
 			}
 			@media (max-width: 992px) {
 				p {

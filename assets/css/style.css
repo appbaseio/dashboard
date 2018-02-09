@@ -661,6 +661,12 @@ body {
       font-family: "Open Sans Regular";
       text-transform: none;
       padding-left: 8px; }
+    @media all and (max-width: 880px) {
+      .navbar.navbar-default .navbar-brand {
+        display: none; } }
+    @media all and (max-width: 768px) {
+      .navbar.navbar-default .navbar-brand {
+        display: inline-block; } }
   .navbar.navbar-default .user-img-container {
     position: relative;
     padding-right: 15px; }
@@ -1330,15 +1336,44 @@ body {
 
 .ad-detail-page {
   margin: 0; }
+  .ad-detail-page .flex {
+    display: flex; }
+  .ad-detail-page .flex-column {
+    flex-direction: column; }
   .ad-detail-page .ad-detail-page-header {
     background: #fff;
-    padding: 22px 15px;
+    padding: 35px 70px;
     border-bottom: 1px solid #dedede;
-    position: relative; }
-    .ad-detail-page .ad-detail-page-header .ad-detail-page-title {
-      font-size: 1.7rem;
-      line-height: 2.2rem;
+    position: relative;
+    color: #232E44;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
+    border: none; }
+    @media all and (max-width: 768px) {
+      .ad-detail-page .ad-detail-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 40px 20px; }
+        .ad-detail-page .ad-detail-page-header div {
+          margin: 10px 0; }
+        .ad-detail-page .ad-detail-page-header .ad-theme-btn {
+          margin: 10px 0; } }
+    .ad-detail-page .ad-detail-page-header .ad-theme-btn {
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-decoration: none;
       font-family: "Open Sans Semi Bold";
+      padding: 15px 30px;
+      margin-right: 120px; }
+      @media all and (max-width: 1200px) {
+        .ad-detail-page .ad-detail-page-header .ad-theme-btn {
+          margin-right: 0; } }
+    .ad-detail-page .ad-detail-page-header .ad-detail-page-title {
+      font-size: 2.5rem;
+      line-height: 2.2rem;
+      font-family: "Open Sans Bold";
       margin: 0;
       display: inline-block; }
     .ad-detail-page .ad-detail-page-header .ad-detail-page-header-sidebar {
@@ -1347,8 +1382,8 @@ body {
       padding: 0; }
     .ad-detail-page .ad-detail-page-header.header-inline-summary p {
       display: inline;
-      padding-left: 10px;
-      margin: 0px 0 3px 0; }
+      margin: 12px 0;
+      font-size: 1.2rem; }
     @media (max-width: 992px) {
       .ad-detail-page .ad-detail-page-header.header-inline-summary p {
         display: block;
