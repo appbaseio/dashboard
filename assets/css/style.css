@@ -722,11 +722,12 @@ body {
         max-width: 0.9rem;
         margin-right: 5px; }
     .navbar.navbar-default li .apps-dropdown-toggle {
-      position: relative; }
+      position: relative;
+      font-family: "Open Sans Semi Bold"; }
       .navbar.navbar-default li .apps-dropdown-toggle .dropdown-chevron {
         position: absolute;
         left: -0.1rem;
-        top: 1.65rem; }
+        top: 1rem; }
     .navbar.navbar-default li .ad-user-info-list {
       padding: 0;
       list-style: none; }
@@ -772,9 +773,9 @@ body {
     .navbar.navbar-default li.dropdown > a:before {
       content: " ";
       position: absolute;
-      right: 1px;
-      bottom: 12px;
-      border-width: 4px;
+      right: 0;
+      bottom: 8px;
+      border-width: 6px;
       border-style: solid; }
     .navbar.navbar-default li.dropdown > a:hover {
       background: transparent; }
@@ -804,11 +805,11 @@ body {
   .navbar.navbar-default li.dropdown:hover > a:after {
     content: " ";
     position: absolute;
-    right: 1px;
-    bottom: 0;
-    border-width: 4px;
+    right: -20px;
+    bottom: -20px;
+    border-width: 25px;
     border-style: solid;
-    border-color: transparent transparent #f7f7f7 transparent; }
+    border-color: transparent transparent white transparent; }
   .navbar.navbar-default li.dropdown a {
     margin-bottom: 0; }
   .navbar.navbar-default li.dropdown:hover .dropdown-menu {
@@ -820,11 +821,16 @@ body {
     left: 0;
     margin-top: -11px;
     right: auto;
-    max-height: 500px;
+    max-height: 400px;
     overflow: auto;
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.1); }
     .navbar.navbar-default li.dropdown .dropdown-menu li {
-      height: auto; }
+      height: auto;
+      font-family: "Open Sans Light"; }
+      .navbar.navbar-default li.dropdown .dropdown-menu li:hover {
+        background-color: #f7f7f7; }
+      .navbar.navbar-default li.dropdown .dropdown-menu li:not(:first-child) {
+        border-top: 1px solid #D9D8E4; }
       .navbar.navbar-default li.dropdown .dropdown-menu li a {
         border-radius: 0;
         margin: 0;
@@ -838,6 +844,8 @@ body {
             left: 10px;
             margin-top: 3px;
             max-width: 22px; }
+        .navbar.navbar-default li.dropdown .dropdown-menu li a:hover {
+          background: transparent !important; }
   .navbar.navbar-default .navbar-collapse {
     padding: 0; }
     .navbar.navbar-default .navbar-collapse.in .navbar-nav {
