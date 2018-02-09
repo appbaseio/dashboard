@@ -782,19 +782,21 @@ body {
   .navbar.navbar-default li.dropdown.without-icon > a:before,
   .navbar.navbar-default li.dropdown.without-icon > a:after {
     display: none; }
-  .navbar.navbar-default li.dropdown.logout-dropdown .dropdown-menu {
-    top: 75px;
-    left: -100px; }
-  .navbar.navbar-default li.dropdown.logout-dropdown li a {
-    font-size: 0.8rem;
-    white-space: inherit;
-    word-break: break-all;
-    display: block;
-    max-height: inherit; }
-    .navbar.navbar-default li.dropdown.logout-dropdown li a .ai-dropdown-logout {
-      color: #EC4545;
-      font-size: 1rem;
-      font-family: "Open Sans Light"; }
+  .navbar.navbar-default li.dropdown.logout-dropdown {
+    padding-bottom: 70px; }
+    .navbar.navbar-default li.dropdown.logout-dropdown .dropdown-menu {
+      top: 75px;
+      left: -100px; }
+    .navbar.navbar-default li.dropdown.logout-dropdown li a {
+      font-size: 0.8rem;
+      white-space: inherit;
+      word-break: break-all;
+      display: block;
+      max-height: inherit; }
+      .navbar.navbar-default li.dropdown.logout-dropdown li a .ai-dropdown-logout {
+        color: #EC4545;
+        font-size: 1rem;
+        font-family: "Open Sans Light"; }
   .navbar.navbar-default li.dropdown.open > a {
     color: #fff;
     background: transparent; }
