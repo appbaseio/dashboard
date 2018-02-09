@@ -16,7 +16,6 @@
 		justify-content: space-between;
 		align-items: center;
 		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
-		border: none;
 		@media all and (max-width: 768px) {
 			flex-direction: column;
 			align-items: flex-start;
@@ -73,7 +72,10 @@
 		}
 	}
 	.ad-detail-page-body {
-		padding: 15px;
+		padding: 30px 120px 15px 70px;
+		@media all and (max-width: 1200px) {
+			padding-right: 50px;
+		}
 		>[class*="col-"] {
 			padding-left: 0;
 			&:last-child {
@@ -87,9 +89,7 @@
 			background: #fff;
 			margin-bottom: 20px;
 			border: 1px solid transparent;
-			border-radius: 3px;
-			-webkit-box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
-			box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
+			box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
 			.ad-detail-page-body-card-title {
 				background-color: #fff;
 				padding: 10px 15px;
