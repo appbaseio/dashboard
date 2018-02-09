@@ -15,6 +15,9 @@
 		.flexcontainer {
 			display: flex;
 			align-items: center;
+			@media all and (max-width: 768px) {
+				flex-direction: column;
+			}
 		}
 		h3 {
 			font-size: 22px;
