@@ -120,7 +120,7 @@ $map in $themes {
 			}
 		}
 		.ad-list {
-			.ad-list-app {
+			.ad-list-app:hover {
 				border-left: 3px solid map-get($map, accent);
 			}
 			.ad-list-app-bg-container {

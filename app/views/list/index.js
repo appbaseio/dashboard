@@ -13,7 +13,6 @@ import SortBy from './components/SortBy';
 import FilterByAppname from './components/FilterByAppname';
 import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
-import CloneApp from './components/CloneApp';
 import { getConfig } from '../../config';
 import { OldDashboard } from '../../shared/SharedComponents';
 
@@ -231,14 +230,13 @@ export default class AppList extends Component {
 						<AppCard key={app.id} setClassName="col-md-4">
 							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
 								<span className="ad-list-app-bg-container">
-									<i className={`fa ${this.config.cardIcon} ad-list-app-bg`}></i>
+									<i className="ad-list-app-bg" />
 								</span>
 								<main className="ad-list-app-content">
 									<header className={`ad-list-app-header ${cx}`}>
 										<div className="ad-list-title-container">
 											<AppOwner app={app} />
 											<h3 className="title">{app.appname}</h3>
-											<CloneApp app={app} />
 										</div>
 									</header>
 									<div className="description">
@@ -246,7 +244,7 @@ export default class AppList extends Component {
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														<Circle percent={appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
@@ -262,7 +260,7 @@ export default class AppList extends Component {
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														<Circle percent={appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
