@@ -205,11 +205,7 @@ body {
   background: #ddd; }
 
 .context-appbase .ad-detail .ad-detail-sidebar {
-  background: #fafeff; }
-  .context-appbase .ad-detail .ad-detail-sidebar li a:hover, .context-appbase .ad-detail .ad-detail-sidebar li a.active {
-    background: #C7F4FF; }
-  .context-appbase .ad-detail .ad-detail-sidebar li a.active {
-    border-color: #B6EF7E; }
+  background: #AEECFC; }
 
 .context-appbase .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a {
   color: #232E44; }
@@ -316,11 +312,7 @@ body {
       color: #759352; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar {
-  background: #88a0fd; }
-  .context-reactivemaps .ad-detail .ad-detail-sidebar li a:hover, .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
-    background: #5678FC; }
-  .context-reactivemaps .ad-detail .ad-detail-sidebar li a.active {
-    border-color: #CDDC39; }
+  background: #AEECFC; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a {
   color: #fff; }
@@ -427,11 +419,7 @@ body {
       color: #fff; }
 
 .context-reactivesearch .ad-detail .ad-detail-sidebar {
-  background: #456fe1; }
-  .context-reactivesearch .ad-detail .ad-detail-sidebar li a:hover, .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
-    background: #2251D1; }
-  .context-reactivesearch .ad-detail .ad-detail-sidebar li a.active {
-    border-color: #FFD600; }
+  background: #AEECFC; }
 
 .context-reactivesearch .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a {
   color: #fff; }
@@ -1214,7 +1202,7 @@ body {
 
 .ad-detail {
   position: relative;
-  padding: 0 0 0 84px;
+  padding: 0 0 0 100px;
   margin: 0;
   height: 100%; }
   .ad-detail .ad-detail-view-container {
@@ -1253,24 +1241,25 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 84px;
+    width: 100px;
     height: 100%;
     padding-top: 0;
     z-index: 2; }
     .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container {
       list-style: none;
-      padding: 0; }
+      padding: 0;
+      padding-top: 35px; }
       .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li {
         text-align: center;
-        font-size: 0.8rem;
-        text-transform: uppercase; }
+        font-size: 1rem;
+        font-family: "Open Sans Regular"; }
         .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a {
           padding: 15px 5px 15px 2px;
           display: block;
           border-left: 5px solid transparent; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a .img-container {
             border-radius: 50%;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.4);
             width: 40px;
             height: 40px;
             margin: 0 auto 5px auto; }
@@ -1280,6 +1269,8 @@ body {
               padding: 5px; }
           .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active {
             text-decoration: none; }
+            .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a:hover .img-container, .ad-detail .ad-detail-sidebar .ad-detail-sidebar-container li a.active .img-container {
+              background: white; }
 
 .loadingBar {
   position: fixed;
@@ -1325,7 +1316,7 @@ body {
   padding: 0; }
 
 #dashboard-container {
-  padding: 110px 0 0 0;
+  padding: 100px 0 0 0;
   position: absolute;
   right: 0;
   top: 0;

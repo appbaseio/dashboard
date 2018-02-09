@@ -8,14 +8,11 @@ $map in $themes {
 	.#{$theme} {
 		.ad-detail {
 			.ad-detail-sidebar {
-				background: lighten(map-get($map, primary), 10%);
+				background: $sidebar-color;
 				li a {
 					&:hover,
 					&.active {
-						background: map-get($map, primary);
-					}
-					&.active {
-						border-color: map-get($map, accent);
+						
 					}
 				}
 			}
