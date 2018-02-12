@@ -23,11 +23,11 @@ export default class ApiCallsView extends Component {
 					<div className="col-xs-12">
 						<div className="col-xs-12 col-sm-6 progress-container">
 							<span className="progress-wrapper">
-								<Circle percent={this.props.appCount.action.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+								<Circle percent={this.props.appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
 							</span>
 							<div className="progress-text">
 								<div className="sub-title">
-									Api calls
+									API calls
 								</div>
 								{
 									this.props.plan ? (
@@ -41,7 +41,7 @@ export default class ApiCallsView extends Component {
 						</div>
 						<div className="col-xs-12 col-sm-6 progress-container">
 							<span className="progress-wrapper">
-								<Circle percent={this.props.appCount.records.percentage} strokeWidth="20" trailWidth="20" trailColor={this.trailColor} strokeColor={this.themeColor} />
+								<Circle percent={this.props.appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
 							</span>
 							<div className="progress-text">
 								<div className="sub-title">

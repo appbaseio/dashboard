@@ -92,8 +92,11 @@
 			box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
 			.ad-detail-page-body-card-title {
 				background-color: #fff;
+				color: $n-navy;
 				padding: 10px 15px;
-				font-size: 1.5rem;
+				font-size: 1.3rem;
+				font-family: $font-bold;
+				margin-bottom: 20px;
 				&.with-border {
 					border-bottom: 1px solid darken($dark-grey, 10%);
 				}

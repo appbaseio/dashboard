@@ -275,14 +275,14 @@
 	}
 	.progress-container {
 		position: relative;
-		padding-left: 48px;
 		min-height: 40px;
+		padding-left: 48px;
 		.progress-wrapper {
 			position: absolute;
 			left: 0;
+			display: inline-block;
 			width: 40px;
 			height: 40px;
-			display: inline-block;
 		}
 		.progress-text {
 			float: left;
@@ -294,12 +294,48 @@
 			padding: 3px 0 0 0;
 		}
 		.sub-title {
-			font-family: $font-semi-bold;
-			text-transform: uppercase;
+			font-family: $font-black;
 			color: $n-navy;
-			font-size: 12px;
+			font-size: 1rem;
 			letter-spacing: 0.02em;
 			padding: 0 0 5px 0;
+		}
+		@media screen and (max-width: 768px) {
+			margin-bottom: 15px;
+		}
+	}
+}
+.ad-detail-page-body .ad-metrics-summary {
+	> [class*="col-"] {
+		padding-right: 0;
+	}
+	.progress-container {
+		position: relative;
+		min-height: 40px;
+		padding-left: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		@media all and (max-width: 768px) {
+			flex-direction: row;
+		}
+		.progress-wrapper {
+			position: relative;
+			width: 80px;
+			height: 80px;
+		}
+		.progress-text {
+			float: left;
+			letter-spacing: 0.02em;
+			word-spacing: 0.1em;
+			color: $n-navy;
+			font-size: 11px;
+			line-height: 14px;
+			padding: 20px 0 0 0;
+			@media all and (max-width: 768px) {
+				padding-top: 0;
+				padding-left: 20px;
+			}
 		}
 		@media screen and (max-width: 768px) {
 			margin-bottom: 15px;

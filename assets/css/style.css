@@ -1169,14 +1169,14 @@ body {
 
 .ad-metrics-summary .progress-container {
   position: relative;
-  padding-left: 48px;
-  min-height: 40px; }
+  min-height: 40px;
+  padding-left: 48px; }
   .ad-metrics-summary .progress-container .progress-wrapper {
     position: absolute;
     left: 0;
+    display: inline-block;
     width: 40px;
-    height: 40px;
-    display: inline-block; }
+    height: 40px; }
   .ad-metrics-summary .progress-container .progress-text {
     float: left;
     letter-spacing: 0.02em;
@@ -1186,14 +1186,46 @@ body {
     line-height: 14px;
     padding: 3px 0 0 0; }
   .ad-metrics-summary .progress-container .sub-title {
-    font-family: "Open Sans Semi Bold";
-    text-transform: uppercase;
+    font-family: "Open Sans Regular";
     color: #232E44;
-    font-size: 12px;
+    font-size: 1rem;
     letter-spacing: 0.02em;
     padding: 0 0 5px 0; }
   @media screen and (max-width: 768px) {
     .ad-metrics-summary .progress-container {
+      margin-bottom: 15px; } }
+
+.ad-detail-page-body .ad-metrics-summary > [class*="col-"] {
+  padding-right: 0; }
+
+.ad-detail-page-body .ad-metrics-summary .progress-container {
+  position: relative;
+  min-height: 40px;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  @media all and (max-width: 768px) {
+    .ad-detail-page-body .ad-metrics-summary .progress-container {
+      flex-direction: row; } }
+  .ad-detail-page-body .ad-metrics-summary .progress-container .progress-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px; }
+  .ad-detail-page-body .ad-metrics-summary .progress-container .progress-text {
+    float: left;
+    letter-spacing: 0.02em;
+    word-spacing: 0.1em;
+    color: #232E44;
+    font-size: 11px;
+    line-height: 14px;
+    padding: 20px 0 0 0; }
+    @media all and (max-width: 768px) {
+      .ad-detail-page-body .ad-metrics-summary .progress-container .progress-text {
+        padding-top: 0;
+        padding-left: 20px; } }
+  @media screen and (max-width: 768px) {
+    .ad-detail-page-body .ad-metrics-summary .progress-container {
       margin-bottom: 15px; } }
 
 .ad-list-newapp-modal .ad-list-newapp-footer .ad-list-newapp-footer-toolbar {
@@ -1413,8 +1445,11 @@ body {
       box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05); }
       .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title {
         background-color: #fff;
+        color: #232E44;
         padding: 10px 15px;
-        font-size: 1.5rem; }
+        font-size: 1.3rem;
+        font-family: "Open Sans Bold";
+        margin-bottom: 20px; }
         .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title.with-border {
           border-bottom: 1px solid #dedede; }
         .ad-detail-page .ad-detail-page-body .ad-detail-page-body-card .ad-detail-page-body-card-title .text-danger {
