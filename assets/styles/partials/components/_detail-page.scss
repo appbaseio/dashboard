@@ -105,6 +105,21 @@
 					font-weight: normal;
 					padding-top: 50px;
 				}
+				.charts-api-calls {
+					font-size: 1rem;
+					font-family: $font-black;
+					.dropdown-toggle {
+						text-transform: capitalize;
+						padding: 5px 12px;
+						background: white;
+						border: 1px solid #D9D8E4;
+						border-radius: 3px;
+					}
+				}
+				.open #sortby-menu {
+					border-color: $external-link-color;
+					box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+				}
 			}
 		}
 		&.other-page-body {
