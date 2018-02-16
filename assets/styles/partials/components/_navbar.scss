@@ -12,6 +12,9 @@
 	.container-fluid {
 		margin-top: 20px;
 	}
+	.nav-container {
+		max-width: 1350px;
+	}
 	.navbar-brand {
 		height: 60px;
 		font-size: 1.75rem;
@@ -84,7 +87,7 @@
 		height: 60px;
 		a,
 		.extra-link {
-			font-size: 1rem;
+			font-size: 1.2rem;
 			padding: 0.8rem 25px;
 			&:hover,
 			&:focus {

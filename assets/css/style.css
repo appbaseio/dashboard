@@ -644,6 +644,8 @@ body {
   color: #232E44; }
   .navbar.navbar-default .container-fluid {
     margin-top: 20px; }
+  .navbar.navbar-default .nav-container {
+    max-width: 1350px; }
   .navbar.navbar-default .navbar-brand {
     height: 60px;
     font-size: 1.75rem;
@@ -704,7 +706,7 @@ body {
     height: 60px; }
     .navbar.navbar-default li a,
     .navbar.navbar-default li .extra-link {
-      font-size: 1rem;
+      font-size: 1.2rem;
       padding: 0.8rem 25px; }
       .navbar.navbar-default li a:hover, .navbar.navbar-default li a:focus,
       .navbar.navbar-default li .extra-link:hover,
@@ -1655,6 +1657,10 @@ body {
 
 .ad-detail-page-body-card-body .permission-card:last-child {
   border: 0; }
+
+@media all and (min-width: 768px) {
+  .modal-dialog {
+    margin-top: 200px; } }
 
 .modal .modal-header {
   border: 0;

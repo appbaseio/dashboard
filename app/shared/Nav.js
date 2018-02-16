@@ -142,7 +142,7 @@ export default class Nav extends Component {
 			case 'links':
 				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1);
 				generatedEle = links.map((item, index) => {
-					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
+					let anchor = (<a href={item.link} target="_blank"><i className="fas fa-external-link-square-alt"></i>&nbsp;{item.label}</a>);
 					if(item.type === 'internal') {
 						anchor = (<Link to={item.link}>{item.label}</Link>);
 					}
@@ -228,7 +228,7 @@ export default class Nav extends Component {
 		});
 		return (
 			<nav className="navbar navbar-default">
-				<div className="container-fluid col-lg-10 col-lg-offset-1">
+				<div className="container-fluid nav-container">
 					<div className="navbar-header">
 						<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 							<span className="sr-only">Toggle navigation</span>
