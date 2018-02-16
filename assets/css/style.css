@@ -36,7 +36,7 @@ body {
     padding: 8px 16px; }
 
 .ad-theme-btn {
-  color: #759352;
+  color: #53683B;
   border-radius: 3px;
   padding: 15px 20px;
   font-size: 1rem;
@@ -297,7 +297,7 @@ body {
   background: #B6EF7E; }
 
 .context-appbase .ad-theme-btn.primary {
-  color: #759352;
+  color: #53683B;
   background: #B6EF7E;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out; }
@@ -309,7 +309,7 @@ body {
     color: #B6EF7E; }
     .context-appbase .ad-theme-btn.primary.transparent:hover, .context-appbase .ad-theme-btn.primary.transparent.active {
       background: #9ce951;
-      color: #759352; }
+      color: #53683B; }
 
 .context-reactivemaps .ad-detail .ad-detail-sidebar {
   background: #AEECFC; }
