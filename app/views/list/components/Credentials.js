@@ -48,7 +48,7 @@ export default class Credentials extends Component {
 			return (
 				<div>
 					<CopyToClipboard onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-						<button {...common.isDisabled(!this.state.credentials)} title={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
+						<button {...common.isDisabled(!this.state.credentials)} aria-label={`Copy ${this.props.label} Credentials`} data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer" data-clipboard-text={this.state.credentials}>
 							{this.props.I}<i className={`fas ${this.props.icon}`}></i>
 						</button>
 					</CopyToClipboard>

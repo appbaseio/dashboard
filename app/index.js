@@ -6,6 +6,7 @@ import Nav from './shared/Nav';
 import { intercomService } from './shared/helper';
 
 require("../dist/css/style.min.css");
+import 'rc-tooltip/assets/bootstrap_white.css';
 
 export default class Main extends Component {
 	constructor(props) {

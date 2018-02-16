@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ReactTooltip from 'react-tooltip';
 import {Loader} from 'react-loaders';
+import Tooltip from 'rc-tooltip';
 import { appbaseService } from '../service/AppbaseService';
 import { getConfig } from '../config';
 
@@ -12,10 +12,14 @@ export const AppOwner =(props) => {
 		<span className="ad-list-app-header-owner">
 			{
 				isDifferentOwner() ? (
-					<span>
-						<i data-tip={`Shared by ${props.app.owner}`} data-effect="solid" data-place="right" className="fa fa-share-alt app-owner-i"></i>
-						<ReactTooltip />
-					</span>
+					<Tooltip
+						overlay={<div>{`Shared by ${props.app.owner}`}</div>}
+						mouseLeaveDelay={0}
+					>
+						<span>
+							<i aria-label={`Shared by ${props.app.owner}`} data-effect="solid" data-place="right" className="fa fa-share-alt app-owner-i"></i>
+						</span>
+					</Tooltip>
 				) : null
 			}
 		</span>

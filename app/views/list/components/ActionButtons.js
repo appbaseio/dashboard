@@ -1,4 +1,5 @@
 import React,{ Component } from 'react';
+import Tooltip from 'rc-tooltip';
 import { appbaseService } from '../../../service/AppbaseService';
 import DeleteApp from './DeleteApp';
 import Credentials from './Credentials';
@@ -22,20 +23,40 @@ export default class ActionButtons extends Component {
 	render() {
 		return (
 			<aside className="options" onClick={this.stopBubble}>
-				<div className="options-item">
-					<CloneApp app={this.props.app} />
-				</div>
-				<div className="options-item">
-					<Credentials data-tip="Copy read Credentials" {...this.props} type="readPermission" label="Read" icon="fa-eye" />
-				</div>
-				<div className="options-item">
-					<Credentials data-tip="Copy write Credentials" {...this.props} type="writePermission" label="Write" icon="fa-key" />
-				</div>
+				<Tooltip
+					overlay={<div>Clone this app</div>}
+					mouseLeaveDelay={0}
+				>
+					<div className="options-item">
+						<CloneApp app={this.props.app} />
+					</div>
+				</Tooltip>
+				<Tooltip
+					overlay={<div>Copy read Credentials</div>}
+					mouseLeaveDelay={0}
+				>
+					<div className="options-item">
+						<Credentials {...this.props} type="readPermission" label="Read" icon="fa-eye" />
+					</div>
+				</Tooltip>
+				<Tooltip
+					overlay={<div>Copy write Credentials</div>}
+					mouseLeaveDelay={0}
+				>
+					<div className="options-item">
+						<Credentials {...this.props} type="writePermission" label="Write" icon="fa-key" />
+					</div>
+				</Tooltip>
 				{
 					!this.isDifferentOwner() ? (
-						<div className="options-item">
-							<DeleteApp {...this.props} />
-						</div>
+						<Tooltip
+							overlay={<div>Delete app</div>}
+							mouseLeaveDelay={0}
+						>
+							<div className="options-item">
+								<DeleteApp {...this.props} />
+							</div>
+						</Tooltip>
 					) : null
 				}
 			</aside>

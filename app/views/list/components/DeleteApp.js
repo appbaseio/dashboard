@@ -42,7 +42,7 @@ export default class DeleteApp extends Component {
 				type="danger"
 				onClose={this.setAside}
 			>
-				<button title="Delete app" data-tip="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer">
+				<button aria-label="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer">
 					<i className="fas fa-trash-alt"></i>
 				</button>
 			</ConfirmBox>

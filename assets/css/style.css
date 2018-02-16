@@ -2204,3 +2204,12 @@ body {
     background: #fff; }
     .ad-importer .ad-importer-close:hover {
       background: #FF8484; }
+
+.rc-tooltip {
+  opacity: 1; }
+  .rc-tooltip .rc-tooltip-arrow {
+    border-right-color: #232E44;
+    border-left-color: #232E44; }
+  .rc-tooltip .rc-tooltip-inner {
+    color: #232E44;
+    border-color: #232E44; }

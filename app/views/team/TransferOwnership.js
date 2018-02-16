@@ -1,6 +1,5 @@
 import React,{ Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import ReactTooltip from 'react-tooltip';
 import ConfirmBox from '../../shared/ConfirmBox';
 import { appbaseService } from '../../service/AppbaseService';
 import { Loading } from "../../shared/SharedComponents";

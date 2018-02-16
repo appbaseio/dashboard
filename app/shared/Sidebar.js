@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router';
-import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
 import { eventEmitter } from './helper';
 import { getConfig } from '../config';
