@@ -133,8 +133,8 @@ export default class PermissionCard extends Component {
 								{this.state.credentials}
 							</div>
 							<div className="ad-permission-key-buttons">
-								<a className="ad-credential-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
-									<i className={`fa fa-${lock}`}></i>
+								<a className="ad-credential-btn ad-permission-key-lock-btn" key={lock} onClick={() => this.toggleKey()}>
+									<i className={`fas fa-${lock}`}></i>
 								</a>
 								<CopyToClipboard type="danger" onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
 									<a className="ad-credential-btn ad-permission-key-copy-btn"

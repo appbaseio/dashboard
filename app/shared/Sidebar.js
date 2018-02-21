@@ -116,6 +116,7 @@ export default class Sidebar extends Component {
 						<Tooltip
 							overlay={<div>{item.tooltip}</div>}
 							mouseLeaveDelay={0}
+							key={index}
 						>
 							<li className="ad-detail-sidebar-item" key={index}>
 								{anchor}

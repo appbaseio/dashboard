@@ -70,14 +70,14 @@ export default class NewPermission extends Component {
 		switch(method) {
 			case 'description':
 				element = (
-					<div className="col-xs-12 ad-create-email">
+					<div className="ad-create-email">
 						<Description updateDescription={this.updateDescription} clearInput={this.state.clearInput} />
 					</div>
 				);
 			break;
 			case 'buttonGroup':
 					element = (
-						<span className="ad-create-button-group without-margin col-xs-9">
+						<span className="ad-create-button-group without-margin">
 							{
 								Object.keys(this.types).map((type, index) => {
 									return (
@@ -105,18 +105,20 @@ export default class NewPermission extends Component {
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.expand}>
-						<i className="fa fa-plus"></i>&nbsp;&nbsp;New Credentials
+						New Credentials
 					</a>
 				</div>
-				<div className="ad-create-expand row">
-					{this.renderElement('description')}
-					<div className="ad-create-button-group-container">
-						{this.renderElement('buttonGroup')}
-						<span className="col-xs-3">
-							<button className="ad-theme-btn primary ad-create-submit" onClick={this.newPermission}>
-								<i className="fa fa-plus"></i>&nbsp;&nbsp;Create
-							</button>
-						</span>
+				<div className="ad-create-expand flex align-center justify-between">
+					<div>
+						{this.renderElement('description')}
+						<div className="ad-create-button-group-container">
+							{this.renderElement('buttonGroup')}
+						</div>
+					</div>
+					<div>
+						<button className="ad-theme-btn primary ad-create-submit" onClick={this.newPermission}>
+							Create
+						</button>
 					</div>
 				</div>
 			</div>
@@ -163,8 +165,9 @@ const PermissionButton = (props) => {
 		"active": props.selectedType === props.type
 	});
 	return (
-		<button className={`ad-create-button-group-btn ad-theme-btn col-xs-4 ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
-			{props.description}
-		</button>
+		<label className="radio-inline">
+			<input type="radio" name={props.type} checked={props.selectedType === props.type} onChange={props.onSelect && (() => props.onSelect(props.type))} /> {props.description}
+			<span className="checkmark"></span>
+		</label>
 	);
 };
