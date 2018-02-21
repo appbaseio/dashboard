@@ -858,7 +858,7 @@ body {
       font-family: "Open Sans Regular";
       text-transform: none;
       padding-left: 8px; }
-    @media all and (max-width: 880px) {
+    @media all and (max-width: 1000px) {
       .navbar.navbar-default .navbar-brand {
         display: none; } }
     @media all and (max-width: 768px) {
@@ -1733,8 +1733,12 @@ body {
       display: inline-block; }
       .permission-card .permission-card-header.delete-title .ad-theme-btn {
         font-family: "Open Sans Regular"; }
-    .permission-card .permission-card-header .permission-editable .ad-editable-edit {
-      padding: 0; }
+    .permission-card .permission-card-header .permission-editable {
+      color: #232E44;
+      font-size: 1.2rem;
+      font-family: "Open Sans Semi Bold"; }
+      .permission-card .permission-card-header .permission-editable .ad-editable-edit {
+        padding: 0; }
     .permission-card .permission-card-header .permission-card-header-description {
       font-size: 1rem;
       padding-left: 5px; }
@@ -1745,40 +1749,41 @@ body {
       font-family: "Open Sans Regular"; }
     .permission-card .permission-card-body .permission-card-body-description {
       font-size: 0.9rem;
-      color: #B3B3B3; }
+      color: #232E44;
+      font-family: "Open Sans Regular"; }
     .permission-card .permission-card-body .permission-card-body-credential {
-      margin-top: -13px;
+      margin-top: -30px;
       position: relative;
-      padding-right: 30px; }
+      padding-right: 50px;
+      max-width: 550px; }
+      @media all and (max-width: 920px) {
+        .permission-card .permission-card-body .permission-card-body-credential {
+          margin-top: 0;
+          margin-top: 10px;
+          width: 100%; } }
     .permission-card .permission-card-body .permission-key-delete {
       position: absolute;
-      right: 0;
+      right: 20px;
       top: 5px;
       padding: 0; }
+    @media all and (max-width: 920px) {
+      .permission-card .permission-card-body {
+        display: flex;
+        flex-direction: column; } }
   .permission-card .permission-delete {
-    opacity: 0;
-    -webkit-animation: fadeout 0.5s;
-    -moz-animation: fadeout 0.5s;
-    -ms-animation: fadeout 0.5s;
-    -o-animation: fadeout 0.5s;
-    animation: fadeout 0.5s; }
+    color: #232E44;
+    opacity: 0.5; }
   .permission-card:hover .permission-delete, .permission-card.delete-active .permission-delete {
-    opacity: 1;
-    -webkit-animation: fadein 0.5s;
-    -moz-animation: fadein 0.5s;
-    -ms-animation: fadin 0.5s;
-    -o-animation: fadein 0.5s;
-    animation: fadein 0.5s; }
+    opacity: 1; }
   .permission-card.delete-card {
     padding: 15px 15px; }
 
 .ad-permission-key {
   position: relative;
-  padding-left: 5px;
+  padding-left: 15px;
   padding-right: 59px;
   margin-right: 5px;
-  background: #f7f7f7;
-  border: 1px solid #dedede; }
+  border: 1px solid #D9D8E4; }
   .ad-permission-key .ad-permission-key-value {
     position: relative;
     overflow: hidden;
@@ -1788,7 +1793,7 @@ body {
     line-height: 28px; }
     .ad-permission-key .ad-permission-key-value:before {
       content: '####################################';
-      background: #f7f7f7;
+      background: white;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -1798,11 +1803,23 @@ body {
   .ad-permission-key .ad-permission-key-buttons {
     position: absolute;
     right: 0;
-    top: 0; }
+    top: 0;
+    height: 100%;
+    display: flex; }
     .ad-permission-key .ad-permission-key-buttons a {
       display: inline-block;
       border: 0;
-      border-left: 1px solid #dedede; }
+      border-left: 1px solid #dedede;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 10px;
+      padding-right: 10px;
+      color: #232E44;
+      opacity: 0.6; }
+      .ad-permission-key .ad-permission-key-buttons a:hover {
+        opacity: 1; }
 
 .ad-editable-container {
   height: 2.3rem;
@@ -1815,7 +1832,7 @@ body {
     .ad-editable-container .ad-editable .ad-editable-value {
       cursor: pointer;
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       line-height: 2rem;
       height: 2rem; }
     .ad-editable-container .ad-editable .ad-editable-edit input {
@@ -1823,7 +1840,7 @@ body {
       outline: none;
       box-shadow: none;
       width: auto;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       line-height: 2rem;
       height: 2rem;
       padding: 0; }
