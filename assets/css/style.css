@@ -216,6 +216,9 @@ body {
     border-color: #242E44; }
   .context-appbase .navbar.navbar-default .navbar-brand {
     color: #232E44; }
+    @media all and (min-width: 768px) {
+      .context-appbase .navbar.navbar-default .navbar-brand {
+        margin-left: 20px; } }
   .context-appbase .navbar.navbar-default li a, .context-appbase .navbar.navbar-default li .extra-link {
     color: #232E44; }
     .context-appbase .navbar.navbar-default li a:hover, .context-appbase .navbar.navbar-default li a:focus, .context-appbase .navbar.navbar-default li .extra-link:hover, .context-appbase .navbar.navbar-default li .extra-link:focus {
@@ -276,12 +279,74 @@ body {
 .context-appbase .modal .modal-header {
   color: #B6EF7E; }
   .context-appbase .modal .modal-header .modal-title {
-    color: #B6EF7E; }
+    color: #232E44;
+    text-transform: capitalize;
+    font-size: 1.2rem; }
   .context-appbase .modal .modal-header .close {
-    color: #B6EF7E; }
+    color: #232E44;
+    font-family: "Open Sans Light";
+    font-size: 1.5rem;
+    border: none;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    top: 20px;
+    right: 10px;
+    background-color: rgba(217, 216, 228, 0.25); }
 
 .context-appbase .modal .modal-content {
-  border-color: #B6EF7E; }
+  border: none;
+  padding: 10px 10px 20px 10px;
+  border-radius: 0; }
+  .context-appbase .modal .modal-content label {
+    font-family: "Open Sans Light";
+    font-size: 1rem;
+    color: #232E44;
+    margin: 10px 0; }
+    .context-appbase .modal .modal-content label.radio-inline {
+      width: 100px;
+      margin-left: 10px;
+      /* Create the indicator (the dot/circle - hidden when not checked) */
+      /* Show the indicator (dot/circle) when checked */
+      /* Style the indicator (dot/circle) */ }
+      .context-appbase .modal .modal-content label.radio-inline input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer; }
+      .context-appbase .modal .modal-content label.radio-inline .checkmark {
+        content: ' ';
+        position: absolute;
+        top: 1px;
+        left: -10px;
+        height: 20px;
+        width: 20px;
+        border: 1px solid #D9D8E4;
+        border-radius: 50%; }
+      .context-appbase .modal .modal-content label.radio-inline .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none; }
+      .context-appbase .modal .modal-content label.radio-inline input:checked ~ .checkmark:after {
+        display: block; }
+      .context-appbase .modal .modal-content label.radio-inline .checkmark:after {
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #326BDC; }
+  .context-appbase .modal .modal-content .alert {
+    margin-top: 5px; }
+  .context-appbase .modal .modal-content input.form-control {
+    border: 1px solid #D9D8E4;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 36px; }
+    .context-appbase .modal .modal-content input.form-control:focus {
+      border-color: #326BDC;
+      box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+  .context-appbase .modal .modal-content .modal-body {
+    margin-top: 20px; }
 
 .context-appbase .modal .ad-confirm-btn {
   color: #B6EF7E;
@@ -290,11 +355,11 @@ body {
     background: #B6EF7E;
     color: #fff; }
 
-.context-appbase .modal.modal-info .modal-content {
-  border-color: #B6EF7E; }
-
 .context-appbase .theme-btn:hover, .context-appbase .theme-btn.active {
   background: #B6EF7E; }
+
+.context-appbase .ad-theme-btn svg {
+  margin-right: 5px; }
 
 .context-appbase .ad-theme-btn.primary {
   color: #53683B;
@@ -323,6 +388,9 @@ body {
     border-color: #242E44; }
   .context-reactivemaps .navbar.navbar-default .navbar-brand {
     color: #fff; }
+    @media all and (min-width: 768px) {
+      .context-reactivemaps .navbar.navbar-default .navbar-brand {
+        margin-left: 20px; } }
   .context-reactivemaps .navbar.navbar-default li a, .context-reactivemaps .navbar.navbar-default li .extra-link {
     color: #fff; }
     .context-reactivemaps .navbar.navbar-default li a:hover, .context-reactivemaps .navbar.navbar-default li a:focus, .context-reactivemaps .navbar.navbar-default li .extra-link:hover, .context-reactivemaps .navbar.navbar-default li .extra-link:focus {
@@ -383,12 +451,74 @@ body {
 .context-reactivemaps .modal .modal-header {
   color: #CDDC39; }
   .context-reactivemaps .modal .modal-header .modal-title {
-    color: #CDDC39; }
+    color: #232E44;
+    text-transform: capitalize;
+    font-size: 1.2rem; }
   .context-reactivemaps .modal .modal-header .close {
-    color: #CDDC39; }
+    color: #232E44;
+    font-family: "Open Sans Light";
+    font-size: 1.5rem;
+    border: none;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    top: 20px;
+    right: 10px;
+    background-color: rgba(217, 216, 228, 0.25); }
 
 .context-reactivemaps .modal .modal-content {
-  border-color: #CDDC39; }
+  border: none;
+  padding: 10px 10px 20px 10px;
+  border-radius: 0; }
+  .context-reactivemaps .modal .modal-content label {
+    font-family: "Open Sans Light";
+    font-size: 1rem;
+    color: #232E44;
+    margin: 10px 0; }
+    .context-reactivemaps .modal .modal-content label.radio-inline {
+      width: 100px;
+      margin-left: 10px;
+      /* Create the indicator (the dot/circle - hidden when not checked) */
+      /* Show the indicator (dot/circle) when checked */
+      /* Style the indicator (dot/circle) */ }
+      .context-reactivemaps .modal .modal-content label.radio-inline input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer; }
+      .context-reactivemaps .modal .modal-content label.radio-inline .checkmark {
+        content: ' ';
+        position: absolute;
+        top: 1px;
+        left: -10px;
+        height: 20px;
+        width: 20px;
+        border: 1px solid #D9D8E4;
+        border-radius: 50%; }
+      .context-reactivemaps .modal .modal-content label.radio-inline .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none; }
+      .context-reactivemaps .modal .modal-content label.radio-inline input:checked ~ .checkmark:after {
+        display: block; }
+      .context-reactivemaps .modal .modal-content label.radio-inline .checkmark:after {
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #326BDC; }
+  .context-reactivemaps .modal .modal-content .alert {
+    margin-top: 5px; }
+  .context-reactivemaps .modal .modal-content input.form-control {
+    border: 1px solid #D9D8E4;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 36px; }
+    .context-reactivemaps .modal .modal-content input.form-control:focus {
+      border-color: #326BDC;
+      box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+  .context-reactivemaps .modal .modal-content .modal-body {
+    margin-top: 20px; }
 
 .context-reactivemaps .modal .ad-confirm-btn {
   color: #CDDC39;
@@ -397,11 +527,11 @@ body {
     background: #CDDC39;
     color: #fff; }
 
-.context-reactivemaps .modal.modal-info .modal-content {
-  border-color: #CDDC39; }
-
 .context-reactivemaps .theme-btn:hover, .context-reactivemaps .theme-btn.active {
   background: #CDDC39; }
+
+.context-reactivemaps .ad-theme-btn svg {
+  margin-right: 5px; }
 
 .context-reactivemaps .ad-theme-btn.primary {
   color: #fff;
@@ -430,6 +560,9 @@ body {
     border-color: #242E44; }
   .context-reactivesearch .navbar.navbar-default .navbar-brand {
     color: #fff; }
+    @media all and (min-width: 768px) {
+      .context-reactivesearch .navbar.navbar-default .navbar-brand {
+        margin-left: 20px; } }
   .context-reactivesearch .navbar.navbar-default li a, .context-reactivesearch .navbar.navbar-default li .extra-link {
     color: #fff; }
     .context-reactivesearch .navbar.navbar-default li a:hover, .context-reactivesearch .navbar.navbar-default li a:focus, .context-reactivesearch .navbar.navbar-default li .extra-link:hover, .context-reactivesearch .navbar.navbar-default li .extra-link:focus {
@@ -490,12 +623,74 @@ body {
 .context-reactivesearch .modal .modal-header {
   color: #FFD600; }
   .context-reactivesearch .modal .modal-header .modal-title {
-    color: #FFD600; }
+    color: #232E44;
+    text-transform: capitalize;
+    font-size: 1.2rem; }
   .context-reactivesearch .modal .modal-header .close {
-    color: #FFD600; }
+    color: #232E44;
+    font-family: "Open Sans Light";
+    font-size: 1.5rem;
+    border: none;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    top: 20px;
+    right: 10px;
+    background-color: rgba(217, 216, 228, 0.25); }
 
 .context-reactivesearch .modal .modal-content {
-  border-color: #FFD600; }
+  border: none;
+  padding: 10px 10px 20px 10px;
+  border-radius: 0; }
+  .context-reactivesearch .modal .modal-content label {
+    font-family: "Open Sans Light";
+    font-size: 1rem;
+    color: #232E44;
+    margin: 10px 0; }
+    .context-reactivesearch .modal .modal-content label.radio-inline {
+      width: 100px;
+      margin-left: 10px;
+      /* Create the indicator (the dot/circle - hidden when not checked) */
+      /* Show the indicator (dot/circle) when checked */
+      /* Style the indicator (dot/circle) */ }
+      .context-reactivesearch .modal .modal-content label.radio-inline input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer; }
+      .context-reactivesearch .modal .modal-content label.radio-inline .checkmark {
+        content: ' ';
+        position: absolute;
+        top: 1px;
+        left: -10px;
+        height: 20px;
+        width: 20px;
+        border: 1px solid #D9D8E4;
+        border-radius: 50%; }
+      .context-reactivesearch .modal .modal-content label.radio-inline .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none; }
+      .context-reactivesearch .modal .modal-content label.radio-inline input:checked ~ .checkmark:after {
+        display: block; }
+      .context-reactivesearch .modal .modal-content label.radio-inline .checkmark:after {
+        top: 3px;
+        left: 3px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #326BDC; }
+  .context-reactivesearch .modal .modal-content .alert {
+    margin-top: 5px; }
+  .context-reactivesearch .modal .modal-content input.form-control {
+    border: 1px solid #D9D8E4;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 36px; }
+    .context-reactivesearch .modal .modal-content input.form-control:focus {
+      border-color: #326BDC;
+      box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+  .context-reactivesearch .modal .modal-content .modal-body {
+    margin-top: 20px; }
 
 .context-reactivesearch .modal .ad-confirm-btn {
   color: #FFD600;
@@ -504,11 +699,11 @@ body {
     background: #FFD600;
     color: #fff; }
 
-.context-reactivesearch .modal.modal-info .modal-content {
-  border-color: #FFD600; }
-
 .context-reactivesearch .theme-btn:hover, .context-reactivesearch .theme-btn.active {
   background: #FFD600; }
+
+.context-reactivesearch .ad-theme-btn svg {
+  margin-right: 5px; }
 
 .context-reactivesearch .ad-theme-btn.primary {
   color: #333;
@@ -1252,6 +1447,24 @@ body {
 
 .ad-list-newapp-modal .ad-list-newapp-form label {
   font-family: "Open Sans Light"; }
+
+.ad-list-newapp-modal #category-menu {
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-family: "Open Sans Regular";
+  color: #232E44;
+  background: white;
+  border: 1px solid #D9D8E4;
+  box-shadow: none;
+  text-transform: capitalize; }
+
+.ad-list-newapp-modal .open #category-menu {
+  border-color: #326BDC;
+  box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+
+.ad-list-newapp-modal .ad-dropdown-menu {
+  margin-top: 10px; }
 
 .ad-detail {
   position: relative;

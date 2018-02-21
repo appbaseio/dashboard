@@ -249,7 +249,7 @@
 			box-shadow: none;
 			&:focus {
 				border-color: $external-link-color;
-			box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+				box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
 			}
 		}
 		@media screen and (max-width: 768px) {
@@ -357,5 +357,23 @@
 		label {
 			font-family: $font-light;
 		}
+	}
+	#category-menu {
+		padding: 5px 10px;
+		border-radius: 3px;
+		font-size: 1rem;
+		font-family: $font-black;
+		color: $n-navy;
+		background: white;
+		border: 1px solid #D9D8E4;
+		box-shadow: none;
+		text-transform: capitalize;
+	}
+	.open #category-menu {
+		border-color: $external-link-color;
+		box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+	}
+	.ad-dropdown-menu {
+		margin-top: 10px;
 	}
 }
