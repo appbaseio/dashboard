@@ -985,7 +985,7 @@ body {
       display: block;
       max-height: inherit; }
       .navbar.navbar-default li.dropdown.logout-dropdown li a .ai-dropdown-logout {
-        color: #EC4545;
+        color: #FF5C5C;
         font-size: 1rem;
         font-family: "Open Sans Light"; }
   .navbar.navbar-default li.dropdown.open > a {
@@ -1914,7 +1914,7 @@ body {
 
 .modal .ad-cancel-btn {
   background: transparent;
-  border-color: transparent; }
+  border: 2px solid #B6EF7E; }
 
 .modal.modal-warning .modal-content {
   border-color: #F5E79E; }
@@ -1937,18 +1937,26 @@ body {
   border-color: #FF8484; }
 
 .modal.modal-danger .modal-header .modal-title {
-  color: #FF8484; }
+  color: #232E44; }
 
 .modal.modal-danger .modal-header .close {
-  color: #FF8484; }
+  color: #232E44; }
+
+.modal.modal-danger .ad-theme-btn {
+  font-size: 1rem;
+  font-family: "Open Sans Semi Bold";
+  letter-spacing: 1px; }
 
 .modal.modal-danger .ad-confirm-btn {
-  background: transparent;
-  color: #FF8484;
-  border-color: #FF8484; }
+  background: #FF5C5C;
+  color: #551111;
+  transition: all 0.3s ease-in-out;
+  border-radius: 3px;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1); }
   .modal.modal-danger .ad-confirm-btn:hover {
-    background: #FF8484;
-    color: #fff; }
+    color: #551111;
+    background: #ff7676;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
 
 #pricing-page .toggleButton .btn {
   border-radius: 20px;

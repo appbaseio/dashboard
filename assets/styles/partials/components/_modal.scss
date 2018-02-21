@@ -45,7 +45,7 @@
 	}
 	.ad-cancel-btn {
 		background: transparent;
-		border-color: transparent;
+		border: 2px solid $n-green;
 	}
 	&.modal-warning {
 		.modal-content {
@@ -75,19 +75,27 @@
 		}
 		.modal-header {
 			.modal-title {
-				color: $modal-danger;
+				color: $n-navy;
 			}
 			.close {
-				color: $modal-danger;
+				color: $n-navy;
 			}
 		}
+		.ad-theme-btn {
+			font-size: 1rem;
+			font-family: $font-semi-bold;
+			letter-spacing: 1px;
+		}
 		.ad-confirm-btn {
-			background: transparent;
-			color: $modal-danger;
-			border-color: $modal-danger;
+			background: $alert-color;
+			color: $alert-text;
+			transition: all 0.3s ease-in-out;
+			border-radius: 3px;
+			box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
 			&:hover {
-				background: $modal-danger;
-				color: #fff;
+				color: $alert-text;
+				background: lighten($alert-color, 5%);
+				box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
 			}
 		}
 	}
