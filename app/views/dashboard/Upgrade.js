@@ -18,9 +18,7 @@ export default class Upgrade extends Component {
 			<div>
 				{
 					this.props.appCount.action.percentage > 80 || this.props.appCount.records.percentage > 80 ? (
-						<section className="ad-detail-page-body-card api-view">
-							<header className="ad-detail-page-body-card-title">
-							</header>
+						<section className="api-view upgrade">
 							<main className="ad-detail-page-body-card-body body-card-body-api-view row">
 								<Link to ="/billing" className="ad-theme-btn primary">
 									Upgrade My Plan

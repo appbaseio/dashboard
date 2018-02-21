@@ -1109,6 +1109,9 @@ body {
   margin: 0;
   padding-bottom: 15px; }
 
+.ad-dashboard .api-view.upgrade {
+  padding-top: 10px; }
+
 .ad-dashboard .ad-dashboard-getting-started-container > div:first-child {
   padding-right: 0; }
   @media screen and (max-width: 768px) {
@@ -1487,6 +1490,7 @@ body {
         position: relative;
         width: 100%;
         height: 100%;
+        padding-bottom: 25px;
         border: 1px solid #f7f7f7; }
         .ad-detail .ad-detail-view-container .ad-detail-view .plugin-container .plugin-loading-container {
           display: flex;
