@@ -127,7 +127,49 @@
 		}
 		&.delete-app-body {
 			padding: 0;
-			margin-top: 15px;
+			margin-top: 40px;
+			.delete-app-container {
+				text-align: right;
+				padding-right: 85px;
+				display: flex;
+				flex-direction: row-reverse;
+				align-items: center;
+				min-height: 50px;
+				@media all and (max-width: 768px) {
+					flex-direction: column;
+				}
+				.permission-card-body {
+					display: none;
+					max-width: 450px;
+					margin-right: 25px;
+					font-size: 1rem;
+					@media all and (max-width: 768px) {
+						text-align: center;
+						margin-right: 0;
+						margin-top: 20px;
+					}
+				}
+				&:hover {
+					.permission-card-body {
+						display: inline-block;
+					}
+				}
+				.ad-theme-btn.danger {
+					color: $alert-text;
+					background: $alert-color;
+					transition: all 0.3s ease-in-out;
+					box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+					padding-left: 30px;
+					padding-right: 30px;
+					&:hover {
+						background: lighten($alert-color, 5%);
+						box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+					}
+				}
+				@media all and (max-width: 1200px) {
+					padding-right: 20px;
+				}
+			}
 		}
 		.ad-change-ownership {
 			padding: 0;

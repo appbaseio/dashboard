@@ -80,8 +80,8 @@ export default class Credentials extends Component {
 					element = (
 						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
 							<div className="page-body col-xs-12">
-								<section className="ad-detail-page-body-card col-xs-12 p-0">
-									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
+								<section className="col-xs-12 p-0">
+									<main className="col-xs-12 p-0">
 										<DeleteApp appName={this.appName} appId={this.appId} />
 									</main>
 								</section>
