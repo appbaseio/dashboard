@@ -1982,8 +1982,41 @@ body {
 
 #team-page .ad-initial-share {
   margin: 15px 0;
-  font-size: 1.2rem;
-  text-align: center; }
+  font-size: 1.1rem;
+  color: #232E44;
+  margin-left: 10px; }
+
+#team-page .add-team-member-card {
+  margin-left: 25px; }
+  #team-page .add-team-member-card .share-owner {
+    color: #232E44; }
+  #team-page .add-team-member-card .ad-create {
+    padding-left: 0; }
+  #team-page .add-team-member-card .active .ad-create-expand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; }
+    @media all and (max-width: 900px) {
+      #team-page .add-team-member-card .active .ad-create-expand {
+        flex-direction: column;
+        align-items: flex-start; } }
+    #team-page .add-team-member-card .active .ad-create-expand .flex-column {
+      flex: 1;
+      margin-right: 150px; }
+
+#team-page .permission-card .permission-delete:hover {
+  background: transparent; }
+
+#team-page .permission-card-header {
+  margin-left: 18px;
+  color: #232E44; }
+
+#team-page .permission-card-title {
+  font-size: 1rem;
+  font-family: "Open Sans Semi Bold"; }
+
+#team-page .permission-card-header-description {
+  font-size: 0.9rem; }
 
 #team-page .ad-detail-page-body-card-title {
   padding: 25px 30px;

@@ -111,18 +111,20 @@ export default class NewShare extends Component {
 			<div className={`ad-create col-xs-12 ${cx}`}>
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.expand}>
-						<i className="fa fa-plus"></i>&nbsp;&nbsp;Add Team Member
+						Add Team Member
 					</a>
 				</div>
 				<div className="ad-create-expand row">
-					{this.renderElement('email')}
-					<div className="ad-create-button-group-container">
-						{this.renderElement('buttonGroup')}
-						<span className="col-xs-3">
-							<button {...common.isDisabled(!this.state.userEmail)} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
-								Share
-							</button>
-						</span>
+					<div className="flex flex-column">
+						{this.renderElement('email')}
+						<div className="ad-create-button-group-container">
+							{this.renderElement('buttonGroup')}
+						</div>
+					</div>
+					<div className="col-xs-8 col-sm-3">
+						<button {...common.isDisabled(!this.state.userEmail)} className="ad-theme-btn primary ad-create-submit" onClick={this.newShare}>
+							Share
+						</button>
 					</div>
 				</div>
 			</div>
@@ -171,12 +173,10 @@ class UserEmail extends Component {
 };
 
 const ShareButton = (props) => {
-	const cx = classNames({
-		"active": props.selectedType === props.type
-	});
 	return (
-		<button className={`ad-create-button-group-btn ad-theme-btn col-xs-4 ${cx}`} onClick={props.onSelect && (() => props.onSelect(props.type))}>
-			{props.description}
-		</button>
+		<label className="radio-inline">
+			<input type="radio" name={props.type} checked={props.selectedType === props.type} onChange={props.onSelect && (() => props.onSelect(props.type))} /> {props.description}
+			<span className="checkmark"></span>
+		</label>
 	);
 };
