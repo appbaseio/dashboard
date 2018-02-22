@@ -32,7 +32,7 @@ export default class ActionButtons extends Component {
 					</div>
 				</Tooltip>
 				<Tooltip
-					overlay={<div>Copy read Credentials</div>}
+					overlay={<div>Copy read credentials</div>}
 					mouseLeaveDelay={0}
 				>
 					<div className="options-item">
@@ -40,7 +40,7 @@ export default class ActionButtons extends Component {
 					</div>
 				</Tooltip>
 				<Tooltip
-					overlay={<div>Copy write Credentials</div>}
+					overlay={<div>Copy write credentials</div>}
 					mouseLeaveDelay={0}
 				>
 					<div className="options-item">

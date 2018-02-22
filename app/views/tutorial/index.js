@@ -76,7 +76,7 @@ export default class Tutorial extends Component {
 								{this.config.tutorial.description}
 							</p>
 							<button className="pull-right btn ad-theme-btn primary" onClick={this.goToDashbord}>
-								Continue to Dashboard
+								Skip Tutorial
 							</button>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>
