@@ -10,13 +10,14 @@
 }
 
 #dashboard-container {
-	padding: 60px 0 0 0;
+	padding: 100px 0 0 0;
 	position: absolute;
 	right: 0;
 	top: 0;
 	overflow: auto;
 	height: 100%;
 	width: 100%;
+	background: rgba(237, 241, 242, 0.2);
 	.page-info {
 		margin: 0 0 15px 0;
 		.page-title {

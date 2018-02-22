@@ -30,6 +30,22 @@ export default class HighChartView extends Component {
 			<section className="ad-detail-page-body-card graph-view">
 				<header className="ad-detail-page-body-card-title body-card-title-highchart">
 					<span>API Calls</span>
+					<span className="ad-dropdown dropdown pull-right charts-api-calls">
+						<button className="dropdown-toggle" type="button" id="sortby-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							{this.state.graphMethod}&nbsp;&nbsp;<span className="caret"></span>
+						</button>
+						<ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="sortby-menu">
+							<li>
+								<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
+							</li>
+							<li>
+								<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
+							</li>
+							<li>
+								<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
+							</li>
+						</ul>
+					</span>
 				</header>
 				<main className="ad-detail-page-body-card-body">
 					<header className="tab-container col-xs-12">
@@ -39,17 +55,6 @@ export default class HighChartView extends Component {
 							</li>
 							<li>
 								<a className={this.state.infoType === 'breakdown' ? 'active' : ''} onClick={() => this.info('breakdown')}>Breakdown</a>
-							</li>
-						</ul>
-						<ul className="nav-tab pull-right">
-							<li>
-								<a className={this.state.graphMethod === 'week' ? 'active' : ''} onClick={() => this.graph('week')}>Week</a>
-							</li>
-							<li>
-								<a className={this.state.graphMethod === 'month' ? 'active' : ''} onClick={() => this.graph('month')}>Month</a>
-							</li>
-							<li>
-								<a className={this.state.graphMethod === 'all' ? 'active' : ''} onClick={() => this.graph('all')}>All</a>
 							</li>
 						</ul>
 					</header>

@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import ConfirmBox from '../../../shared/ConfirmBox';
-import ReactTooltip from 'react-tooltip';
 const $ = require("jquery");
 
 export default class DeleteApp extends Component {
@@ -43,9 +42,8 @@ export default class DeleteApp extends Component {
 				type="danger"
 				onClose={this.setAside}
 			>
-				<button data-tip="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="text-danger card-icon pointer">
-					<i className="fa fa-trash"></i>
-					<ReactTooltip />
+				<button aria-label="Delete app" data-effect="solid" data-place="left" data-offset="{'top': 0, 'left': 0}" className="card-icon pointer">
+					<i className="fas fa-trash-alt"></i>
 				</button>
 			</ConfirmBox>
 		)

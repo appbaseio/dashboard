@@ -6,11 +6,15 @@
 		.tab-container {
 			padding: 0 4px;
 			margin: 0 0 15px 0;
+			color: $n-navy;
 		}
 	}
 	.body-card-body-api-view {
 		margin: 0;
 		padding-bottom: 15px;
+	}
+	.api-view.upgrade {
+		padding-top: 10px;
 	}
 	.ad-dashboard-getting-started-container {
 		> div:first-child {
@@ -28,19 +32,28 @@
 		position: relative;
 		font-size: 1rem;
 		margin: 0;
+		margin-left: 10px;
 		li {
 			display: inline-block;
 			float: left;
-			padding: 4px 8px;
+			border-bottom: 1px solid $n-navy;
 			a {
 				display: inline-block;
 				padding: 0;
-				color: $grey-font;
+				color: $n-navy;
 				position: relative;
 				cursor: pointer;
-				border-bottom: 2px solid transparent;
+				padding-bottom: 5px;
+				padding-left: 10px;
+				padding-right: 10px;
+				&.active {
+					font-family: $font-semi-bold !important;
+					color: $n-navy !important;
+					box-shadow: 0px 4px 0px 0px rgba(0,0,0,1);
+				}
 				&:hover {
 					text-decoration: none;
+					color: $n-navy !important;
 				}
 			}
 		}

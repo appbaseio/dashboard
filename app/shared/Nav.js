@@ -38,7 +38,7 @@ export default class Nav extends Component {
 			link: `${this.contextPath}billing`,
 			type: 'internal'
 		}];
-		this.options = ['name', 'email', 'logout'];
+		this.options = ['name', 'logout'];
 		this.currentActiveApp = null;
 	}
 
@@ -132,7 +132,7 @@ export default class Nav extends Component {
 								<i className="fa fa-chevron-right dropdown-chevron"></i>&nbsp;
 								{apps[0].appname} <AppOwner app={apps[0]} />
 							</a>
-							<ul className="dropdown-menu pull-right">
+							<ul className="dropdown-menu apps-dropdown-menu">
 								{this.renderElement('apps')}
 							</ul>
 						</li>
@@ -142,7 +142,7 @@ export default class Nav extends Component {
 			case 'links':
 				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1);
 				generatedEle = links.map((item, index) => {
-					let anchor = (<a href={item.link} target="_blank">{item.label}</a>);
+					let anchor = (<a href={item.link} target="_blank"><i className="fas fa-external-link-square-alt"></i>&nbsp;{item.label}</a>);
 					if(item.type === 'internal') {
 						anchor = (<Link to={item.link}>{item.label}</Link>);
 					}
@@ -172,9 +172,20 @@ export default class Nav extends Component {
 												<li key={item}>
 													<a onClick={() => this.logout(item)}>
 														{
+															item === 'name' &&
+															<div>
+																<div className="user-name">
+																	{appbaseService.userInfo.body.details.name}
+																</div>
+																<div className="user-email">
+																	{appbaseService.userInfo.body.details.email}
+																</div>
+															</div>
+														}
+														{
 															item === 'logout' ?
-															(<span className="text-danger ai-dropdown-logout"><i className="fa fa-sign-out"></i> Logout</span>) :
-															appbaseService.userInfo.body.details[item]
+															(<span className="text-danger ai-dropdown-logout">Logout</span>) :
+															null
 														}
 													</a>
 												</li>
@@ -191,12 +202,14 @@ export default class Nav extends Component {
 								</li>
 								<li>
 									<a onClick={() => this.logout('logout')}>
-										<span className="text-danger"><i className="fa fa-sign-out"></i> Logout</span>
+										<span className="text-danger">Logout</span>
 									</a>
 								</li>
 							</ul>
 						</li>
 					);
+				} else {
+					generatedEle = <li><a onClick={this.props.open} className="login-nav">Login</a></li>
 				}
 			break;
 		}
@@ -215,7 +228,7 @@ export default class Nav extends Component {
 		});
 		return (
 			<nav className="navbar navbar-default">
-				<div className="container-fluid">
+				<div className="container-fluid nav-container">
 					<div className="navbar-header">
 						<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 							<span className="sr-only">Toggle navigation</span>

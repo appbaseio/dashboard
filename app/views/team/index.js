@@ -9,19 +9,14 @@ import TransferOwnership from './TransferOwnership';
 const InitialShare = (props) => {
 	return (
 		<p className="col-xs-12 ad-initial-share">
-			You do not have any team members yet.&nbsp;&nbsp;
-			{
-				appbaseService.isMyApp(props.info) ? (
-					<a onClick={props.newShareInit}><i className="fa fa-plus"></i>&nbsp;Add</a>
-				) : null
-			}
+			You do not have any team members yet.
 		</p>
 	);
 }
 
 const ShareOwner = (props) => {
 	return (
-		<p>
+		<p className="share-owner">
 			This app has been shared by {props.owner}.
 		</p>
 	);
@@ -126,23 +121,6 @@ export default class Team extends Component {
 				}}
 			>
 				<div className="ad-detail-page row" id="team-page">
-					<header className="ad-detail-page-header header-inline-summary col-xs-12">
-						<div className={`col-xs-12 p-0 ${cx}`}>
-							<h2 className="ad-detail-page-title">Team</h2>
-							{
-								this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner !== appbaseService.userInfo.body.email ? (
-									<ShareOwner owner={this.state.info.appInfo.owner}></ShareOwner>
-								) : (<p>Manage who can access your app data.</p>)
-							}
-						</div>
-						<aside className="ad-detail-page-header-sidebar col-xs-12 col-sm-8 col-md-6 col-lg-6">
-							{
-								appbaseService.isMyApp(this.state.info) ? (
-									<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />
-								) : null
-							}
-						</aside>
-					</header>
 					<main className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
 						{
@@ -159,6 +137,18 @@ export default class Team extends Component {
 									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
 										{this.renderElement('share')}
 									</main>
+									<div className="add-team-member-card">
+										{
+											this.state.info && this.state.info.appInfo && this.state.info.appInfo.owner !== appbaseService.userInfo.body.email ? (
+												<ShareOwner owner={this.state.info.appInfo.owner}></ShareOwner>
+											) : null
+										}
+										{
+											appbaseService.isMyApp(this.state.info) ? (
+												<NewShare newShare={this.newShare} newShareExpand={this.state.newShareExpand} />
+											) : null
+										}
+									</div>
 								</section>
 							) : null
 						}

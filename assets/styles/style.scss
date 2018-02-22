@@ -1,4 +1,5 @@
 @import "partials/settings/variables",
+		"partials/settings/mixins",
 		"partials/base/base",
 		"partials/theme/default";
 
@@ -17,4 +18,5 @@
 		"partials/components/modal",
 		"partials/components/billing",
 		"partials/components/tutorial",
-		"partials/components/importer";
+		"partials/components/importer",
+		"partials/components/rc-tooltip";

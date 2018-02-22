@@ -1,72 +1,35 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
 import { Link, browserHistory } from 'react-router';
 import { getConfig } from '../../config';
 import { appbaseService } from '../../service/AppbaseService';
+import LoginModal from '../../shared/LoginModal';
 
 export default class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			showModal: false
-		};
 		if (appbaseService.userInfo) {
 			appbaseService.pushUrl('/apps');
 		}
 		this.config = getConfig();
-		this.open = this.open.bind(this);
-		this.close = this.close.bind(this);
-	}
-	close() {
-		this.setState({ showModal: false });
-	}
-	open() {
-		this.setState({ showModal: true });
-	}
-	getNexturl() {
-		return localStorage.getItem("ad-login") ? localStorage.getItem("ad-login") : window.location.href;
-	}
-	login(provider) {
-		var baseURL = window.location.protocol + "//" + window.location.host + '/';
-		var redirectTo = appbaseService.address+'login/' + provider + '?next=' + this.getNexturl();
-		window.location.href = redirectTo;
 	}
 	render() {
-		const childrenWithProps = React.Children.map(this.props.children,
-			(child) => React.cloneElement(child, {
-				onClick: this.open
-			})
-		);
+		const { open, close, showModal, login } = this.props;
 		return (
 			<section id="login" className="text-center container">
 				<h2>
 					{this.config.login.description}
 				</h2>
+				<p>
+					Login to Appbase or create an account to access your Dashboard.
+				</p>
 				<div>
-					<button className="ad-theme-btn primary transparent lg-btn" onClick={this.open}>Login</button>
+					<button className="ad-theme-btn primary lg-btn" onClick={open}>Login</button>
 				</div>
-				<Modal className="modal-appbase modal-white" id="login_modal" show={this.state.showModal} onHide={() => this.close()}>
-					<Modal.Header closeButton>
-						<Modal.Title>
-							Login with your Github or Google ID.
-						</Modal.Title>
-						<div className="bootstrap-dialog-close-button">
-							<button className="close" onClick={this.close}>×</button>
-						</div>
-					</Modal.Header>
-					<Modal.Body>
-						<div>
-							<button className="btn Login-button modal-btn" onClick={() => this.login('github')} >Github</button>
-							<button className="btn Login-button modal-btn" onClick={() => this.login('google')} >Google</button>
-						</div>
-						<div className="mt25">
-							<p className="no-margin">
-								Having issues logging in? Write to us&nbsp;
-								<a className="contact-link" href="mailto:info@appbase.io?subject=Login+issues" target="_blank">here</a>.
-							</p>
-						</div>
-					</Modal.Body>
-				</Modal>
+				<LoginModal
+					showModal={showModal}
+					close={close}
+					login={login}
+				/>
 			</section>
 		)
 	}

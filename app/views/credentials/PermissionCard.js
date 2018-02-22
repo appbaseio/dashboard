@@ -124,22 +124,22 @@ export default class PermissionCard extends Component {
 					</summary>
 				</header>
 				<main className="permission-card-body col-xs-12">
-					<div className="col-xs-12 col-sm-6 permission-card-body-description">
+					<div className="col-xs-12 col-sm-3 col-md-3 col-lg-5 permission-card-body-description">
 						{this.keySummary[this.state.keyType]}
 					</div>
-					<div className="col-xs-12 col-sm-6 permission-card-body-credential">
+					<div className="col-xs-12 col-sm-9 col-md-9 col-lg-7 permission-card-body-credential">
 						<div className={`ad-permission-key ${cx}`}>
 							<div className="ad-permission-key-value">
 								{this.state.credentials}
 							</div>
 							<div className="ad-permission-key-buttons">
-								<a className="ad-theme-btn ad-permission-key-lock-btn" onClick={() => this.toggleKey()}>
-									<i className={`fa fa-${lock}`}></i>
+								<a className="ad-credential-btn ad-permission-key-lock-btn" key={lock} onClick={() => this.toggleKey()}>
+									<i className={`fas fa-${lock}`}></i>
 								</a>
 								<CopyToClipboard type="danger" onSuccess={() => this.ccSuccess()} onError={() => this.ccError()}>
-									<a className="ad-theme-btn ad-permission-key-copy-btn"
+									<a className="ad-credential-btn ad-permission-key-copy-btn"
 										data-clipboard-text={this.state.credentials}>
-										<i className={`fa fa-clone`}></i>
+										<i className={`far fa-clone`}></i>
 									</a>
 								</CopyToClipboard>
 							</div>
@@ -149,8 +149,8 @@ export default class PermissionCard extends Component {
 								info={this.confirmBoxInfo}
 								onConfirm={this.deletePermission}
 								type="danger" >
-								<a className="ad-theme-btn danger-reverse permission-delete animation">
-									<i className="fa fa-trash"></i>
+								<a className="permission-delete animation">
+									<i className="fa fa-trash-alt"></i>
 								</a>
 							</ConfirmBox>
 						</aside>

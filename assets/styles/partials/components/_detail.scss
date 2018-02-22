@@ -1,8 +1,9 @@
 .ad-detail {
 	position: relative;
-	padding: 0 0 0 84px;
+	padding: 0 0 0 100px;
 	margin: 0;
 	height: 100%;
+	background-color: rgba(237, 241, 242, 0.2);
 	.ad-detail-view-container {
 		position: relative;
 		height: 100%;
@@ -18,6 +19,7 @@
 				position: relative;
 				width: 100%;
 				height: 100%;
+				padding-bottom: 25px;
 				border: 1px solid $dark-grey;
 				.plugin-loading-container {
 					display: flex;
@@ -45,24 +47,25 @@
 		position: absolute;
 		left: 0;
 		top: 0;
-		width: 84px;
+		width: 100px;
 		height: 100%;
 		padding-top: 0;
 		z-index: 2;
 		.ad-detail-sidebar-container {
 			list-style: none;
 			padding: 0;
+			padding-top: 35px;
 			li {
 				text-align: center;
-				font-size: 0.8rem;
-				text-transform: uppercase;
+				font-size: 1rem;
+				font-family: $font-black;
 				a {
 					padding: 15px 5px 15px 2px;
 					display: block;
 					border-left: 5px solid transparent;
 					.img-container {
 						border-radius: 50%;
-						background: #fff;
+						background: rgba(255, 255, 255, 0.4);
 						width: 40px;
 						height: 40px;
 						margin: 0 auto 5px auto;
@@ -76,6 +79,9 @@
 					&:hover,
 					&.active {
 						text-decoration: none;
+						.img-container {
+							background: white;
+						}
 					}
 					&.active {}
 					.ad-detail-sidebar-item-label {}

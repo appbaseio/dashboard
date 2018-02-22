@@ -161,10 +161,6 @@ export default class Dashboard extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-					<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12">
-						<h2 className="ad-detail-page-title">Dashboard</h2>
-						<p>View app usage stats.</p>
-					</header>
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
 							{

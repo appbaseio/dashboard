@@ -31,8 +31,8 @@ export default class CloneApp extends Component {
 	}
 	render() {
 		return (
-			<button onClick={this.cloneApp} {...common.isDisabled(!this.state.cloneAppLink)} className="ad-theme-btn-transparent ad-list-app-header-clone">
-				<i className="fa fa-code-fork"></i>
+			<button aria-label="Clone this app" onClick={this.cloneApp} {...common.isDisabled(!this.state.cloneAppLink)} className="ad-theme-btn-transparent ad-list-app-header-clone card-icon pointer">
+				<i className="fas fa-code-branch"></i>
 			</button>
 		)
 	}

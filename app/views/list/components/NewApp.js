@@ -60,9 +60,9 @@ export default class NewApp extends Component {
 			this.close();
 		}
 	}
-	chooseCategory(event) {
+	chooseCategory(category) {
 		this.setState({
-			category: event.target.value
+			category
 		});
 	}
 	validateApp(appName) {
@@ -172,14 +172,14 @@ export default class NewApp extends Component {
 	}
 	render() {
 		return (
-			<AppCard setClassName="appcard-newapp">
+			<AppCard setClassName="appcard-newapp col-md-3">
 				<div className="ad-list-newapp">
 					<button className="col-xs-12 ad-theme-btn primary" onClick={this.open} >
-						<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;New App
+						Create a New App
 					</button>
 					<Modal className="modal-info ad-list-newapp-modal" show={this.state.showModal} onHide={this.close}>
 						<Modal.Header closeButton>
-							<Modal.Title>New App</Modal.Title>
+							<Modal.Title>Create A New App</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
 							<div className="row ad-list-newapp-form">
@@ -193,9 +193,11 @@ export default class NewApp extends Component {
 									<div>
 										<label className="radio-inline">
 											<input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked={this.state.importer} onChange={() => this.changeImporter(true)} /> Yes
+											<span className="checkmark"></span>
 										</label>
 										<label className="radio-inline">
 											<input type="radio" name="inlineRadioOptions" id="inlineRadio2" checked={!this.state.importer} onChange={() => this.changeImporter(false)} /> No
+											<span className="checkmark"></span>
 										</label>
 									</div>
 								</div>
@@ -205,30 +207,37 @@ export default class NewApp extends Component {
 										<div>
 											<label className="radio-inline">
 												<input type="radio" name="inlineRadioOptions3" id="inlineRadio3" checked={this.state.es_version === 2} onChange={() => this.chooseEs(2)} /> 2
+												<span className="checkmark"></span>
 											</label>
 											<label className="radio-inline">
 												<input type="radio" name="inlineRadioOptions4" id="inlineRadio4" checked={this.state.es_version === 5} onChange={() => this.chooseEs(5)} /> 5
+												<span className="checkmark"></span>
 											</label>
 										</div>
 									</div>
 									<div className="col-xs-12 col-sm-6 form-group">
 										<label>Category</label>
 										<div>
-											<select value={this.state.category} onChange={this.chooseCategory} className="form-control">
-												{
-													Object.keys(this.categories).map(item => (
-														<option key={item} value={this.categories[item]}>{this.categories[item]}</option>
-													))
-												}
-											</select>
+											<span className="ad-dropdown dropdown">
+												<button className="dropdown-toggle" type="button" id="category-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+													{this.state.category}&nbsp;&nbsp;<span className="caret"></span>
+												</button>
+												<ul className="ad-dropdown-menu dropdown-menu" aria-labelledby="category-menu">
+													{
+														Object.keys(this.categories).map((item) => (
+															<li key={item}><a onClick={() => this.chooseCategory(this.categories[item])}>{this.categories[item]}</a></li>
+														))
+													}
+												</ul>
+											</span>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div className="col-xs-12 p-0 ad-list-newapp-footer">
-								<button className="ad-theme-btn  ad-confirm-btn " {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} onClick={this.handleSubmit}>
+								<button className="ad-theme-btn primary" {...common.isDisabled(!this.state.validate.value || this.props.createAppLoading)} onClick={this.handleSubmit}>
 									{this.props.createAppLoading || this.state.createAppLoading ? (<Loading></Loading>) : null}
-									<i className="fa fa-plus-circle"></i>&nbsp;&nbsp;Create App
+									Create App
 								</button>
 							</div>
 						</Modal.Body>

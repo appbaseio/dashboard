@@ -35,6 +35,7 @@ export default class Tutorial extends Component {
 		this.iframeRef.contentDocument.addEventListener('click', function (e) {
 			if($(e.target).hasClass('go-to-dashboard')) {
 				appbaseService.pushUrl('/apps');
+				window.location.reload();
 			}
 			if($(e.target).hasClass('go-to-document')) {
 				window.open('http://docs.appbase.io');
@@ -75,7 +76,7 @@ export default class Tutorial extends Component {
 								{this.config.tutorial.description}
 							</p>
 							<button className="pull-right btn ad-theme-btn primary" onClick={this.goToDashbord}>
-								Continue to Dashboard
+								Skip Tutorial
 							</button>
 						</header>
 						<main className='ad-detail-page-body col-xs-12' ref={(page) => this.pageRef = page}>

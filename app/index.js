@@ -6,6 +6,7 @@ import Nav from './shared/Nav';
 import { intercomService } from './shared/helper';
 
 require("../dist/css/style.min.css");
+import 'rc-tooltip/assets/bootstrap_white.css';
 
 export default class Main extends Component {
 	constructor(props) {
@@ -61,7 +62,7 @@ export default class Main extends Component {
 		);
 		let dashboard = (
 			<div>
-				<Nav />
+				<Nav open={this.props.route.open} />
 				<div id="dashboard-container" className="container-fluid">
 					{this.props.children}
 				</div>

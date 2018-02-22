@@ -103,8 +103,8 @@ export default class ShareCard extends Component {
 		});
 		return (
 			<div className="permission-card col-xs-12">
-				<header className="permission-card-header col-xs-12">
-					<summary className="col-xs-10">
+				<header className="permission-card-header col-xs-10 col-sm-12">
+					<summary className="col-xs-8 col-sm-10">
 						<span className="permission-card-title">
 							{this.props.shareInfo.email}
 						</span>

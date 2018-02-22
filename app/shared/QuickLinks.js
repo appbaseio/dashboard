@@ -2,30 +2,30 @@ import React from 'react';
 
 export const AppbaseQuickLinks =() => {
 	return (
-		<ul style={{"fontSize":"1.1rem"}}>
+		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
-			<li><a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;JS Quick Start</a></li>
-			<li><a href="http://docs.appbase.io/rest/getting-started.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
 
 export const ReactiveMapsQuickLinks =() => {
 	return (
-		<ul style={{"fontSize":"1.1rem"}}>
+		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
-			<li><a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;JS Quick Start</a></li>
-			<li><a href="http://docs.appbase.io/rest/getting-started.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
 
 export const ReactiveSearchQuickLinks =() => {
 	return (
-		<ul style={{"fontSize":"1.1rem"}}>
+		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
-			<li><a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;JS Quick Start</a></li>
-			<li><a href="http://docs.appbase.io/rest/getting-started.html" target="_blank"><i className="fa fa-external-link-square"></i>&nbsp;REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
@@ -39,7 +39,7 @@ export const AppbaseDashboardGettingStarted = () => (
 				</header>
 				<main className="ad-detail-page-body-card-body col-xs-12">
 					<p>
-						Try out the <a href="/tutorial"><i className="fa fa-external-link-square"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
+						Try out the <a href="/tutorial"><i className="fas fa-external-link-square-alt"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
 					</p>
 				</main>
 			</section>
@@ -85,7 +85,7 @@ export const ReactiveMapsDashboardGettingStarted = () => (
 				</header>
 				<main className="ad-detail-page-body-card-body col-xs-12">
 					<p>
-						Try out the <a href="/tutorial"><i className="fa fa-external-link-square"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
+						Try out the <a href="/tutorial"><i className="fas fa-external-link-square-alt"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
 					</p>
 				</main>
 			</section>
@@ -131,7 +131,7 @@ export const ReactiveSearchDashboardGettingStarted = () => (
 				</header>
 				<main className="ad-detail-page-body-card-body col-xs-12">
 					<p>
-						Try out the <a href="/tutorial"><i className="fa fa-external-link-square"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
+						Try out the <a href="/tutorial"><i className="fas fa-external-link-square-alt"/>&nbsp;interactive tutorial</a> for adding your first data to the app.
 					</p>
 				</main>
 			</section>

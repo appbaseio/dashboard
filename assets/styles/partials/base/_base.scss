@@ -1,6 +1,6 @@
 html,
 body {
-	background: #F3F8F9;
+	background: white;
 	color: $primary-font-color;
 	font-size: 15px;
 	height: 100%;
@@ -46,15 +46,16 @@ body {
 }
 
 .ad-theme-btn {
-	background: $dark-grey;
-	border: 1px solid;
-	border-color: darken($dark-grey, 10%);
-	padding: 3px 8px;
+	color: $d-green;
+	border-radius: 3px;
+	padding: 15px 20px;
 	font-size: 1rem;
+	text-transform: uppercase;
+	font-family: $font-semi-bold;
+	border: none;
 	&:hover,
 	&.active {
-		color: lighten($primary-font-color, 2%);
-		background: darken($dark-grey, 5%);
+		background: lighten($dark-grey, 5%);
 		text-decoration: none;
 	}
 	&.primary {
@@ -127,11 +128,9 @@ body {
 		cursor: not-allowed;
 	}
 	&.lg-btn {
-		font-size: 2rem;
 		margin: 2%;
 		padding-left: 50px;
 		padding-right: 50px;
-		border: 2px solid;
 	}
 }
 

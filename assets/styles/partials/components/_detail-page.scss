@@ -1,14 +1,47 @@
 .ad-detail-page {
 	margin: 0;
+	.flex {
+		display: flex;
+	}
+	.flex-column {
+		flex-direction: column;
+	}
 	.ad-detail-page-header {
 		background: #fff;
-		padding: 22px 15px;
+		padding: 35px 70px;
 		border-bottom: 1px solid darken($dark-grey, 10%);
 		position: relative;
-		.ad-detail-page-title {
-			font-size: 1.7rem;
-			line-height: 2.2rem;
+		color: $n-navy;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		@media all and (max-width: 768px) {
+			flex-direction: column;
+			align-items: flex-start;
+			padding: 40px 20px;
+			div {
+				margin: 10px 0;
+			}
+			.ad-theme-btn {
+				margin: 10px 0;
+			}
+		}
+		.ad-theme-btn {
+			font-size: 0.9rem;
+			letter-spacing: 1px;
+			text-decoration: none;
 			font-family: $font-semi-bold;
+			padding: 15px 30px;
+			margin-right: 120px;
+			@media all and (max-width: 1200px) {
+				margin-right: 0;
+			}
+		}
+		.ad-detail-page-title {
+			font-size: 2.5rem;
+			line-height: 2.2rem;
+			font-family: $font-bold;
 			margin: 0;
 			display: inline-block;
 		}
@@ -20,8 +53,8 @@
 		&.header-inline-summary {
 			p {
 				display: inline;
-				padding-left: 10px;
-				margin: 0px 0 3px 0;
+				margin: 12px 0;
+				font-size: 1.2rem;
 			}
 			@media (max-width: 992px) {
 				p {
@@ -39,7 +72,10 @@
 		}
 	}
 	.ad-detail-page-body {
-		padding: 15px;
+		padding: 30px 120px 15px 70px;
+		@media all and (max-width: 1200px) {
+			padding-right: 50px;
+		}
 		>[class*="col-"] {
 			padding-left: 0;
 			&:last-child {
@@ -53,13 +89,14 @@
 			background: #fff;
 			margin-bottom: 20px;
 			border: 1px solid transparent;
-			border-radius: 3px;
-			-webkit-box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
-			box-shadow: 0 1px 0 #c5cad8, 0 2px 3px #d4d8e3;
+			box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
 			.ad-detail-page-body-card-title {
 				background-color: #fff;
+				color: $n-navy;
 				padding: 10px 15px;
-				font-size: 1.5rem;
+				font-size: 1.3rem;
+				font-family: $font-bold;
+				margin-bottom: 20px;
 				&.with-border {
 					border-bottom: 1px solid darken($dark-grey, 10%);
 				}
@@ -68,6 +105,21 @@
 					font-weight: normal;
 					padding-top: 50px;
 				}
+				.charts-api-calls {
+					font-size: 1rem;
+					font-family: $font-black;
+					.dropdown-toggle {
+						text-transform: capitalize;
+						padding: 5px 12px;
+						background: white;
+						border: 1px solid #D9D8E4;
+						border-radius: 3px;
+					}
+				}
+				.open #sortby-menu {
+					border-color: $external-link-color;
+					box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+				}
 			}
 		}
 		&.other-page-body {
@@ -75,7 +127,49 @@
 		}
 		&.delete-app-body {
 			padding: 0;
-			margin-top: 15px;
+			margin-top: 40px;
+			.delete-app-container {
+				text-align: right;
+				padding-right: 85px;
+				display: flex;
+				flex-direction: row-reverse;
+				align-items: center;
+				min-height: 50px;
+				@media all and (max-width: 768px) {
+					flex-direction: column;
+				}
+				.permission-card-body {
+					display: none;
+					max-width: 450px;
+					margin-right: 25px;
+					font-size: 1rem;
+					@media all and (max-width: 768px) {
+						text-align: center;
+						margin-right: 0;
+						margin-top: 20px;
+					}
+				}
+				&:hover {
+					.permission-card-body {
+						display: inline-block;
+					}
+				}
+				.ad-theme-btn.danger {
+					color: $alert-text;
+					background: $alert-color;
+					transition: all 0.3s ease-in-out;
+					box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+					padding-left: 30px;
+					padding-right: 30px;
+					&:hover {
+						background: lighten($alert-color, 5%);
+						box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+					}
+				}
+				@media all and (max-width: 1200px) {
+					padding-right: 20px;
+				}
+			}
 		}
 		.ad-change-ownership {
 			padding: 0;
@@ -85,10 +179,8 @@
 				font-family: $font-light;
 			}
 			#ownershipEmail {
-				margin-right: 10px;
-				padding: 0px 10px;
 				line-height: 29px;
-				height: 29px;
+				height: 38px;
 			}
 		}
 	}

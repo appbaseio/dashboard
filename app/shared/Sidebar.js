@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router';
-import ReactTooltip from 'react-tooltip';
 import classNames from "classnames";
+import Tooltip from 'rc-tooltip';
 import { eventEmitter } from './helper';
 import { getConfig } from '../config';
 import { appbaseService } from '../service/AppbaseService';
@@ -24,36 +24,42 @@ export default class Sidebar extends Component {
 			link: `${this.contextPath}dashboard/`,
 			type: 'internal',
 			name: 'dashboard',
+			tooltip: 'View app usage stats',
 			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}></img>)
 		}, {
 			label: 'Browser',
 			link: `${this.contextPath}browser/`,
 			type: 'internal',
 			name: 'browser',
+			tooltip: 'Create, view and manage app data',
 			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/browser.svg`}></img>)
 		}, {
 			label: 'Mappings',
 			link: `${this.contextPath}mappings/`,
 			type: 'internal',
 			name: 'gem',
+			tooltip: 'View app mappings',
 			img: (<img className="img-responsive mappings" src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}></img>)
 		},{
 			label: 'Builder',
 			link: `${this.contextPath}builder/`,
 			type: 'internal',
 			name: 'mirage',
+			tooltip: 'Create and save queries with a GUI',
 			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/builder.svg`}></img>)
 		}, {
 			label: 'Credentials',
 			link: `${this.contextPath}credentials/`,
 			type: 'internal',
 			name: 'credentials',
+			tooltip: 'View and manage API access credentials',
 			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/credentials.svg`}></img>)
 		}, {
 			label: 'Team',
 			link: `${this.contextPath}team/`,
 			type: 'internal',
 			name: 'team',
+			tooltip: 'Manage who can access your app data',
 			img: (<img className="img-responsive" src={`../../../assets/images/${this.config.name}/sidebar/team.svg`}></img>)
 		}];
 	}
@@ -107,9 +113,15 @@ export default class Sidebar extends Component {
 						</Link>
 					);
 					return (
-						<li className="ad-detail-sidebar-item" key={index}>
-							{anchor}
-						</li>
+						<Tooltip
+							overlay={<div>{item.tooltip}</div>}
+							mouseLeaveDelay={0}
+							key={index}
+						>
+							<li className="ad-detail-sidebar-item" key={index}>
+								{anchor}
+							</li>
+						</Tooltip>
 					);
 				})
 				break;

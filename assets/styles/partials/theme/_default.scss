@@ -1,5 +1,5 @@
 $themes: (
-	context-appbase: (primary: #3BC7F6, accent: #B6EF7E, primaryfont: #fff, dropdownfont: #333, buttoncolor: #fff),
+	context-appbase: (primary: #C7F4FF, accent: #B6EF7E, primaryfont: #232E44, dropdownfont: #333, buttoncolor: $d-green),
 	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #333, buttoncolor: #fff),
 	context-reactivesearch: (accent: #FFD600, primary: #2251D1, primaryfont: #fff, dropdownfont: #333, buttoncolor: #333)
 );
@@ -8,14 +8,11 @@ $map in $themes {
 	.#{$theme} {
 		.ad-detail {
 			.ad-detail-sidebar {
-				background: lighten(map-get($map, primary), 10%);
+				background: $sidebar-color;
 				li a {
 					&:hover,
 					&.active {
-						background: map-get($map, primary);
-					}
-					&.active {
-						border-color: map-get($map, accent);
+						
 					}
 				}
 			}
@@ -32,9 +29,15 @@ $map in $themes {
 			}
 		}
 		.navbar.navbar-default {
+			.navbar-toggle {
+				border-color: $navy;
+			}
 			background: map-get($map, primary);
 			.navbar-brand {
 				color: map-get($map, primaryfont);
+				@media all and (min-width: 768px) {
+					margin-left: 20px;
+				}
 			}
 			li {
 				a, .extra-link {
@@ -70,14 +73,16 @@ $map in $themes {
 			}
 			.navbar-collapse {
 				background: map-get($map, primary);
+				padding-top: 8px;
+				border-color: $navy;
 			}
 			.navbar-toggle {
 				.icon-bar {
-					background-color: #fff;
+					background-color: $navy;
 				}
 				&:hover,
 				&:focus {
-					background-color: #fff;
+					background-color: $navy;
 					.icon-bar {
 						background-color: map-get($map, primary);
 					}
@@ -115,7 +120,7 @@ $map in $themes {
 			}
 		}
 		.ad-list {
-			.ad-list-app {
+			.ad-list-app:hover {
 				border-left: 3px solid map-get($map, accent);
 			}
 			.ad-list-app-bg-container {
@@ -135,14 +140,90 @@ $map in $themes {
 			.modal-header {
 				color: map-get($map, accent);
 				.modal-title {
-					color: map-get($map, accent);
+					color: $n-navy;
+					text-transform: capitalize;
+					font-size: 1.2rem;
 				}
 				.close {
-					color: map-get($map, accent);
+					color: $n-navy;
+					font-family: $font-extra-light;
+					font-size: 1.5rem;
+					border: none;
+					padding: 0;
+					width: 25px;
+					height: 25px;
+					top: 20px;
+					right: 10px;
+					background-color: rgba(217,216,228,0.25);
 				}
 			}
 			.modal-content {
-				border-color: map-get($map, accent);
+				border: none;
+				padding: 10px 10px 20px 10px;
+				border-radius: 0;
+				label {
+					font-family: $font-light;
+					font-size: 1rem;
+					color: $n-navy;
+					margin: 10px 0;
+					&.radio-inline {
+						width: 100px;
+						margin-left: 10px;
+						input {
+							position: absolute;
+							opacity: 0;
+							cursor: pointer;
+						}
+						.checkmark {
+							content: ' ';
+							position: absolute;
+							top: 1px;
+							left: -10px;
+							height: 20px;
+							width: 20px;
+							border: 1px solid #D9D8E4;
+							border-radius: 50%;
+						}
+
+						/* Create the indicator (the dot/circle - hidden when not checked) */
+						.checkmark:after {
+							content: "";
+							position: absolute;
+							display: none;
+						}
+
+						/* Show the indicator (dot/circle) when checked */
+						input:checked ~ .checkmark:after {
+							display: block;
+						}
+
+						/* Style the indicator (dot/circle) */
+						.checkmark:after {
+							top: 3px;
+							left: 3px;
+							width: 12px;
+							height: 12px;
+							border-radius: 50%;
+							background: $external-link-color;
+						}
+					}
+				}
+				.alert {
+					margin-top: 5px;
+				}
+				input.form-control {
+					border: 1px solid #D9D8E4;
+					border-radius: 3px;
+					box-shadow: none;
+					height: 36px;
+					&:focus {
+						border-color: $external-link-color;
+						box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+					}
+				}
+				.modal-body {
+					margin-top: 20px;
+				}
 			}
 			.ad-confirm-btn {
 				color: map-get($map, accent);
@@ -150,11 +231,6 @@ $map in $themes {
 				&:hover {
 					background: map-get($map, accent);
 					color: #fff;
-				}
-			}
-			&.modal-info {
-				.modal-content {
-					border-color: map-get($map, accent);
 				}
 			}
 		}
@@ -165,12 +241,17 @@ $map in $themes {
 			}
 		}
 		.ad-theme-btn {
+			svg {
+				margin-right: 5px;
+			}
 			&.primary {
 				color: map-get($map, buttoncolor);
 				background: map-get($map, accent);
-				border-color: darken(map-get($map, accent), 10%);
+				box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+				transition: all 0.3s ease-in-out;
 				&:hover, &.active {
-					background: darken(map-get($map, accent), 10%);
+					background: lighten(map-get($map, accent), 5%);
+					box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
 				}
 				&.transparent {
 					background: #fff;
