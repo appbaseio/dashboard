@@ -5,7 +5,10 @@ import { billingService } from "../../service/BillingService";
 const FreeHeader = (props) => {
 	return (
 		<div className="title">
-			{props.plan}
+			<span><span className="unit">$</span><span className="plan-price">0</span></span>
+			<span className="superscript">
+				FREE
+			</span>
 		</div>
 	);
 };

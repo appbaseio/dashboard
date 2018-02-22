@@ -137,7 +137,7 @@ export default class BillingCard extends Component {
 		});
 		const loadingCondition = this.props.loading === this.props.plan || this.state.localLoading;
 		return (
-			<div className="col-xs-12 col-sm-4 single-card-container" id="free-card">
+			<div className="col-xs-12 col-sm-4 single-card-container" id={`${this.props.plan}-card`}>
 				<div className="price-card">
 					{this.renderElement(`${this.props.plan}Header`)}
 					{this.renderElement(`${this.props.plan}Description`)}
