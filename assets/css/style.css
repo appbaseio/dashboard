@@ -1013,10 +1013,12 @@ body {
     padding: 0;
     left: 0;
     margin-top: -11px;
-    right: auto;
     max-height: 400px;
     overflow: auto;
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.1); }
+    .navbar.navbar-default li.dropdown .dropdown-menu.apps-dropdown-menu {
+      position: absolute;
+      right: -20px; }
     .navbar.navbar-default li.dropdown .dropdown-menu li {
       height: auto;
       font-family: "Open Sans Light"; }

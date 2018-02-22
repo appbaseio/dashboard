@@ -132,7 +132,7 @@ export default class Nav extends Component {
 								<i className="fa fa-chevron-right dropdown-chevron"></i>&nbsp;
 								{apps[0].appname} <AppOwner app={apps[0]} />
 							</a>
-							<ul className="dropdown-menu pull-right">
+							<ul className="dropdown-menu apps-dropdown-menu">
 								{this.renderElement('apps')}
 							</ul>
 						</li>
