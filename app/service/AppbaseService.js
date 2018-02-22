@@ -24,11 +24,12 @@ class AppbaseService {
 			}
 		};
 		this.sortOptions = {
+			"created_at": "Most Recent",
 			"api_calls": "API Calls",
 			"records": "Records",
 			"appname": "Name"
 		};
-		this.defaultSortBy ="api_calls";
+		this.defaultSortBy ="created_at";
 		this.sortBy = {
 			field: this.getSortBy(),
 			order: 'desc'
