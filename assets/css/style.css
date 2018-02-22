@@ -1748,10 +1748,8 @@ body {
         font-size: 1.5rem;
         font-family: "Open Sans Light"; }
       .ad-detail-page .ad-detail-page-body .ad-change-ownership #ownershipEmail {
-        margin-right: 10px;
-        padding: 0px 10px;
         line-height: 29px;
-        height: 29px; }
+        height: 38px; }
 
 .permission-card {
   padding: 15px 0;
@@ -1986,6 +1984,79 @@ body {
   margin: 15px 0;
   font-size: 1.2rem;
   text-align: center; }
+
+#team-page .ad-detail-page-body-card-title {
+  padding: 25px 30px;
+  font-size: 1.2rem;
+  font-family: "Open Sans Semi Bold";
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+  @media all and (max-width: 940px) {
+    #team-page .ad-detail-page-body-card-title {
+      flex-direction: column;
+      align-items: flex-start; } }
+  #team-page .ad-detail-page-body-card-title .form-inline {
+    display: flex;
+    align-items: center; }
+    @media all and (max-width: 940px) {
+      #team-page .ad-detail-page-body-card-title .form-inline {
+        flex-direction: column;
+        align-items: flex-start; } }
+    #team-page .ad-detail-page-body-card-title .form-inline input {
+      border: 1px solid #D9D8E4;
+      border-radius: 3px;
+      box-shadow: none;
+      font-family: "Open Sans Regular";
+      padding: 8px 12px;
+      width: 280px; }
+      #team-page .ad-detail-page-body-card-title .form-inline input:focus {
+        border-color: #326BDC;
+        box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+      @media all and (max-width: 940px) {
+        #team-page .ad-detail-page-body-card-title .form-inline input {
+          width: auto;
+          margin-top: 20px; } }
+    #team-page .ad-detail-page-body-card-title .form-inline button {
+      margin-left: 10px; }
+      @media all and (max-width: 940px) {
+        #team-page .ad-detail-page-body-card-title .form-inline button {
+          margin-left: 0; } }
+      #team-page .ad-detail-page-body-card-title .form-inline button.ad-theme-btn:not(.danger-inverse) {
+        transition: all 0.3s ease-in-out;
+        font-size: 1rem;
+        font-family: "Open Sans Semi Bold";
+        letter-spacing: 1px;
+        padding: 7px 12px;
+        color: #232E44;
+        background: #EDECF2;
+        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1); }
+        #team-page .ad-detail-page-body-card-title .form-inline button.ad-theme-btn:not(.danger-inverse):hover {
+          box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
+        #team-page .ad-detail-page-body-card-title .form-inline button.ad-theme-btn:not(.danger-inverse):hover {
+          background: #dfdde8; }
+        @media all and (max-width: 940px) {
+          #team-page .ad-detail-page-body-card-title .form-inline button.ad-theme-btn:not(.danger-inverse) {
+            margin-top: 10px;
+            margin-left: 10px; } }
+
+#team-page .danger-inverse {
+  border: 2px solid #FF5C5C;
+  transition: all 0.3s ease-in-out;
+  font-size: 1rem;
+  font-family: "Open Sans Semi Bold";
+  letter-spacing: 1px;
+  padding: 7px 12px;
+  color: #FF5C5C;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1); }
+  #team-page .danger-inverse:hover {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
+  #team-page .danger-inverse:hover {
+    background: #FF5C5C;
+    color: white; }
+  @media all and (max-width: 940px) {
+    #team-page .danger-inverse {
+      margin-top: 10px; } }
 
 .ad-detail-page-body-card-body .permission-card:last-child {
   border: 0; }
