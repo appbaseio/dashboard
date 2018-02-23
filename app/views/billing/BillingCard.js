@@ -137,26 +137,22 @@ export default class BillingCard extends Component {
 		});
 		const loadingCondition = this.props.loading === this.props.plan || this.state.localLoading;
 		return (
-			<div className="col-xs-12 col-sm-4 single-card-container" id={`${this.props.plan}-card`}>
+			<div className="col-xs-12 col-sm-12 single-card-container" id={`${this.props.plan}-card`}>
 				<div className="price-card">
 					{this.renderElement(`${this.props.plan}Header`)}
 					{this.renderElement(`${this.props.plan}Description`)}
-					<ul className="description">
-						<li className="subscribe-li">
-							<div className="button text-center">
-								<button {...common.isDisabled(loadingCondition)} className={`pos-relative new-btn get-started ${cx}`} onClick={this.changeSubscribe}>
-									{
-										loadingCondition ? (
-											<Loading></Loading>
-										) : null
-									}
-									<span> {
-										this.props.activePlan === this.props.plan && this.props.mode === this.props.activeMode ? "Current plan" : "Subscribe plan"
-									} </span>
-								</button>
-							</div>
-						</li>
-					</ul>
+					<div className="button text-center plan-button">
+						<button {...common.isDisabled(loadingCondition)} className={`pos-relative new-btn get-started ${cx}`} onClick={this.changeSubscribe}>
+							{
+								loadingCondition ? (
+									<Loading></Loading>
+								) : null
+							}
+							<span> {
+								this.props.activePlan === this.props.plan && this.props.mode === this.props.activeMode ? "Current plan" : "Subscribe plan"
+							} </span>
+						</button>
+					</div>
 				</div>
 			</div>
 		);

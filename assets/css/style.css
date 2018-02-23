@@ -2182,6 +2182,21 @@ body {
     background: #ff7676;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
 
+#pricing-page .flex {
+  display: flex; }
+  @media all and (max-width: 1280px) {
+    #pricing-page .flex {
+      flex-direction: column; } }
+
+#pricing-page .appbase-logo {
+  height: 2rem; }
+
+#pricing-page .plan-button {
+  margin-top: -90px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto; }
+
 #pricing-page .toggleButton .btn {
   border-radius: 20px;
   background: #86DDF8;
@@ -2213,26 +2228,29 @@ body {
   font-family: "Open Sans Regular"; }
 
 #pricing-page .new-btn {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-size: 1.6em;
+  font-size: 1rem;
+  font-family: "Open Sans Semi Bold";
   text-transform: uppercase;
   background: #B6EF7E;
-  color: #232E44;
-  padding: 4px 30px;
+  color: #53683B;
+  padding: 15px 30px;
   height: auto;
-  letter-spacing: 2px;
-  border-radius: 5px;
-  font-family: "Open Sans Regular";
+  letter-spacing: 1px;
+  border-radius: 3px;
   border: 0;
-  outline: none; }
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1); }
+  #pricing-page .new-btn:hover {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
   #pricing-page .new-btn:active, #pricing-page .new-btn:focus, #pricing-page .new-btn:hover, #pricing-page .new-btn:link, #pricing-page .new-btn:visited {
-    color: #232E44 !important; }
+    background: #c3f295; }
   #pricing-page .new-btn.subscribed {
     background: #232E44;
     color: #fff; }
     #pricing-page .new-btn.subscribed:active, #pricing-page .new-btn.subscribed:focus, #pricing-page .new-btn.subscribed:hover, #pricing-page .new-btn.subscribed:link, #pricing-page .new-btn.subscribed:visited {
-      color: #fff !important; }
+      color: #fff !important;
+      background: #2c3955; }
 
 #pricing-page #top-container {
   background: #C7F4FF;
@@ -2244,6 +2262,12 @@ body {
 #pricing-page #cards {
   margin-top: -210px;
   margin-bottom: 40px; }
+  @media all and (max-width: 1278px) {
+    #pricing-page #cards {
+      margin-top: -230px; } }
+  @media all and (max-width: 980px) {
+    #pricing-page #cards {
+      margin-top: -190px; } }
   @media all and (max-width: 768px) {
     #pricing-page #cards {
       margin-top: -150px; } }
@@ -2257,23 +2281,15 @@ body {
     display: flex;
     margin: 0 5rem;
     margin-top: -20px; }
+    @media all and (max-width: 1278px) {
+      #pricing-page #cards .cards-container {
+        margin: 0 1rem; } }
     @media all and (max-width: 400px) {
       #pricing-page #cards .cards-container {
         margin: 0; } }
     #pricing-page #cards .cards-container #free-card .price-card .description {
       background: rgba(134, 221, 248, 0.5);
       height: 500px; }
-      @media all and (max-width: 1150px) {
-        #pricing-page #cards .cards-container #free-card .price-card .description {
-          height: 400px; } }
-      @media all and (max-width: 768px) {
-        #pricing-page #cards .cards-container #free-card .price-card .description {
-          height: 380px; } }
-      #pricing-page #cards .cards-container #free-card .price-card .description li:nth-child(3) {
-        height: 180px; }
-        @media all and (max-width: 1150px) {
-          #pricing-page #cards .cards-container #free-card .price-card .description li:nth-child(3) {
-            height: auto; } }
     #pricing-page #cards .cards-container #free-card .price-card .title {
       background: rgba(134, 221, 248, 0.5); }
     #pricing-page #cards .cards-container #free-card .text-container .figure.light {
@@ -2282,17 +2298,6 @@ body {
     #pricing-page #cards .cards-container #bootstrap-card .price-card .description {
       background: rgba(59, 199, 246, 0.5);
       height: 500px; }
-      @media all and (max-width: 1150px) {
-        #pricing-page #cards .cards-container #bootstrap-card .price-card .description {
-          height: 400px; } }
-      @media all and (max-width: 768px) {
-        #pricing-page #cards .cards-container #bootstrap-card .price-card .description {
-          height: 380px; } }
-      #pricing-page #cards .cards-container #bootstrap-card .price-card .description li:nth-child(3) {
-        height: 180px; }
-        @media all and (max-width: 1150px) {
-          #pricing-page #cards .cards-container #bootstrap-card .price-card .description li:nth-child(3) {
-            height: auto; } }
     #pricing-page #cards .cards-container #bootstrap-card .price-card .title {
       background: rgba(59, 199, 246, 0.5); }
     #pricing-page #cards .cards-container #bootstrap-card .price-card .big-description {
@@ -2304,17 +2309,6 @@ body {
     #pricing-page #cards .cards-container #growth-card .price-card .description {
       background: rgba(36, 216, 228, 0.5);
       height: 500px; }
-      @media all and (max-width: 1150px) {
-        #pricing-page #cards .cards-container #growth-card .price-card .description {
-          height: 420px; } }
-      @media all and (max-width: 768px) {
-        #pricing-page #cards .cards-container #growth-card .price-card .description {
-          height: 400px; } }
-      #pricing-page #cards .cards-container #growth-card .price-card .description li:nth-child(3) {
-        height: 180px; }
-        @media all and (max-width: 1150px) {
-          #pricing-page #cards .cards-container #growth-card .price-card .description li:nth-child(3) {
-            height: auto; } }
     #pricing-page #cards .cards-container #growth-card .price-card .title {
       background: rgba(36, 216, 228, 0.5); }
     #pricing-page #cards .cards-container #growth-card .price-card .big-description {
@@ -2330,6 +2324,10 @@ body {
         #pricing-page #cards .cards-container .single-card-container {
           padding-left: 30px;
           padding-right: 30px; } }
+      @media all and (max-width: 1200px) {
+        #pricing-page #cards .cards-container .single-card-container {
+          padding-left: 10px;
+          padding-right: 10px; } }
       #pricing-page #cards .cards-container .single-card-container .price-card {
         border-radius: 10px;
         height: 100%;
@@ -2384,9 +2382,9 @@ body {
             position: relative;
             padding: 40px;
             padding-top: 30px; }
-            @media all and (max-width: 1150px) {
+            @media all and (max-width: 1278px) {
               #pricing-page #cards .cards-container .single-card-container .price-card .description li {
-                padding-bottom: 10px; } }
+                padding-bottom: 20px; } }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link {
               text-decoration: none;
               padding-bottom: 3px;
@@ -2394,6 +2392,9 @@ body {
               color: #232E44; }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link:hover {
                 color: #232E44; }
+              @media all and (max-width: 1320px) {
+                #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link {
+                  font-size: 1rem; } }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li.with-icon {
               padding-left: 100px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
@@ -2420,6 +2421,10 @@ body {
                 font-family: "Open Sans Bold"; }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .summary {
                 font-family: "Open Sans Light"; }
+                @media all and (max-width: 1278px) {
+                  #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .summary {
+                    margin-left: -3px;
+                    margin-top: -10px; } }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .small-fonts {
                 position: absolute;
                 font-size: 1em; }
@@ -2442,18 +2447,18 @@ body {
       @media screen and (max-width: 1300px) {
         #pricing-page #cards .cards-container .single-card-container .single-card-container {
           padding: 0 15px; } }
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 980px) {
       #pricing-page #cards .cards-container {
         display: block; }
         #pricing-page #cards .cards-container .single-card-container {
-          margin-bottom: 30px;
-          padding: 0 80px; }
-          #pricing-page #cards .cards-container .single-card-container#free-card .price-card .title {
+          margin-bottom: 100px;
+          padding: 0 150px; }
+          #pricing-page #cards .cards-container .single-card-container#free-card .price-card .title, #pricing-page #cards .cards-container .single-card-container#bootstrap-card .price-card .title, #pricing-page #cards .cards-container .single-card-container#growth-card .price-card .title {
             padding-top: 40px; }
           #pricing-page #cards .cards-container .single-card-container .price-card .title {
             line-height: 86px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .title .superscript {
-              top: -14px; }
+              top: -70px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .title .subscript {
               right: 35%;
               bottom: -20px; }
@@ -2463,6 +2468,9 @@ body {
               bottom: -120px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
               max-width: 250px; } }
+    @media screen and (max-width: 768px) {
+      #pricing-page #cards .cards-container .single-card-container {
+        padding: 0 60px; } }
     @media screen and (max-width: 480px) {
       #pricing-page #cards .cards-container .single-card-container {
         padding: 0 15px; } }

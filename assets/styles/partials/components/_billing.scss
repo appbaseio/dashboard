@@ -1,4 +1,19 @@
 #pricing-page {
+	.flex {
+		display: flex;
+		@media all and (max-width: 1280px) {
+			flex-direction: column;
+		}
+	}
+	.appbase-logo {
+		height: 2rem;
+	}
+	.plan-button {
+		margin-top: -90px;
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+	}
 	.toggleButton {
 		.btn {
 			border-radius: 20px;
@@ -35,25 +50,25 @@
 		font-family: $font-black;
 	}
 	.new-btn {
-		padding-top: 8px;
-		padding-bottom: 8px;
-		font-size: 1.6em;
+		font-size: 1rem;
+		font-family: $font-semi-bold;
 		text-transform: uppercase;
 		background: $n-green;
-		color: $n-navy;
-		padding: 4px 30px;
+		color: $d-green;
+		padding: 15px 30px;
 		height: auto;
-		letter-spacing: 2px;
-		border-radius: 5px;
-		font-family: $font-regular;
+		letter-spacing: 1px;
+		border-radius: 3px;
 		border: 0;
 		outline: none;
+		transition: all 0.3s ease-in-out;
+		@include btn-shadow();
 		&:active,
 		&:focus,
 		&:hover,
 		&:link,
 		&:visited {
-			color: $n-navy !important;
+			background: lighten($n-green, 5%);
 		}
 		&.subscribed {
 			background: $n-navy;
@@ -64,6 +79,7 @@
 			&:link,
 			&:visited {
 				color: #fff !important;
+				background: lighten($n-navy, 5%);
 			}
 		}
 	}
@@ -77,6 +93,12 @@
 	#cards {
 		margin-top: -210px;
 		margin-bottom: 40px;
+		@media all and (max-width: 1278px) {
+			margin-top: -230px;
+		}
+		@media all and (max-width: 980px) {
+			margin-top: -190px;
+		}
 		@media all and (max-width: 768px) {
 			margin-top: -150px;
 		}
@@ -90,6 +112,9 @@
 		.cards-container {
 			display: flex;
 			margin: 0 5rem;
+			@media all and (max-width: 1278px) {
+				margin: 0 1rem;
+			};
 			@media all and (max-width: 400px) {
 				margin: 0;
 			};
@@ -99,19 +124,7 @@
                     .description {
 						background: rgba(134, 221, 248, 0.5);
 						height: 500px;
-						@media all and (max-width: 1150px) {
-							height: 400px;
-						}
-						@media all and (max-width: 768px) {
-							height: 380px;
-						}
-						li:nth-child(3) {
-							height: 180px;
-							@media all and (max-width: 1150px) {
-								height: auto;
 							}
-						}
-                    }
 					.title {
 						background: rgba(134, 221, 248, 0.5);
 					}
@@ -128,19 +141,7 @@
                     .description {
                         background: rgba(59, 199, 246, 0.5);
 						height: 500px;
-						@media all and (max-width: 1150px) {
-							height: 400px;
-						}
-						@media all and (max-width: 768px) {
-							height: 380px;
-						}
-						li:nth-child(3) {
-							height: 180px;
-							@media all and (max-width: 1150px) {
-								height: auto;
 							}
-						}
-                    }
 					.title {
 						background: rgba(59, 199, 246, 0.5);
 					}
@@ -159,19 +160,7 @@
                     .description {
                         background: rgba(36, 216, 228, 0.5);
 						height: 500px;
-						@media all and (max-width: 1150px) {
-							height: 420px;
 						}
-						@media all and (max-width: 768px) {
-							height: 400px;
-						}
-						li:nth-child(3) {
-							height: 180px;
-							@media all and (max-width: 1150px) {
-								height: auto;
-							}
-						}
-                    }
 					.title {
 						background: rgba(36, 216, 228, 0.5);
 					}
@@ -191,6 +180,10 @@
 				@media all and (max-width: 1400px) {
 					padding-left: 30px;
 					padding-right: 30px;
+				}
+				@media all and (max-width: 1200px) {
+					padding-left: 10px;
+					padding-right: 10px;
 				}
 				.price-card {
 					border-radius: 10px;
@@ -251,8 +244,8 @@
 							position: relative;
 							padding: 40px;
 							padding-top: 30px;
-							@media all and (max-width: 1150px) {
-								padding-bottom: 10px;
+							@media all and (max-width: 1278px) {
+								padding-bottom: 20px;
 							}
 							.logo-link {
 								text-decoration: none;
@@ -261,6 +254,9 @@
 								color: $n-navy;
 								&:hover {
 									color: $n-navy;
+								}
+								@media all and (max-width: 1320px) {
+									font-size: 1rem;
 								}
 							}
 							&.with-icon {
@@ -295,6 +291,10 @@
 								}
 								.summary {
 									font-family: $font-light;
+									@media all and (max-width: 1278px) {
+										margin-left: -3px;
+										margin-top: -10px;
+									}
 								}
 								.small-fonts {
 									position: absolute;
@@ -329,12 +329,14 @@
 					}
 				}
 			}
-			@media screen and (max-width:767px) {
+			@media screen and (max-width:980px) {
 				display: block;
 				.single-card-container {
-					margin-bottom: 30px;
-					padding: 0 80px;
-					&#free-card {
+					margin-bottom: 100px;
+					padding: 0 150px;
+					&#free-card,
+					&#bootstrap-card,
+					&#growth-card {
 						.price-card {
 							.title {
 								padding-top: 40px;
@@ -345,7 +347,7 @@
 						.title {
 							line-height: 86px;
 							.superscript {
-								top: -14px;
+								top: -70px;
 							}
 							.subscript {
 								right: 35%;
@@ -364,6 +366,11 @@
 							}
 						}
 					}
+				}
+			}
+			@media screen and (max-width: 768px) {
+				.single-card-container {
+					padding: 0 60px;
 				}
 			}
 			@media screen and (max-width:480px) {

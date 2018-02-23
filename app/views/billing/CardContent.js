@@ -18,29 +18,27 @@ const FreeDescription = (props) => {
 		<ul className="description">
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_10.svg" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/calls.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.action}</div>
-					<div className="summary">API calls</div>
+					<div className="figure flex">{props.cardInfo.action}<div className="summary">&nbsp;API calls</div></div>
 				</div>
 			</li>
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_11.png" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/records.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.records}</div>
-					<div className="summary">Records</div>
+					<div className="figure flex">{props.cardInfo.records}<div className="summary">&nbsp;Records</div></div>
 				</div>
 			</li>
 			<li>
-				<img src="../../../assets/images/pricing/PB_Appbase_Black.svg" alt="" className="img-responsive img-center" />
+				<img src="../../../assets/images/pricing/PB_Appbase_Black.svg" alt="" className="img-responsive appbase-logo img-center" />
 			</li>
 			<li>
 				<div className="text-container text-center">
 					<div className="figure light">
-						Requires <a href="/poweredby_logo_placement.zip" className="logo-link">logo <i className="fa fa-arrow-down"></i></a> placement
+					<a href="/poweredby_logo_placement.zip" className="logo-link"><i className="fa fa-arrow-down"></i> Requires logo placement</a>
 					</div>
 				</div>
 			</li>
@@ -67,25 +65,23 @@ const BootstrapDescription = (props) => {
 		<ul className="description">
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_10.svg" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/calls.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.action}</div>
-					<div className="summary">API calls</div>
+					<div className="figure flex">{props.cardInfo.action}<div className="summary">&nbsp;API calls</div></div>
 					<div className="small-fonts">
-						$5 per additional 1M API calls
+						$5 per additional <br /> 1M API calls
 					</div>
 				</div>
 			</li>
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_11.png" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/records.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.records}</div>
-					<div className="summary">Records</div>
+					<div className="figure flex">{props.cardInfo.records}<div className="summary">&nbsp;Records</div></div>
 					<div className="small-fonts">
-						$5 per additional 100k records
+						$5 per additional <br /> 100k records
 					</div>
 				</div>
 			</li>
@@ -119,25 +115,23 @@ const GrowthDescription = (props) => {
 		<ul className="description">
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_10.svg" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/calls.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.action}</div>
-					<div className="summary">API calls</div>
+					<div className="figure flex">{props.cardInfo.action}<div className="summary">&nbsp;API calls</div></div>
 					<div className="small-fonts">
-						$5 per additional 1M API calls
+						$5 per additional <br /> 1M API calls
 					</div>
 				</div>
 			</li>
 			<li className="with-icon">
 				<span className="icon-container">
-						<img src="../../../assets/images/pricing/Icons_Pricing_11.png" alt="" className="img-responsive" />
+						<img src="../../../assets/images/pricing/records.png" alt="" className="img-responsive" />
 					</span>
 				<div className="text-container">
-					<div className="figure">{props.cardInfo.records}</div>
-					<div className="summary">Records</div>
+					<div className="figure flex">{props.cardInfo.records}<div className="summary">&nbsp;Records</div></div>
 					<div className="small-fonts">
-						$5 per additional 100k records
+						$5 per additional <br /> 100k records
 					</div>
 				</div>
 			</li>
