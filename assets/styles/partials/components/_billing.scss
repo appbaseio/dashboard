@@ -1,13 +1,29 @@
 #pricing-page {
+	.flex {
+		display: flex;
+		@media all and (max-width: 1280px) {
+			flex-direction: column;
+		}
+	}
+	.appbase-logo {
+		height: 2rem;
+	}
+	.plan-button {
+		margin-top: -90px;
+		width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+	}
 	.toggleButton {
 		.btn {
 			border-radius: 20px;
-			background: #55869E;
-			color: $n-navy;
-			font-family: $font-regular;
-			font-size: 1.4em;
-			padding: 0.5em 1em;
-			outline: none;
+			background: $n-lblue;
+			color: $blue-pricing;
+            font-family: $font-semi-bold;
+            letter-spacing: 1px;
+			font-size: 0.9rem;
+			padding: 0.7em 2em;
+            outline: none;
 			&.left {
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
@@ -15,38 +31,44 @@
 			&.right {
 				border-top-left-radius: 0;
 				border-bottom-left-radius: 0;
+				margin-left: -4px;
 			}
 			&.active {
-				background: $n-green;
-				color: $n-navy;
-				font-size: 1.8em;
+                opacity: 1;
+                font-size: 1.1rem;
+                background: $n-green;
+                color: $dgreen-17;
+				box-shadow: none;
+				position: relative;
 			}
 		}
 	}
 	.plan-bottomline {
 		margin-top: 15px;
-		color: $n-lblue;
+		color: $n-navy;
+		font-size: 1.2rem;
+		font-family: $font-black;
 	}
 	.new-btn {
-		padding-top: 8px;
-		padding-bottom: 8px;
-		font-size: 1.6em;
+		font-size: 1rem;
+		font-family: $font-semi-bold;
 		text-transform: uppercase;
 		background: $n-green;
-		color: $n-navy;
-		padding: 4px 30px;
+		color: $d-green;
+		padding: 15px 30px;
 		height: auto;
-		letter-spacing: 2px;
-		border-radius: 5px;
-		font-family: $font-regular;
+		letter-spacing: 1px;
+		border-radius: 3px;
 		border: 0;
 		outline: none;
+		transition: all 0.3s ease-in-out;
+		@include btn-shadow();
 		&:active,
 		&:focus,
 		&:hover,
 		&:link,
 		&:visited {
-			color: $n-navy !important;
+			background: lighten($n-green, 5%);
 		}
 		&.subscribed {
 			background: $n-navy;
@@ -57,63 +79,141 @@
 			&:link,
 			&:visited {
 				color: #fff !important;
+				background: lighten($n-navy, 5%);
 			}
 		}
 	}
 	#top-container {
-		background: $n-navy;
-		padding-bottom: 170px;
+		background: $lblue;
+		padding-bottom: 340px;
+		@media all and (max-width: 768px) {
+			padding-bottom: 210px;
+		}
 	}
 	#cards {
-		margin-top: -160px;
+		margin-top: -210px;
 		margin-bottom: 40px;
+		@media all and (max-width: 1278px) {
+			margin-top: -230px;
+		}
+		@media all and (max-width: 980px) {
+			margin-top: -190px;
+		}
+		@media all and (max-width: 768px) {
+			margin-top: -150px;
+		}
+		.price-header {
+            font-size: 2.1rem;
+            text-transform: uppercase;
+            font-family: $font-bold;
+            text-align: center;
+            margin: 15px 0;
+        }
 		.cards-container {
 			display: flex;
+			margin: 0 5rem;
+			@media all and (max-width: 1278px) {
+				margin: 0 1rem;
+			};
+			@media all and (max-width: 400px) {
+				margin: 0;
+			};
+            margin-top: -20px;
 			#free-card {
 				.price-card {
-					background: #C2EEFB;
+                    .description {
+						background: rgba(134, 221, 248, 0.5);
+						height: 500px;
+							}
 					.title {
-						background: #86DDF8;
+						background: rgba(134, 221, 248, 0.5);
+					}
+				}
+				.text-container {
+					.figure.light {
+						font-size: 1.2rem;
+						color: $n-navy;
 					}
 				}
 			}
 			#bootstrap-card {
 				.price-card {
-					background: #9DE3FA;
+                    .description {
+                        background: rgba(59, 199, 246, 0.5);
+						height: 500px;
+							}
 					.title {
-						background: #3BC7F6;
+						background: rgba(59, 199, 246, 0.5);
+					}
+					.big-description {
+						font-size: 1.2rem;
+						font-family: $font-bold;
+						margin: 20px 0 20px 20px;
+						&:before {
+							content: '\2022';
+						}
 					}
 				}
 			}
 			#growth-card {
 				.price-card {
-					background: #91EBF1;
+                    .description {
+                        background: rgba(36, 216, 228, 0.5);
+						height: 500px;
+						}
 					.title {
-						background: #24D8E4;
+						background: rgba(36, 216, 228, 0.5);
+					}
+					.big-description {
+						font-size: 1.2rem;
+						font-family: $font-bold;
+						margin: 20px 0 20px 20px;
+						&:before {
+							content: '\2022';
+						}
 					}
 				}
 			}
 			.single-card-container {
-				padding-left: 26px;
-				padding-right: 26px;
+				padding-left: 40px;
+				padding-right: 40px;
+				@media all and (max-width: 1400px) {
+					padding-left: 30px;
+					padding-right: 30px;
+				}
+				@media all and (max-width: 1200px) {
+					padding-left: 10px;
+					padding-right: 10px;
+				}
 				.price-card {
 					border-radius: 10px;
 					height: 100%;
 					padding-bottom: 110px;
+					@media all and (max-width: 1150px) {
+						padding-bottom: 20px;
+					}
+                    .plan-price {
+                        letter-spacing: -5px;
+                    }
 					.title {
 						background: #3BC7F6;
-						color: #fff;
-						font-size: 100px;
-						line-height: 100px;
+						color: $n-navy;
+                        font-size: 8rem;
 						font-family: $font-extra-light;
-						padding: 46px 15px;
 						text-align: center;
-						height: 160px;
 						border-top-left-radius: 10px;
 						border-top-right-radius: 10px;
 						position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+						min-height: 220px;
+						@media all and (max-width: 768px) {
+							min-height: auto;
+						}
 						.unit {
-							font-size: 60px;
+                            font-size: 2.5rem;
+                            font-family: $font-black;
 						}
 						.superscript {
 							font-size: 20px;
@@ -122,35 +222,41 @@
 							width: 100%;
 							height: auto;
 							text-align: center;
-							top: -26px;
+							top: -60px;
+							font-size: 2rem;
 							left: 0;
-							font-family: $font-regular;
+							font-family: $font-bold;
 						}
 						.subscript {
-							font-size: 14px;
-							text-transform: lowercase;
-							position: absolute;
-							bottom: -30px;
-							right: 80px;
+                            font-size: 1.4rem;
 							height: auto;
-							text-align: center;
+                            text-align: center;
+                            font-family: $font-black;
 						}
 					}
 					.description {
 						color: $n-navy;
 						list-style: none;
-						padding-left: 0;
+                        padding-left: 0;
+						border-bottom-left-radius: 10px;
+						border-bottom-right-radius: 10px;
 						li {
 							position: relative;
-							padding: 50px;
+							padding: 40px;
 							padding-top: 30px;
-							padding-bottom: 40px;
+							@media all and (max-width: 1278px) {
+								padding-bottom: 20px;
+							}
 							.logo-link {
+								text-decoration: none;
 								padding-bottom: 3px;
 								border-bottom: 1px solid;
 								color: $n-navy;
 								&:hover {
 									color: $n-navy;
+								}
+								@media all and (max-width: 1320px) {
+									font-size: 1rem;
 								}
 							}
 							&.with-icon {
@@ -179,16 +285,16 @@
 									}
 								}
 								.figure {
-									font-size: 1.8em;
-									line-height: 1.4em;
-									font-family: $font-regular;
-									&.light {
-										font-family: $font-extra-light;
-									}
+									font-size: 1.4em;
+									line-height: 1.9em;
+									font-family: $font-bold;
 								}
 								.summary {
-									font-size: 1.5em;
-									line-height: 1em;
+									font-family: $font-light;
+									@media all and (max-width: 1278px) {
+										margin-left: -3px;
+										margin-top: -10px;
+									}
 								}
 								.small-fonts {
 									position: absolute;
@@ -196,18 +302,16 @@
 								}
 							}
 							&.subscribe-li {
-								position: absolute;
 								bottom: 15px;
 								left: 0;
 								width: 100%;
 								padding-left: 60px;
 								padding-right: 60px;
+								color: $dgreen-17;
 							}
 						}
 					}
 					.new-btn {
-						color: $n-navy;
-						font-family: $font-regular;
 						width: 100%;
 						display: inline-block;
 						&.subscribed {
@@ -215,13 +319,24 @@
 						}
 					}
 				}
+				@media screen and (max-width:1150px) {
+					flex-direction: column;
+					align-items: center;
+				}
+				@media screen and (max-width:1300px) {
+					.single-card-container {
+						padding: 0 15px;
+					}
+				}
 			}
-			@media screen and (max-width:767px) {
+			@media screen and (max-width:980px) {
 				display: block;
 				.single-card-container {
-					margin-bottom: 30px;
-					padding: 0 80px;
-					&#free-card {
+					margin-bottom: 100px;
+					padding: 0 150px;
+					&#free-card,
+					&#bootstrap-card,
+					&#growth-card {
 						.price-card {
 							.title {
 								padding-top: 40px;
@@ -232,7 +347,7 @@
 						.title {
 							line-height: 86px;
 							.superscript {
-								top: -14px;
+								top: -70px;
 							}
 							.subscript {
 								right: 35%;
@@ -251,6 +366,11 @@
 							}
 						}
 					}
+				}
+			}
+			@media screen and (max-width: 768px) {
+				.single-card-container {
+					padding: 0 60px;
 				}
 			}
 			@media screen and (max-width:480px) {
@@ -365,8 +485,7 @@
 	padding-top: $navbar-height+50px;
 	text-align: center;
 	color: white;
-	padding-top: 60px;
-	padding-bottom: 80px;
+	padding-top: 20px;
 	color: $n-lblue;
 	p {
 		margin-bottom: 0;
@@ -375,9 +494,12 @@
 	}
 	h1 {
 		padding-bottom: 40px;
-		font-family: $font-semi-bold;
-		color: $n-lblue;
-		font-size: 6em;
+		font-family: $font-bold;
+		color: $n-navy;
+		font-size: 3.3em;
+		@media all and (max-width: 768px) {
+			font-size: 3em;
+		}
 	}
 	.signup-row {
 		padding-top: 30px;

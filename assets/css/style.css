@@ -2182,93 +2182,180 @@ body {
     background: #ff7676;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
 
+#pricing-page .flex {
+  display: flex; }
+  @media all and (max-width: 1280px) {
+    #pricing-page .flex {
+      flex-direction: column; } }
+
+#pricing-page .appbase-logo {
+  height: 2rem; }
+
+#pricing-page .plan-button {
+  margin-top: -90px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto; }
+
 #pricing-page .toggleButton .btn {
   border-radius: 20px;
-  background: #55869E;
-  color: #232E44;
-  font-family: "Open Sans Regular";
-  font-size: 1.4em;
-  padding: 0.5em 1em;
+  background: #86DDF8;
+  color: #3EAED1;
+  font-family: "Open Sans Semi Bold";
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  padding: 0.7em 2em;
   outline: none; }
   #pricing-page .toggleButton .btn.left {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
   #pricing-page .toggleButton .btn.right {
     border-top-left-radius: 0;
-    border-bottom-left-radius: 0; }
+    border-bottom-left-radius: 0;
+    margin-left: -4px; }
   #pricing-page .toggleButton .btn.active {
+    opacity: 1;
+    font-size: 1.1rem;
     background: #B6EF7E;
-    color: #232E44;
-    font-size: 1.8em; }
+    color: #759352;
+    box-shadow: none;
+    position: relative; }
 
 #pricing-page .plan-bottomline {
   margin-top: 15px;
-  color: #86DDF8; }
+  color: #232E44;
+  font-size: 1.2rem;
+  font-family: "Open Sans Regular"; }
 
 #pricing-page .new-btn {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-size: 1.6em;
+  font-size: 1rem;
+  font-family: "Open Sans Semi Bold";
   text-transform: uppercase;
   background: #B6EF7E;
-  color: #232E44;
-  padding: 4px 30px;
+  color: #53683B;
+  padding: 15px 30px;
   height: auto;
-  letter-spacing: 2px;
-  border-radius: 5px;
-  font-family: "Open Sans Regular";
+  letter-spacing: 1px;
+  border-radius: 3px;
   border: 0;
-  outline: none; }
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1); }
+  #pricing-page .new-btn:hover {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
   #pricing-page .new-btn:active, #pricing-page .new-btn:focus, #pricing-page .new-btn:hover, #pricing-page .new-btn:link, #pricing-page .new-btn:visited {
-    color: #232E44 !important; }
+    background: #c3f295; }
   #pricing-page .new-btn.subscribed {
     background: #232E44;
     color: #fff; }
     #pricing-page .new-btn.subscribed:active, #pricing-page .new-btn.subscribed:focus, #pricing-page .new-btn.subscribed:hover, #pricing-page .new-btn.subscribed:link, #pricing-page .new-btn.subscribed:visited {
-      color: #fff !important; }
+      color: #fff !important;
+      background: #2c3955; }
 
 #pricing-page #top-container {
-  background: #232E44;
-  padding-bottom: 170px; }
+  background: #C7F4FF;
+  padding-bottom: 340px; }
+  @media all and (max-width: 768px) {
+    #pricing-page #top-container {
+      padding-bottom: 210px; } }
 
 #pricing-page #cards {
-  margin-top: -160px;
+  margin-top: -210px;
   margin-bottom: 40px; }
+  @media all and (max-width: 1278px) {
+    #pricing-page #cards {
+      margin-top: -230px; } }
+  @media all and (max-width: 980px) {
+    #pricing-page #cards {
+      margin-top: -190px; } }
+  @media all and (max-width: 768px) {
+    #pricing-page #cards {
+      margin-top: -150px; } }
+  #pricing-page #cards .price-header {
+    font-size: 2.1rem;
+    text-transform: uppercase;
+    font-family: "Open Sans Bold";
+    text-align: center;
+    margin: 15px 0; }
   #pricing-page #cards .cards-container {
-    display: flex; }
-    #pricing-page #cards .cards-container #free-card .price-card {
-      background: #C2EEFB; }
-      #pricing-page #cards .cards-container #free-card .price-card .title {
-        background: #86DDF8; }
-    #pricing-page #cards .cards-container #bootstrap-card .price-card {
-      background: #9DE3FA; }
-      #pricing-page #cards .cards-container #bootstrap-card .price-card .title {
-        background: #3BC7F6; }
-    #pricing-page #cards .cards-container #growth-card .price-card {
-      background: #91EBF1; }
-      #pricing-page #cards .cards-container #growth-card .price-card .title {
-        background: #24D8E4; }
+    display: flex;
+    margin: 0 5rem;
+    margin-top: -20px; }
+    @media all and (max-width: 1278px) {
+      #pricing-page #cards .cards-container {
+        margin: 0 1rem; } }
+    @media all and (max-width: 400px) {
+      #pricing-page #cards .cards-container {
+        margin: 0; } }
+    #pricing-page #cards .cards-container #free-card .price-card .description {
+      background: rgba(134, 221, 248, 0.5);
+      height: 500px; }
+    #pricing-page #cards .cards-container #free-card .price-card .title {
+      background: rgba(134, 221, 248, 0.5); }
+    #pricing-page #cards .cards-container #free-card .text-container .figure.light {
+      font-size: 1.2rem;
+      color: #232E44; }
+    #pricing-page #cards .cards-container #bootstrap-card .price-card .description {
+      background: rgba(59, 199, 246, 0.5);
+      height: 500px; }
+    #pricing-page #cards .cards-container #bootstrap-card .price-card .title {
+      background: rgba(59, 199, 246, 0.5); }
+    #pricing-page #cards .cards-container #bootstrap-card .price-card .big-description {
+      font-size: 1.2rem;
+      font-family: "Open Sans Bold";
+      margin: 20px 0 20px 20px; }
+      #pricing-page #cards .cards-container #bootstrap-card .price-card .big-description:before {
+        content: '\2022'; }
+    #pricing-page #cards .cards-container #growth-card .price-card .description {
+      background: rgba(36, 216, 228, 0.5);
+      height: 500px; }
+    #pricing-page #cards .cards-container #growth-card .price-card .title {
+      background: rgba(36, 216, 228, 0.5); }
+    #pricing-page #cards .cards-container #growth-card .price-card .big-description {
+      font-size: 1.2rem;
+      font-family: "Open Sans Bold";
+      margin: 20px 0 20px 20px; }
+      #pricing-page #cards .cards-container #growth-card .price-card .big-description:before {
+        content: '\2022'; }
     #pricing-page #cards .cards-container .single-card-container {
-      padding-left: 26px;
-      padding-right: 26px; }
+      padding-left: 40px;
+      padding-right: 40px; }
+      @media all and (max-width: 1400px) {
+        #pricing-page #cards .cards-container .single-card-container {
+          padding-left: 30px;
+          padding-right: 30px; } }
+      @media all and (max-width: 1200px) {
+        #pricing-page #cards .cards-container .single-card-container {
+          padding-left: 10px;
+          padding-right: 10px; } }
       #pricing-page #cards .cards-container .single-card-container .price-card {
         border-radius: 10px;
         height: 100%;
         padding-bottom: 110px; }
+        @media all and (max-width: 1150px) {
+          #pricing-page #cards .cards-container .single-card-container .price-card {
+            padding-bottom: 20px; } }
+        #pricing-page #cards .cards-container .single-card-container .price-card .plan-price {
+          letter-spacing: -5px; }
         #pricing-page #cards .cards-container .single-card-container .price-card .title {
           background: #3BC7F6;
-          color: #fff;
-          font-size: 100px;
-          line-height: 100px;
+          color: #232E44;
+          font-size: 8rem;
           font-family: "Open Sans Light";
-          padding: 46px 15px;
           text-align: center;
-          height: 160px;
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
-          position: relative; }
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-height: 220px; }
+          @media all and (max-width: 768px) {
+            #pricing-page #cards .cards-container .single-card-container .price-card .title {
+              min-height: auto; } }
           #pricing-page #cards .cards-container .single-card-container .price-card .title .unit {
-            font-size: 60px; }
+            font-size: 2.5rem;
+            font-family: "Open Sans Regular"; }
           #pricing-page #cards .cards-container .single-card-container .price-card .title .superscript {
             font-size: 20px;
             text-transform: uppercase;
@@ -2276,32 +2363,38 @@ body {
             width: 100%;
             height: auto;
             text-align: center;
-            top: -26px;
+            top: -60px;
+            font-size: 2rem;
             left: 0;
-            font-family: "Open Sans Regular"; }
+            font-family: "Open Sans Bold"; }
           #pricing-page #cards .cards-container .single-card-container .price-card .title .subscript {
-            font-size: 14px;
-            text-transform: lowercase;
-            position: absolute;
-            bottom: -30px;
-            right: 80px;
+            font-size: 1.4rem;
             height: auto;
-            text-align: center; }
+            text-align: center;
+            font-family: "Open Sans Regular"; }
         #pricing-page #cards .cards-container .single-card-container .price-card .description {
           color: #232E44;
           list-style: none;
-          padding-left: 0; }
+          padding-left: 0;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px; }
           #pricing-page #cards .cards-container .single-card-container .price-card .description li {
             position: relative;
-            padding: 50px;
-            padding-top: 30px;
-            padding-bottom: 40px; }
+            padding: 40px;
+            padding-top: 30px; }
+            @media all and (max-width: 1278px) {
+              #pricing-page #cards .cards-container .single-card-container .price-card .description li {
+                padding-bottom: 20px; } }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link {
+              text-decoration: none;
               padding-bottom: 3px;
               border-bottom: 1px solid;
               color: #232E44; }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link:hover {
                 color: #232E44; }
+              @media all and (max-width: 1320px) {
+                #pricing-page #cards .cards-container .single-card-container .price-card .description li .logo-link {
+                  font-size: 1rem; } }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li.with-icon {
               padding-left: 100px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
@@ -2323,43 +2416,49 @@ body {
                 #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .big-description.list-bottom-gap {
                   margin-bottom: 20px; }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .figure {
-                font-size: 1.8em;
-                line-height: 1.4em;
-                font-family: "Open Sans Regular"; }
-                #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .figure.light {
-                  font-family: "Open Sans Light"; }
+                font-size: 1.4em;
+                line-height: 1.9em;
+                font-family: "Open Sans Bold"; }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .summary {
-                font-size: 1.5em;
-                line-height: 1em; }
+                font-family: "Open Sans Light"; }
+                @media all and (max-width: 1278px) {
+                  #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .summary {
+                    margin-left: -3px;
+                    margin-top: -10px; } }
               #pricing-page #cards .cards-container .single-card-container .price-card .description li .text-container .small-fonts {
                 position: absolute;
                 font-size: 1em; }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li.subscribe-li {
-              position: absolute;
               bottom: 15px;
               left: 0;
               width: 100%;
               padding-left: 60px;
-              padding-right: 60px; }
+              padding-right: 60px;
+              color: #759352; }
         #pricing-page #cards .cards-container .single-card-container .price-card .new-btn {
-          color: #232E44;
-          font-family: "Open Sans Regular";
           width: 100%;
           display: inline-block; }
           #pricing-page #cards .cards-container .single-card-container .price-card .new-btn.subscribed {
             color: #fff; }
-    @media screen and (max-width: 767px) {
+      @media screen and (max-width: 1150px) {
+        #pricing-page #cards .cards-container .single-card-container {
+          flex-direction: column;
+          align-items: center; } }
+      @media screen and (max-width: 1300px) {
+        #pricing-page #cards .cards-container .single-card-container .single-card-container {
+          padding: 0 15px; } }
+    @media screen and (max-width: 980px) {
       #pricing-page #cards .cards-container {
         display: block; }
         #pricing-page #cards .cards-container .single-card-container {
-          margin-bottom: 30px;
-          padding: 0 80px; }
-          #pricing-page #cards .cards-container .single-card-container#free-card .price-card .title {
+          margin-bottom: 100px;
+          padding: 0 150px; }
+          #pricing-page #cards .cards-container .single-card-container#free-card .price-card .title, #pricing-page #cards .cards-container .single-card-container#bootstrap-card .price-card .title, #pricing-page #cards .cards-container .single-card-container#growth-card .price-card .title {
             padding-top: 40px; }
           #pricing-page #cards .cards-container .single-card-container .price-card .title {
             line-height: 86px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .title .superscript {
-              top: -14px; }
+              top: -70px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .title .subscript {
               right: 35%;
               bottom: -20px; }
@@ -2369,6 +2468,9 @@ body {
               bottom: -120px; }
             #pricing-page #cards .cards-container .single-card-container .price-card .description li .img-center {
               max-width: 250px; } }
+    @media screen and (max-width: 768px) {
+      #pricing-page #cards .cards-container .single-card-container {
+        padding: 0 60px; } }
     @media screen and (max-width: 480px) {
       #pricing-page #cards .cards-container .single-card-container {
         padding: 0 15px; } }
@@ -2453,8 +2555,7 @@ body {
   padding-top: 150px;
   text-align: center;
   color: white;
-  padding-top: 60px;
-  padding-bottom: 80px;
+  padding-top: 20px;
   color: #86DDF8; }
   .pricing-top p {
     margin-bottom: 0;
@@ -2462,9 +2563,12 @@ body {
     font-family: "Open Sans Light"; }
   .pricing-top h1 {
     padding-bottom: 40px;
-    font-family: "Open Sans Semi Bold";
-    color: #86DDF8;
-    font-size: 6em; }
+    font-family: "Open Sans Bold";
+    color: #232E44;
+    font-size: 3.3em; }
+    @media all and (max-width: 768px) {
+      .pricing-top h1 {
+        font-size: 3em; } }
   .pricing-top .signup-row {
     padding-top: 30px; }
     .pricing-top .signup-row .new-btn {
