@@ -48,13 +48,15 @@ export default class AppList extends Component {
 			createAppLoading: false,
 			createAppError: null,
 			clearInput: false,
-			loading: true
+			loading: true,
+			showShared: appbaseService.getShareApps()
 		};
 		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);
 		this.registerApps = this.registerApps.bind(this);
+		this.toggleShared = this.toggleShared.bind(this);
 		this.config = getConfig();
 	}
 
@@ -215,11 +217,20 @@ export default class AppList extends Component {
 		return app && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.owner !== appbaseService.userInfo.body.email ? true : false;
 	}
 
+	toggleShared() {
+		const { showShared } = this.state;
+		this.setState({
+			showShared: !showShared
+		});
+	}
+
 	renderElement(ele) {
 		var generatedEle = null;
 		switch (ele) {
 			case 'apps':
-				let apps = this.state.apps;
+				let apps = this.state.apps.filter(app => this.state.showShared ? true : (app.owner === appbaseService.userInfo.body.email));
+				// in order to figure out a way around localstorage update logic
+
 				generatedEle = apps.map((app, index) => {
 					let appCount = {
 						action: this.calcPercentage(app, 'action'),
@@ -341,7 +352,7 @@ export default class AppList extends Component {
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 									<FilterByAppname registerApps={this.registerApps} />
-									<FilterByOwner registerApps={this.registerApps} />
+									<FilterByOwner registerApps={this.registerApps} toggleShared={this.toggleShared} />
 								</div>
 								<div className="ad-list-apps row">
 									{this.renderElement('apps')}
