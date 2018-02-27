@@ -47,7 +47,8 @@ export default class AppList extends Component {
 			plan: 'free',
 			createAppLoading: false,
 			createAppError: null,
-			clearInput: false
+			clearInput: false,
+			loading: true
 		};
 		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
@@ -154,6 +155,7 @@ export default class AppList extends Component {
 			apps = appbaseService.filterBySharedApps();
 			this.registerApps(apps);
 			this.setIntercomData(data.body);
+			this.setState({ loading: false })
 		}).catch((e) => {
 			console.log(e);
 		});
@@ -228,7 +230,14 @@ export default class AppList extends Component {
 					});
 					return (
 						<AppCard key={app.id} setClassName="col-md-4">
-							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
+							<div
+								className="ad-list-app"
+								onClick={() => {
+									window.sessionStorage.setItem('currentCalls', app.api_calls);
+									window.sessionStorage.setItem('currentRecords', app.records);
+									appbaseService.pushUrl(`/dashboard/${app.appname}`)
+								}}
+							>
 								<span className="ad-list-app-bg-container">
 									<i className="ad-list-app-bg" />
 								</span>
@@ -244,32 +253,52 @@ export default class AppList extends Component {
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														{
+															this.state.loading
+																? <div className="animated-spinner"><i className="fas fa-circle-notch fa-spin" /></div>
+																: <Circle percent={appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														}
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
 															API calls
 														</div>
-														<div>
-															<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
-															<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
-														</div>
+														{
+															this.state.loading
+																? <div>Loading...</div>
+																: (
+																	<div>
+																		<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
+																		<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
+																	</div>
+																)
+														}
 													</div>
 												</div>
 											</div>
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														{
+															this.state.loading
+																? <div className="animated-spinner"><i className="fas fa-circle-notch fa-spin" /></div>
+																: <Circle percent={appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														}
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
 															Records
 														</div>
-														<div>
-															<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
-															<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
-														</div>
+														{
+															this.state.loading
+																? <div>Loading...</div>
+																: (
+																	<div>
+																		<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
+																		<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
+																	</div>
+																)
+														}
 													</div>
 												</div>
 											</div>

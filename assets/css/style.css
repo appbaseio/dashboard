@@ -1410,6 +1410,10 @@ body {
     .ad-metrics-summary .progress-container {
       margin-bottom: 15px; } }
 
+.animated-spinner {
+  font-size: 36px;
+  margin-top: -5px; }
+
 .ad-detail-page-body .ad-metrics-summary > [class*="col-"] {
   padding-right: 0; }
 
