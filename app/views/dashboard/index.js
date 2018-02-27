@@ -164,7 +164,7 @@ export default class Dashboard extends Component {
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
 							{
-								this.state.totalApiCalls || this.state.waitingForApiCalls ? (
+								this.state.totalApiCalls || this.appCount().records.count || this.state.waitingForApiCalls ? (
 									<HighChartView
 										apiCalls={this.state.apiCalls}
 										graphMethod={this.state.graphMethod}
