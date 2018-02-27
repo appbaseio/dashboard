@@ -42,7 +42,6 @@ export default class Credentials extends Component {
 	ccError() {
 		toastr.error('Error', e);
 	}
-	// TODO: react-tooltip has an issue with rendering a large number of items
 	render() {
 		if (this.state.credentials) {
 			return (
