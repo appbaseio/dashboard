@@ -248,7 +248,7 @@ export default class AppList extends Component {
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
-															Api calls
+															API calls
 														</div>
 														<div>
 															<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
