@@ -1412,7 +1412,8 @@ body {
 
 .animated-spinner {
   font-size: 36px;
-  margin-top: -5px; }
+  margin-top: -5px;
+  color: #eee; }
 
 .ad-detail-page-body .ad-metrics-summary > [class*="col-"] {
   padding-right: 0; }
