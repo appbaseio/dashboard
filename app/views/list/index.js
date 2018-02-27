@@ -47,13 +47,16 @@ export default class AppList extends Component {
 			plan: 'free',
 			createAppLoading: false,
 			createAppError: null,
-			clearInput: false
+			clearInput: false,
+			loading: true,
+			showShared: appbaseService.getShareApps()
 		};
 		this.themeColor = getConfig().accent;
 		this.trailColor = '#eee';
 		this.createApp = this.createApp.bind(this);
 		this.deleteApp = this.deleteApp.bind(this);
 		this.registerApps = this.registerApps.bind(this);
+		this.toggleShared = this.toggleShared.bind(this);
 		this.config = getConfig();
 	}
 
@@ -154,6 +157,7 @@ export default class AppList extends Component {
 			apps = appbaseService.filterBySharedApps();
 			this.registerApps(apps);
 			this.setIntercomData(data.body);
+			this.setState({ loading: false })
 		}).catch((e) => {
 			console.log(e);
 		});
@@ -213,11 +217,20 @@ export default class AppList extends Component {
 		return app && appbaseService && appbaseService.userInfo && appbaseService.userInfo.body && app.owner !== appbaseService.userInfo.body.email ? true : false;
 	}
 
+	toggleShared() {
+		const { showShared } = this.state;
+		this.setState({
+			showShared: !showShared
+		});
+	}
+
 	renderElement(ele) {
 		var generatedEle = null;
 		switch (ele) {
 			case 'apps':
-				let apps = this.state.apps;
+				let apps = this.state.apps.filter(app => this.state.showShared ? true : (app.owner === appbaseService.userInfo.body.email));
+				// in order to figure out a way around localstorage update logic
+
 				generatedEle = apps.map((app, index) => {
 					let appCount = {
 						action: this.calcPercentage(app, 'action'),
@@ -228,7 +241,14 @@ export default class AppList extends Component {
 					});
 					return (
 						<AppCard key={app.id} setClassName="col-md-4">
-							<div className="ad-list-app" onClick={() => appbaseService.pushUrl(`/dashboard/${app.appname}`)}>
+							<div
+								className="ad-list-app"
+								onClick={() => {
+									window.sessionStorage.setItem('currentCalls', app.api_calls);
+									window.sessionStorage.setItem('currentRecords', app.records);
+									appbaseService.pushUrl(`/dashboard/${app.appname}`)
+								}}
+							>
 								<span className="ad-list-app-bg-container">
 									<i className="ad-list-app-bg" />
 								</span>
@@ -244,32 +264,52 @@ export default class AppList extends Component {
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														{
+															this.state.loading
+																? <div className="animated-spinner"><i className="fas fa-circle-notch fa-spin" /></div>
+																: <Circle percent={appCount.action.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														}
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
-															Api calls
+															API calls
 														</div>
-														<div>
-															<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
-															<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
-														</div>
+														{
+															this.state.loading
+																? <div>Loading...</div>
+																: (
+																	<div>
+																		<strong>{common.compressNumber(appCount.action.count)}</strong>&nbsp;/&nbsp;
+																		<span>{common.compressNumber(billingService.planLimits[this.state.plan].action)}</span>
+																	</div>
+																)
+														}
 													</div>
 												</div>
 											</div>
 											<div className="col-xs-6">
 												<div className="col-xs-12 p-0 progress-container">
 													<span className="progress-wrapper">
-														<Circle percent={appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														{
+															this.state.loading
+																? <div className="animated-spinner"><i className="fas fa-circle-notch fa-spin" /></div>
+																: <Circle percent={appCount.records.percentage} strokeWidth="10" trailWidth="10" trailColor={this.trailColor} strokeColor={this.themeColor} />
+														}
 													</span>
 													<div className="progress-text">
 														<div className="sub-title">
 															Records
 														</div>
-														<div>
-															<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
-															<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
-														</div>
+														{
+															this.state.loading
+																? <div>Loading...</div>
+																: (
+																	<div>
+																		<strong>{common.compressNumber(appCount.records.count)}</strong>&nbsp;/&nbsp;
+																		<span>{common.compressNumber(billingService.planLimits[this.state.plan].records)}</span>
+																	</div>
+																)
+														}
 													</div>
 												</div>
 											</div>
@@ -312,7 +352,7 @@ export default class AppList extends Component {
 								<div className="ad-list-filters col-xs-12 p-0 text-right">
 									<SortBy apps={this.state.apps} registerApps={this.registerApps} />
 									<FilterByAppname registerApps={this.registerApps} />
-									<FilterByOwner registerApps={this.registerApps} />
+									<FilterByOwner registerApps={this.registerApps} toggleShared={this.toggleShared} />
 								</div>
 								<div className="ad-list-apps row">
 									{this.renderElement('apps')}

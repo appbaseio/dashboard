@@ -63,15 +63,26 @@ export default class Credentials extends Component {
 		switch(method) {
 			case 'permissions':
 				if(this.state.info && this.state.info.permission) {
-					element = this.state.info.permission.body.map((permissionInfo, index) => {
-						return (
-							<PermissionCard
-								appId={this.appId}
-								key={index}
-								permissionInfo={permissionInfo}
-								getInfo={this.getInfo}
-							/>
-						);
+					element = this.state.info.permission.body
+						.sort((a, b) => {
+							const first = a.description;
+							const second = b.description;
+							if (first < second) {
+								return -1;
+							} else if (first > second) {
+								return 1;
+							}
+							return 0;
+						})
+						.map((permissionInfo, index) => {
+							return (
+								<PermissionCard
+									appId={this.appId}
+									key={index}
+									permissionInfo={permissionInfo}
+									getInfo={this.getInfo}
+								/>
+							);
 					})
 				}
 			break;

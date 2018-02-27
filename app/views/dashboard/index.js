@@ -12,6 +12,8 @@ export default class Dashboard extends Component {
 
 	constructor(props) {
 		super(props);
+		const currentCalls = Number(window.sessionStorage.getItem('currentCalls'));
+		this.currentRecords = Number(window.sessionStorage.getItem('currentRecords'));
 		this.state = {
 			info: {},
 			plan: null,
@@ -19,7 +21,7 @@ export default class Dashboard extends Component {
 			config: {
 				chartConfig: {}
 			},
-			totalApiCalls: 0,
+			totalApiCalls: currentCalls || 0,
 			apiCalls: 0,
 			waitingForApiCalls: true
 		};
@@ -152,6 +154,7 @@ export default class Dashboard extends Component {
 	}
 
 	render() {
+		const displayCharts = (Boolean(this.state.totalApiCalls) || Boolean(this.appCount().records.count) || Boolean(this.currentRecords))
 		return (
 			<AppPage
 				pageInfo={{
@@ -164,7 +167,7 @@ export default class Dashboard extends Component {
 					<main className='ad-detail-page-body col-xs-12'>
 						<section className="col-xs-12 col-sm-8">
 							{
-								this.state.totalApiCalls || this.state.waitingForApiCalls ? (
+								displayCharts ? (
 									<HighChartView
 										apiCalls={this.state.apiCalls}
 										graphMethod={this.state.graphMethod}

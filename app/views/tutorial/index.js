@@ -62,6 +62,7 @@ export default class Tutorial extends Component {
 
 	goToDashbord() {
 		appbaseService.pushUrl('/apps');
+		window.location.reload();
 	}
 
 	render() {

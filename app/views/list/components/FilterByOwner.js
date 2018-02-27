@@ -15,6 +15,7 @@ export default class FilterByOwner extends Component {
 		this.setState({
 			sharedApps: e.target.checked
 		}, this.applyFilter);
+		this.props.toggleShared();
 	}
 
 	applyFilter() {
