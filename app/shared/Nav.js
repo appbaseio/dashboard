@@ -146,6 +146,9 @@ export default class Nav extends Component {
 					if(item.type === 'internal') {
 						anchor = (<Link to={item.link}>{item.label}</Link>);
 					}
+					if(item.label === 'Tutorial' && !appbaseService.userInfo) {
+						return null;
+					}
 					return (
 						<li key={index}>
 							{anchor}
