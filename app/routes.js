@@ -85,7 +85,17 @@ class MainApp extends React.Component {
 		return (
 			<Router history={browserHistory}>
 				<Route path={getContext()} component={Main} open={this.open}>
-					<IndexRoute component={Default} />
+					<IndexRoute
+						component={
+							() =>
+								<Login
+									showModal={this.state.showModal}
+									close={this.close}
+									open={this.open}
+									login={this.login}
+								/>
+						}
+					/>
 					<Route path="apps" component={AppList} />
 					<Route
 						path="login"
