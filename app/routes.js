@@ -62,6 +62,15 @@ class MainApp extends React.Component {
 		this.login = this.login.bind(this);
 	}
 
+	componentDidMount() {
+		// to detect if user has logged out in some other tab
+		window.onfocus = () => {
+			if (localStorage.getItem('reload') === 'true') {
+				window.location.reload()
+			}
+		}
+	}
+
 	close() {
 		this.setState({ showModal: false });
 	}
@@ -75,6 +84,7 @@ class MainApp extends React.Component {
 	}
 
 	login(provider) {
+		localStorage.setItem('reload', false);
 		var baseURL = window.location.protocol + "//" + window.location.host + '/';
 		var redirectTo = appbaseService.address+'login/' + provider + '?next=' + this.getNexturl();
 		window.location.href = redirectTo;
@@ -85,7 +95,17 @@ class MainApp extends React.Component {
 		return (
 			<Router history={browserHistory}>
 				<Route path={getContext()} component={Main} open={this.open}>
-					<IndexRoute component={Default} />
+					<IndexRoute
+						component={
+							() =>
+								<Login
+									showModal={this.state.showModal}
+									close={this.close}
+									open={this.open}
+									login={this.login}
+								/>
+						}
+					/>
 					<Route path="apps" component={AppList} />
 					<Route
 						path="login"

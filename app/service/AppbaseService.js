@@ -358,6 +358,7 @@ class AppbaseService {
 	}
 
 	logout() {
+		localStorage.setItem('reload', true);
 		var baseURL = window.location.protocol + "//" + window.location.host+'/';
 		window.location.href = this.address + 'logout?next=https://appbase.io';
 	}
