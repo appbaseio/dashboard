@@ -5,7 +5,7 @@ export const AppbaseQuickLinks =() => {
 		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
 			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
-			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
@@ -15,7 +15,7 @@ export const ReactiveMapsQuickLinks =() => {
 		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
 			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
-			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
@@ -25,7 +25,7 @@ export const ReactiveSearchQuickLinks =() => {
 		<ul className="quick-links-list" style={{"fontSize":"1.1rem"}}>
 			<li><a href="/tutorial">Interactive Tutorial</a></li>
 			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">JS Quick Start</a></li>
-			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">REST Quick Start</a></li>
+			<li><i className="fas fa-external-link-square-alt"></i>&nbsp;<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">REST Quick Start</a></li>
 		</ul>
 	);
 }
@@ -59,7 +59,7 @@ export const AppbaseDashboardGettingStarted = () => (
 								</a>
 							</li>
 							<li>
-								<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">
+								<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">
 									REST Quick Start
 								</a>
 							</li>
@@ -105,7 +105,7 @@ export const ReactiveMapsDashboardGettingStarted = () => (
 								</a>
 							</li>
 							<li>
-								<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">
+								<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">
 									REST Quick Start
 								</a>
 							</li>
@@ -151,7 +151,7 @@ export const ReactiveSearchDashboardGettingStarted = () => (
 								</a>
 							</li>
 							<li>
-								<a href="http://docs.appbase.io/rest/getting-started.html" target="_blank">
+								<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">
 									REST Quick Start
 								</a>
 							</li>
