@@ -743,6 +743,40 @@ body {
     font-size: 1.2rem;
     color: #242E44;
     margin-bottom: 50px; }
+  #login .mt25 {
+    margin-top: 25px;
+    font-family: "Open Sans Light";
+    color: #242E44; }
+
+#login-btn-screen .modal-btn {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  border: none;
+  border-radius: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: auto;
+  margin: 5px;
+  color: #fff;
+  transition: all 0.3s ease-in-out; }
+  #login-btn-screen .modal-btn svg {
+    font-size: 1.2rem;
+    margin-right: 20px; }
+  #login-btn-screen .modal-btn:hover {
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1); }
+  #login-btn-screen .modal-btn.github-btn {
+    background: #2A2A2A; }
+    #login-btn-screen .modal-btn.github-btn:hover {
+      background: #373737; }
+  #login-btn-screen .modal-btn.google-btn {
+    background: #DC4E41; }
+    #login-btn-screen .modal-btn.google-btn:hover {
+      background: #e06257; }
+
+#login-btn-screen .contact-link {
+  color: #242E44;
+  border-bottom: 1px dotted;
+  text-decoration: none; }
 
 #login_modal.modal {
   margin-top: 20vh; }
