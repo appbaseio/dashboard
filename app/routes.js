@@ -66,6 +66,7 @@ class MainApp extends React.Component {
 		// to detect if user has logged out in some other tab
 		window.onfocus = () => {
 			if (localStorage.getItem('reload') === 'true') {
+				localStorage.setItem('reload', false);
 				window.location.reload()
 			}
 		}
