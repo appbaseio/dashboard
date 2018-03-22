@@ -45,6 +45,7 @@ class AppbaseService {
 				withCredentials: true
 			}
 		});
+		this.profileCheckDate = '2018-03-22T18:04:57.641963Z'	// when the profile feature went live
 	}
 
 	getSortBy() {
@@ -475,6 +476,24 @@ class AppbaseService {
 
 	setExtra(key, value) {
 		this.extra[key] = value;
+	}
+
+	setUserInfo(userInfo) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				url: this.address + 'user/profile',
+				type: 'PUT',
+				contentType: "application/json",
+				dataType: "json",
+				data: JSON.stringify(userInfo),
+				success: (result) => {
+					resolve(result);
+				},
+				error: (error) => {
+					reject(error);
+				}
+			});
+		});
 	}
 
 	pushUrl(url=null) {

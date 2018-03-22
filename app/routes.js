@@ -16,6 +16,7 @@ import Mirage from './views/mirage';
 import Billing from './views/billing';
 import Importer from './views/importer';
 import * as helper from './shared/helper';
+import UserInfo from './shared/UserInfo';
 import { contextConfig, getConfig } from './config';
 
 const $ = require('jquery');
@@ -107,6 +108,7 @@ class MainApp extends React.Component {
 								/>
 						}
 					/>
+					<Route path="profile" component={UserInfo} />
 					<Route path="apps" component={AppList} />
 					<Route
 						path="login"

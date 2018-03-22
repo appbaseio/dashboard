@@ -1193,6 +1193,54 @@ body {
   padding-right: 2px !important;
   background-color: #666 !important; }
 
+.user-info-list {
+  color: #232E44; }
+  .user-info-list .user-info-header {
+    background: #fff;
+    padding: 1.5rem 0;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05); }
+  .user-info-list .title {
+    font-size: 2.5rem;
+    letter-spacing: 0.01em;
+    margin-top: 10px;
+    font-family: "Open Sans Bold"; }
+  .user-info-list .sub-title {
+    font-size: 1.2rem; }
+  .user-info-list .user-info-form {
+    padding: 1.5rem 0;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column; }
+  .user-info-list .field {
+    margin: 5px; }
+  .user-info-list .field-title {
+    margin: 3px; }
+  .user-info-list input,
+  .user-info-list .dropdown-toggle {
+    height: 35px;
+    width: 350px;
+    border: 1px solid #D9D8E4;
+    border-radius: 3px;
+    padding: 6px 10px 4px;
+    box-shadow: none;
+    margin: 3px; }
+    .user-info-list input:focus,
+    .user-info-list .dropdown-toggle:focus {
+      border-color: #326BDC;
+      box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25); }
+  .user-info-list .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff; }
+  .user-info-list .btn {
+    margin-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px; }
+  .user-info-list .alert-text {
+    color: #FF5C5C; }
+
 .ad-list .ad-list-header {
   background: #fff;
   padding: 15px 15px 25px;

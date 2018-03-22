@@ -173,7 +173,7 @@ export default class Nav extends Component {
 										{
 											this.options.map((item) => (
 												<li key={item}>
-													<a onClick={() => this.logout(item)}>
+													<a onClick={() => appbaseService.pushUrl('/profile')}>
 														{
 															item === 'name' &&
 															<div>
