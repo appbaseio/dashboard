@@ -57,6 +57,12 @@ class UserInfo extends Component {
             'Evaluating',
             'Hobby project'
         ];
+        const useCaseOptions = [
+            'Backend',
+            'Web',
+            'React Native (iOS, Android)',
+            'Not sure'
+        ];
         return (
             <section className="user-info-list">
                 <div className="user-info-header">
@@ -92,7 +98,27 @@ class UserInfo extends Component {
                     </div>
                     <div className="field">
                         <div className="field-title">What is the primary use-case you are looking at? *</div>
-                        <input name="useCase" value={useCase} onChange={this.handleChange} />
+                        <div className="dropdown">
+                            <button className="dropdown-toggle" type="button" id="usecase-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {useCase.length ? useCase : 'Select'}&nbsp;&nbsp;<span className="caret" />
+                            </button>
+                            <ul className="ad-dropdown-menu dropdown-menu" aria-labelledby="sortby-menu">
+                                {
+                                    useCaseOptions.map((item) => (
+                                        <li key={item}>
+                                            <a onClick={() => this.handleChange({
+                                                target: {
+                                                    name: 'useCase',
+                                                    value: item
+                                                }
+                                            })}>
+                                                {item}
+                                            </a>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
                     </div>
                     <div className="field">
                         <div className="field-title">Phone Number</div>
