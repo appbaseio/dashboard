@@ -178,7 +178,8 @@ export default class Nav extends Component {
 															item === 'name' &&
 															<div>
 																<div className="user-name">
-																	{appbaseService.userInfo.body.details.name}
+																	{appbaseService.userInfo.body.details.name}&nbsp;&nbsp;
+																	<i className="fas fa-pencil-alt" />
 																</div>
 																<div className="user-email">
 																	{appbaseService.userInfo.body.details.email}

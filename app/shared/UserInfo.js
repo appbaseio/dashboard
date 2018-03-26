@@ -72,7 +72,7 @@ class UserInfo extends Component {
                             <button className="dropdown-toggle" type="button" id="deployment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 {deploymentTimeframe.length ? deploymentTimeframe : 'Select'}&nbsp;&nbsp;<span className="caret" />
                             </button>
-                            <ul className="ad-dropdown-menu dropdown-menu pull-right" aria-labelledby="sortby-menu">
+                            <ul className="ad-dropdown-menu dropdown-menu" aria-labelledby="sortby-menu">
                                 {
                                     deploymentOptions.map((item) => (
                                         <li key={item}>
@@ -91,7 +91,7 @@ class UserInfo extends Component {
                         </div>
                     </div>
                     <div className="field">
-                        <div className="field-title">Usecase *</div>
+                        <div className="field-title">What is the primary use-case you are looking at? *</div>
                         <input name="useCase" value={useCase} onChange={this.handleChange} />
                     </div>
                     <div className="field">
