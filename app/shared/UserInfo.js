@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import PhoneInput from 'react-intl-tel-input';
+import 'react-intl-tel-input/dist/main.css';
 
 import { appbaseService } from '../service/AppbaseService';
+import countryCodes from './utils/countryCodes';
 
 class UserInfo extends Component {
     state = {
@@ -8,6 +11,8 @@ class UserInfo extends Component {
         company: '',
         deploymentTimeframe: '',
         phone: '',
+        countryCode: '',
+        submitCountryCode: '',
         useCase: ''
     }
 
@@ -17,7 +22,10 @@ class UserInfo extends Component {
                 this.setState({
                     company: body.company,
                     deploymentTimeframe: body['deployment-timeframe'],
-                    phone: body.phone,
+                    phone: body.phone.length ? body.phone.split('-')[1] : '',
+                    countryCode: body.phone.length
+                        ? countryCodes.find(item => item.dial_code === body.phone.split('-')[0]).code
+                        : '',
                     useCase: body.usecase,
                     name: body.details.name.split(' ')[0]
                 });
@@ -26,18 +34,21 @@ class UserInfo extends Component {
 
     handleChange = (e) => {
         const { name, value } = e.target;
+        if (name === 'phone' && !/^\d*$/.test(value)) {
+            return;
+        }
         this.setState({
             [name]: value
         });
     }
 
     handleSubmit = () => {
-        const { company, deploymentTimeframe, phone, useCase } = this.state;
+        const { company, deploymentTimeframe, phone, submitCountryCode, useCase } = this.state;
         appbaseService
             .setUserInfo({
                 company,
                 'deployment-timeframe': deploymentTimeframe,
-                phone,
+                phone: `${submitCountryCode}-${phone}`,
                 usecase: useCase
             })
             .then(() => {
@@ -50,7 +61,7 @@ class UserInfo extends Component {
     }
     
     render() {
-        const { company, deploymentTimeframe, useCase, phone, name } = this.state;
+        const { company, deploymentTimeframe, useCase, phone, countryCode, name } = this.state;
         const deploymentOptions = [
             'Within the next week',
             'Within the next several weeks',
@@ -68,7 +79,7 @@ class UserInfo extends Component {
                 <div className="user-info-header">
                     <div className="container">
                         <h1 className="title">Hi {name},</h1>
-                        <p className="sub-title">Please answer a few questions before you get started</p>
+                        <p className="sub-title">{this.props.description}</p>
                     </div>
                 </div>
                 <div className="user-info-form container">
@@ -120,12 +131,32 @@ class UserInfo extends Component {
                             </ul>
                         </div>
                     </div>
-                    <div className="field">
+                    <div className="field" key={countryCode}>
                         <div className="field-title">Phone Number</div>
-                        <input name="phone" value={phone} onChange={this.handleChange} />
+                        <PhoneInput
+                            value={phone}
+                            preferredCountries={['us', 'in']}
+                            defaultCountry={countryCode.toLowerCase()}
+                            onSelectFlag={(value, { dialCode }) => {
+                                this.setState({
+                                    submitCountryCode: dialCode
+                                });
+                            }}
+                            onPhoneNumberChange={(status, value, { dialCode }) => {
+                                this.handleChange({
+                                    target: {
+                                        name: 'phone',
+                                        value
+                                    }
+                                });
+                                this.setState({
+                                    submitCountryCode: dialCode
+                                });
+                            }}
+                        />
                         {
-                            phone.length > 15
-                            && <div className="alert-text">Phone No. should be max 15 characters</div>
+                            phone.length > 11
+                            && <div className="alert-text">Phone No. max characters exceeded</div>
                         }
                     </div>
                     <div className="field">
@@ -146,6 +177,7 @@ class UserInfo extends Component {
 }
 
 UserInfo.defaultProps = {
+    description: "This is your profile view",
     forceUpdate: () => { appbaseService.pushUrl('/apps') }
 }
 
