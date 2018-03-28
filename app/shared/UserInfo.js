@@ -65,14 +65,15 @@ class UserInfo extends Component {
         const deploymentOptions = [
             'Within the next week',
             'Within the next several weeks',
-            'Evaluating',
-            'Hobby project'
+            'I am currently evaluating',
+            'This is a hobby project'
         ];
         const useCaseOptions = [
-            'Backend',
-            'Web',
-            'React Native (iOS, Android)',
-            'Not sure'
+            'A web app',
+            'A mobile app (iOS, Android, React Native)',
+            'A backend system',
+            'An IoT app',
+            'Not sure yet'
         ];
         return (
             <section className="user-info-list">
@@ -84,18 +85,18 @@ class UserInfo extends Component {
                 </div>
                 <div className="user-info-form container">
                     <div className="field">
-                        <div className="field-title">How soon do you wish to deploy to production? *</div>
+                        <div className="field-title">* What are you building?</div>
                         <div className="dropdown">
-                            <button className="dropdown-toggle" type="button" id="deployment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {deploymentTimeframe.length ? deploymentTimeframe : 'Select'}&nbsp;&nbsp;<span className="caret" />
+                            <button className="dropdown-toggle" type="button" id="usecase-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {useCase.length ? useCase : 'Select'}&nbsp;&nbsp;<span className="caret" />
                             </button>
                             <ul className="ad-dropdown-menu dropdown-menu" aria-labelledby="sortby-menu">
                                 {
-                                    deploymentOptions.map((item) => (
+                                    useCaseOptions.map((item) => (
                                         <li key={item}>
                                             <a onClick={() => this.handleChange({
                                                 target: {
-                                                    name: 'deploymentTimeframe',
+                                                    name: 'useCase',
                                                     value: item
                                                 }
                                             })}>
@@ -108,18 +109,18 @@ class UserInfo extends Component {
                         </div>
                     </div>
                     <div className="field">
-                        <div className="field-title">What is the primary use-case you are looking at? *</div>
+                        <div className="field-title">* How soon do you plan to go to production?</div>
                         <div className="dropdown">
-                            <button className="dropdown-toggle" type="button" id="usecase-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {useCase.length ? useCase : 'Select'}&nbsp;&nbsp;<span className="caret" />
+                            <button className="dropdown-toggle" type="button" id="deployment-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {deploymentTimeframe.length ? deploymentTimeframe : 'Select'}&nbsp;&nbsp;<span className="caret" />
                             </button>
                             <ul className="ad-dropdown-menu dropdown-menu" aria-labelledby="sortby-menu">
                                 {
-                                    useCaseOptions.map((item) => (
+                                    deploymentOptions.map((item) => (
                                         <li key={item}>
                                             <a onClick={() => this.handleChange({
                                                 target: {
-                                                    name: 'useCase',
+                                                    name: 'deploymentTimeframe',
                                                     value: item
                                                 }
                                             })}>
