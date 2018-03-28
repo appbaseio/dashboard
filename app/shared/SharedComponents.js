@@ -29,7 +29,7 @@ export const AppOwner =(props) => {
 export const Loading =(props) => {
 	return (
 		<span className="ad-loading">
-			<Loader type="ball-clip-rotate-multiple" active={true} />
+			<Loader type="ball-pulse-sync" color="#B6EF7E" active={true} />
 		</span>
 	);
 }

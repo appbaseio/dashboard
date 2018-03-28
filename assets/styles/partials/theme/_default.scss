@@ -131,7 +131,6 @@ $map in $themes {
 			background: map-get($map, accent);
 		}
 		.ad-loading {
-			border: 1px solid map-get($map, accent);
 			.ball-clip-rotate-multiple>div {
 				border-color : transparent map-get($map, accent);
 			}
