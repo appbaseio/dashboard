@@ -966,6 +966,10 @@ body {
         .navbar.navbar-default li .ad-user-info-list.visible-xs > li a {
           float: left;
           width: 100%; }
+      .navbar.navbar-default li .ad-user-info-list .ad-dropdown-menu .editable-menu {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; }
       .navbar.navbar-default li .ad-user-info-list .ad-dropdown-menu .user-name {
         color: #232E44;
         font-size: 1rem;
