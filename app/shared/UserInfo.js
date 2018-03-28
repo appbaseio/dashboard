@@ -13,7 +13,9 @@ class UserInfo extends Component {
         phone: '',
         countryCode: '',
         submitCountryCode: '',
-        useCase: ''
+        useCase: '',
+        loading: false,
+        success: false
     }
 
     componentWillMount() {
@@ -43,6 +45,9 @@ class UserInfo extends Component {
     }
 
     handleSubmit = () => {
+        this.setState({
+            loading: true
+        });
         const { company, deploymentTimeframe, phone, submitCountryCode, useCase } = this.state;
         appbaseService
             .setUserInfo({
@@ -55,13 +60,21 @@ class UserInfo extends Component {
                 appbaseService
                     .getUser()
                     .then(() => {
-                        this.props.forceUpdate()
+                        this.setState({
+                            loading: false,
+                            success: true
+                        });
+                        setTimeout(this.props.forceUpdate, 1000);
                     });
             });
     }
     
     render() {
-        const { company, deploymentTimeframe, useCase, phone, countryCode, name } = this.state;
+        const { company, deploymentTimeframe, useCase, phone, name } = this.state;
+        let { countryCode } = this.state;
+        if (countryCode === 'CA') {
+            countryCode = 'US';
+        }
         const deploymentOptions = [
             'Within the next week',
             'Within the next several weeks',
@@ -169,8 +182,16 @@ class UserInfo extends Component {
                         className="btn theme-btn ad-theme-btn primary"
                         onClick={this.handleSubmit}
                     >
-                        Submit
+                        {
+                            this.state.loading
+                                ? 'Submitting...'
+                                : 'Submit'
+                        }
                     </button>
+                    {
+                        this.state.success
+                        && <span style={{ margin: 15, color: '#759352' }}>Profile updated successfully</span>
+                    }
                 </div>
             </section>
         );
@@ -178,7 +199,7 @@ class UserInfo extends Component {
 }
 
 UserInfo.defaultProps = {
-    description: "This is your profile view",
+    description: "This is your profile view.",
     forceUpdate: () => { appbaseService.pushUrl('/apps') }
 }
 
