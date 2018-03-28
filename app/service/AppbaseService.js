@@ -45,7 +45,7 @@ class AppbaseService {
 				withCredentials: true
 			}
 		});
-		this.profileCheckDate = '2018-03-22T18:04:57.641963Z'	// when the profile feature went live
+		this.profileCheckDate = '2018-03-27T18:04:57.641963Z'	// when the profile feature went live
 	}
 
 	getSortBy() {
