@@ -173,7 +173,14 @@ export default class Nav extends Component {
 										{
 											this.options.map((item) => (
 												<li key={item}>
-													<a onClick={() => appbaseService.pushUrl('/profile')}>
+													<a onClick={() => {
+														if (item === 'name') {
+															appbaseService.pushUrl('/profile');
+														}
+														else if (item === 'logout') {
+															this.logout('logout');
+														}
+													}}>
 														{
 															item === 'name' &&
 															<div className="editable-menu">
