@@ -335,7 +335,7 @@ export default class AppList extends Component {
 			) {
 			return (
 				<UserInfo
-					description="Please answer a few questions before you get started"
+					description="While we're creating your account, can you take a minute to answer these questions?"
 					forceUpdate={() => this.forceUpdate()}
 				/>
 			);

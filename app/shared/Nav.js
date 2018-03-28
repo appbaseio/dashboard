@@ -176,14 +176,16 @@ export default class Nav extends Component {
 													<a onClick={() => appbaseService.pushUrl('/profile')}>
 														{
 															item === 'name' &&
-															<div>
-																<div className="user-name">
-																	{appbaseService.userInfo.body.details.name}&nbsp;&nbsp;
-																	<i className="fas fa-pencil-alt" />
+															<div className="editable-menu">
+																<div>
+																	<div className="user-name">
+																		{appbaseService.userInfo.body.details.name}&nbsp;&nbsp;
+																	</div>
+																	<div className="user-email">
+																		{appbaseService.userInfo.body.details.email}
+																	</div>
 																</div>
-																<div className="user-email">
-																	{appbaseService.userInfo.body.details.email}
-																</div>
+																<i className="fas fa-pencil-alt" />
 															</div>
 														}
 														{

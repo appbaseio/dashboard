@@ -135,6 +135,11 @@
 				}
 			}
 			.ad-dropdown-menu {
+				.editable-menu {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
 				.user-name {
 					color: $n-navy;
 					font-size: 1rem;

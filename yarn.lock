@@ -4262,12 +4262,11 @@ react-intl-tel-input@^5.0.2:
     react-style-proptype "^3.0.0"
     underscore.deferred "^0.4.0"
 
-react-loaders@^2.3.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-loaders/-/react-loaders-2.4.1.tgz#6c15bb9564bdc90702bd9718ee3d6ea4cb23d40d"
+react-loaders@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-loaders/-/react-loaders-3.0.1.tgz#963ad7adefe530b24b1ed13faf4645134cf09a0e"
   dependencies:
     classnames "^2.2.3"
-    react "^15.4.2"
 
 react-moment-proptypes@^1.2.1:
   version "1.4.0"
