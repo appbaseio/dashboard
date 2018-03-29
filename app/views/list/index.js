@@ -110,7 +110,7 @@ export default class AppList extends Component {
 
 	registerApps(apps, getInfo = false) {
 		if(appbaseService.preservedApps.length === 0 && !appbaseService.filterAppName.trim().length) {
-			appbaseService.pushUrl('/tutorial');
+			// appbaseService.pushUrl('/tutorial'); skip to show user info first
 		} else {
 			this.setState({
 				apps
@@ -331,12 +331,12 @@ export default class AppList extends Component {
 	render() {
 		if (
 			new Date(appbaseService.profileCheckDate) < new Date(get(appbaseService.userInfo, ['body', 'created_at']))
-				&& get(appbaseService.userInfo, ['body', 'deployment_timeframe']) === ''
+				&& get(appbaseService.userInfo, ['body', 'deployment-timeframe']) === ''
 			) {
 			return (
 				<UserInfo
 					description="While we're creating your account, can you take a minute to answer these questions?"
-					forceUpdate={() => this.forceUpdate()}
+					forceUpdate={() => appbaseService.pushUrl('/tutorial')}
 				/>
 			);
 		}

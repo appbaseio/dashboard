@@ -35,7 +35,6 @@ export default class Main extends Component {
 		});
 		intercomService.loggingIn(data.userInfo.body);
 		localStorage.removeItem("ad-login");
-		this.redirectToPath();
 	}
 
 	onGetUserCatch(e) {
