@@ -173,16 +173,26 @@ export default class Nav extends Component {
 										{
 											this.options.map((item) => (
 												<li key={item}>
-													<a onClick={() => this.logout(item)}>
+													<a onClick={() => {
+														if (item === 'name') {
+															appbaseService.pushUrl('/profile');
+														}
+														else if (item === 'logout') {
+															this.logout('logout');
+														}
+													}}>
 														{
 															item === 'name' &&
-															<div>
-																<div className="user-name">
-																	{appbaseService.userInfo.body.details.name}
+															<div className="editable-menu">
+																<div>
+																	<div className="user-name">
+																		{appbaseService.userInfo.body.details.name}&nbsp;&nbsp;
+																	</div>
+																	<div className="user-email">
+																		{appbaseService.userInfo.body.details.email}
+																	</div>
 																</div>
-																<div className="user-email">
-																	{appbaseService.userInfo.body.details.email}
-																</div>
+																<i className="fas fa-pencil-alt" />
 															</div>
 														}
 														{

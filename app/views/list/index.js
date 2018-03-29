@@ -15,6 +15,8 @@ import FilterByOwner from './components/FilterByOwner';
 import Upgrade from './components/Upgrade';
 import { getConfig } from '../../config';
 import { OldDashboard } from '../../shared/SharedComponents';
+import UserInfo from '../../shared/UserInfo';
+import get from 'lodash/get';
 
 const moment = require('moment');
 
@@ -327,6 +329,17 @@ export default class AppList extends Component {
 	}
 
 	render() {
+		if (
+			new Date(appbaseService.profileCheckDate) < new Date(get(appbaseService.userInfo, ['body', 'created_at']))
+				&& get(appbaseService.userInfo, ['body', 'deployment_timeframe']) === ''
+			) {
+			return (
+				<UserInfo
+					description="While we're creating your account, can you take a minute to answer these questions?"
+					forceUpdate={() => this.forceUpdate()}
+				/>
+			);
+		}
 		return (
 			<div className="ad-list">
 				<OldDashboard />

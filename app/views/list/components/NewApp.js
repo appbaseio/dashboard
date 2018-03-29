@@ -180,6 +180,7 @@ export default class NewApp extends Component {
 					<Modal className="modal-info ad-list-newapp-modal" show={this.state.showModal} onHide={this.close}>
 						<Modal.Header closeButton>
 							<Modal.Title>Create A New App</Modal.Title>
+							
 						</Modal.Header>
 						<Modal.Body>
 							<div className="row ad-list-newapp-form">
