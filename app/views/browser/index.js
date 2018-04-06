@@ -76,6 +76,15 @@ export default class Browser extends Component {
 			urlShare.compressInputState(obj).then((url) => {
 				this.applyUrl(url);
 			}).catch((error) => console.log(error));
+		} else if (this.state.permission && this.state.permission.body.length) {
+			const { permission: { body: [permission] } } = this.state;
+			let obj = {
+				url: 'https://' + permission.username + ':' + permission.password + '@scalr.api.appbase.io',
+				appname: this.appName
+			};
+			urlShare.compressInputState(obj).then((url) => {
+				this.applyUrl(url);
+			}).catch((error) => console.log(error));
 		} else if(this.state.adminPermission === null) {
 			this.setState({
 				showAlert: true,
