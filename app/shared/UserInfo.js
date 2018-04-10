@@ -63,10 +63,8 @@ class UserInfo extends Component {
                     .then(({ userInfo: { body } }) => {
                         const intercomPayload = {
                             name: body.details.name,
-                            custom_attributes: {
-                                'deployment-timeframe': deploymentTimeframe,
-                                usecase: useCase
-                            },
+                            'deployment-timeframe': deploymentTimeframe,
+                            usecase: useCase,
                             phone: `${submitCountryCode}-${phone}`
                         };
                         if (company.length) {
