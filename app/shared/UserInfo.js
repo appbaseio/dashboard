@@ -65,7 +65,7 @@ class UserInfo extends Component {
                             name: body.details.name,
                             'deployment-timeframe': deploymentTimeframe,
                             usecase: useCase,
-                            phone: `${submitCountryCode}-${phone}`
+                            phone: `+${submitCountryCode}${phone}`
                         };
                         if (company.length) {
                             intercomPayload.companies = [{
