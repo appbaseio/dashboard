@@ -3,6 +3,7 @@ import PhoneInput from 'react-intl-tel-input';
 import 'react-intl-tel-input/dist/main.css';
 
 import { appbaseService } from '../service/AppbaseService';
+import { intercomService } from './helper';
 import countryCodes from './utils/countryCodes';
 
 class UserInfo extends Component {
@@ -59,7 +60,22 @@ class UserInfo extends Component {
             .then(() => {
                 appbaseService
                     .getUser()
-                    .then(() => {
+                    .then(({ userInfo: { body } }) => {
+                        const intercomPayload = {
+                            name: body.details.name,
+                            custom_attributes: {
+                                'deployment-timeframe': deploymentTimeframe,
+                                usecase: useCase
+                            },
+                            phone: `${submitCountryCode}-${phone}`
+                        };
+                        if (company.length) {
+                            intercomPayload.companies = [{
+                                company_id: company,
+                                name: company
+                            }];
+                        }
+                        intercomService.update(intercomPayload);
                         this.setState({
                             loading: false,
                             success: true
