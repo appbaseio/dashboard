@@ -65,13 +65,15 @@ class UserInfo extends Component {
                             name: body.details.name,
                             'deployment-timeframe': deploymentTimeframe,
                             usecase: useCase,
-                            phone: `+${submitCountryCode}${phone}`
                         };
                         if (company.length) {
                             intercomPayload.companies = [{
                                 company_id: company,
                                 name: company
                             }];
+                        }
+                        if (phone.length) {
+                            intercomPayload.phone = `+${submitCountryCode}${phone}`;
                         }
                         intercomService.update(intercomPayload);
                         this.setState({
