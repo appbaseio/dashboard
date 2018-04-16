@@ -2824,8 +2824,8 @@ body {
 .ad-importer {
   position: fixed;
   width: 100%;
-  height: calc(100% - 60px);
-  top: 60px;
+  height: calc(100% - 100px);
+  top: 100px;
   left: 0; }
   .ad-importer .ad-importer-iframe {
     position: relative;
@@ -2834,7 +2834,7 @@ body {
   .ad-importer .ad-importer-close {
     position: absolute;
     left: 15px;
-    bottom: 15px;
+    bottom: 5px;
     background: #fff; }
     .ad-importer .ad-importer-close:hover {
       background: #FF8484; }
