@@ -6,7 +6,7 @@ import ConfirmBox from '../../shared/ConfirmBox';
 export default class Importer extends Component {
 	constructor(props) {
 		super(props);
-		this.importerUrl = "https://appbaseio-confidential.github.io/importer/?header=false";
+		this.importerUrl = "https://importer.appbase.io/?header=false";
 		this.confirmInfo = {
 			title: "Switch to Dashboard",
 			description: (<p> Do you want to abort the import process and go back to the dashboard? The current progress will not be saved.</p>),
