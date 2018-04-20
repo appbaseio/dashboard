@@ -8,6 +8,7 @@ import AppList from './views/list';
 import Dashboard from './views/dashboard';
 import Credentials from './views/credentials';
 import Team from './views/team';
+import Onboarding from './views/onboarding';
 import Login from './views/login';
 import Tutorial from './views/tutorial';
 import Browser from './views/browser';
@@ -96,6 +97,7 @@ class MainApp extends React.Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
+				<Route path="onboarding" component={Onboarding} />
 				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute
 						component={

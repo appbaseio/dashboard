@@ -1129,6 +1129,143 @@ body {
   #onboarding-container .tutorial-tabs {
     text-align: initial; }
 
+.onboarding-wrapper {
+  display: flex;
+  height: 100vh;
+  position: relative;
+  color: #fff; }
+  .onboarding-wrapper .left {
+    width: 300px;
+    height: 100%;
+    background-color: #3d2774;
+    padding: 40px 20px; }
+    .onboarding-wrapper .left ul {
+      margin: 0;
+      padding: 0;
+      list-style: none; }
+      .onboarding-wrapper .left ul li a {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        border-radius: 6px;
+        color: #ccc;
+        position: relative;
+        cursor: pointer; }
+        .onboarding-wrapper .left ul li a:hover, .onboarding-wrapper .left ul li a:focus {
+          text-decoration: none; }
+        .onboarding-wrapper .left ul li a.active {
+          margin: 8px 0;
+          background-color: #fff;
+          color: #3d2774; }
+  .onboarding-wrapper .right {
+    width: calc(100% - 300px);
+    height: 100%;
+    background-color: #633ebe;
+    padding: 20px;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    overflow-y: scroll; }
+    .onboarding-wrapper .right .container {
+      max-width: 950px;
+      margin: 20px auto; }
+      .onboarding-wrapper .right .container iframe {
+        margin: 40px 0; }
+  .onboarding-wrapper h2 {
+    max-width: 700px;
+    margin: 30px auto;
+    line-height: 42px; }
+  .onboarding-wrapper p {
+    max-width: 750px;
+    margin: 0 auto 20px;
+    line-height: 24px; }
+  .onboarding-wrapper footer {
+    width: calc(100% - 300px);
+    height: 100px;
+    background-color: rgba(17, 16, 95, 0.8);
+    position: fixed;
+    bottom: 0;
+    left: 300px;
+    padding: 0 50px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center; }
+  .onboarding-wrapper .button {
+    background: #fff;
+    padding: 0 24px;
+    color: #111;
+    border-radius: 4px;
+    display: inline-flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: 0.01rem;
+    border: none;
+    cursor: pointer;
+    transition: all .2s ease; }
+    .onboarding-wrapper .button.has-icon {
+      padding: 0 16px 0 24px; }
+    .onboarding-wrapper .button:hover, .onboarding-wrapper .button:focus {
+      text-decoration: none;
+      box-shadow: 0 1px 7px rgba(0, 0, 0, 0.1);
+      background-color: #fefefe;
+      color: #05f; }
+    .onboarding-wrapper .button.primary {
+      color: #046248;
+      background-color: #00F9B5; }
+      .onboarding-wrapper .button.primary:hover, .onboarding-wrapper .button.primary:focus {
+        background-color: #08b787;
+        color: #fff; }
+    .onboarding-wrapper .button.disabled {
+      background-color: #888; }
+      .onboarding-wrapper .button.disabled:hover, .onboarding-wrapper .button.disabled:focus {
+        cursor: not-allowed;
+        color: #111; }
+  .onboarding-wrapper .search-field-container {
+    width: 400px;
+    height: auto;
+    margin: 50px auto 20px;
+    border-radius: 2px;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    color: #424242; }
+    .onboarding-wrapper .search-field-container h3 {
+      font-size: 18px;
+      margin: 0 0 6px;
+      font-weight: bold;
+      color: #111; }
+    .onboarding-wrapper .search-field-container p {
+      color: #888;
+      margin: 0 0 12px;
+      font-size: 13px; }
+    .onboarding-wrapper .search-field-container .button {
+      height: 36px;
+      font-size: 15px; }
+  .onboarding-wrapper .search-app a:hover, .onboarding-wrapper .search-app a:focus {
+    text-decoration: none; }
+  .onboarding-wrapper .list-item {
+    padding: 20px 0;
+    border-bottom: 1px solid #eee; }
+  .onboarding-wrapper p.result-stats {
+    max-width: none;
+    margin: 20px 0 0;
+    line-height: 16px;
+    text-align: right; }
+  .onboarding-wrapper .tag {
+    font-size: 0.8rem;
+    background: #eeeeee;
+    margin: 5px 3px;
+    padding: 3px 8px;
+    border-radius: 2px; }
+    .onboarding-wrapper .tag:first-child {
+      margin-left: 0px; }
+
 .appcard {
   margin: 15px 0; }
   .appcard.appcard-newapp {
