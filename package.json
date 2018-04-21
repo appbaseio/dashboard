@@ -5,13 +5,13 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack-server": "webpack-dev-server --hot --progress --colors",
+    "webpack-server": "webpack-dev-server --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
     "start": "concurrently \"npm run webpack-server\" \"gulp watch\"",
     "build": "gulp && webpack -p --progress --colors --config ./webpack.production.config.js"
   },
   "author": "Farhan Chauhan",
   "dependencies": {
-    "@appbaseio/reactivemaps": "^0.1.4",
+    "@appbaseio/reactivesearch": "^2.5.1",
     "appbase-onboarding": "^0.1.0",
     "babel-preset-stage-0": "^6.5.0",
     "classnames": "^2.2.5",
@@ -33,6 +33,7 @@
     "react-intl-tel-input": "^5.0.2",
     "react-loaders": "^3.0.1",
     "react-router": "^2.8.1",
+    "react-select": "^1.2.1",
     "react-tooltip": "^3.2.7",
     "recharts": "^0.20.5",
     "toastr": "^2.1.2"
@@ -61,7 +62,7 @@
     "style-loader": "^0.13.2",
     "url": "^0.11.0",
     "url-loader": "^0.5.8",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.3"
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.1"
   }
 }
