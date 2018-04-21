@@ -162,6 +162,27 @@ $right-color: #633ebe;
 			height: 36px;
 			font-size: 15px;
 		}
+
+		&.full-row {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+
+			& > * {
+				width: 40%;
+
+				p {
+					margin-bottom: 0;
+				}
+				
+				&:last-child {
+					width: 20%;
+					margin-top: 0 !important;
+				}
+			}
+		}
 	}
 
 
@@ -177,6 +198,27 @@ $right-color: #633ebe;
 		border-bottom: 1px solid #eee;
 	}
 
+	.multi-col {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	
+		.left-col {
+			width: 240px;
+
+			h2 {
+				margin: 40px 0 0;
+			}
+
+			label {
+				font-weight: normal;
+			}
+		}
+
+		.right-col {
+			width: calc(100% - 260px);
+		}
+	}
 
 	p.result-stats {
 		max-width: none;

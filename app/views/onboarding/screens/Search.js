@@ -7,12 +7,11 @@ import Footer from '../components/Footer';
 
 export default class Search extends Component {
 	state = {
-		selectedOption: [],
+		selectedOption: this.props.searchFields.map(item => ({label: item, value: item})) || [],
 	}
 
 	handleChange = (selectedOption) => {
 		this.setState({ selectedOption });
-		console.log(selectedOption);
 	}
 
 	setSearchFields = () => {
@@ -21,19 +20,20 @@ export default class Search extends Component {
 	}
 
 	renderSearchApp = () => {
-		console.log('searchapp');
 		return (
 			<div>
-				{this.renderSearchInput()}
-				<SearchApp fields={this.props.searchFields} />);
+				{this.renderSearchInput(true)}
+				<SearchApp fields={this.props.searchFields} />
 			</div>
 		);
 	}
 
-	renderSearchInput = () => (
-		<div className="search-field-container">
-			<h3>Searchable Fields</h3>
-			<p>Select the list of attributes you want to search in.</p>
+	renderSearchInput = (horizontal) => (
+		<div className={`search-field-container ${horizontal ? 'full-row' : ''}`}>
+			<div>
+				<h3>Searchable Fields</h3>
+				<p>Select the list of attributes you want to search in.</p>
+			</div>
 			<Select
 				name="form-field-name"
 				value={this.state.selectedOption}

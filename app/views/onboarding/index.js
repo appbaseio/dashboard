@@ -19,6 +19,7 @@ export default class Onboarding extends Component {
 		thresholdScreen: 0, // to maintain the max threshold reached by currentScreen
 		hasJSON: false,
 		searchFields: [],
+		facetFields: [],
 	};
 
 	nextScreen = () => {
@@ -54,6 +55,12 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	setFacetFields = (facetFields) => {
+		this.setState({
+			facetFields,
+		});
+	};
+
 	renderCurrentScreen = () => {
 		const RenderScreen = screens[this.state.currentScreen];
 		let props = {};
@@ -66,6 +73,12 @@ export default class Onboarding extends Component {
 		} else if (this.state.currentScreen === 1) {
 			props = {
 				setSearchFields: this.setSearchFields,
+				searchFields: this.state.searchFields,
+			};
+		} else if (this.state.currentScreen === 2) {
+			props = {
+				setFacetFields: this.setFacetFields,
+				facetFields: this.state.facetFields,
 				searchFields: this.state.searchFields,
 			};
 		}
