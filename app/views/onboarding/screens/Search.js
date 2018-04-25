@@ -55,13 +55,16 @@ export default class Search extends Component {
 	render () {
 		return (
 			<div>
-				<h2>Improving Search Relevancy</h2>
+				<h2>Set Searchable Fields</h2>
 				<p>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-					Delectus deleniti saepe iusto distinctio et obis autem labore quasi sequi
-					ipsum sapiente voluptatum enim nihil!
+					All fields in appbase.io are indexed to allow for a blazing fast querying performance. However, all fields aren't created equal.
 				</p>
-
+				<p>
+					Fields that are searchable require a specific n-gram mapping to provide an auto-complete like behavior.
+				</p>
+				<p>
+					We will start by letting you set certain fields as Searchable.
+				</p>
 				{
 					this.props.searchFields.length
 						? this.renderSearchApp()

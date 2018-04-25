@@ -96,7 +96,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 0 ? 'active' : null}
 								onClick={() => this.setScreen(0)}
 							>
-								Importing data into Elasticsearch
+								Create your first app
 							</a>
 						</li>
 						<li>
@@ -104,7 +104,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 1 ? 'active' : null}
 								onClick={() => this.setScreen(1)}
 							>
-								Improving Search Relevancy
+								Set Searchable Fields
 							</a>
 						</li>
 						<li>
@@ -112,7 +112,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 2 ? 'active' : null}
 								onClick={() => this.setScreen(2)}
 							>
-								Building Facets for your search screen
+								Set Aggregation Fields
 							</a>
 						</li>
 						<li>
@@ -120,7 +120,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 3 ? 'active' : null}
 								onClick={() => this.setScreen(3)}
 							>
-								Realtime Elasticsearch queries
+								Stream Realtime Updates
 							</a>
 						</li>
 					</ul>

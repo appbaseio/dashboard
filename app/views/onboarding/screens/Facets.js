@@ -31,8 +31,8 @@ export default class Search extends Component {
 	renderFacetInput = (horizontal) => (
 		<div className={`search-field-container ${horizontal ? 'full-row' : ''}`}>
 			<div>
-				<h3>Search Facets</h3>
-				<p>Select the list of attributes you want to apply facets on.</p>
+				<h3>Set Aggregation Fields</h3>
+				<p>Set at least one aggregation field.</p>
 			</div>
 			<Select
 				name="form-field-name"
@@ -55,13 +55,10 @@ export default class Search extends Component {
 	render () {
 		return (
 			<div>
-				<h2>Building Facets for your search screen</h2>
+				<h2>Set Aggregation Fields</h2>
 				<p>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-					Delectus deleniti saepe iusto distinctio et obis autem labore quasi sequi
-					ipsum sapiente voluptatum enim nihil!
+					Based on how each field will be used in your app UI, you can set them as Searchable, or as Aggregation friendly, or as some other type.
 				</p>
-
 				{
 					this.props.facetFields.length
 						? this.renderSearchApp()
