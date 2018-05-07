@@ -11,9 +11,8 @@
   },
   "author": "Farhan Chauhan",
   "dependencies": {
-    "@appbaseio/reactivesearch": "^2.5.1",
+    "@appbaseio/reactivesearch": "^2.6.2",
     "appbase-onboarding": "^0.1.0",
-    "babel-preset-stage-0": "^6.5.0",
     "classnames": "^2.2.5",
     "clipboard": "^1.6.0",
     "cross-env": "^3.1.4",

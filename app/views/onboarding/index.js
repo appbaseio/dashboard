@@ -1,25 +1,28 @@
 import React, { Component } from "react";
 
 import Introduction from "./screens/Introduction";
+import ImportData from "./screens/ImportData";
 import AppbaseFeatures from "./screens/AppbaseFeatures";
 import Search from "./screens/Search";
 import Facets from "./screens/Facets";
 
 const screens = {
 	0: Introduction,
-	1: Search,
-	2: Facets,
-	3: AppbaseFeatures,
+	1: ImportData,
+	2: Search,
+	3: Facets,
+	4: AppbaseFeatures,
 };
 
 export default class Onboarding extends Component {
 	state = {
 		currentScreen: 0,
-		totalScreen: 4,
+		totalScreen: 5,
 		thresholdScreen: 0, // to maintain the max threshold reached by currentScreen
 		hasJSON: false,
 		searchFields: [],
 		facetFields: [],
+		url: '',
 	};
 
 	nextScreen = () => {
@@ -49,6 +52,12 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	setURL = (url) => {
+		this.setState({
+			url,
+		});
+	};
+
 	setSearchFields = (searchFields) => {
 		this.setState({
 			searchFields,
@@ -72,10 +81,15 @@ export default class Onboarding extends Component {
 			}
 		} else if (this.state.currentScreen === 1) {
 			props = {
+				url: this.state.url,
+				setURL: this.setURL,
+			};
+		} else if (this.state.currentScreen === 2) {
+			props = {
 				setSearchFields: this.setSearchFields,
 				searchFields: this.state.searchFields,
 			};
-		} else if (this.state.currentScreen === 2) {
+		} else if (this.state.currentScreen === 3) {
 			props = {
 				setFacetFields: this.setFacetFields,
 				facetFields: this.state.facetFields,
@@ -104,7 +118,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 1 ? 'active' : null}
 								onClick={() => this.setScreen(1)}
 							>
-								Set Searchable Fields
+								Import Data into your app
 							</a>
 						</li>
 						<li>
@@ -112,13 +126,21 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 2 ? 'active' : null}
 								onClick={() => this.setScreen(2)}
 							>
-								Set Aggregation Fields
+								Set Searchable Fields
 							</a>
 						</li>
 						<li>
 							<a
 								className={this.state.currentScreen === 3 ? 'active' : null}
 								onClick={() => this.setScreen(3)}
+							>
+								Set Aggregation Fields
+							</a>
+						</li>
+						<li>
+							<a
+								className={this.state.currentScreen === 4 ? 'active' : null}
+								onClick={() => this.setScreen(4)}
 							>
 								Stream Realtime Updates
 							</a>
