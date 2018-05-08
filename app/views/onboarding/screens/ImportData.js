@@ -97,7 +97,7 @@ export default class Introduction extends Component {
 					<div className="content">
 						<header>
 							<h2>Import data from anywhere into your app</h2>
-							<p>JSON, CSV, Mongo or SQL - we've got you covered 😉</p>
+							<p>JSON, CSV, Mongo or SQL - we've got you covered</p>
 						</header>
 
 						{
