@@ -101,27 +101,33 @@ export default class Introduction extends Component {
 
 				<div className="feature-list">
 					<div>
-						<img
-							src="/assets/images/onboarding/Dashboard.png"
-							srcSet="/assets/images/onboarding/Dashboard.png @1x, /assets/images/onboarding/Dashboard@2x.png @2x"
-							alt="Dashboard"
-						/>
+						<div style={{ display: 'block' }}>
+							<img
+								src="/assets/images/onboarding/Dashboard.png"
+								srcSet="/assets/images/onboarding/Dashboard.png 110w, /assets/images/onboarding/Dashboard@2x.png 220w"
+								alt="Dashboard"
+							/>
+						</div>
 						<p>1. Dashboard - GUI for import JSON/CSV.</p>
 					</div>
 					<div>
-						<img
-							src="/assets/images/onboarding/CLI.png"
-							srcSet="/assets/images/onboarding/CLI.png @1x, /assets/images/onboarding/CLI@2x.png @2x"
-							alt="CLI"
-						/>
+						<div style={{ display: 'block' }}>
+							<img
+								src="/assets/images/onboarding/CLI.png"
+								srcSet="/assets/images/onboarding/CLI.png 110w, /assets/images/onboarding/CLI@2x.png 220w"
+								alt="CLI"
+							/>
+						</div>
 						<p>2. A CLI for bringing data from most popular databases.</p>
 					</div>
 					<div>
-						<img
-							src="/assets/images/onboarding/REST.png"
-							srcSet="/assets/images/onboarding/REST.png @1x, /assets/images/onboarding/REST@2x.png @2x"
-							alt="REST API"
-						/>
+						<div style={{ display: 'block' }}>
+							<img
+								src="/assets/images/onboarding/REST.png"
+								srcSet="/assets/images/onboarding/REST.png 110w, /assets/images/onboarding/REST@2x.png 220w"
+								alt="REST API"
+							/>
+						</div>
 						<p>3. Using the REST API for indexing the data.</p>
 					</div>
 				</div>

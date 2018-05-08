@@ -113,6 +113,11 @@ export default class Onboarding extends Component {
 				facetFields: this.state.facetFields,
 				searchFields: this.state.searchFields,
 			};
+		} else if (this.state.currentScreen === 4) {
+			props = {
+				facetFields: this.state.facetFields,
+				searchFields: this.state.searchFields,
+			};
 		}
 
 		return <RenderScreen nextScreen={this.nextScreen} previousScreen={this.previousScreen} {...props} />;

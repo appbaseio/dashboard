@@ -5,20 +5,12 @@ import url from './URL';
 
 const streamingData = {
     "genres": "Action",
-    "homepage": "https://www.imdb.com/title/tt2527336/",
-    "imdb_id": "tt2527336",
-    "total_revenue": "1.1B",
     "original_language": "English",
     "original_title": "Star Wars: The Last Jedi",
     "overview": "Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers. Meanwhile, the Resistance prepares to do battle with the First Order.",
-    "popularity": 600.345,
     "poster_path": "/kOVEVeg59E0wsnXmF9nrh6OmWII.jpg",
-    "revenue_string": "1.3B",
     "release_year": 2017,
-    "revenue": 1325937250,
-    "score": 600.48,
-    "tagline": "Episode VIII - The Last Jedi",
-    "vote_average": 7.4
+    "tagline": "Episode VIII - The Last Jedi"
 };
 
 class AppbaseUtils {
@@ -161,16 +153,31 @@ class AppbaseUtils {
 			finalData.push(indexObj);
 			finalData.push(record);
 		});
-		const appbaseRef = new Appbase({
+		this.appbaseRef = new Appbase({
 			"url": this.address,
 			"appname": this.app.appName,
 			"username": this.app.username,
 			"password": this.app.password
 		});
 		return new Promise((resolve, reject) => {
-			appbaseRef.bulk({
+			this.appbaseRef.bulk({
 				type: this.app.type,
 				body: finalData
+			})
+				.on('data', () => {
+					resolve();
+				})
+				.on('error', (e) => {
+					reject(e);
+				});
+		});
+	}
+
+	indexNewData = () => {
+		return new Promise((resolve, reject) => {
+			this.appbaseRef.index({
+				type: this.app.type,
+				body: streamingData
 			})
 				.on('data', () => {
 					resolve();

@@ -5,28 +5,19 @@ import Loader from '../components/Loader';
 import appbaseHelpers from '../utils/appbaseHelpers';
 
 const jsonBlock = `
-<div style="background: #272822; overflow:auto;width:auto;padding:1rem;"><pre style="margin: 0; line-height: 180%; border: 0; background: transparent; border-radius: 0;"><span style="color: #f8f8f2">{</span>
-    <span style="color: #e6db74">&quot;genres&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Comedy&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;homepage&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;http://www.minionsmovie.com/&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;imdb_id&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;tt2293640&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;total_revenue&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;1.1B&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;original_language&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;English&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;original_title&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Minions&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;overview&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Minions Stuart, Kevin and Bob are recruited by Scarlet Overkill, a super-villain who, alongside her inventor husband Herb, hatches a plot to take over the world.&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;popularity&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">547.488298</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;poster_path&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;/q0R4crx2SehcEEQEkYObktdeFy.jpg&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;revenue_string&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;1.1B&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;release_date&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;17-06-2015&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;revenue&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">1156730962</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;score&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">547.48</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;tagline&quot;</span><span style="color: #f92672">:</span> <span style="color: #e6db74">&quot;Before Gru, they had a history of bad bosses&quot;</span><span style="color: #f8f8f2">,</span>
-    <span style="color: #e6db74">&quot;vote_average&quot;</span><span style="color: #f92672">:</span> <span style="color: #ae81ff">6.4</span>
-<span style="color: #f8f8f2">}</span>
+<div style="background: #DCF8FF; overflow:auto;width:auto;padding:1rem;"><pre style="margin: 0; line-height: 180%; border: 0; background: transparent; border-radius: 0;">{
+	<span style="color: #4070a0">&quot;genres&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Comedy&quot;</span>,
+	<span style="color: #4070a0">&quot;original_language&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;English&quot;</span>,
+	<span style="color: #4070a0">&quot;original_title&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions&quot;</span>,
+	<span style="color: #4070a0">&quot;overview&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions Stuart, Kevin and Bob are recruited by Scarlet Overkill, a super-villain who, alongside her inventor husband Herb, hatches a plot to take over the world.&quot;</span>,
+	<span style="color: #4070a0">&quot;poster_path&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;/q0R4crx2SehcEEQEkYObktdeFy.jpg&quot;</span>,
+	<span style="color: #4070a0">&quot;release_year&quot;</span><span style="color: #666666">:</span> <span style="color: #40a070">2015</span>,
+	<span style="color: #4070a0">&quot;tagline&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Before Gru, they had a history of bad bosses&quot;</span>
+}
 </pre></div>
 `;
 
 export default class Introduction extends Component {
-
 	constructor(props) {
 		super(props);
 
@@ -115,7 +106,9 @@ export default class Introduction extends Component {
 								: (
 									<div className="col-wrapper">
 										{this.renderJSONBlock()}
-										<a style={{ margin: 60 }} onClick={this.setMapping} className="primary button">Import Data</a>
+										<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+											<a style={{ margin: 60 }} onClick={this.setMapping} className="primary button">Import Data</a>
+										</div>
 									</div>
 								)
 						}

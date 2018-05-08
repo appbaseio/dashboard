@@ -110,6 +110,7 @@ export default class SearchApp extends Component {
 	}
 
 	render() {
+		console.log(this.props);
 		return (
 			<ReactiveBase
 				{...this.appConfig}
@@ -164,6 +165,7 @@ export default class SearchApp extends Component {
 							resultStats: 'result-stats',
 						}}
 						pagination
+						stream
 					/>
 				</div>
 			</ReactiveBase>
