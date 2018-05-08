@@ -15,9 +15,12 @@ const onData = res => ({
 	title: res.original_title,
 	description: (
 		<div>
-			<p style={{ marginBottom: 10 }}>{res.tagline}</p>
+			<p style={{ fontSize: '16px', lineHeight: '24px' }}>{res.tagline}</p>
+			<p
+				style={{ color: '#888', margin: '8px 0', fontSize: '13px', lineHeight: '18px' }}
+				dangerouslySetInnerHTML={{ __html: res.overview }}
+			/>
 			<div>
-				<span className="tag" style={{ backgroundColor: '#9eff7e' }}>${res.revenue_string}</span>
 				{
 					res.genres
 						? <span className="tag">{res.genres}</span>
@@ -119,19 +122,27 @@ export default class SearchApp extends Component {
 				style={{
 					backgroundColor: '#fff',
 					padding: '40px',
-					borderRadius: '6px',
+					borderRadius: '2px',
 					textAlign: 'left',
 				}}
 			>
-				<DataSearch
-					componentId="search"
-					dataField={getFields(this.props.fields, ['', '.search'])}
-					iconPosition="left"
-					placeholder="Search products..."
-					autosuggest={false}
-					filterLabel="Search"
-					highlight
-				/>
+				<header>
+					<h2>The Movies Store <span role="img" aria-label="books">🎥</span></h2>
+
+					<DataSearch
+						componentId="search"
+						dataField={getFields(this.props.fields, ['', '.search'])}
+						showIcon={false}
+						placeholder="Search movies..."
+						autosuggest={false}
+						filterLabel="Search"
+						highlight
+						style={{
+							maxWidth: '400px',
+							margin: '0 auto',
+						}}
+					/>
+				</header>
 
 				<SelectedFilters style={{ marginTop: 20 }} />
 
@@ -145,6 +156,7 @@ export default class SearchApp extends Component {
 						react={{
 							and: ['search', 'genres', 'original_language', 'release_year'],
 						}}
+						size={6}
 						onData={onData}
 						className="right-col"
 						innerClass={{

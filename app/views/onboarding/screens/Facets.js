@@ -101,7 +101,7 @@ export default class Search extends Component {
 						: null
 				}
 
-				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.props.searchFields.length} />
+				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.props.facetFields.length} />
 			</div>
 		);
 	}

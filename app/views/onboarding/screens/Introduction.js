@@ -79,7 +79,7 @@ export default class Introduction extends Component {
 
 	renderAppInput = () => {
 		return (
-			<div className="search-field-container" style={{ marginLeft: 0 }}>
+			<div className="search-field-container small" style={{ marginLeft: 0 }}>
 				<div>
 					<h3>Pick a unique app name</h3>
 					<p>Get started by creating an app which will serve as your elasticsearch index.</p>

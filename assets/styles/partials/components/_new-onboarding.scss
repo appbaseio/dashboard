@@ -38,6 +38,29 @@ $right-color: #C7F4FF;
 		background-color: $left-color;
 		padding: 40px 20px;
 
+		header {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			letter-spacing: 0.04rem;
+			color: #ccc;
+		}
+
+		.meter {
+			width: 100%;
+			height: 4px;
+			background-color: #666;
+			border-radius: 999em;
+			margin: 15px 0 35px;
+			overflow: hidden;
+
+			.color {
+				background: $right-color;
+				height: 100%;
+				transition: all .3s ease;
+			}
+		}
+
 		ul {
 			margin: 0;
 			padding: 0;
@@ -51,13 +74,13 @@ $right-color: #C7F4FF;
 				color: #ccc;
 				position: relative;
 				cursor: pointer;
+				margin: 6px 0;
 
 				&:hover, &:focus {
 					text-decoration: none;
 				}
 
 				&.active {
-					margin: 8px 0;
 					background-color: #fff;
 					color: $left-color;
 				}
@@ -236,7 +259,7 @@ $right-color: #C7F4FF;
 	}
 
 	.search-field-container {
-		width: 400px;
+		width: 560px;
 		height: auto;
 		margin: 30px 0;
 		border-radius: 2px;
@@ -244,6 +267,10 @@ $right-color: #C7F4FF;
 		padding: 30px;
 		text-align: left;
 		color: #424242;
+
+		&.small {
+			width: 400px;
+		}
 
 		.input-wrapper {
 			display: flex;
@@ -294,14 +321,14 @@ $right-color: #C7F4FF;
 			align-items: center;
 
 			& > * {
-				width: 40%;
+				width: 60%;
 
 				p {
 					margin: 0;
 				}
 				
 				&:first-child {
-					width: 55%;
+					width: 40%;
 				}
 			}
 		}
@@ -310,6 +337,29 @@ $right-color: #C7F4FF;
 
 	// search app styles
 	.search-app {
+		header {
+			width: 100%;
+			margin: 0;
+			padding: 3rem 6rem;
+			background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+
+			h2 {
+				color: #424242;
+				text-align: center;
+				letter-spacing: 0.06rem;
+				margin-bottom: 12px
+			}
+
+			input {
+				border: 0;
+				height: 60px;
+				padding: 0 28px;
+				font-size: 18px;
+				border-radius: 999em;
+				box-shadow: 0 20px 30px 0 rgba(16,36,94,0.2), inset 0 -8px 0 0 rgba(103,117,161,0.08);
+			}
+		}
+
 		h2 {
 			font-size: 18px;
 			line-height: 28px;

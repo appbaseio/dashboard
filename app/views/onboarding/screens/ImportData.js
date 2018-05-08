@@ -31,7 +31,7 @@ export default class Introduction extends Component {
 		super(props);
 
 		this.state = {
-			status: 'Applying Analyzer settings... Please wait!',
+			status: 'Applying relevant settings... Please wait!',
 			error: '',
 			loading: false,
 			url: props.url,
@@ -57,7 +57,7 @@ export default class Introduction extends Component {
 		appbaseHelpers.applyAnalyzers()
 			.then(() => {
 				this.setState({
-					status: 'Applying Mappings... Please wait!'
+					status: 'Preparing the database configuration... Please wait!'
 				});
 			})
 			.then(appbaseHelpers.updateMapping)

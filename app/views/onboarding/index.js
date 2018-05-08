@@ -41,7 +41,7 @@ export default class Onboarding extends Component {
 
 	previousScreen = () => {
 		this.setState((state) => {
-			const currentScreen = state.currentScreen - 1 <= 0
+			const currentScreen = state.currentScreen - 1 >= 0
 				? state.currentScreen -1
 				: state.currentScreen;
 
@@ -122,6 +122,13 @@ export default class Onboarding extends Component {
 		return (
 			<div className="onboarding-wrapper">
 				<div className="left">
+					<header>
+						<span>STEPS</span>
+						<span>{this.state.currentScreen+1} of {this.state.totalScreen}</span>
+					</header>
+					<div className="meter">
+						<div className="color" style={{ width: `${(this.state.currentScreen+1) * 100 / this.state.totalScreen}%` }}></div>
+					</div>
 					<ul>
 						<li>
 							<a
