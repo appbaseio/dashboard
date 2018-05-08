@@ -101,15 +101,27 @@ export default class Introduction extends Component {
 
 				<div className="feature-list">
 					<div>
-						<img src="" alt=""/>
+						<img
+							src="/assets/images/onboarding/Dashboard.png"
+							srcSet="/assets/images/onboarding/Dashboard.png @1x, /assets/images/onboarding/Dashboard@2x.png @2x"
+							alt="Dashboard"
+						/>
 						<p>1. Dashboard - GUI for import JSON/CSV.</p>
 					</div>
 					<div>
-						<img src="" alt=""/>
+						<img
+							src="/assets/images/onboarding/CLI.png"
+							srcSet="/assets/images/onboarding/CLI.png @1x, /assets/images/onboarding/CLI@2x.png @2x"
+							alt="CLI"
+						/>
 						<p>2. A CLI for bringing data from most popular databases.</p>
 					</div>
 					<div>
-						<img src="" alt=""/>
+						<img
+							src="/assets/images/onboarding/REST.png"
+							srcSet="/assets/images/onboarding/REST.png @1x, /assets/images/onboarding/REST@2x.png @2x"
+							alt="REST API"
+						/>
 						<p>3. Using the REST API for indexing the data.</p>
 					</div>
 				</div>
@@ -121,7 +133,9 @@ export default class Introduction extends Component {
 		return (
 			<div>
 				<div className="wrapper">
-					<span className="header-icon"></span>
+					<div>
+						<img src="/assets/images/onboarding/Import.svg" alt="create app"/>
+					</div>
 					<div className="content">
 						<header>
 							<h2>Creating your first app with appbase.io 👶</h2>

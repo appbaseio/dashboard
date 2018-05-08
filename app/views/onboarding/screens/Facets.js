@@ -79,7 +79,9 @@ export default class Search extends Component {
 		return (
 			<div>
 				<div className="wrapper">
-					<span className="header-icon"></span>
+					<div>
+						<img src="/assets/images/onboarding/Aggregation.svg" alt="aggregations"/>
+					</div>
 					<div className="content">
 						<header>
 							<h2>Set Aggregation Fields</h2>

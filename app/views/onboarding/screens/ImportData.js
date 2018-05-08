@@ -100,7 +100,9 @@ export default class Introduction extends Component {
 		return (
 			<div>
 				<div className="wrapper">
-					<span className="header-icon"></span>
+					<div>
+						<img src="/assets/images/onboarding/Import.svg" alt="importing data"/>
+					</div>
 					<div className="content">
 						<header>
 							<h2>Import data from anywhere into your app</h2>

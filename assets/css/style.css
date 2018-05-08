@@ -1221,24 +1221,17 @@ body {
     letter-spacing: -1px;
     line-height: 42px; }
   .onboarding-wrapper header p {
-    margin: 0;
-    font-size: 22px;
-    line-height: 32px;
+    margin: 15px 0;
+    font-size: 18px;
+    line-height: 28px;
     max-width: 550px; }
-  .onboarding-wrapper .header-icon {
-    width: 70px;
-    height: 70px;
-    background-color: #9BE5F7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%; }
+  .onboarding-wrapper header img {
+    width: 70px; }
   .onboarding-wrapper p {
     max-width: 750px;
     margin: 0 0 20px;
-    line-height: 24px;
-    font-size: 20px;
-    line-height: 32px; }
+    font-size: 18px;
+    line-height: 28px; }
   .onboarding-wrapper h3 {
     font-size: 20px;
     line-height: 35px;

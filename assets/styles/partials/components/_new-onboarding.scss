@@ -129,29 +129,23 @@ $right-color: #C7F4FF;
 		}
 
 		p {
-			margin: 0;
-			font-size: 22px;
-			line-height: 32px;
+			margin: 15px 0;
+			font-size: 18px;
+			line-height: 28px;
 			max-width: 550px;
+		}
+
+		img {
+			width: 70px;
 		}
 	}
 
-	.header-icon {
-		width: 70px;
-		height: 70px;
-		background-color: #9BE5F7;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 50%;
-	}
 
 	p {
 		max-width: 750px;
 		margin: 0 0 20px;
-		line-height: 24px;
-		font-size: 20px;
-		line-height: 32px;
+		font-size: 18px;
+		line-height: 28px;
 	}
 
 	h3 {

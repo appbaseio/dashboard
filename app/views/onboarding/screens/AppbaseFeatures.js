@@ -30,7 +30,9 @@ export default class AppbaseFeatures extends Component {
 		return (
 			<div>
 				<div className="wrapper">
-					<span className="header-icon"></span>
+					<div>
+						<img src="/assets/images/onboarding/Realtime.svg" alt="realtime appbase.io"/>
+					</div>
 					<div className="content">
 						<header>
 							<h2>Stream Realtime Updates</h2>

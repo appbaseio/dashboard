@@ -79,7 +79,9 @@ export default class Search extends Component {
 		return (
 			<div>
 				<div className="wrapper">
-					<span className="header-icon"></span>
+					<div>
+						<img src="/assets/images/onboarding/Searchable.svg" alt="search"/>
+					</div>
 					<div className="content">
 						<header>
 							<h2>Set Searchable Fields</h2>
