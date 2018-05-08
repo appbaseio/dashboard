@@ -60,6 +60,7 @@ export default class Search extends Component {
 					onChange={this.handleChange}
 					placeholder="Select facet fields"
 					multi={true}
+					clearable={false}
 					options={[
 						{ value: 'release_year', label: 'release_year' },
 						{ value: 'genres', label: 'genres' },
@@ -100,7 +101,7 @@ export default class Search extends Component {
 						: null
 				}
 
-				<Footer nextScreen={this.props.nextScreen} disabled={!this.props.searchFields.length} />
+				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.props.searchFields.length} />
 			</div>
 		);
 	}

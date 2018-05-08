@@ -41,7 +41,7 @@ export default class AppbaseFeatures extends Component {
 						{this.renderJSONBlock()}
 					</div>
 				</div>
-				<Footer nextScreen={this.props.nextScreen} label="Finish" />
+				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} label="Finish" />
 			</div>
 		);
 	}

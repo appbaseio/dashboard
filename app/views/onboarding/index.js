@@ -39,6 +39,24 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	previousScreen = () => {
+		this.setState((state) => {
+			const currentScreen = state.currentScreen - 1 <= 0
+				? state.currentScreen -1
+				: state.currentScreen;
+
+			return ({
+				...state,
+				currentScreen,
+				thresholdScreen: (
+					state.thresholdScreen < state.currentScreen
+						? state.currentScreen
+						: state.thresholdScreen
+				),
+			});
+		});
+	};
+
 	setScreen = (currentScreen) => {
 		this.setState(state => ({
 			...state,
@@ -97,7 +115,7 @@ export default class Onboarding extends Component {
 			};
 		}
 
-		return <RenderScreen nextScreen={this.nextScreen} {...props} />;
+		return <RenderScreen nextScreen={this.nextScreen} previousScreen={this.previousScreen} {...props} />;
 	};
 
 	render() {

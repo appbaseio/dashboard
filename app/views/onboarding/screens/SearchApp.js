@@ -130,6 +130,7 @@ export default class SearchApp extends Component {
 					placeholder="Search products..."
 					autosuggest={false}
 					filterLabel="Search"
+					highlight
 				/>
 
 				<SelectedFilters style={{ marginTop: 20 }} />

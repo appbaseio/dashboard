@@ -60,6 +60,7 @@ export default class Search extends Component {
 					onChange={this.handleChange}
 					placeholder="Select fields"
 					multi={true}
+					clearable={false}
 					options={[
 						{ value: 'original_title', label: 'original_title' },
 						{ value: 'overview', label: 'overview' },
@@ -104,7 +105,7 @@ export default class Search extends Component {
 						: null
 				}
 
-				<Footer nextScreen={this.props.nextScreen} disabled={!this.props.searchFields.length} />
+				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.props.searchFields.length} />
 			</div>
 		);
 	}

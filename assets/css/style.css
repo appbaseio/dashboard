@@ -1135,6 +1135,8 @@ body {
   position: relative;
   color: #fff;
   font-family: 'Open Sans', sans-serif; }
+  .onboarding-wrapper mark {
+    background-color: #ff0; }
   .onboarding-wrapper .loader {
     position: fixed;
     width: 100%;
@@ -1242,8 +1244,13 @@ body {
     left: 300px;
     padding: 0 50px;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center; }
+    .onboarding-wrapper footer .left-column {
+      text-align: left; }
+    .onboarding-wrapper footer .right-column {
+      text-align: right; }
   .onboarding-wrapper .button {
     background: #fff;
     padding: 0 24px;
@@ -1266,7 +1273,7 @@ body {
       text-decoration: none;
       box-shadow: 0 1px 7px rgba(0, 0, 0, 0.1);
       background-color: #fefefe;
-      color: #05f; }
+      color: #28a5c3; }
     .onboarding-wrapper .button.primary {
       color: #375619;
       background-color: #B6EF7E; }
@@ -1338,7 +1345,8 @@ body {
         .onboarding-wrapper .search-field-container.full-row > *:first-child {
           width: 55%; }
   .onboarding-wrapper .search-app h2 {
-    font-size: 18px; }
+    font-size: 18px;
+    line-height: 28px; }
   .onboarding-wrapper .search-app p {
     font-size: 16px; }
   .onboarding-wrapper .search-app a:hover, .onboarding-wrapper .search-app a:focus {

@@ -134,7 +134,7 @@ export default class Introduction extends Component {
 						: null
 				}
 				<Loader show={this.state.loading} label={this.state.status} />
-				<Footer nextScreen={this.props.nextScreen} disabled={!this.state.url} />
+				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.state.url} />
 			</div>
 		);
 	}
