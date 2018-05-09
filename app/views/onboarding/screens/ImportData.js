@@ -106,9 +106,6 @@ export default class Introduction extends Component {
 								: (
 									<div className="col-wrapper">
 										{this.renderJSONBlock()}
-										<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-											<a style={{ margin: 60 }} onClick={this.setMapping} className="primary button">Import Data</a>
-										</div>
 									</div>
 								)
 						}
@@ -129,7 +126,22 @@ export default class Introduction extends Component {
 						: null
 				}
 				<Loader show={this.state.loading} label={this.state.status} />
-				<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} disabled={!this.state.url} />
+				{
+					this.state.url
+						? (<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} />)
+						: (
+							<footer>
+								<div className="left-column">
+									<a className="button has-icon" style={{ padding: '0 24px 0 16px' }} onClick={this.props.previousScreen}>
+										<img width="13" style={{ transform: 'rotate(180deg)' }} src="/assets/images/next.svg" alt="<"/> &nbsp; Previous
+									</a>
+								</div>
+								<div className="right-column">
+									<a onClick={this.setMapping} className="primary button big">Import Movies Dataset</a>
+								</div>
+							</footer>
+						)
+				}
 			</div>
 		);
 	}

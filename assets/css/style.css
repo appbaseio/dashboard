@@ -1290,6 +1290,8 @@ body {
       .onboarding-wrapper .button.primary:hover, .onboarding-wrapper .button.primary:focus {
         background-color: #70d210;
         color: #375619; }
+    .onboarding-wrapper .button.big:hover, .onboarding-wrapper .button.big:focus {
+      color: #fff; }
     .onboarding-wrapper .button.disabled {
       background-color: #888; }
       .onboarding-wrapper .button.disabled:hover, .onboarding-wrapper .button.disabled:focus {

@@ -229,6 +229,12 @@ $right-color: #C7F4FF;
 			}
 		}
 
+		&.big {
+			&:hover, &:focus {
+				color: #fff;
+			}
+		}
+
 		&.disabled {
 			background-color: #888;
 
