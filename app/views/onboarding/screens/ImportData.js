@@ -22,7 +22,7 @@ export default class Introduction extends Component {
 		super(props);
 
 		this.state = {
-			status: 'Applying relevant settings... Please wait!',
+			status: 'Applying relevant settings...',
 			error: '',
 			loading: false,
 			url: props.url,
@@ -48,7 +48,7 @@ export default class Introduction extends Component {
 		appbaseHelpers.applyAnalyzers()
 			.then(() => {
 				this.setState({
-					status: 'Preparing the database configuration... Please wait!'
+					status: 'Preparing the database configuration...'
 				});
 			})
 			.then(appbaseHelpers.updateMapping)
@@ -60,7 +60,7 @@ export default class Introduction extends Component {
 			.then(appbaseHelpers.indexData)
 			.then(res => {
 				this.setState({
-					status: 'Loading Data Browser... Hang tight!'
+					status: 'Loading data browser... Hang tight!'
 				});
 			})
 			.then(() => {

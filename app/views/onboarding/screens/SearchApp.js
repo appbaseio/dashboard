@@ -15,7 +15,10 @@ const onData = res => ({
 	title: res.original_title,
 	description: (
 		<div>
-			<p style={{ fontSize: '16px', lineHeight: '24px' }}>{res.tagline}</p>
+			<p
+				style={{ fontSize: '16px', lineHeight: '24px' }}
+				dangerouslySetInnerHTML={{ __html: res.tagline }}
+			/>
 			<p
 				style={{ color: '#888', margin: '8px 0', fontSize: '13px', lineHeight: '18px' }}
 				dangerouslySetInnerHTML={{ __html: res.overview }}
@@ -100,6 +103,19 @@ const getFields = (fields, suffix) => {
 		})
 	})
 	return newFields;
+};
+
+const getWeights = fields => {
+	const weights = {
+		'original_title': 6,
+		'original_title.search': 5,
+		'tagline': 4,
+		'tagline.search': 3,
+		'overview': 2,
+		'overview.search': 1,
+	};
+
+	return fields.map(item => weights[item]);
 }
 
 export default class SearchApp extends Component {
@@ -110,7 +126,7 @@ export default class SearchApp extends Component {
 	}
 
 	render() {
-		console.log(this.props);
+		const fields = getFields(this.props.fields, ['', '.search'])
 		return (
 			<ReactiveBase
 				{...this.appConfig}
@@ -132,11 +148,12 @@ export default class SearchApp extends Component {
 
 					<DataSearch
 						componentId="search"
-						dataField={getFields(this.props.fields, ['', '.search'])}
+						dataField={fields}
 						showIcon={false}
 						placeholder="Search movies..."
 						autosuggest={false}
 						filterLabel="Search"
+						weights={getWeights(fields)}
 						highlight
 						style={{
 							maxWidth: '400px',

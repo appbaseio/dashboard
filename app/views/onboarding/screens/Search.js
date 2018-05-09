@@ -23,17 +23,14 @@ export default class Search extends Component {
 	};
 
 	handleChange = (selectedOption) => {
-		this.setState({ selectedOption });
-	}
-
-	setSearchFields = () => {
-		if (!this.state.selectedOption.length) {
-			this.setError('Please select atleast one search field to continue');
+		if (!selectedOption.length) {
+			this.setError('Search fields cannot be empty.');
 		} else {
 			this.setState({
+				selectedOption,
 				error: ''
 			});
-			const values = this.state.selectedOption.map(item => item.value);
+			const values = selectedOption.map(item => item.value);
 			this.props.setSearchFields(values);
 		}
 	}
@@ -67,7 +64,6 @@ export default class Search extends Component {
 						{ value: 'tagline', label: 'tagline' },
 					]}
 				/>
-				<a className="button primary" onClick={this.setSearchFields}>Save</a>
 			</div>
 			{
 				this.state.error && (<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>)

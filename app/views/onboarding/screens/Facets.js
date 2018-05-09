@@ -26,14 +26,15 @@ export default class Search extends Component {
 		});
 	};
 
-	setFacetFields = () => {
-		if (!this.state.selectedOption.length) {
-			this.setError('Please select atleast one aggregation field to continue');
+	handleChange = (selectedOption) => {
+		if (!selectedOption.length) {
+			this.setError('Aggregation fields cannot be empty.');
 		} else {
 			this.setState({
+				selectedOption,
 				error: ''
 			});
-			const values = this.state.selectedOption.map(item => item.value);
+			const values = selectedOption.map(item => item.value);
 			this.props.setFacetFields(values);
 		}
 	}
@@ -67,7 +68,6 @@ export default class Search extends Component {
 						{ value: 'original_language', label: 'original_language' }
 					]}
 				/>
-				<a className="button primary" onClick={this.setFacetFields}>Save</a>
 			</div>
 			{
 				this.state.error && (<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>)
