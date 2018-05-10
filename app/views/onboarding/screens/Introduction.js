@@ -62,14 +62,18 @@ export default class Introduction extends Component {
 					}
 				})
 				.then(res => {
-					appbaseHelpers.getWritePermissions()
-						.then(permission => {
-							app = Object.assign(app, permission);
-							appbaseHelpers.updateApp(app);
-							this.setState({
-								appId: app.id,
-							});
-						})
+					if (app.appName) {
+						appbaseHelpers.getWritePermissions()
+							.then(permission => {
+								app = Object.assign(app, permission);
+								appbaseHelpers.updateApp(app);
+								this.setState({
+									appId: app.id,
+								}, () => {
+									this.props.nextScreen();
+								});
+							})
+					}
 				})
 				.catch((e) => {
 					this.setError('Some error occurred. Please try again with a different app name.');
@@ -94,63 +98,22 @@ export default class Introduction extends Component {
 		);
 	};
 
-	renderContent = () => {
-		return (
-			<div>
-				<h3>There are three ways to bring your data into appbase.io:</h3>
-
-				<div className="feature-list">
-					<div>
-						<div style={{ display: 'block' }}>
-							<img
-								src="/assets/images/onboarding/Dashboard.png"
-								srcSet="/assets/images/onboarding/Dashboard.png 110w, /assets/images/onboarding/Dashboard@2x.png 220w"
-								alt="Dashboard"
-							/>
-						</div>
-						<p>1. Dashboard - GUI for import JSON/CSV.</p>
-					</div>
-					<div>
-						<div style={{ display: 'block' }}>
-							<img
-								src="/assets/images/onboarding/CLI.png"
-								srcSet="/assets/images/onboarding/CLI.png 110w, /assets/images/onboarding/CLI@2x.png 220w"
-								alt="CLI"
-							/>
-						</div>
-						<p>2. A CLI for bringing data from most popular databases.</p>
-					</div>
-					<div>
-						<div style={{ display: 'block' }}>
-							<img
-								src="/assets/images/onboarding/REST.png"
-								srcSet="/assets/images/onboarding/REST.png 110w, /assets/images/onboarding/REST@2x.png 220w"
-								alt="REST API"
-							/>
-						</div>
-						<p>3. Using the REST API for indexing the data.</p>
-					</div>
-				</div>
-			</div>
-		)
-	};
-
 	render() {
 		return (
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/assets/images/onboarding/Import.svg" alt="create app"/>
+						<img src="/assets/images/onboarding/Create.svg" alt="create app"/>
 					</div>
 					<div className="content">
 						<header>
 							<h2>Creating your first app with appbase.io</h2>
 							<p>An app in appbase.io is equivalent to an index in Elasticsearch (or like a database in SQL).</p>
 						</header>
-						{this.state.appId ? this.renderContent() : this.renderAppInput()}
+						{this.renderAppInput()}
 					</div>
 				</div>
-				<Footer nextScreen={this.props.nextScreen} disabled={!this.state.appId} />
+				<Footer nextScreen={this.props.nextScreen} disabled={true} />
 			</div>
 		);
 	}

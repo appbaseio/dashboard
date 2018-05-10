@@ -138,7 +138,6 @@ export default class Onboarding extends Component {
 						<li>
 							<a
 								className={this.state.currentScreen === 0 ? 'active' : null}
-								onClick={() => this.setScreen(0)}
 							>
 								Create your first app
 							</a>

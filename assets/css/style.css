@@ -1244,7 +1244,8 @@ body {
     .onboarding-wrapper .feature-list div img {
       width: 110px; }
     .onboarding-wrapper .feature-list div p {
-      padding-left: 30px; }
+      padding-left: 30px;
+      max-width: 550px; }
   .onboarding-wrapper footer {
     width: calc(100% - 300px);
     height: 100px;

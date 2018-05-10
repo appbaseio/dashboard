@@ -26,6 +26,7 @@ export default class Introduction extends Component {
 			error: '',
 			loading: false,
 			url: props.url,
+			layout: 0,
 		};
 	}
 
@@ -78,7 +79,12 @@ export default class Introduction extends Component {
 		});
 	}
 
-	renderJSONBlock = () => (<div className="code-block" dangerouslySetInnerHTML={{ __html: jsonBlock }} />);
+	renderJSONBlock = () => (
+		<div>
+			<p>Showing a sample JSON to be imported:</p>
+			<div style={{ width: '650px' }} className="code-block" dangerouslySetInnerHTML={{ __html: jsonBlock }} />
+		</div>
+	);
 
 	setURL = (url) => {
 		this.setState({
@@ -87,7 +93,13 @@ export default class Introduction extends Component {
 		this.props.setURL(url);
 	}
 
-	render() {
+	nextLayout = () => {
+		this.setState({
+			layout: 1,
+		});
+	}
+
+	renderImportContent = () => {
 		return (
 			<div>
 				<div className="wrapper">
@@ -97,7 +109,74 @@ export default class Introduction extends Component {
 					<div className="content">
 						<header>
 							<h2>Import data from anywhere into your app</h2>
-							<p>JSON, CSV, Mongo or SQL - we've got you covered</p>
+						</header>
+						<div>
+							<h3>There are three ways to bring your data into appbase.io:</h3>
+
+							<div className="feature-list">
+								<div>
+									<div style={{ display: 'block' }}>
+										<img
+											src="/assets/images/onboarding/Dashboard.png"
+											srcSet="/assets/images/onboarding/Dashboard.png 110w, /assets/images/onboarding/Dashboard@2x.png 220w"
+											alt="Dashboard"
+										/>
+									</div>
+									<p>Dashboard offers a GUI for import JSON/CSV files when creating a new app.</p>
+								</div>
+								<div>
+									<div style={{ display: 'block' }}>
+										<img
+											src="/assets/images/onboarding/CLI.png"
+											srcSet="/assets/images/onboarding/CLI.png 110w, /assets/images/onboarding/CLI@2x.png 220w"
+											alt="CLI"
+										/>
+									</div>
+									<p>A CLI for syncing data from popular databases like MongoDB, MySQL, PostgreSQL, MSSQL, JSON, CSV.</p>
+								</div>
+								<div>
+									<div style={{ display: 'block' }}>
+										<img
+											src="/assets/images/onboarding/REST.png"
+											srcSet="/assets/images/onboarding/REST.png 110w, /assets/images/onboarding/REST@2x.png 220w"
+											alt="REST API"
+										/>
+									</div>
+									<p>REST based APIs for indexing the data in programming language of your choice.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer>
+					<div className="left-column" />
+					<div className="right-column">
+						<a className="button has-icon" onClick={this.nextLayout}>
+							Next &nbsp; <img width="13" src="/assets/images/next.svg" alt=">"/>
+						</a>
+					</div>
+				</footer>
+			</div>
+		);
+	};
+
+	render() {
+		if (this.state.layout === 0) return this.renderImportContent();
+
+		return (
+			<div>
+				<div className="wrapper">
+					<div>
+						<img src="/assets/images/onboarding/Import.svg" alt="importing data"/>
+					</div>
+					<div className="content">
+						<header>
+							<h2>Import data into your app</h2>
+							{
+								this.state.url
+									? null
+									: (<p>We will import a dataset of 500 movies obtained from TMDB</p>)
+							}
 						</header>
 
 						{
@@ -114,28 +193,27 @@ export default class Introduction extends Component {
 				{
 					this.state.url
 						? (
-							<iframe
-								src={`https://opensource.appbase.io/dejavu/live/#?input_state=${this.state.url}&hf=false&subscribe=false`}
-								height="600px"
-								width="100%"
-								frameBorder="0"
-								style={{ marginTop: '-10px' }}
-								onLoad={this.hideLoader}
-							/>
+							<div>
+								<p>Explore your imported dataset for the movies store</p>
+								<iframe
+									src={`https://opensource.appbase.io/dejavu/live/#?input_state=${this.state.url}&hf=false&subscribe=false`}
+									height="600px"
+									width="100%"
+									frameBorder="0"
+									style={{ marginTop: '-10px' }}
+									onLoad={this.hideLoader}
+								/>
+							</div>
 						)
 						: null
 				}
 				<Loader show={this.state.loading} label={this.state.status} />
 				{
 					this.state.url
-						? (<Footer nextScreen={this.props.nextScreen} previousScreen={this.props.previousScreen} />)
+						? (<Footer nextScreen={this.props.nextScreen} />)
 						: (
 							<footer>
-								<div className="left-column">
-									<a className="button has-icon" style={{ padding: '0 24px 0 16px' }} onClick={this.props.previousScreen}>
-										<img width="13" style={{ transform: 'rotate(180deg)' }} src="/assets/images/next.svg" alt="<"/> &nbsp; Previous
-									</a>
-								</div>
+								<div className="left-column" />
 								<div className="right-column">
 									<a onClick={this.setMapping} className="primary button big">Import Movies Dataset</a>
 								</div>
