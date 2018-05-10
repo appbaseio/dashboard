@@ -9,6 +9,7 @@ import Dashboard from './views/dashboard';
 import Credentials from './views/credentials';
 import Team from './views/team';
 import Onboarding from './views/onboarding';
+import OnboardingEndScreen from './views/onboarding/EndScreen';
 import Login from './views/login';
 import Tutorial from './views/tutorial';
 import Browser from './views/browser';
@@ -98,6 +99,7 @@ class MainApp extends React.Component {
 		return (
 			<Router history={browserHistory}>
 				<Route path="onboarding" component={Onboarding} />
+				<Route path="onboarding/finish" component={OnboardingEndScreen} />
 				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute
 						component={
@@ -127,20 +129,20 @@ class MainApp extends React.Component {
 					<Route path="tutorial" component={Tutorial} />
 					<Route path="billing" component={Billing} />
 					<Route path="importer" component={Importer} />
-					<Route path="dashboard/:appId" component={Dashboard} 
+					<Route path="dashboard/:appId" component={Dashboard}
 						{...appChangesEvent}
 						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'dashboard')}
 					/>
-					<Route path="browser/:appId" component={Browser} {...appChangesEvent} 
+					<Route path="browser/:appId" component={Browser} {...appChangesEvent}
 						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'browser')}
 					/>
-					<Route path="mappings/:appId" component={Gem} {...appChangesEvent} 
+					<Route path="mappings/:appId" component={Gem} {...appChangesEvent}
 						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'mappings')}
 					/>
-					<Route path="builder/:appId" component={Mirage} {...appChangesEvent} 
+					<Route path="builder/:appId" component={Mirage} {...appChangesEvent}
 						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'builder')}
 					/>
-					<Route path="credentials/:appId" component={Credentials} {...appChangesEvent} 
+					<Route path="credentials/:appId" component={Credentials} {...appChangesEvent}
 						onEnter={params => helper.appDashboard.onEnter(params.params.appId, 'credentials')}
 					/>
 					<Route path="team/:appId" component={Team} {...appChangesEvent}

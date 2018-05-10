@@ -441,3 +441,92 @@ $right-color: #C7F4FF;
 		}
 	}
 }
+
+.end-screen {
+	width: 100%;
+	padding-top: 130px;
+	font-family: 'Open Sans';
+
+	.banner-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		.big-card {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			background-color: #45FFDA;
+			flex-wrap: wrap;
+			align-items: center;
+			text-align: center;
+			padding: 30px;
+			width: 66.66%;
+
+			h2, h3 {
+				width: 100%;
+				font-size: 20px;
+				font-weight: 700;
+			}
+
+			h3 {
+				font-size: 18px;
+			}
+
+			img {
+				width: 200px;
+				margin: 0px auto 20px;
+			}
+
+			& > div {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+
+			.col {
+				display: flex;
+				flex-direction: column;
+				text-align: center;
+				padding: 15px;
+				margin-top: 20px;
+				width: 50%;
+			}
+		}
+
+		.small-card {
+			width: 33%;
+			padding: 30px;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			h2 {
+				font-size: 32px;
+				line-height: 44px;
+				font-weight: 300;
+			}
+		}
+	}
+
+	.button {
+		background-color: #00DE94;
+		color: #fff;
+		text-transform: uppercase;
+		margin: 20px auto 0;
+		padding: 0 28px;
+		display: inline-flex;
+		height: 44px;
+		font-weight: 700;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+		transition: all .3s ease;
+
+		&:hover, &:focus {
+			background-color: #02a971;
+			text-decoration: none;
+		}
+	}
+}
