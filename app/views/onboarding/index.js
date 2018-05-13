@@ -147,7 +147,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 1 ? 'active' : null}
 								onClick={() => this.setScreen(1)}
 							>
-								Import Data into your app
+								Import data into your app
 							</a>
 						</li>
 						<li>
@@ -155,7 +155,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 2 ? 'active' : null}
 								onClick={() => this.setScreen(2)}
 							>
-								Set Searchable Fields
+								Set searchable fields
 							</a>
 						</li>
 						<li>
@@ -163,7 +163,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 3 ? 'active' : null}
 								onClick={() => this.setScreen(3)}
 							>
-								Set Aggregation Fields
+								Set aggregation fields
 							</a>
 						</li>
 						<li>
@@ -171,7 +171,7 @@ export default class Onboarding extends Component {
 								className={this.state.currentScreen === 4 ? 'active' : null}
 								onClick={() => this.setScreen(4)}
 							>
-								Stream Realtime Updates
+								Stream realtime updates
 							</a>
 						</li>
 					</ul>

@@ -59,7 +59,7 @@ export default class Search extends Component {
 					name="form-field-name"
 					value={this.state.selectedOption}
 					onChange={this.handleChange}
-					placeholder="Select facet fields"
+					placeholder="Select aggregation fields"
 					multi={true}
 					clearable={false}
 					options={[
@@ -84,10 +84,10 @@ export default class Search extends Component {
 					</div>
 					<div className="content">
 						<header>
-							<h2>Set Aggregation Fields</h2>
+							<h2>Set aggregation fields</h2>
 						</header>
 						<p>
-							Based on how each field will be used in your app UI, you can set them as Searchable, or as Aggregation friendly, or as some other type.
+							Based on how each field will be used in your app UI, you can set them as searchable, or as aggregation friendly, or as some other type.
 						</p>
 						{
 							this.props.facetFields.length

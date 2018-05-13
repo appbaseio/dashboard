@@ -70,7 +70,7 @@ export default class AppbaseFeatures extends Component {
 					</div>
 					<div className="content">
 						<header>
-							<h2>Stream Realtime Updates</h2>
+							<h2>Stream realtime updates</h2>
 						</header>
 						<p>
 							appbase.io has built-in support for streaming realtime updates on documents and queries.

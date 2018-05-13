@@ -80,7 +80,7 @@ export default class Search extends Component {
 					</div>
 					<div className="content">
 						<header>
-							<h2>Set Searchable Fields</h2>
+							<h2>Set searchable fields</h2>
 						</header>
 						<p>
 							All fields in appbase.io are indexed to allow for a blazing fast querying performance. However, all fields aren't created equal.

@@ -107,11 +107,11 @@ const getFields = (fields, suffix) => {
 
 const getWeights = fields => {
 	const weights = {
-		'original_title': 6,
-		'original_title.search': 5,
-		'tagline': 4,
-		'tagline.search': 3,
-		'overview': 2,
+		'original_title': 10,
+		'original_title.search': 10,
+		'tagline': 5,
+		'tagline.search': 5,
+		'overview': 1,
 		'overview.search': 1,
 	};
 
@@ -174,7 +174,7 @@ export default class SearchApp extends Component {
 						react={{
 							and: ['search', 'genres', 'original_language', 'release_year'],
 						}}
-						size={6}
+						size={4}
 						onData={onData}
 						className="right-col"
 						innerClass={{

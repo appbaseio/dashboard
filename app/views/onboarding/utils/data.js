@@ -7,7 +7,7 @@ module.exports = [{
     "release_year": 2015,
     "tagline": "Before Gru, they had a history of bad bosses"
 }, {
-    "genres": "",
+    "genres": "Action",
     "original_language": "English",
     "original_title": "Wonder Woman",
     "overview": "An Amazon princess comes to the world of Man to become the greatest of the female superheroes.",

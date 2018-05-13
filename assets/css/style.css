@@ -1135,6 +1135,8 @@ body {
   position: relative;
   color: #fff;
   font-family: 'Open Sans', sans-serif; }
+  .onboarding-wrapper .Select--multi .Select-value-icon {
+    padding: 3px 5px 2px; }
   .onboarding-wrapper mark {
     background-color: #ff0; }
   .onboarding-wrapper .loader {
@@ -1203,6 +1205,8 @@ body {
     right: 0;
     color: #424242;
     overflow-y: scroll; }
+    .onboarding-wrapper .right header.vcenter {
+      padding-top: 10px; }
     .onboarding-wrapper .right .container {
       max-width: 950px;
       margin: 20px auto; }
