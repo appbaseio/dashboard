@@ -12,9 +12,19 @@ export default props => (
 			}
 		</div>
 		<div className="right-column">
-			<a className={`button has-icon ${props.disabled ? 'disabled' : ''}`} onClick={!props.disabled && props.nextScreen}>
-				{props.label || 'Next'} &nbsp; <img width="13" src="/assets/images/next.svg" alt=">"/>
-			</a>
+			{
+				props.label === 'Finish'
+					? (
+						<a className="button has-icon" href="/onboarding/finish">
+							Finish &nbsp; <img width="13" src="/assets/images/next.svg" alt=">"/>
+						</a>
+					)
+					: (
+						<a className={`button has-icon ${props.disabled ? 'disabled' : ''}`} onClick={!props.disabled && props.nextScreen}>
+							{props.label || 'Next'} &nbsp; <img width="13" src="/assets/images/next.svg" alt=">"/>
+						</a>
+					)
+			}
 		</div>
 	</footer>
 )

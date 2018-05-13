@@ -42,6 +42,42 @@ export default class EndScreen extends Component {
 							<a style={{ marginTop: '40px' }} className="button" href="/">Go to Dashboard</a>
 						</div>
 					</div>
+
+					<div className="card-row">
+						<div className="card">
+							<h2>MOBILE APP</h2>
+							<img src="/assets/images/onboarding/finish-screen/ReactiveNative.svg" alt="Reactive maps"/>
+							<p>A React UI components library for building Airbnb / Yelp like search interfaces.</p>
+							<a
+								className="button"
+								href="https://opensource.appbase.io/reactivesearch/native"
+							>
+								Learn More
+							</a>
+						</div>
+						<div className="card">
+							<h2>MAPS APP</h2>
+							<img src="/assets/images/onboarding/finish-screen/ReactiveMaps.svg" alt="Reactive maps"/>
+							<p>A React UI components library for building Airbnb / Yelp like search interfaces.</p>
+							<a
+								className="button"
+								href="https://opensource.appbase.io/reactivemaps"
+							>
+								Learn More
+							</a>
+						</div>
+						<div className="card">
+							<h2>APIs</h2>
+							<img width="100px" style={{ margin: '40px 0px 55px' }} src="/assets/images/onboarding/finish-screen/code@2x.png" alt="Reactive maps"/>
+							<p>A React UI components library for building Airbnb / Yelp like search interfaces.</p>
+							<a
+								className="button"
+								href="https://docs.appbase.io"
+							>
+								Learn More
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
