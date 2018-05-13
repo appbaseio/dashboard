@@ -1135,6 +1135,19 @@ body {
   position: relative;
   color: #fff;
   font-family: 'Open Sans', sans-serif; }
+  .onboarding-wrapper .skip-link {
+    color: #424242;
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: all .3s ease; }
+    .onboarding-wrapper .skip-link:hover, .onboarding-wrapper .skip-link:focus {
+      color: #111;
+      background-color: #fff;
+      text-decoration: none; }
   .onboarding-wrapper .Select--multi .Select-value-icon {
     padding: 3px 5px 2px; }
   .onboarding-wrapper mark {

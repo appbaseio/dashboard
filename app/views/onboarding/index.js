@@ -177,6 +177,7 @@ export default class Onboarding extends Component {
 					</ul>
 				</div>
 				<div className="right">
+					<a className="skip-link" href="/">&#10005; &nbsp; Skip Tutorial</a>
 					<div className="container">
 						{this.renderCurrentScreen()}
 					</div>
