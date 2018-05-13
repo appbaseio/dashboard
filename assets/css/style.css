@@ -1206,8 +1206,7 @@ body {
         .onboarding-wrapper .left ul li a:hover, .onboarding-wrapper .left ul li a:focus {
           text-decoration: none; }
         .onboarding-wrapper .left ul li a.active {
-          background-color: #fff;
-          color: #232E44; }
+          color: #C7F4FF; }
   .onboarding-wrapper .right {
     width: calc(100% - 300px);
     height: 100%;
