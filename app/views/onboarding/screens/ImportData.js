@@ -208,7 +208,7 @@ export default class Introduction extends Component {
 							<div>
 								<p>Explore your imported dataset for the movies store</p>
 								<iframe
-									src={`https://opensource.appbase.io/dejavu/live/#?input_state=${this.state.url}&hf=false&subscribe=false`}
+									src={`https://opensource.appbase.io/dejavu/live/#?input_state=${this.state.url}&hf=false&subscribe=false&sidebar=false`}
 									height="600px"
 									width="100%"
 									frameBorder="0"

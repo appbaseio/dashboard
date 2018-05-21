@@ -1453,18 +1453,12 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      background-color: #45FFDA;
+      background-color: #87FFE7;
       flex-wrap: wrap;
       align-items: center;
       text-align: center;
       padding: 30px;
       width: 66%; }
-      .end-screen .banner-row .big-card h2, .end-screen .banner-row .big-card h3 {
-        width: 100%;
-        font-size: 20px;
-        font-weight: 700; }
-      .end-screen .banner-row .big-card h3 {
-        font-size: 18px; }
       .end-screen .banner-row .big-card img {
         width: 200px;
         margin: 0px auto 20px; }
@@ -1479,6 +1473,12 @@ body {
         padding: 15px;
         margin-top: 20px;
         width: 50%; }
+    .end-screen .banner-row h2, .end-screen .banner-row h3 {
+      width: 100%;
+      font-size: 20px;
+      font-weight: 700; }
+    .end-screen .banner-row h3 {
+      font-size: 18px; }
     .end-screen .banner-row .small-card {
       width: 33%;
       padding: 30px;
@@ -1487,16 +1487,14 @@ body {
       flex-direction: column;
       justify-content: center; }
       .end-screen .banner-row .small-card h2 {
-        font-size: 32px;
-        line-height: 44px;
-        font-weight: 300; }
+        margin-top: 0px; }
   .end-screen .card-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 20px 0 40px; }
     .end-screen .card-row .card {
-      background-color: #65B4FF;
+      background-color: #C7F4FF;
       width: 32%;
       padding: 20px;
       color: #232E44;
@@ -1510,25 +1508,21 @@ body {
         margin-top: 15px; }
       .end-screen .card-row .card img, .end-screen .card-row .card a {
         margin: 20px 0; }
-      .end-screen .card-row .card .button {
-        background-color: #0033FF; }
-        .end-screen .card-row .card .button:hover, .end-screen .card-row .card .button:focus {
-          background-color: #0007e1; }
   .end-screen .button {
-    background-color: #00DE94;
-    color: #fff;
+    background-color: #B6EF7E;
+    color: #53683B;
     text-transform: uppercase;
     margin: 20px auto 0;
     padding: 0 28px;
     display: inline-flex;
     height: 44px;
-    font-weight: 700;
+    font-weight: 600;
     align-items: center;
     justify-content: center;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
     transition: all .3s ease; }
     .end-screen .button:hover, .end-screen .button:focus {
-      background-color: #02a971;
+      background-color: #a4f158;
       text-decoration: none; }
 
 .appcard {

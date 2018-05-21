@@ -38,8 +38,20 @@ export default class EndScreen extends Component {
 							</div>
 						</div>
 						<div className="small-card">
-							<h2>Browse your app or create a new one via the main dashboard.</h2>
-							<a style={{ marginTop: '40px' }} className="button" href="/">Go to Dashboard</a>
+							<h2>DASHBOARD</h2>
+
+							<img
+								style={{
+									width: '150px',
+									margin: '40px auto 20px'
+								}}
+								src="/assets/images/onboarding/finish-screen/Webapp.png"
+								srcSet="/assets/images/onboarding/finish-screen/Webapp.png 245w, /assets/images/onboarding/finish-screen/Webapp@2x.png 490w"
+								alt="Webapp"
+							/>
+
+							<p style={{ fontSize: '16px', lineHeight: '26px', maxWidth: '250px', margin: '20px auto' }}>Browse your app or create a new one via the main dashboard.</p>
+							<a className="button" href="/">Go to Dashboard</a>
 						</div>
 					</div>
 
