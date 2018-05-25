@@ -736,7 +736,7 @@ body {
     font-family: "Open Sans Regular";
     font-size: 1.2rem;
     color: #242E44;
-    margin-bottom: 50px; }
+    margin: 20px auto; }
   #login .mt25 {
     margin-top: 25px;
     font-family: "Open Sans Light";

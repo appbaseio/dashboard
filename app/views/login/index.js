@@ -19,7 +19,8 @@ export default class Login extends Component {
 					{this.config.login.description}
 				</h2>
 				<p>
-					Login to Appbase or create an account to access your Dashboard.
+					Create an account or sign-in to access your Dashboard.<br/>
+					By creating an account, you agree to our <a href="https://appbase.io/tos">Terms of Service</a> and <a href="https://appbase.io/privacy">Privacy Policy</a>.
 				</p>
 				<div className="flex flex-column" id="login-btn-screen">
 					<button
