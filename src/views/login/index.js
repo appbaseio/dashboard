@@ -18,8 +18,7 @@ export default class Login extends Component {
 					{this.config.login.description}
 				</h2>
 				<p>
-					Create an account or sign-in to access your Dashboard.<br />
-					By creating an account, you agree to our <a href="https://appbase.io/tos">Terms of Service</a> and <a href="https://appbase.io/privacy">Privacy Policy</a>.
+					Sign in to access your appbase.io apps.<br />
 				</p>
 				<div className="flex flex-column" id="login-btn-screen">
 					<button
@@ -37,14 +36,8 @@ export default class Login extends Component {
 				</div>
 				<div className="mt25">
 					<p className="no-margin">
-						Having issues logging in? Write to us&nbsp;
-						<a
-							className="contact-link"
-							href="mailto:info@appbase.io?subject=Login+issues"
-							target="_blank"
-						>
-							here
-						</a>.
+						Don{"'"}t have an account?&nbsp;
+						<a href="/signup">Sign up here</a>.
 					</p>
 				</div>
 			</section>

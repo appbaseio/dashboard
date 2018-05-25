@@ -39,8 +39,6 @@ export default class Main extends Component {
 
 	onGetUserCatch(e) {
 		localStorage.setItem('ad-login', window.location.href);
-		appbaseService.pushUrl('/login');
-		console.log(e);
 		this.setState({
 			loggedIn: false,
 			loading: false,

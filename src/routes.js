@@ -10,6 +10,7 @@ import Team from './views/team';
 import Onboarding from './views/onboarding';
 import OnboardingEndScreen from './views/onboarding/EndScreen';
 import Login from './views/login';
+import Signup from './views/signup';
 import Browser from './views/browser';
 import Mirage from './views/mirage';
 import Billing from './views/billing';
@@ -17,13 +18,6 @@ import Importer from './views/importer';
 import * as helper from './shared/helper';
 import UserInfo from './shared/UserInfo';
 import config from './config';
-
-//
-
-// const baseName = $('#appbase-dashboard').attr('data-basename') ? $('#appbase-dashboard').attr('data-basename') : './';
-// const browserHistory = useRouterHistory(useBasename(createHistory))({
-// 	basename: baseName
-// });
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
@@ -106,6 +100,18 @@ class MainApp extends React.Component {
 								login={this.login}
 							/>
 						)}
+					/>
+					<Route
+						path="signup"
+						component={
+							() =>
+								(<Signup
+									showModal={this.state.showModal}
+									close={this.close}
+									open={this.open}
+									login={this.login}
+								/>)
+						}
 					/>
 					<Route path="profile" component={UserInfo} />
 					<Route path="apps" component={AppList} />

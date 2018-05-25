@@ -15,6 +15,7 @@ class UserInfo extends Component {
 		countryCode: '',
 		submitCountryCode: '',
 		useCase: '',
+		optIn: false,
 		loading: false,
 		success: false,
 	};
@@ -30,11 +31,12 @@ class UserInfo extends Component {
 					: '',
 				useCase: body.usecase,
 				name: body.details.name.split(' ')[0],
+				optIn: localStorage.getItem('optIn') === 'true',
 			});
 		});
 	}
 
-	handleChange = e => {
+	handleChange = (e) => {
 		const { name, value } = e.target;
 		if (name === 'phone' && !/^\d*$/.test(value)) {
 			return;
@@ -48,7 +50,14 @@ class UserInfo extends Component {
 		this.setState({
 			loading: true,
 		});
-		const { company, deploymentTimeframe, phone, submitCountryCode, useCase } = this.state;
+		const {
+			company,
+			deploymentTimeframe,
+			phone,
+			submitCountryCode,
+			useCase,
+			optIn,
+		} = this.state;
 		appbaseService
 			.setUserInfo({
 				company,
@@ -62,6 +71,7 @@ class UserInfo extends Component {
 						name: body.details.name,
 						'deployment-timeframe': deploymentTimeframe,
 						usecase: useCase,
+						optInMail: optIn,
 					};
 					if (company.length) {
 						intercomPayload.companies = [
@@ -85,7 +95,9 @@ class UserInfo extends Component {
 	};
 
 	render() {
-		const { company, deploymentTimeframe, useCase, phone, name } = this.state;
+		const {
+ company, deploymentTimeframe, useCase, phone, name,
+} = this.state;
 		let { countryCode } = this.state;
 		if (countryCode === 'CA') {
 			countryCode = 'US';
