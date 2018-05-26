@@ -9,6 +9,7 @@ import Dashboard from './views/dashboard';
 import Credentials from './views/credentials';
 import Team from './views/team';
 import Login from './views/login';
+import Signup from './views/signup';
 import Tutorial from './views/tutorial';
 import Browser from './views/browser';
 import Gem from './views/gem';
@@ -115,6 +116,18 @@ class MainApp extends React.Component {
 						component={
 							() =>
 								<Login
+									showModal={this.state.showModal}
+									close={this.close}
+									open={this.open}
+									login={this.login}
+								/>
+						}
+					/>
+					<Route
+						path="signup"
+						component={
+							() =>
+								<Signup
 									showModal={this.state.showModal}
 									close={this.close}
 									open={this.open}

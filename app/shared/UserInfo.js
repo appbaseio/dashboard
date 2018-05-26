@@ -15,6 +15,7 @@ class UserInfo extends Component {
         countryCode: '',
         submitCountryCode: '',
         useCase: '',
+        optIn: false,
         loading: false,
         success: false
     }
@@ -30,7 +31,8 @@ class UserInfo extends Component {
                         ? countryCodes.find(item => item.dial_code === body.phone.split('-')[0]).code
                         : '',
                     useCase: body.usecase,
-                    name: body.details.name.split(' ')[0]
+                    name: body.details.name.split(' ')[0],
+                    optIn: localStorage.getItem('optIn') === 'true'
                 });
             })
     }
@@ -49,7 +51,7 @@ class UserInfo extends Component {
         this.setState({
             loading: true
         });
-        const { company, deploymentTimeframe, phone, submitCountryCode, useCase } = this.state;
+        const { company, deploymentTimeframe, phone, submitCountryCode, useCase, optIn } = this.state;
         appbaseService
             .setUserInfo({
                 company,
@@ -65,6 +67,7 @@ class UserInfo extends Component {
                             name: body.details.name,
                             'deployment-timeframe': deploymentTimeframe,
                             usecase: useCase,
+                            optInMail: optIn
                         };
                         if (company.length) {
                             intercomPayload.companies = [{
