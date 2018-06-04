@@ -1,6 +1,5 @@
+import _ from 'lodash';
 import { browserHistory } from 'react-router';
-
-const _ = require('lodash');
 
 class AppbaseService {
 	constructor() {
@@ -58,17 +57,17 @@ class AppbaseService {
 
 	getShareApps() {
 		const sharedApps = localStorage.getItem('ai-sharedApps');
-		return sharedApps === 'false' ? false : true;
+		return sharedApps !== 'false';
 	}
 
 	getUser() {
 		return new Promise((resolve, reject) => {
-			$.get(this.address + 'user')
-				.done(data => {
+			$.get(`${this.address }user`)
+				.done((data) => {
 					this.userInfo = data;
 					resolve({ userInfo: data });
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 		});
@@ -80,12 +79,12 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].permissions);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(this.address + 'app/' + appId + '/permissions')
-				.done(data => {
+			$.get(`${this.address }app/${appId}/permissions`)
+				.done((data) => {
 					this.apps[appId].permissions = data;
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 			// }
@@ -98,12 +97,12 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].share);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(this.address + 'app/' + appId + '/share')
-				.done(data => {
+			$.get(`${this.address }app/${appId }/share`)
+				.done((data) => {
 					this.apps[appId].share = data;
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 			// }
@@ -116,12 +115,12 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].appInfo);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(this.address + 'app/' + appId)
-				.done(data => {
+			$.get(`${this.address}app/${appId}`)
+				.done((data) => {
 					this.apps[appId].appInfo = data;
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 			// }
@@ -134,12 +133,12 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].metrics);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(this.address + 'app/' + appId + '/metrics')
-				.done(data => {
+			$.get(`${this.address}app/${ appId }/metrics`)
+				.done((data) => {
 					this.apps[appId].metrics = data;
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 			// }
@@ -151,12 +150,12 @@ class AppbaseService {
 			if (cached && this.userApps) {
 				resolve(this.userApps);
 			} else {
-				$.get(this.address + 'user/apps')
-					.done(data => {
+				$.get(`${this.address}user/apps`)
+					.done((data) => {
 						this.userApps = data;
 						resolve(data);
 					})
-					.fail(e => {
+					.fail((e) => {
 						reject(e);
 					});
 			}
@@ -165,11 +164,11 @@ class AppbaseService {
 
 	allMetrics() {
 		return new Promise((resolve, reject) => {
-			$.get(this.address + 'user/apps/metrics')
-				.done(data => {
+			$.get(`${this.address }user/apps/metrics`)
+				.done((data) => {
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 		});
@@ -177,24 +176,24 @@ class AppbaseService {
 
 	allPermissions() {
 		return new Promise((resolve, reject) => {
-			$.get(this.address + 'user/apps/permissions')
-				.done(data => {
+			$.get(`${this.address }user/apps/permissions`)
+				.done((data) => {
 					resolve(data);
 				})
-				.fail(e => {
+				.fail((e) => {
 					reject(e);
 				});
 		});
 	}
 
 	createApp(appData) {
-		let appsObj = {
+		const appsObj = {
 			allApps: null,
 			user: null,
 		};
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'app/' + appData.appname,
+				url: `${this.address }app/${appData.appname}`,
 				type: 'PUT',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -202,32 +201,32 @@ class AppbaseService {
 					category: appData.category,
 					es_version: appData.es_version,
 				}),
-				success: result => {
+				success: (result) => {
 					this.preservedApps = [];
 					this.allApps()
-						.then(data => {
+						.then((data) => {
 							appsObj.allApps = data;
 							cb(result);
 						})
-						.catch(e => {
+						.catch((e) => {
 							appsObj.allApps = e;
 							cb(result);
 						});
 					this.getUser()
-						.then(data => {
+						.then((data) => {
 							appsObj.user = data;
 							cb(result);
 						})
-						.catch(e => {
+						.catch((e) => {
 							appsObj.user = e;
 							cb(result);
 						});
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
-			const cb = result => {
+			const cb = (result) => {
 				if (appsObj.user && appsObj.allApps) {
 					resolve(result);
 				}
@@ -243,10 +242,10 @@ class AppbaseService {
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(info),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -261,10 +260,10 @@ class AppbaseService {
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(info),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -278,10 +277,10 @@ class AppbaseService {
 				type: 'DELETE',
 				contentType: 'application/json',
 				dataType: 'json',
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -296,10 +295,10 @@ class AppbaseService {
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(info),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -314,10 +313,10 @@ class AppbaseService {
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(info),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -327,23 +326,23 @@ class AppbaseService {
 	updateShare(appId, user, info) {
 		return new Promise((resolve, reject) => {
 			this.deleteShare(appId, user.username, { email: user.email })
-				.then(data => {
+				.then((data) => {
 					const request = {
 						email: user.email,
 						user: user.email,
 						read: info.read,
 						write: info.write,
-						description: 'Shared with ' + user.email,
+						description: `Shared with ${ user.email}`,
 					};
 					this.newShare(appId, request)
-						.then(data => {
+						.then((data) => {
 							resolve(data);
 						})
-						.catch(e => {
+						.catch((e) => {
 							reject(e);
 						});
 				})
-				.catch(e => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
@@ -357,10 +356,10 @@ class AppbaseService {
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(request),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -370,19 +369,19 @@ class AppbaseService {
 	deleteApp(id) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'app/' + id,
+				url: `${this.address}app/${id}`,
 				type: 'DELETE',
-				success: result => {
+				success: (result) => {
 					this.getUser()
-						.then(data => {
+						.then((data) => {
 							resolve(result);
 						})
-						.catch(e => {
+						.catch((e) => {
 							console.log(e);
 							resolve(result);
 						});
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -391,23 +390,23 @@ class AppbaseService {
 
 	logout() {
 		localStorage.setItem('reload', true);
-		var baseURL = window.location.protocol + '//' + window.location.host + '/';
-		window.location.href = this.address + 'logout?next=https://appbase.io';
+		const baseURL = `${window.location.protocol }//${window.location.host }/`;
+		window.location.href = `${this.address}logout?next=https://appbase.io`;
 	}
 
 	computeMetrics(metrics) {
-		var totalRecords = 0;
-		var totalStorage = 0;
-		var totalCalls = 0;
-		var current_date = new Date();
+		let totalRecords = 0;
+		let totalStorage = 0;
+		let totalCalls = 0;
+		const current_date = new Date();
 		// current_date.setMonth(current_date.getMonth() - 1);
 		current_date.setDate(1);
 
 		totalRecords += parseInt(metrics.body.overall.numDocs) || 0;
 		totalStorage += metrics.body.overall.storage / Math.pow(1024, 2) || 0; // in MB
-		//console.log(metrics.body);
+		// console.log(metrics.body);
 
-		metrics.body.month.buckets.forEach(function(bucket) {
+		metrics.body.month.buckets.forEach((bucket) => {
 			if (bucket.key >= current_date.getTime()) totalCalls += bucket.apiCalls.value;
 		});
 
@@ -445,13 +444,9 @@ class AppbaseService {
 			if (field === 'all') {
 				filteredApps = this.extra.allApps;
 			} else if (field === 'myapps') {
-				filteredApps = this.extra.allApps.filter(app => {
-					return this.isMyApp(app);
-				});
+				filteredApps = this.extra.allApps.filter(app => this.isMyApp(app));
 			} else if (field === 'shared') {
-				filteredApps = this.extra.allApps.filter(app => {
-					return !this.isMyApp(app);
-				});
+				filteredApps = this.extra.allApps.filter(app => !this.isMyApp(app));
 			}
 		}
 		return filteredApps;
@@ -460,9 +455,9 @@ class AppbaseService {
 	getPreservedApps(apps) {
 		let preservedApps = localStorage.getItem('ai-apps');
 		preservedApps = preservedApps ? JSON.parse(preservedApps) : [];
-		let finalApps = [];
+		const finalApps = [];
 		const appInFinalApps = [];
-		preservedApps.forEach(item => {
+		preservedApps.forEach((item) => {
 			const isAppExists = apps.filter(app => item.appname === app.appname);
 			if (isAppExists && isAppExists.length) {
 				finalApps.push(isAppExists[0]);
@@ -486,9 +481,7 @@ class AppbaseService {
 
 	filterBySharedApps(sharedApps = this.sharedApps) {
 		localStorage.setItem('ai-sharedApps', sharedApps);
-		return appbaseService.preservedApps.filter(
-			app => (sharedApps ? true : app.owner === appbaseService.userInfo.body.email),
-		);
+		return appbaseService.preservedApps.filter(app => (sharedApps ? true : app.owner === appbaseService.userInfo.body.email) );
 	}
 
 	isMyApp(app) {
@@ -498,7 +491,7 @@ class AppbaseService {
 	isAppNameAvailable(appname) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'apps/' + appname,
+				url: `${this.address}apps/${appname}`,
 				type: 'GET',
 				success: resolve,
 				error: reject,
@@ -513,15 +506,15 @@ class AppbaseService {
 	setUserInfo(userInfo) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: this.address + 'user/profile',
+				url: `${this.address }user/profile`,
 				type: 'PUT',
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify(userInfo),
-				success: result => {
+				success: (result) => {
 					resolve(result);
 				},
-				error: error => {
+				error: (error) => {
 					reject(error);
 				},
 			});
@@ -535,7 +528,7 @@ class AppbaseService {
 	}
 
 	getContextPath() {
-		return this.context === '/' ? '/' : this.context + '/';
+		return this.context === '/' ? '/' : `${this.context}/`;
 	}
 }
 

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
 	entry: path.join(__dirname, 'src/routes.js'),
@@ -6,6 +7,7 @@ module.exports = {
 		path: path.join(__dirname, 'dist/js'),
 		publicPath: '/dist/js/',
 		filename: 'bundle.js',
+		chunkFilename: '[name].bundle.js',
 	},
 	module: {
 		rules: [
@@ -38,4 +40,7 @@ module.exports = {
 			},
 		],
 	},
+	plugins: [
+		new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+	],
 };

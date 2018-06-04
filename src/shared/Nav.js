@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
+import _ from 'lodash';
 import config from '../config';
 import { appbaseService } from '../service/AppbaseService';
 import { eventEmitter } from './helper';
 import { AppOwner } from './SharedComponents';
-
-const _ = require('lodash');
 
 const defaultImg = '../../../assets/images/userImg.png';
 
