@@ -58,7 +58,7 @@
 			li {
 				text-align: center;
 				font-size: 1rem;
-				font-family: $font-black;
+				font-family: $font-regular; font-weight: 600;
 				a {
 					padding: 15px 5px 15px 2px;
 					display: block;
@@ -83,8 +83,10 @@
 							background: white;
 						}
 					}
-					&.active {}
-					.ad-detail-sidebar-item-label {}
+					&.active {
+					}
+					.ad-detail-sidebar-item-label {
+					}
 				}
 			}
 		}

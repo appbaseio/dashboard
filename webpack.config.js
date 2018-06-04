@@ -1,26 +1,41 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
-	context: path.resolve(__dirname, "app"),
-	entry: {
-		main: "./routes.js"
-	},
+	entry: path.join(__dirname, 'src/routes.js'),
 	output: {
-		path: path.resolve(__dirname, "dist/js"),
-		filename: "app.js",
-		publicPath: "/dist/js/"
+		path: path.join(__dirname, 'dist/js'),
+		publicPath: '/dist/js/',
+		filename: 'bundle.js',
 	},
 	module: {
 		rules: [
 			{
-				test: /.jsx?$/,
-				loader: "babel-loader",
-				exclude: /node_modules/
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+				},
 			},
-			{ test: /\.css$/, loader: "style-loader!css-loader" },
-			{ test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-			{ test: /\.(ttf|eot|svg|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
-		]
-	}
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader'],
+			},
+			{
+				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				use: {
+					loader: 'url-loader',
+					options: {
+						limit: 10000,
+						mimetype: 'application/font-woff',
+					},
+				},
+			},
+			{
+				test: /\.(ttf|eot|svg|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				use: {
+					loader: 'file-loader',
+				},
+			},
+		],
+	},
 };

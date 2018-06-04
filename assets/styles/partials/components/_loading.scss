@@ -8,10 +8,10 @@
 	transform: translateX(100%);
 	display: block;
 	animation: shift-rightwards 0.5s ease-in-out infinite;
-	animation-delay: .2s
+	animation-delay: 0.2s;
 }
 .ad-loading {
-	background: rgba(255,255,255,1);
+	background: rgba(255, 255, 255, 1);
 	overflow: hidden;
 	display: flex;
 	width: 100%;
@@ -24,15 +24,15 @@
 }
 @keyframes shift-rightwards {
 	0% {
-		transform: translateX(-100%)
+		transform: translateX(-100%);
 	}
 	40% {
-		transform: translateX(0)
+		transform: translateX(0);
 	}
 	60% {
-		transform: translateX(0)
+		transform: translateX(0);
 	}
 	100% {
-		transform: translateX(100%)
+		transform: translateX(100%);
 	}
 }

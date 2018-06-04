@@ -1,6 +1,5 @@
 .ad-dashboard {
 	.body-card-title-highchart {
-
 	}
 	.ad-detail-page-body-card-body {
 		.tab-container {
@@ -47,9 +46,10 @@
 				padding-left: 10px;
 				padding-right: 10px;
 				&.active {
-					font-family: $font-semi-bold !important;
+					font-family: $font-regular;
+					font-weight: 600 !important;
 					color: $n-navy !important;
-					box-shadow: 0px 4px 0px 0px rgba(0,0,0,1);
+					box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 1);
 				}
 				&:hover {
 					text-decoration: none;

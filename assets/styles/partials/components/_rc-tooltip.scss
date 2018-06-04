@@ -1,11 +1,11 @@
 .rc-tooltip {
-    opacity: 1;
-    .rc-tooltip-arrow {
-        border-right-color: $n-navy;
-        border-left-color: $n-navy;
-    }
-    .rc-tooltip-inner {
-        color: $n-navy;
-        border-color: $n-navy;
-    }
+	opacity: 1;
+	.rc-tooltip-arrow {
+		border-right-color: $n-navy;
+		border-left-color: $n-navy;
+	}
+	.rc-tooltip-inner {
+		color: $n-navy;
+		border-color: $n-navy;
+	}
 }

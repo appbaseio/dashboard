@@ -1,5 +1,5 @@
-$left-color: #232E44;
-$right-color: #C7F4FF;
+$left-color: #232e44;
+$right-color: #c7f4ff;
 
 .onboarding-wrapper {
 	display: flex;
@@ -16,9 +16,10 @@ $right-color: #C7F4FF;
 		padding: 5px 10px;
 		border-radius: 4px;
 		background-color: rgba(255, 255, 255, 0.5);
-		transition: all .3s ease;
+		transition: all 0.3s ease;
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			color: #111;
 			background-color: #fff;
 			text-decoration: none;
@@ -42,7 +43,7 @@ $right-color: #C7F4FF;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: rgba(0,0,0,.85);
+		background-color: rgba(0, 0, 0, 0.85);
 		color: #fff;
 		font-size: 16px;
 		z-index: 200;
@@ -78,7 +79,7 @@ $right-color: #C7F4FF;
 			.color {
 				background: $right-color;
 				height: 100%;
-				transition: all .3s ease;
+				transition: all 0.3s ease;
 			}
 		}
 
@@ -97,7 +98,8 @@ $right-color: #C7F4FF;
 				cursor: pointer;
 				margin: 6px 0;
 
-				&:hover, &:focus {
+				&:hover,
+				&:focus {
 					text-decoration: none;
 				}
 
@@ -163,7 +165,6 @@ $right-color: #C7F4FF;
 			width: 70px;
 		}
 	}
-
 
 	p {
 		max-width: 750px;
@@ -231,31 +232,34 @@ $right-color: #C7F4FF;
 		letter-spacing: 0.01rem;
 		border: none;
 		cursor: pointer;
-		transition: all .2s ease;
+		transition: all 0.2s ease;
 
 		&.has-icon {
 			padding: 0 16px 0 24px;
 		}
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			text-decoration: none;
-			box-shadow: 0 1px 7px rgba(0,0,0,.1);
+			box-shadow: 0 1px 7px rgba(0, 0, 0, 0.1);
 			background-color: #fefefe;
 			color: #28a5c3;
 		}
 
 		&.primary {
 			color: #375619;
-			background-color: #B6EF7E;
+			background-color: #b6ef7e;
 
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				background-color: #70d210;
 				color: #375619;
 			}
 		}
 
 		&.big {
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				color: #fff;
 			}
 		}
@@ -263,7 +267,8 @@ $right-color: #C7F4FF;
 		&.disabled {
 			background-color: #888;
 
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				background-color: #888;
 				cursor: not-allowed;
 				color: #111;
@@ -290,7 +295,6 @@ $right-color: #C7F4FF;
 			right: 0px;
 			margin: 0;
 			box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px 2px;
-
 		}
 
 		&.show {
@@ -303,7 +307,7 @@ $right-color: #C7F4FF;
 		height: auto;
 		margin: 30px 0;
 		border-radius: 2px;
-		background-color: #DCF8FF;
+		background-color: #dcf8ff;
 		padding: 30px;
 		text-align: left;
 		color: #424242;
@@ -374,7 +378,6 @@ $right-color: #C7F4FF;
 		}
 	}
 
-
 	// search app styles
 	.search-app {
 		header {
@@ -387,7 +390,7 @@ $right-color: #C7F4FF;
 				color: #424242;
 				text-align: center;
 				letter-spacing: 0.06rem;
-				margin-bottom: 12px
+				margin-bottom: 12px;
 			}
 
 			input {
@@ -396,7 +399,8 @@ $right-color: #C7F4FF;
 				padding: 0 28px;
 				font-size: 18px;
 				border-radius: 999em;
-				box-shadow: 0 20px 30px 0 rgba(16,36,94,0.2), inset 0 -8px 0 0 rgba(103,117,161,0.08);
+				box-shadow: 0 20px 30px 0 rgba(16, 36, 94, 0.2),
+					inset 0 -8px 0 0 rgba(103, 117, 161, 0.08);
 			}
 		}
 
@@ -410,7 +414,8 @@ $right-color: #C7F4FF;
 		}
 
 		a {
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				text-decoration: none;
 			}
 		}
@@ -480,7 +485,7 @@ $right-color: #C7F4FF;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
-			background-color: #87FFE7;
+			background-color: #87ffe7;
 			flex-wrap: wrap;
 			align-items: center;
 			text-align: center;
@@ -508,7 +513,8 @@ $right-color: #C7F4FF;
 			}
 		}
 
-		h2, h3 {
+		h2,
+		h3 {
 			width: 100%;
 			font-size: 20px;
 			font-weight: 700;
@@ -539,10 +545,10 @@ $right-color: #C7F4FF;
 		padding: 20px 0 40px;
 
 		.card {
-			background-color: #C7F4FF;
+			background-color: #c7f4ff;
 			width: 32%;
 			padding: 20px;
-			color: #232E44;
+			color: #232e44;
 			text-align: center;
 
 			h2 {
@@ -556,15 +562,16 @@ $right-color: #C7F4FF;
 				margin-top: 15px;
 			}
 
-			img, a {
+			img,
+			a {
 				margin: 20px 0;
 			}
 		}
 	}
 
 	.button {
-		background-color: #B6EF7E;
-		color: #53683B;
+		background-color: #b6ef7e;
+		color: #53683b;
 		text-transform: uppercase;
 		margin: 20px auto 0;
 		padding: 0 28px;
@@ -573,10 +580,11 @@ $right-color: #C7F4FF;
 		font-weight: 600;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
-		transition: all .3s ease;
+		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
 
-		&:hover, &:focus {
+		&:hover,
+		&:focus {
 			background-color: #a4f158;
 			text-decoration: none;
 		}

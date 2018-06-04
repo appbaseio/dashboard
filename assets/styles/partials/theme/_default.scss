@@ -1,10 +1,30 @@
 $themes: (
-	context-appbase: (primary: #C7F4FF, accent: #B6EF7E, primaryfont: #232E44, dropdownfont: #333, buttoncolor: $d-green),
-	context-reactivemaps: (primary: #5678FC, accent: #CDDC39, primaryfont: #fff, dropdownfont: #333, buttoncolor: #fff),
-	context-reactivesearch: (accent: #FFD600, primary: #2251D1, primaryfont: #fff, dropdownfont: #333, buttoncolor: #333)
+	context-appbase:
+		(
+			primary: #c7f4ff,
+			accent: #b6ef7e,
+			primaryfont: #232e44,
+			dropdownfont: #333,
+			buttoncolor: $d-green
+		),
+	context-reactivemaps:
+		(
+			primary: #5678fc,
+			accent: #cddc39,
+			primaryfont: #fff,
+			dropdownfont: #333,
+			buttoncolor: #fff
+		),
+	context-reactivesearch:
+		(
+			accent: #ffd600,
+			primary: #2251d1,
+			primaryfont: #fff,
+			dropdownfont: #333,
+			buttoncolor: #333
+		)
 );
-@each $theme,
-$map in $themes {
+@each $theme, $map in $themes {
 	.#{$theme} {
 		.ad-detail {
 			.ad-detail-sidebar {
@@ -12,7 +32,6 @@ $map in $themes {
 				li a {
 					&:hover,
 					&.active {
-						
 					}
 				}
 			}
@@ -40,7 +59,8 @@ $map in $themes {
 				}
 			}
 			li {
-				a, .extra-link {
+				a,
+				.extra-link {
 					color: map-get($map, primaryfont);
 					&:hover,
 					&:focus {
@@ -51,7 +71,10 @@ $map in $themes {
 			li.dropdown {
 				> a {
 					&:before {
-						border-color: map-get($map, primaryfont) transparent transparent transparent;
+						border-color: map-get($map, primaryfont)
+							transparent
+							transparent
+							transparent;
 					}
 				}
 				.dropdown-menu {
@@ -131,8 +154,8 @@ $map in $themes {
 			background: map-get($map, accent);
 		}
 		.ad-loading {
-			.ball-clip-rotate-multiple>div {
-				border-color : transparent map-get($map, accent);
+			.ball-clip-rotate-multiple > div {
+				border-color: transparent map-get($map, accent);
 			}
 		}
 		.modal {
@@ -145,7 +168,7 @@ $map in $themes {
 				}
 				.close {
 					color: $n-navy;
-					font-family: $font-extra-light;
+					font-family: $font-regular; font-weight: 300;
 					font-size: 1.5rem;
 					border: none;
 					padding: 0;
@@ -153,7 +176,7 @@ $map in $themes {
 					height: 25px;
 					top: 20px;
 					right: 10px;
-					background-color: rgba(217,216,228,0.25);
+					background-color: rgba(217, 216, 228, 0.25);
 				}
 			}
 			.modal-content {
@@ -161,7 +184,7 @@ $map in $themes {
 				padding: 10px 10px 20px 10px;
 				border-radius: 0;
 				label {
-					font-family: $font-light;
+					font-family: $font-regular; font-weight: 300;
 					font-size: 1rem;
 					color: $n-navy;
 					margin: 10px 0;
@@ -180,13 +203,13 @@ $map in $themes {
 							left: -10px;
 							height: 20px;
 							width: 20px;
-							border: 1px solid #D9D8E4;
+							border: 1px solid #d9d8e4;
 							border-radius: 50%;
 						}
 
 						/* Create the indicator (the dot/circle - hidden when not checked) */
 						.checkmark:after {
-							content: "";
+							content: '';
 							position: absolute;
 							display: none;
 						}
@@ -211,13 +234,13 @@ $map in $themes {
 					margin-top: 5px;
 				}
 				input.form-control {
-					border: 1px solid #D9D8E4;
+					border: 1px solid #d9d8e4;
 					border-radius: 3px;
 					box-shadow: none;
 					height: 36px;
 					&:focus {
 						border-color: $external-link-color;
-						box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+						box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 					}
 				}
 				.modal-body {
@@ -246,11 +269,12 @@ $map in $themes {
 			&.primary {
 				color: map-get($map, buttoncolor);
 				background: map-get($map, accent);
-				box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 				transition: all 0.3s ease-in-out;
-				&:hover, &.active {
+				&:hover,
+				&.active {
 					background: lighten(map-get($map, accent), 5%);
-					box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+					box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 				}
 				&.transparent {
 					background: #fff;
