@@ -53,9 +53,8 @@ export default class EndScreen extends Component {
 									width: '150px',
 									margin: '40px auto 20px',
 								}}
-								src="/assets/images/onboarding/finish-screen/Webapp.png"
-								srcSet="/assets/images/onboarding/finish-screen/Webapp.png 245w, /assets/images/onboarding/finish-screen/Webapp@2x.png 490w"
-								alt="Webapp"
+								src="/assets/images/onboarding/finish-screen/Group@3x.svg"
+								alt="Dashboard"
 							/>
 
 							<p
@@ -79,7 +78,7 @@ export default class EndScreen extends Component {
 							<h2>MOBILE APP</h2>
 							<img
 								src="/assets/images/onboarding/finish-screen/ReactiveNative.svg"
-								alt="Reactive maps"
+								alt="Reactive search"
 							/>
 							<p>
 								A React UI components library for building Airbnb / Yelp like search
@@ -99,8 +98,7 @@ export default class EndScreen extends Component {
 								alt="Reactive maps"
 							/>
 							<p>
-								A React UI components library for building Airbnb / Yelp like search
-								interfaces.
+								A React UI components library for building realtime geolocation apps with google maps.
 							</p>
 							<a className="button" href="https://opensource.appbase.io/reactivemaps">
 								Learn More
@@ -111,12 +109,11 @@ export default class EndScreen extends Component {
 							<img
 								width="100px"
 								style={{ margin: '40px 0px 55px' }}
-								src="/assets/images/onboarding/finish-screen/code@2x.png"
-								alt="Reactive maps"
+								src="/assets/images/onboarding/finish-screen/api@3x.svg"
+								alt="API"
 							/>
 							<p>
-								A React UI components library for building Airbnb / Yelp like search
-								interfaces.
+								Get started with the REST APIs for indexing, querying and streaming data with appbase.
 							</p>
 							<a className="button" href="https://docs.appbase.io">
 								Learn More
