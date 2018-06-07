@@ -11,7 +11,7 @@ export default class Search extends Component {
 		selectedOption: this.props.searchFields.map(item => ({ label: item, value: item })) || [],
 	};
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -25,7 +25,7 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = (selectedOption) => {
+	handleChange = selectedOption => {
 		if (!selectedOption.length) {
 			this.setError('Search fields cannot be empty.');
 		} else {
@@ -39,11 +39,11 @@ export default class Search extends Component {
 	};
 
 	renderSearchApp = () => (
-			<div>
-				{this.renderSearchInput(true)}
-				<SearchApp fields={this.props.searchFields} />
-			</div>
-		);
+		<div>
+			{this.renderSearchInput(true)}
+			<SearchApp fields={this.props.searchFields} />
+		</div>
+	);
 
 	renderSearchInput = horizontal => (
 		<div
@@ -52,7 +52,10 @@ export default class Search extends Component {
 		>
 			<div>
 				<h3>Set Searchable Fields</h3>
-				<p>Select the fields you want to search on. They will be updated dynamically in the UI.</p>
+				<p>
+					Select the fields you want to search on. They will be updated dynamically in the
+					UI.
+				</p>
 			</div>
 			<div className="input-wrapper">
 				<Select
@@ -90,8 +93,10 @@ export default class Search extends Component {
 								querying performance. However, all fields aren{"'"}t created equal.
 							</p>
 							<p>
-								Fields that are searchable require a specific n-gram mapping to provide
-								an auto-complete like behavior.
+								However, all fields aren’t created equal. When you set a field as{' '}
+								<strong>Searchable</strong>, it gets an additional n-gram based
+								analyzer applied which enables blazing fast auto-completion and
+								partial match features.
 							</p>
 						</header>
 						<h3>We will start by letting you set certain fields as Searchable.</h3>

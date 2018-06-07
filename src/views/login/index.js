@@ -14,9 +14,7 @@ export default class Login extends Component {
 		const { login } = this.props;
 		return (
 			<section id="login" className="text-center container">
-				<h2>
-					{this.config.login.description}
-				</h2>
+				<h2>{this.config.login.description}</h2>
 				<p>
 					Sign in to access your appbase.io apps.<br />
 				</p>

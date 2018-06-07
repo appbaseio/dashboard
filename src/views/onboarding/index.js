@@ -27,7 +27,7 @@ export default class Onboarding extends Component {
 	};
 
 	nextScreen = () => {
-		this.setState((state) => {
+		this.setState(state => {
 			const currentScreen =
 				state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
@@ -42,7 +42,7 @@ export default class Onboarding extends Component {
 	};
 
 	previousScreen = () => {
-		this.setState((state) => {
+		this.setState(state => {
 			const currentScreen =
 				state.currentScreen - 1 >= 0 ? state.currentScreen - 1 : state.currentScreen;
 
@@ -57,7 +57,7 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setScreen = (currentScreen) => {
+	setScreen = currentScreen => {
 		this.setState(state => ({
 			...state,
 			currentScreen:
@@ -71,19 +71,19 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setURL = (url) => {
+	setURL = url => {
 		this.setState({
 			url,
 		});
 	};
 
-	setSearchFields = (searchFields) => {
+	setSearchFields = searchFields => {
 		this.setState({
 			searchFields,
 		});
 	};
 
-	setFacetFields = (facetFields) => {
+	setFacetFields = facetFields => {
 		this.setState({
 			facetFields,
 		});

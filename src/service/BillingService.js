@@ -35,64 +35,64 @@ class BillingService {
 	}
 	getCustomer(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/me`,
+			url: `${this.billingAddress}/api/me`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	createCustomer(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/createCustomer`,
+			url: `${this.billingAddress}/api/createCustomer`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	stripeConnect(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/stripeConnect`,
+			url: `${this.billingAddress}/api/stripeConnect`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	updateStripeCustomer(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/updateStripeCustomer`,
+			url: `${this.billingAddress}/api/updateStripeCustomer`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	updateCustomer(requestData, method) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/updateCustomer/${  method}`,
+			url: `${this.billingAddress}/api/updateCustomer/${method}`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	paymentInfo(requestData, method) {
 		return $http.start({
-			url: `${this.billingAddress  }/api/paymentInfo`,
+			url: `${this.billingAddress}/api/paymentInfo`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	updateSubscribe(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/billing/subscribe`,
+			url: `${this.billingAddress}/billing/subscribe`,
 			data: requestData,
 			method: 'PUT',
 		});
 	}
 	cancelSubscription(requestData) {
 		return $http.start({
-			url: `${this.billingAddress  }/billing/cancelSubscription`,
+			url: `${this.billingAddress}/billing/cancelSubscription`,
 			data: requestData,
 			method: 'POST',
 		});
 	}
 	usage(start, end) {
-		let url = `${this.billingAddress  }/usage`;
+		let url = `${this.billingAddress}/usage`;
 		if (start && end) {
-			url = `${this.billingAddress  }/usage?start=${  start  }&end=${  end}`;
+			url = `${this.billingAddress}/usage?start=${start}&end=${end}`;
 		}
 		return $http.start({
 			url,
@@ -101,7 +101,7 @@ class BillingService {
 	}
 	calculator() {
 		return $http.start({
-			url: `${this.billingAddress  }/calculator`,
+			url: `${this.billingAddress}/calculator`,
 			method: 'GET',
 		});
 	}

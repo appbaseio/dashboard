@@ -36,7 +36,7 @@ class UserInfo extends Component {
 		});
 	}
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const { name, value } = e.target;
 		if (name === 'phone' && !/^\d*$/.test(value)) {
 			return;
@@ -95,9 +95,7 @@ class UserInfo extends Component {
 	};
 
 	render() {
-		const {
- company, deploymentTimeframe, useCase, phone, name,
-} = this.state;
+		const { company, deploymentTimeframe, useCase, phone, name } = this.state;
 		let { countryCode } = this.state;
 		if (countryCode === 'CA') {
 			countryCode = 'US';

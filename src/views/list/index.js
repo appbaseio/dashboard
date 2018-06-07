@@ -68,9 +68,11 @@ export default class AppList extends Component {
 	deleteApp(selectedApp) {
 		appbaseService
 			.deleteApp(selectedApp.id)
-			.then((data) => {
+			.then(data => {
 				const apps = this.state.apps.filter(app => app.id !== selectedApp.id);
-				appbaseService.preservedApps = appbaseService.preservedApps.filter(app => app.id !== selectedApp.id);
+				appbaseService.preservedApps = appbaseService.preservedApps.filter(
+					app => app.id !== selectedApp.id,
+				);
 				if (appbaseService.preservedApps.length === 0) {
 					appbaseService.pushUrl('/tutorial');
 				}
@@ -78,7 +80,7 @@ export default class AppList extends Component {
 					apps,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.log(e);
 			});
 	}
@@ -96,12 +98,12 @@ export default class AppList extends Component {
 	getApps() {
 		appbaseService
 			.allApps()
-			.then((data) => {
+			.then(data => {
 				const apps = appbaseService.getPreservedApps(data.body);
 				appbaseService.setPreservedApps(apps);
 				this.registerApps(apps, true);
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.log(e);
 				appbaseService.pushUrl('/login');
 			});
@@ -138,7 +140,7 @@ export default class AppList extends Component {
 			};
 			billingService
 				.getCustomer(requestData)
-				.then((data) => {
+				.then(data => {
 					const plan =
 						Object.keys(billingService.planLimits).indexOf(data.plan) > -1
 							? data.plan
@@ -148,7 +150,7 @@ export default class AppList extends Component {
 						plan,
 					});
 				})
-				.catch((e) => {
+				.catch(e => {
 					console.log(e);
 				});
 		}
@@ -175,7 +177,7 @@ export default class AppList extends Component {
 		let apps = this.state.apps;
 		appbaseService
 			.allMetrics()
-			.then((data) => {
+			.then(data => {
 				apps = apps.map(app => Object.assign(app, data.body[app.id]));
 				apps = appbaseService.applySort(apps, appbaseService.sortBy.field);
 				apps = appbaseService.filterBySharedApps();
@@ -183,17 +185,18 @@ export default class AppList extends Component {
 				this.setIntercomData(data.body);
 				this.setState({ loading: false });
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.log(e);
 			});
 		appbaseService
 			.allPermissions()
-			.then((data) => {
+			.then(data => {
 				apps = apps.map(app =>
-					Object.assign(app, appListHelper.filterPermissions(data.body[app.id])));
+					Object.assign(app, appListHelper.filterPermissions(data.body[app.id])),
+				);
 				this.registerApps(apps);
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.log(e);
 			});
 	}
@@ -206,7 +209,7 @@ export default class AppList extends Component {
 			apps: Object.keys(metrics).length,
 			[config.name]: true,
 		};
-		Object.keys(metrics).forEach((item) => {
+		Object.keys(metrics).forEach(item => {
 			userInfo.calls += metrics[item].api_calls;
 			userInfo.records += metrics[item].records;
 		});
@@ -223,14 +226,14 @@ export default class AppList extends Component {
 	createApp(appData) {
 		appbaseService
 			.createApp(appData)
-			.then((data) => {
+			.then(data => {
 				this.setState({
 					createAppLoading: false,
 					clearInput: true,
 				});
 				appbaseService.pushUrl(`/dashboard/${appData.appname}`);
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					createAppError: e.responseJSON,
 					createAppLoading: false,
@@ -264,13 +267,15 @@ export default class AppList extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'apps': {
-				const apps = this.state.apps.filter(app =>
-						(this.state.showShared
+				const apps = this.state.apps.filter(
+					app =>
+						this.state.showShared
 							? true
-							: app.owner === appbaseService.userInfo.body.email));
+							: app.owner === appbaseService.userInfo.body.email,
+				);
 				// in order to figure out a way around localstorage update logic
 
-				generatedEle = apps.map((app) => {
+				generatedEle = apps.map(app => {
 					const appCount = {
 						action: this.calcPercentage(app, 'action'),
 						records: this.calcPercentage(app, 'records'),
@@ -324,12 +329,16 @@ export default class AppList extends Component {
 														) : (
 															<div>
 																<strong>
-																	{common.compressNumber(appCount.action.count)}
+																	{common.compressNumber(
+																		appCount.action.count,
+																	)}
 																</strong>&nbsp;/&nbsp;
 																<span>
-																	{common.compressNumber(billingService.planLimits[
+																	{common.compressNumber(
+																		billingService.planLimits[
 																			this.state.plan
-																		].action)}
+																		].action,
+																	)}
 																</span>
 															</div>
 														)}
@@ -362,12 +371,16 @@ export default class AppList extends Component {
 														) : (
 															<div>
 																<strong>
-																	{common.compressNumber(appCount.records.count)}
+																	{common.compressNumber(
+																		appCount.records.count,
+																	)}
 																</strong>&nbsp;/&nbsp;
 																<span>
-																	{common.compressNumber(billingService.planLimits[
+																	{common.compressNumber(
+																		billingService.planLimits[
 																			this.state.plan
-																		].records)}
+																		].records,
+																	)}
 																</span>
 															</div>
 														)}
@@ -433,7 +446,10 @@ export default class AppList extends Component {
 									toggleShared={this.toggleShared}
 								/>
 							</div>
-							<div style={{ width: 'calc(100% + 30px)' }} className="ad-list-apps row clearfix">
+							<div
+								style={{ width: 'calc(100% + 30px)' }}
+								className="ad-list-apps row clearfix"
+							>
 								{this.renderElement('apps')}
 							</div>
 						</div>

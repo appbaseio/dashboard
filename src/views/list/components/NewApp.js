@@ -123,10 +123,10 @@ export default class NewApp extends Component {
 			});
 			appbaseService
 				.isAppNameAvailable(appname)
-				.then((data) => {
+				.then(data => {
 					this.checkAppValidation(data);
 				})
-				.catch((e) => {
+				.catch(e => {
 					this.checkAppValidation(e);
 				});
 		}
@@ -284,7 +284,9 @@ export default class NewApp extends Component {
 														<li key={item}>
 															<a
 																onClick={() =>
-																	this.chooseCategory(this.categories[item],)
+																	this.chooseCategory(
+																		this.categories[item],
+																	)
 																}
 															>
 																{this.categories[item]}
@@ -300,7 +302,9 @@ export default class NewApp extends Component {
 							<div className="col-xs-12 p-0 ad-list-newapp-footer">
 								<button
 									className="ad-theme-btn primary"
-									{...common.isDisabled(!this.state.validate.value || this.props.createAppLoading,)}
+									{...common.isDisabled(
+										!this.state.validate.value || this.props.createAppLoading,
+									)}
 									onClick={this.handleSubmit}
 								>
 									{this.props.createAppLoading || this.state.createAppLoading ? (

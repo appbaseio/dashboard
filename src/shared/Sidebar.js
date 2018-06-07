@@ -108,7 +108,7 @@ export default class Sidebar extends Component {
 	}
 
 	componentWillMount() {
-		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
+		this.listenEvent = eventEmitter.addListener('activeApp', activeApp => {
 			if (!this.stopUpdate) {
 				this.setState(activeApp);
 			}
@@ -137,7 +137,9 @@ export default class Sidebar extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'links': {
-				const filteredList = this.links.filter(item => this.config.appDashboard.indexOf(item.name) > -1 );
+				const filteredList = this.links.filter(
+					item => this.config.appDashboard.indexOf(item.name) > -1,
+				);
 				generatedEle = filteredList.map((item, index) => {
 					const cx = classNames({
 						active: this.props.currentView === item.name,
@@ -178,7 +180,7 @@ export default class Sidebar extends Component {
 			<aside className="ad-detail-sidebar">
 				<ul
 					className="ad-detail-sidebar-container"
-					ref={(aside) => {
+					ref={aside => {
 						this.sidebarRef = aside;
 					}}
 				>

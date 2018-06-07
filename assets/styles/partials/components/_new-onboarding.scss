@@ -1,4 +1,4 @@
-$left-color: #232e44;
+$left-color: hsl(220, 32%, 20%);
 $right-color: #c7f4ff;
 
 .onboarding-wrapper {
@@ -7,6 +7,10 @@ $right-color: #c7f4ff;
 	position: relative;
 	color: #fff;
 	font-family: 'Open Sans', sans-serif;
+
+	a.dashed {
+		border-bottom: 1px dashed $right-color;
+	}
 
 	.skip-link {
 		color: #424242;

@@ -46,7 +46,7 @@ export default class AppPage extends Component {
 		}
 	}
 	getAllApps() {
-		appbaseService.allApps(true).then((data) => {
+		appbaseService.allApps(true).then(data => {
 			const app = data.body.filter(app => this.props.pageInfo.appName === app.appname);
 			this.setState({
 				showChild: app && app.length ? true : null,
@@ -56,7 +56,8 @@ export default class AppPage extends Component {
 	render() {
 		this.isAllowed();
 		const childrenWithProps = React.Children.map(this.props.children, child =>
-			React.cloneElement(child, {}),);
+			React.cloneElement(child, {}),
+		);
 		return (
 			<div className="ad-detail row">
 				<Sidebar

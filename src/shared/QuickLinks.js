@@ -3,22 +3,33 @@ import React from 'react';
 export const AppbaseQuickLinks = () => (
 	<ul className="quick-links-list" style={{ fontSize: '1.1rem' }}>
 		<li>
-			<i className="fas fa-graduation-cap" />
-			&nbsp;
-			<a href="/tutorial">Tutorial</a>
-		</li>
-		<li>
 			<i className="fas fa-external-link-alt" />
-			&nbsp;
-			<a href="http://docs.appbase.io/javascript/quickstart.html" target="_blank">
+			<a
+				href="http://docs.appbase.io/javascript/quickstart.html"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				JS Quick Start
 			</a>
 		</li>
 		<li>
 			<i className="fas fa-external-link-alt" />
-			&nbsp;
-			<a href="http://docs.appbase.io/rest-quickstart.html" target="_blank">
+			<a
+				href="http://docs.appbase.io/rest-quickstart.html"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
 				REST Quick Start
+			</a>
+		</li>
+		<li>
+			<i className="fas fa-external-link-alt" />
+			<a
+				href="https://docs.appbase.io/interactive/javascript.html"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Interactive Examples
 			</a>
 		</li>
 	</ul>

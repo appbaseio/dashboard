@@ -7,22 +7,22 @@ import appbaseHelpers from '../utils/appbaseHelpers';
 const jsonBlock = `
 <div style="background: #DCF8FF; overflow:auto;width:auto;padding:1rem;"><pre style="margin: 0; line-height: 180%; border: 0; background: transparent; border-radius: 0;">[
 	{
-		<span style="color: #4070a0">&quot;genres&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Comedy&quot;</span>,
-		<span style="color: #4070a0">&quot;original_language&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;English&quot;</span>,
-		<span style="color: #4070a0">&quot;original_title&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions&quot;</span>,
-		<span style="color: #4070a0">&quot;overview&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions Stuart, Kevin and Bob are recruited by Scarlet Overkill, a super-villain who, alongside her inventor husband Herb, hatches a plot to take over the world.&quot;</span>,
-		<span style="color: #4070a0">&quot;poster_path&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;/q0R4crx2SehcEEQEkYObktdeFy.jpg&quot;</span>,
-		<span style="color: #4070a0">&quot;release_year&quot;</span><span style="color: #666666">:</span> <span style="color: #40a070">2015</span>,
-		<span style="color: #4070a0">&quot;tagline&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Before Gru, they had a history of bad bosses&quot;</span>
+		<span style="font-weight: bold; color: #4070a0">&quot;genres&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Comedy&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;original_language&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;English&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;original_title&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;overview&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Minions Stuart, Kevin and Bob are recruited by Scarlet Overkill, a super-villain who, alongside her inventor husband Herb, hatches a plot to take over the world.&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;poster_path&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;/q0R4crx2SehcEEQEkYObktdeFy.jpg&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;release_year&quot;</span><span style="color: #666666">:</span> <span style="color: #40a070">2015</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;tagline&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Before Gru, they had a history of bad bosses&quot;</span>
 	},
 	{
-		<span style="color: #4070a0">&quot;genres&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Action&quot;</span>,
-		<span style="color: #4070a0">&quot;original_language&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;English&quot;</span>,
-		<span style="color: #4070a0">&quot;original_title&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Wonder Woman&quot;</span>,
-		<span style="color: #4070a0">&quot;overview&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;An Amazon princess comes to the world of Man to become the greatest of the female superheroes.&quot;</span>,
-		<span style="color: #4070a0">&quot;poster_path&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;/imekS7f1OuHyUP2LAiTEM0zBzUz.jpg&quot;</span>,
-		<span style="color: #4070a0">&quot;release_year&quot;</span><span style="color: #666666">:</span> <span style="color: #40a070">2017</span>,
-		<span style="color: #4070a0">&quot;tagline&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Power. Grace. Wisdom. Wonder.&quot;</span>
+		<span style="font-weight: bold; color: #4070a0">&quot;genres&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Action&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;original_language&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;English&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;original_title&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Wonder Woman&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;overview&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;An Amazon princess comes to the world of Man to become the greatest of the female superheroes.&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;poster_path&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;/imekS7f1OuHyUP2LAiTEM0zBzUz.jpg&quot;</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;release_year&quot;</span><span style="color: #666666">:</span> <span style="color: #40a070">2017</span>,
+		<span style="font-weight: bold; color: #4070a0">&quot;tagline&quot;</span><span style="color: #666666">:</span> <span style="color: #4070a0">&quot;Power. Grace. Wisdom. Wonder.&quot;</span>
 	},
 	...
 ]
@@ -42,7 +42,7 @@ export default class Introduction extends Component {
 		};
 	}
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -83,8 +83,11 @@ export default class Introduction extends Component {
 			.then(() => {
 				appbaseHelpers.createURL(this.setURL);
 			})
-			.catch((e) => {
-				if (e._bodyInit === '{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}') {
+			.catch(e => {
+				if (
+					e._bodyInit ===
+					'{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}'
+				) {
 					appbaseHelpers.createURL(this.setURL);
 				}
 				console.log('@error-at-importing-data', e);
@@ -111,7 +114,7 @@ export default class Introduction extends Component {
 		</div>
 	);
 
-	setURL = (url) => {
+	setURL = url => {
 		this.setState({
 			url,
 		});
@@ -147,8 +150,8 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									Dashboard offers a GUI for importing JSON/CSV files when creating a
-									new app.
+									Dashboard offers a GUI for importing JSON/CSV files when
+									creating a new app.
 								</p>
 							</div>
 							<div>
@@ -160,8 +163,16 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									<a href="https://github.com/appbaseio/abc" target="_blank" rel="noopener noreferrer">CLI</a> syncs data from popular databases like MongoDB,
-									MySQL, PostgreSQL, MSSQL, JSON, CSV.
+									<a
+										className="dashed"
+										href="https://github.com/appbaseio/abc"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										CLI
+									</a>{' '}
+									syncs data from popular database and file formats like MongoDB,
+									MySQL, PostgreSQL, SQLServer, Kafka, JSON and CSV.
 								</p>
 							</div>
 							<div>
@@ -173,8 +184,16 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									<a href="https://rest.appbase.io" target="_blank" rel="noopener noreferrer">REST based APIs</a> for indexing data in a programming language of
-									your choice.
+									<a
+										className="dashed"
+										href="https://rest.appbase.io"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										REST based APIs
+									</a>{' '}
+									className="dashed"enable indexing data in a programming language
+									of your choice.
 								</p>
 							</div>
 						</div>
@@ -204,11 +223,11 @@ export default class Introduction extends Component {
 					<div className="content">
 						<header className="vcenter">
 							<h2>Import data into your app</h2>
-							{
-								this.state.url
-									? (<p>Explore your imported dataset for the movies store.</p>)
-									: (<p>We will import a dataset of 500 movies obtained from TMDB.</p>)
-							}
+							{this.state.url ? (
+								<p>Explore your imported dataset for the movies store.</p>
+							) : (
+								<p>We will import a dataset of 500 movies obtained from TMDB.</p>
+							)}
 						</header>
 
 						{this.state.url ? null : (

@@ -10,30 +10,45 @@ import * as helper from './shared/helper';
 import UserInfo from './shared/UserInfo';
 import config from './config';
 
-const AppList = AsyncComponent(() => import('./views/list')
-	.then(module => module.default), { name: 'AppList' });
-const Dashboard = AsyncComponent(() => import('./views/dashboard')
-	.then(module => module.default), { name: 'Dashboard' });
-const Credentials = AsyncComponent(() => import('./views/credentials')
-	.then(module => module.default), { name: 'Credentials' });
-const Team = AsyncComponent(() => import('./views/team')
-	.then(module => module.default), { name: 'Team' });
-const Onboarding = AsyncComponent(() => import('./views/onboarding')
-	.then(module => module.default), { name: 'Onboarding' });
-const OnboardingEndScreen = AsyncComponent(() => import('./views/onboarding/EndScreen')
-	.then(module => module.default), { name: 'OnboardingEndScreen' });
-const Login = AsyncComponent(() => import('./views/login')
-	.then(module => module.default), { name: 'Login' });
-const Signup = AsyncComponent(() => import('./views/signup')
-	.then(module => module.default), { name: 'Signup' });
-const Browser = AsyncComponent(() => import('./views/browser')
-	.then(module => module.default), { name: 'Browser' });
-const Mirage = AsyncComponent(() => import('./views/mirage')
-	.then(module => module.default), { name: 'Mirage' });
-const Billing = AsyncComponent(() => import('./views/billing')
-	.then(module => module.default), { name: 'Billing' });
-const Importer = AsyncComponent(() => import('./views/importer')
-	.then(module => module.default), { name: 'Importer' });
+const AppList = AsyncComponent(() => import('./views/list').then(module => module.default), {
+	name: 'AppList',
+});
+const Dashboard = AsyncComponent(() => import('./views/dashboard').then(module => module.default), {
+	name: 'Dashboard',
+});
+const Credentials = AsyncComponent(
+	() => import('./views/credentials').then(module => module.default),
+	{ name: 'Credentials' },
+);
+const Team = AsyncComponent(() => import('./views/team').then(module => module.default), {
+	name: 'Team',
+});
+const Onboarding = AsyncComponent(
+	() => import('./views/onboarding').then(module => module.default),
+	{ name: 'Onboarding' },
+);
+const OnboardingEndScreen = AsyncComponent(
+	() => import('./views/onboarding/EndScreen').then(module => module.default),
+	{ name: 'OnboardingEndScreen' },
+);
+const Login = AsyncComponent(() => import('./views/login').then(module => module.default), {
+	name: 'Login',
+});
+const Signup = AsyncComponent(() => import('./views/signup').then(module => module.default), {
+	name: 'Signup',
+});
+const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
+	name: 'Browser',
+});
+const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
+	name: 'Mirage',
+});
+const Billing = AsyncComponent(() => import('./views/billing').then(module => module.default), {
+	name: 'Billing',
+});
+const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
+	name: 'Importer',
+});
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
@@ -119,15 +134,14 @@ class MainApp extends React.Component {
 					/>
 					<Route
 						path="signup"
-						component={
-							() =>
-								(<Signup
-									showModal={this.state.showModal}
-									close={this.close}
-									open={this.open}
-									login={this.login}
-								/>)
-						}
+						component={() => (
+							<Signup
+								showModal={this.state.showModal}
+								close={this.close}
+								open={this.open}
+								login={this.login}
+							/>
+						)}
 					/>
 					<Route path="profile" component={UserInfo} />
 					<Route path="apps" component={AppList} />
