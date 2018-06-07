@@ -17,7 +17,7 @@ export default () => (
 								srcSet="/assets/images/onboarding/finish-screen/Trophy.png 245w, /assets/images/onboarding/finish-screen/Trophy@2x.png 490w"
 								alt="Trophy"
 							/>
-							<p>You{"'"}ve finished the tutorial</p>
+							<p>You{"'"}ve finished the tutorial.</p>
 						</div>
 
 						<div className="col">
@@ -31,12 +31,11 @@ export default () => (
 							/>
 							<h3>Learn how to build a web app</h3>
 							<p>
-								A React UI components library for building Airbnb / Yelp
-								like search interfaces.
+								appbase.io UI components for building data-driven web apps.
 							</p>
 							<a
 								className="button"
-								href="https://opensource.appbase.io/reactivesearch"
+								href="https://opensource.appbase.io/reactive-manual/getting-started/reactivesearch.html"
 							>
 								Get Started
 							</a>
@@ -63,7 +62,7 @@ export default () => (
 							margin: '20px auto',
 						}}
 					>
-						Browse your app or create a new one via the main dashboard.
+						Create an app or browse your current apps via the dashboard.
 					</p>
 					<a className="button" href="/">
 						Go to Dashboard
@@ -79,12 +78,11 @@ export default () => (
 						alt="Reactive search"
 					/>
 					<p>
-						A React UI components library for building Airbnb / Yelp like search
-						interfaces.
+						appbase.io UI components for building mobile apps.
 					</p>
 					<a
 						className="button"
-						href="https://opensource.appbase.io/reactivesearch/native"
+						href="https://opensource.appbase.io/reactive-manual/native/getting-started/reactivesearch.html"
 					>
 						Learn More
 					</a>
@@ -96,10 +94,9 @@ export default () => (
 						alt="Reactive maps"
 					/>
 					<p>
-						A React UI components library for building realtime geolocation apps
-						with google maps.
+						appbase.io UI components for building realtime geolocation apps.
 					</p>
-					<a className="button" href="https://opensource.appbase.io/reactivemaps">
+					<a className="button" href="https://opensource.appbase.io/reactive-manual/getting-started/reactivemaps.html">
 						Learn More
 					</a>
 				</div>
@@ -112,10 +109,10 @@ export default () => (
 						alt="API"
 					/>
 					<p>
-						Get started with the REST APIs for indexing, querying and streaming
+						Get started with the APIs for indexing, querying and streaming
 						data with appbase.
 					</p>
-					<a className="button" href="https://docs.appbase.io">
+					<a className="button" href="https://docs.appbase.io/interactive/javascript.html">
 						Learn More
 					</a>
 				</div>
