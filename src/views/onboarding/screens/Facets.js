@@ -11,11 +11,11 @@ export default class Search extends Component {
 		selectedOption: this.props.facetFields.map(item => ({ label: item, value: item })) || [],
 	};
 
-	handleChange = selectedOption => {
+	handleChange = (selectedOption) => {
 		this.setState({ selectedOption });
 	};
 
-	setError = e => {
+	setError = (e) => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -29,7 +29,7 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = selectedOption => {
+	handleChange = (selectedOption) => {
 		if (!selectedOption.length) {
 			this.setError('Aggregation fields cannot be empty.');
 		} else {
@@ -42,14 +42,12 @@ export default class Search extends Component {
 		}
 	};
 
-	renderSearchApp = () => {
-		return (
+	renderSearchApp = () => (
 			<div>
 				{this.renderFacetInput(true)}
 				<SearchApp fields={this.props.searchFields} facets={this.props.facetFields} />
 			</div>
 		);
-	};
 
 	renderFacetInput = horizontal => (
 		<div className={`search-field-container ${horizontal ? 'full-row' : ''}`}>
@@ -63,7 +61,7 @@ export default class Search extends Component {
 					value={this.state.selectedOption}
 					onChange={this.handleChange}
 					placeholder="Select aggregation fields"
-					multi={true}
+					multi
 					clearable={false}
 					options={[
 						{ value: 'release_year', label: 'release_year' },
@@ -88,21 +86,27 @@ export default class Search extends Component {
 					<div className="content">
 						<header>
 							<h2>Set aggregation fields</h2>
+							<p>
+								Based on how each field will be used in your app UI, you can set them as
+								searchable, or as aggregation friendly, or as some other type.
+							</p>
 						</header>
-						<p>
-							Based on how each field will be used in your app UI, you can set them as
-							searchable, or as aggregation friendly, or as some other type.
-						</p>
 						{this.props.facetFields.length ? null : this.renderFacetInput()}
 					</div>
 				</div>
 
 				{this.props.facetFields.length ? this.renderSearchApp() : null}
 
+				{/* <Footer
+					nextScreen={this.props.nextScreen}
+					previousScreen={this.props.previousScreen}
+					disabled={!this.props.facetFields.length}
+				/> */}
 				<Footer
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					disabled={!this.props.facetFields.length}
+					label="Finish"
 				/>
 			</div>
 		);

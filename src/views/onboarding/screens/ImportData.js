@@ -84,6 +84,9 @@ export default class Introduction extends Component {
 				appbaseHelpers.createURL(this.setURL);
 			})
 			.catch((e) => {
+				if (e.error.reason === 'request body is required' && e.error.type === 'parse_exception') {
+					appbaseHelpers.createURL(this.setURL);
+				}
 				console.log('error', e);
 			});
 	};
@@ -142,7 +145,7 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									Dashboard offers a GUI for import JSON/CSV files when creating a
+									Dashboard offers a GUI for importing JSON/CSV files when creating a
 									new app.
 								</p>
 							</div>
@@ -155,7 +158,7 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									A CLI for syncing data from popular databases like MongoDB,
+									<a href="https://github.com/appbaseio/abc" target="_blank" rel="noopener noreferrer">CLI</a> syncs data from popular databases like MongoDB,
 									MySQL, PostgreSQL, MSSQL, JSON, CSV.
 								</p>
 							</div>
@@ -168,7 +171,7 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									REST based APIs for indexing the data in programming language of
+									<a href="https://rest.appbase.io" target="_blank" rel="noopener noreferrer">REST based APIs</a> for indexing data in a programming language of
 									your choice.
 								</p>
 							</div>
@@ -199,9 +202,11 @@ export default class Introduction extends Component {
 					<div className="content">
 						<header className="vcenter">
 							<h2>Import data into your app</h2>
-							{this.state.url ? null : (
-								<p>We will import a dataset of 500 movies obtained from TMDB</p>
-							)}
+							{
+								this.state.url
+									? (<p>Explore your imported dataset for the movies store.</p>)
+									: (<p>We will import a dataset of 500 movies obtained from TMDB.</p>)
+							}
 						</header>
 
 						{this.state.url ? null : (
@@ -211,7 +216,6 @@ export default class Introduction extends Component {
 				</div>
 				{this.state.url ? (
 					<div>
-						<p>Explore your imported dataset for the movies store</p>
 						<iframe
 							src={`https://opensource.appbase.io/dejavu/live/#?app=${
 								this.state.url

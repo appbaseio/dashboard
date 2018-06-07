@@ -82,14 +82,15 @@
 			font-size: 22px;
 			letter-spacing: 0.01em;
 			margin-top: 10px;
-			font-family: $font-regular; font-weight: 700;
+			font-family: $font-regular; font-weight: 600;
 			color: $n-navy;
 			&.name {
 				font-size: 2.5rem;
 			}
 			&.quick-links {
 				font-size: 1.6rem;
-				font-family: $font-regular; font-weight: 700;
+				margin-bottom: 20px;
+				font-family: $font-regular; font-weight: 600;
 			}
 		}
 		ul {
@@ -116,7 +117,6 @@
 				color: $external-link-color;
 				text-decoration: none;
 				font-family: $font-regular; font-weight: 600;
-				border-bottom: 1px solid $external-link-color;
 			}
 		}
 	}
@@ -130,7 +130,7 @@
 			padding: 5px 10px;
 			border-radius: 3px;
 			font-size: 1rem;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular; font-weight: 400;
 			color: $n-navy;
 			background: white;
 			border: 1px solid #d9d8e4;

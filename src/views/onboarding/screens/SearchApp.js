@@ -20,7 +20,9 @@ const onData = res => ({
 				dangerouslySetInnerHTML={{ __html: res.tagline }}
 			/>
 			<p
-				style={{ color: '#888', margin: '8px 0', fontSize: '13px', lineHeight: '18px' }}
+				style={{
+ color: '#888', margin: '8px 0', fontSize: '13px', lineHeight: '18px',
+}}
 				dangerouslySetInnerHTML={{ __html: res.overview }}
 			/>
 			<div>{res.genres ? <span className="tag">{res.genres}</span> : null}</div>
@@ -28,9 +30,9 @@ const onData = res => ({
 	),
 });
 
-const renderFilters = fields => {
+const renderFilters = (fields) => {
 	if (fields && fields.length) {
-		return fields.map(field => {
+		return fields.map((field) => {
 			switch (field) {
 				case 'genres': {
 					return (
@@ -91,21 +93,24 @@ const renderFilters = fields => {
 
 const getFields = (fields, suffix) => {
 	let newFields = [];
-	fields.forEach(item => {
-		suffix.forEach(str => {
+	fields.forEach((item) => {
+		suffix.forEach((str) => {
 			newFields = [...newFields, `${item}${str}`];
 		});
 	});
 	return newFields;
 };
 
-const getWeights = fields => {
+const getWeights = (fields) => {
 	const weights = {
 		original_title: 10,
-		'original_title.search': 10,
+		'original_title.raw': 10,
+		'original_title.search': 2,
 		tagline: 5,
-		'tagline.search': 5,
+		'tagline.raw': 5,
+		'tagline.search': 1,
 		overview: 1,
+		'overview.raw': 1,
 		'overview.search': 1,
 	};
 
@@ -152,7 +157,7 @@ export default class SearchApp extends Component {
 						placeholder="Search movies..."
 						autosuggest={false}
 						filterLabel="Search"
-						weights={getWeights(fields)}
+						fieldWeights={getWeights(fields)}
 						highlight
 						style={{
 							maxWidth: '400px',

@@ -11,7 +11,7 @@ export default class Search extends Component {
 		selectedOption: this.props.searchFields.map(item => ({ label: item, value: item })) || [],
 	};
 
-	setError = e => {
+	setError = (e) => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -25,7 +25,7 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = selectedOption => {
+	handleChange = (selectedOption) => {
 		if (!selectedOption.length) {
 			this.setError('Search fields cannot be empty.');
 		} else {
@@ -38,14 +38,12 @@ export default class Search extends Component {
 		}
 	};
 
-	renderSearchApp = () => {
-		return (
+	renderSearchApp = () => (
 			<div>
 				{this.renderSearchInput(true)}
 				<SearchApp fields={this.props.searchFields} />
 			</div>
 		);
-	};
 
 	renderSearchInput = horizontal => (
 		<div
@@ -53,8 +51,8 @@ export default class Search extends Component {
 			className={`search-field-container ${horizontal ? 'full-row' : ''}`}
 		>
 			<div>
-				<h3>Searchable Fields</h3>
-				<p>Select the list of attributes you want to search in.</p>
+				<h3>Set Searchable Fields</h3>
+				<p>Select the fields you want to search on. They will be updated dynamically in the UI.</p>
 			</div>
 			<div className="input-wrapper">
 				<Select
@@ -62,7 +60,7 @@ export default class Search extends Component {
 					value={this.state.selectedOption}
 					onChange={this.handleChange}
 					placeholder="Select fields"
-					multi={true}
+					multi
 					clearable={false}
 					options={[
 						{ value: 'original_title', label: 'original_title' },
@@ -87,15 +85,15 @@ export default class Search extends Component {
 					<div className="content">
 						<header>
 							<h2>Set searchable fields</h2>
+							<p>
+								All fields in appbase.io are indexed to allow for a blazing fast
+								querying performance. However, all fields aren{"'"}t created equal.
+							</p>
+							<p>
+								Fields that are searchable require a specific n-gram mapping to provide
+								an auto-complete like behavior.
+							</p>
 						</header>
-						<p>
-							All fields in appbase.io are indexed to allow for a blazing fast
-							querying performance. However, all fields aren't created equal.
-						</p>
-						<p>
-							Fields that are searchable require a specific n-gram mapping to provide
-							an auto-complete like behavior.
-						</p>
 						<h3>We will start by letting you set certain fields as Searchable.</h3>
 						{this.props.searchFields.length ? null : this.renderSearchInput()}
 					</div>
