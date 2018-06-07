@@ -1,4 +1,4 @@
-#appbase-dashboard {
+#root {
 	height: 100%;
 }
 
@@ -11,10 +11,10 @@
 
 #dashboard-container {
 	padding: 100px 0 0 0;
-	position: absolute;
-	right: 0;
-	top: 0;
 	overflow: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
 	height: 100%;
 	width: 100%;
 	background: rgba(237, 241, 242, 0.2);
@@ -23,6 +23,5 @@
 		.page-title {
 			margin: 0 0 5px 0;
 		}
-		.page-description {}
 	}
 }

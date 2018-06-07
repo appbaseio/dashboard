@@ -1,13 +1,12 @@
-# Appbase.io Universal Dashboard
+# appbase.io dashboard
 
-A universal dashboard app for Appbase.io, Reactive Maps, Reactive Search, et al.
+### Development Setup
 
-### For development
+Install [sass](https://sass-lang.com/install) if you don't have it already, and then:
 
-``` javascript    
-npm install
-bower install
-npm start
-```    
+```bash
+yarn
+yarn start
+```
 
-visit http://localhost:1357
+Visit http://localhost:1357

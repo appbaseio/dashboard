@@ -10,13 +10,13 @@
 	.user-info-header {
 		background: #fff;
 		padding: 1.5rem 0;
-		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 	}
 	.title {
 		font-size: 2.5rem;
 		letter-spacing: 0.01em;
 		margin-top: 10px;
-		font-family: $font-bold;
+		font-family: $font-regular; font-weight: 700;
 	}
 	.sub-title {
 		font-size: 1.2rem;
@@ -38,14 +38,14 @@
 	.dropdown-toggle {
 		height: 35px;
 		width: 350px;
-		border: 1px solid #D9D8E4;
+		border: 1px solid #d9d8e4;
 		border-radius: 3px;
 		padding: 6px 10px 4px;
 		box-shadow: none;
 		margin: 3px;
 		&:focus {
 			border-color: $external-link-color;
-			box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+			box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 		}
 	}
 	.dropdown-toggle {
@@ -70,7 +70,7 @@
 		padding: 15px 15px 25px;
 		font-size: 14px;
 		margin: 0 0 15px 0;
-		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 		.flexcontainer {
 			display: flex;
 			align-items: center;
@@ -82,14 +82,14 @@
 			font-size: 22px;
 			letter-spacing: 0.01em;
 			margin-top: 10px;
-			font-family: $font-bold;
+			font-family: $font-regular; font-weight: 700;
 			color: $n-navy;
 			&.name {
 				font-size: 2.5rem;
 			}
 			&.quick-links {
 				font-size: 1.6rem;
-				font-family: $font-bold;
+				font-family: $font-regular; font-weight: 700;
 			}
 		}
 		ul {
@@ -106,11 +106,8 @@
 		}
 		.quick-links-list {
 			li {
-				margin: 2px 0;
+				margin: 8px 0;
 				color: $external-link-color;
-				&:first-child {
-					margin-left: 22px;
-				}
 			}
 			svg {
 				margin-right: 5px;
@@ -118,7 +115,7 @@
 			a {
 				color: $external-link-color;
 				text-decoration: none;
-				font-family: $font-black;
+				font-family: $font-regular; font-weight: 600;
 				border-bottom: 1px solid $external-link-color;
 			}
 		}
@@ -133,15 +130,15 @@
 			padding: 5px 10px;
 			border-radius: 3px;
 			font-size: 1rem;
-			font-family: $font-black;
+			font-family: $font-regular; font-weight: 600;
 			color: $n-navy;
 			background: white;
-			border: 1px solid #D9D8E4;
+			border: 1px solid #d9d8e4;
 			box-shadow: none;
 		}
 		.open #sortby-menu {
 			border-color: $external-link-color;
-			box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+			box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 		}
 		@media screen and (max-width: 768px) {
 			max-width: 500px;
@@ -158,7 +155,7 @@
 			text-align: left;
 			color: #666;
 			padding-top: 10px;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 		}
 		input {
 			padding: 6px 10px 4px;
@@ -169,14 +166,14 @@
 			background-color: transparent;
 			border-radius: 0;
 			&:focus {
-				box-shadow: 0 0.3125em 1.25em 0 rgba(46, 61, 73, .06);
+				box-shadow: 0 0.3125em 1.25em 0 rgba(46, 61, 73, 0.06);
 				background-color: #fafafa;
 			}
 		}
 		button {
 			text-transform: uppercase;
 			font-size: 14px;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			letter-spacing: 0.05em;
 			padding: 8px;
 			height: 46px;
@@ -190,9 +187,9 @@
 		height: 100%;
 		overflow: hidden;
 		background: #fff;
-		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
-		-webkit-transition: all .3s ease;
-		transition: all .3s ease;
+		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
+		-webkit-transition: all 0.3s ease;
+		transition: all 0.3s ease;
 		.ad-list-app-content {
 			z-index: 2;
 			position: relative;
@@ -202,7 +199,7 @@
 			z-index: 1;
 			position: absolute;
 			font-size: 100px;
-			opacity: .5;
+			opacity: 0.5;
 			top: -24px;
 			left: -24px;
 		}
@@ -226,7 +223,7 @@
 					letter-spacing: 0.02em;
 					color: $n-navy;
 					font-size: 1.2rem;
-					font-family: $font-semi-bold;
+					font-family: $font-regular; font-weight: 600;
 					max-height: 24px;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -254,8 +251,8 @@
 			right: -33px;
 			background-color: rgba(228, 239, 239, 0.33);
 			text-align: center;
-			-webkit-transition: all .3s ease;
-			transition: all .3s ease;
+			-webkit-transition: all 0.3s ease;
+			transition: all 0.3s ease;
 			z-index: 3;
 			font-size: 1rem;
 			display: flex;
@@ -303,13 +300,13 @@
 		input {
 			height: 35px;
 			width: 350px;
-			border: 1px solid #D9D8E4;
+			border: 1px solid #d9d8e4;
 			border-radius: 3px;
 			margin-right: 25px;
 			box-shadow: none;
 			&:focus {
 				border-color: $external-link-color;
-				box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+				box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 			}
 		}
 		@media screen and (max-width: 768px) {
@@ -330,7 +327,7 @@
 }
 
 .ad-metrics-summary {
-	> [class*="col-"] {
+	> [class*='col-'] {
 		padding-right: 0;
 	}
 	.progress-container {
@@ -354,7 +351,7 @@
 			padding: 3px 0 0 0;
 		}
 		.sub-title {
-			font-family: $font-black;
+			font-family: $font-regular; font-weight: 600;
 			color: $n-navy;
 			font-size: 1rem;
 			letter-spacing: 0.02em;
@@ -371,7 +368,7 @@
 	color: #eee;
 }
 .ad-detail-page-body .ad-metrics-summary {
-	> [class*="col-"] {
+	> [class*='col-'] {
 		padding-right: 0;
 	}
 	.progress-container {
@@ -420,23 +417,23 @@
 	}
 	.ad-list-newapp-form {
 		label {
-			font-family: $font-light;
+			font-family: $font-regular; font-weight: 300;
 		}
 	}
 	#category-menu {
 		padding: 5px 10px;
 		border-radius: 3px;
 		font-size: 1rem;
-		font-family: $font-black;
+		font-family: $font-regular; font-weight: 600;
 		color: $n-navy;
 		background: white;
-		border: 1px solid #D9D8E4;
+		border: 1px solid #d9d8e4;
 		box-shadow: none;
 		text-transform: capitalize;
 	}
 	.open #category-menu {
 		border-color: $external-link-color;
-		box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+		box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 	}
 	.ad-dropdown-menu {
 		margin-top: 10px;

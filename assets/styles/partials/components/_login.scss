@@ -9,31 +9,31 @@
 		color: #888;
 		margin: 0;
 		font-size: 3.5em;
-		font-family: $font-light;
+		font-family: $font-regular; font-weight: 300;
 	}
 	h2 {
 		padding: 5vh 10vw 10px 10vw;
 		color: $navy;
 		margin: 0;
 		font-size: 2.5rem;
-		font-family: $font-bold;
+		font-family: $font-regular; font-weight: 700;
 	}
 	p {
-		font-family: $font-black;
+		font-family: $font-regular; font-weight: 600;
 		font-size: 1.2rem;
 		color: $navy;
 		margin: 20px auto;
 	}
 	.mt25 {
 		margin-top: 25px;
-		font-family: $font-light;
+		font-family: $font-regular; font-weight: 300;
 		color: $navy;
 	}
 }
 
 #login-btn-screen {
 	.modal-btn {
-		box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 		font-size: 1rem;
 		border: none;
 		border-radius: 3px;
@@ -48,7 +48,7 @@
 			margin-right: 20px;
 		}
 		&:hover {
-			box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+			box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 		}
 		&.github-btn {
 			background: $github-color;
@@ -62,6 +62,9 @@
 				background: lighten($google-color, 5%);
 			}
 		}
+	}
+	i {
+		margin-right: 8px;
 	}
 	.contact-link {
 		color: $navy;
@@ -85,11 +88,11 @@
 	.modal-content {
 		border-radius: 4px;
 		border: none;
-		font-family: $font-light;
+		font-family: $font-regular; font-weight: 300;
 		color: $login-color;
 		background: $login-bg;
 		.modal-header {
-			font-family: $font-light;
+			font-family: $font-regular; font-weight: 300;
 			font-size: 18px;
 			background-color: inherit;
 			border: 0;
@@ -99,7 +102,7 @@
 			.modal-title {
 				color: $navy;
 				font-size: 1.2rem;
-				font-family: $font-semi-bold;
+				font-family: $font-regular; font-weight: 600;
 				text-transform: inherit;
 				text-align: center;
 				padding-top: 0;
@@ -118,7 +121,7 @@
 		}
 		.mt25 {
 			margin-top: 25px;
-			font-family: $font-light;
+			font-family: $font-regular; font-weight: 300;
 			color: $navy;
 		}
 		.close {
@@ -128,10 +131,10 @@
 			width: 25px;
 			height: 25px;
 			font-size: 20px;
-			font-family: $font-light;
+			font-family: $font-regular; font-weight: 300;
 		}
 		.modal-btn {
-			box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+			box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 			font-size: 1rem;
 			border: none;
 			border-radius: 3px;
@@ -143,7 +146,7 @@
 				margin-right: 20px;
 			}
 			&:hover {
-				box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+				box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 			}
 			&.github-btn {
 				background: $github-color;

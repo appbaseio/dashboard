@@ -83,7 +83,7 @@
 		}
 		.ad-theme-btn {
 			font-size: 1rem;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			letter-spacing: 1px;
 		}
 		.ad-confirm-btn {
@@ -91,11 +91,11 @@
 			color: $alert-text;
 			transition: all 0.3s ease-in-out;
 			border-radius: 3px;
-			box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+			box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 			&:hover {
 				color: $alert-text;
 				background: lighten($alert-color, 5%);
-				box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+				box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 			}
 		}
 	}

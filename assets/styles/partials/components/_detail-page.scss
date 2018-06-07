@@ -15,7 +15,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 		@media all and (max-width: 768px) {
 			flex-direction: column;
 			align-items: flex-start;
@@ -31,7 +31,7 @@
 			font-size: 0.9rem;
 			letter-spacing: 1px;
 			text-decoration: none;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			padding: 15px 30px;
 			margin-right: 120px;
 			@media all and (max-width: 1200px) {
@@ -41,7 +41,7 @@
 		.ad-detail-page-title {
 			font-size: 2.5rem;
 			line-height: 2.2rem;
-			font-family: $font-bold;
+			font-family: $font-regular; font-weight: 700;
 			margin: 0;
 			display: inline-block;
 		}
@@ -76,7 +76,7 @@
 		@media all and (max-width: 1200px) {
 			padding-right: 50px;
 		}
-		>[class*="col-"] {
+		> [class*='col-'] {
 			padding-left: 0;
 			&:last-child {
 				padding-right: 0;
@@ -89,13 +89,13 @@
 			background: #fff;
 			margin-bottom: 20px;
 			border: 1px solid transparent;
-			box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+			box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 			.ad-detail-page-body-card-title {
 				background-color: #fff;
 				color: $n-navy;
 				padding: 10px 15px;
 				font-size: 1.3rem;
-				font-family: $font-bold;
+				font-family: $font-regular; font-weight: 700;
 				margin-bottom: 20px;
 				&.with-border {
 					border-bottom: 1px solid darken($dark-grey, 10%);
@@ -107,18 +107,18 @@
 				}
 				.charts-api-calls {
 					font-size: 1rem;
-					font-family: $font-black;
+					font-family: $font-regular; font-weight: 600;
 					.dropdown-toggle {
 						text-transform: capitalize;
 						padding: 5px 12px;
 						background: white;
-						border: 1px solid #D9D8E4;
+						border: 1px solid #d9d8e4;
 						border-radius: 3px;
 					}
 				}
 				.open #sortby-menu {
 					border-color: $external-link-color;
-					box-shadow: 0 0 0 3px rgba(50, 107, 220, .25);
+					box-shadow: 0 0 0 3px rgba(50, 107, 220, 0.25);
 				}
 			}
 		}
@@ -158,12 +158,12 @@
 					color: $alert-text;
 					background: $alert-color;
 					transition: all 0.3s ease-in-out;
-					box-shadow: 0 3px 3px 0 rgba(0,0,0,0.1);
+					box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);
 					padding-left: 30px;
 					padding-right: 30px;
 					&:hover {
 						background: lighten($alert-color, 5%);
-						box-shadow: 0 5px 5px 0 rgba(0,0,0,0.1);
+						box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
 					}
 				}
 				@media all and (max-width: 1200px) {
@@ -176,7 +176,7 @@
 			label {
 				padding-right: 10px;
 				font-size: 1.5rem;
-				font-family: $font-light;
+				font-family: $font-regular; font-weight: 300;
 			}
 			#ownershipEmail {
 				line-height: 29px;

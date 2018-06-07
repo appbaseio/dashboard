@@ -19,11 +19,11 @@
 			border-radius: 20px;
 			background: $n-lblue;
 			color: $blue-pricing;
-            font-family: $font-semi-bold;
-            letter-spacing: 1px;
+			font-family: $font-regular; font-weight: 600;
+			letter-spacing: 1px;
 			font-size: 0.9rem;
 			padding: 0.7em 2em;
-            outline: none;
+			outline: none;
 			&.left {
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
@@ -34,10 +34,10 @@
 				margin-left: -4px;
 			}
 			&.active {
-                opacity: 1;
-                font-size: 1.1rem;
-                background: $n-green;
-                color: $dgreen-17;
+				opacity: 1;
+				font-size: 1.1rem;
+				background: $n-green;
+				color: $dgreen-17;
 				box-shadow: none;
 				position: relative;
 			}
@@ -47,11 +47,11 @@
 		margin-top: 15px;
 		color: $n-navy;
 		font-size: 1.2rem;
-		font-family: $font-black;
+		font-family: $font-regular; font-weight: 600;
 	}
 	.new-btn {
 		font-size: 1rem;
-		font-family: $font-semi-bold;
+		font-family: $font-regular; font-weight: 600;
 		text-transform: uppercase;
 		background: $n-green;
 		color: $d-green;
@@ -103,28 +103,28 @@
 			margin-top: -150px;
 		}
 		.price-header {
-            font-size: 2.1rem;
-            text-transform: uppercase;
-            font-family: $font-bold;
-            text-align: center;
-            margin: 15px 0;
-        }
+			font-size: 2.1rem;
+			text-transform: uppercase;
+			font-family: $font-regular; font-weight: 700;
+			text-align: center;
+			margin: 15px 0;
+		}
 		.cards-container {
 			display: flex;
 			margin: 0 5rem;
 			@media all and (max-width: 1278px) {
 				margin: 0 1rem;
-			};
+			}
 			@media all and (max-width: 400px) {
 				margin: 0;
-			};
-            margin-top: -20px;
+			}
+			margin-top: -20px;
 			#free-card {
 				.price-card {
-                    .description {
+					.description {
 						background: rgba(134, 221, 248, 0.5);
 						height: 500px;
-							}
+					}
 					.title {
 						background: rgba(134, 221, 248, 0.5);
 					}
@@ -138,16 +138,16 @@
 			}
 			#bootstrap-card {
 				.price-card {
-                    .description {
-                        background: rgba(59, 199, 246, 0.5);
+					.description {
+						background: rgba(59, 199, 246, 0.5);
 						height: 500px;
-							}
+					}
 					.title {
 						background: rgba(59, 199, 246, 0.5);
 					}
 					.big-description {
 						font-size: 1.2rem;
-						font-family: $font-bold;
+						font-family: $font-regular; font-weight: 700;
 						margin: 20px 0 20px 20px;
 						&:before {
 							content: '\2022';
@@ -157,16 +157,16 @@
 			}
 			#growth-card {
 				.price-card {
-                    .description {
-                        background: rgba(36, 216, 228, 0.5);
+					.description {
+						background: rgba(36, 216, 228, 0.5);
 						height: 500px;
-						}
+					}
 					.title {
 						background: rgba(36, 216, 228, 0.5);
 					}
 					.big-description {
 						font-size: 1.2rem;
-						font-family: $font-bold;
+						font-family: $font-regular; font-weight: 700;
 						margin: 20px 0 20px 20px;
 						&:before {
 							content: '\2022';
@@ -192,28 +192,28 @@
 					@media all and (max-width: 1150px) {
 						padding-bottom: 20px;
 					}
-                    .plan-price {
-                        letter-spacing: -5px;
-                    }
+					.plan-price {
+						letter-spacing: -5px;
+					}
 					.title {
-						background: #3BC7F6;
+						background: #3bc7f6;
 						color: $n-navy;
-                        font-size: 8rem;
-						font-family: $font-extra-light;
+						font-size: 8rem;
+						font-family: $font-regular; font-weight: 300;
 						text-align: center;
 						border-top-left-radius: 10px;
 						border-top-right-radius: 10px;
 						position: relative;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
 						min-height: 220px;
 						@media all and (max-width: 768px) {
 							min-height: auto;
 						}
 						.unit {
-                            font-size: 2.5rem;
-                            font-family: $font-black;
+							font-size: 2.5rem;
+							font-family: $font-regular; font-weight: 600;
 						}
 						.superscript {
 							font-size: 20px;
@@ -225,19 +225,19 @@
 							top: -60px;
 							font-size: 2rem;
 							left: 0;
-							font-family: $font-bold;
+							font-family: $font-regular; font-weight: 700;
 						}
 						.subscript {
-                            font-size: 1.4rem;
+							font-size: 1.4rem;
 							height: auto;
-                            text-align: center;
-                            font-family: $font-black;
+							text-align: center;
+							font-family: $font-regular; font-weight: 600;
 						}
 					}
 					.description {
 						color: $n-navy;
 						list-style: none;
-                        padding-left: 0;
+						padding-left: 0;
 						border-bottom-left-radius: 10px;
 						border-bottom-right-radius: 10px;
 						li {
@@ -275,7 +275,7 @@
 								padding: 15px 0;
 							}
 							.text-container {
-								font-family: $font-light;
+								font-family: $font-regular; font-weight: 300;
 								.big-description {
 									font-size: 1.8em;
 									line-height: 1em;
@@ -287,10 +287,10 @@
 								.figure {
 									font-size: 1.4em;
 									line-height: 1.9em;
-									font-family: $font-bold;
+									font-family: $font-regular; font-weight: 700;
 								}
 								.summary {
-									font-family: $font-light;
+									font-family: $font-regular; font-weight: 300;
 									@media all and (max-width: 1278px) {
 										margin-left: -3px;
 										margin-top: -10px;
@@ -319,17 +319,17 @@
 						}
 					}
 				}
-				@media screen and (max-width:1150px) {
+				@media screen and (max-width: 1150px) {
 					flex-direction: column;
 					align-items: center;
 				}
-				@media screen and (max-width:1300px) {
+				@media screen and (max-width: 1300px) {
 					.single-card-container {
 						padding: 0 15px;
 					}
 				}
 			}
-			@media screen and (max-width:980px) {
+			@media screen and (max-width: 980px) {
 				display: block;
 				.single-card-container {
 					margin-bottom: 100px;
@@ -373,7 +373,7 @@
 					padding: 0 60px;
 				}
 			}
-			@media screen and (max-width:480px) {
+			@media screen and (max-width: 480px) {
 				.single-card-container {
 					padding: 0 15px;
 				}
@@ -381,13 +381,13 @@
 		}
 	}
 	#dedicated-card {
-		background: #BBDEFB;
+		background: #bbdefb;
 		color: $n-navy;
 		padding-top: 40px;
 		padding-bottom: 40px;
 		h3 {
 			font-size: 4em;
-			font-family: $font-extra-light;
+			font-family: $font-regular; font-weight: 300;
 			padding-bottom: 30px;
 			.figure {
 				font-size: 2em;
@@ -398,7 +398,7 @@
 		}
 		.orange-btn {
 			font-family: $font-regular;
-			background: #FFB74D;
+			background: #ffb74d;
 		}
 		.description {
 			color: $n-navy;
@@ -428,16 +428,16 @@
 					padding: 0 15px;
 				}
 				.text-container {
-					font-family: $font-extra-light;
+					font-family: $font-regular; font-weight: 300;
 					.figure {
 						font-size: 1.8em;
-						font-family: $font-bold;
+						font-family: $font-regular; font-weight: 700;
 						&.regular {
 							font-family: $font-regular;
 						}
 					}
 					.summary {
-						font-family: $font-extra-light;
+						font-family: $font-regular; font-weight: 300;
 						font-size: 1em;
 					}
 				}
@@ -451,12 +451,12 @@
 		padding-bottom: 40px;
 		h3 {
 			font-size: 3em;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			padding-bottom: 30px;
 			text-transform: uppercase;
 		}
 		.single-point {
-			font-family: $font-bold;
+			font-family: $font-regular; font-weight: 700;
 			margin-bottom: 80px;
 			h4.title {
 				font-size: 2em;
@@ -482,7 +482,7 @@
 
 .pricing-top {
 	margin-top: 0;
-	padding-top: $navbar-height+50px;
+	padding-top: $navbar-height + 50px;
 	text-align: center;
 	color: white;
 	padding-top: 20px;
@@ -490,11 +490,11 @@
 	p {
 		margin-bottom: 0;
 		font-size: 24px;
-		font-family: $font-extra-light;
+		font-family: $font-regular; font-weight: 300;
 	}
 	h1 {
 		padding-bottom: 40px;
-		font-family: $font-bold;
+		font-family: $font-regular; font-weight: 700;
 		color: $n-navy;
 		font-size: 3.3em;
 		@media all and (max-width: 768px) {
@@ -505,7 +505,7 @@
 		padding-top: 30px;
 		.new-btn {
 			color: $n-navy !important;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 		}
 	}
 }
@@ -518,14 +518,14 @@
 		.title {
 			text-transform: uppercase;
 			color: $n-navy;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			margin-bottom: 15px;
 			font-size: 2.5em;
 			letter-spacing: 2px;
 		}
 		.pricing .line .plan-title b {
 			color: $n-navy;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 		}
 	}
 	#faq-container {
@@ -535,7 +535,7 @@
 		.btitle {
 			text-transform: uppercase;
 			color: $n-navy;
-			font-family: $font-semi-bold;
+			font-family: $font-regular; font-weight: 600;
 			font-size: 2.5em;
 			letter-spacing: 2px;
 			margin-top: 20px;
@@ -560,7 +560,7 @@
 			width: 300px;
 			position: relative;
 			background-color: #f5f5f7;
-			box-shadow: 0 12px 30px 0 rgba(0, 0, 0, .5), inset 0 1px 0 0 hsla(0, 0%, 100%, .65);
+			box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 hsla(0, 0%, 100%, 0.65);
 			-webkit-backface-visibility: hidden;
 			backface-visibility: hidden;
 			border: 0;
@@ -611,11 +611,11 @@
 						margin: 0 auto;
 					}
 					.Header-logoBevel {
-						border: 1px solid rgba(0, 0, 0, .2);
+						border: 1px solid rgba(0, 0, 0, 0.2);
 						width: 64px;
 						height: 64px;
 						border-radius: 100%;
-						box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, .1);
+						box-shadow: inset 0 1px 0 0 hsla(0, 0%, 100%, 0.1);
 						position: absolute;
 						top: 3px;
 						left: 3px;
@@ -625,7 +625,7 @@
 						width: 70px;
 						height: 70px;
 						border-radius: 100%;
-						box-shadow: 0 0 0 1px rgba(0, 0, 0, .18), 0 2px 2px 0 rgba(0, 0, 0, .08);
+						box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18), 0 2px 2px 0 rgba(0, 0, 0, 0.08);
 						position: absolute;
 						top: 0;
 						left: 0;
@@ -680,20 +680,27 @@
 				position: relative;
 				border-radius: 4px;
 				background-color: #3ea8e5;
-				background-image: -webkit-gradient(linear,left top,left bottom,from(#44b1e8),to(#3098de));
-				background-image: -webkit-linear-gradient(top,#44b1e8,#3098de);
-				background-image: linear-gradient(-180deg,#44b1e8,#3098de);
-				box-shadow: 0 1px 0 0 rgba(46,86,153,.15), inset 0 1px 0 0 rgba(46,86,153,.1), inset 0 -1px 0 0 rgba(46,86,153,.4);
+				background-image: -webkit-gradient(
+					linear,
+					left top,
+					left bottom,
+					from(#44b1e8),
+					to(#3098de)
+				);
+				background-image: -webkit-linear-gradient(top, #44b1e8, #3098de);
+				background-image: linear-gradient(-180deg, #44b1e8, #3098de);
+				box-shadow: 0 1px 0 0 rgba(46, 86, 153, 0.15),
+					inset 0 1px 0 0 rgba(46, 86, 153, 0.1), inset 0 -1px 0 0 rgba(46, 86, 153, 0.4);
 				font-size: 17px;
 				line-height: 21px;
 				height: 37px;
 				font-weight: 700;
-				text-shadow: 0 -1px 0 rgba(0,0,0,.12);
+				text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
 				color: #fff;
 				cursor: pointer;
 				width: 100%;
-				-webkit-transition: all .2s ease-in-out;
-				transition: all .2s ease-in-out;
+				-webkit-transition: all 0.2s ease-in-out;
+				transition: all 0.2s ease-in-out;
 			}
 		}
 	}
