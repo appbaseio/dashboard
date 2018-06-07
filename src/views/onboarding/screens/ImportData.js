@@ -84,9 +84,11 @@ export default class Introduction extends Component {
 				appbaseHelpers.createURL(this.setURL);
 			})
 			.catch((e) => {
-				if (e.error.reason === 'request body is required' && e.error.type === 'parse_exception') {
+				if (e._bodyInit === '{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}') {
 					appbaseHelpers.createURL(this.setURL);
 				}
+				console.log('@error-at-importing-data', e);
+				console.log('@error-at-importing-data-response-type', typeof e);
 				console.log('error', e);
 			});
 	};
