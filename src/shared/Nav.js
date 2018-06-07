@@ -165,7 +165,7 @@ export default class Nav extends Component {
 				generatedEle = links.map((item, index) => {
 					let anchor = (
 						<a href={item.link} target="_blank">
-							<i className="fas fa-external-link-alt" />&nbsp;{item.label}
+							<i className="fas fa-external-link-alt" style={{ fontSize: '16px' }} />&nbsp;{item.label}
 						</a>
 					);
 					if (item.type === 'internal') {
@@ -184,7 +184,7 @@ export default class Nav extends Component {
 					appbaseService.userInfo.body.details
 				) {
 					generatedEle = (
-						<li>
+						<li style={{ marginLeft: '22px' }}>
 							<ul className="ad-user-info-list hidden-xs">
 								<li className="ad-dropdown dropdown without-icon logout-dropdown extra-link">
 									<a

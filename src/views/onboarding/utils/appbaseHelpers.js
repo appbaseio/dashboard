@@ -55,13 +55,11 @@ class AppbaseUtils {
 				},
 			})
 				.then(res => res.json())
-				.then(data => {
-					const permissions = data.body.filter(
-						permission => permission.read && permission.write,
-					);
+				.then((data) => {
+					const permissions = data.body.filter(permission => permission.read && permission.write);
 					resolve(permissions[0]);
 				})
-				.catch(e => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
@@ -112,17 +110,17 @@ class AppbaseUtils {
 						});
 					});
 				})
-				.catch(e => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
 	};
 
-	updateUser = user => {
+	updateUser = (user) => {
 		this.user = user;
 	};
 
-	updateApp = app => {
+	updateApp = (app) => {
 		this.app = app;
 	};
 
@@ -147,7 +145,7 @@ class AppbaseUtils {
 		const indexObj = {
 			index: {},
 		};
-		moviesData.forEach(record => {
+		moviesData.forEach((record) => {
 			finalData.push(indexObj);
 			finalData.push(record);
 		});
@@ -166,7 +164,7 @@ class AppbaseUtils {
 				.on('data', () => {
 					resolve();
 				})
-				.on('error', e => {
+				.on('error', (e) => {
 					reject(e);
 				});
 		});
@@ -182,7 +180,7 @@ class AppbaseUtils {
 				.on('data', () => {
 					resolve();
 				})
-				.on('error', e => {
+				.on('error', (e) => {
 					reject(e);
 				});
 		});

@@ -17,7 +17,8 @@ const screens = {
 export default class Onboarding extends Component {
 	state = {
 		currentScreen: 0,
-		totalScreen: 5,
+		totalScreen: 4,
+		// eslint-disable-next-line
 		thresholdScreen: 0, // to maintain the max threshold reached by currentScreen
 		hasJSON: false,
 		searchFields: [],
@@ -26,7 +27,7 @@ export default class Onboarding extends Component {
 	};
 
 	nextScreen = () => {
-		this.setState(state => {
+		this.setState((state) => {
 			const currentScreen =
 				state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
@@ -41,7 +42,7 @@ export default class Onboarding extends Component {
 	};
 
 	previousScreen = () => {
-		this.setState(state => {
+		this.setState((state) => {
 			const currentScreen =
 				state.currentScreen - 1 >= 0 ? state.currentScreen - 1 : state.currentScreen;
 
@@ -56,7 +57,7 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setScreen = currentScreen => {
+	setScreen = (currentScreen) => {
 		this.setState(state => ({
 			...state,
 			currentScreen:
@@ -70,19 +71,19 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setURL = url => {
+	setURL = (url) => {
 		this.setState({
 			url,
 		});
 	};
 
-	setSearchFields = searchFields => {
+	setSearchFields = (searchFields) => {
 		this.setState({
 			searchFields,
 		});
 	};
 
-	setFacetFields = facetFields => {
+	setFacetFields = (facetFields) => {
 		this.setState({
 			facetFields,
 		});
@@ -178,14 +179,14 @@ export default class Onboarding extends Component {
 								Set aggregation fields
 							</a>
 						</li>
-						<li>
+						{/* <li>
 							<a
 								className={this.state.currentScreen === 4 ? 'active' : null}
 								onClick={() => this.setScreen(4)}
 							>
 								Stream realtime updates
 							</a>
-						</li>
+						</li> */}
 					</ul>
 				</div>
 				<div className="right">

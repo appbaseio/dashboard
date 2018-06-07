@@ -37,7 +37,7 @@ export default class Introduction extends Component {
 		let app = {};
 
 		this.setState({
-			status: 'Creating your app... Please Wait!',
+			status: 'Creating your app... Please wait!',
 			error: '',
 		});
 
