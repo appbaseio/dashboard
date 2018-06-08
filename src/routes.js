@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router';
 import Main from './index';
 import { appbaseService } from './service/AppbaseService';
 
@@ -121,6 +121,7 @@ class MainApp extends React.Component {
 			<Router history={browserHistory}>
 				<Route path="tutorial" component={Onboarding} />
 				<Route path="tutorial/finish" component={OnboardingEndScreen} />
+				<Redirect from="scalr/tutorial" to="tutorial" />
 				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute
 						component={() => (
