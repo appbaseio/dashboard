@@ -187,7 +187,7 @@ export default class Dashboard extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-					<main className="ad-detail-page-body col-xs-12">
+					<div className="ad-detail-page-body col-xs-12">
 						<section className="col-xs-12 col-sm-8">
 							{displayCharts ? (
 								<HighChartView
@@ -206,7 +206,7 @@ export default class Dashboard extends Component {
 							<ApiCallsView plan={this.state.plan} appCount={this.appCount()} />
 							<Upgrade plan={this.state.plan} appCount={this.appCount()} />
 						</section>
-					</main>
+					</div>
 				</div>
 			</AppPage>
 		);

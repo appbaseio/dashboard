@@ -118,7 +118,7 @@ export default class Team extends Component {
 				}}
 			>
 				<div className="ad-detail-page row" id="team-page">
-					<main className="ad-detail-page-body col-xs-12">
+					<div className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
 							{this.state.info &&
 							this.state.info.appInfo &&
@@ -133,9 +133,9 @@ export default class Team extends Component {
 											/>
 										</span>
 									</header>
-									<main className="ad-detail-page-body-card-body col-xs-12 p-0">
+									<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 										{this.renderElement('share')}
-									</main>
+									</div>
 									<div className="add-team-member-card">
 										{this.state.info &&
 										this.state.info.appInfo &&
@@ -153,7 +153,7 @@ export default class Team extends Component {
 								</section>
 							) : null}
 						</div>
-					</main>
+					</div>
 				</div>
 			</AppPage>
 		);

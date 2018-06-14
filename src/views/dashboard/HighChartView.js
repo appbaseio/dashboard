@@ -71,7 +71,7 @@ export default class HighChartView extends Component {
 						</ul>
 					</span>
 				</header>
-				<main className="ad-detail-page-body-card-body">
+				<div className="ad-detail-page-body-card-body">
 					<header className="tab-container col-xs-12">
 						<ul className="nav-tab pull-left">
 							<li>
@@ -98,7 +98,7 @@ export default class HighChartView extends Component {
 						info={this.props.info}
 						infoType={this.state.infoType}
 					/>
-				</main>
+				</div>
 			</section>
 		);
 	}

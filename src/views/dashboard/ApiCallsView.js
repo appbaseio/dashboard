@@ -18,7 +18,7 @@ export default class ApiCallsView extends Component {
 				<header className="ad-detail-page-body-card-title">
 					<span>Usage this month</span>
 				</header>
-				<main className="ad-detail-page-body-card-body body-card-body-api-view row ad-metrics-summary">
+				<div className="ad-detail-page-body-card-body body-card-body-api-view row ad-metrics-summary">
 					<div className="col-xs-12">
 						<div className="col-xs-12 col-sm-6 progress-container">
 							<span className="progress-wrapper">
@@ -77,7 +77,7 @@ export default class ApiCallsView extends Component {
 							</div>
 						</div>
 					</div>
-				</main>
+				</div>
 			</section>
 		);
 	}
