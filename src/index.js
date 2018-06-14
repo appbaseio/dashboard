@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
+import 'rc-tooltip/assets/bootstrap_white.css';
+
 import { appbaseService } from './service/AppbaseService';
 import { dataOperation } from './service/tutorialService/DataOperation';
 import Nav from './shared/Nav';
 import { intercomService } from './shared/helper';
 
-import 'rc-tooltip/assets/bootstrap_white.css';
-// require('../dist/css/style.min.css');
-
 export default class Main extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loggedIn: false,
-			userInfo: null,
 			loading: true,
-			currentApp: null,
 		};
 		this.getUser();
 	}
@@ -29,18 +25,15 @@ export default class Main extends Component {
 	onGetUserSuccess(data) {
 		dataOperation.updateUser(data.userInfo.body);
 		this.setState({
-			loggedIn: true,
 			loading: false,
-			userInfo: data.userInfo,
 		});
 		intercomService.loggingIn(data.userInfo.body);
 		localStorage.removeItem('ad-login');
 	}
 
-	onGetUserCatch(e) {
+	onGetUserCatch() {
 		localStorage.setItem('ad-login', window.location.href);
 		this.setState({
-			loggedIn: false,
 			loading: false,
 		});
 	}

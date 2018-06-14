@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, Redirect, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import Main from './index';
 import { appbaseService } from './service/AppbaseService';
 
@@ -40,6 +40,9 @@ const Signup = AsyncComponent(() => import('./views/signup').then(module => modu
 const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
 	name: 'Browser',
 });
+const Configurator = AsyncComponent(() => import('./views/configurator').then(module => module.default), {
+	name: 'Configurator',
+});
 const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
 	name: 'Mirage',
 });
@@ -48,6 +51,15 @@ const Billing = AsyncComponent(() => import('./views/billing').then(module => mo
 });
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
 	name: 'Importer',
+});
+
+// configurator routes
+const QueryTester = AsyncComponent(() => import('./views/configurator/pages/QueryTester').then(module => module.default), {
+	name: 'QueryTester',
+});
+
+const Mapping = AsyncComponent(() => import('../modules/batteries/components/Mapping').then(module => module.default), {
+	name: 'Mapping',
 });
 
 const NotFound = () => {
@@ -110,7 +122,6 @@ class MainApp extends React.Component {
 
 	login(provider) {
 		localStorage.setItem('reload', false);
-		const baseURL = `${window.location.protocol}//${window.location.host}/`;
 		const redirectTo = `${appbaseService.address}login/${provider}?next=${this.getNexturl()}`;
 		window.location.href = redirectTo;
 	}
@@ -167,6 +178,18 @@ class MainApp extends React.Component {
 							helper.appDashboard.onEnter(params.params.appId, 'dashboard')
 						}
 					/>
+					<Route
+						path="configurator/:appId"
+						component={Configurator}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'configurator')
+						}
+					>
+						<IndexRedirect to="query-tester" />
+						<Route path="query-tester" component={QueryTester} />
+						<Route path="manage-mappings" component={Mapping} />
+					</Route>
 					<Route
 						path="browser/:appId"
 						component={Browser}

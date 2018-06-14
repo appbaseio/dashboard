@@ -40,7 +40,7 @@ export const AppbaseDashboardGettingStarted = () => (
 		<div className="col-xs-12 col-sm-6">
 			<section className="ad-detail-page-body-card getting-started col-xs-12 p-0">
 				<header className="ad-detail-page-body-card-title col-xs-12">Tutorial</header>
-				<main className="ad-detail-page-body-card-body col-xs-12">
+				<div className="ad-detail-page-body-card-body col-xs-12">
 					<p>
 						Try out the{' '}
 						<a href="/tutorial">
@@ -49,7 +49,7 @@ export const AppbaseDashboardGettingStarted = () => (
 						</a>{' '}
 						for adding your first data to the app.
 					</p>
-				</main>
+				</div>
 			</section>
 		</div>
 		<div className="col-xs-12 col-sm-6">

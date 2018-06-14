@@ -65,12 +65,12 @@ export default class AppPage extends Component {
 					appName={this.props.pageInfo.appName}
 					appId={this.props.pageInfo.appId}
 				/>
-				<main className="ad-detail-view-container">
+				<div className="ad-detail-view-container">
 					<div className="ad-detail-view">
 						{this.state.showChild ? childrenWithProps : null}
 						{this.state.showChild === null ? <Page404 /> : null}
 					</div>
-				</main>
+				</div>
 			</div>
 		);
 	}

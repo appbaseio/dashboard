@@ -1,6 +1,6 @@
 .ad-detail {
 	position: relative;
-	padding: 0 0 0 100px;
+	padding: 0 0 0 120px;
 	margin: 0;
 	height: 100%;
 	background-color: rgba(237, 241, 242, 0.2);
@@ -47,7 +47,7 @@
 		position: absolute;
 		left: 0;
 		top: 0;
-		width: 100px;
+		width: 120px;
 		height: 100%;
 		padding-top: 0;
 		z-index: 2;
@@ -76,16 +76,21 @@
 							padding: 5px;
 						}
 					}
+					.ad-detail-sidebar-item-label {
+						font-size: 14px;
+						margin-top: 6px;
+						display: block;
+						color: #444;
+					}
 					&:hover,
 					&.active {
 						text-decoration: none;
 						.img-container {
 							background: white;
 						}
-					}
-					&.active {
-					}
-					.ad-detail-sidebar-item-label {
+						.ad-detail-sidebar-item-label {
+							color: #222;
+						}
 					}
 				}
 			}

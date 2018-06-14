@@ -92,9 +92,9 @@ export default class Credentials extends Component {
 						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
 							<div className="page-body col-xs-12">
 								<section className="col-xs-12 p-0">
-									<main className="col-xs-12 p-0">
+									<div className="col-xs-12 p-0">
 										<DeleteApp appName={this.appName} appId={this.appId} />
-									</main>
+									</div>
 								</section>
 							</div>
 						</footer>
@@ -114,6 +114,7 @@ export default class Credentials extends Component {
 	}
 
 	render() {
+		console.log(this.props);
 		return (
 			<AppPage
 				pageInfo={{
@@ -123,18 +124,18 @@ export default class Credentials extends Component {
 				}}
 			>
 				<div id="permission-page" className="ad-detail-page ad-dashboard row">
-					<main className="ad-detail-page-body col-xs-12">
+					<div className="ad-detail-page-body col-xs-12">
 						<div className="page-body col-xs-12">
 							<section className="ad-detail-page-body-card col-xs-12 p-0">
-								<main className="ad-detail-page-body-card-body col-xs-12 p-0">
+								<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
 									{this.isOwner() ? (
 										<NewPermission newPermission={this.newPermission} />
 									) : null}
-								</main>
+								</div>
 							</section>
 						</div>
-					</main>
+					</div>
 					{this.renderElement('deleteApp')}
 				</div>
 			</AppPage>
