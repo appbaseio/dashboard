@@ -31,7 +31,7 @@ export default class Search extends Component {
 
 	handleChange = (selectedOption) => {
 		if (!selectedOption.length) {
-			this.setError('Aggregation fields cannot be empty.');
+			this.setError('There should be at least one field set for aggregation.');
 		} else {
 			this.setState({
 				selectedOption,
@@ -96,8 +96,8 @@ export default class Search extends Component {
 								optimized for performing computations and sorting functionalites.
 							</p>
 							<p>
-								We will start by letting you set certain fields to be of{' '}
-								<strong>Aggregation</strong> kind.
+								We will start by letting you set some
+								<strong>Aggregation</strong> fields.
 							</p>
 						</header>
 						{this.props.facetFields.length ? null : this.renderFacetInput()}

@@ -26,6 +26,20 @@ export default class Onboarding extends Component {
 		url: '',
 	};
 
+	componentDidMount() {
+		const intercom = document.getElementById('intercom-container');
+		if (intercom) {
+			intercom.style.display = 'none';
+		}
+	}
+
+	componentWillUnmount() {
+		const intercom = document.getElementById('intercom-container');
+		if (intercom) {
+			intercom.style.display = 'block';
+		}
+	}
+
 	nextScreen = () => {
 		this.setState((state) => {
 			const currentScreen =

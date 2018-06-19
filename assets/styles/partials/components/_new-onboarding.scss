@@ -9,7 +9,12 @@ $right-color: #c7f4ff;
 	font-family: 'Open Sans', sans-serif;
 
 	a.dashed {
-		border-bottom: 1px dashed $right-color;
+		border-bottom: 1px dashed #337ab7;
+
+		&:hover, &:focus {
+			text-decoration: none;
+			border-bottom: 1px solid #337ab7;
+		}
 	}
 
 	.skip-link {

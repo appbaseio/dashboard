@@ -42,7 +42,7 @@
 		"webpack-dev-server": "^3.1.4"
 	},
 	"dependencies": {
-		"@appbaseio/reactivesearch": "^2.6.5",
+		"@appbaseio/reactivesearch": "^2.6.8",
 		"appbase-js": "^3.0.0",
 		"classnames": "^2.2.5",
 		"clipboard": "^2.0.1",

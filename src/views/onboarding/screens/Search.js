@@ -11,7 +11,7 @@ export default class Search extends Component {
 		selectedOption: this.props.searchFields.map(item => ({ label: item, value: item })) || [],
 	};
 
-	setError = e => {
+	setError = (e) => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -25,9 +25,9 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = selectedOption => {
+	handleChange = (selectedOption) => {
 		if (!selectedOption.length) {
-			this.setError('Search fields cannot be empty.');
+			this.setError('There should be at least one field set for search.');
 		} else {
 			this.setState({
 				selectedOption,
@@ -90,10 +90,10 @@ export default class Search extends Component {
 							<h2>Set searchable fields</h2>
 							<p>
 								All fields in appbase.io are indexed to allow for a blazing fast
-								querying performance. However, all fields aren{"'"}t created equal.
+								querying performance.
 							</p>
 							<p>
-								However, all fields aren’t created equal. When you set a field as{' '}
+								However, all fields aren{'’'}t created equal. When you set a field as{' '}
 								<strong>Searchable</strong>, it gets an additional n-gram based
 								analyzer applied which enables blazing fast auto-completion and
 								partial match features.
