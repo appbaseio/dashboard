@@ -2601,7 +2601,7 @@ emotion-theming@^9.0.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-emotion@^9.0.0:
+emotion@^9.0.0, emotion@^9.2.3:
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.2.3.tgz#c93b9a222df92e6281036afa02b3b5b8cfb9e049"
   dependencies:
@@ -6017,7 +6017,7 @@ react-dom@16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-emotion@^9.0.0:
+react-emotion@^9.0.0, react-emotion@^9.2.3:
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/react-emotion/-/react-emotion-9.2.3.tgz#03c3b9dc9ad282c2d50b8137f3a6f72eee5095f3"
   dependencies:

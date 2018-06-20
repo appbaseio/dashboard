@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import 'rc-tooltip/assets/bootstrap_white.css';
 
 import { appbaseService } from './service/AppbaseService';
@@ -33,6 +34,7 @@ export default class Main extends Component {
 
 	onGetUserCatch() {
 		localStorage.setItem('ad-login', window.location.href);
+		browserHistory.push('/login');
 		this.setState({
 			loading: false,
 		});
