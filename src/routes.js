@@ -49,6 +49,9 @@ const Billing = AsyncComponent(() => import('./views/billing').then(module => mo
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
 	name: 'Importer',
 });
+const Clusters = AsyncComponent(() => import('./views/clusters').then(module => module.default), {
+	name: 'Clusters',
+});
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
@@ -146,6 +149,7 @@ class MainApp extends React.Component {
 					/>
 					<Route path="profile" component={UserInfo} />
 					<Route path="apps" component={AppList} />
+					<Route path="clusters" component={Clusters} />
 					<Route
 						path="login"
 						component={() => (

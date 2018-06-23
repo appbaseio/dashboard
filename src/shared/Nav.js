@@ -15,6 +15,9 @@ export default class Nav extends Component {
 		this.config = config;
 		this.contextPath = appbaseService.getContextPath();
 		this.state = {
+			activeParentView: window.location.pathname.startsWith('/clusters')
+				? 'Clusters'
+				: 'Apps',
 			activeApp: null,
 			currentView: null,
 			userImg: this.getUserImg(),
@@ -46,7 +49,7 @@ export default class Nav extends Component {
 	}
 
 	getAllApps(cb) {
-		appbaseService.allApps(true).then(data => {
+		appbaseService.allApps(true).then((data) => {
 			this.setState(
 				{
 					apps: _.sortBy(data.body, 'appname'),
@@ -68,7 +71,6 @@ export default class Nav extends Component {
 	getUserImg() {
 		return appbaseService.userInfo &&
 			appbaseService.userInfo.body &&
-			appbaseService.userInfo.body &&
 			appbaseService.userInfo.body.details
 			? appbaseService.userInfo.body.details.picture
 				? appbaseService.userInfo.body.details.picture
@@ -82,7 +84,7 @@ export default class Nav extends Component {
 				this.setState(appbaseService.extra.nav);
 			});
 		}
-		this.listenEvent = eventEmitter.addListener('activeApp', activeApp => {
+		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
 			this.getAllApps(() => {
 				this.setState(activeApp);
 			});
@@ -101,22 +103,54 @@ export default class Nav extends Component {
 		});
 	}
 
+	setActiveParentView = (activeParentView) => {
+		this.setState({
+			activeParentView,
+		});
+	}
+
 	renderElement(ele) {
 		let generatedEle = null;
 		switch (ele) {
 			case 'appLink':
 				generatedEle = (
-					<li>
-						<Link to={this.appLink.link}>
-							<span className="icon-container">
-								<img
-									src="../../../assets/images/newapp.svg"
-									alt=""
-									className="img-responsive"
-								/>
-							</span>
-							{this.appLink.label}
-						</Link>
+					<li role="presentation" className="dropdown" style={{ marginRight: 25 }}>
+						<a
+							className="dropdown-toggle apps-dropdown-toggle"
+							data-toggle="dropdown"
+							href="#"
+							role="button"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							{this.state.activeParentView}
+						</a>
+						<ul className="dropdown-menu apps-dropdown-menu">
+							<li>
+								<Link to="/apps" onClick={() => this.setActiveParentView('Apps')}>
+									<span className="icon-container">
+										<img
+											src="../../../assets/images/newapp.svg"
+											alt=""
+											className="img-responsive"
+										/>
+									</span>
+									Apps
+								</Link>
+							</li>
+							<li>
+								<Link to="/clusters" onClick={() => this.setActiveParentView('Clusters')}>
+									<span className="icon-container">
+										<img
+											src="../../../assets/images/newapp.svg"
+											alt=""
+											className="img-responsive"
+										/>
+									</span>
+									Clusters
+								</Link>
+							</li>
+						</ul>
 					</li>
 				);
 				break;
@@ -144,9 +178,7 @@ export default class Nav extends Component {
 				break;
 			case 'currentApp':
 				if (this.state.activeApp && this.state.apps && this.isValidApp()) {
-					const apps = this.state.apps.filter(
-						app => app.appname === this.state.activeApp,
-					);
+					const apps = this.state.apps.filter(app => app.appname === this.state.activeApp);
 					generatedEle = (
 						<li role="presentation" className="dropdown">
 							<a
@@ -168,9 +200,7 @@ export default class Nav extends Component {
 				}
 				break;
 			case 'links':
-				const links = this.links.filter(
-					item => this.config.navbar.indexOf(item.label) > -1,
-				);
+				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1);
 				generatedEle = links.map((item, index) => {
 					let anchor = (
 						<a href={item.link} target="_blank">
@@ -312,7 +342,7 @@ export default class Nav extends Component {
 							<span className="icon-bar" />
 							<span className="icon-bar" />
 						</button>
-						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`}>
+						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`} onClick={() => this.setActiveParentView('Apps')}>
 							<img src={this.config.logo} alt="" className="img-responsive" />
 							{this.config.logoText ? <span>{this.config.logoText}</span> : null}
 						</Link>
