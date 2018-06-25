@@ -22,7 +22,6 @@ export default class NewApp extends Component {
 				error: null,
 			},
 			value: '',
-			showInput: false,
 			importer: false,
 			category: this.categories[this.config.name],
 			es_version: 5,

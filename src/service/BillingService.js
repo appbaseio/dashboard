@@ -1,8 +1,9 @@
 import { $http } from '../shared/helper';
+import { ACC_API } from '../../config';
 
 class BillingService {
 	constructor() {
-		this.address = 'https://accapi.appbase.io/';
+		this.address = ACC_API;
 		this.billingAddress = 'https://transactions.appbase.io';
 		// this.billingAddress = 'http://127.0.0.1:8080';
 		// this.billingAddress = 'http://139.59.24.182:8080';

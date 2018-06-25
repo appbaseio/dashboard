@@ -122,7 +122,7 @@ class MainApp extends React.Component {
 
 	login(provider) {
 		localStorage.setItem('reload', false);
-		const redirectTo = `${appbaseService.address}login/${provider}?next=${this.getNexturl()}`;
+		const redirectTo = `${appbaseService.address}/login/${provider}?next=${this.getNexturl()}`;
 		window.location.href = redirectTo;
 	}
 

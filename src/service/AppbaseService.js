@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import { browserHistory } from 'react-router';
+import { ACC_API } from '../../config';
 
 class AppbaseService {
 	constructor() {
 		this.userInfo = null;
 		this.apps = {};
-		this.address = 'https://accapi.appbase.io/';
+		this.address = ACC_API;
 		this.billingAddress = 'https://transactions.appbase.io';
 		this.planLimits = {
 			free: {
@@ -62,7 +63,7 @@ class AppbaseService {
 
 	getUser() {
 		return new Promise((resolve, reject) => {
-			$.get(`${this.address}user`)
+			$.get(`${this.address}/user`)
 				.done(data => {
 					this.userInfo = data;
 					resolve({ userInfo: data });
@@ -79,7 +80,7 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].permissions);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(`${this.address}app/${appId}/permissions`)
+			$.get(`${this.address}/app/${appId}/permissions`)
 				.done(data => {
 					this.apps[appId].permissions = data;
 					resolve(data);
@@ -97,7 +98,7 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].share);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(`${this.address}app/${appId}/share`)
+			$.get(`${this.address}/app/${appId}/share`)
 				.done(data => {
 					this.apps[appId].share = data;
 					resolve(data);
@@ -115,7 +116,7 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].appInfo);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(`${this.address}app/${appId}`)
+			$.get(`${this.address}/app/${appId}`)
 				.done(data => {
 					this.apps[appId].appInfo = data;
 					resolve(data);
@@ -133,7 +134,7 @@ class AppbaseService {
 			// 	resolve(this.apps[appId].metrics);
 			// } else {
 			this.apps[appId] = this.apps[appId] ? this.apps[appId] : {};
-			$.get(`${this.address}app/${appId}/metrics`)
+			$.get(`${this.address}/app/${appId}/metrics`)
 				.done(data => {
 					this.apps[appId].metrics = data;
 					resolve(data);
@@ -150,7 +151,7 @@ class AppbaseService {
 			if (cached && this.userApps) {
 				resolve(this.userApps);
 			} else {
-				$.get(`${this.address}user/apps`)
+				$.get(`${this.address}/user/apps`)
 					.done(data => {
 						this.userApps = data;
 						resolve(data);
@@ -164,7 +165,7 @@ class AppbaseService {
 
 	allMetrics() {
 		return new Promise((resolve, reject) => {
-			$.get(`${this.address}user/apps/metrics`)
+			$.get(`${this.address}/user/apps/metrics`)
 				.done(data => {
 					resolve(data);
 				})
@@ -176,7 +177,7 @@ class AppbaseService {
 
 	allPermissions() {
 		return new Promise((resolve, reject) => {
-			$.get(`${this.address}user/apps/permissions`)
+			$.get(`${this.address}/user/apps/permissions`)
 				.done(data => {
 					resolve(data);
 				})
@@ -193,7 +194,7 @@ class AppbaseService {
 		};
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appData.appname}`,
+				url: `${this.address}/app/${appData.appname}`,
 				type: 'PUT',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -237,7 +238,7 @@ class AppbaseService {
 	updatePermission(appId, username, info) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/permission/${username}`,
+				url: `${this.address}/app/${appId}/permission/${username}`,
 				type: 'PATCH',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -255,7 +256,7 @@ class AppbaseService {
 	newPermission(appId, info) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/permissions`,
+				url: `${this.address}/app/${appId}/permissions`,
 				type: 'POST',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -273,7 +274,7 @@ class AppbaseService {
 	deletePermission(appId, username) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/permission/${username}`,
+				url: `${this.address}/app/${appId}/permission/${username}`,
 				type: 'DELETE',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -290,7 +291,7 @@ class AppbaseService {
 	newShare(appId, info) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/share`,
+				url: `${this.address}/app/${appId}/share`,
 				type: 'POST',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -308,7 +309,7 @@ class AppbaseService {
 	transferOwnership(appId, info) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/changeowner`,
+				url: `${this.address}/app/${appId}/changeowner`,
 				type: 'POST',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -351,7 +352,7 @@ class AppbaseService {
 	deleteShare(appId, username, request) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${appId}/share/${username}`,
+				url: `${this.address}/app/${appId}/share/${username}`,
 				type: 'DELETE',
 				contentType: 'application/json',
 				dataType: 'json',
@@ -369,7 +370,7 @@ class AppbaseService {
 	deleteApp(id) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}app/${id}`,
+				url: `${this.address}/app/${id}`,
 				type: 'DELETE',
 				success: result => {
 					this.getUser()
@@ -391,7 +392,7 @@ class AppbaseService {
 	logout() {
 		localStorage.setItem('reload', true);
 		const baseURL = `${window.location.protocol}//${window.location.host}/`;
-		window.location.href = `${this.address}logout?next=https://appbase.io`;
+		window.location.href = `${this.address}/logout?next=https://appbase.io`;
 	}
 
 	computeMetrics(metrics) {
@@ -493,7 +494,7 @@ class AppbaseService {
 	isAppNameAvailable(appname) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}apps/${appname}`,
+				url: `${this.address}/apps/${appname}`,
 				type: 'GET',
 				success: resolve,
 				error: reject,
@@ -508,7 +509,7 @@ class AppbaseService {
 	setUserInfo(userInfo) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
-				url: `${this.address}user/profile`,
+				url: `${this.address}/user/profile`,
 				type: 'PUT',
 				contentType: 'application/json',
 				dataType: 'json',
