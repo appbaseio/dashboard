@@ -1,4 +1,5 @@
 import { sampleCodeSnippet } from './SampleCodeSnippet';
+import { ACC_API, SCALR_API } from '../../../config';
 
 class DataOperation {
 	constructor() {
@@ -21,7 +22,7 @@ class DataOperation {
 	getUser() {
 		return $.ajax({
 			type: 'GET',
-			url: 'https://accapi.appbase.io/user',
+			url: `${ACC_API}/user`,
 			dataType: 'json',
 			contentType: 'application/json',
 		});
@@ -29,7 +30,7 @@ class DataOperation {
 	logout() {
 		return $.ajax({
 			type: 'GET',
-			url: 'https://accapi.appbase.io/logout?next=',
+			url: `${ACC_API}/logout?next=`,
 			dataType: 'json',
 			contentType: 'application/json',
 		});
@@ -37,7 +38,7 @@ class DataOperation {
 	createApp(appname) {
 		return $.ajax({
 			type: 'PUT',
-			url: `https://accapi.appbase.io/app/${appname}`,
+			url: `${ACC_API}/app/${appname}`,
 			dataType: 'json',
 			contentType: 'application/json',
 		});
@@ -53,7 +54,7 @@ class DataOperation {
 		this.app.type = type;
 		return $.ajax({
 			type: 'GET',
-			url: `https://scalr.api.appbase.io/${this.app.appName}/_mapping/`,
+			url: `${SCALR_API}/${this.app.appName}/_mapping/`,
 			dataType: 'json',
 			contentType: 'application/json',
 			headers: {
@@ -66,7 +67,7 @@ class DataOperation {
 		this.app.type = type;
 		return $.ajax({
 			type: 'PUT',
-			url: `https://scalr.api.appbase.io/${
+			url: `${SCALR_API}/${
 				this.app.appName
 			}/_mapping/${type}?ignore_conflicts=true&update_all_types=true`,
 			dataType: 'json',
@@ -88,7 +89,7 @@ class DataOperation {
 			finalData.push(record);
 		});
 		const appbaseRef = new Appbase({
-			url: 'https://scalr.api.appbase.io',
+			url: SCALR_API,
 			appname: this.app.appName,
 			username: this.app.username,
 			password: this.app.password,

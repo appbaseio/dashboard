@@ -113,8 +113,12 @@ class MainApp extends React.Component {
 
 	login(provider) {
 		localStorage.setItem('reload', false);
+<<<<<<< HEAD
 		const baseURL = `${window.location.protocol}//${window.location.host}/`;
 		const redirectTo = `${appbaseService.address}login/${provider}?next=${this.getNexturl()}`;
+=======
+		const redirectTo = `${appbaseService.address}/login/${provider}?next=${this.getNexturl()}`;
+>>>>>>> c0beef7... wire up API URLs usage properly
 		window.location.href = redirectTo;
 	}
 
