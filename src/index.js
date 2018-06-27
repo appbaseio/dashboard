@@ -27,6 +27,7 @@ export default class Main extends Component {
 	}
 
 	onGetUserSuccess(data) {
+		console.log('got the user');
 		dataOperation.updateUser(data.userInfo.body);
 		this.setState({
 			loggedIn: true,
@@ -38,6 +39,7 @@ export default class Main extends Component {
 	}
 
 	onGetUserCatch(e) {
+		console.log('no user found');
 		localStorage.setItem('ad-login', window.location.href);
 		this.setState({
 			loggedIn: false,
