@@ -52,6 +52,9 @@ const Importer = AsyncComponent(() => import('./views/importer').then(module => 
 const Clusters = AsyncComponent(() => import('./views/clusters').then(module => module.default), {
 	name: 'Clusters',
 });
+const NewCluster = AsyncComponent(() => import('./views/clusters/new').then(module => module.default), {
+	name: 'NewCluster',
+});
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
@@ -149,6 +152,7 @@ class MainApp extends React.Component {
 					<Route path="profile" component={UserInfo} />
 					<Route path="apps" component={AppList} />
 					<Route path="clusters" component={Clusters} />
+					<Route path="clusters/new" component={NewCluster} />
 					<Route
 						path="login"
 						component={() => (

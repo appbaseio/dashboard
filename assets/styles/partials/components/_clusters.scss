@@ -17,6 +17,46 @@
 		font-size: 16px;
 		line-height: 26px;
 	}
+
+	.region-container {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.region-list {
+		margin: 0;
+		padding: 0;
+		width: 270px;
+		list-style: none;
+
+		li {
+			cursor: pointer;
+			width: 240px;
+			height: 46px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding: 8px;
+			border: 1px solid #9196A1;
+			border-radius: 3px;
+			margin-bottom: 12px;
+			background-color: #fff;
+			transition: all .3s ease;
+
+			img {
+				width: 40px;
+				margin-right: 8px;
+			}
+
+			&:hover, &:focus {
+				background-color: #fafafa;
+			}
+
+			&.active {
+				border: 2px solid #4FEE4F;
+			}
+		}
+	}
 }
 
 .cluster-info {
@@ -80,7 +120,7 @@
 		}
 
 		input, select {
-			max-width: 500px;
+			max-width: 510px;
 			height: 42px;
 			padding: 5px 10px;
 		}
@@ -113,7 +153,7 @@
 	}
 
 	select {
-		max-width: 300px !important;
+		max-width: 310px !important;
 	}
 
 	label {
@@ -127,6 +167,41 @@
 			position: relative;
 			top: -1px;
 			margin-right: 8px;
+		}
+	}
+}
+
+.clusters-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	.cluster-card {
+		padding: 20px;
+		border-radius: 3px;
+		margin-bottom: 30px;
+		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
+		background-color: #fff;
+
+		.info-row {
+			display: flex;
+			flex-direction: row;
+
+			& > div {
+				flex: 1;
+				flex-direction: column;
+			}
+
+			h4 {
+				font-size: 13px;
+				font-weight: 600;
+				color: #999;
+				text-transform: uppercase;
+			}
+
+			button {
+				margin-top: 10px;
+			}
 		}
 	}
 }
