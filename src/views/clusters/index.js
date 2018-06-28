@@ -26,7 +26,10 @@ export default class Clusters extends Component {
 							<div className="info-row">
 								<div>
 									<h4>Region</h4>
-									<div>East US</div>
+									<div className="region-info">
+										<img src="/assets/images/flags/united-states.png" alt="US" />
+										<span>East US</span>
+									</div>
 								</div>
 
 								<div>
@@ -66,7 +69,10 @@ export default class Clusters extends Component {
 							<div className="info-row">
 								<div>
 									<h4>Region</h4>
-									<div>Canada</div>
+									<div className="region-info">
+										<img src="/assets/images/flags/canada.png" alt="CA" />
+										<span>Canada</span>
+									</div>
 								</div>
 
 								<div>
@@ -100,6 +106,13 @@ export default class Clusters extends Component {
 							</div>
 						</li>
 					</ul>
+
+					<div style={{ textAlign: 'center', margin: '40px 0' }}>
+						<button className="ad-theme-btn primary">
+							<i className="fas fa-plus" />&nbsp;
+							Create a New Cluster
+						</button>
+					</div>
 				</article>
 			</section>
 		);

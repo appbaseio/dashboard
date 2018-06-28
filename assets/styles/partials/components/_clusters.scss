@@ -192,6 +192,21 @@
 				flex-direction: column;
 			}
 
+			.region-info {
+				display: flex;
+				flex-direction: row;
+
+				img {
+					width: 40px;
+					height: 21px;
+					margin-right: 12px;
+				}
+
+				span {
+					font-weight: 600;
+				}
+			}
+
 			h4 {
 				font-size: 13px;
 				font-weight: 600;
