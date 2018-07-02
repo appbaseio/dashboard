@@ -1,26 +1,44 @@
 import React, { Component } from 'react';
+import { getClusters } from './utils';
 
 export default class Clusters extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			isLoading: true,
 			clustersAvailable: true,
+			clusters: [],
 		};
 	}
 
 	componentDidMount() {
-		// if no clusters found move to /new
+		getClusters()
+			.then((clusters) => {
+				this.setState({
+					clustersAvailable: !!clusters.length,
+					clusters,
+					isLoading: false,
+				});
+			})
+			.catch((e) => {
+				console.error(e);
+				this.setState({
+					isLoading: false,
+				});
+			});
 	}
 
 	render() {
+		if (this.state.isLoading) return 'Please Wait';
+		if (!this.state.isLoading && !this.state.clustersAvailable) return '14 day trial screen';
 		return (
 			<section className="cluster-container container">
 				<article>
 					<h2>My Clusters</h2>
 
 					<ul className="clusters-list">
-						<li className="cluster-card">
+						<li className="cluster-card compact">
 							<h3>Cluster A</h3>
 
 							<div className="info-row">
@@ -63,7 +81,7 @@ export default class Clusters extends Component {
 							</div>
 						</li>
 
-						<li className="cluster-card">
+						<li className="cluster-card compact">
 							<h3>Cluster B</h3>
 
 							<div className="info-row">

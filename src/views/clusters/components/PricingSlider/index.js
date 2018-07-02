@@ -5,7 +5,7 @@ import Slider from 'rc-slider/lib/Slider';
 export default class PricingSlider extends Component {
 	constructor(props) {
 		super(props);
-		const { marks } = props;
+		const marks = JSON.parse(JSON.stringify(props.marks));
 		let active = 0;
 
 		Object.keys(marks).forEach((key, index) => {
@@ -58,6 +58,7 @@ export default class PricingSlider extends Component {
 	onAfterChange = () => {
 		// snap to nearest value
 		this.setState({ value: this.state.active });
+		this.props.onChange(this.props.marks[this.state.active]);
 	};
 
 	render() {

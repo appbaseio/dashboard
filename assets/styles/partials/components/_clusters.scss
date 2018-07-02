@@ -1,6 +1,17 @@
 .cluster-container {
 	margin: 40px auto;
 
+	.tag {
+		background-color: #eee;
+		color: #333;
+		font-size: 13px;
+		font-weight: 400;
+		border-radius: 3px;
+		padding: 2px 8px;
+		margin: 0 12px;
+		border: 1px solid #ccc;
+	}
+
 	h2, h3 {
 		font-size: 18px;
 		font-weight: 600;
@@ -177,11 +188,19 @@
 	list-style: none;
 
 	.cluster-card {
-		padding: 20px;
+		padding: 30px 25px;
 		border-radius: 3px;
 		margin-bottom: 30px;
 		box-shadow: 0 3px 5px 0 rgba(0,0,0,0.05);
 		background-color: #fff;
+
+		&.compact {
+			padding: 20px;
+		}
+
+		h3 {
+			margin-bottom: 15px;
+		}
 
 		.info-row {
 			display: flex;
@@ -211,12 +230,94 @@
 				font-size: 13px;
 				font-weight: 600;
 				color: #999;
+				margin-top: 0;
 				text-transform: uppercase;
 			}
 
 			button {
 				margin-top: 10px;
 			}
+		}
+	}
+}
+
+.cluster-endpoint {
+	display: flex;
+	flex-direction: row;
+	margin: 12px 0 25px;
+
+	h4 {
+		color: #326BDC;
+		font-size: 16px;
+		font-weight: 600;
+		width: 180px;
+
+		i {
+			font-size: 14px;
+			margin-right: 6px;
+			position: relative;
+			top: -1px;
+		}
+	}
+}
+
+.creds-box {
+	display: inline-flex;
+	border-radius: 3px;
+	border: 1px solid #D9D8E4;
+	color: #555;
+
+	a {
+		cursor: pointer;
+	}
+
+	& > span {
+		padding: 6px 12px;
+		text-align: center;
+		display: inline-flex;
+		align-items: center;
+
+		a {
+			color: #888;
+			transition: all .3s ease;
+
+			&:hover, &:focus {
+				color: #666;
+			}
+		}
+
+		&:last-child {
+			padding: 0;
+			border-left: 1px solid #D9D8E4;
+		}
+
+		& > a {
+			padding: 6px 12px;
+		}
+
+		span {
+			border-left: 1px solid #D9D8E4;
+			padding: 6px 12px;
+		}
+	}
+}
+
+.invoice-table {
+	width: 100%;
+	margin: 20px 20px 30px;
+
+	tr {
+		display: flex;
+		flex-direction: row;
+		border-bottom: 1px solid #eee;
+
+		& > * {
+			flex: 1;
+			padding: 20px 10px;
+		}
+
+		&:first-child, &:last-child {
+			border: 0;
 		}
 	}
 }
