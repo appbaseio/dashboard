@@ -3,6 +3,14 @@ import { Link } from 'react-router';
 import { getClusters } from './utils';
 import { machineMarks } from './new';
 
+const regions = {
+	eastus: { name: 'East US', flag: 'united-states.png' },
+	centralus: { name: 'East US', flag: 'united-states.png' },
+	westeurope: { name: 'West Europe', flag: 'europe.png' },
+	canadacentral: { name: 'Canada Central', flag: 'canada.png' },
+	canadaeast: { name: 'Canada East', flag: 'canada.png' },
+};
+
 export default class Clusters extends Component {
 	constructor(props) {
 		super(props);
@@ -50,16 +58,55 @@ export default class Clusters extends Component {
 			});
 	}
 
-	renderClusterRegion = () => (
-		<div className="region-info">
-			<img src="/assets/images/flags/united-states.png" alt="US" />
-			<span>East US</span>
-		</div>
-	);
+	renderClusterRegion = (region) => {
+		if (!region) return null;
+
+		const { name, flag } = regions[region];
+		return (
+			<div className="region-info">
+				<img src={`/assets/images/flags/${flag}`} alt="US" />
+				<span>{name}</span>
+			</div>
+		);
+	}
 
 	render() {
-		if (this.state.isLoading) return 'Please Wait';
-		if (!this.state.isLoading && !this.state.clustersAvailable) return '14 day trial screen';
+		const vcenter = {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 'calc(100vh - 200px)',
+			width: '100%',
+			fontSize: '20px',
+		};
+
+		if (this.state.isLoading) {
+			return (
+				<div style={vcenter}>
+					Loading clusters...
+				</div>
+			);
+		}
+
+		if (!this.state.isLoading && !this.state.clustersAvailable) {
+			return (
+				<div style={vcenter}>
+					<i className="fas fa-gift" style={{ fontSize: 36 }} />
+					<h2 style={{ fontSize: 22 }}>You{"'"}ve unlocked 14 days free trial</h2>
+					<p style={{ margin: '15px 0 20px', fontSize: 16 }}>Get started with clusters today</p>
+					<div style={{ textAlign: 'center' }}>
+						<Link to="/clusters/new">
+							<button className="ad-theme-btn primary">
+								<i className="fas fa-plus" />&nbsp;
+								Create a New Cluster
+							</button>
+						</Link>
+					</div>
+				</div>
+			);
+		}
+
 		return (
 			<section className="cluster-container container">
 				<article>
@@ -67,24 +114,24 @@ export default class Clusters extends Component {
 
 					<ul className="clusters-list">
 						{
-							this.state.clusters.map((cluster, index) => (
+							this.state.clusters.map(cluster => (
 								<li key={cluster.name} className="cluster-card compact">
 									<h3>{cluster.name} <span className="tag">{cluster.status}</span></h3>
 
 									<div className="info-row">
 										<div>
 											<h4>Region</h4>
-											{this.renderClusterRegion()}
+											{this.renderClusterRegion(cluster.region)}
 										</div>
 
 										<div>
 											<h4>Pricing Plan</h4>
-											<div>{this.state.clusters[index].pricing_plan}</div>
+											<div>{cluster.pricing_plan}</div>
 										</div>
 
 										<div>
 											<h4>ES Version</h4>
-											<div>{this.state.clusters[index].es_version}</div>
+											<div>{cluster.es_version}</div>
 										</div>
 
 										<div>
@@ -92,7 +139,7 @@ export default class Clusters extends Component {
 											<div>
 												{
 													this.getFromPricing(
-														this.state.clusters[index].pricing_plan,
+														cluster.pricing_plan,
 														'memory',
 													)
 												}
@@ -104,7 +151,7 @@ export default class Clusters extends Component {
 											<div>
 												{
 													this.getFromPricing(
-														this.state.clusters[index].pricing_plan,
+														cluster.pricing_plan,
 														'disk',
 													)
 												}
@@ -113,63 +160,22 @@ export default class Clusters extends Component {
 
 										<div>
 											<h4>Nodes</h4>
-											<div>{this.state.clusters[index].total_nodes}</div>
+											<div>{cluster.total_nodes}</div>
 										</div>
 
 										<div>
-											<button
-												className="ad-theme-btn primary"
-											>
-												View Details
-											</button>
+											<Link to={`/clusters/${cluster.id}`}>
+												<button
+													className="ad-theme-btn primary"
+												>
+													View Details
+												</button>
+											</Link>
 										</div>
 									</div>
 								</li>
 							))
 						}
-
-						<li className="cluster-card compact">
-							<h3>Cluster B</h3>
-
-							<div className="info-row">
-								<div>
-									<h4>Region</h4>
-									<div className="region-info">
-										<img src="/assets/images/flags/canada.png" alt="CA" />
-										<span>Canada</span>
-									</div>
-								</div>
-
-								<div>
-									<h4>Pricing Plan</h4>
-									<div>Production II</div>
-								</div>
-
-								<div>
-									<h4>ES Version</h4>
-									<div>5.6.3</div>
-								</div>
-
-								<div>
-									<h4>Memory</h4>
-									<div>16 GB</div>
-								</div>
-
-								<div>
-									<h4>Disk Size</h4>
-									<div>500 GB</div>
-								</div>
-
-								<div>
-									<h4>Nodes</h4>
-									<div>5</div>
-								</div>
-
-								<div>
-									<button className="ad-theme-btn primary">View Details</button>
-								</div>
-							</div>
-						</li>
 					</ul>
 
 					<div style={{ textAlign: 'center', margin: '40px 0' }}>
