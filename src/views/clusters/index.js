@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { getClusters } from './utils';
 import { machineMarks } from './new';
 
-const regions = {
+export const regions = {
 	eastus: { name: 'East US', flag: 'united-states.png' },
 	centralus: { name: 'East US', flag: 'united-states.png' },
 	westeurope: { name: 'West Europe', flag: 'europe.png' },

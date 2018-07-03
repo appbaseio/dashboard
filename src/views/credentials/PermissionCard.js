@@ -67,9 +67,7 @@ export default class PermissionCard extends Component {
 	ccSuccess() {
 		toastr.success(`${this.state.description} Credentials have been copied successully!`);
 		if (this.state.keyType === 'admin') {
-			toastr.warning(
-				'The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.',
-			);
+			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.' );
 		}
 	}
 	ccError() {
@@ -86,17 +84,17 @@ export default class PermissionCard extends Component {
 	applyChange() {
 		appbaseService
 			.updatePermission(this.props.appId, this.props.permissionInfo.username, this.state)
-			.then(data => {
+			.then((data) => {
 				console.log(data);
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.log(e);
 			});
 	}
 	updatDescription(description) {
 		this.setState(
 			{
-				description: description,
+				description,
 			},
 			this.applyChange,
 		);
@@ -104,10 +102,10 @@ export default class PermissionCard extends Component {
 	deletePermission() {
 		appbaseService
 			.deletePermission(this.props.appId, this.props.permissionInfo.username)
-			.then(data => {
+			.then((data) => {
 				this.props.getInfo();
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.log(e);
 			});
 	}
@@ -169,7 +167,7 @@ export default class PermissionCard extends Component {
 										className="ad-credential-btn ad-permission-key-copy-btn"
 										data-clipboard-text={this.state.credentials}
 									>
-										<i className={`far fa-clone`} />
+										<i className="far fa-clone" />
 									</a>
 								</CopyToClipboard>
 							</div>

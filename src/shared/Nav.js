@@ -212,6 +212,9 @@ export default class Nav extends Component {
 					if (item.type === 'internal') {
 						anchor = <Link to={item.link}>{item.label}</Link>;
 					}
+					if (this.state.activeParentView === 'Clusters' && item.label === 'Billing') {
+						anchor = <Link to="/clusters/billing">Billing</Link>;
+					}
 					if (item.label === 'Tutorial' && !appbaseService.userInfo) {
 						return null;
 					}

@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { getClusterData } from './utils';
+import { regions } from './index';
+import { machineMarks } from './new';
+
 import CopyToClipboard from '../../shared/CopyToClipboard';
 
 export default class Clusters extends Component {
@@ -6,54 +10,165 @@ export default class Clusters extends Component {
 		super(props);
 
 		this.state = {
-			clustersAvailable: true,
+			cluster: null,
+			deployment: null,
 		};
 	}
 
 	componentDidMount() {
-		// if no clusters found move to /new
+		this.init();
+	}
+
+	getFromPricing = (plan, key) => {
+		const selectedPlan = Object.values(machineMarks)
+			.find(item => item.label === plan);
+
+		return (selectedPlan ? selectedPlan[key] : '-') || '-';
+	}
+
+	init = () => {
+		getClusterData(this.props.routeParams.id)
+			.then((res) => {
+				const { cluster, deployment } = res;
+				this.setState({
+					cluster,
+					deployment,
+				});
+
+				if (cluster.status === 'In progress') {
+					setTimeout(this.init, 30000);
+				}
+			});
+	}
+
+	copySuccess = (source) => {
+		// eslint-disable-next-line
+		toastr.success(`${source} credentials have been copied successully!`);
+	}
+
+	copyError = () => {
+		// eslint-disable-next-line
+		toastr.error('Error', e);
+	}
+
+	renderClusterRegion = (region) => {
+		if (!region) return null;
+
+		const { name, flag } = regions[region];
+		return (
+			<div className="region-info">
+				<img src={`/assets/images/flags/${flag}`} alt="US" />
+				<span>{name}</span>
+			</div>
+		);
+	}
+
+	renderClusterEndpoint = (source) => {
+		if (Object.keys(source).length) {
+			return (
+				<div className="cluster-endpoint">
+					<h4>
+						<a href={source.url} target="_blank" rel="noopener noreferrer">
+							<i className="fas fa-external-link-alt" />
+							{source.name}
+						</a>
+					</h4>
+					<div className="creds-box">
+						<span>
+							####################################
+						</span>
+						<span>
+							<a>
+								<i className="fas fa-eye" />
+							</a>
+							<CopyToClipboard
+								type="danger"
+								onSuccess={() => this.copySuccess(source.name)}
+								onError={() => this.copyError(source.name)}
+							>
+								<a data-clipboard-text={`${source.username}:${source.password}`}>
+									<i className="far fa-clone" />
+								</a>
+							</CopyToClipboard>
+						</span>
+					</div>
+				</div>
+			);
+		}
+
+		return null;
 	}
 
 	render() {
+		const vcenter = {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: 'calc(100vh - 200px)',
+			width: '100%',
+			fontSize: '20px',
+		};
+
+		if (!this.state.cluster) {
+			return (
+				<div style={vcenter}>
+					Loading cluster data...
+				</div>
+			);
+		}
+
 		return (
 			<section className="cluster-container container">
 				<article>
-					<h2>Cluster A <span className="tag">Version 6.2.4</span></h2>
+					<h2>{this.state.cluster.name} <span className="tag">{this.state.cluster.status}</span></h2>
 
 					<ul className="clusters-list">
-						<li className="cluster-card">
+						<li key={this.state.cluster.name} className="cluster-card compact">
+
 							<div className="info-row">
 								<div>
 									<h4>Region</h4>
-									<div className="region-info">
-										<img src="/assets/images/flags/united-states.png" alt="US" />
-										<span>East US</span>
-									</div>
+									{this.renderClusterRegion(this.state.cluster.region)}
 								</div>
 
 								<div>
 									<h4>Pricing Plan</h4>
-									<div>Hobby</div>
+									<div>{this.state.cluster.pricing_plan}</div>
 								</div>
 
 								<div>
 									<h4>ES Version</h4>
-									<div>6.2.4</div>
+									<div>{this.state.cluster.es_version}</div>
 								</div>
 
 								<div>
 									<h4>Memory</h4>
-									<div>8 GB</div>
+									<div>
+										{
+											this.getFromPricing(
+												this.state.cluster.pricing_plan,
+												'memory',
+											)
+										}
+									</div>
 								</div>
 
 								<div>
 									<h4>Disk Size</h4>
-									<div>240 GB</div>
+									<div>
+										{
+											this.getFromPricing(
+												this.state.cluster.pricing_plan,
+												'disk',
+											)
+										}
+									</div>
 								</div>
 
 								<div>
 									<h4>Nodes</h4>
-									<div>3</div>
+									<div>{this.state.cluster.total_nodes}</div>
 								</div>
 							</div>
 						</li>
@@ -65,121 +180,15 @@ export default class Clusters extends Component {
 							</div>
 
 							<div className="col">
-								<div className="cluster-endpoint">
-									<h4>
-										<a href="#">
-											<i className="fas fa-external-link-alt" />
-											Elasticsearch
-										</a>
-									</h4>
-									<div className="creds-box">
-										<span>
-											####################################
-										</span>
-										<span>
-											<a>
-												<i className="fas fa-eye" />
-											</a>
-											<CopyToClipboard
-												type="danger"
-												onSuccess={() => {}}
-												onError={() => {}}
-											>
-												<a data-clipboard-text="yolo">
-													<i className="far fa-clone" />
-												</a>
-											</CopyToClipboard>
-										</span>
-									</div>
-								</div>
-
-								<div className="cluster-endpoint">
-									<h4>
-										<a href="#">
-											<i className="fas fa-external-link-alt" />
-											Kibana
-										</a>
-									</h4>
-									<div className="creds-box">
-										<span>
-											####################################
-										</span>
-										<span>
-											<a>
-												<i className="fas fa-eye" />
-											</a>
-											<CopyToClipboard
-												type="danger"
-												onSuccess={() => {}}
-												onError={() => {}}
-											>
-												<a data-clipboard-text="yolo">
-													<i className="far fa-clone" />
-												</a>
-											</CopyToClipboard>
-										</span>
-									</div>
-								</div>
-
-								<div className="cluster-endpoint">
-									<h4>
-										<a href="#">
-											<i className="fas fa-external-link-alt" />
-											Logstash
-										</a>
-									</h4>
-									<div className="creds-box">
-										<span>
-											####################################
-										</span>
-										<span>
-											<a>
-												<i className="fas fa-eye" />
-											</a>
-											<CopyToClipboard
-												type="danger"
-												onSuccess={() => {}}
-												onError={() => {}}
-											>
-												<a data-clipboard-text="yolo">
-													<i className="far fa-clone" />
-												</a>
-											</CopyToClipboard>
-										</span>
-									</div>
-								</div>
-
-								<div className="cluster-endpoint">
-									<h4>
-										<a href="#">
-											<i className="fas fa-external-link-alt" />
-											Dejavu
-										</a>
-									</h4>
-									<div className="creds-box">
-										<span>
-											####################################
-										</span>
-										<span>
-											<a>
-												<i className="fas fa-eye" />
-											</a>
-											<CopyToClipboard
-												type="danger"
-												onSuccess={() => {}}
-												onError={() => {}}
-											>
-												<a data-clipboard-text="yolo">
-													<i className="far fa-clone" />
-												</a>
-											</CopyToClipboard>
-										</span>
-									</div>
-								</div>
+								{
+									Object.keys(this.state.deployment)
+										.filter(item => item !== 'addons')
+										.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
+								}
 							</div>
 						</li>
 
-						<li className="card">
+						{/* <li className="card">
 							<div className="col light">
 								<h3>Active pricing plan</h3>
 								<p>Production II</p>
@@ -281,7 +290,7 @@ export default class Clusters extends Component {
 									</tr>
 								</tbody>
 							</table>
-						</li>
+						</li> */}
 					</ul>
 
 				</article>

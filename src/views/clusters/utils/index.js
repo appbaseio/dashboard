@@ -19,25 +19,23 @@ export function getClusters() {
 	});
 }
 
-export function getClustersData(clusters) {
-	const promises = clusters.map(cluster => new Promise((resolve, reject) => {
-			fetch(`${ACC_API}/v1/_status/${cluster.id}`, {
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+export function getClusterData(id) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_status/${id}`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(res => res.json())
+			.then((data) => {
+				resolve(data);
 			})
-				.then(res => res.json())
-				.then((data) => {
-					resolve(data);
-				})
-				.catch((e) => {
-					reject(e);
-				});
-		}));
-
-	return Promise.all(promises);
+			.catch((e) => {
+				reject(e);
+			});
+	});
 }
 
 export function deployCluster(cluster) {
