@@ -17,7 +17,7 @@ const esVersions = [
 	'5.2.1',
 ];
 
-const machineMarks = {
+export const machineMarks = {
 	0: {
 		label: 'Sandbox',
 		storage: 30,
@@ -67,6 +67,7 @@ export default class NewCluster extends Component {
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
+			pricing_plan: machineMarks[0].label,
 			vm_size: machineMarks[0].machine,
 			region: 'eastus',
 			kibana: false,
@@ -80,6 +81,13 @@ export default class NewCluster extends Component {
 	setConfig = (type, value) => {
 		this.setState({
 			[type]: value,
+		});
+	}
+
+	setPricing = (plan) => {
+		this.setState({
+			vm_size: plan.machine,
+			pricing_plan: plan.label,
 		});
 	}
 
@@ -105,6 +113,7 @@ export default class NewCluster extends Component {
 				name: this.state.clusterName,
 				location: this.state.region,
 				vm_size: this.state.vm_size,
+				pricing_plan: this.state.pricing_plan,
 				ssh_public_key: SSH_KEY,
 			},
 		};
@@ -182,7 +191,7 @@ export default class NewCluster extends Component {
 
 						<PricingSlider
 							marks={machineMarks}
-							onChange={selected => this.setConfig('vm_size', selected.machine)}
+							onChange={this.setPricing}
 						/>
 					</div>
 

@@ -2,7 +2,6 @@ import { ACC_API } from '../../../../config';
 
 export function getClusters() {
 	return new Promise((resolve, reject) => {
-		console.log(ACC_API);
 		fetch(`${ACC_API}/v1/clusters`, {
 			method: 'GET',
 			credentials: 'include',
@@ -18,6 +17,27 @@ export function getClusters() {
 				reject(e);
 			});
 	});
+}
+
+export function getClustersData(clusters) {
+	const promises = clusters.map(cluster => new Promise((resolve, reject) => {
+			fetch(`${ACC_API}/v1/_status/${cluster.id}`, {
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(res => res.json())
+				.then((data) => {
+					resolve(data);
+				})
+				.catch((e) => {
+					reject(e);
+				});
+		}));
+
+	return Promise.all(promises);
 }
 
 export function deployCluster(cluster) {
