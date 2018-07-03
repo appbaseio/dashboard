@@ -98,7 +98,22 @@ export default class NewCluster extends Component {
 		}));
 	}
 
+	validateClusterName = () => {
+		const { clusterName } = this.state;
+		const pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+
+		return pattern.test(clusterName);
+	}
+
 	createCluster = () => {
+		if (!this.validateClusterName()) {
+			this.setState({
+				error: 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.',
+			});
+			document.getElementById('cluster-name').focus();
+			return;
+		}
+
 		const selectedMachine = Object.values(machineMarks)
 			.find(item => item.machine === this.state.vm_size);
 
@@ -250,6 +265,7 @@ export default class NewCluster extends Component {
 						</div>
 						<div className="col grow vcenter">
 							<input
+								id="cluster-name"
 								type="name"
 								className="form-control"
 								placeholder="Enter your cluster name"
@@ -377,6 +393,11 @@ export default class NewCluster extends Component {
 					</div>
 
 					<div style={{ textAlign: 'right', marginBottom: 40 }}>
+						{
+							this.state.error
+								? <p style={{ color: 'tomato', margin: '20px 0' }}>{this.state.error}</p>
+								: null
+						}
 						<button className="ad-theme-btn primary" onClick={this.createCluster}>
 							Create Cluster &nbsp; &nbsp;
 							<i className="fas fa-arrow-right" />
