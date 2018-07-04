@@ -38,10 +38,10 @@ export function getClusterData(id) {
 	});
 }
 
-export function deployCluster(cluster) {
+export function deployCluster(cluster, id) {
 	const body = JSON.stringify(cluster);
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/_deploy`, {
+		fetch(`${ACC_API}/v1/_deploy${id ? `/${id}` : ''}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {

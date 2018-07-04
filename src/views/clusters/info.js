@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { getClusterData } from './utils';
+import { browserHistory } from 'react-router';
+import { getClusterData, deployCluster } from './utils';
 import { regions } from './index';
 import { machineMarks } from './new';
 
@@ -12,6 +13,10 @@ export default class Clusters extends Component {
 		this.state = {
 			cluster: null,
 			deployment: null,
+			kibana: false,
+			logstash: false,
+			elasticsearch: false,
+			mirage: false,
 		};
 	}
 
@@ -26,6 +31,12 @@ export default class Clusters extends Component {
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	}
 
+	setConfig = (type, value) => {
+		this.setState({
+			[type]: value,
+		});
+	}
+
 	init = () => {
 		getClusterData(this.props.routeParams.id)
 			.then((res) => {
@@ -33,6 +44,18 @@ export default class Clusters extends Component {
 				this.setState({
 					cluster,
 					deployment,
+					kibana: deployment.kibana
+						? !!Object.keys(deployment.kibana).length
+						: false,
+					logstash: deployment.logstash
+						? !!Object.keys(deployment.logstash).length
+						: false,
+					elasticsearch: deployment.elasticsearch
+						? !!Object.keys(deployment.elasticsearch).length
+						: false,
+					mirage: deployment.mirage
+						? !!Object.keys(deployment.mirage).length
+						: false,
 				});
 
 				if (cluster.status === 'In progress') {
@@ -51,6 +74,76 @@ export default class Clusters extends Component {
 		toastr.error('Error', e);
 	}
 
+	toggleConfig = (type) => {
+		this.setState(state => ({
+			...state,
+			[type]: !state[type],
+		}));
+	}
+
+	saveClusterSettings = () => {
+		const body = {};
+
+		if (this.state.kibana) {
+			body.kibana = {
+				create_node: false,
+				version: this.state.cluster.es_version,
+			};
+		}
+
+		if (this.state.logstash) {
+			body.logstash = {
+				create_node: false,
+				version: this.state.cluster.es_version,
+			};
+		}
+
+		if (this.state.dejavu) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'dejavu',
+					image: 'appbaseio/dejavu:1.5.0',
+					exposed_port: 1358,
+				},
+			];
+		}
+
+		if (this.state.mirage) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'mirage',
+					image: 'appbaseio/mirage:0.8.0',
+					exposed_port: 3030,
+				},
+			];
+		}
+
+		if (this.state.elasticsearch) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'elasticsearch-hq',
+					image: 'elastichq/elasticsearch-hq:release-v3.4.0',
+					exposed_port: 5000,
+				},
+			];
+		}
+
+		deployCluster(body, this.props.routeParams.id)
+			.then(() => {
+				browserHistory.push('/clusters');
+			})
+			.catch((e) => {
+				// TODO: handle errror
+				console.log('error', e);
+			});
+	}
+
 	renderClusterRegion = (region) => {
 		if (!region) return null;
 
@@ -66,7 +159,7 @@ export default class Clusters extends Component {
 	renderClusterEndpoint = (source) => {
 		if (Object.keys(source).length) {
 			return (
-				<div className="cluster-endpoint">
+				<div key={source.name} className="cluster-endpoint">
 					<h4>
 						<a href={source.url} target="_blank" rel="noopener noreferrer">
 							<i className="fas fa-external-link-alt" />
@@ -188,110 +281,110 @@ export default class Clusters extends Component {
 							</div>
 						</li>
 
-						{/* <li className="card">
+						<li className="card">
 							<div className="col light">
-								<h3>Active pricing plan</h3>
-								<p>Production II</p>
+								<h3>Edit Cluster Settings</h3>
+								<p>Customise as per your needs</p>
 							</div>
-
-							<div className="col grey" style={{ width: 350 }}>
-								<div className="cluster-info">
-									<div className="cluster-info__item">
-										<div>
-											10 GB
-										</div>
-										<div>Storage (SSD)</div>
-									</div>
-									<div className="cluster-info__item">
-										<div>
-											120 GB
-										</div>
-										<div>Memory</div>
-									</div>
-									<div className="cluster-info__item">
-										<div>
-											3 Nodes
-										</div>
-										<div>HA</div>
-									</div>
-								</div>
-								<div className="cluster-info">
-									<div>
-										<div className="price">
-											<span>$</span>
-											299 /mo
-										</div>
-										<h3>Estimated Cost</h3>
-									</div>
-								</div>
-							</div>
-
 							<div className="col grow">
-								<h3>Usage this month</h3>
-								<p style={{ fontSize: 13, fontWeight: 600, color: '#999' }}>Billing period: June 1 - June 30, 2018</p>
+								<div className="settings-item">
+									<h4>Kibana</h4>
+									<div className="form-check">
+										<label htmlFor="yes">
+											<input
+												type="radio"
+												name="kibana"
+												defaultChecked={this.state.kibana}
+												id="yes"
+												onChange={() => this.setConfig('kibana', true)}
+											/>
+											Yes
+										</label>
 
-								<br />
-
-								<div className="cluster-info">
-									<div>
-										<div className="price">
-											<span>$</span>
-											56.50
-										</div>
-										<h3>Payment Due</h3>
+										<label htmlFor="no">
+											<input
+												type="radio"
+												name="kibana"
+												defaultChecked={!this.state.kibana}
+												id="no"
+												onChange={() => this.setConfig('kibana', false)}
+											/>
+											No
+										</label>
 									</div>
 								</div>
 
-								<br />
-								<div style={{ textAlign: 'right' }}>
-									<button className="ad-theme-btn primary">Pay Now</button>
-									<button className="ad-theme-btn">View Details</button>
+								<div className="settings-item">
+									<h4>Logstash</h4>
+									<div className="form-check">
+										<label htmlFor="yes2">
+											<input
+												type="radio"
+												name="logstash"
+												defaultChecked={this.state.logstash}
+												id="yes2"
+												onChange={() => this.setConfig('logstash', true)}
+											/>
+											Yes
+										</label>
+
+										<label htmlFor="no2">
+											<input
+												type="radio"
+												name="logstash"
+												defaultChecked={!this.state.logstash}
+												id="no2"
+												onChange={() => this.setConfig('logstash', false)}
+											/>
+											No
+										</label>
+									</div>
+								</div>
+
+								<div className="settings-item">
+									<h4>Add-ons</h4>
+									<div className="form-check">
+										<label htmlFor="dejavu">
+											<input
+												type="checkbox"
+												defaultChecked={this.state.dejavu}
+												id="dejavu"
+												onChange={() => this.toggleConfig('dejavu')}
+											/>
+											Dejavu
+										</label>
+
+										<label htmlFor="elasticsearch">
+											<input
+												type="checkbox"
+												defaultChecked={this.state.elasticsearch}
+												id="elasticsearch"
+												onChange={() => this.toggleConfig('elasticsearch')}
+											/>
+											Elasticsearch-HQ
+										</label>
+
+										<label htmlFor="mirage">
+											<input
+												type="checkbox"
+												defaultChecked={this.state.mirage}
+												id="mirage"
+												onChange={() => this.toggleConfig('mirage')}
+											/>
+											Mirage
+										</label>
+									</div>
 								</div>
 							</div>
 						</li>
-
-						<li className="card">
-							<div className="col light">
-								<h3>Invoices</h3>
-								<p>For book-keeping</p>
-							</div>
-
-							<table className="invoice-table">
-								<tbody>
-									<tr>
-										<th>Invoice-number</th>
-										<th>Month</th>
-										<th>Status</th>
-										<th />
-									</tr>
-									<tr>
-										<td>20983</td>
-										<td>March, 2018</td>
-										<td>Paid</td>
-										<td><a href="#">Download</a></td>
-									</tr>
-									<tr>
-										<td>20983</td>
-										<td>March, 2018</td>
-										<td>Paid</td>
-										<td><a href="#">Download</a></td>
-									</tr>
-									<tr>
-										<td>20983</td>
-										<td>March, 2018</td>
-										<td>Paid</td>
-										<td><a href="#">Download</a></td>
-									</tr>
-									<tr>
-										<td>20983</td>
-										<td>March, 2018</td>
-										<td>Paid</td>
-										<td><a href="#">Download</a></td>
-									</tr>
-								</tbody>
-							</table>
-						</li> */}
 					</ul>
+
+					<div style={{ textAlign: 'right', marginBottom: 40 }}>
+						<button className="ad-theme-btn primary" onClick={this.saveClusterSettings}>
+							Save Cluster Settings &nbsp; &nbsp;
+							<i className="fas fa-arrow-right" />
+						</button>
+					</div>
 
 				</article>
 			</section>
