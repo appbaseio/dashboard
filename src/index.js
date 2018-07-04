@@ -42,7 +42,7 @@ export default class Main extends Component {
 
 	redirectToPath() {
 		if (Object.keys(appbaseService.userInfo.body.apps).length === 0) {
-			appbaseService.pushUrl('/onboarding');
+			appbaseService.pushUrl('/tutorial');
 		} else if (
 			window.location.pathname === '/apps' ||
 			window.location.pathname === appbaseService.getContextPath() ||
