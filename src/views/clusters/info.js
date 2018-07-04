@@ -40,6 +40,7 @@ export default class Clusters extends Component {
 	init = () => {
 		getClusterData(this.props.routeParams.id)
 			.then((res) => {
+				this.originalCluster = res;
 				const { cluster, deployment } = res;
 				this.setState({
 					cluster,
@@ -58,7 +59,7 @@ export default class Clusters extends Component {
 						: false,
 				});
 
-				if (cluster.status === 'In progress') {
+				if (cluster.status === 'in progress') {
 					setTimeout(this.init, 30000);
 				}
 			});
@@ -81,24 +82,35 @@ export default class Clusters extends Component {
 		}));
 	}
 
-	saveClusterSettings = () => {
-		const body = {};
+	includedInOriginal = (key) => {
+		const original = this.originalCluster.deployment;
+		return original[key] ? !!Object.keys(original[key]).length : false;
+	}
 
-		if (this.state.kibana) {
+	saveClusterSettings = () => {
+		const body = {
+			remove_deployments: [],
+		};
+
+		if (this.state.kibana && !this.includedInOriginal('kibana')) {
 			body.kibana = {
 				create_node: false,
 				version: this.state.cluster.es_version,
 			};
+		} else if (!this.state.kibana && this.includedInOriginal('kibana')) {
+			body.remove_deployments = [...body.remove_deployments, 'kibana'];
 		}
 
-		if (this.state.logstash) {
+		if (this.state.logstash && !this.includedInOriginal('logstash')) {
 			body.logstash = {
 				create_node: false,
 				version: this.state.cluster.es_version,
 			};
+		} else if (!this.state.logstash && this.includedInOriginal('logstash')) {
+			body.remove_deployments = [...body.remove_deployments, 'logstash'];
 		}
 
-		if (this.state.dejavu) {
+		if (this.state.dejavu && !this.includedInOriginal('dejavu')) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
@@ -108,9 +120,11 @@ export default class Clusters extends Component {
 					exposed_port: 1358,
 				},
 			];
+		} else if (!this.state.dejavu && this.includedInOriginal('dejavu')) {
+			body.remove_deployments = [...body.remove_deployments, 'dejavu'];
 		}
 
-		if (this.state.mirage) {
+		if (this.state.mirage && !this.includedInOriginal('mirage')) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
@@ -120,9 +134,11 @@ export default class Clusters extends Component {
 					exposed_port: 3030,
 				},
 			];
+		} else if (!this.state.mirage && this.includedInOriginal('mirage')) {
+			body.remove_deployments = [...body.remove_deployments, 'mirage'];
 		}
 
-		if (this.state.elasticsearch) {
+		if (this.state.elasticsearch && !this.includedInOriginal('elasticsearch')) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
@@ -132,6 +148,8 @@ export default class Clusters extends Component {
 					exposed_port: 5000,
 				},
 			];
+		} else if (!this.state.elasticsearch && this.includedInOriginal('elasticsearch')) {
+			body.remove_deployments = [...body.remove_deployments, 'elasticsearch'];
 		}
 
 		deployCluster(body, this.props.routeParams.id)
@@ -243,7 +261,7 @@ export default class Clusters extends Component {
 												this.state.cluster.pricing_plan,
 												'memory',
 											)
-										}
+										} GB
 									</div>
 								</div>
 
@@ -253,9 +271,9 @@ export default class Clusters extends Component {
 										{
 											this.getFromPricing(
 												this.state.cluster.pricing_plan,
-												'disk',
+												'storage',
 											)
-										}
+										} GB
 									</div>
 								</div>
 
@@ -266,126 +284,143 @@ export default class Clusters extends Component {
 							</div>
 						</li>
 
-						<li className="card">
-							<div className="col light">
-								<h3>Endpoints</h3>
-								<p>Plug-ins and Add-ons</p>
-							</div>
+						{
+							this.state.cluster.status === 'in progress'
+								? null
+								: (
+									<li className="card">
+										<div className="col light">
+											<h3>Endpoints</h3>
+											<p>Plug-ins and Add-ons</p>
+										</div>
 
-							<div className="col">
-								{
-									Object.keys(this.state.deployment)
-										.filter(item => item !== 'addons')
-										.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
-								}
-							</div>
-						</li>
+										<div className="col">
+											{
+												Object.keys(this.state.deployment)
+													.filter(item => item !== 'addons')
+													.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
+											}
+										</div>
+									</li>
+								)
+						}
 
-						<li className="card">
-							<div className="col light">
-								<h3>Edit Cluster Settings</h3>
-								<p>Customise as per your needs</p>
-							</div>
-							<div className="col grow">
-								<div className="settings-item">
-									<h4>Kibana</h4>
-									<div className="form-check">
-										<label htmlFor="yes">
-											<input
-												type="radio"
-												name="kibana"
-												defaultChecked={this.state.kibana}
-												id="yes"
-												onChange={() => this.setConfig('kibana', true)}
-											/>
-											Yes
-										</label>
+						{
+							this.state.cluster.status === 'in progress'
+								? null
+								: (
+									<li className="card">
+										<div className="col light">
+											<h3>Edit Cluster Settings</h3>
+											<p>Customise as per your needs</p>
+										</div>
+										<div className="col grow">
+											<div className="settings-item">
+												<h4>Kibana</h4>
+												<div className="form-check">
+													<label htmlFor="yes">
+														<input
+															type="radio"
+															name="kibana"
+															defaultChecked={this.state.kibana}
+															id="yes"
+															onChange={() => this.setConfig('kibana', true)}
+														/>
+														Yes
+													</label>
 
-										<label htmlFor="no">
-											<input
-												type="radio"
-												name="kibana"
-												defaultChecked={!this.state.kibana}
-												id="no"
-												onChange={() => this.setConfig('kibana', false)}
-											/>
-											No
-										</label>
-									</div>
-								</div>
+													<label htmlFor="no">
+														<input
+															type="radio"
+															name="kibana"
+															defaultChecked={!this.state.kibana}
+															id="no"
+															onChange={() => this.setConfig('kibana', false)}
+														/>
+														No
+													</label>
+												</div>
+											</div>
 
-								<div className="settings-item">
-									<h4>Logstash</h4>
-									<div className="form-check">
-										<label htmlFor="yes2">
-											<input
-												type="radio"
-												name="logstash"
-												defaultChecked={this.state.logstash}
-												id="yes2"
-												onChange={() => this.setConfig('logstash', true)}
-											/>
-											Yes
-										</label>
+											<div className="settings-item">
+												<h4>Logstash</h4>
+												<div className="form-check">
+													<label htmlFor="yes2">
+														<input
+															type="radio"
+															name="logstash"
+															defaultChecked={this.state.logstash}
+															id="yes2"
+															onChange={() => this.setConfig('logstash', true)}
+														/>
+														Yes
+													</label>
 
-										<label htmlFor="no2">
-											<input
-												type="radio"
-												name="logstash"
-												defaultChecked={!this.state.logstash}
-												id="no2"
-												onChange={() => this.setConfig('logstash', false)}
-											/>
-											No
-										</label>
-									</div>
-								</div>
+													<label htmlFor="no2">
+														<input
+															type="radio"
+															name="logstash"
+															defaultChecked={!this.state.logstash}
+															id="no2"
+															onChange={() => this.setConfig('logstash', false)}
+														/>
+														No
+													</label>
+												</div>
+											</div>
 
-								<div className="settings-item">
-									<h4>Add-ons</h4>
-									<div className="form-check">
-										<label htmlFor="dejavu">
-											<input
-												type="checkbox"
-												defaultChecked={this.state.dejavu}
-												id="dejavu"
-												onChange={() => this.toggleConfig('dejavu')}
-											/>
-											Dejavu
-										</label>
+											<div className="settings-item">
+												<h4>Add-ons</h4>
+												<div className="form-check">
+													<label htmlFor="dejavu">
+														<input
+															type="checkbox"
+															defaultChecked={this.state.dejavu}
+															id="dejavu"
+															onChange={() => this.toggleConfig('dejavu')}
+														/>
+														Dejavu
+													</label>
 
-										<label htmlFor="elasticsearch">
-											<input
-												type="checkbox"
-												defaultChecked={this.state.elasticsearch}
-												id="elasticsearch"
-												onChange={() => this.toggleConfig('elasticsearch')}
-											/>
-											Elasticsearch-HQ
-										</label>
+													<label htmlFor="elasticsearch">
+														<input
+															type="checkbox"
+															defaultChecked={this.state.elasticsearch}
+															id="elasticsearch"
+															onChange={() => this.toggleConfig('elasticsearch')}
+														/>
+														Elasticsearch-HQ
+													</label>
 
-										<label htmlFor="mirage">
-											<input
-												type="checkbox"
-												defaultChecked={this.state.mirage}
-												id="mirage"
-												onChange={() => this.toggleConfig('mirage')}
-											/>
-											Mirage
-										</label>
-									</div>
-								</div>
-							</div>
-						</li>
+													<label htmlFor="mirage">
+														<input
+															type="checkbox"
+															defaultChecked={this.state.mirage}
+															id="mirage"
+															onChange={() => this.toggleConfig('mirage')}
+														/>
+														Mirage
+													</label>
+												</div>
+											</div>
+										</div>
+									</li>
+								)
+						}
 					</ul>
 
-					<div style={{ textAlign: 'right', marginBottom: 40 }}>
-						<button className="ad-theme-btn primary" onClick={this.saveClusterSettings}>
-							Save Cluster Settings &nbsp; &nbsp;
-							<i className="fas fa-arrow-right" />
-						</button>
-					</div>
-
+					{
+						this.state.cluster.status === 'in progress'
+							? <p style={{ textAlign: 'center' }}>Deployment is in progress. Please wait.</p>
+							: (
+								<div style={{ textAlign: 'right', marginBottom: 40 }}>
+									<button className="ad-theme-btn primary" onClick={this.saveClusterSettings}>
+										Save Cluster Settings &nbsp; &nbsp;
+										<i className="fas fa-arrow-right" />
+									</button>
+								</div>
+							)
+					}
 				</article>
 			</section>
 		);

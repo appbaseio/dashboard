@@ -21,7 +21,7 @@ export const machineMarks = {
 	0: {
 		label: 'Sandbox',
 		storage: 30,
-		memory: 1,
+		memory: 1.75,
 		nodes: 1,
 		cost: 49,
 		machine: 'Basic_A1',
@@ -47,7 +47,7 @@ export const machineMarks = {
 		storage: 240,
 		memory: 8,
 		nodes: 3,
-		cost: 299,
+		cost: 399,
 		machine: 'Standard_B2ms',
 	},
 	100: {
@@ -55,7 +55,7 @@ export const machineMarks = {
 		storage: 512,
 		memory: 16,
 		nodes: 3,
-		cost: 499,
+		cost: 799,
 		machine: 'Standard_B4ms',
 	},
 };

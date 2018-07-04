@@ -43,7 +43,7 @@ export default class Clusters extends Component {
 				});
 
 				clusters.every((cluster) => {
-					if (cluster.status === 'In progress') {
+					if (cluster.status === 'in progress') {
 						setTimeout(this.initClusters, 30000);
 						return false;
 					}
@@ -142,7 +142,7 @@ export default class Clusters extends Component {
 														cluster.pricing_plan,
 														'memory',
 													)
-												}
+												} GB
 											</div>
 										</div>
 
@@ -152,9 +152,9 @@ export default class Clusters extends Component {
 												{
 													this.getFromPricing(
 														cluster.pricing_plan,
-														'disk',
+														'storage',
 													)
-												}
+												} GB
 											</div>
 										</div>
 
