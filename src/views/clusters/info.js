@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import { getClusterData, deployCluster } from './utils';
+import { getClusterData, deployCluster, deleteCluster } from './utils';
 import { regions } from './index';
 import { machineMarks } from './new';
 
@@ -85,6 +85,17 @@ export default class Clusters extends Component {
 	includedInOriginal = (key) => {
 		const original = this.originalCluster.deployment;
 		return original[key] ? !!Object.keys(original[key]).length : false;
+	}
+
+	deleteCluster = () => {
+		deleteCluster(this.props.routeParams.id)
+			.then(() => {
+				browserHistory.push('/clusters');
+			})
+			.catch((e) => {
+				// TODO: handle errror
+				console.log('error', e);
+			});
 	}
 
 	saveClusterSettings = () => {
@@ -232,7 +243,16 @@ export default class Clusters extends Component {
 		return (
 			<section className="cluster-container container">
 				<article>
-					<h2>{this.state.cluster.name} <span className="tag">{this.state.cluster.status}</span></h2>
+					<h2>
+						{this.state.cluster.name}
+						<span className="tag">
+							{
+								this.state.cluster.status === 'delInProg'
+									? 'Deletion in progress'
+									: this.state.cluster.status
+							}
+						</span>
+					</h2>
 
 					<ul className="clusters-list">
 						<li key={this.state.cluster.name} className="cluster-card compact">
@@ -414,6 +434,18 @@ export default class Clusters extends Component {
 							? <p style={{ textAlign: 'center' }}>Deployment is in progress. Please wait.</p>
 							: (
 								<div style={{ textAlign: 'right', marginBottom: 40 }}>
+									<button
+										className="ad-theme-btn"
+										onClick={this.deleteCluster}
+										style={{
+											marginRight: 12,
+											color: 'tomato',
+										}}
+									>
+										Delete Cluster &nbsp; &nbsp;
+										<i className="fas fa-trash-alt" />
+									</button>
+
 									<button className="ad-theme-btn primary" onClick={this.saveClusterSettings}>
 										Save Cluster Settings &nbsp; &nbsp;
 										<i className="fas fa-arrow-right" />

@@ -116,7 +116,16 @@ export default class Clusters extends Component {
 						{
 							this.state.clusters.map(cluster => (
 								<li key={cluster.name} className="cluster-card compact">
-									<h3>{cluster.name} <span className="tag">{cluster.status}</span></h3>
+									<h3>
+										{cluster.name}
+										<span className="tag">
+											{
+												cluster.status === 'delInProg'
+													? 'deletion in progress'
+													: cluster.status
+											}
+										</span>
+									</h3>
 
 									<div className="info-row">
 										<div>
