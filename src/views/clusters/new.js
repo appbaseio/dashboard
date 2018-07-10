@@ -24,7 +24,7 @@ export const machineMarks = {
 		memory: 1.75,
 		nodes: 1,
 		cost: 49,
-		machine: 'Basic_A1',
+		machine: 'Standard_A1',
 	},
 	25: {
 		label: 'Hobby',
