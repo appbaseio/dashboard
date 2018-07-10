@@ -42,25 +42,27 @@ export default class Clusters extends Component {
 			.then((res) => {
 				this.originalCluster = res;
 				const { cluster, deployment } = res;
-				this.setState({
-					cluster,
-					deployment,
-					kibana: deployment.kibana
-						? !!Object.keys(deployment.kibana).length
-						: false,
-					logstash: deployment.logstash
-						? !!Object.keys(deployment.logstash).length
-						: false,
-					elasticsearch: deployment.elasticsearch
-						? !!Object.keys(deployment.elasticsearch).length
-						: false,
-					mirage: deployment.mirage
-						? !!Object.keys(deployment.mirage).length
-						: false,
-				});
+				if (cluster && deployment) {
+					this.setState({
+						cluster,
+						deployment,
+						kibana: deployment.kibana
+							? !!Object.keys(deployment.kibana).length
+							: false,
+						logstash: deployment.logstash
+							? !!Object.keys(deployment.logstash).length
+							: false,
+						elasticsearch: deployment.elasticsearch
+							? !!Object.keys(deployment.elasticsearch).length
+							: false,
+						mirage: deployment.mirage
+							? !!Object.keys(deployment.mirage).length
+							: false,
+					});
 
-				if (cluster.status === 'in progress') {
-					setTimeout(this.init, 30000);
+					if (cluster.status === 'in progress') {
+						setTimeout(this.init, 30000);
+					}
 				}
 			});
 	}
@@ -303,6 +305,23 @@ export default class Clusters extends Component {
 								</div>
 							</div>
 						</li>
+
+						{
+							this.state.cluster.status === 'in progress'
+								? null
+								: (
+									<li className="card">
+										<div className="col light">
+											<h3>Dashboard</h3>
+											<p>Manage your cluster</p>
+										</div>
+
+										<div className="col">
+											{this.renderClusterEndpoint(this.state.cluster)}
+										</div>
+									</li>
+								)
+						}
 
 						{
 							this.state.cluster.status === 'in progress'
