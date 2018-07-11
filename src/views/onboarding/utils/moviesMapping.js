@@ -9,7 +9,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 					search: {
@@ -28,7 +28,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 				},
@@ -42,7 +42,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 					search: {
@@ -61,7 +61,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 					search: {
@@ -80,7 +80,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 				},
@@ -97,7 +97,7 @@ export default {
 						analyzer: 'autosuggest_analyzer',
 						search_analyzer: 'simple',
 					},
-					raw: {
+					keyword: {
 						type: 'keyword',
 					},
 					search: {
