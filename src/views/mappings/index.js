@@ -12,7 +12,7 @@ export default (props) => {
 	};
 
 	return (
-		<AppPage pageInfo={pageInfo}>
+		<AppPage pageInfo={pageInfo} key={appId}>
 			<div className="ad-detail-page ad-dashboard row" style={{ padding: '40px 0' }}>
 				{
 					React.Children.map(props.children, child =>
