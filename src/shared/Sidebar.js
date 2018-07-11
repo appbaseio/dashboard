@@ -31,15 +31,29 @@ export default class Sidebar extends Component {
 				),
 			},
 			{
-				label: 'Configurator',
-				link: `${this.contextPath}configurator/`,
+				label: 'Mappings',
+				link: `${this.contextPath}mappings/`,
 				type: 'internal',
-				name: 'configurator',
+				name: 'mappings',
+				tooltip: 'View or update mappings',
+				img: (
+					<img
+						className="img-responsive"
+						alt="mappings"
+						src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}
+					/>
+				),
+			},
+			{
+				label: 'Search Sandbox',
+				link: `${this.contextPath}search-sandbox/`,
+				type: 'internal',
+				name: 'search-sandbox',
 				tooltip: 'Update search preferences',
 				img: (
 					<img
 						className="img-responsive"
-						alt="configurator"
+						alt="search-sandbox"
 						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
 					/>
 				),
@@ -55,20 +69,6 @@ export default class Sidebar extends Component {
 						className="img-responsive"
 						alt="browser"
 						src={`../../../assets/images/${this.config.name}/sidebar/browser.svg`}
-					/>
-				),
-			},
-			{
-				label: 'Mappings',
-				link: `${this.contextPath}mappings/`,
-				type: 'internal',
-				name: 'gem',
-				tooltip: 'View app mappings',
-				img: (
-					<img
-						className="img-responsive mappings"
-						alt="mapping"
-						src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}
 					/>
 				),
 			},

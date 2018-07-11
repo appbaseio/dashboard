@@ -5,32 +5,20 @@ import { appbaseService } from '../../service/AppbaseService';
 
 const navLinks = [
 	{
-		label: 'Query Tester',
-		link: 'query-tester',
-	},
-	{
-		label: 'Manage Mappings',
-		link: 'manage-mappings',
-	},
-	{
-		label: 'Query Engine',
-		link: 'query-engine',
-	},
-	{
-		label: 'Display',
-		link: 'display',
-	},
-	{
-		label: 'Logs',
-		link: 'logs',
+		label: 'Editor',
+		link: 'editor',
 	},
 	{
 		label: 'UI Demos',
 		link: 'ui-demos',
 	},
+	{
+		label: 'Settings',
+		link: 'settings',
+	},
 ];
 
-export default class Configurator extends Component {
+export default class SearchSandbox extends Component {
 	constructor(props) {
 		super(props);
 
@@ -41,19 +29,19 @@ export default class Configurator extends Component {
 		const appName = this.props.params.appId;
 		const appId = appbaseService.userInfo.body.apps[appName];
 		this.pageInfo = {
-			currentView: 'configurator',
+			currentView: 'search-sandbox',
 			appName,
 			appId,
 		};
 		return (
 			<AppPage pageInfo={this.pageInfo}>
-				<div className="ad-detail-page ad-dashboard row configurator-wrapper">
+				<div className="ad-detail-page ad-dashboard row sandbox-wrapper">
 					<nav>
 						<ul>
 							{
 								navLinks.map(item => (
 									<li key={item.link}>
-										<Link activeClassName="active" to={`/configurator/${appName}/${item.link}`}>{item.label}</Link>
+										<Link activeClassName="active" to={`/search-sandbox/${appName}/${item.link}`}>{item.label}</Link>
 									</li>
 								))
 							}

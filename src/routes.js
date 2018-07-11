@@ -40,8 +40,14 @@ const Signup = AsyncComponent(() => import('./views/signup').then(module => modu
 const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
 	name: 'Browser',
 });
-const Configurator = AsyncComponent(() => import('./views/configurator').then(module => module.default), {
-	name: 'Configurator',
+const MappingsWrapper = AsyncComponent(() => import('./views/mappings').then(module => module.default), {
+	name: 'MappingsWrapper',
+});
+const Mappings = AsyncComponent(() => import('../modules/batteries/components/Mappings').then(module => module.default), {
+	name: 'Mappings',
+});
+const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
+	name: 'SearchSandbox',
 });
 const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
 	name: 'Mirage',
@@ -53,13 +59,9 @@ const Importer = AsyncComponent(() => import('./views/importer').then(module => 
 	name: 'Importer',
 });
 
-// configurator routes
-const QueryTester = AsyncComponent(() => import('./views/configurator/pages/QueryTester').then(module => module.default), {
-	name: 'QueryTester',
-});
-
-const Mapping = AsyncComponent(() => import('../modules/batteries/components/Mapping').then(module => module.default), {
-	name: 'Mapping',
+// SearchSandbox routes
+const SearchEditor = AsyncComponent(() => import('./views/search-sandbox/pages/Editor').then(module => module.default), {
+	name: 'SearchEditor',
 });
 
 const NotFound = () => {
@@ -179,16 +181,25 @@ class MainApp extends React.Component {
 						}
 					/>
 					<Route
-						path="configurator/:appId"
-						component={Configurator}
+						path="mappings/:appId"
+						component={MappingsWrapper}
 						{...appChangesEvent}
 						onEnter={params =>
-							helper.appDashboard.onEnter(params.params.appId, 'configurator')
+							helper.appDashboard.onEnter(params.params.appId, 'mappings')
 						}
 					>
-						<IndexRedirect to="query-tester" />
-						<Route path="query-tester" component={QueryTester} />
-						<Route path="manage-mappings" component={Mapping} />
+						<IndexRoute component={Mappings} />
+					</Route>
+					<Route
+						path="search-sandbox/:appId"
+						component={SearchSandbox}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'search-sandbox')
+						}
+					>
+						<IndexRedirect to="editor" />
+						<Route path="editor" component={SearchEditor} />
 					</Route>
 					<Route
 						path="browser/:appId"
