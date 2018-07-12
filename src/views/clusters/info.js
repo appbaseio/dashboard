@@ -3,8 +3,7 @@ import { browserHistory } from 'react-router';
 import { getClusterData, deployCluster, deleteCluster } from './utils';
 import { regions } from './index';
 import { machineMarks } from './new';
-
-import CopyToClipboard from '../../shared/CopyToClipboard';
+import CredentialsBox from './components/CredentialsBox';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -65,16 +64,6 @@ export default class Clusters extends Component {
 					}
 				}
 			});
-	}
-
-	copySuccess = (source) => {
-		// eslint-disable-next-line
-		toastr.success(`${source} credentials have been copied successully!`);
-	}
-
-	copyError = () => {
-		// eslint-disable-next-line
-		toastr.error('Error', e);
 	}
 
 	toggleConfig = (type) => {
@@ -189,33 +178,22 @@ export default class Clusters extends Component {
 
 	renderClusterEndpoint = (source) => {
 		if (Object.keys(source).length) {
+			const username = source.username || source.dashboard_username;
+			const password = source.password || source.dashboard_password;
+			const url = (source.url || source.dashboard_url).substring(7);
 			return (
 				<div key={source.name} className="cluster-endpoint">
 					<h4>
-						<a href={source.url} target="_blank" rel="noopener noreferrer">
+						<a
+							href={`http://${username}:${password}@${url}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<i className="fas fa-external-link-alt" />
 							{source.name}
 						</a>
 					</h4>
-					<div className="creds-box">
-						<span>
-							####################################
-						</span>
-						<span>
-							<a>
-								<i className="fas fa-eye" />
-							</a>
-							<CopyToClipboard
-								type="danger"
-								onSuccess={() => this.copySuccess(source.name)}
-								onError={() => this.copyError(source.name)}
-							>
-								<a data-clipboard-text={`${source.username}:${source.password}`}>
-									<i className="far fa-clone" />
-								</a>
-							</CopyToClipboard>
-						</span>
-					</div>
+					<CredentialsBox name={source.name} text={`${username}:${password}`} />
 				</div>
 			);
 		}

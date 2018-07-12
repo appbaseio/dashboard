@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import PricingSlider from './components/PricingSlider';
 import { deployCluster } from './utils';
+import plugins from './utils/plugins';
 
 const SSH_KEY = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -64,6 +65,11 @@ export default class NewCluster extends Component {
 	constructor(props) {
 		super(props);
 
+		const pluginState = {};
+		Object.keys(plugins).forEach((item) => {
+			pluginState[item] = item !== 'x-pack';
+		});
+
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
@@ -75,6 +81,7 @@ export default class NewCluster extends Component {
 			dejavu: true,
 			elasticsearchHQ: true,
 			mirage: false,
+			...pluginState,
 		};
 	}
 
@@ -122,7 +129,7 @@ export default class NewCluster extends Component {
 				nodes: selectedMachine.nodes,
 				version: this.state.clusterVersion,
 				volume_size: selectedMachine.storage,
-				plugins: [], // TODO
+				plugins: Object.keys(plugins).filter(item => this.state[item]),
 			},
 			cluster: {
 				name: this.state.clusterName,
@@ -192,6 +199,48 @@ export default class NewCluster extends Component {
 				console.log('error', e);
 			});
 	}
+
+	renderPlugins = () => (
+		<div className="card">
+			<div className="col light">
+				<h3>Edit Cluster Plugins</h3>
+				<p>Add or remove cluster plugins</p>
+			</div>
+			<div className="col grow">
+				{
+					Object.keys(plugins)
+						.map(plugin => (
+							<div key={plugin} className="settings-item grow">
+								<h4>{plugins[plugin]}</h4>
+								<div className="form-check">
+									<label htmlFor="yes">
+										<input
+											type="radio"
+											name={plugin}
+											defaultChecked={this.state[plugin]}
+											id={`${plugin}-yes`}
+											onChange={() => this.setConfig(plugin, true)}
+										/>
+										Yes
+									</label>
+
+									<label htmlFor="no">
+										<input
+											type="radio"
+											name={plugin}
+											defaultChecked={!this.state[plugin]}
+											id={`${plugin}-no`}
+											onChange={() => this.setConfig(plugin, false)}
+										/>
+										No
+									</label>
+								</div>
+							</div>
+						))
+				}
+			</div>
+		</div>
+	);
 
 	render() {
 		return (
@@ -391,6 +440,8 @@ export default class NewCluster extends Component {
 							</div>
 						</div>
 					</div>
+
+					{this.renderPlugins()}
 
 					<div style={{ textAlign: 'right', marginBottom: 40 }}>
 						{
