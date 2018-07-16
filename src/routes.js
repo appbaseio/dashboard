@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, Redirect, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import Main from './index';
 import Authenticator from './Authenticator';
 import { appbaseService } from './service/AppbaseService';
@@ -41,6 +41,15 @@ const Signup = AsyncComponent(() => import('./views/signup').then(module => modu
 const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
 	name: 'Browser',
 });
+const MappingsWrapper = AsyncComponent(() => import('./views/mappings').then(module => module.default), {
+	name: 'MappingsWrapper',
+});
+const Mappings = AsyncComponent(() => import('../modules/batteries/components/Mappings').then(module => module.default), {
+	name: 'Mappings',
+});
+const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
+	name: 'SearchSandbox',
+});
 const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
 	name: 'Mirage',
 });
@@ -49,6 +58,11 @@ const Billing = AsyncComponent(() => import('./views/billing').then(module => mo
 });
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
 	name: 'Importer',
+});
+
+// SearchSandbox routes
+const SearchEditor = AsyncComponent(() => import('./views/search-sandbox/pages/Editor').then(module => module.default), {
+	name: 'SearchEditor',
 });
 
 const NotFound = () => {
@@ -111,8 +125,7 @@ class MainApp extends React.Component {
 
 	login(provider) {
 		localStorage.setItem('reload', false);
-		const baseURL = `${window.location.protocol}//${window.location.host}/`;
-		const redirectTo = `${appbaseService.address}login/${provider}?next=${this.getNexturl()}`;
+		const redirectTo = `${appbaseService.address}/login/${provider}?next=${this.getNexturl()}`;
 		window.location.href = redirectTo;
 	}
 
@@ -172,6 +185,27 @@ class MainApp extends React.Component {
 							helper.appDashboard.onEnter(params.params.appId, 'dashboard')
 						}
 					/>
+					<Route
+						path="mappings/:appId"
+						component={MappingsWrapper}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'mappings')
+						}
+					>
+						<IndexRoute component={Mappings} />
+					</Route>
+					<Route
+						path="search-sandbox/:appId"
+						component={SearchSandbox}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'search-sandbox')
+						}
+					>
+						<IndexRedirect to="editor" />
+						<Route path="editor" component={SearchEditor} />
+					</Route>
 					<Route
 						path="browser/:appId"
 						component={Browser}

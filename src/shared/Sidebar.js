@@ -31,6 +31,34 @@ export default class Sidebar extends Component {
 				),
 			},
 			{
+				label: 'Mappings',
+				link: `${this.contextPath}mappings/`,
+				type: 'internal',
+				name: 'mappings',
+				tooltip: 'View or update mappings',
+				img: (
+					<img
+						className="img-responsive"
+						alt="mappings"
+						src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}
+					/>
+				),
+			},
+			{
+				label: 'Search Sandbox',
+				link: `${this.contextPath}search-sandbox/`,
+				type: 'internal',
+				name: 'search-sandbox',
+				tooltip: 'Update search preferences',
+				img: (
+					<img
+						className="img-responsive"
+						alt="search-sandbox"
+						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
+					/>
+				),
+			},
+			{
 				label: 'Browser',
 				link: `${this.contextPath}browser/`,
 				type: 'internal',
@@ -41,20 +69,6 @@ export default class Sidebar extends Component {
 						className="img-responsive"
 						alt="browser"
 						src={`../../../assets/images/${this.config.name}/sidebar/browser.svg`}
-					/>
-				),
-			},
-			{
-				label: 'Mappings',
-				link: `${this.contextPath}mappings/`,
-				type: 'internal',
-				name: 'gem',
-				tooltip: 'View app mappings',
-				img: (
-					<img
-						className="img-responsive mappings"
-						alt="mapping"
-						src={`../../../assets/images/${this.config.name}/sidebar/mapping.svg`}
 					/>
 				),
 			},
@@ -108,7 +122,7 @@ export default class Sidebar extends Component {
 	}
 
 	componentWillMount() {
-		this.listenEvent = eventEmitter.addListener('activeApp', activeApp => {
+		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
 			if (!this.stopUpdate) {
 				this.setState(activeApp);
 			}
@@ -137,9 +151,8 @@ export default class Sidebar extends Component {
 		let generatedEle = null;
 		switch (ele) {
 			case 'links': {
-				const filteredList = this.links.filter(
-					item => this.config.appDashboard.indexOf(item.name) > -1,
-				);
+				const filteredList = this.links.filter(item =>
+					this.config.appDashboard.indexOf(item.name) > -1);
 				generatedEle = filteredList.map((item, index) => {
 					const cx = classNames({
 						active: this.props.currentView === item.name,
@@ -180,7 +193,7 @@ export default class Sidebar extends Component {
 			<aside className="ad-detail-sidebar">
 				<ul
 					className="ad-detail-sidebar-container"
-					ref={aside => {
+					ref={(aside) => {
 						this.sidebarRef = aside;
 					}}
 				>

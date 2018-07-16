@@ -1,12 +1,13 @@
-const { EventEmitter } = require('fbemitter');
-
-const eventEmitter = new EventEmitter();
 import { appbaseService } from '../service/AppbaseService';
 import { AppOwner } from '../shared/SharedComponents';
 
+const { EventEmitter } = require('fbemitter');
+
+const eventEmitter = new EventEmitter();
+
 class AppDashboard {
 	constructor() {
-		this.allowedView = ['dashboard', 'browser', 'mappings', 'builder', 'credentials', 'team'];
+		this.allowedView = ['dashboard', 'search-sandbox', 'browser', 'mappings', 'builder', 'credentials', 'team'];
 	}
 	onEnter(activeApp, currentView) {
 		const appObj = {
@@ -39,7 +40,7 @@ class AppDashboard {
 		this.contextPath = appbaseService.getContextPath();
 		appbaseService
 			.getUser()
-			.then(data => {
+			.then((data) => {
 				const apps = Object.keys(data.userInfo.body.apps);
 				if (!lastActiveApp) {
 					lastActiveApp = apps.length ? apps[0] : null;
@@ -52,7 +53,7 @@ class AppDashboard {
 					appbaseService.pushUrl();
 				}
 			})
-			.catch(e => {
+			.catch((e) => {
 				appbaseService.pushUrl('/login');
 			});
 	}
@@ -73,12 +74,12 @@ class AppListHelper {
 		});
 	}
 	getInfo(appId, index, resolveApps, metrics = true, permission = true, appInfo = true) {
-		let apps = this.apps;
-		let info = {};
-		let count = {
-			metrics: !metrics ? true : false,
-			permission: !permission ? true : false,
-			appInfo: !appInfo ? true : false,
+		const apps = this.apps;
+		const info = {};
+		const count = {
+			metrics: !metrics,
+			permission: !permission,
+			appInfo: !appInfo,
 		};
 		const init = () => {
 			if (!count.metrics) {
@@ -94,7 +95,7 @@ class AppListHelper {
 		const getMetrics = () => {
 			appbaseService
 				.getMetrics(appId, true)
-				.then(data => {
+				.then((data) => {
 					info.metrics = data;
 					info.appStats = appbaseService.computeMetrics(data);
 					apps[index].apiCalls = info.appStats.calls;
@@ -119,7 +120,7 @@ class AppListHelper {
 					count.metrics = true;
 					cb.call(this);
 				})
-				.catch(e => {
+				.catch((e) => {
 					console.log(e);
 					apps[index].info = null;
 					count.metrics = true;
@@ -128,12 +129,12 @@ class AppListHelper {
 		const getPermission = () => {
 			appbaseService
 				.getPermission(appId, true)
-				.then(data => {
+				.then((data) => {
 					apps[index].permissions = this.filterPermissions(data.body);
 					count.permission = true;
 					cb.call(this);
 				})
-				.catch(e => {
+				.catch((e) => {
 					console.log(e);
 					apps[index].info = null;
 					count.metrics = true;
@@ -142,12 +143,12 @@ class AppListHelper {
 		const getAppInfo = () => {
 			appbaseService
 				.getAppInfo(appId, true)
-				.then(data => {
+				.then((data) => {
 					apps[index].appInfo = data.body;
 					count.appInfo = true;
 					cb.call(this);
 				})
-				.catch(e => {
+				.catch((e) => {
 					console.log(e);
 					apps[index].appInfo = null;
 					count.appInfo = true;
@@ -165,10 +166,10 @@ class AppListHelper {
 		init.call(this);
 	}
 	filterPermissions(permissions) {
-		let permObj = {
-			permissions: permissions,
+		const permObj = {
+			permissions,
 		};
-		permissions.forEach(item => {
+		permissions.forEach((item) => {
 			if (item.write) {
 				permObj.writePermission = item;
 			} else if (item.read) {
@@ -178,9 +179,9 @@ class AppListHelper {
 		return permObj;
 	}
 	normalizaApps(apps) {
-		let storeApps = [];
+		const storeApps = [];
 		Object.keys(apps).forEach((app, index) => {
-			var obj = {
+			const obj = {
 				name: app,
 				id: apps[app],
 			};
@@ -192,7 +193,7 @@ class AppListHelper {
 		return new Promise((resolve, reject) => {
 			appbaseService
 				.createApp(appName)
-				.then(data => {
+				.then((data) => {
 					apps.unshift({
 						name: appName,
 						id: data.body.id,
@@ -201,11 +202,11 @@ class AppListHelper {
 					});
 					resolve({
 						createAppLoading: false,
-						apps: apps,
+						apps,
 						clearInput: true,
 					});
 				})
-				.catch(e => {
+				.catch((e) => {
 					console.log(e);
 					let error = null;
 					try {
@@ -257,7 +258,7 @@ class Common {
 		return flag ? { disabled: true } : null;
 	}
 	getPermission(permissions, role = 'admin') {
-		const conditions = permission => {
+		const conditions = (permission) => {
 			let flag = false;
 			switch (role) {
 				case 'admin':
@@ -296,10 +297,10 @@ class AjaxHttp {
 					type: req.method,
 					contentType: 'application/json',
 					dataType: 'json',
-					success: result => {
+					success: (result) => {
 						resolve(result);
 					},
-					error: error => {
+					error: (error) => {
 						reject(error.responseJSON);
 					},
 				};
@@ -326,7 +327,7 @@ class IntercomService {
 }
 
 module.exports = {
-	eventEmitter: eventEmitter,
+	eventEmitter,
 	appDashboard: new AppDashboard(),
 	appListHelper: new AppListHelper(),
 	common: new Common(),

@@ -120,7 +120,7 @@ export default class Mirage extends Component {
 			<AppPage pageInfo={this.pageInfo}>
 				<div className="ad-detail-page ad-dashboard row">
 					<header className="ad-detail-page-header header-inline-summary header-align-end col-xs-12 hidden" />
-					<main
+					<div
 						className="ad-detail-page-body col-xs-12"
 						ref={page => {
 							this.pageRef = page;
@@ -140,7 +140,7 @@ export default class Mirage extends Component {
 							) : null}
 							{this.state.showAlert ? <EsAlert {...this.pageInfo} /> : null}
 						</div>
-					</main>
+					</div>
 				</div>
 			</AppPage>
 		);

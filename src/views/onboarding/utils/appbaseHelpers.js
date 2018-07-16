@@ -2,6 +2,7 @@ import Appbase from 'appbase-js';
 import settings from './settings';
 import mappingObj from './moviesMapping';
 import moviesData from './data';
+import { ACC_API, SCALR_API } from '../../../../config';
 
 const streamingData = {
 	genres: 'Action',
@@ -18,14 +19,14 @@ class AppbaseUtils {
 	constructor() {
 		this.user = null;
 		this.app = null;
-		this.accountAddress = 'https://accapi.appbase.io/';
-		this.address = 'https://scalr.api.appbase.io/';
+		this.accountAddress = ACC_API;
+		this.address = SCALR_API;
 	}
 
 	getApp = () => (this.app ? this.app.id : '');
 
 	getUser() {
-		return fetch(`${this.accountAddress}user`, {
+		return fetch(`${this.accountAddress}/user`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -35,7 +36,7 @@ class AppbaseUtils {
 	}
 
 	logout() {
-		return fetch(`${this.accountAddress}logout?next=`, {
+		return fetch(`${this.accountAddress}/logout?next=`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -47,7 +48,7 @@ class AppbaseUtils {
 	getWritePermissions() {
 		const appId = this.getApp();
 		return new Promise((resolve, reject) => {
-			fetch(`${this.accountAddress}app/${appId}/permissions`, {
+			fetch(`${this.accountAddress}/app/${appId}/permissions`, {
 				method: 'GET',
 				credentials: 'include',
 				headers: {
@@ -55,25 +56,26 @@ class AppbaseUtils {
 				},
 			})
 				.then(res => res.json())
-				.then(data => {
-					const permissions = data.body.filter(
-						permission => permission.read && permission.write,
-					);
+				.then((data) => {
+					const permissions = data.body.filter(permission => permission.read && permission.write);
 					resolve(permissions[0]);
 				})
-				.catch(e => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
 	}
 
 	createApp(appname) {
-		return fetch(`${this.accountAddress}app/${appname}`, {
+		return fetch(`${this.accountAddress}/app/${appname}`, {
 			method: 'PUT',
 			credentials: 'include',
 			headers: {
 				'content-type': 'application/json',
 			},
+			body: JSON.stringify({
+				es_version: '5',
+			}),
 		});
 	}
 
@@ -82,7 +84,7 @@ class AppbaseUtils {
 		const credentials = `${this.app.username}:${this.app.password}`;
 
 		return new Promise((resolve, reject) => {
-			fetch(`${this.address}${appName}/_close`, {
+			fetch(`${this.address}/${appName}/_close`, {
 				method: 'POST',
 				credentials: 'include',
 				headers: {
@@ -91,7 +93,7 @@ class AppbaseUtils {
 				},
 			})
 				.then(() => {
-					fetch(`${this.address}${appName}/_settings`, {
+					fetch(`${this.address}/${appName}/_settings`, {
 						method: 'PUT',
 						credentials: 'include',
 						headers: {
@@ -100,7 +102,7 @@ class AppbaseUtils {
 						},
 						body: JSON.stringify(settings),
 					}).then(() => {
-						fetch(`${this.address}${appName}/_open`, {
+						fetch(`${this.address}/${appName}/_open`, {
 							method: 'POST',
 							credentials: 'include',
 							headers: {
@@ -112,17 +114,17 @@ class AppbaseUtils {
 						});
 					});
 				})
-				.catch(e => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
 	};
 
-	updateUser = user => {
+	updateUser = (user) => {
 		this.user = user;
 	};
 
-	updateApp = app => {
+	updateApp = (app) => {
 		this.app = app;
 	};
 
@@ -131,7 +133,7 @@ class AppbaseUtils {
 		const credentials = `${this.app.username}:${this.app.password}`;
 		this.app.type = type;
 
-		return fetch(`${this.address}${this.app.appName}/_mapping/${type}?update_all_types=true`, {
+		return fetch(`${this.address}/${this.app.appName}/_mapping/${type}?update_all_types=true`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -147,7 +149,7 @@ class AppbaseUtils {
 		const indexObj = {
 			index: {},
 		};
-		moviesData.forEach(record => {
+		moviesData.forEach((record) => {
 			finalData.push(indexObj);
 			finalData.push(record);
 		});
@@ -166,7 +168,7 @@ class AppbaseUtils {
 				.on('data', () => {
 					resolve();
 				})
-				.on('error', e => {
+				.on('error', (e) => {
 					reject(e);
 				});
 		});
@@ -182,7 +184,7 @@ class AppbaseUtils {
 				.on('data', () => {
 					resolve();
 				})
-				.on('error', e => {
+				.on('error', (e) => {
 					reject(e);
 				});
 		});
