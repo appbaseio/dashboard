@@ -192,7 +192,7 @@ export default class Introduction extends Component {
 									>
 										REST based APIs
 									</a>{' '}
-									className="dashed"enable indexing data in a programming language
+									enable indexing data in a programming language
 									of your choice.
 								</p>
 							</div>

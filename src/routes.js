@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, Redirect, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import Main from './index';
+import Authenticator from './Authenticator';
 import { appbaseService } from './service/AppbaseService';
 
 import AsyncComponent from './AsyncComponent';
@@ -132,8 +133,10 @@ class MainApp extends React.Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
-				<Route path="tutorial" component={Onboarding} />
-				<Route path="tutorial/finish" component={OnboardingEndScreen} />
+				<Route path="tutorial" component={Authenticator}>
+					<IndexRoute component={Onboarding} />
+					<Route path="finish" component={OnboardingEndScreen} />
+				</Route>
 				<Redirect from="scalr/tutorial" to="tutorial" />
 				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute
@@ -170,7 +173,9 @@ class MainApp extends React.Component {
 							/>
 						)}
 					/>
-					<Route path="billing" component={Billing} />
+					<Route path="billing" component={Authenticator}>
+						<IndexRoute component={Billing} />
+					</Route>
 					<Route path="importer" component={Importer} />
 					<Route
 						path="dashboard/:appId"

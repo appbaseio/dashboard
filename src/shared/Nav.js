@@ -46,7 +46,7 @@ export default class Nav extends Component {
 	}
 
 	getAllApps(cb) {
-		appbaseService.allApps(true).then(data => {
+		appbaseService.allApps(true).then((data) => {
 			this.setState(
 				{
 					apps: _.sortBy(data.body, 'appname'),
@@ -82,7 +82,7 @@ export default class Nav extends Component {
 				this.setState(appbaseService.extra.nav);
 			});
 		}
-		this.listenEvent = eventEmitter.addListener('activeApp', activeApp => {
+		this.listenEvent = eventEmitter.addListener('activeApp', (activeApp) => {
 			this.getAllApps(() => {
 				this.setState(activeApp);
 			});
@@ -144,9 +144,7 @@ export default class Nav extends Component {
 				break;
 			case 'currentApp':
 				if (this.state.activeApp && this.state.apps && this.isValidApp()) {
-					const apps = this.state.apps.filter(
-						app => app.appname === this.state.activeApp,
-					);
+					const apps = this.state.apps.filter(app => app.appname === this.state.activeApp,);
 					generatedEle = (
 						<li role="presentation" className="dropdown">
 							<a
@@ -168,9 +166,7 @@ export default class Nav extends Component {
 				}
 				break;
 			case 'links':
-				const links = this.links.filter(
-					item => this.config.navbar.indexOf(item.label) > -1,
-				);
+				const links = this.links.filter(item => this.config.navbar.indexOf(item.label) > -1,);
 				generatedEle = links.map((item, index) => {
 					let anchor = (
 						<a href={item.link} target="_blank">
@@ -312,7 +308,7 @@ export default class Nav extends Component {
 							<span className="icon-bar" />
 							<span className="icon-bar" />
 						</button>
-						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`}>
+						<Link to="/apps" className={`navbar-brand ${cx}`}>
 							<img src={this.config.logo} alt="" className="img-responsive" />
 							{this.config.logoText ? <span>{this.config.logoText}</span> : null}
 						</Link>
