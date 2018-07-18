@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import 'antd/dist/antd.css';
 import 'rc-tooltip/assets/bootstrap_white.css';
 
 import { appbaseService } from './service/AppbaseService';

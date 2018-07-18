@@ -114,7 +114,6 @@ export default class Credentials extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<AppPage
 				pageInfo={{

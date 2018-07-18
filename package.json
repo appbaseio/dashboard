@@ -48,6 +48,7 @@
 	},
 	"dependencies": {
 		"@appbaseio/reactivesearch": "^2.6.8",
+		"antd": "^3.7.0",
 		"appbase-js": "^3.0.0",
 		"classnames": "^2.2.5",
 		"clipboard": "^2.0.1",
