@@ -7425,6 +7425,10 @@ react-prop-types@^0.4.0:
   dependencies:
     warning "^3.0.0"
 
+react-reactive-form@^1.0.27:
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/react-reactive-form/-/react-reactive-form-1.0.27.tgz#e57a4b752f70810720bd1013a032b36ebf24d2e2"
+
 react-redux@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import CreateCredentials from './CreateCredentials';
+import CreateCredentials from './CreateCredentials/index';
+import { checkUserStatus } from '../../utils/user';
 
 export default class NewPermission extends Component {
 	constructor(props) {
@@ -9,6 +10,7 @@ export default class NewPermission extends Component {
 			showCredForm: false,
 			description: null,
 			selectedType: 'read',
+			isPaidUser: false,
 		};
 		this.types = {
 			read: {
@@ -32,12 +34,29 @@ export default class NewPermission extends Component {
 		this.onSelect = this.onSelect.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);
 	}
+	componentDidMount() {
+		checkUserStatus().then(
+			(response) => {
+				if (response.isPaidUser) {
+					this.setState({ isPaidUser: response.isPaidUser });
+				}
+			},
+			(error) => {
+				console.log('THSI SI ERROR', error);
+			},
+		);
+	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.description) {
 			this.setState({
 				description: this.props.description,
 			});
 		}
+	}
+	onSelect(selectedType) {
+		this.setState({
+			selectedType,
+		});
 	}
 	newPermission() {
 		const request = this.types[this.state.selectedType];
@@ -47,6 +66,12 @@ export default class NewPermission extends Component {
 		this.props.newPermission(request);
 		this.expand();
 	}
+	handleSubmit = (form) => {
+		const requestPayload = { ...form.value.operationType, ...form.value };
+		delete requestPayload.operationType;
+
+		this.props.newPermission(requestPayload);
+	};
 	expand() {
 		this.setState({
 			show: !this.state.show,
@@ -61,11 +86,17 @@ export default class NewPermission extends Component {
 			});
 		}
 	}
-	onSelect(selectedType) {
+	showCredForm = () => {
 		this.setState({
-			selectedType,
+			showCredForm: true,
 		});
-	}
+		this.expand();
+	};
+	handleCancel = () => {
+		this.setState({
+			showCredForm: false,
+		});
+	};
 	renderElement(method) {
 		let element = null;
 		switch (method) {
@@ -82,9 +113,9 @@ export default class NewPermission extends Component {
 			case 'buttonGroup':
 				element = (
 					<span className="ad-create-button-group without-margin">
-						{Object.keys(this.types).map((type, index) => (
+						{Object.keys(this.types).map(type => (
 							<PermissionButton
-								key={index}
+								key={type}
 								type={type}
 								selectedType={this.state.selectedType}
 								description={this.types[type].description}
@@ -94,20 +125,10 @@ export default class NewPermission extends Component {
 					</span>
 				);
 				break;
+			default:
 		}
 		return element;
 	}
-	handleCancel = () => {
-		this.setState({
-			showCredForm: false,
-		});
-	};
-	showCredForm = () => {
-		this.setState({
-			showCredForm: true,
-		});
-		this.expand();
-	};
 	render() {
 		// const cx = classNames({
 		// 	active: this.state.show,
@@ -115,6 +136,8 @@ export default class NewPermission extends Component {
 		return (
 			<div className="ad-create col-xs-12">
 				<CreateCredentials
+					isPaidUser={this.state.isPaidUser}
+					onSubmit={this.handleSubmit}
 					show={this.state.showCredForm}
 					handleCancel={this.handleCancel}
 				/>
