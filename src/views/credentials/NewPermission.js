@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import CreateCredentials from './CreateCredentials/index';
+import { getMappings } from './../../../modules/batteries/utils/mappings';
+import { appbaseService } from '../../service/AppbaseService';
 import { checkUserStatus } from '../../utils/user';
+import { getCredentials } from './../../../modules/batteries/utils';
 
 export default class NewPermission extends Component {
 	constructor(props) {
@@ -11,6 +14,7 @@ export default class NewPermission extends Component {
 			description: null,
 			selectedType: 'read',
 			isPaidUser: false,
+			mappings: undefined,
 		};
 		this.types = {
 			read: {
@@ -45,6 +49,23 @@ export default class NewPermission extends Component {
 				console.log('THSI SI ERROR', error);
 			},
 		);
+		if (this.props.appId) {
+			const appId = appbaseService.userInfo.body.apps[this.props.appId];
+			getCredentials(appId)
+				.then((user) => {
+					const { username, password } = user;
+					return getMappings(this.props.appName, `${username}:${password}`);
+				})
+				.then((res) => {
+					this.setState({
+						mappings: res,
+					});
+					console.log('THIS IS MAPPING', res);
+				})
+				.catch((error) => {
+					console.log('THIS IS MAPPING ERROR', error);
+				});
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.description) {
@@ -136,10 +157,11 @@ export default class NewPermission extends Component {
 		return (
 			<div className="ad-create col-xs-12">
 				<CreateCredentials
-					isPaidUser={this.state.isPaidUser}
+					isPaidUser={this.state.isPaidUser || true}
 					onSubmit={this.handleSubmit}
 					show={this.state.showCredForm}
 					handleCancel={this.handleCancel}
+					mappings={this.state.mappings}
 				/>
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.showCredForm}>

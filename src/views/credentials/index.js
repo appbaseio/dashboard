@@ -38,13 +38,13 @@ export default class Credentials extends Component {
 
 	getInfo() {
 		this.info = {};
-		appbaseService.getPermission(this.appId).then(data => {
+		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
-		appbaseService.getAppInfo(this.appId).then(data => {
+		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data.body;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
@@ -53,7 +53,7 @@ export default class Credentials extends Component {
 	}
 
 	newPermission(request) {
-		appbaseService.newPermission(this.appId, request).then(data => {
+		appbaseService.newPermission(this.appId, request).then((data) => {
 			this.getInfo();
 		});
 	}
@@ -74,16 +74,14 @@ export default class Credentials extends Component {
 							}
 							return 0;
 						})
-						.map((permissionInfo, index) => {
-							return (
-								<PermissionCard
-									appId={this.appId}
-									key={index}
-									permissionInfo={permissionInfo}
-									getInfo={this.getInfo}
-								/>
-							);
-						});
+						.map((permissionInfo, index) => (
+							<PermissionCard
+								appId={this.appId}
+								key={index}
+								permissionInfo={permissionInfo}
+								getInfo={this.getInfo}
+							/>
+						));
 				}
 				break;
 			case 'deleteApp':
@@ -114,6 +112,7 @@ export default class Credentials extends Component {
 	}
 
 	render() {
+		console.log('THIS IS PROPS', this.props);
 		return (
 			<AppPage
 				pageInfo={{
@@ -129,7 +128,11 @@ export default class Credentials extends Component {
 								<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
 									{this.isOwner() ? (
-										<NewPermission newPermission={this.newPermission} />
+										<NewPermission
+											appId={this.props.params.appId}
+											appName={this.appName}
+											newPermission={this.newPermission}
+										/>
 									) : null}
 								</div>
 							</section>

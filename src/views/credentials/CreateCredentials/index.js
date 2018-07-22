@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button } from 'antd';
 import { css } from 'emotion';
 import { FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
 import styles from './styles';
 import { Button as UpgradeButton } from './../../../../modules/batteries/components/Mappings/styles';
 import Grid from './Grid';
+import Flex from './../../../shared/Flex';
 import WhiteList from './WhiteList';
 import ListInput from './ListInput';
 
@@ -16,6 +18,27 @@ const hoverMessage = () => (
 		data whenever you edit them from this UI.
 	</div>
 );
+
+const traverseMapping = (mappings = {}) => {
+	const fieldObject = {};
+	const checkIfPropertyPresent = (m, type) => {
+		fieldObject[type] = [];
+		const setFields = (mp, prefix = '') => {
+			if (mp.properties) {
+				Object.keys(mp.properties).forEach((mpp) => {
+					fieldObject[type].push(`${prefix}${mpp}`);
+					const field = mp.properties[mpp];
+					if (field && field.properties) {
+						setFields(field, `${prefix}${mpp}.`);
+					}
+				});
+			}
+		};
+		setFields(m);
+	};
+	Object.keys(mappings).forEach(k => checkIfPropertyPresent(mappings[k], k));
+	return fieldObject;
+};
 const Types = {
 	read: {
 		description: 'Read-only key',
@@ -34,23 +57,18 @@ const Types = {
 	},
 };
 
-const aclOptions = ['index', 'get', 'Settings', 'Search', 'Stream'];
+const aclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
+const aclOptionsLabel = {
+	index: 'Index',
+	get: 'Get',
+	search: 'Search',
+	settings: 'Settings',
+	stream: 'Stream',
+	bulk: 'Bulk',
+	delete: 'Delete',
+};
 const defaultAclOptions = ['index', 'get'];
 const CheckboxGroup = Checkbox.Group;
-const preAddedDomain = [
-	{
-		id: '1',
-		name: 'appbase.io',
-		description: 'Matches exactly appbase.io',
-	},
-];
-const preAddedIP = [
-	{
-		id: '1',
-		name: '0.0.0.0/0',
-		description: 'Matches exactly appbase.io',
-	},
-];
 const overlay = css`
 	position: absolute;
 	top: 160px;
@@ -73,9 +91,9 @@ class CreateCredentials extends React.Component {
 		this.form = FormBuilder.group({
 			description: [Types.read.description, Validators.required],
 			operationType: [Types.read, Validators.required],
-			acl: [{ value: defaultAclOptions, disabled: props.isPaidUser }, Validators.required],
-			referers: [{ value: undefined, disabled: props.isPaidUser }],
-			sources: [{ value: undefined, disabled: props.isPaidUser }],
+			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
+			referers: [{ value: ['dwed*'], disabled: !props.isPaidUser }],
+			sources: [{ value: [], disabled: !props.isPaidUser }],
 			include_fields: [{ value: [], disabled: !props.isPaidUser }],
 			exclude_fields: [{ value: [], disabled: !props.isPaidUser }],
 			ip_limit: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
@@ -86,7 +104,11 @@ class CreateCredentials extends React.Component {
 		this.props.onSubmit(this.form);
 	};
 	render() {
-		const { show, handleCancel, isPaidUser } = this.props;
+		const {
+ show, handleCancel, isPaidUser, mappings,
+} = this.props;
+		const traverseMappings = traverseMapping(mappings);
+		console.log('THIS IS THE THING', traverseMappings);
 		return (
 			<FieldGroup
 				strict={false}
@@ -94,7 +116,7 @@ class CreateCredentials extends React.Component {
 				render={({ invalid }) => (
 					<Modal
 						footer={[
-							<Button key="back" onClick={this.handleCancel}>
+							<Button key="back" onClick={handleCancel}>
 								Cancel
 							</Button>,
 							<Button
@@ -106,7 +128,7 @@ class CreateCredentials extends React.Component {
 								Submit
 							</Button>,
 						]}
-						visible={show}
+						visible={show || true}
 						onCancel={handleCancel}
 					>
 						<div css="position: relative">
@@ -143,8 +165,8 @@ class CreateCredentials extends React.Component {
 									/>
 								)}
 							/>
-							<div css={!isPaidUser ? overlay : undefined}>
-								{!isPaidUser && (
+							{!isPaidUser && (
+								<div css={overlay}>
 									<div css={upgradePlan}>
 										<div>
 											<Icon type="lock" css="font-size: 40px" />
@@ -161,30 +183,68 @@ class CreateCredentials extends React.Component {
 											Upgrade Now
 										</UpgradeButton>
 									</div>
-								)}
-							</div>
+								</div>
+							)}
 							<FieldControl
 								name="acl"
-								render={({ handler }) => (
-									<Grid
-										label="ACLs"
-										component={
-											<CheckboxGroup
-												css="label { font-weight: 100 }"
-												options={aclOptions}
-												{...handler()}
-											/>
-										}
+								render={({ handler }) => {
+									const inputHandler = handler();
+									return (
+										<Grid
+											label="ACLs"
+											component={
+												<CheckboxGroup
+													css="label { font-weight: 100 }"
+													options={aclOptions.map(o => aclOptionsLabel[o])}
+													{...inputHandler}
+													onChange={(value) => {
+														inputHandler.onChange(value.map(item =>
+																find(
+																	aclOptionsLabel,
+																	o => o === item,
+																)));
+													}}
+												/>
+											}
+										/>
+									);
+								}}
+							/>
+							<Grid label="Security" />
+							<FieldControl
+								name="referers"
+								render={control => (
+									<WhiteList
+										control={control}
+										type="dropdown"
+										defaultSuggestionValue="https://example.com/"
+										label="HTTP Referers"
+										inputProps={{
+											placeholder: 'Add a HTTP Referer',
+										}}
 									/>
 								)}
 							/>
-							<Grid label="Security" />
-							<WhiteList label="HTTP Referers" preAdded={preAddedDomain} />
-							<WhiteList label="IP Sources" preAdded={preAddedIP} />
+							<FieldControl
+								name="sources"
+								render={control => (
+									<WhiteList
+										control={control}
+										label="IP Sources"
+										defaultValue={{
+											value: '0.0.0.0/0 (default)',
+											description: 'Matches all IP sources',
+										}}
+										inputProps={{
+											placeholder: 'Add an IP Source in CIDR format',
+										}}
+									/>
+								)}
+							/>
 							<Grid
 								label="Fields Filtering"
 								component="List of fields to retrieve (or not retrieve) when making a search query using
-					this Api Key"
+								this Api Key"
 							/>
 							<Grid
 								label={<span css={styles.subHeader}>Include</span>}
@@ -198,7 +258,7 @@ class CreateCredentials extends React.Component {
 								name="ip_limit"
 								render={({ handler }) => (
 									<Grid
-										label="MAX API calls / IP / HOUR"
+										label="Max API calls/IP/hour"
 										component={
 											<div>
 												<Input

@@ -17,12 +17,13 @@ export default {
 		border-radius: 2px;
 		padding: 5px 10px;
 		color: #343e54;
+		margin-bottom: 5px;
 		width: 100%;
 	`,
 	description: css`
-	font-size: 12px,
-	font-weight: 100;
-`,
+		font-size: 12px,
+		font-weight: 100;
+	`,
 	serachResultsCls: css`
 		border: solid 1px #d9d9d9;
 		border-top: none;
@@ -31,5 +32,10 @@ export default {
 		width: 100%;
 		background-color: #fff;
 		z-index: 1;
+	`,
+	error: css`
+		color: red;
+		font-size: 12px;
+		padding: 5px;
 	`,
 };
