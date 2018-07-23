@@ -59,6 +59,9 @@ const Billing = AsyncComponent(() => import('./views/billing').then(module => mo
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
 	name: 'Importer',
 });
+const Analytics = AsyncComponent(() => import('./views/analytics').then(module => module.default), {
+	name: 'Analytics',
+});
 
 // SearchSandbox routes
 const SearchEditor = AsyncComponent(() => import('./views/search-sandbox/pages/Editor').then(module => module.default), {
@@ -195,6 +198,14 @@ class MainApp extends React.Component {
 					>
 						<IndexRoute component={Mappings} />
 					</Route>
+					<Route
+						path="analytics/:appId"
+						component={Analytics}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'analytics')
+						}
+					/>
 					<Route
 						path="search-sandbox/:appId"
 						component={SearchSandbox}
