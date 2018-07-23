@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import find from 'lodash/find';
-import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button } from 'antd';
+import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button, Select } from 'antd';
 import { css } from 'emotion';
 import { FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
 import styles from './styles';
@@ -9,13 +8,37 @@ import { Button as UpgradeButton } from './../../../../modules/batteries/compone
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
 import WhiteList from './WhiteList';
-import ListInput from './ListInput';
 
+const fieldBadge = css`
+	margin-left: 2px;
+    font-size: 10px;
+    background-color: #a2a4aa;
+	border-radius: 3px;
+	padding: 1px 2px;
+	color: #fff
+`;
 const hoverMessage = () => (
 	<div style={{ maxWidth: 220 }}>
 		Editing security permissions isn{"'"}t a native feature in Elasticsearch. All appbase.io
 		paid plans offer editable security permissions by performing a lossless re-indexing of your
 		data whenever you edit them from this UI.
+	</div>
+);
+
+const fieldMessage = () => (
+	<div style={{ maxWidth: 220 }}>
+		List of fields to retrieve (or not retrieve) when making a search query using
+								this Api Key.
+	</div>
+);
+const ttlMessage = () => (
+	<div style={{ maxWidth: 220 }}>
+		In seconds. 0 means unlimited.
+	</div>
+);
+const ipLimitMessage = () => (
+	<div style={{ maxWidth: 220 }}>
+		The maximum number of hits this API key can retrieve in one call. 0 means unlimited.
 	</div>
 );
 
@@ -67,7 +90,7 @@ const aclOptionsLabel = {
 	bulk: 'Bulk',
 	delete: 'Delete',
 };
-const defaultAclOptions = ['index', 'get'];
+const defaultAclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
 const CheckboxGroup = Checkbox.Group;
 const overlay = css`
 	position: absolute;
@@ -85,30 +108,54 @@ const upgradePlan = css`
 	font-weight: 500;
 	text-align: center;
 `;
+const { Option } = Select;
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
 		this.form = FormBuilder.group({
-			description: [Types.read.description, Validators.required],
+			description: Types.read.description,
 			operationType: [Types.read, Validators.required],
 			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
-			referers: [{ value: ['dwed*'], disabled: !props.isPaidUser }],
-			sources: [{ value: [], disabled: !props.isPaidUser }],
-			include_fields: [{ value: [], disabled: !props.isPaidUser }],
+			referers: [{ value: [], disabled: !props.isPaidUser }],
+			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
+			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
 			exclude_fields: [{ value: [], disabled: !props.isPaidUser }],
 			ip_limit: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 		});
+	}
+	componentDidMount() {
+		const includeFieldsHandler = this.form.get('include_fields');
+		const excludeFieldsHandler = this.form.get('exclude_fields');
+		includeFieldsHandler.valueChanges.subscribe((value) => {
+			if (value.includes('*')) {
+				excludeFieldsHandler.disable({ emitEvent: false });
+				excludeFieldsHandler.reset([]);
+			} else {
+				excludeFieldsHandler.enable({ emitEvent: false });
+			}
+		});
+		excludeFieldsHandler.valueChanges.subscribe((value) => {
+			if (value.includes('*')) {
+				includeFieldsHandler.disable({ emitEvent: false });
+				includeFieldsHandler.reset([]);
+			} else {
+				includeFieldsHandler.enable({ emitEvent: false });
+			}
+		});
+	}
+	componentWillUnmount() {
+		this.form.get('include_fields').valueChanges.unsubscribe();
+		this.form.get('exclude_fields').valueChanges.unsubscribe();
 	}
 	handleSubmit = () => {
 		this.props.onSubmit(this.form);
 	};
 	render() {
 		const {
- show, handleCancel, isPaidUser, mappings,
+ show, handleCancel, isPaidUser, mappings, isSubmitting,
 } = this.props;
 		const traverseMappings = traverseMapping(mappings);
-		console.log('THIS IS THE THING', traverseMappings);
 		return (
 			<FieldGroup
 				strict={false}
@@ -120,6 +167,7 @@ class CreateCredentials extends React.Component {
 								Cancel
 							</Button>,
 							<Button
+								loading={isSubmitting}
 								disabled={invalid}
 								key="submit"
 								type="primary"
@@ -128,7 +176,7 @@ class CreateCredentials extends React.Component {
 								Submit
 							</Button>,
 						]}
-						visible={show || true}
+						visible={show}
 						onCancel={handleCancel}
 					>
 						<div css="position: relative">
@@ -141,7 +189,7 @@ class CreateCredentials extends React.Component {
 								render={({ handler }) => (
 									<Grid
 										label="Description"
-										component={<Input autoFocus {...handler()} />}
+										component={<Input autoFocus placeholder="Add a description (optional)" {...handler()} />}
 									/>
 								)}
 							/>
@@ -195,14 +243,11 @@ class CreateCredentials extends React.Component {
 											component={
 												<CheckboxGroup
 													css="label { font-weight: 100 }"
-													options={aclOptions.map(o => aclOptionsLabel[o])}
 													{...inputHandler}
+													options={aclOptions.map(o => aclOptionsLabel[o])}
+													value={inputHandler.value.map(o => aclOptionsLabel[o])}
 													onChange={(value) => {
-														inputHandler.onChange(value.map(item =>
-																find(
-																	aclOptionsLabel,
-																	o => o === item,
-																)));
+														inputHandler.onChange(value.map(v => v.toLowerCase()));
 													}}
 												/>
 											}
@@ -241,18 +286,98 @@ class CreateCredentials extends React.Component {
 									/>
 								)}
 							/>
-							<Grid
-								label="Fields Filtering"
-								component="List of fields to retrieve (or not retrieve) when making a search query using
-								this Api Key"
+							<div css="margin-top: 30px">
+								<span css={styles.formLabel}>Fields Filtering</span>
+								<Tooltip css="margin-left: 5px" overlay={fieldMessage} mouseLeaveDelay={0}>
+									<i className="fas fa-info-circle" />
+								</Tooltip>
+							</div>
+							<FieldControl
+								strict={false}
+								name="include_fields"
+								render={({ handler }) => {
+									const inputHandler = handler();
+									const excludedFields = this.form.get('exclude_fields').value;
+									return (
+										<Grid
+											label={<span css={styles.subHeader}>Include</span>}
+											component={
+												<Select
+													placeholder="Select field value"
+													mode="multiple"
+													style={{ width: '100%' }}
+													{...inputHandler}
+													onChange={(value) => {
+														if (value.includes('*')) {
+															inputHandler.onChange(['*']);
+														} else {
+															inputHandler.onChange(value);
+														}
+													}}
+												>
+												<Option key="*">* (Include all fields)</Option>
+												{Object.keys(traverseMappings).map(i =>
+													traverseMappings[i].map((v) => {
+														if (!excludedFields.includes(v)) {
+															return (
+																<Option value={v} key={v} title={v}>
+																	{v}
+																	<span css={fieldBadge}>{i}</span>
+																</Option>
+															);
+														}
+														return null;
+													}))
+												}
+												</Select>
+											}
+										/>
+									);
+								}}
 							/>
-							<Grid
-								label={<span css={styles.subHeader}>Include</span>}
-								component={<ListInput placeholder="Select field value" />}
-							/>
-							<Grid
-								label={<span css={styles.subHeader}>Exclude</span>}
-								component={<ListInput placeholder="Select field value" />}
+							<FieldControl
+								strict={false}
+								name="exclude_fields"
+								render={({ handler }) => {
+									const inputHandler = handler();
+									const includedFields = this.form.get('include_fields').value;
+									return (
+										<Grid
+											label={<span css={styles.subHeader}>Exclude</span>}
+											component={
+												<Select
+													placeholder="Select field value"
+													mode="multiple"
+													style={{ width: '100%' }}
+													{...inputHandler}
+													onChange={(value) => {
+														if (!value.length || !value.includes('*')) {
+															inputHandler.onChange(value);
+														} else {
+															inputHandler.onChange(['*']);
+														}
+													}}
+												>
+													<Option key="*">* (Exclude all fields)</Option>
+													{Object.keys(traverseMappings).map(i =>
+													traverseMappings[i].map((v) => {
+														if (!includedFields.includes(v)) {
+															return (
+																<Option value={v} key={v}>
+																	{v}
+																	<span css={fieldBadge}>{i}</span>
+																</Option>
+															);
+														}
+														return null;
+													}))
+												}
+												</Select>
+											}
+										/>
+									);
+								}
+							}
 							/>
 							<FieldControl
 								name="ip_limit"
@@ -260,17 +385,16 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="Max API calls/IP/hour"
 										component={
-											<div>
+											<Flex justifyContent="center" alignItems="center">
 												<Input
 													type="number"
 													css="border: solid 1px #9195A2!important;width: 70px"
 													{...handler()}
 												/>
-												<div>
-													The maximum number of hits this API key can
-													retrieve in one call. 0 means unlimited.
-												</div>
-											</div>
+												<Tooltip css="margin-left: 5px" overlay={ipLimitMessage} mouseLeaveDelay={0}>
+													<i className="fas fa-info-circle" />
+												</Tooltip>
+											</Flex>
 										}
 									/>
 								)}
@@ -281,11 +405,16 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="TTL"
 										component={
+											<Flex justifyContent="center" alignItems="center">
 											<Input
 												type="number"
 												css="border: solid 1px #9195A2!important;width: 70px"
 												{...handler()}
 											/>
+											<Tooltip css="margin-left: 5px" overlay={ttlMessage} mouseLeaveDelay={0}>
+													<i className="fas fa-info-circle" />
+											</Tooltip>
+											</Flex>
 										}
 									/>
 								)}
@@ -299,9 +428,11 @@ class CreateCredentials extends React.Component {
 }
 CreateCredentials.defaultProps = {
 	show: false,
+	isSubmitting: false,
 };
 CreateCredentials.propTypes = {
 	isPaidUser: PropTypes.bool,
+	isSubmitting: PropTypes.bool,
 	show: PropTypes.bool,
 	cancel: PropTypes.func,
 	onSubmit: PropTypes.func,

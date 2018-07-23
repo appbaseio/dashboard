@@ -17,7 +17,7 @@ export default {
 		border-radius: 2px;
 		padding: 5px 10px;
 		color: #343e54;
-		margin-bottom: 5px;
+		margin-bottom: 15px;
 		width: 100%;
 	`,
 	description: css`

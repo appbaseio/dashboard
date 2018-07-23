@@ -46,7 +46,7 @@ export default class NewPermission extends Component {
 				}
 			},
 			(error) => {
-				console.log('THSI SI ERROR', error);
+				toastr.error('Error', 'Something went wrong');
 			},
 		);
 		if (this.props.appId) {
@@ -60,10 +60,9 @@ export default class NewPermission extends Component {
 					this.setState({
 						mappings: res,
 					});
-					console.log('THIS IS MAPPING', res);
 				})
 				.catch((error) => {
-					console.log('THIS IS MAPPING ERROR', error);
+					toastr.error('Error', 'Unable to fetch mappings');
 				});
 		}
 	}
@@ -156,13 +155,16 @@ export default class NewPermission extends Component {
 		// });
 		return (
 			<div className="ad-create col-xs-12">
-				<CreateCredentials
-					isPaidUser={this.state.isPaidUser || true}
-					onSubmit={this.handleSubmit}
-					show={this.state.showCredForm}
-					handleCancel={this.handleCancel}
-					mappings={this.state.mappings}
-				/>
+				{this.state.showCredForm && (
+					<CreateCredentials
+						isPaidUser={this.state.isPaidUser || true}
+						isSubmitting={this.props.isSubmitting}
+						onSubmit={this.handleSubmit}
+						show={this.state.showCredForm}
+						handleCancel={this.handleCancel}
+						mappings={this.state.mappings}
+					/>
+				)}
 				<div className="ad-create-collapse">
 					<a className="ad-theme-btn primary" onClick={this.showCredForm}>
 						New Credentials

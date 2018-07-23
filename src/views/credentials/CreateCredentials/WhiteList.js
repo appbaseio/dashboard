@@ -1,8 +1,7 @@
 import React from 'react';
-import { Icon, Input } from 'antd';
+import { Icon, Input, Select } from 'antd';
 import styles from './styles';
 import Grid from './Grid';
-import ListInput from './ListInput';
 import Flex from './../../../shared/Flex';
 
 const Suggestions = {
@@ -41,9 +40,11 @@ const getSuggestionCode = (str) => {
 };
 const ipValidator = (value) => {
 	const splitIp = value.split('/');
-	if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(splitIp[0])) {
+	if (
+		/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(splitIp[0])
+	) {
 		const parsedNumber = parseInt(splitIp[1], 10);
-		if (parsedNumber && parsedNumber > -1 && parsedNumber < 256) {
+		if (parsedNumber > -1 && parsedNumber < 256) {
 			return true;
 		}
 		return false;
@@ -57,54 +58,16 @@ class WhiteList extends React.Component {
 		this.state = {
 			isFocused: false,
 			selectedSuggestion: 1,
-			text: '',
+			text: undefined,
 		};
 	}
-	componentDidMount() {
-		document.addEventListener('keydown', this.handleKeyDown);
-	}
-	componentWillUnmount() {
-		document.removeEventListener('keydown', this.handleKeyDown);
-	}
-	handleKeyDown = (event) => {
-		if (this.state.isFocused) {
-			switch (event.code) {
-				case 'ArrowDown':
-					this.setState(prevState => ({
-						selectedSuggestion:
-							prevState.selectedSuggestion < 4
-								? prevState.selectedSuggestion + 1
-								: prevState.selectedSuggestion,
-					}));
-					break;
-				case 'ArrowUp':
-					this.setState(prevState => ({
-						selectedSuggestion:
-							prevState.selectedSuggestion > 1
-								? prevState.selectedSuggestion - 1
-								: prevState.selectedSuggestion,
-					}));
-					break;
-				case 'Enter':
-					this.handleSelectOption();
-					break;
-				default:
-			}
-		}
-	};
-	handleSelectOption = () => {
-		this.inputRef.blur();
+	handleSelectOption = (value) => {
 		this.setState((prevState) => {
-			const selectedSuggestion = Suggestions[prevState.selectedSuggestion];
-			if (selectedSuggestion) {
-				const { control } = this.props;
-				control.onChange([
-					...control.value,
-					`${selectedSuggestion.prefix}${prevState.text}${selectedSuggestion.suffix}`,
-				]);
+			const { control } = this.props;
+			if (value && !control.value.includes(value)) {
+				control.onChange([...control.value, value]);
 				return {
-					selectedSuggestion: 1,
-					text: '',
+					text: undefined,
 				};
 			}
 			return prevState;
@@ -129,9 +92,14 @@ class WhiteList extends React.Component {
 			100,
 		);
 	};
-	hanldeOnChange = (e) => {
+	hanldeOnChange = (value) => {
 		this.setState({
-			text: e.target.value,
+			text: value,
+		});
+	};
+	handleOnSearch = (value) => {
+		this.setState({
+			text: value.replace('*', '').trim(),
 		});
 	};
 	removeItem = (item) => {
@@ -144,23 +112,25 @@ class WhiteList extends React.Component {
 		}
 	};
 	submitOnBlur = () => {
-		if (ipValidator(this.state.text)) {
-			this.props.control.onChange([...this.props.control.value, this.state.text]);
-			this.setState({
-				text: '',
-			});
-		} else if (this.state.text) {
-			this.props.control.setErrors({ invalidIP: true });
-		} else {
-			this.props.control.setErrors(undefined);
+		if (!this.props.control.value.includes(this.state.text)) {
+			if (ipValidator(this.state.text)) {
+				this.props.control.onChange([...this.props.control.value, this.state.text]);
+				this.setState({
+					text: '',
+				});
+			} else if (this.state.text) {
+				this.props.control.setErrors({ invalidIP: true });
+			} else {
+				this.props.control.setErrors(undefined);
+			}
 		}
-	}
+	};
 	render() {
 		const {
 			label,
 			inputProps,
 			defaultSuggestionValue,
-			defaultValue,
+			// defaultValue,
 			control: { value, handler, hasError },
 			type,
 		} = this.props;
@@ -170,14 +140,14 @@ class WhiteList extends React.Component {
 				label={<span css={styles.subHeader}>{label}</span>}
 				component={
 					<Flex css="width: 100%;position: relative" flexDirection="column">
-						{defaultValue && (
+						{/* {defaultValue && (
 							<div key={defaultValue.value} css={styles.addedWhiteList}>
 								<div>{defaultValue.value}</div>
 								<div css="font-size: 12px;font-weight: normal">
 									{defaultValue.description}
 								</div>
 							</div>
-						)}
+						)} */}
 						{value.map(item => (
 							<Flex
 								key={item}
@@ -186,13 +156,13 @@ class WhiteList extends React.Component {
 							>
 								<div>
 									<div>{item}</div>
-									{type === 'dropdown' &&
+									{type === 'dropdown' && (
 										<div css="font-size: 12px;font-weight: normal">
-										{	Suggestions[getSuggestionCode(item)].description}
+											{Suggestions[getSuggestionCode(item)].description}
 										</div>
-									}
+									)}
 								</div>
-								<div>
+								<div css="cursor:pointer">
 									<Icon
 										onClick={() => this.removeItem(item)}
 										type="close-circle-o"
@@ -200,30 +170,73 @@ class WhiteList extends React.Component {
 								</div>
 							</Flex>
 						))}
-						<div css="margin-top: 10px">
+						<div>
 							{type === 'dropdown' ? (
-								<ListInput
+								<Select
+									showSearch
 									{...inputProps}
-									onBlur={this.handleBlur}
-									onChange={this.hanldeOnChange}
-									onFocus={this.handleFocus}
 									value={text}
-									setRef={(ref) => {
-										this.inputRef = ref;
-									}}
-								/>
+									onSearch={this.handleOnSearch}
+									onSelect={this.handleSelectOption}
+									onBlur={this.handleSelectOption}
+									defaultActiveFirstOption={!!text}
+									showArrow={false}
+									filterOption={false}
+									style={{ width: '100%' }}
+								>
+									{Object.keys(Suggestions).map((k) => {
+										const suggestion = Suggestions[k];
+										if (text) {
+											const suggestionValue = `${
+												suggestion.prefix
+											}${text}${suggestion.suffix}`;
+											return (
+												<Select.Option key={suggestionValue}>
+													<Flex justifyContent="space-between">
+														<span>{suggestionValue}</span>
+														<span css={styles.description}>
+															{suggestion.description}
+														</span>
+													</Flex>
+												</Select.Option>
+											);
+										}
+										return (
+											<Select.Option css="pointer-events: none" key={k}>
+												<Flex
+													justifyContent="space-between"
+													css="color: #d9d9d9;font-weight: 100;font-size: 12px"
+												>
+													<span>
+														{suggestion.prefix}
+														{defaultSuggestionValue}
+														{suggestion.suffix}
+													</span>
+													<span css={styles.description}>
+														{suggestion.description}
+													</span>
+												</Flex>
+											</Select.Option>
+										);
+									})}
+								</Select>
 							) : (
 								<Input
 									{...inputProps}
 									{...handler()}
 									value={text}
-									onChange={this.hanldeOnChange}
+									onChange={(e) => {
+										this.hanldeOnChange(e.target.value);
+									}}
 									onBlur={this.submitOnBlur}
+									onKeyPress={(event) => {
+										if (event.key === 'Enter') {
+											this.submitOnBlur();
+										}
+									}}
 								/>
 							)}
-							{
-								hasError('invalidIP') && <div css={styles.error}>Invalid IP</div>
-							}
+							{hasError('invalidIP') && <div css={styles.error}>Invalid IP</div>}
 							{this.state.isFocused && (
 								<div css={styles.serachResultsCls}>
 									{Object.keys(Suggestions).map((k, index) => {

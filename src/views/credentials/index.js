@@ -10,6 +10,7 @@ export default class Credentials extends Component {
 		super(props);
 		this.state = {
 			info: null,
+			isSubmitting: false,
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newPermission = this.newPermission.bind(this);
@@ -53,9 +54,27 @@ export default class Credentials extends Component {
 	}
 
 	newPermission(request) {
-		appbaseService.newPermission(this.appId, request).then((data) => {
-			this.getInfo();
-		});
+		this.setState(
+			{
+				isSubmitting: true,
+			},
+			() => {
+				appbaseService.newPermission(this.appId, request).then(
+					() => {
+						this.getInfo();
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+					(e) => {
+						toastr.error('Error', 'Unable to save credentials');
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+				);
+			},
+		);
 	}
 
 	renderElement(method) {
@@ -112,7 +131,6 @@ export default class Credentials extends Component {
 	}
 
 	render() {
-		console.log('THIS IS PROPS', this.props);
 		return (
 			<AppPage
 				pageInfo={{
@@ -131,6 +149,7 @@ export default class Credentials extends Component {
 										<NewPermission
 											appId={this.props.params.appId}
 											appName={this.appName}
+											isSubmitting={this.state.isSubmitting}
 											newPermission={this.newPermission}
 										/>
 									) : null}
