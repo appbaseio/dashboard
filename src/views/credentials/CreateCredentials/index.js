@@ -1,114 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button, Select } from 'antd';
-import { css } from 'emotion';
 import { FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
 import styles from './styles';
 import { Button as UpgradeButton } from './../../../../modules/batteries/components/Mappings/styles';
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
+import { hoverMessage, fieldMessage, ttlMessage, ipLimitMessage } from './../../../utils/messages';
+import { traverseMapping } from './../../../utils/mappings';
+import { Types, aclOptions, aclOptionsLabel, defaultAclOptions } from './utils';
 import WhiteList from './WhiteList';
 
-const fieldBadge = css`
-	margin-left: 2px;
-    font-size: 10px;
-    background-color: #a2a4aa;
-	border-radius: 3px;
-	padding: 1px 2px;
-	color: #fff
-`;
-const hoverMessage = () => (
-	<div style={{ maxWidth: 220 }}>
-		Editing security permissions isn{"'"}t a native feature in Elasticsearch. All appbase.io
-		paid plans offer editable security permissions by performing a lossless re-indexing of your
-		data whenever you edit them from this UI.
-	</div>
-);
-
-const fieldMessage = () => (
-	<div style={{ maxWidth: 220 }}>
-		List of fields to retrieve (or not retrieve) when making a search query using
-								this Api Key.
-	</div>
-);
-const ttlMessage = () => (
-	<div style={{ maxWidth: 220 }}>
-		In seconds. 0 means unlimited.
-	</div>
-);
-const ipLimitMessage = () => (
-	<div style={{ maxWidth: 220 }}>
-		The maximum number of hits this API key can retrieve in one call. 0 means unlimited.
-	</div>
-);
-
-const traverseMapping = (mappings = {}) => {
-	const fieldObject = {};
-	const checkIfPropertyPresent = (m, type) => {
-		fieldObject[type] = [];
-		const setFields = (mp, prefix = '') => {
-			if (mp.properties) {
-				Object.keys(mp.properties).forEach((mpp) => {
-					fieldObject[type].push(`${prefix}${mpp}`);
-					const field = mp.properties[mpp];
-					if (field && field.properties) {
-						setFields(field, `${prefix}${mpp}.`);
-					}
-				});
-			}
-		};
-		setFields(m);
-	};
-	Object.keys(mappings).forEach(k => checkIfPropertyPresent(mappings[k], k));
-	return fieldObject;
-};
-const Types = {
-	read: {
-		description: 'Read-only key',
-		read: true,
-		write: false,
-	},
-	write: {
-		description: 'Write-only key',
-		read: false,
-		write: true,
-	},
-	admin: {
-		description: 'Admin key',
-		read: true,
-		write: true,
-	},
-};
-
-const aclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
-const aclOptionsLabel = {
-	index: 'Index',
-	get: 'Get',
-	search: 'Search',
-	settings: 'Settings',
-	stream: 'Stream',
-	bulk: 'Bulk',
-	delete: 'Delete',
-};
-const defaultAclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
-const CheckboxGroup = Checkbox.Group;
-const overlay = css`
-	position: absolute;
-	top: 160px;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(255, 255, 255, 0.8);
-	z-index: 9999;
-	color: black;
-`;
-const upgradePlan = css`
-	margin-top: 200px;
-	font-size: 16px;
-	font-weight: 500;
-	text-align: center;
-`;
 const { Option } = Select;
+const CheckboxGroup = Checkbox.Group;
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
@@ -119,7 +23,7 @@ class CreateCredentials extends React.Component {
 			referers: [{ value: [], disabled: !props.isPaidUser }],
 			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
 			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
-			exclude_fields: [{ value: [], disabled: !props.isPaidUser }],
+			exclude_fields: [{ value: [], disabled: true }],
 			ip_limit: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 		});
@@ -214,8 +118,8 @@ class CreateCredentials extends React.Component {
 								)}
 							/>
 							{!isPaidUser && (
-								<div css={overlay}>
-									<div css={upgradePlan}>
+								<div css={styles.overlay}>
+									<div css={styles.upgradePlan}>
 										<div>
 											<Icon type="lock" css="font-size: 40px" />
 										</div>
@@ -322,7 +226,7 @@ class CreateCredentials extends React.Component {
 															return (
 																<Option value={v} key={v} title={v}>
 																	{v}
-																	<span css={fieldBadge}>{i}</span>
+																	<span css={styles.fieldBadge}>{i}</span>
 																</Option>
 															);
 														}
@@ -365,7 +269,7 @@ class CreateCredentials extends React.Component {
 															return (
 																<Option value={v} key={v}>
 																	{v}
-																	<span css={fieldBadge}>{i}</span>
+																	<span css={styles.fieldBadge}>{i}</span>
 																</Option>
 															);
 														}

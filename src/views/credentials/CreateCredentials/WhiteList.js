@@ -1,63 +1,16 @@
 import React from 'react';
 import { Icon, Input, Select } from 'antd';
+import PropTypes from 'prop-types';
 import styles from './styles';
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
+import { Suggestions, getSuggestionCode, ipValidator } from './utils';
 
-const Suggestions = {
-	1: {
-		prefix: '',
-		suffix: '',
-		description: 'Matches exactly',
-	},
-	2: {
-		prefix: '',
-		suffix: '*',
-		description: 'Matches refers starting with',
-	},
-	3: {
-		prefix: '*',
-		suffix: '',
-		description: 'Matches refers ending with',
-	},
-	4: {
-		prefix: '*',
-		suffix: '*',
-		description: 'Matches refers containing',
-	},
-};
-const getSuggestionCode = (str) => {
-	if (str.startsWith('*') && str.endsWith('*')) {
-		return 4;
-	}
-	if (str.startsWith('*')) {
-		return 2;
-	}
-	if (str.endsWith('*')) {
-		return 3;
-	}
-	return 1;
-};
-const ipValidator = (value) => {
-	const splitIp = value.split('/');
-	if (
-		/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(splitIp[0])
-	) {
-		const parsedNumber = parseInt(splitIp[1], 10);
-		if (parsedNumber > -1 && parsedNumber < 256) {
-			return true;
-		}
-		return false;
-	}
-	return false;
-};
 class WhiteList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.inputRef = undefined;
 		this.state = {
-			isFocused: false,
-			selectedSuggestion: 1,
 			text: undefined,
 		};
 	}
@@ -73,34 +26,17 @@ class WhiteList extends React.Component {
 			return prevState;
 		});
 	};
-	selectOption = (key) => {
-		this.setState({
-			selectedSuggestion: key,
-		});
-	};
-	handleFocus = () => {
-		this.setState({
-			isFocused: true,
-		});
-	};
-	handleBlur = () => {
-		setTimeout(
-			() =>
-				this.setState({
-					isFocused: false,
-				}),
-			100,
-		);
-	};
 	hanldeOnChange = (value) => {
 		this.setState({
 			text: value,
 		});
 	};
 	handleOnSearch = (value) => {
-		this.setState({
-			text: value.replace('*', '').trim(),
-		});
+		if (!(value && value.length === 1 && value[0] === '*')) {
+			this.setState({
+				text: value.trim(),
+			});
+		}
 	};
 	removeItem = (item) => {
 		const { control } = this.props;
@@ -116,7 +52,7 @@ class WhiteList extends React.Component {
 			if (ipValidator(this.state.text)) {
 				this.props.control.onChange([...this.props.control.value, this.state.text]);
 				this.setState({
-					text: '',
+					text: undefined,
 				});
 			} else if (this.state.text) {
 				this.props.control.setErrors({ invalidIP: true });
@@ -130,7 +66,6 @@ class WhiteList extends React.Component {
 			label,
 			inputProps,
 			defaultSuggestionValue,
-			// defaultValue,
 			control: { value, handler, hasError },
 			type,
 		} = this.props;
@@ -140,14 +75,6 @@ class WhiteList extends React.Component {
 				label={<span css={styles.subHeader}>{label}</span>}
 				component={
 					<Flex css="width: 100%;position: relative" flexDirection="column">
-						{/* {defaultValue && (
-							<div key={defaultValue.value} css={styles.addedWhiteList}>
-								<div>{defaultValue.value}</div>
-								<div css="font-size: 12px;font-weight: normal">
-									{defaultValue.description}
-								</div>
-							</div>
-						)} */}
 						{value.map(item => (
 							<Flex
 								key={item}
@@ -175,6 +102,7 @@ class WhiteList extends React.Component {
 								<Select
 									showSearch
 									{...inputProps}
+									{...handler()}
 									value={text}
 									onSearch={this.handleOnSearch}
 									onSelect={this.handleSelectOption}
@@ -186,10 +114,10 @@ class WhiteList extends React.Component {
 								>
 									{Object.keys(Suggestions).map((k) => {
 										const suggestion = Suggestions[k];
-										if (text) {
-											const suggestionValue = `${
-												suggestion.prefix
-											}${text}${suggestion.suffix}`;
+										if (text && text.length > 1) {
+											const suggestionValue = `${suggestion.prefix}${text}${
+												suggestion.suffix
+											}`;
 											return (
 												<Select.Option key={suggestionValue}>
 													<Flex justifyContent="space-between">
@@ -237,60 +165,6 @@ class WhiteList extends React.Component {
 								/>
 							)}
 							{hasError('invalidIP') && <div css={styles.error}>Invalid IP</div>}
-							{this.state.isFocused && (
-								<div css={styles.serachResultsCls}>
-									{Object.keys(Suggestions).map((k, index) => {
-										const suggestion = Suggestions[k];
-										const isSelected =
-											index === this.state.selectedSuggestion - 1;
-										return text ? (
-											<Flex
-												onClick={() => this.handleSelectOption()}
-												onMouseOver={() => this.selectOption(k)}
-												onFocus={() => this.selectOption(k)}
-												justifyContent="space-between"
-												key={k}
-												css={`
-													background-color: ${isSelected && '#83a2ee'};
-													color: ${isSelected ? '#fff' : '#d9d9d9'};
-													padding: 5px 10px;
-													font-weight: 100;
-													cursor: pointer;
-													font-size: 12px;
-												`}
-											>
-												<span
-													css={`
-														color: ${isSelected ? '#fff' : 'black'};
-													`}
-												>
-													{suggestion.prefix}
-													{text}
-													{suggestion.suffix}
-												</span>
-												<span css={styles.description}>
-													{suggestion.description}
-												</span>
-											</Flex>
-										) : (
-											<Flex
-												justifyContent="space-between"
-												key={k}
-												css="padding: 5px 10px;color: #d9d9d9;font-weight: 100;font-size: 12px"
-											>
-												<span>
-													{suggestion.prefix}
-													{defaultSuggestionValue}
-													{suggestion.suffix}
-												</span>
-												<span css={styles.description}>
-													{suggestion.description}
-												</span>
-											</Flex>
-										);
-									})}
-								</div>
-							)}
 						</div>
 					</Flex>
 				}
@@ -298,5 +172,11 @@ class WhiteList extends React.Component {
 		);
 	}
 }
-
+WhiteList.propTypes = {
+	label: PropTypes.string,
+	inputProps: PropTypes.object,
+	defaultSuggestionValue: PropTypes.string,
+	control: PropTypes.object,
+	type: PropTypes.oneOf(['dropdown']),
+};
 export default WhiteList;

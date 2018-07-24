@@ -11,6 +11,7 @@ export default class Credentials extends Component {
 		this.state = {
 			info: null,
 			isSubmitting: false,
+			showCredForm: false,
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newPermission = this.newPermission.bind(this);
@@ -52,7 +53,11 @@ export default class Credentials extends Component {
 			}
 		});
 	}
-
+	handleCancel = () => {
+		this.setState({
+			showCredForm: false,
+		});
+	};
 	newPermission(request) {
 		this.setState(
 			{
@@ -64,6 +69,7 @@ export default class Credentials extends Component {
 						this.getInfo();
 						this.setState({
 							isSubmitting: false,
+							showCredForm: false,
 						});
 					},
 					(e) => {
@@ -129,7 +135,11 @@ export default class Credentials extends Component {
 			this.state.info.appInfo.owner === appbaseService.userInfo.body.email
 		);
 	}
-
+	showForm = () => {
+		this.setState({
+			showCredForm: true,
+		});
+	};
 	render() {
 		return (
 			<AppPage
@@ -148,9 +158,12 @@ export default class Credentials extends Component {
 									{this.isOwner() ? (
 										<NewPermission
 											appId={this.props.params.appId}
+											handleCancel={this.handleCancel}
 											appName={this.appName}
 											isSubmitting={this.state.isSubmitting}
 											newPermission={this.newPermission}
+											showForm={this.showForm}
+											showCredForm={this.state.showCredForm}
 										/>
 									) : null}
 								</div>
