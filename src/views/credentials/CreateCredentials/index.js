@@ -120,7 +120,7 @@ class CreateCredentials extends React.Component {
 							{!isPaidUser && (
 								<div css={styles.overlay}>
 									<div css={styles.upgradePlan}>
-										<div>
+										<div style={{ marginBottom: 20 }}>
 											<Icon type="lock" css="font-size: 40px" />
 										</div>
 										Upgrade to a paid plan to add security permissions.
@@ -131,6 +131,9 @@ class CreateCredentials extends React.Component {
 											css="margin-top: 10px"
 											href="/billing"
 											target="_blank"
+											style={{
+												marginTop: 20,
+											}}
 										>
 											Upgrade Now
 										</UpgradeButton>
