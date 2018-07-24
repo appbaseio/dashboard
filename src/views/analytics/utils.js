@@ -83,7 +83,10 @@ export function getAnalytics(appName) {
 				'Content-Type': 'application/json',
 			},
 		})
-			.then(() => {
+		    // Comment out this line
+			// .then(res => res.json())
+			.then((res) => {
+				// resolve the promise with response
 				resolve(data.body);
 			})
 			.catch((e) => {

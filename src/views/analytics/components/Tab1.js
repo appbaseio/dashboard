@@ -9,7 +9,7 @@ const normalizeData = (data = []) =>
 	data.map((o) => {
 		const newData = o;
 		const date = new Date(o.key_as_string);
-		newData.formatDate = `${date.getMonth()}/${date.getDate()}`;
+		newData.formatDate = `${date.getMonth() + 1}/${date.getDate()}`;
 		return newData;
 	});
 const addKeys = (data = []) =>
