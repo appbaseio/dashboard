@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './styles';
 import Flex from './../../../shared/Flex';
 
@@ -12,5 +13,10 @@ const Grid = ({ label, component }) => (
 		<Flex css="flex: 75%; margin-left: 20px">{component}</Flex>
 	</Flex>
 );
+
+Grid.propTypes = {
+	label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+	component: PropTypes.node,
+};
 
 export default Grid;

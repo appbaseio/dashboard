@@ -10,7 +10,6 @@ export default class NewPermission extends Component {
 		super(props);
 		this.state = {
 			show: false,
-			showCredForm: false,
 			description: null,
 			selectedType: 'read',
 			isPaidUser: false,
@@ -45,7 +44,7 @@ export default class NewPermission extends Component {
 					this.setState({ isPaidUser: response.isPaidUser });
 				}
 			},
-			(error) => {
+			() => {
 				toastr.error('Error', 'Something went wrong');
 			},
 		);
@@ -106,17 +105,6 @@ export default class NewPermission extends Component {
 			});
 		}
 	}
-	showCredForm = () => {
-		this.setState({
-			showCredForm: true,
-		});
-		this.expand();
-	};
-	handleCancel = () => {
-		this.setState({
-			showCredForm: false,
-		});
-	};
 	renderElement(method) {
 		let element = null;
 		switch (method) {
@@ -155,18 +143,18 @@ export default class NewPermission extends Component {
 		// });
 		return (
 			<div className="ad-create col-xs-12">
-				{this.state.showCredForm && (
+				{this.props.showCredForm && (
 					<CreateCredentials
-						isPaidUser={this.state.isPaidUser || true}
+						isPaidUser={this.state.isPaidUser}
 						isSubmitting={this.props.isSubmitting}
 						onSubmit={this.handleSubmit}
-						show={this.state.showCredForm}
-						handleCancel={this.handleCancel}
+						show={this.props.showCredForm}
+						handleCancel={this.props.handleCancel}
 						mappings={this.state.mappings}
 					/>
 				)}
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.showCredForm}>
+					<a className="ad-theme-btn primary" onClick={this.props.showForm}>
 						New Credentials
 					</a>
 				</div>
