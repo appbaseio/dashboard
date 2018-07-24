@@ -10,6 +10,8 @@ export default class Credentials extends Component {
 		super(props);
 		this.state = {
 			info: null,
+			isSubmitting: false,
+			showCredForm: false,
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newPermission = this.newPermission.bind(this);
@@ -38,24 +40,47 @@ export default class Credentials extends Component {
 
 	getInfo() {
 		this.info = {};
-		appbaseService.getPermission(this.appId).then(data => {
+		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
-		appbaseService.getAppInfo(this.appId).then(data => {
+		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data.body;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
 	}
-
-	newPermission(request) {
-		appbaseService.newPermission(this.appId, request).then(data => {
-			this.getInfo();
+	handleCancel = () => {
+		this.setState({
+			showCredForm: false,
 		});
+	};
+	newPermission(request) {
+		this.setState(
+			{
+				isSubmitting: true,
+			},
+			() => {
+				appbaseService.newPermission(this.appId, request).then(
+					() => {
+						this.getInfo();
+						this.setState({
+							isSubmitting: false,
+							showCredForm: false,
+						});
+					},
+					(e) => {
+						toastr.error('Error', 'Unable to save credentials');
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+				);
+			},
+		);
 	}
 
 	renderElement(method) {
@@ -74,16 +99,14 @@ export default class Credentials extends Component {
 							}
 							return 0;
 						})
-						.map((permissionInfo, index) => {
-							return (
-								<PermissionCard
-									appId={this.appId}
-									key={index}
-									permissionInfo={permissionInfo}
-									getInfo={this.getInfo}
-								/>
-							);
-						});
+						.map((permissionInfo, index) => (
+							<PermissionCard
+								appId={this.appId}
+								key={index}
+								permissionInfo={permissionInfo}
+								getInfo={this.getInfo}
+							/>
+						));
 				}
 				break;
 			case 'deleteApp':
@@ -112,9 +135,12 @@ export default class Credentials extends Component {
 			this.state.info.appInfo.owner === appbaseService.userInfo.body.email
 		);
 	}
-
+	showForm = () => {
+		this.setState({
+			showCredForm: true,
+		});
+	};
 	render() {
-		console.log(this.props);
 		return (
 			<AppPage
 				pageInfo={{
@@ -130,7 +156,15 @@ export default class Credentials extends Component {
 								<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
 									{this.isOwner() ? (
-										<NewPermission newPermission={this.newPermission} />
+										<NewPermission
+											appId={this.props.params.appId}
+											handleCancel={this.handleCancel}
+											appName={this.appName}
+											isSubmitting={this.state.isSubmitting}
+											newPermission={this.newPermission}
+											showForm={this.showForm}
+											showCredForm={this.state.showCredForm}
+										/>
 									) : null}
 								</div>
 							</section>

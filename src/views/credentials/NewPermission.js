@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import CreateCredentials from './CreateCredentials/index';
+import { getMappings } from './../../../modules/batteries/utils/mappings';
+import { appbaseService } from '../../service/AppbaseService';
+import { checkUserStatus } from '../../utils/user';
+import { getCredentials } from './../../../modules/batteries/utils';
 
 export default class NewPermission extends Component {
 	constructor(props) {
@@ -8,6 +12,8 @@ export default class NewPermission extends Component {
 			show: false,
 			description: null,
 			selectedType: 'read',
+			isPaidUser: false,
+			mappings: undefined,
 		};
 		this.types = {
 			read: {
@@ -31,12 +37,45 @@ export default class NewPermission extends Component {
 		this.onSelect = this.onSelect.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);
 	}
+	componentDidMount() {
+		checkUserStatus().then(
+			(response) => {
+				if (response.isPaidUser) {
+					this.setState({ isPaidUser: response.isPaidUser });
+				}
+			},
+			() => {
+				toastr.error('Error', 'Something went wrong');
+			},
+		);
+		if (this.props.appId) {
+			const appId = appbaseService.userInfo.body.apps[this.props.appId];
+			getCredentials(appId)
+				.then((user) => {
+					const { username, password } = user;
+					return getMappings(this.props.appName, `${username}:${password}`);
+				})
+				.then((res) => {
+					this.setState({
+						mappings: res,
+					});
+				})
+				.catch((error) => {
+					toastr.error('Error', 'Unable to fetch mappings');
+				});
+		}
+	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.description) {
 			this.setState({
 				description: this.props.description,
 			});
 		}
+	}
+	onSelect(selectedType) {
+		this.setState({
+			selectedType,
+		});
 	}
 	newPermission() {
 		const request = this.types[this.state.selectedType];
@@ -46,6 +85,18 @@ export default class NewPermission extends Component {
 		this.props.newPermission(request);
 		this.expand();
 	}
+	handleSubmit = (form) => {
+		const requestPayload = { ...form.value.operationType, ...form.value };
+		delete requestPayload.operationType;
+		Object.keys(requestPayload).forEach((k) => {
+			if (requestPayload[k] !== undefined) {
+				if (k === 'ip_limit' || k === 'ttl') {
+					requestPayload[k] = parseInt(requestPayload[k], 10);
+				}
+			}
+		});
+		this.props.newPermission(requestPayload);
+	};
 	expand() {
 		this.setState({
 			show: !this.state.show,
@@ -59,11 +110,6 @@ export default class NewPermission extends Component {
 				clearInput: false,
 			});
 		}
-	}
-	onSelect(selectedType) {
-		this.setState({
-			selectedType,
-		});
 	}
 	renderElement(method) {
 		let element = null;
@@ -81,31 +127,40 @@ export default class NewPermission extends Component {
 			case 'buttonGroup':
 				element = (
 					<span className="ad-create-button-group without-margin">
-						{Object.keys(this.types).map((type, index) => {
-							return (
-								<PermissionButton
-									key={index}
-									type={type}
-									selectedType={this.state.selectedType}
-									description={this.types[type].description}
-									onSelect={this.onSelect}
-								/>
-							);
-						})}
+						{Object.keys(this.types).map(type => (
+							<PermissionButton
+								key={type}
+								type={type}
+								selectedType={this.state.selectedType}
+								description={this.types[type].description}
+								onSelect={this.onSelect}
+							/>
+						))}
 					</span>
 				);
 				break;
+			default:
 		}
 		return element;
 	}
 	render() {
-		const cx = classNames({
-			active: this.state.show,
-		});
+		// const cx = classNames({
+		// 	active: this.state.show,
+		// });
 		return (
-			<div className={`ad-create col-xs-12 ${cx}`}>
+			<div className="ad-create col-xs-12">
+				{this.props.showCredForm && (
+					<CreateCredentials
+						isPaidUser={this.state.isPaidUser || true}
+						isSubmitting={this.props.isSubmitting}
+						onSubmit={this.handleSubmit}
+						show={this.props.showCredForm}
+						handleCancel={this.props.handleCancel}
+						mappings={this.state.mappings}
+					/>
+				)}
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.expand}>
+					<a className="ad-theme-btn primary" onClick={this.props.showForm}>
 						New Credentials
 					</a>
 				</div>
@@ -173,20 +228,15 @@ class Description extends Component {
 	}
 }
 
-const PermissionButton = props => {
-	const cx = classNames({
-		active: props.selectedType === props.type,
-	});
-	return (
-		<label className="radio-inline">
-			<input
-				type="radio"
-				name={props.type}
-				checked={props.selectedType === props.type}
-				onChange={props.onSelect && (() => props.onSelect(props.type))}
-			/>{' '}
-			{props.description}
-			<span className="checkmark" />
-		</label>
-	);
-};
+const PermissionButton = props => (
+	<label className="radio-inline" htmlFor={props.type}>
+		<input
+			type="radio"
+			name={props.type}
+			checked={props.selectedType === props.type}
+			onChange={props.onSelect && (() => props.onSelect(props.type))}
+		/>{' '}
+		{props.description}
+		<span className="checkmark" />
+	</label>
+);

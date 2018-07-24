@@ -202,7 +202,7 @@ export default class Nav extends Component {
 										aria-haspopup="true"
 										aria-expanded="true"
 									>
-										<button className="user-img">
+										<button className="user-img" css="margin-top: -5px;margin-right: -10px;">
 											<span className="img-container">
 												<img
 													src={this.state.userImg}
