@@ -102,7 +102,6 @@ class WhiteList extends React.Component {
 								<Select
 									showSearch
 									{...inputProps}
-									{...handler()}
 									value={text}
 									onSearch={this.handleOnSearch}
 									onSelect={this.handleSelectOption}
