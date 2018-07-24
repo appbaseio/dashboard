@@ -88,7 +88,13 @@ export default class NewPermission extends Component {
 	handleSubmit = (form) => {
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
-
+		Object.keys(requestPayload).forEach((k) => {
+			if (requestPayload[k] !== undefined) {
+				if (k === 'ip_limit' || k === 'ttl') {
+					requestPayload[k] = parseInt(requestPayload[k], 10);
+				}
+			}
+		});
 		this.props.newPermission(requestPayload);
 	};
 	expand() {
@@ -145,7 +151,7 @@ export default class NewPermission extends Component {
 			<div className="ad-create col-xs-12">
 				{this.props.showCredForm && (
 					<CreateCredentials
-						isPaidUser={this.state.isPaidUser}
+						isPaidUser={this.state.isPaidUser || true}
 						isSubmitting={this.props.isSubmitting}
 						onSubmit={this.handleSubmit}
 						show={this.props.showCredForm}
