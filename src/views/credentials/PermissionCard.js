@@ -127,6 +127,9 @@ export default class PermissionCard extends Component {
 		}
 		return keyType;
 	}
+	editCredentials = () => {
+		this.props.showForm(this.props.permissionInfo);
+	}
 	render() {
 		const cx = classNames({
 			active: this.state.showKey,
@@ -172,6 +175,12 @@ export default class PermissionCard extends Component {
 										<i className={`far fa-clone`} />
 									</a>
 								</CopyToClipboard>
+								<a
+									onClick={this.editCredentials}
+									className="ad-credential-btn ad-permission-key-copy-btn"
+								>
+										<i className={`far fa-edit`} />
+									</a>
 							</div>
 						</div>
 						<aside className="permission-key-delete">

@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import CreateCredentials from './CreateCredentials/index';
-import { getMappings } from './../../../modules/batteries/utils/mappings';
-import { appbaseService } from '../../service/AppbaseService';
-import { checkUserStatus } from '../../utils/user';
-import { getCredentials } from './../../../modules/batteries/utils';
 
 export default class NewPermission extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			show: false,
 			description: null,
 			selectedType: 'read',
-			isPaidUser: false,
-			mappings: undefined,
 		};
 		this.types = {
 			read: {
@@ -36,34 +29,6 @@ export default class NewPermission extends Component {
 		this.expand = this.expand.bind(this);
 		this.onSelect = this.onSelect.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);
-	}
-	componentDidMount() {
-		checkUserStatus().then(
-			(response) => {
-				if (response.isPaidUser) {
-					this.setState({ isPaidUser: response.isPaidUser });
-				}
-			},
-			() => {
-				toastr.error('Error', 'Something went wrong');
-			},
-		);
-		if (this.props.appId) {
-			const appId = appbaseService.userInfo.body.apps[this.props.appId];
-			getCredentials(appId)
-				.then((user) => {
-					const { username, password } = user;
-					return getMappings(this.props.appName, `${username}:${password}`);
-				})
-				.then((res) => {
-					this.setState({
-						mappings: res,
-					});
-				})
-				.catch((error) => {
-					toastr.error('Error', 'Unable to fetch mappings');
-				});
-		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.description) {
@@ -151,12 +116,13 @@ export default class NewPermission extends Component {
 			<div className="ad-create col-xs-12">
 				{this.props.showCredForm && (
 					<CreateCredentials
-						isPaidUser={this.state.isPaidUser || true}
+						isPaidUser={this.props.isPaidUser || true}
 						isSubmitting={this.props.isSubmitting}
 						onSubmit={this.handleSubmit}
 						show={this.props.showCredForm}
 						handleCancel={this.props.handleCancel}
-						mappings={this.state.mappings}
+						mappings={this.props.mappings}
+						initialValues={this.props.initialValues}
 					/>
 				)}
 				<div className="ad-create-collapse">

@@ -27,6 +27,7 @@ class CreateCredentials extends React.Component {
 			ip_limit: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 		});
+		this.mappings = traverseMapping(this.props.mappings);
 	}
 	componentDidMount() {
 		const includeFieldsHandler = this.form.get('include_fields');
@@ -48,6 +49,11 @@ class CreateCredentials extends React.Component {
 			}
 		});
 	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.mappings !== this.props.mappings) {
+			this.mappings = traverseMapping(nextProps.mappings);
+		}
+	}
 	componentWillUnmount() {
 		this.form.get('include_fields').valueChanges.unsubscribe();
 		this.form.get('exclude_fields').valueChanges.unsubscribe();
@@ -57,9 +63,8 @@ class CreateCredentials extends React.Component {
 	};
 	render() {
 		const {
- show, handleCancel, isPaidUser, mappings, isSubmitting,
+ show, handleCancel, isPaidUser, isSubmitting,
 } = this.props;
-		const traverseMappings = traverseMapping(mappings);
 		return (
 			<FieldGroup
 				strict={false}
@@ -223,8 +228,8 @@ class CreateCredentials extends React.Component {
 													}}
 												>
 												<Option key="*">* (Include all fields)</Option>
-												{Object.keys(traverseMappings).map(i =>
-													traverseMappings[i].map((v) => {
+												{Object.keys(this.mappings).map(i =>
+													this.mappings[i].map((v) => {
 														if (!excludedFields.includes(v)) {
 															return (
 																<Option value={v} key={v} title={v}>
@@ -266,8 +271,8 @@ class CreateCredentials extends React.Component {
 													}}
 												>
 													<Option key="*">* (Exclude all fields)</Option>
-													{Object.keys(traverseMappings).map(i =>
-													traverseMappings[i].map((v) => {
+													{Object.keys(this.mappings).map(i =>
+													this.mappings[i].map((v) => {
 														if (!includedFields.includes(v)) {
 															return (
 																<Option value={v} key={v}>
