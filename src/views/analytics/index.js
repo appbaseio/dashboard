@@ -1,44 +1,72 @@
 import React from 'react';
-import { Card, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
-import Flex from './../../shared/Flex';
-import Searches from './components/Searches';
+import Tab1 from './components/Tab1';
+import { getAnalytics } from './utils';
 
 const { TabPane } = Tabs;
-
-export default (props) => {
-	const appName = props.params.appId;
-	const appId = appbaseService.userInfo.body.apps[appName];
-	const pageInfo = {
-		currentView: 'mappings',
-		appName,
-		appId,
-	};
-
-	return (
-		<AppPage pageInfo={pageInfo} key={appId}>
-			<div className="ad-detail-page ad-dashboard row" style={{ padding: '40px' }}>
-				<Tabs defaultActiveKey="1">
-					<TabPane tab="Analytics" key="1">
-						<Card title="Daily Search Volume" />
-						<Flex css="width: 100%;margin-top: 20px">
-							<div css="flex: 50%;margin-right: 10px">
-								<Searches title="Popular Searches" />
-							</div>
-							<div css="flex: 50%;margin-left: 10px">
-								<Searches title="No Result Searches" />
-							</div>
-						</Flex>
-					</TabPane>
-					<TabPane tab="Popular Searches" key="2">
-						Content of Tab Pane 2
-					</TabPane>
-					<TabPane tab="No Result Searches" key="3">
-						Content of Tab Pane 3
-					</TabPane>
-				</Tabs>
-			</div>
-		</AppPage>
-	);
-};
+class Analytics extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isFetching: true,
+			noResults: [],
+			popularSearches: [],
+			searchVolume: [],
+		};
+		const appName = props.params.appId;
+		this.appId = appbaseService.userInfo.body.apps[appName];
+		this.pageInfo = {
+			currentView: 'mappings',
+			appName,
+			appId: this.appId,
+		};
+	}
+	componentDidMount() {
+		getAnalytics(this.props.appName)
+			.then((res) => {
+				this.setState({
+					noResults: res.noresults,
+					popularSearches: res.popularsearches,
+					searchVolume: res.searchvolume,
+					isFetching: false,
+				});
+				console.log('THIS IS RESPONSE', res);
+			})
+			.catch((e) => {
+				this.setState({
+					isFetching: false,
+				});
+				console.log('ERROR=>', e);
+			});
+	}
+	render() {
+		const {
+ noResults, popularSearches, searchVolume, isFetching,
+} = this.state;
+		return (
+			<AppPage pageInfo={this.pageInfo} key={this.appId}>
+				<div className="ad-detail-page ad-dashboard row" style={{ padding: '40px' }}>
+					<Tabs defaultActiveKey="1">
+						<TabPane tab="Analytics" key="1">
+							<Tab1
+								loading={isFetching}
+								noResults={noResults}
+								popularSearches={popularSearches}
+								searchVolume={searchVolume}
+							/>
+						</TabPane>
+						<TabPane tab="Popular Searches" key="2">
+							Content of Tab Pane 2
+						</TabPane>
+						<TabPane tab="No Result Searches" key="3">
+							Content of Tab Pane 3
+						</TabPane>
+					</Tabs>
+				</div>
+			</AppPage>
+		);
+	}
+}
+export default Analytics;
