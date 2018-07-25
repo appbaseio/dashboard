@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { appbaseService } from '../../service/AppbaseService';
+import { getMappings } from './../../../modules/batteries/utils/mappings';
+import { checkUserStatus } from '../../utils/user';
+import { getCredentials } from './../../../modules/batteries/utils';
 import PermissionCard from './PermissionCard';
 import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';
 import DeleteApp from './DeleteApp';
 
 export default class Credentials extends Component {
-	constructor(props, context) {
+	constructor(props) {
 		super(props);
 		this.state = {
 			info: null,
+			isSubmitting: false,
+			showCredForm: false,
+			isPaidUser: false,
+			mappings: {},
+			currentPermissionInfo: undefined,
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newPermission = this.newPermission.bind(this);
@@ -18,6 +26,34 @@ export default class Credentials extends Component {
 	componentWillMount() {
 		this.stopUpdate = false;
 		this.initialize(this.props);
+	}
+	componentDidMount() {
+		checkUserStatus().then(
+			(response) => {
+				if (response.isPaidUser) {
+					this.setState({ isPaidUser: response.isPaidUser });
+				}
+			},
+			() => {
+				toastr.error('Error', 'Something went wrong');
+			},
+		);
+		if (this.props.appId) {
+			const appId = appbaseService.userInfo.body.apps[this.props.appId];
+			getCredentials(appId)
+				.then((user) => {
+					const { username, password } = user;
+					return getMappings(this.props.appName, `${username}:${password}`);
+				})
+				.then((res) => {
+					this.setState({
+						mappings: res,
+					});
+				})
+				.catch((error) => {
+					toastr.error('Error', 'Unable to fetch mappings');
+				});
+		}
 	}
 
 	componentWillUnmount() {
@@ -38,25 +74,72 @@ export default class Credentials extends Component {
 
 	getInfo() {
 		this.info = {};
-		appbaseService.getPermission(this.appId).then(data => {
+		appbaseService.getPermission(this.appId).then((data) => {
 			this.info.permission = data;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
-		appbaseService.getAppInfo(this.appId).then(data => {
+		appbaseService.getAppInfo(this.appId).then((data) => {
 			this.info.appInfo = data.body;
 			if (!this.stopUpdate) {
 				this.setState({ info: this.info });
 			}
 		});
 	}
-
-	newPermission(request) {
-		appbaseService.newPermission(this.appId, request).then(data => {
-			this.getInfo();
+	handleCancel = () => {
+		this.setState({
+			showCredForm: false,
 		});
+	};
+	newPermission(request) {
+		this.setState(
+			{
+				isSubmitting: true,
+			},
+			() => {
+				appbaseService.newPermission(this.appId, request).then(
+					() => {
+						this.getInfo();
+						this.setState({
+							isSubmitting: false,
+							showCredForm: false,
+						});
+					},
+					(e) => {
+						toastr.error('Error', 'Unable to save credentials');
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+				);
+			},
+		);
 	}
+	updatePermission = (request, username) => {
+		this.setState(
+			{
+				isSubmitting: true,
+			},
+			() => {
+				appbaseService.updatePermission(this.appId, username, request).then(
+					() => {
+						this.getInfo();
+						this.setState({
+							isSubmitting: false,
+							showCredForm: false,
+						});
+					},
+					(e) => {
+						toastr.error('Error', 'Unable to save credentials');
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+				);
+			},
+		);
+	};
 
 	renderElement(method) {
 		let element = null;
@@ -74,16 +157,17 @@ export default class Credentials extends Component {
 							}
 							return 0;
 						})
-						.map((permissionInfo, index) => {
-							return (
-								<PermissionCard
-									appId={this.appId}
-									key={index}
-									permissionInfo={permissionInfo}
-									getInfo={this.getInfo}
-								/>
-							);
-						});
+						.map((permissionInfo, index) => (
+							<PermissionCard
+								appId={this.appId}
+								key={index}
+								permissionInfo={permissionInfo}
+								isPaidUser={this.state.isPaidUser}
+								mappings={this.state.mappings}
+								getInfo={this.getInfo}
+								showForm={this.showForm}
+							/>
+						));
 				}
 				break;
 			case 'deleteApp':
@@ -101,6 +185,7 @@ export default class Credentials extends Component {
 					);
 				}
 				break;
+			default:
 		}
 		return element;
 	}
@@ -112,9 +197,20 @@ export default class Credentials extends Component {
 			this.state.info.appInfo.owner === appbaseService.userInfo.body.email
 		);
 	}
-
+	showForm = (permissionInfo) => {
+		if (permissionInfo) {
+			this.setState({
+				showCredForm: true,
+				currentPermissionInfo: permissionInfo,
+			});
+		} else {
+			this.setState({
+				showCredForm: true,
+				currentPermissionInfo: undefined,
+			});
+		}
+	};
 	render() {
-		console.log(this.props);
 		return (
 			<AppPage
 				pageInfo={{
@@ -130,7 +226,19 @@ export default class Credentials extends Component {
 								<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
 									{this.isOwner() ? (
-										<NewPermission newPermission={this.newPermission} />
+										<NewPermission
+											appId={this.props.params.appId}
+											appName={this.appName}
+											isSubmitting={this.state.isSubmitting}
+											newPermission={this.newPermission}
+											updatePermission={this.updatePermission}
+											showForm={this.showForm}
+											showCredForm={this.state.showCredForm}
+											handleCancel={this.handleCancel}
+											isPaidUser={this.state.isPaidUser}
+											mappings={this.state.mappings}
+											initialValues={this.state.currentPermissionInfo}
+										/>
 									) : null}
 								</div>
 							</section>
