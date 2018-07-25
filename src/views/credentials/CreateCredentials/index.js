@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button, Select } from 'antd';
 import { FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
+import get from 'lodash/get';
 import styles from './styles';
 import { Button as UpgradeButton } from './../../../../modules/batteries/components/Mappings/styles';
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
 import { hoverMessage, fieldMessage, ttlMessage, ipLimitMessage } from './../../../utils/messages';
-import { traverseMapping } from './../../../utils/mappings';
-import { Types, aclOptions, aclOptionsLabel, defaultAclOptions } from './utils';
+import { traverseMapping } from './../../../../modules/batteries/utils/mappings';
+import { Types, aclOptions, aclOptionsLabel, defaultAclOptions } from '../utils';
 import WhiteList from './WhiteList';
 
 const { Option } = Select;
@@ -20,7 +21,7 @@ class CreateCredentials extends React.Component {
 			description: Types.read.description,
 			operationType: [Types.read, Validators.required],
 			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
-			referers: [{ value: [], disabled: !props.isPaidUser }],
+			referers: [{ value: ['*'], disabled: !props.isPaidUser }],
 			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
 			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
 			exclude_fields: [{ value: [], disabled: true }],
@@ -48,6 +49,9 @@ class CreateCredentials extends React.Component {
 				includeFieldsHandler.enable({ emitEvent: false });
 			}
 		});
+		if (this.props.initialValues) {
+			this.form.patchValue(this.props.initialValues);
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.mappings !== this.props.mappings) {
@@ -58,8 +62,11 @@ class CreateCredentials extends React.Component {
 		this.form.get('include_fields').valueChanges.unsubscribe();
 		this.form.get('exclude_fields').valueChanges.unsubscribe();
 	}
+	get isEditing() {
+		return !!this.props.initialValues;
+	}
 	handleSubmit = () => {
-		this.props.onSubmit(this.form);
+		this.props.onSubmit(this.form, get(this.props, 'initialValues.meta.username'));
 	};
 	render() {
 		const {
@@ -82,7 +89,7 @@ class CreateCredentials extends React.Component {
 								type="primary"
 								onClick={this.handleSubmit}
 							>
-								Submit
+								{this.isEditing ? 'Save' : 'Generate'}
 							</Button>,
 						]}
 						visible={show}
@@ -348,6 +355,18 @@ CreateCredentials.propTypes = {
 	show: PropTypes.bool,
 	cancel: PropTypes.func,
 	onSubmit: PropTypes.func,
+	initialValues: PropTypes.shape({
+		description: PropTypes.string,
+		operationType: PropTypes.object,
+		acl: PropTypes.arrayOf(PropTypes.string),
+		referers: PropTypes.arrayOf(PropTypes.string),
+		sources: PropTypes.arrayOf(PropTypes.string),
+		include_fields: PropTypes.arrayOf(PropTypes.string),
+		exclude_fields: PropTypes.arrayOf(PropTypes.string),
+		ip_limit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+		ttl: PropTypes.number,
+		meta: PropTypes.object,
+	}),
 };
 
 export default CreateCredentials;

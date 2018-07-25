@@ -25,7 +25,7 @@ export default class NewPermission extends Component {
 				write: true,
 			},
 		};
-		this.newPermission = this.newPermission.bind(this);
+		// this.newPermission = this.newPermission.bind(this);
 		this.expand = this.expand.bind(this);
 		this.onSelect = this.onSelect.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);
@@ -42,25 +42,32 @@ export default class NewPermission extends Component {
 			selectedType,
 		});
 	}
-	newPermission() {
-		const request = this.types[this.state.selectedType];
-		if (this.state.description) {
-			request.description = this.state.description;
-		}
-		this.props.newPermission(request);
-		this.expand();
-	}
-	handleSubmit = (form) => {
+	// newPermission() {
+	// 	const request = this.types[this.state.selectedType];
+	// 	if (this.state.description) {
+	// 		request.description = this.state.description;
+	// 	}
+	// 	this.props.newPermission(request);
+	// 	this.expand();
+	// }
+	handleSubmit = (form, username) => {
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
 		Object.keys(requestPayload).forEach((k) => {
 			if (requestPayload[k] !== undefined) {
-				if (k === 'ip_limit' || k === 'ttl') {
+				if (k === 'ttl') {
 					requestPayload[k] = parseInt(requestPayload[k], 10);
+				}
+				if (k === 'ip_limit') {
+					requestPayload[k] = parseFloat(requestPayload[k], 10);
 				}
 			}
 		});
-		this.props.newPermission(requestPayload);
+		if (username) {
+			this.props.updatePermission(requestPayload, username);
+		} else {
+			this.props.newPermission(requestPayload);
+		}
 	};
 	expand() {
 		this.setState({
@@ -126,7 +133,7 @@ export default class NewPermission extends Component {
 					/>
 				)}
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.props.showForm}>
+					<a className="ad-theme-btn primary" onClick={() => this.props.showForm()}>
 						New Credentials
 					</a>
 				</div>

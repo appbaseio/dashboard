@@ -4,6 +4,7 @@ import { appbaseService } from '../../service/AppbaseService';
 import ConfirmBox from '../../shared/ConfirmBox';
 import CopyToClipboard from '../../shared/CopyToClipboard';
 import { common } from '../../shared/helper';
+import { Types } from './utils';
 import Description from './Description';
 
 export default class PermissionCard extends Component {
@@ -128,7 +129,31 @@ export default class PermissionCard extends Component {
 		return keyType;
 	}
 	editCredentials = () => {
-		this.props.showForm(this.props.permissionInfo);
+		const { permissionInfo, showForm } = this.props;
+		let operationType = '';
+		Object.keys(Types).every((k) => {
+			const type = Types[k];
+			if (type.read === permissionInfo.read && type.write === permissionInfo.write) {
+				operationType = type;
+				return false;
+			}
+			return true;
+		});
+		const formPayload = {
+			description: permissionInfo.description,
+			operationType,
+			acl: permissionInfo.acl,
+			referers: permissionInfo.referers,
+			sources: permissionInfo.sources,
+			include_fields: permissionInfo.include_fields,
+			exclude_fields: permissionInfo.exclude_fields,
+			ip_limit: (permissionInfo.ip_limit * 3600).toFixed(2),
+			ttl: permissionInfo.ttl,
+			meta: {
+				username: permissionInfo.username,
+			},
+		};
+		showForm(formPayload);
 	}
 	render() {
 		const cx = classNames({
@@ -138,6 +163,7 @@ export default class PermissionCard extends Component {
 			eye: !this.state.showKey,
 			'eye-slash': this.state.showKey,
 		});
+		console.log("THSI IS PROPS IN PERMISSION CARD", this.props)
 		return (
 			<div className="permission-card col-xs-12 p-0">
 				<header className="permission-card-header col-xs-12">

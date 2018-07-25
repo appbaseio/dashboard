@@ -116,6 +116,30 @@ export default class Credentials extends Component {
 			},
 		);
 	}
+	updatePermission = (request, username) => {
+		this.setState(
+			{
+				isSubmitting: true,
+			},
+			() => {
+				appbaseService.updatePermission(this.appId, username, request).then(
+					() => {
+						this.getInfo();
+						this.setState({
+							isSubmitting: false,
+							showCredForm: false,
+						});
+					},
+					(e) => {
+						toastr.error('Error', 'Unable to save credentials');
+						this.setState({
+							isSubmitting: false,
+						});
+					},
+				);
+			},
+		);
+	};
 
 	renderElement(method) {
 		let element = null;
@@ -161,7 +185,7 @@ export default class Credentials extends Component {
 					);
 				}
 				break;
-				default:
+			default:
 		}
 		return element;
 	}
@@ -207,6 +231,7 @@ export default class Credentials extends Component {
 											appName={this.appName}
 											isSubmitting={this.state.isSubmitting}
 											newPermission={this.newPermission}
+											updatePermission={this.updatePermission}
 											showForm={this.showForm}
 											showCredForm={this.state.showCredForm}
 											handleCancel={this.handleCancel}

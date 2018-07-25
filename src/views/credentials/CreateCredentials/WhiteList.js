@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
-import { Suggestions, getSuggestionCode, ipValidator } from './utils';
+import { Suggestions, getSuggestionCode, ipValidator } from '../utils';
 
 class WhiteList extends React.Component {
 	constructor(props) {
@@ -85,7 +85,7 @@ class WhiteList extends React.Component {
 									<div>{item}</div>
 									{type === 'dropdown' && (
 										<div css="font-size: 12px;font-weight: normal">
-											{Suggestions[getSuggestionCode(item)].description}
+											{getSuggestionCode(item)}
 										</div>
 									)}
 								</div>
