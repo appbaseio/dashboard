@@ -163,7 +163,6 @@ export default class PermissionCard extends Component {
 			eye: !this.state.showKey,
 			'eye-slash': this.state.showKey,
 		});
-		console.log("THSI IS PROPS IN PERMISSION CARD", this.props)
 		return (
 			<div className="permission-card col-xs-12 p-0">
 				<header className="permission-card-header col-xs-12">
