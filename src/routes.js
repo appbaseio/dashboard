@@ -207,6 +207,14 @@ class MainApp extends React.Component {
 						}
 					/>
 					<Route
+						path="analytics/:appId/:tab"
+						component={Analytics}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'analytics')
+						}
+					/>
+					<Route
 						path="search-sandbox/:appId"
 						component={SearchSandbox}
 						{...appChangesEvent}
