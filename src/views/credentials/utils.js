@@ -21,16 +21,19 @@ export const Suggestions = {
 	},
 };
 export const getSuggestionCode = (str) => {
+	if (str === '*') {
+		return 'Matches All';
+	}
 	if (str.startsWith('*') && str.endsWith('*')) {
-		return 4;
+		return Suggestions[4].description;
 	}
 	if (str.startsWith('*')) {
-		return 2;
+		return Suggestions[2].description;
 	}
 	if (str.endsWith('*')) {
-		return 3;
+		return Suggestions[3].description;
 	}
-	return 1;
+	return Suggestions[1].description;
 };
 export const ipValidator = (value) => {
 	const splitIp = value && value.split('/');
