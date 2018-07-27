@@ -1,4 +1,4 @@
-import { ANALYTICS_API } from './../../config';
+import { ACC_API } from './../../../config';
 
 const data = {
 	body: {
@@ -76,16 +76,16 @@ const data = {
 // eslint-disable-next-line
 export function getAnalytics(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(ANALYTICS_API, {
+		fetch(`${ACC_API}/${appName}/analytics/overview`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		})
-		    // Comment out this line
+			// Comment out this line
 			// .then(res => res.json())
-			.then((res) => {
+			.then(() => {
 				// resolve the promise with response
 				resolve(data.body);
 			})

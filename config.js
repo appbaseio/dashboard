@@ -3,5 +3,3 @@
 export const ACC_API = 'https://accapi-staging.bottleneck.io';
 export const SCALR_API = 'https://api-staging.bottleneck.io';
 export const BILLING_API = 'https://transactions.appbase.io';
-// TODO: Replace with original
-export const ANALYTICS_API = 'http://httpbin.org/ip';

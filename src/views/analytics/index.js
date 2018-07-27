@@ -24,7 +24,7 @@ class Analytics extends React.Component {
 		};
 	}
 	componentDidMount() {
-		getAnalytics(this.props.appName)
+		getAnalytics(this.pageInfo.appName)
 			.then((res) => {
 				this.setState({
 					noResults: res.noresults,
@@ -32,7 +32,6 @@ class Analytics extends React.Component {
 					searchVolume: res.searchvolume,
 					isFetching: false,
 				});
-				console.log('THIS IS RESPONSE', res);
 			})
 			.catch((e) => {
 				this.setState({
@@ -42,6 +41,7 @@ class Analytics extends React.Component {
 			});
 	}
 	render() {
+		console.log('THSI IS PROPS', this.props);
 		const {
  noResults, popularSearches, searchVolume, isFetching,
 } = this.state;
