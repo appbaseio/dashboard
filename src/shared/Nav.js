@@ -196,7 +196,6 @@ export default class Nav extends Component {
 								<li className="ad-dropdown dropdown without-icon logout-dropdown extra-link">
 									<a
 										className="dropdown-toggle user-img-container"
-										type="button"
 										id="userimg-menu"
 										data-toggle="dropdown"
 										aria-haspopup="true"

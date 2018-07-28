@@ -47,7 +47,7 @@ const MappingsWrapper = AsyncComponent(() => import('./views/mappings').then(mod
 const Mappings = AsyncComponent(() => import('../modules/batteries/components/Mappings').then(module => module.default), {
 	name: 'Mappings',
 });
-const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
+const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox-wrapper').then(module => module.default), {
 	name: 'SearchSandbox',
 });
 const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
@@ -61,8 +61,11 @@ const Importer = AsyncComponent(() => import('./views/importer').then(module => 
 });
 
 // SearchSandbox routes
-const SearchEditor = AsyncComponent(() => import('./views/search-sandbox/pages/Editor').then(module => module.default), {
+const SearchEditor = AsyncComponent(() => import('../modules/batteries/components/SearchSandbox/containers/Editor').then(module => module.default), {
 	name: 'SearchEditor',
+});
+const SearchDemos = AsyncComponent(() => import('../modules/batteries/components/SearchSandbox/containers/Demos').then(module => module.default), {
+	name: 'SearchDemos',
 });
 
 const NotFound = () => {
@@ -205,6 +208,7 @@ class MainApp extends React.Component {
 					>
 						<IndexRedirect to="editor" />
 						<Route path="editor" component={SearchEditor} />
+						<Route path="ui-demos" component={SearchDemos} />
 					</Route>
 					<Route
 						path="browser/:appId"
