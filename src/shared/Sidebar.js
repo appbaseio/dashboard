@@ -45,20 +45,6 @@ export default class Sidebar extends Component {
 				),
 			},
 			{
-				label: 'Analytics',
-				link: `${this.contextPath}analytics/`,
-				type: 'internal',
-				name: 'analytics',
-				tooltip: 'View app analytics',
-				img: (
-					<img
-						className="img-responsive"
-						alt="analytics"
-						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
-					/>
-				),
-			},
-			{
 				label: 'Search Sandbox',
 				link: `${this.contextPath}search-sandbox/`,
 				type: 'internal',
@@ -87,16 +73,16 @@ export default class Sidebar extends Component {
 				),
 			},
 			{
-				label: 'Builder',
-				link: `${this.contextPath}builder/`,
+				label: 'Analytics',
+				link: `${this.contextPath}analytics/`,
 				type: 'internal',
-				name: 'mirage',
-				tooltip: 'Create and save queries with a GUI',
+				name: 'analytics',
+				tooltip: 'View app analytics',
 				img: (
 					<img
 						className="img-responsive"
-						alt="builder"
-						src={`../../../assets/images/${this.config.name}/sidebar/builder.svg`}
+						alt="analytics"
+						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
 					/>
 				),
 			},
