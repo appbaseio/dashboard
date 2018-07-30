@@ -2,15 +2,14 @@ import React from 'react';
 import { Tabs, Icon, Spin } from 'antd';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
-import Tab1 from './components/Tab1';
-import Tab2 from './components/Tab2';
+import Tab1 from './components/Analytics';
+import Tab2 from './components/PopularSearches';
 import { getAnalytics } from './utils';
-// import { checkUserStatus } from '../../utils/user';
 import UpgradePlan from './components/UpgradePlan';
 import Flex from '../../shared/Flex';
-import Tab3 from './components/Tab3';
-import Tab4 from './components/Tab4';
-import Tab5 from './components/Tab5';
+import Tab3 from './components/NoResultsSearch';
+import Tab4 from './components/PopularResults';
+import Tab5 from './components/PopularFilters';
 
 const { TabPane } = Tabs;
 class Analytics extends React.Component {

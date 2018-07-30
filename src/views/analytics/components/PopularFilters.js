@@ -3,7 +3,7 @@ import Searches from './Searches';
 import { getPopularFilters, popularSearchesFull } from './../utils';
 import Loader from './Loader';
 
-class Tab3 extends React.Component {
+class PopularFilters extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -41,4 +41,4 @@ class Tab3 extends React.Component {
 	}
 }
 
-export default Tab3;
+export default PopularFilters;

@@ -13,7 +13,7 @@ const normalizeData = (data = []) =>
 		newData.formatDate = `${date.getMonth() + 1}/${date.getDate()}`;
 		return newData;
 	});
-class Tab1 extends React.Component {
+class Analytics extends React.Component {
 	handleViewMore = () => {
 		console.log(this.props);
 	};
@@ -88,7 +88,7 @@ class Tab1 extends React.Component {
 		);
 	}
 }
-Tab1.propTypes = {
+Analytics.propTypes = {
 	noResults: PropTypes.array,
 	popularSearches: PropTypes.array,
 	searchVolume: PropTypes.array,
@@ -96,4 +96,4 @@ Tab1.propTypes = {
 	popularFilters: PropTypes.array,
 };
 
-export default Tab1;
+export default Analytics;

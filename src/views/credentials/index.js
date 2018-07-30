@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { appbaseService } from '../../service/AppbaseService';
 import { getMappings } from './../../../modules/batteries/utils/mappings';
-import { checkUserStatus } from '../../utils/user';
-import { getCredentials } from './../../../modules/batteries/utils';
+import { getCredentials, checkUserStatus } from './../../../modules/batteries/utils';
 import PermissionCard from './PermissionCard';
 import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';

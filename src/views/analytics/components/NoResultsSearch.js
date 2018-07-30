@@ -1,21 +1,21 @@
 import React from 'react';
 import Searches from './Searches';
-import { getPopularSearches, popularSearchesFull } from './../utils';
+import { getNoResultSearches, popularSearchesFull } from './../utils';
 import Loader from './Loader';
 
-class Tab2 extends React.Component {
+class NoResultsSearch extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isFetching: true,
-			popularSearches: [],
+			noResults: [],
 		};
 	}
 	componentDidMount() {
-		getPopularSearches(this.props.appName)
+		getNoResultSearches(this.props.appName)
 			.then((res) => {
 				this.setState({
-					popularSearches: res,
+					noResults: res,
 					isFetching: false,
 				});
 			})
@@ -34,11 +34,11 @@ class Tab2 extends React.Component {
 			<Searches
 				showViewOption={false}
 				columns={popularSearchesFull}
-				dataSource={this.state.popularSearches}
-				title="Popular Searches"
+				dataSource={this.state.noResults}
+				title="No Results Searches"
 			/>
 		);
 	}
 }
 
-export default Tab2;
+export default NoResultsSearch;
