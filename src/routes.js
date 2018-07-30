@@ -50,9 +50,6 @@ const Mappings = AsyncComponent(() => import('../modules/batteries/components/Ma
 const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
 	name: 'SearchSandbox',
 });
-const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
-	name: 'Mirage',
-});
 const Billing = AsyncComponent(() => import('./views/billing').then(module => module.default), {
 	name: 'Billing',
 });
@@ -231,14 +228,6 @@ class MainApp extends React.Component {
 						{...appChangesEvent}
 						onEnter={params =>
 							helper.appDashboard.onEnter(params.params.appId, 'browser')
-						}
-					/>
-					<Route
-						path="builder/:appId"
-						component={Mirage}
-						{...appChangesEvent}
-						onEnter={params =>
-							helper.appDashboard.onEnter(params.params.appId, 'builder')
 						}
 					/>
 					<Route
