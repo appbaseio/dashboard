@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import get from 'lodash/get';
 import { appbaseService } from '../../service/AppbaseService';
 import { getMappings } from './../../../modules/batteries/utils/mappings';
 import { getCredentials, checkUserStatus } from './../../../modules/batteries/utils';
@@ -33,8 +34,8 @@ export default class Credentials extends Component {
 					this.setState({ isPaidUser: response.isPaidUser });
 				}
 			},
-			() => {
-				toastr.error('Error', 'Something went wrong');
+			(error) => {
+				toastr.error('Error', get(error, 'responseJSON.message', 'Something went wrong'));
 			},
 		);
 		if (this.props.params.appId) {
@@ -50,7 +51,6 @@ export default class Credentials extends Component {
 					});
 				})
 				.catch((error) => {
-					console.log('THSI IS ERROR', error);
 					toastr.error('Error', 'Unable to fetch mappings');
 				});
 		}
@@ -107,7 +107,10 @@ export default class Credentials extends Component {
 						});
 					},
 					(e) => {
-						toastr.error('Error', 'Unable to save credentials');
+						toastr.error(
+							'Error',
+							get(e, 'responseJSON.message', 'Unable to save credentials'),
+						);
 						this.setState({
 							isSubmitting: false,
 						});
@@ -131,7 +134,10 @@ export default class Credentials extends Component {
 						});
 					},
 					(e) => {
-						toastr.error('Error', 'Unable to save credentials');
+						toastr.error(
+							'Error',
+							get(e, 'responseJSON.message', 'Unable to save credentials'),
+						);
 						this.setState({
 							isSubmitting: false,
 						});

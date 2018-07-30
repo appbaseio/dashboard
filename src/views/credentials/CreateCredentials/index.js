@@ -36,7 +36,7 @@ class CreateCredentials extends React.Component {
 				{ value: 7200, disabled: !props.isPaidUser },
 				[Validators.required, isNegative],
 			],
-			ttl: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
+			ttl: [{ value: 0, disabled: !props.isPaidUser }, [Validators.required, isNegative]],
 		});
 		this.mappings = traverseMapping(this.props.mappings);
 	}
@@ -348,7 +348,7 @@ class CreateCredentials extends React.Component {
 											<Flex justifyContent="center" alignItems="center">
 												<Input
 													type="number"
-													css="border: solid 1px #9195A2!important;width: 70px"
+													css="border: solid 1px #9195A2!important;width: 120px"
 													{...handler()}
 												/>
 												{hasError('isNegative') && (
@@ -363,7 +363,7 @@ class CreateCredentials extends React.Component {
 							/>
 							<FieldControl
 								name="ttl"
-								render={({ handler }) => (
+								render={({ handler, hasError }) => (
 									<Grid
 										label="TTL"
 										toolTipMessage={Messages.ttl}
@@ -371,9 +371,14 @@ class CreateCredentials extends React.Component {
 											<Flex justifyContent="center" alignItems="center">
 												<Input
 													type="number"
-													css="border: solid 1px #9195A2!important;width: 70px"
+													css="border: solid 1px #9195A2!important;width: 120px"
 													{...handler()}
 												/>
+												{hasError('isNegative') && (
+													<span css="color: red;margin-left: 10px">
+														Field value can{"'"}t be negative.
+													</span>
+												)}
 											</Flex>
 										}
 									/>

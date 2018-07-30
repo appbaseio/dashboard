@@ -63,7 +63,7 @@ export default class NewPermission extends Component {
 				}
 			}
 		});
-		if (username) {
+		if (this.props.initialValues || username) {
 			this.props.updatePermission(requestPayload, username);
 		} else {
 			this.props.newPermission(requestPayload);
