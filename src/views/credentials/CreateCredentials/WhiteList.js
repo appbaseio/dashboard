@@ -15,7 +15,7 @@ class WhiteList extends React.Component {
 		};
 	}
 	handleSelectOption = (value) => {
-		this.setState((prevState) => {
+		this.setState(() => {
 			const { control } = this.props;
 			if (value && !control.value.includes(value)) {
 				control.onChange([...control.value, value]);
@@ -23,7 +23,9 @@ class WhiteList extends React.Component {
 					text: undefined,
 				};
 			}
-			return prevState;
+			return {
+				text: undefined,
+			};
 		});
 	};
 	hanldeOnChange = (value) => {
@@ -32,7 +34,7 @@ class WhiteList extends React.Component {
 		});
 	};
 	handleOnSearch = (value) => {
-		if (!(value && value.length === 1 && value[0] === '*')) {
+		if (!(value && value.startsWith('**'))) {
 			this.setState({
 				text: value.trim(),
 			});
@@ -59,6 +61,11 @@ class WhiteList extends React.Component {
 			} else {
 				this.props.control.setErrors(undefined);
 			}
+		} else {
+			this.setState({
+				text: undefined,
+			});
+			this.props.control.setErrors(undefined);
 		}
 	};
 	render() {
@@ -68,11 +75,13 @@ class WhiteList extends React.Component {
 			defaultSuggestionValue,
 			control: { value, handler, hasError },
 			type,
+			toolTipMessage,
 		} = this.props;
 		const { text } = this.state;
 		return (
 			<Grid
 				label={<span css={styles.subHeader}>{label}</span>}
+				toolTipMessage={toolTipMessage}
 				component={
 					<Flex css="width: 100%;position: relative" flexDirection="column">
 						{value.map(item => (
@@ -111,41 +120,52 @@ class WhiteList extends React.Component {
 									filterOption={false}
 									style={{ width: '100%' }}
 								>
-									{Object.keys(Suggestions).map((k) => {
-										const suggestion = Suggestions[k];
-										if (text && text.length > 1) {
-											const suggestionValue = `${suggestion.prefix}${text}${
-												suggestion.suffix
-											}`;
+									{text === '*' && text.length === 1 ? (
+										<Select.Option key="*">
+											<Flex justifyContent="space-between">
+												<span>*</span>
+												<span css={styles.description}>
+													{getSuggestionCode('*')}
+												</span>
+											</Flex>
+										</Select.Option>
+									) : (
+										Object.keys(Suggestions).map((k) => {
+											const suggestion = Suggestions[k];
+											if (text) {
+												const suggestionValue = `${
+													suggestion.prefix
+												}${text}${suggestion.suffix}`;
+												return (
+													<Select.Option key={suggestionValue}>
+														<Flex justifyContent="space-between">
+															<span>{suggestionValue}</span>
+															<span css={styles.description}>
+																{suggestion.description}
+															</span>
+														</Flex>
+													</Select.Option>
+												);
+											}
 											return (
-												<Select.Option key={suggestionValue}>
-													<Flex justifyContent="space-between">
-														<span>{suggestionValue}</span>
+												<Select.Option css="pointer-events: none" key={k}>
+													<Flex
+														justifyContent="space-between"
+														css="color: #d9d9d9;font-weight: 100;font-size: 12px"
+													>
+														<span>
+															{suggestion.prefix}
+															{defaultSuggestionValue}
+															{suggestion.suffix}
+														</span>
 														<span css={styles.description}>
 															{suggestion.description}
 														</span>
 													</Flex>
 												</Select.Option>
 											);
-										}
-										return (
-											<Select.Option css="pointer-events: none" key={k}>
-												<Flex
-													justifyContent="space-between"
-													css="color: #d9d9d9;font-weight: 100;font-size: 12px"
-												>
-													<span>
-														{suggestion.prefix}
-														{defaultSuggestionValue}
-														{suggestion.suffix}
-													</span>
-													<span css={styles.description}>
-														{suggestion.description}
-													</span>
-												</Flex>
-											</Select.Option>
-										);
-									})}
+										})
+									)}
 								</Select>
 							) : (
 								<Input
@@ -163,7 +183,7 @@ class WhiteList extends React.Component {
 									}}
 								/>
 							)}
-							{hasError('invalidIP') && <div css={styles.error}>Invalid IP</div>}
+							{hasError('invalidIP') && <div css={styles.error}>Not a valid IP</div>}
 						</div>
 					</Flex>
 				}
@@ -173,6 +193,7 @@ class WhiteList extends React.Component {
 }
 WhiteList.propTypes = {
 	label: PropTypes.string,
+	toolTipMessage: PropTypes.any,
 	inputProps: PropTypes.object,
 	defaultSuggestionValue: PropTypes.string,
 	control: PropTypes.object,

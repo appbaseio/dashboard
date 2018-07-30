@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from 'emotion';
 import { Icon, Modal, Input, Checkbox, Radio, Tooltip, Button, Select } from 'antd';
 import { FormBuilder, Validators, FieldGroup, FieldControl } from 'react-reactive-form';
 import get from 'lodash/get';
@@ -7,25 +8,34 @@ import styles from './styles';
 import { Button as UpgradeButton } from './../../../../modules/batteries/components/Mappings/styles';
 import Grid from './Grid';
 import Flex from './../../../shared/Flex';
-import { hoverMessage, fieldMessage, ttlMessage, ipLimitMessage } from './../../../utils/messages';
+import { createCredentials as Messages, hoverMessage } from './../../../utils/messages';
 import { traverseMapping } from './../../../../modules/batteries/utils/mappings';
-import { Types, aclOptions, aclOptionsLabel, defaultAclOptions } from '../utils';
+import { Types, aclOptions, aclOptionsLabel, defaultAclOptions, isNegative } from '../utils';
 import WhiteList from './WhiteList';
 
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
+
+const modal = css`
+	.ant-modal-content {
+		width: 580px;
+	}
+`;
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
 		this.form = FormBuilder.group({
-			description: Types.read.description,
+			description: '',
 			operationType: [Types.read, Validators.required],
 			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
 			referers: [{ value: ['*'], disabled: !props.isPaidUser }],
 			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
 			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
 			exclude_fields: [{ value: [], disabled: true }],
-			ip_limit: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
+			ip_limit: [
+				{ value: 7200, disabled: !props.isPaidUser },
+				[Validators.required, isNegative],
+			],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, Validators.required],
 		});
 		this.mappings = traverseMapping(this.props.mappings);
@@ -78,6 +88,10 @@ class CreateCredentials extends React.Component {
 				control={this.form}
 				render={({ invalid }) => (
 					<Modal
+						style={{
+							width: '600px',
+						}}
+						css={modal}
 						footer={[
 							<Button key="back" onClick={handleCancel}>
 								Cancel
@@ -97,7 +111,7 @@ class CreateCredentials extends React.Component {
 					>
 						<div css="position: relative">
 							<span css="font-weight: 500;color: black;font-size: 16px;">
-								Creating a new credential
+								{this.isEditing ? 'Edit credential' : 'Create a new credential'}
 							</span>
 							<FieldControl
 								strict={false}
@@ -105,7 +119,14 @@ class CreateCredentials extends React.Component {
 								render={({ handler }) => (
 									<Grid
 										label="Description"
-										component={<Input autoFocus placeholder="Add a description (optional)" {...handler()} />}
+										toolTipMessage={Messages.description}
+										component={
+											<Input
+												autoFocus={!this.isEditing}
+												placeholder="Add an optional description for this credential"
+												{...handler()}
+											/>
+										}
 									/>
 								)}
 							/>
@@ -114,6 +135,7 @@ class CreateCredentials extends React.Component {
 								render={({ handler }) => (
 									<Grid
 										label="Operation Type"
+										toolTipMessage={Messages.operationType}
 										component={
 											<Radio.Group
 												{...handler()}
@@ -159,6 +181,7 @@ class CreateCredentials extends React.Component {
 									return (
 										<Grid
 											label="ACLs"
+											toolTipMessage={Messages.acls}
 											component={
 												<CheckboxGroup
 													css="label { font-weight: 100 }"
@@ -174,11 +197,12 @@ class CreateCredentials extends React.Component {
 									);
 								}}
 							/>
-							<Grid label="Security" />
+							<Grid label="Security" toolTipMessage={Messages.security} />
 							<FieldControl
 								name="referers"
 								render={control => (
 									<WhiteList
+										toolTipMessage={Messages.security}
 										control={control}
 										type="dropdown"
 										defaultSuggestionValue="https://example.com/"
@@ -194,6 +218,7 @@ class CreateCredentials extends React.Component {
 								render={control => (
 									<WhiteList
 										control={control}
+										toolTipMessage={Messages.sources}
 										label="IP Sources"
 										defaultValue={{
 											value: '0.0.0.0/0 (default)',
@@ -207,7 +232,11 @@ class CreateCredentials extends React.Component {
 							/>
 							<div css="margin-top: 30px">
 								<span css={styles.formLabel}>Fields Filtering</span>
-								<Tooltip css="margin-left: 5px" overlay={fieldMessage} mouseLeaveDelay={0}>
+								<Tooltip
+									css="margin-left: 5px;color:#898989"
+									overlay={Messages.fieldFiltering}
+									mouseLeaveDelay={0}
+								>
 									<i className="fas fa-info-circle" />
 								</Tooltip>
 							</div>
@@ -220,6 +249,7 @@ class CreateCredentials extends React.Component {
 									return (
 										<Grid
 											label={<span css={styles.subHeader}>Include</span>}
+											toolTipMessage={Messages.include}
 											component={
 												<Select
 													placeholder="Select field value"
@@ -234,20 +264,27 @@ class CreateCredentials extends React.Component {
 														}
 													}}
 												>
-												<Option key="*">* (Include all fields)</Option>
-												{Object.keys(this.mappings).map(i =>
-													this.mappings[i].map((v) => {
-														if (!excludedFields.includes(v)) {
-															return (
-																<Option value={v} key={v} title={v}>
-																	{v}
-																	<span css={styles.fieldBadge}>{i}</span>
-																</Option>
-															);
-														}
-														return null;
-													}))
-												}
+													<Option key="*">* (Include all fields)</Option>
+													{Object.keys(this.mappings).map(i =>
+														this.mappings[i].map((v) => {
+															if (!excludedFields.includes(v)) {
+																return (
+																	<Option
+																		value={v}
+																		key={v}
+																		title={v}
+																	>
+																		{v}
+																		<span
+																			css={styles.fieldBadge}
+																		>
+																			{i}
+																		</span>
+																	</Option>
+																);
+															}
+															return null;
+														}))}
 												</Select>
 											}
 										/>
@@ -263,6 +300,7 @@ class CreateCredentials extends React.Component {
 									return (
 										<Grid
 											label={<span css={styles.subHeader}>Exclude</span>}
+											toolTipMessage={Messages.exclude}
 											component={
 												<Select
 													placeholder="Select field value"
@@ -279,30 +317,33 @@ class CreateCredentials extends React.Component {
 												>
 													<Option key="*">* (Exclude all fields)</Option>
 													{Object.keys(this.mappings).map(i =>
-													this.mappings[i].map((v) => {
-														if (!includedFields.includes(v)) {
-															return (
-																<Option value={v} key={v}>
-																	{v}
-																	<span css={styles.fieldBadge}>{i}</span>
-																</Option>
-															);
-														}
-														return null;
-													}))
-												}
+														this.mappings[i].map((v) => {
+															if (!includedFields.includes(v)) {
+																return (
+																	<Option value={v} key={v}>
+																		{v}
+																		<span
+																			css={styles.fieldBadge}
+																		>
+																			{i}
+																		</span>
+																	</Option>
+																);
+															}
+															return null;
+														}))}
 												</Select>
 											}
 										/>
 									);
-								}
-							}
+								}}
 							/>
 							<FieldControl
 								name="ip_limit"
-								render={({ handler }) => (
+								render={({ handler, hasError }) => (
 									<Grid
 										label="Max API calls/IP/hour"
+										toolTipMessage={Messages.ipLimit}
 										component={
 											<Flex justifyContent="center" alignItems="center">
 												<Input
@@ -310,9 +351,11 @@ class CreateCredentials extends React.Component {
 													css="border: solid 1px #9195A2!important;width: 70px"
 													{...handler()}
 												/>
-												<Tooltip css="margin-left: 5px" overlay={ipLimitMessage} mouseLeaveDelay={0}>
-													<i className="fas fa-info-circle" />
-												</Tooltip>
+												{hasError('isNegative') && (
+													<span css="color: red;margin-left: 10px">
+														Field value can{"'"}t be negative.
+													</span>
+												)}
 											</Flex>
 										}
 									/>
@@ -323,16 +366,14 @@ class CreateCredentials extends React.Component {
 								render={({ handler }) => (
 									<Grid
 										label="TTL"
+										toolTipMessage={Messages.ttl}
 										component={
 											<Flex justifyContent="center" alignItems="center">
-											<Input
-												type="number"
-												css="border: solid 1px #9195A2!important;width: 70px"
-												{...handler()}
-											/>
-											<Tooltip css="margin-left: 5px" overlay={ttlMessage} mouseLeaveDelay={0}>
-													<i className="fas fa-info-circle" />
-											</Tooltip>
+												<Input
+													type="number"
+													css="border: solid 1px #9195A2!important;width: 70px"
+													{...handler()}
+												/>
 											</Flex>
 										}
 									/>

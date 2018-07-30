@@ -38,12 +38,12 @@ export default class Credentials extends Component {
 				toastr.error('Error', 'Something went wrong');
 			},
 		);
-		if (this.props.appId) {
-			const appId = appbaseService.userInfo.body.apps[this.props.appId];
+		if (this.props.params.appId) {
+			const appId = appbaseService.userInfo.body.apps[this.props.params.appId];
 			getCredentials(appId)
 				.then((user) => {
 					const { username, password } = user;
-					return getMappings(this.props.appName, `${username}:${password}`);
+					return getMappings(this.appName, `${username}:${password}`);
 				})
 				.then((res) => {
 					this.setState({
@@ -51,6 +51,7 @@ export default class Credentials extends Component {
 					});
 				})
 				.catch((error) => {
+					console.log('THSI IS ERROR', error);
 					toastr.error('Error', 'Unable to fetch mappings');
 				});
 		}

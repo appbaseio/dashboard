@@ -147,7 +147,7 @@ export default class PermissionCard extends Component {
 			sources: permissionInfo.sources,
 			include_fields: permissionInfo.include_fields,
 			exclude_fields: permissionInfo.exclude_fields,
-			ip_limit: (permissionInfo.ip_limit * 3600).toFixed(2),
+			ip_limit: permissionInfo.ip_limit,
 			ttl: permissionInfo.ttl,
 			meta: {
 				username: permissionInfo.username,
