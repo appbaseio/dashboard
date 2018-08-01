@@ -41,33 +41,63 @@ const Signup = AsyncComponent(() => import('./views/signup').then(module => modu
 const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
 	name: 'Browser',
 });
-const MappingsWrapper = AsyncComponent(() => import('./views/mappings').then(module => module.default), {
-	name: 'MappingsWrapper',
-});
-const Mappings = AsyncComponent(() => import('../modules/batteries/components/Mappings').then(module => module.default), {
-	name: 'Mappings',
-});
-const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
-	name: 'SearchSandbox',
-});
+const MappingsWrapper = AsyncComponent(
+	() => import('./views/mappings').then(module => module.default),
+	{
+		name: 'MappingsWrapper',
+	},
+);
+const Mappings = AsyncComponent(
+	() => import('../modules/batteries/components/Mappings').then(module => module.default),
+	{
+		name: 'Mappings',
+	},
+);
+const SearchSandbox = AsyncComponent(
+	() => import('./views/search-sandbox').then(module => module.default),
+	{
+		name: 'SearchSandbox',
+	},
+);
 const Billing = AsyncComponent(() => import('./views/billing').then(module => module.default), {
 	name: 'Billing',
 });
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {
 	name: 'Importer',
 });
+const Analytics = AsyncComponent(() => import('./views/analytics').then(module => module.default), {
+	name: 'Analytics',
+});
+
+// SearchSandbox routes
+const SearchEditor = AsyncComponent(
+	() => import('./views/search-sandbox/pages/Editor').then(module => module.default),
+	{
+		name: 'SearchEditor',
+	},
+);
+
 const Clusters = AsyncComponent(() => import('./views/clusters').then(module => module.default), {
 	name: 'Clusters',
 });
-const NewCluster = AsyncComponent(() => import('./views/clusters/new').then(module => module.default), {
-	name: 'NewCluster',
-});
-const ClusterInfo = AsyncComponent(() => import('./views/clusters/info').then(module => module.default), {
-	name: 'ClusterInfo',
-});
-const ClusterBilling = AsyncComponent(() => import('./views/clusters/billing').then(module => module.default), {
-	name: 'ClusterBilling',
-});
+const NewCluster = AsyncComponent(
+	() => import('./views/clusters/new').then(module => module.default),
+	{
+		name: 'NewCluster',
+	},
+);
+const ClusterInfo = AsyncComponent(
+	() => import('./views/clusters/info').then(module => module.default),
+	{
+		name: 'ClusterInfo',
+	},
+);
+const ClusterBilling = AsyncComponent(
+	() => import('./views/clusters/billing').then(module => module.default),
+	{
+		name: 'ClusterBilling',
+	},
+);
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
