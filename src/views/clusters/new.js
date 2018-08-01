@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import PricingSlider from './components/PricingSlider';
 import { deployCluster } from './utils';
 import plugins from './utils/plugins';
+import ErrorModal from '../../../modules/batteries/components/Mappings/ErrorModal';
 
 const SSH_KEY = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -81,6 +82,9 @@ export default class NewCluster extends Component {
 			dejavu: true,
 			elasticsearchHQ: true,
 			mirage: false,
+			error: '',
+			deploymentError: '',
+			showError: false,
 			...pluginState,
 		};
 	}
@@ -110,6 +114,13 @@ export default class NewCluster extends Component {
 		const pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
 
 		return pattern.test(clusterName);
+	}
+
+	hideErrorModal = () => {
+		this.setState({
+			showError: false,
+			deploymentError: '',
+		});
 	}
 
 	createCluster = () => {
@@ -195,8 +206,10 @@ export default class NewCluster extends Component {
 				browserHistory.push('/clusters');
 			})
 			.catch((e) => {
-				// TODO: handle errror
-				console.log('error', e);
+				this.setState({
+					deploymentError: e,
+					showError: true,
+				});
 			});
 	}
 
@@ -245,6 +258,11 @@ export default class NewCluster extends Component {
 	render() {
 		return (
 			<section className="cluster-container container">
+				<ErrorModal
+					show={this.state.showError}
+					message={this.state.deploymentError}
+					onClose={this.hideErrorModal}
+				/>
 				<article>
 					<h2>Create a new cluster</h2>
 					<div className="card">

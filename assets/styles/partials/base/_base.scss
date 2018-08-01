@@ -4,7 +4,7 @@ body {
 	color: $primary-font-color;
 	font-size: 15px;
 	height: 100%;
-	font-family: $font-regular;
+	font-family: $font-regular !important;
 }
 
 .p-0 {
