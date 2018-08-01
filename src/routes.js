@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, Redirect, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import Main from './index';
+import Authenticator from './Authenticator';
 import { appbaseService } from './service/AppbaseService';
 
 import AsyncComponent from './AsyncComponent';
@@ -40,8 +41,14 @@ const Signup = AsyncComponent(() => import('./views/signup').then(module => modu
 const Browser = AsyncComponent(() => import('./views/browser').then(module => module.default), {
 	name: 'Browser',
 });
-const Mirage = AsyncComponent(() => import('./views/mirage').then(module => module.default), {
-	name: 'Mirage',
+const MappingsWrapper = AsyncComponent(() => import('./views/mappings').then(module => module.default), {
+	name: 'MappingsWrapper',
+});
+const Mappings = AsyncComponent(() => import('../modules/batteries/components/Mappings').then(module => module.default), {
+	name: 'Mappings',
+});
+const SearchSandbox = AsyncComponent(() => import('./views/search-sandbox').then(module => module.default), {
+	name: 'SearchSandbox',
 });
 const Billing = AsyncComponent(() => import('./views/billing').then(module => module.default), {
 	name: 'Billing',
@@ -130,8 +137,10 @@ class MainApp extends React.Component {
 	render() {
 		return (
 			<Router history={browserHistory}>
-				<Route path="tutorial" component={Onboarding} />
-				<Route path="tutorial/finish" component={OnboardingEndScreen} />
+				<Route path="tutorial" component={Authenticator}>
+					<IndexRoute component={Onboarding} />
+					<Route path="finish" component={OnboardingEndScreen} />
+				</Route>
 				<Redirect from="scalr/tutorial" to="tutorial" />
 				<Route path={getContext()} component={Main} open={this.open}>
 					<IndexRoute
@@ -172,7 +181,9 @@ class MainApp extends React.Component {
 							/>
 						)}
 					/>
-					<Route path="billing" component={Billing} />
+					<Route path="billing" component={Authenticator}>
+						<IndexRoute component={Billing} />
+					</Route>
 					<Route path="importer" component={Importer} />
 					<Route
 						path="dashboard/:appId"
@@ -183,19 +194,48 @@ class MainApp extends React.Component {
 						}
 					/>
 					<Route
+						path="mappings/:appId"
+						component={MappingsWrapper}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'mappings')
+						}
+					>
+						<IndexRoute component={Mappings} />
+					</Route>
+					<Route
+						path="analytics/:appId"
+						component={Analytics}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'analytics')
+						}
+					/>
+					<Route
+						path="analytics/:appId/:tab"
+						component={Analytics}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'analytics')
+						}
+					/>
+					<Route
+						path="search-sandbox/:appId"
+						component={SearchSandbox}
+						{...appChangesEvent}
+						onEnter={params =>
+							helper.appDashboard.onEnter(params.params.appId, 'search-sandbox')
+						}
+					>
+						<IndexRedirect to="editor" />
+						<Route path="editor" component={SearchEditor} />
+					</Route>
+					<Route
 						path="browser/:appId"
 						component={Browser}
 						{...appChangesEvent}
 						onEnter={params =>
 							helper.appDashboard.onEnter(params.params.appId, 'browser')
-						}
-					/>
-					<Route
-						path="builder/:appId"
-						component={Mirage}
-						{...appChangesEvent}
-						onEnter={params =>
-							helper.appDashboard.onEnter(params.params.appId, 'builder')
 						}
 					/>
 					<Route

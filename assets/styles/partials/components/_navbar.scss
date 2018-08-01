@@ -101,7 +101,8 @@
 		}
 		.apps-dropdown-toggle {
 			position: relative;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 			.dropdown-chevron {
 				position: absolute;
 				left: -0.1rem;
@@ -143,12 +144,14 @@
 				.user-name {
 					color: $n-navy;
 					font-size: 1rem;
-					font-family: $font-regular; font-weight: 300;
+					font-family: $font-regular;
+					font-weight: 300;
 				}
 				.user-email {
 					color: $n-navy;
 					font-size: 0.8rem;
-					font-family: $font-regular; font-weight: 300;
+					font-family: $font-regular;
+					font-weight: 300;
 				}
 				li:not(:first-child) {
 					border-top: 1px solid $separator-color;
@@ -206,7 +209,8 @@
 				.ai-dropdown-logout {
 					color: $alert-color;
 					font-size: 1rem;
-					font-family: $font-regular; font-weight: 300;
+					font-family: $font-regular;
+					font-weight: 300;
 				}
 			}
 		}
@@ -258,7 +262,8 @@
 			}
 			li {
 				height: auto;
-				font-family: $font-regular; font-weight: 300;
+				font-family: $font-regular;
+				font-weight: 300;
 				&:hover {
 					background-color: $dark-grey;
 				}

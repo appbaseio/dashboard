@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import CreateCredentials from './CreateCredentials/index';
 
 export default class NewPermission extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			show: false,
 			description: null,
 			selectedType: 'read',
 		};
@@ -26,7 +25,7 @@ export default class NewPermission extends Component {
 				write: true,
 			},
 		};
-		this.newPermission = this.newPermission.bind(this);
+		// this.newPermission = this.newPermission.bind(this);
 		this.expand = this.expand.bind(this);
 		this.onSelect = this.onSelect.bind(this);
 		this.updateDescription = this.updateDescription.bind(this);
@@ -38,14 +37,38 @@ export default class NewPermission extends Component {
 			});
 		}
 	}
-	newPermission() {
-		const request = this.types[this.state.selectedType];
-		if (this.state.description) {
-			request.description = this.state.description;
-		}
-		this.props.newPermission(request);
-		this.expand();
+	onSelect(selectedType) {
+		this.setState({
+			selectedType,
+		});
 	}
+	// newPermission() {
+	// 	const request = this.types[this.state.selectedType];
+	// 	if (this.state.description) {
+	// 		request.description = this.state.description;
+	// 	}
+	// 	this.props.newPermission(request);
+	// 	this.expand();
+	// }
+	handleSubmit = (form, username) => {
+		const requestPayload = { ...form.value.operationType, ...form.value };
+		delete requestPayload.operationType;
+		Object.keys(requestPayload).forEach((k) => {
+			if (requestPayload[k] !== undefined) {
+				if (k === 'ttl') {
+					requestPayload[k] = parseInt(requestPayload[k], 10);
+				}
+				if (k === 'ip_limit') {
+					requestPayload[k] = parseFloat(requestPayload[k], 10);
+				}
+			}
+		});
+		if (this.props.initialValues || username) {
+			this.props.updatePermission(requestPayload, username);
+		} else {
+			this.props.newPermission(requestPayload);
+		}
+	};
 	expand() {
 		this.setState({
 			show: !this.state.show,
@@ -59,11 +82,6 @@ export default class NewPermission extends Component {
 				clearInput: false,
 			});
 		}
-	}
-	onSelect(selectedType) {
-		this.setState({
-			selectedType,
-		});
 	}
 	renderElement(method) {
 		let element = null;
@@ -81,31 +99,41 @@ export default class NewPermission extends Component {
 			case 'buttonGroup':
 				element = (
 					<span className="ad-create-button-group without-margin">
-						{Object.keys(this.types).map((type, index) => {
-							return (
-								<PermissionButton
-									key={index}
-									type={type}
-									selectedType={this.state.selectedType}
-									description={this.types[type].description}
-									onSelect={this.onSelect}
-								/>
-							);
-						})}
+						{Object.keys(this.types).map(type => (
+							<PermissionButton
+								key={type}
+								type={type}
+								selectedType={this.state.selectedType}
+								description={this.types[type].description}
+								onSelect={this.onSelect}
+							/>
+						))}
 					</span>
 				);
 				break;
+			default:
 		}
 		return element;
 	}
 	render() {
-		const cx = classNames({
-			active: this.state.show,
-		});
+		// const cx = classNames({
+		// 	active: this.state.show,
+		// });
 		return (
-			<div className={`ad-create col-xs-12 ${cx}`}>
+			<div className="ad-create col-xs-12">
+				{this.props.showCredForm && (
+					<CreateCredentials
+						isPaidUser={this.state.isPaidUser}
+						isSubmitting={this.props.isSubmitting}
+						onSubmit={this.handleSubmit}
+						show={this.props.showCredForm}
+						handleCancel={this.props.handleCancel}
+						mappings={this.props.mappings}
+						initialValues={this.props.initialValues}
+					/>
+				)}
 				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={this.expand}>
+					<a className="ad-theme-btn primary" onClick={() => this.props.showForm()}>
 						New Credentials
 					</a>
 				</div>
@@ -173,20 +201,15 @@ class Description extends Component {
 	}
 }
 
-const PermissionButton = props => {
-	const cx = classNames({
-		active: props.selectedType === props.type,
-	});
-	return (
-		<label className="radio-inline">
-			<input
-				type="radio"
-				name={props.type}
-				checked={props.selectedType === props.type}
-				onChange={props.onSelect && (() => props.onSelect(props.type))}
-			/>{' '}
-			{props.description}
-			<span className="checkmark" />
-		</label>
-	);
-};
+const PermissionButton = props => (
+	<label className="radio-inline" htmlFor={props.type}>
+		<input
+			type="radio"
+			name={props.type}
+			checked={props.selectedType === props.type}
+			onChange={props.onSelect && (() => props.onSelect(props.type))}
+		/>{' '}
+		{props.description}
+		<span className="checkmark" />
+	</label>
+);

@@ -6,7 +6,8 @@ export default {
 	favicon: '../../../assets/images/appbase/favicon.ico',
 	logoText: null,
 	cardIcon: '',
-	appDashboard: ['dashboard', 'browser', 'mirage', 'credentials', 'team'],
+	// add 'search-sandbox' here when needed
+	appDashboard: ['dashboard', 'mappings', 'analytics', 'browser', 'mirage', 'credentials', 'team'],
 	navbar: ['Tutorial', 'Docs', 'Billing'],
 	document: 'https://docs.appbase.io',
 	tutorial: {

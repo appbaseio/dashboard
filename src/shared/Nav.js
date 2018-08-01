@@ -239,7 +239,7 @@ export default class Nav extends Component {
 										aria-haspopup="true"
 										aria-expanded="true"
 									>
-										<button className="user-img">
+										<button className="user-img" css="margin-top: -5px;margin-right: -10px;">
 											<span className="img-container">
 												<img
 													src={this.state.userImg}
@@ -345,7 +345,7 @@ export default class Nav extends Component {
 							<span className="icon-bar" />
 							<span className="icon-bar" />
 						</button>
-						<Link to={`${this.contextPath}apps`} className={`navbar-brand ${cx}`} onClick={() => this.setActiveParentView('Apps')}>
+						<Link to="/apps" className={`navbar-brand ${cx}`}>
 							<img src={this.config.logo} alt="" className="img-responsive" />
 							{this.config.logoText ? <span>{this.config.logoText}</span> : null}
 						</Link>

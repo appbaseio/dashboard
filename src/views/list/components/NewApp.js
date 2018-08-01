@@ -24,7 +24,7 @@ export default class NewApp extends Component {
 			value: '',
 			importer: false,
 			category: this.categories[this.config.name],
-			es_version: 5,
+			es_version: '5',
 		};
 		this.errors = {
 			duplicate: 'Duplicate app',
@@ -242,8 +242,8 @@ export default class NewApp extends Component {
 													type="radio"
 													name="inlineRadioOptions3"
 													id="inlineRadio3"
-													checked={this.state.es_version === 2}
-													onChange={() => this.chooseEs(2)}
+													checked={this.state.es_version === '2'}
+													onChange={() => this.chooseEs('2')}
 												/>{' '}
 												2
 												<span className="checkmark" />
@@ -253,8 +253,8 @@ export default class NewApp extends Component {
 													type="radio"
 													name="inlineRadioOptions4"
 													id="inlineRadio4"
-													checked={this.state.es_version === 5}
-													onChange={() => this.chooseEs(5)}
+													checked={this.state.es_version === '5'}
+													onChange={() => this.chooseEs('5')}
 												/>{' '}
 												5
 												<span className="checkmark" />

@@ -4,6 +4,7 @@ import { appbaseService } from '../../service/AppbaseService';
 import ConfirmBox from '../../shared/ConfirmBox';
 import CopyToClipboard from '../../shared/CopyToClipboard';
 import { common } from '../../shared/helper';
+import { Types } from './utils';
 import Description from './Description';
 
 export default class PermissionCard extends Component {
@@ -125,6 +126,33 @@ export default class PermissionCard extends Component {
 		}
 		return keyType;
 	}
+	editCredentials = () => {
+		const { permissionInfo, showForm } = this.props;
+		let operationType = '';
+		Object.keys(Types).every((k) => {
+			const type = Types[k];
+			if (type.read === permissionInfo.read && type.write === permissionInfo.write) {
+				operationType = type;
+				return false;
+			}
+			return true;
+		});
+		const formPayload = {
+			description: permissionInfo.description,
+			operationType,
+			acl: permissionInfo.acl,
+			referers: permissionInfo.referers,
+			sources: permissionInfo.sources,
+			include_fields: permissionInfo.include_fields,
+			exclude_fields: permissionInfo.exclude_fields,
+			ip_limit: permissionInfo.ip_limit,
+			ttl: permissionInfo.ttl,
+			meta: {
+				username: permissionInfo.username,
+			},
+		};
+		showForm(formPayload);
+	}
 	render() {
 		const cx = classNames({
 			active: this.state.showKey,
@@ -143,7 +171,7 @@ export default class PermissionCard extends Component {
 						/>
 					</summary>
 				</header>
-				<main className="permission-card-body col-xs-12">
+				<div className="permission-card-body col-xs-12">
 					<div className="col-xs-12 col-sm-3 col-md-3 col-lg-5 permission-card-body-description">
 						{this.keySummary[this.state.keyType]}
 					</div>
@@ -170,6 +198,12 @@ export default class PermissionCard extends Component {
 										<i className="far fa-clone" />
 									</a>
 								</CopyToClipboard>
+								<a
+									onClick={this.editCredentials}
+									className="ad-credential-btn ad-permission-key-copy-btn"
+								>
+										<i className={`far fa-edit`} />
+									</a>
 							</div>
 						</div>
 						<aside className="permission-key-delete">
@@ -184,7 +218,7 @@ export default class PermissionCard extends Component {
 							</ConfirmBox>
 						</aside>
 					</div>
-				</main>
+				</div>
 			</div>
 		);
 	}
