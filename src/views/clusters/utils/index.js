@@ -21,6 +21,7 @@ export function getClusters() {
 
 export function getClusterData(id) {
 	return new Promise((resolve, reject) => {
+		let hasError = false;
 		fetch(`${ACC_API}/v1/_status/${id}`, {
 			method: 'GET',
 			credentials: 'include',
@@ -28,8 +29,16 @@ export function getClusterData(id) {
 				'Content-Type': 'application/json',
 			},
 		})
-			.then(res => res.json())
+			.then((res) => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
 			.then((data) => {
+				if (hasError) {
+					reject(data.status.message);
+				}
 				resolve(data);
 			})
 			.catch((e) => {

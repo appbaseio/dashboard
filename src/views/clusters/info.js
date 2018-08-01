@@ -4,6 +4,7 @@ import { getClusterData, deployCluster, deleteCluster } from './utils';
 import { regions } from './index';
 import { machineMarks } from './new';
 import CredentialsBox from './components/CredentialsBox';
+import ErrorModal from '../../../modules/batteries/components/Mappings/ErrorModal';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -16,6 +17,9 @@ export default class Clusters extends Component {
 			logstash: false,
 			elasticsearch: false,
 			mirage: false,
+			error: '',
+			deploymentError: '',
+			showError: false,
 		};
 	}
 
@@ -63,6 +67,11 @@ export default class Clusters extends Component {
 						setTimeout(this.init, 30000);
 					}
 				}
+			})
+			.catch((e) => {
+				this.setState({
+					error: e,
+				});
 			});
 	}
 
@@ -84,8 +93,10 @@ export default class Clusters extends Component {
 				browserHistory.push('/clusters');
 			})
 			.catch((e) => {
-				// TODO: handle errror
-				console.log('error', e);
+				this.setState({
+					deploymentError: e,
+					showError: true,
+				});
 			});
 	}
 
@@ -159,9 +170,18 @@ export default class Clusters extends Component {
 				browserHistory.push('/clusters');
 			})
 			.catch((e) => {
-				// TODO: handle errror
-				console.log('error', e);
+				this.setState({
+					deploymentError: e,
+					showError: true,
+				});
 			});
+	}
+
+	hideErrorModal = () => {
+		this.setState({
+			showError: false,
+			deploymentError: '',
+		});
 	}
 
 	renderClusterRegion = (region) => {
@@ -201,6 +221,39 @@ export default class Clusters extends Component {
 		return null;
 	}
 
+	renderErrorScreen = () => (
+		<section
+			className="cluster-container container"
+			style={{ textAlign: 'center', paddingTop: 40 }}
+		>
+			<article>
+				<h2>Some error occurred</h2>
+				<p>{this.state.error}</p>
+				<div style={{ marginTop: 30 }}>
+					<button
+						className="ad-theme-btn"
+						onClick={() => browserHistory.push('/clusters')}
+					>
+						<i className="fas fa-arrow-left" />
+						&nbsp; &nbsp; Go Back
+					</button>
+
+					<button
+						className="ad-theme-btn"
+						onClick={this.deleteCluster}
+						style={{
+							marginLeft: 12,
+							color: 'tomato',
+						}}
+					>
+						Delete Cluster &nbsp; &nbsp;
+						<i className="fas fa-trash-alt" />
+					</button>
+				</div>
+			</article>
+		</section>
+	)
+
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -212,6 +265,10 @@ export default class Clusters extends Component {
 			fontSize: '20px',
 		};
 
+		if (this.state.error) {
+			return this.renderErrorScreen();
+		}
+
 		if (!this.state.cluster) {
 			return (
 				<div style={vcenter}>
@@ -222,6 +279,11 @@ export default class Clusters extends Component {
 
 		return (
 			<section className="cluster-container container">
+				<ErrorModal
+					show={this.state.showError}
+					message={this.state.deploymentError}
+					onClose={this.hideErrorModal}
+				/>
 				<article>
 					<h2>
 						{this.state.cluster.name}
