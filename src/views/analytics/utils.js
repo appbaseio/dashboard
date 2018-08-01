@@ -1,4 +1,16 @@
+import React from 'react';
+import { css } from 'emotion';
 import { ACC_API } from './../../../config';
+import logs from './logsData';
+
+const requestOpt = css`
+	color: #252525;
+	text-transform: uppercase;
+	font-weight: 500;
+	background-color: #00ff88;
+	padding: 5px 10px;
+	border-radius: 5px;
+`;
 
 export const popularFiltersCol = [
 	{
@@ -252,6 +264,29 @@ export const popularResultsFull = [
 		key: 'conversionrate',
 	},
 ];
+export const requestLogs = [
+	{
+		title: 'Operation',
+		dataIndex: 'operation',
+		key: 'operation',
+		render: operation => (
+			<div>
+				<span css={requestOpt}>{operation.classifier}</span>
+				<span css="color: #74A2FF;margin-left: 10px">{operation.uri}</span>
+			</div>
+		),
+	},
+	{
+		title: 'Time',
+		dataIndex: 'timeTaken',
+		key: 'timeTaken',
+	},
+	{
+		title: 'Status',
+		dataIndex: 'status',
+		key: 'status',
+	},
+];
 /**
  * Get the analytics
  * @param {string} appName
@@ -358,6 +393,27 @@ export function getPopularFilters(appName) {
 			.then(() => {
 				// resolve the promise with response
 				resolve(data.body.popularFilters);
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+// To fetch request logs
+export function getRequestLogs(appName) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/app/${appName}/logs`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			// Comment out this line
+			// .then(res => res.json())
+			.then(() => {
+				// resolve the promise with response
+				resolve(logs);
 			})
 			.catch((e) => {
 				reject(e);
