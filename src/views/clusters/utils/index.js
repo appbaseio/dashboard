@@ -41,6 +41,7 @@ export function getClusterData(id) {
 export function deployCluster(cluster, id) {
 	const body = JSON.stringify(cluster);
 	return new Promise((resolve, reject) => {
+		let hasError = false;
 		fetch(`${ACC_API}/v1/_deploy${id ? `/${id}` : ''}`, {
 			method: 'POST',
 			credentials: 'include',
@@ -49,8 +50,16 @@ export function deployCluster(cluster, id) {
 			},
 			body,
 		})
-			.then(res => res.json())
+			.then((res) => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
 			.then((data) => {
+				if (hasError) {
+					reject(data.status.message);
+				}
 				if (data.error) {
 					reject(data.error);
 				}
