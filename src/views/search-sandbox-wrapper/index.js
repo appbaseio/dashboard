@@ -44,6 +44,7 @@ export default class SearchSandboxWrapper extends Component {
 					appId={this.appId}
 					appName={this.appName}
 					credentials={this.state.credentials}
+					isDashboard
 				>
 					{this.props.children}
 				</SearchSandbox>
