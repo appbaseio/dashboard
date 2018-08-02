@@ -43,25 +43,27 @@ const RequestDetails = ({
 			visible={show}
 			onCancel={handleCancel}
 		>
-			<span css="font-weight: 500;color: black;font-size: 16px;">Request Details</span>
+			<span css="font-weight: 500;color: black;font-size: 16px;">Log Details</span>
 			<Grid label="Time" component={time} />
 			<Grid label="Method" component={method.toUpperCase()} />
 			<Grid label="Url" component={url} />
 			<Grid label="IP" component={ip} />
 			<Grid label="Response Code" component={status} />
-			<Grid
-				label="Processing Time"
-				component={`${timeDuration.time} ${timeDuration.formattedUnit}`}
-			/>
-			<Tabs css="margin-top: 30px" animated={false} defaultActiveKey="headers">
-				<TabPane tab="Headers" key="headers">
-					<pre css={tab}>{JSON.stringify(headers, 0, 2)}</pre>
+			{processingTime && (
+				<Grid
+					label="Processing Time"
+					component={`${timeDuration.time} ${timeDuration.formattedUnit}`}
+				/>
+			)}
+			<Tabs css="margin-top: 30px" animated={false} defaultActiveKey="response">
+				<TabPane tab="Response" key="response">
+					<pre css={tab}>{JSON.stringify(response, null, 2)}</pre>
 				</TabPane>
 				<TabPane tab="Request" key="request">
 					<pre css={tab}>{JSON.stringify(request, null, 2)}</pre>
 				</TabPane>
-				<TabPane tab="Response" key="response">
-					<pre css={tab}>{JSON.stringify(response, null, 2)}</pre>
+				<TabPane tab="Headers" key="headers">
+					<pre css={tab}>{JSON.stringify(headers, 0, 2)}</pre>
 				</TabPane>
 			</Tabs>
 		</Modal>

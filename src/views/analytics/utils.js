@@ -2,15 +2,16 @@ import React from 'react';
 import { css } from 'emotion';
 import moment from 'moment';
 import { ACC_API } from './../../../config';
-import logs from './logsData';
+import Flex from '../../shared/Flex';
+// import logs from './logsData';
 
 const requestOpt = css`
-	color: #252525;
+	color: #00ff88;
 	text-transform: uppercase;
 	font-weight: 500;
-	background-color: #00ff88;
 	padding: 5px 10px;
-	border-radius: 5px;
+	border-radius: 3px;
+	border: solid 1px #00ff88;
 `;
 export const getTimeDuration = (time) => {
 	const timeInMs = moment.duration(moment().diff(time)).asMilliseconds();
@@ -23,7 +24,7 @@ export const getTimeDuration = (time) => {
 		};
 	}
 	if (timeInMs >= 60 * 60 * 1000) {
-		const timeH = parseInt(timeInMs / (60 * 60 * 60 * 1000), 10);
+		const timeH = parseInt(timeInMs / (60 * 60 * 1000), 10);
 		return {
 			unit: 'hr',
 			time: timeH,
@@ -31,7 +32,7 @@ export const getTimeDuration = (time) => {
 		};
 	}
 	if (timeInMs >= 60 * 1000) {
-		const timeM = parseInt(timeInMs / (60 * 60 * 1000), 10);
+		const timeM = parseInt(timeInMs / (60 * 1000), 10);
 		return {
 			unit: 'min',
 			time: timeM,
@@ -39,7 +40,7 @@ export const getTimeDuration = (time) => {
 		};
 	}
 	if (timeInMs >= 1000) {
-		const timeS = parseInt(timeInMs / (60 * 1000), 10);
+		const timeS = parseInt(timeInMs / 1000, 10);
 		return {
 			unit: 'sec',
 			time: timeS,
@@ -310,10 +311,21 @@ export const requestLogs = [
 		key: 'operation',
 		render: operation => (
 			<div>
-				<span css={requestOpt}>{operation.classifier}</span>
-				<span css="color: #74A2FF;margin-left: 10px">{operation.uri}</span>
+				<Flex>
+					<div css="width: 70px">
+						<span css={requestOpt}>{operation.method}</span>
+					</div>
+					<div>
+						<span css="color: #74A2FF;margin-left: 10px">{operation.uri}</span>
+					</div>
+				</Flex>
 			</div>
 		),
+	},
+	{
+		title: 'Classifier',
+		dataIndex: 'classifier',
+		key: 'classifier',
 	},
 	{
 		title: 'Time',
@@ -449,10 +461,10 @@ export function getRequestLogs(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(logs);
+				resolve(res);
 			})
 			.catch((e) => {
 				reject(e);

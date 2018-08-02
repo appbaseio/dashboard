@@ -3,7 +3,6 @@ import find from 'lodash/find';
 import get from 'lodash/get';
 import { Card, Tabs, Table } from 'antd';
 import { getRequestLogs, requestLogs, getTimeDuration } from '../../utils';
-import { appbaseService } from '../../../../service/AppbaseService';
 import RequestDetails from './RequestDetails';
 import Loader from './../Loader';
 
@@ -15,9 +14,10 @@ const normalizeData = data =>
 		return {
 			id: get(i, '_id'),
 			operation: {
-				classifier: get(i, '_source.classifier'),
+				method: get(i, '_source.request.method'),
 				uri: get(i, '_source.request.uri'),
 			},
+			classifier: get(i, '_source.classifier', '').toUpperCase(),
 			timeTaken: `${timeDuration.time} ${timeDuration.formattedUnit} ago`,
 			status: get(i, '_source.response.status'),
 		};
@@ -59,8 +59,7 @@ class RequestLogs extends React.Component {
 		};
 	}
 	componentDidMount() {
-		const appId = appbaseService.userInfo.body.apps[this.props.appName];
-		getRequestLogs(appId)
+		getRequestLogs(this.props.appName)
 			.then((res) => {
 				const filteredHits = filterHits(res.hits);
 				this.setState({
@@ -72,7 +71,8 @@ class RequestLogs extends React.Component {
 					searchHits: normalizeData(filteredHits.searchHits),
 				});
 			})
-			.catch(() => {
+			.catch((e) => {
+				toastr.error('Error', get(e, 'responseJSON.message', 'Unable to fetch logs.'));
 				this.setState({
 					isFetching: false,
 				});
