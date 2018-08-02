@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
+import moment from 'moment';
 import { ACC_API } from './../../../config';
 import logs from './logsData';
 
@@ -11,7 +12,45 @@ const requestOpt = css`
 	padding: 5px 10px;
 	border-radius: 5px;
 `;
-
+export const getTimeDuration = (time) => {
+	const timeInMs = moment.duration(moment().diff(time)).asMilliseconds();
+	if (timeInMs >= 24 * 60 * 60 * 1000) {
+		const timeD = parseInt(timeInMs / (24 * 60 * 60 * 1000), 10);
+		return {
+			unit: 'day',
+			time: timeD,
+			formattedUnit: timeD > 1 ? 'days' : 'day',
+		};
+	}
+	if (timeInMs >= 60 * 60 * 1000) {
+		const timeH = parseInt(timeInMs / (60 * 60 * 60 * 1000), 10);
+		return {
+			unit: 'hr',
+			time: timeH,
+			formattedUnit: timeH > 1 ? 'hrs' : 'hr',
+		};
+	}
+	if (timeInMs >= 60 * 1000) {
+		const timeM = parseInt(timeInMs / (60 * 60 * 1000), 10);
+		return {
+			unit: 'min',
+			time: timeM,
+			formattedUnit: timeM > 1 ? 'mins' : 'min',
+		};
+	}
+	if (timeInMs >= 1000) {
+		const timeS = parseInt(timeInMs / (60 * 1000), 10);
+		return {
+			unit: 'sec',
+			time: timeS,
+			formattedUnit: timeS > 1 ? 'secs' : 'sec',
+		};
+	}
+	return {
+		unit: 'ms',
+		time: parseInt(timeInMs / 1000, 10),
+	};
+};
 export const popularFiltersCol = [
 	{
 		title: 'Polpular Filters',

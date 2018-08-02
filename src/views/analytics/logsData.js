@@ -235,7 +235,7 @@ export default {
 			_source: {
 				appid: '296',
 				appname: 'router102',
-				classifier: 'index',
+				classifier: 'search',
 				request: {
 					body: {
 						age: 22,

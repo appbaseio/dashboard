@@ -2,28 +2,51 @@ import React from 'react';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import { Card, Tabs, Table } from 'antd';
-import { getRequestLogs, requestLogs } from '../../utils';
+import { getRequestLogs, requestLogs, getTimeDuration } from '../../utils';
 import { appbaseService } from '../../../../service/AppbaseService';
 import RequestDetails from './RequestDetails';
 import Loader from './../Loader';
 
 const { TabPane } = Tabs;
+
 const normalizeData = data =>
-	data.map(i => ({
-		/*eslint-disable */
-		id: i._id,
-		operation: {
-			classifier: i._source.classifier,
-			uri: i._source.request.uri,
-		},
-		timeTaken: i._source.timestamp,
-		status: i._source.response.status,
-		/* eslint-enable */
-	}));
+	data.map((i) => {
+		const timeDuration = getTimeDuration(get(i, '_source.timestamp'));
+		return {
+			id: get(i, '_id'),
+			operation: {
+				classifier: get(i, '_source.classifier'),
+				uri: get(i, '_source.request.uri'),
+			},
+			timeTaken: `${timeDuration.time} ${timeDuration.formattedUnit} ago`,
+			status: get(i, '_source.response.status'),
+		};
+	});
+const filterHits = (hits = []) => {
+	const successHits = [];
+	const errorHits = [];
+	const searchHits = [];
+	hits.forEach((h) => {
+		const status = get(h, '_source.response.status');
+		if (get(h, '_source.classifier') === 'search') {
+			searchHits.push(h);
+		}
+		if (status >= 200 && status <= 300) {
+			successHits.push(h);
+		} else {
+			errorHits.push(h);
+		}
+	});
+	return {
+		successHits,
+		errorHits,
+		searchHits,
+	};
+};
 class RequestLogs extends React.Component {
 	constructor(props) {
 		super(props);
-		this.tabKeys = ['all', 'success', 'error'];
+		this.tabKeys = ['all', 'search', 'success', 'error'];
 		this.state = {
 			activeTabKey: this.tabKeys.includes(props.tab) ? props.tab : this.tabKeys[0],
 			logs: undefined,
@@ -31,20 +54,22 @@ class RequestLogs extends React.Component {
 			hits: [],
 			successHits: [],
 			errorHits: [],
+			searchHits: [],
 			showDetails: false,
-			logId: undefined,
 		};
 	}
 	componentDidMount() {
 		const appId = appbaseService.userInfo.body.apps[this.props.appName];
 		getRequestLogs(appId)
 			.then((res) => {
+				const filteredHits = filterHits(res.hits);
 				this.setState({
 					logs: res.hits,
 					isFetching: false,
 					hits: normalizeData(res.hits),
-					successHits: [],
-					errorHits: [],
+					successHits: normalizeData(filteredHits.successHits),
+					errorHits: normalizeData(filteredHits.errorHits),
+					searchHits: normalizeData(filteredHits.searchHits),
 				});
 			})
 			.catch(() => {
@@ -69,8 +94,8 @@ class RequestLogs extends React.Component {
 		);
 	};
 	handleLogClick = (record) => {
-		this.currentRequest = this.state.logs && find(this.state.logs, o => o._id === record.id);
-		console.log('this is the hing', record.id, this.currentRequest);
+		this.currentRequest =
+			this.state.logs && find(this.state.logs, o => get(o, '_id') === record.id);
 		this.setState({
 			showDetails: true,
 		});
@@ -82,8 +107,14 @@ class RequestLogs extends React.Component {
 	};
 	render() {
 		const {
- activeTabKey, hits, isFetching, showDetails,
-} = this.state;
+			activeTabKey,
+			hits,
+			isFetching,
+			showDetails,
+			successHits,
+			errorHits,
+			searchHits,
+		} = this.state;
 		if (isFetching) {
 			return <Loader />;
 		}
@@ -106,11 +137,41 @@ class RequestLogs extends React.Component {
 							})}
 						/>
 					</TabPane>
-					<TabPane tab="SUCCESS" key={this.tabKeys[1]}>
-						search
+					<TabPane tab="SEARCH" key={this.tabKeys[1]}>
+						<Table
+							css=".ant-table-row { cursor: pointer }"
+							rowKey={record => record.id}
+							dataSource={searchHits}
+							columns={requestLogs}
+							pagination={false}
+							onRow={record => ({
+								onClick: () => this.handleLogClick(record),
+							})}
+						/>
 					</TabPane>
-					<TabPane tab="ERROR" key={this.tabKeys[2]}>
-						errors
+					<TabPane tab="SUCCESS" key={this.tabKeys[2]}>
+						<Table
+							css=".ant-table-row { cursor: pointer }"
+							rowKey={record => record.id}
+							dataSource={successHits}
+							columns={requestLogs}
+							pagination={false}
+							onRow={record => ({
+								onClick: () => this.handleLogClick(record),
+							})}
+						/>
+					</TabPane>
+					<TabPane tab="ERROR" key={this.tabKeys[3]}>
+						<Table
+							css=".ant-table-row { cursor: pointer }"
+							rowKey={record => record.id}
+							dataSource={errorHits}
+							columns={requestLogs}
+							pagination={false}
+							onRow={record => ({
+								onClick: () => this.handleLogClick(record),
+							})}
+						/>
 					</TabPane>
 				</Tabs>
 				{showDetails &&
@@ -124,7 +185,10 @@ class RequestLogs extends React.Component {
 							time={get(this.currentRequest, '_source.timestamp', '')}
 							method={get(this.currentRequest, '_source.request.method', '')}
 							url={get(this.currentRequest, '_source.request.uri', '')}
-							ip=""
+							ip={get(
+								this.currentRequest,
+								'_source.request.headers.X-Forwarded-For[0]',
+							)}
 							status={get(this.currentRequest, '_source.response.status', '')}
 							processingTime={get(
 								this.currentRequest,
