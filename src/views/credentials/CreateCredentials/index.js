@@ -134,7 +134,7 @@ class CreateCredentials extends React.Component {
 								name="operationType"
 								render={({ handler }) => (
 									<Grid
-										label="Operation Type"
+										label="Key Type"
 										toolTipMessage={Messages.operationType}
 										component={
 											<Radio.Group
@@ -157,7 +157,7 @@ class CreateCredentials extends React.Component {
 										<div style={{ marginBottom: 20 }}>
 											<Icon type="lock" css="font-size: 40px" />
 										</div>
-										Upgrade to a paid plan to add security permissions.
+										Upgrade to a paid plan to add advanced security permissions.
 										<Tooltip overlay={hoverMessage} mouseLeaveDelay={0}>
 											<i className="fas fa-info-circle" />
 										</Tooltip>
@@ -202,7 +202,7 @@ class CreateCredentials extends React.Component {
 								name="referers"
 								render={control => (
 									<WhiteList
-										toolTipMessage={Messages.security}
+										toolTipMessage={Messages.referers}
 										control={control}
 										type="dropdown"
 										defaultSuggestionValue="https://example.com/"

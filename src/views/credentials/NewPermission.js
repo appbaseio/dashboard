@@ -123,7 +123,7 @@ export default class NewPermission extends Component {
 			<div className="ad-create col-xs-12">
 				{this.props.showCredForm && (
 					<CreateCredentials
-						isPaidUser={this.state.isPaidUser}
+						isPaidUser={this.state.isPaidUser || true}
 						isSubmitting={this.props.isSubmitting}
 						onSubmit={this.handleSubmit}
 						show={this.props.showCredForm}
