@@ -10,6 +10,7 @@ import PopularSearches from './components/PopularSearches';
 import NoResultsSearch from './components/NoResultsSearch';
 import PopularResults from './components/PopularResults';
 import PopularFilters from './components/PopularFilters';
+// import { checkUserStatus } from './../../../modules/batteries/utils';
 import RequestLogs from './components/RequestLogs';
 
 const { TabPane } = Tabs;
@@ -31,7 +32,8 @@ class Main extends React.Component {
 			popularResults: [],
 			popularFilters: [],
 			searchVolume: [],
-			isPaidUser: true, // TODO: CHANGE TO false
+			isPaidUser: true, // change it to true to test paid user
+			currentPlan: undefined, // change it to growth to test growth plan user
 			activeTabKey: this.tabKeys.includes(props.params.tab)
 				? props.params.tab
 				: this.tabKeys[0],
@@ -45,11 +47,14 @@ class Main extends React.Component {
 		};
 	}
 	componentDidMount() {
+		// Comment out the below code to test paid user
+		// COMMENT START
 		// checkUserStatus().then(
 		// 	(response) => {
 		// 		if (response.isPaidUser) {
-		// 			this.setState({ isPaidUser: response.isPaidUser }, () => {
+		// 			this.setState({ isPaidUser: response.isPaidUser, currentPlan: response.plan }, () => {
 		// Only fetch in user is paid
+		// COMMENT END
 		getAnalytics(this.pageInfo.appName)
 			.then((res) => {
 				this.setState({
@@ -61,12 +66,12 @@ class Main extends React.Component {
 					isFetching: false,
 				});
 			})
-			.catch((e) => {
+			.catch(() => {
 				this.setState({
 					isFetching: false,
 				});
-				console.log('ERROR=>', e);
 			});
+		// COMMENT START
 		// 			});
 		// 		} else {
 		// 			this.setState({
@@ -82,6 +87,7 @@ class Main extends React.Component {
 		// 		toastr.error('Error', 'Something went wrong');
 		// 	},
 		// );
+		// COMMENT END
 	}
 	changeActiveTabKey = (tab) => {
 		this.setState(
@@ -108,6 +114,7 @@ class Main extends React.Component {
 			isFetching,
 			isPaidUser,
 			activeTabKey,
+			currentPlan,
 		} = this.state;
 		if (isFetching) {
 			const antIcon = (
@@ -130,6 +137,7 @@ class Main extends React.Component {
 								<Analytics
 									loading={isFetching}
 									noResults={noResults}
+									plan={currentPlan}
 									popularSearches={popularSearches}
 									popularFilters={popularFilters}
 									popularResults={popularResults}
@@ -143,12 +151,16 @@ class Main extends React.Component {
 							<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
 								<NoResultsSearch appName={this.pageInfo.appName} />
 							</TabPane>
-							<TabPane tab="Popular Results" key={this.tabKeys[3]}>
-								<PopularResults appName={this.pageInfo.appName} />
-							</TabPane>
-							<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
-								<PopularFilters appName={this.pageInfo.appName} />
-							</TabPane>
+							{currentPlan === 'growth' && (
+								<React.Fragment>
+									<TabPane tab="Popular Results" key={this.tabKeys[3]}>
+										<PopularResults appName={this.pageInfo.appName} />
+									</TabPane>
+									<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
+										<PopularFilters appName={this.pageInfo.appName} />
+									</TabPane>
+								</React.Fragment>
+							)}
 							<TabPane tab="Request Logs" key={this.tabKeys[5]}>
 								<RequestLogs
 									tab={this.props.params.subTab}

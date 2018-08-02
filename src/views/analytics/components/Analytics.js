@@ -28,6 +28,7 @@ class Analytics extends React.Component {
 			searchVolume,
 			popularFilters,
 			popularResults,
+			plan,
 		} = this.props;
 		return (
 			<React.Fragment>
@@ -66,24 +67,26 @@ class Analytics extends React.Component {
 						/>
 					</div>
 				</Flex>
-				<Flex css="width: 100%;margin-top: 50px">
-					<div css="flex: 50%;margin-right: 10px">
-						<Searches
-							dataSource={popularResults}
-							columns={popularResultsCol}
-							title="Popular Results"
-							onClick={() => this.props.redirectTo('popularResults')}
-						/>
-					</div>
-					<div css="flex: 50%;margin-left: 10px">
-						<Searches
-							dataSource={popularFilters}
-							columns={popularFiltersCol}
-							title="Popular Filters"
-							onClick={() => this.props.redirectTo('popularFilters')}
-						/>
-					</div>
-				</Flex>
+				{plan === 'growth' && (
+					<Flex css="width: 100%;margin-top: 50px">
+						<div css="flex: 50%;margin-right: 10px">
+							<Searches
+								dataSource={popularResults}
+								columns={popularResultsCol}
+								title="Popular Results"
+								onClick={() => this.props.redirectTo('popularResults')}
+							/>
+						</div>
+						<div css="flex: 50%;margin-left: 10px">
+							<Searches
+								dataSource={popularFilters}
+								columns={popularFiltersCol}
+								title="Popular Filters"
+								onClick={() => this.props.redirectTo('popularFilters')}
+							/>
+						</div>
+					</Flex>
+				)}
 			</React.Fragment>
 		);
 	}
@@ -91,6 +94,7 @@ class Analytics extends React.Component {
 Analytics.propTypes = {
 	noResults: PropTypes.array,
 	popularSearches: PropTypes.array,
+	plan: PropTypes.string.isRequired,
 	searchVolume: PropTypes.array,
 	popularResults: PropTypes.array,
 	popularFilters: PropTypes.array,
