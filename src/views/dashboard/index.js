@@ -167,7 +167,8 @@ export default class Dashboard extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-					{this.state.plan !== 'free' ? (
+					{/* Change plan here to test paid user */}
+					{this.state.plan === 'free' ? (
 						<div className="ad-detail-page-body col-xs-12">
 							<section className="col-xs-12 col-sm-8">
 								{displayCharts ? (

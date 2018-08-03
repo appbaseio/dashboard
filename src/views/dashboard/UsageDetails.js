@@ -15,7 +15,7 @@ const percentCls = css`
 `;
 const UsageDetails = ({ plan, appCount }) => (
 	<Card title="Usage this month" css="width: 300px">
-		<Flex justifyContent="space-between">
+		<Flex justifyContent="center" alignItems="center">
 			<div css="width: 100px;position: relative">
 				<div css={percentCls}>{`${get(appCount, 'action.percentage')}%`}</div>
 				<Circle
@@ -39,7 +39,7 @@ const UsageDetails = ({ plan, appCount }) => (
 					) : null}
 				</Flex>
 			</div>
-			<div css="width: 100px;position: relative">
+			<div css="width: 100px;position: relative;margin-left: 20px">
 				<div css={percentCls}>{`${get(appCount, 'records.percentage')}%`}</div>
 				<Circle
 					style={{
