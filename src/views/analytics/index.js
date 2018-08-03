@@ -2,19 +2,29 @@ import React from 'react';
 import { Tabs, Icon, Spin } from 'antd';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
-import Tab1 from './components/Analytics';
-import Tab2 from './components/PopularSearches';
-import { getAnalytics } from './utils';
-import UpgradePlan from './components/UpgradePlan';
+import { getAnalytics, bannerMessages } from './utils';
+import UpgradePlan from './../../shared/UpgradePlan';
 import Flex from '../../shared/Flex';
-import Tab3 from './components/NoResultsSearch';
-import Tab4 from './components/PopularResults';
-import Tab5 from './components/PopularFilters';
+import Analytics from './components/Analytics';
+import PopularSearches from './components/PopularSearches';
+import NoResultsSearch from './components/NoResultsSearch';
+import PopularResults from './components/PopularResults';
+import PopularFilters from './components/PopularFilters';
+import { checkUserStatus } from './../../../modules/batteries/utils';
+import RequestLogs from './components/RequestLogs';
 
 const { TabPane } = Tabs;
-class Analytics extends React.Component {
+class Main extends React.Component {
 	constructor(props) {
 		super(props);
+		this.tabKeys = [
+			'analytics',
+			'popularSearches',
+			'noResultSearches',
+			'popularResults',
+			'popularFilters',
+			'requestLogs',
+		];
 		this.state = {
 			isFetching: true,
 			noResults: [],
@@ -22,55 +32,67 @@ class Analytics extends React.Component {
 			popularResults: [],
 			popularFilters: [],
 			searchVolume: [],
-			isPaidUser: true, // TODO: CHANGE TO false
-			activeTabKey: props.params.tab || 'analytics',
+			// change it to true to test paid user
+			isPaidUser: false,
+			// change it to plan for eg. growth, bootstrap to test growth plan user
+			currentPlan: undefined,
+			activeTabKey: this.tabKeys.includes(props.params.tab)
+				? props.params.tab
+				: this.tabKeys[0],
 		};
 		const appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[appName];
 		this.pageInfo = {
-			currentView: 'mappings',
+			currentView: 'analytics',
 			appName,
 			appId: this.appId,
 		};
 	}
 	componentDidMount() {
-		// checkUserStatus().then(
-		// 	(response) => {
-		// 		if (response.isPaidUser) {
-		// 			this.setState({ isPaidUser: response.isPaidUser }, () => {
-		// Only fetch in user is paid
-		getAnalytics(this.pageInfo.appName)
-			.then((res) => {
+		// Comment out the below code to test paid user
+		// COMMENT START
+		checkUserStatus().then(
+			(response) => {
+				if (response.isPaidUser) {
+					this.setState(
+						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
+						() => {
+							// COMMENT END
+							getAnalytics(this.pageInfo.appName)
+								.then((res) => {
+									this.setState({
+										noResults: res.noResultSearches,
+										popularSearches: res.popularSearches,
+										searchVolume: res.searchVolume,
+										popularResults: res.popularResults,
+										popularFilters: res.popularFilters,
+										isFetching: false,
+									});
+								})
+								.catch(() => {
+									this.setState({
+										isFetching: false,
+									});
+								});
+							// COMMENT START
+						},
+					);
+				} else {
+					this.setState({
+						isFetching: false,
+						isPaidUser: false,
+					});
+				}
+			},
+			() => {
 				this.setState({
-					noResults: res.noresults,
-					popularSearches: res.popularsearches,
-					searchVolume: res.searchvolume,
-					popularResults: res.popularResults,
-					popularFilters: res.popularFilters,
 					isFetching: false,
 				});
-			})
-			.catch((e) => {
-				this.setState({
-					isFetching: false,
-				});
-				console.log('ERROR=>', e);
-			});
-		// 			});
-		// 		} else {
-		// 			this.setState({
-		// 				isFetching: false,
-		// 				isPaidUser: false,
-		// 			});
-		// 		}
-		// 	},
-		// 	() => {
-		// 		this.setState({
-		// 			isFetching: false,
-		// 		});
-		// 		toastr.error('Error', 'Something went wrong');
-		// 	},
-		// );
+				// eslint-disable-next-line
+				toastr.error('Error', 'Something went wrong');
+			},
+		);
+		// COMMENT END
 	}
 	changeActiveTabKey = (tab) => {
 		this.setState(
@@ -97,6 +119,7 @@ class Analytics extends React.Component {
 			isFetching,
 			isPaidUser,
 			activeTabKey,
+			currentPlan,
 		} = this.state;
 		if (isFetching) {
 			const antIcon = (
@@ -114,42 +137,54 @@ class Analytics extends React.Component {
 			<AppPage pageInfo={this.pageInfo} key={this.appId}>
 				<div className="ad-detail-page ad-dashboard row" style={{ padding: '40px' }}>
 					{isPaidUser ? (
-						<Tabs
-							defaultActiveKey={this.props.params.tab || 'analytics'}
-							animated={false}
-							onTabClick={this.changeActiveTabKey}
-							activeKey={activeTabKey}
-						>
-							<TabPane tab="Analytics" key="analytics">
-								<Tab1
-									loading={isFetching}
-									noResults={noResults}
-									popularSearches={popularSearches}
-									popularFilters={popularFilters}
-									popularResults={popularResults}
-									searchVolume={searchVolume}
-									redirectTo={tab => this.changeActiveTabKey(tab)}
-								/>
-							</TabPane>
-							<TabPane tab="Popular Searches" key="popularSearches">
-								<Tab2 appName={this.pageInfo.appName} />
-							</TabPane>
-							<TabPane tab="No Result Searches" key="noResultSearches">
-								<Tab3 appName={this.pageInfo.appName} />
-							</TabPane>
-							<TabPane tab="Popular Results" key="popularResults">
-								<Tab4 appName={this.pageInfo.appName} />
-							</TabPane>
-							<TabPane tab="Popular Filters" key="popularFilters">
-								<Tab5 appName={this.pageInfo.appName} />
-							</TabPane>
-						</Tabs>
+						<React.Fragment>
+							{bannerMessages[currentPlan] && (
+								<UpgradePlan {...bannerMessages[currentPlan]} />
+							)}
+							<Tabs onTabClick={this.changeActiveTabKey} activeKey={activeTabKey}>
+								<TabPane tab="Analytics" key={this.tabKeys[0]}>
+									<Analytics
+										loading={isFetching}
+										noResults={noResults}
+										plan={currentPlan}
+										popularSearches={popularSearches}
+										popularFilters={popularFilters}
+										popularResults={popularResults}
+										searchVolume={searchVolume}
+										redirectTo={tab => this.changeActiveTabKey(tab)}
+									/>
+								</TabPane>
+								<TabPane tab="Popular Searches" key={this.tabKeys[1]}>
+									<PopularSearches appName={this.pageInfo.appName} />
+								</TabPane>
+								<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
+									<NoResultsSearch appName={this.pageInfo.appName} />
+								</TabPane>
+								{currentPlan === 'growth' && (
+									<React.Fragment>
+										<TabPane tab="Popular Results" key={this.tabKeys[3]}>
+											<PopularResults appName={this.pageInfo.appName} />
+										</TabPane>
+										<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
+											<PopularFilters appName={this.pageInfo.appName} />
+										</TabPane>
+									</React.Fragment>
+								)}
+								<TabPane tab="Request Logs" key={this.tabKeys[5]}>
+									<RequestLogs
+										tab={this.props.params.subTab}
+										appName={this.pageInfo.appName}
+										redirectTo={this.redirectTo}
+									/>
+								</TabPane>
+							</Tabs>
+						</React.Fragment>
 					) : (
-						<UpgradePlan />
+						<UpgradePlan {...bannerMessages.free} />
 					)}
 				</div>
 			</AppPage>
 		);
 	}
 }
-export default Analytics;
+export default Main;

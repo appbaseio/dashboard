@@ -1,13 +1,31 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import get from 'lodash/get';
 import { appbaseService } from '../../service/AppbaseService';
 import { billingService } from '../../service/BillingService';
+import UsageDashboard from './UsageDetails';
 import HighChartView from './HighChartView';
-import ApiCallsView from './ApiCallsView';
 import AppPage from '../../shared/AppPage';
 import Upgrade from './Upgrade';
 import DashboardGettingStarted from './DashboardGettingStarted';
+import PaidUserDashboard from './PaidUserDashboard';
+import Loader from '../analytics/components/Loader';
 
+const getApiCalls = (data) => {
+	let total = 0;
+	data.body.month.buckets.forEach((bucket) => {
+		total += bucket.apiCalls.value;
+	});
+	return total;
+};
+const getTotalApiCalls = (data) => {
+	let apiCalls = 0;
+	const buckets =
+		data.body && data.body.month && data.body.month.buckets ? data.body.month.buckets : [];
+	buckets.forEach((bucket) => {
+		apiCalls += bucket.apiCalls.value;
+	});
+	return apiCalls;
+};
 export default class Dashboard extends Component {
 	constructor(props) {
 		super(props);
@@ -27,18 +45,11 @@ export default class Dashboard extends Component {
 		this.themeColor = '#CDDC39';
 		this.trailColor = '#fff';
 	}
-
-	componentWillMount() {
-		this.stopUpdate = false;
+	componentDidMount() {
 		this.initialize(this.props);
 	}
-
-	componentWillUnmount() {
-		this.stopUpdate = true;
-	}
-
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.params.appId != this.appName) {
+		if (nextProps.params.appId !== this.appName) {
 			this.setState(
 				{
 					waitingForApiCalls: true,
@@ -47,14 +58,6 @@ export default class Dashboard extends Component {
 			);
 		}
 	}
-
-	initialize(props) {
-		this.appName = props.params.appId;
-		this.appId = appbaseService.userInfo.body.apps[this.appName];
-		this.getInfo();
-		this.getBillingInfo();
-	}
-
 	getBillingInfo() {
 		if (
 			appbaseService.userInfo &&
@@ -66,7 +69,7 @@ export default class Dashboard extends Component {
 			};
 			billingService
 				.getCustomer(requestData)
-				.then(data => {
+				.then((data) => {
 					const plan =
 						Object.keys(billingService.planLimits).indexOf(data.plan) > -1
 							? data.plan
@@ -76,7 +79,7 @@ export default class Dashboard extends Component {
 						plan,
 					});
 				})
-				.catch(e => {
+				.catch((e) => {
 					this.setState({
 						plan: 'free',
 					});
@@ -84,72 +87,46 @@ export default class Dashboard extends Component {
 				});
 		}
 	}
-
-	getApiCalls(data) {
-		let total = 0;
-		data.body.month.buckets.forEach(bucket => {
-			total += bucket.apiCalls.value;
-		});
-		return total;
-	}
-
 	getInfo() {
 		this.info = {};
-		appbaseService.getPermission(this.appId).then(data => {
-			this.info.permission = data;
-			if (!this.stopUpdate) {
-				this.setState({ info: this.info });
-			}
-		});
-		appbaseService.getAppInfo(this.appId).then(data => {
-			this.info.appInfo = data;
-			if (!this.stopUpdate) {
-				this.setState({ info: this.info });
-			}
-		});
-		appbaseService.getMetrics(this.appId).then(data => {
-			this.info.metrics = data;
-			const totalApiCalls = this.getTotalApiCalls(data);
-			this.info.appStats = appbaseService.computeMetrics(data);
-			if (!this.stopUpdate) {
-				this.setState({
-					info: this.info,
-					apiCalls: this.getApiCalls(data),
-					totalApiCalls,
-					waitingForApiCalls: false,
-				});
-			}
+		Promise.all([
+			appbaseService.getPermission(this.appId),
+			appbaseService.getAppInfo(this.appId),
+			appbaseService.getMetrics(this.appId),
+			this.getBillingInfo(),
+		]).then(([permission, appInfo, metrics]) => {
+			this.info = {};
+			this.info.permission = permission;
+			this.info.appInfo = appInfo;
+			this.info.metrics = metrics;
+			const totalApiCalls = getTotalApiCalls(metrics);
+			this.info.appStats = appbaseService.computeMetrics(metrics);
+			this.setState({
+				info: this.info,
+				apiCalls: getApiCalls(metrics),
+				totalApiCalls,
+				waitingForApiCalls: false,
+			});
 		});
 	}
 
-	getTotalApiCalls(data) {
-		let apiCalls = 0;
-		const buckets =
-			data.body && data.body.month && data.body.month.buckets ? data.body.month.buckets : [];
-		buckets.forEach(bucket => {
-			apiCalls += bucket.apiCalls.value;
-		});
-		return apiCalls;
+	initialize(props) {
+		this.appName = props.params.appId;
+		this.appId = appbaseService.userInfo.body.apps[this.appName];
+		this.getInfo();
 	}
-
-	pretify(obj) {
-		return JSON.stringify(obj, null, 4);
-	}
-
 	calcPercentage(app, field) {
-		let count =
-			field === 'action'
-				? app.info && app.info.appStats && app.info.appStats.calls
-					? app.info.appStats.calls
-					: 0
-				: app.info && app.info.appStats && app.info.appStats.records
-					? app.info.appStats.records
-					: 0;
+		let count;
+		if (field === 'action') {
+			count = get(app, 'info.appStats.calls', 0);
+		} else {
+			count = get(app, 'info.appStats.records', 0);
+		}
 		let percentage = (100 * count) / billingService.planLimits[this.state.plan][field];
 		percentage = percentage < 100 ? percentage : 100;
 		return {
-			percentage: percentage,
-			count: count,
+			percentage,
+			count,
 		};
 	}
 
@@ -174,6 +151,9 @@ export default class Dashboard extends Component {
 	}
 
 	render() {
+		if (this.state.waitingForApiCalls) {
+			return <Loader />;
+		}
 		const displayCharts =
 			Boolean(this.state.totalApiCalls) ||
 			Boolean(this.appCount().records.count) ||
@@ -187,26 +167,35 @@ export default class Dashboard extends Component {
 				}}
 			>
 				<div className="ad-detail-page ad-dashboard row">
-					<div className="ad-detail-page-body col-xs-12">
-						<section className="col-xs-12 col-sm-8">
-							{displayCharts ? (
-								<HighChartView
-									apiCalls={this.state.apiCalls}
-									graphMethod={this.state.graphMethod}
-									info={this.state.info}
-								/>
-							) : (
-								<DashboardGettingStarted
-									appName={this.appName}
-									appId={this.appId}
-								/>
-							)}
-						</section>
-						<section className="col-xs-12 col-sm-4">
-							<ApiCallsView plan={this.state.plan} appCount={this.appCount()} />
-							<Upgrade plan={this.state.plan} appCount={this.appCount()} />
-						</section>
-					</div>
+					{/* Change plan here to test paid user */}
+					{this.state.plan === 'free' ? (
+						<div className="ad-detail-page-body col-xs-12">
+							<section className="col-xs-12 col-sm-8">
+								{displayCharts ? (
+									<HighChartView
+										apiCalls={this.state.apiCalls}
+										graphMethod={this.state.graphMethod}
+										info={this.state.info}
+									/>
+								) : (
+									<DashboardGettingStarted
+										appName={this.appName}
+										appId={this.appId}
+									/>
+								)}
+							</section>
+							<section className="col-xs-12 col-sm-4">
+								<UsageDashboard plan={this.state.plan} appCount={this.appCount()} />
+								<Upgrade plan={this.state.plan} appCount={this.appCount()} />
+							</section>
+						</div>
+					) : (
+						<PaidUserDashboard
+							appName={this.appName}
+							plan={this.state.plan}
+							appCount={this.appCount()}
+						/>
+					)}
 				</div>
 			</AppPage>
 		);
