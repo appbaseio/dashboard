@@ -28,7 +28,7 @@ class Analytics extends React.Component {
 		const appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[appName];
 		this.pageInfo = {
-			currentView: 'mappings',
+			currentView: 'analytics',
 			appName,
 			appId: this.appId,
 		};
