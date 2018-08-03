@@ -128,7 +128,7 @@ class AppbaseService {
 		});
 	}
 
-	getMetrics(appId, cache = false) {
+	getMetrics(appId) {
 		return new Promise((resolve, reject) => {
 			// if (this.apps && this.apps[appId] && this.apps[appId].metrics && cache) {
 			// 	resolve(this.apps[appId].metrics);

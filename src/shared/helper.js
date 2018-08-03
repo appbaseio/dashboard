@@ -7,7 +7,7 @@ const eventEmitter = new EventEmitter();
 
 class AppDashboard {
 	constructor() {
-		this.allowedView = ['dashboard', 'search-sandbox', 'browser', 'mappings', 'builder', 'credentials', 'team'];
+		this.allowedView = ['dashboard', 'search-sandbox', 'browser', 'mappings', 'builder', 'credentials', 'team', 'analytics'];
 	}
 	onEnter(activeApp, currentView) {
 		const appObj = {

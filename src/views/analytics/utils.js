@@ -1,5 +1,57 @@
+import React from 'react';
+import { css } from 'emotion';
+import moment from 'moment';
 import { ACC_API } from './../../../config';
+import Flex from '../../shared/Flex';
+// import logs from './logsData';
 
+const requestOpt = css`
+	color: #00ff88;
+	text-transform: uppercase;
+	font-weight: 500;
+	padding: 5px 10px;
+	border-radius: 3px;
+	border: solid 1px #00ff88;
+`;
+export const getTimeDuration = (time) => {
+	const timeInMs = moment.duration(moment().diff(time)).asMilliseconds();
+	if (timeInMs >= 24 * 60 * 60 * 1000) {
+		const timeD = parseInt(timeInMs / (24 * 60 * 60 * 1000), 10);
+		return {
+			unit: 'day',
+			time: timeD,
+			formattedUnit: timeD > 1 ? 'days' : 'day',
+		};
+	}
+	if (timeInMs >= 60 * 60 * 1000) {
+		const timeH = parseInt(timeInMs / (60 * 60 * 1000), 10);
+		return {
+			unit: 'hr',
+			time: timeH,
+			formattedUnit: timeH > 1 ? 'hrs' : 'hr',
+		};
+	}
+	if (timeInMs >= 60 * 1000) {
+		const timeM = parseInt(timeInMs / (60 * 1000), 10);
+		return {
+			unit: 'min',
+			time: timeM,
+			formattedUnit: timeM > 1 ? 'mins' : 'min',
+		};
+	}
+	if (timeInMs >= 1000) {
+		const timeS = parseInt(timeInMs / 1000, 10);
+		return {
+			unit: 'sec',
+			time: timeS,
+			formattedUnit: timeS > 1 ? 'secs' : 'sec',
+		};
+	}
+	return {
+		unit: 'ms',
+		time: parseInt(timeInMs / 1000, 10),
+	};
+};
 export const popularFiltersCol = [
 	{
 		title: 'Polpular Filters',
@@ -252,13 +304,47 @@ export const popularResultsFull = [
 		key: 'conversionrate',
 	},
 ];
+export const requestLogs = [
+	{
+		title: 'Operation',
+		dataIndex: 'operation',
+		key: 'operation',
+		render: operation => (
+			<div>
+				<Flex>
+					<div css="width: 70px">
+						<span css={requestOpt}>{operation.method}</span>
+					</div>
+					<div>
+						<span css="color: #74A2FF;margin-left: 10px">{operation.uri}</span>
+					</div>
+				</Flex>
+			</div>
+		),
+	},
+	{
+		title: 'Classifier',
+		dataIndex: 'classifier',
+		key: 'classifier',
+	},
+	{
+		title: 'Time',
+		dataIndex: 'timeTaken',
+		key: 'timeTaken',
+	},
+	{
+		title: 'Status',
+		dataIndex: 'status',
+		key: 'status',
+	},
+];
 /**
  * Get the analytics
  * @param {string} appName
  */
 export function getAnalytics(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/overview`, {
+		fetch(`${ACC_API}/analytics/${appName}/overview`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -266,10 +352,10 @@ export function getAnalytics(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body);
+				resolve(res);
 			})
 			.catch((e) => {
 				reject(e);
@@ -282,7 +368,7 @@ export function getAnalytics(appName) {
  */
 export function getPopularSearches(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularsearches`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularsearches`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -290,10 +376,10 @@ export function getPopularSearches(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.noresults);
+				resolve(res.popularSearches);
 			})
 			.catch((e) => {
 				reject(e);
@@ -306,7 +392,7 @@ export function getPopularSearches(appName) {
  */
 export function getNoResultSearches(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/noresultsearches`, {
+		fetch(`${ACC_API}/analytics/${appName}/noresultsearches`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -314,10 +400,10 @@ export function getNoResultSearches(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.noresults);
+				resolve(res.noResultSearches);
 			})
 			.catch((e) => {
 				reject(e);
@@ -326,7 +412,7 @@ export function getNoResultSearches(appName) {
 }
 export function getPopularResults(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularResults`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularResults`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -346,7 +432,7 @@ export function getPopularResults(appName) {
 }
 export function getPopularFilters(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularFilters`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularFilters`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -364,3 +450,51 @@ export function getPopularFilters(appName) {
 			});
 	});
 }
+// To fetch request logs
+export function getRequestLogs(appName) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/app/${appName}/logs`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			// Comment out this line
+			.then(res => res.json())
+			.then((res) => {
+				// resolve the promise with response
+				resolve(res);
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+
+// Banner messages
+export const bannerMessages = {
+	free: {
+		title: 'Unlock the ROI impact of your search',
+		description:
+			'Get a paid plan to see actionable analytics on search volume, popular searches, no results, track clicks and conversions.',
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	bootstrap: {
+		title: 'Get richer analytics on clicks and conversions',
+		description:
+			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
+		buttonText: 'Upgrade To Growth',
+		href: '/billing',
+		isHorizontal: true,
+	},
+	growth: {
+		title: 'Learn how to track click analytics',
+		description:
+			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
+		buttonText: 'Read Docs',
+		isHorizontal: true,
+		href: 'https://docs.appbase.io',
+	},
+};
