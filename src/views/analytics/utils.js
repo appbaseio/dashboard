@@ -1,5 +1,57 @@
+import React from 'react';
+import { css } from 'emotion';
+import moment from 'moment';
 import { ACC_API } from './../../../config';
+import Flex from '../../shared/Flex';
+// import logs from './logsData';
 
+const requestOpt = css`
+	color: #00ff88;
+	text-transform: uppercase;
+	font-weight: 500;
+	padding: 5px 10px;
+	border-radius: 3px;
+	border: solid 1px #00ff88;
+`;
+export const getTimeDuration = (time) => {
+	const timeInMs = moment.duration(moment().diff(time)).asMilliseconds();
+	if (timeInMs >= 24 * 60 * 60 * 1000) {
+		const timeD = parseInt(timeInMs / (24 * 60 * 60 * 1000), 10);
+		return {
+			unit: 'day',
+			time: timeD,
+			formattedUnit: timeD > 1 ? 'days' : 'day',
+		};
+	}
+	if (timeInMs >= 60 * 60 * 1000) {
+		const timeH = parseInt(timeInMs / (60 * 60 * 1000), 10);
+		return {
+			unit: 'hr',
+			time: timeH,
+			formattedUnit: timeH > 1 ? 'hrs' : 'hr',
+		};
+	}
+	if (timeInMs >= 60 * 1000) {
+		const timeM = parseInt(timeInMs / (60 * 1000), 10);
+		return {
+			unit: 'min',
+			time: timeM,
+			formattedUnit: timeM > 1 ? 'mins' : 'min',
+		};
+	}
+	if (timeInMs >= 1000) {
+		const timeS = parseInt(timeInMs / 1000, 10);
+		return {
+			unit: 'sec',
+			time: timeS,
+			formattedUnit: timeS > 1 ? 'secs' : 'sec',
+		};
+	}
+	return {
+		unit: 'ms',
+		time: parseInt(timeInMs / 1000, 10),
+	};
+};
 export const popularFiltersCol = [
 	{
 		title: 'Polpular Filters',
@@ -252,6 +304,40 @@ export const popularResultsFull = [
 		key: 'conversionrate',
 	},
 ];
+export const requestLogs = [
+	{
+		title: 'Operation',
+		dataIndex: 'operation',
+		key: 'operation',
+		render: operation => (
+			<div>
+				<Flex>
+					<div css="width: 70px">
+						<span css={requestOpt}>{operation.method}</span>
+					</div>
+					<div>
+						<span css="color: #74A2FF;margin-left: 10px">{operation.uri}</span>
+					</div>
+				</Flex>
+			</div>
+		),
+	},
+	{
+		title: 'Classifier',
+		dataIndex: 'classifier',
+		key: 'classifier',
+	},
+	{
+		title: 'Time',
+		dataIndex: 'timeTaken',
+		key: 'timeTaken',
+	},
+	{
+		title: 'Status',
+		dataIndex: 'status',
+		key: 'status',
+	},
+];
 /**
  * Get the analytics
  * @param {string} appName
@@ -358,6 +444,27 @@ export function getPopularFilters(appName) {
 			.then(() => {
 				// resolve the promise with response
 				resolve(data.body.popularFilters);
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+// To fetch request logs
+export function getRequestLogs(appName) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/app/${appName}/logs`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			// Comment out this line
+			.then(res => res.json())
+			.then((res) => {
+				// resolve the promise with response
+				resolve(res);
 			})
 			.catch((e) => {
 				reject(e);

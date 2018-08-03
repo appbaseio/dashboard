@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import get from 'lodash/get';
 import { appbaseService } from '../../service/AppbaseService';
 import { billingService } from '../../service/BillingService';
-import UsageDashboard from '../newdashboard/UsageDetails';
+import UsageDashboard from './UsageDetails';
 import HighChartView from './HighChartView';
 import AppPage from '../../shared/AppPage';
 import Upgrade from './Upgrade';
 import DashboardGettingStarted from './DashboardGettingStarted';
 import PaidUserDashboard from './PaidUserDashboard';
+import Loader from '../analytics/components/Loader';
 
 const getApiCalls = (data) => {
 	let total = 0;
@@ -44,9 +45,7 @@ export default class Dashboard extends Component {
 		this.themeColor = '#CDDC39';
 		this.trailColor = '#fff';
 	}
-
-	componentWillMount() {
-		this.stopUpdate = false;
+	componentDidMount() {
 		this.initialize(this.props);
 	}
 	componentWillReceiveProps(nextProps) {
@@ -59,10 +58,6 @@ export default class Dashboard extends Component {
 			);
 		}
 	}
-	componentWillUnmount() {
-		this.stopUpdate = true;
-	}
-
 	getBillingInfo() {
 		if (
 			appbaseService.userInfo &&
@@ -98,6 +93,7 @@ export default class Dashboard extends Component {
 			appbaseService.getPermission(this.appId),
 			appbaseService.getAppInfo(this.appId),
 			appbaseService.getMetrics(this.appId),
+			this.getBillingInfo(),
 		]).then(([permission, appInfo, metrics]) => {
 			this.info = {};
 			this.info.permission = permission;
@@ -118,7 +114,6 @@ export default class Dashboard extends Component {
 		this.appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
 		this.getInfo();
-		this.getBillingInfo();
 	}
 	calcPercentage(app, field) {
 		let count;
@@ -156,7 +151,9 @@ export default class Dashboard extends Component {
 	}
 
 	render() {
-		console.log(this.state);
+		if (this.state.waitingForApiCalls) {
+			return <Loader />;
+		}
 		const displayCharts =
 			Boolean(this.state.totalApiCalls) ||
 			Boolean(this.appCount().records.count) ||

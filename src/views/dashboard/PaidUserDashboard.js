@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import Flex from '../../shared/Flex';
-import UsageDetails from '../newdashboard/UsageDetails';
+import UsageDetails from './UsageDetails';
 import { getAnalytics } from '../analytics/utils';
 import SearchVolumeChart from '../../shared/SearchVolumeChart';
 import Searches from '../analytics/components/Searches';
+import RequestLogs from '../analytics/components/RequestLogs';
 
 class PaidUserDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isFetching: true,
+			// isFetching: true,
 			noResults: [],
 			popularSearches: [],
 			searchVolume: [],
@@ -24,12 +25,12 @@ class PaidUserDashboard extends React.Component {
 					noResults: res.noresults,
 					popularSearches: res.popularsearches,
 					searchVolume: res.searchvolume,
-					isFetching: false,
+					// isFetching: false,
 				});
 			})
 			.catch((e) => {
 				this.setState({
-					isFetching: false,
+					// isFetching: false,
 				});
 				console.log('ERROR=>', e);
 			});
@@ -43,11 +44,13 @@ class PaidUserDashboard extends React.Component {
 		return (
 			<div css="padding: 40px">
 				<Flex justifyContent="space-between">
-					<UsageDetails plan={plan} appCount={appCount} />
-					<Card title="Daily Search Volume">
+					<div css="margin-right: 10px">
+						<UsageDetails plan={plan} appCount={appCount} />
+					</div>
+					<Card css="margin-left: 10px" title="Daily Search Volume">
 						<SearchVolumeChart
-							width={window.innerWidth - (300 + 270)}
-							height={250}
+							width={window.innerWidth - 580}
+							height={210}
 							data={searchVolume}
 						/>
 					</Card>
@@ -68,6 +71,9 @@ class PaidUserDashboard extends React.Component {
 						/>
 					</div>
 				</Flex>
+				<div css="margin-top: 20px">
+					<RequestLogs changeUrlOnTabChange={false} appName={this.props.appName} />
+				</div>
 			</div>
 		);
 	}
@@ -75,5 +81,6 @@ class PaidUserDashboard extends React.Component {
 PaidUserDashboard.propTypes = {
 	plan: PropTypes.string,
 	appCount: PropTypes.object,
+	appName: PropTypes.string,
 };
 export default PaidUserDashboard;

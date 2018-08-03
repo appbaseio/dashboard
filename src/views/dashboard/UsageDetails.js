@@ -15,7 +15,7 @@ const percentCls = css`
 `;
 const UsageDetails = ({ plan, appCount }) => (
 	<Card title="Usage this month" css="width: 300px">
-		<Flex css="margin-top: 30px" justifyContent="space-between">
+		<Flex justifyContent="space-between">
 			<div css="width: 100px;position: relative">
 				<div css={percentCls}>{`${get(appCount, 'action.percentage')}%`}</div>
 				<Circle
@@ -64,7 +64,7 @@ const UsageDetails = ({ plan, appCount }) => (
 			</div>
 		</Flex>
 		<Flex justifyContent="center" alignItems="center">
-			<UpgradeButton css="margin-top: 30px;" href="/billing" target="_blank">
+			<UpgradeButton css="margin-top: 30px;width: 100%;" href="/billing" target="_blank">
 				Upgrade Now
 			</UpgradeButton>
 		</Flex>

@@ -10,8 +10,10 @@ const Analytics = ({
 	noResults,
 	popularSearches,
 	searchVolume,
-	popularResults,
 	popularFilters,
+	popularResults,
+	plan,
+	redirectTo,
 	loading,
 }) => {
 	if (loading) {
@@ -30,45 +32,49 @@ const Analytics = ({
 			<Flex css="width: 100%;margin-top: 20px">
 				<div css="flex: 50%;margin-right: 10px">
 					<Searches
-						onClick={() => this.props.redirectTo('popularSearches')}
+						onClick={() => redirectTo('popularSearches')}
 						dataSource={popularSearches}
 						title="Popular Searches"
 					/>
 				</div>
 				<div css="flex: 50%;margin-left: 10px">
 					<Searches
-						onClick={() => this.props.redirectTo('noResultSearches')}
+						onClick={() => redirectTo('noResultSearches')}
 						dataSource={noResults}
 						title="No Result Searches"
 					/>
 				</div>
 			</Flex>
-			<Flex css="width: 100%;margin-top: 50px">
-				<div css="flex: 50%;margin-right: 10px">
-					<Searches
-						dataSource={popularResults}
-						columns={popularResultsCol}
-						title="Popular Results"
-						onClick={() => this.props.redirectTo('popularResults')}
-					/>
-				</div>
-				<div css="flex: 50%;margin-left: 10px">
-					<Searches
-						dataSource={popularFilters}
-						columns={popularFiltersCol}
-						title="Popular Filters"
-						onClick={() => this.props.redirectTo('popularFilters')}
-					/>
-				</div>
-			</Flex>
+			{plan === 'growth' && (
+				<Flex css="width: 100%;margin-top: 50px">
+					<div css="flex: 50%;margin-right: 10px">
+						<Searches
+							dataSource={popularResults}
+							columns={popularResultsCol}
+							title="Popular Results"
+							onClick={() => redirectTo('popularResults')}
+						/>
+					</div>
+					<div css="flex: 50%;margin-left: 10px">
+						<Searches
+							dataSource={popularFilters}
+							columns={popularFiltersCol}
+							title="Popular Filters"
+							onClick={() => redirectTo('popularFilters')}
+						/>
+					</div>
+				</Flex>
+			)}
 		</React.Fragment>
 	);
 };
 Analytics.propTypes = {
 	noResults: PropTypes.array,
 	popularSearches: PropTypes.array,
+	plan: PropTypes.string.isRequired,
 	searchVolume: PropTypes.array,
 	popularResults: PropTypes.array,
+	redirectTo: PropTypes.func,
 	popularFilters: PropTypes.array,
 };
 
