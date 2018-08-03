@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { appbaseService } from '../../service/AppbaseService';
 import ShareCard from './ShareCard';
 import NewShare from './NewShare';
 import AppPage from '../../shared/AppPage';
+import { checkUserStatus } from './../../../modules/batteries/utils';
 import TransferOwnership from './TransferOwnership';
+import UpgradePlan from './../../shared/UpgradePlan';
 
-const InitialShare = props => {
-	return <p className="col-xs-12 ad-initial-share">You do not have any team members yet.</p>;
+const InitialShare = () => (
+	<p className="col-xs-12 ad-initial-share">You do not have any team members yet.</p>
+);
+
+const ShareOwner = props => (
+	<p className="share-owner">This app has been shared by {props.owner}.</p>
+);
+
+const bannerConfig = {
+	title: 'Unlock more potential',
+	description: `Our analytics feature can do much more! Discover what you could do by enabling our
+		metrics on Clicks and Conversions, Filters, Results.`,
+	buttonText: 'Upgrade Now',
+	href: '/billing',
 };
-
-const ShareOwner = props => {
-	return <p className="share-owner">This app has been shared by {props.owner}.</p>;
-};
-
 export default class Team extends Component {
-	constructor(props, context) {
+	constructor(props) {
 		super(props);
 		this.state = {
 			info: null,
 			newShareExpand: false,
+			isPaidUser: false,
 		};
 		this.getInfo = this.getInfo.bind(this);
 		this.newShare = this.newShare.bind(this);
@@ -31,36 +40,45 @@ export default class Team extends Component {
 		this.initialize(this.props);
 	}
 
-	componentWillUnmount() {
-		this.stopUpdate = true;
-	}
-
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.params.appId != this.appName) {
+		if (nextProps.params.appId !== this.appName) {
 			this.initialize(nextProps);
 		}
 	}
+	componentWillUnmount() {
+		this.stopUpdate = true;
+	}
+	getInfo() {
+		checkUserStatus().then((res) => {
+			this.setState(
+				{
+					isPaidUser: res.isPaidUser,
+				},
+				() => {
+					if (this.state.isPaidUser) {
+						this.info = {};
 
+						appbaseService.getShare(this.appId).then((data) => {
+							this.info.share = data;
+							if (!this.stopUpdate) {
+								this.setState({ info: this.info });
+							}
+						});
+						appbaseService.getAppInfo(this.appId).then((data) => {
+							this.info.appInfo = data.body;
+							if (!this.stopUpdate) {
+								this.setState({ info: this.info });
+							}
+						});
+					}
+				},
+			);
+		});
+	}
 	initialize(props) {
 		this.appName = props.params.appId;
 		this.appId = appbaseService.userInfo.body.apps[this.appName];
 		this.getInfo();
-	}
-
-	getInfo() {
-		this.info = {};
-		appbaseService.getShare(this.appId).then(data => {
-			this.info.share = data;
-			if (!this.stopUpdate) {
-				this.setState({ info: this.info });
-			}
-		});
-		appbaseService.getAppInfo(this.appId).then(data => {
-			this.info.appInfo = data.body;
-			if (!this.stopUpdate) {
-				this.setState({ info: this.info });
-			}
-		});
 	}
 
 	newShareInit() {
@@ -70,7 +88,7 @@ export default class Team extends Component {
 	}
 
 	newShare(request) {
-		appbaseService.newShare(this.appId, request).then(data => {
+		appbaseService.newShare(this.appId, request).then(() => {
 			this.getInfo();
 		});
 	}
@@ -81,16 +99,14 @@ export default class Team extends Component {
 			case 'share':
 				if (this.state.info && this.state.info.share) {
 					if (this.state.info.share.body.length) {
-						element = this.state.info.share.body.map((shareInfo, index) => {
-							return (
-								<ShareCard
-									appId={this.appId}
-									key={index}
-									shareInfo={shareInfo}
-									getInfo={this.getInfo}
-								/>
-							);
-						});
+						element = this.state.info.share.body.map((shareInfo, index) => (
+							<ShareCard
+								appId={this.appId}
+								key={index}
+								shareInfo={shareInfo}
+								getInfo={this.getInfo}
+							/>
+						));
 					} else {
 						element = (
 							<InitialShare info={this.state.info} newShareInit={this.newShareInit} />
@@ -98,17 +114,13 @@ export default class Team extends Component {
 					}
 				}
 				break;
+			default:
 		}
 		return element;
 	}
 
 	render() {
-		const cx = classNames({
-			'col-sm-4 col-md-6 col-lg-6':
-				this.state.info &&
-				this.state.info.appInfo &&
-				this.state.info.appInfo.owner === appbaseService.userInfo.body.email,
-		});
+		const { isPaidUser } = this.state;
 		return (
 			<AppPage
 				pageInfo={{
@@ -119,40 +131,45 @@ export default class Team extends Component {
 			>
 				<div className="ad-detail-page row" id="team-page">
 					<div className="ad-detail-page-body col-xs-12">
-						<div className="page-body col-xs-12">
-							{this.state.info &&
-							this.state.info.appInfo &&
-							this.state.info.appInfo.owner === appbaseService.userInfo.body.email ? (
-								<section className="ad-detail-page-body-card col-xs-12 p-0">
-									<header className="ad-detail-page-body-card-title with-border">
-										<span>Team Members</span>
-										<span className="pull-right">
-											<TransferOwnership
-												appId={this.appId}
-												appName={this.appName}
-											/>
-										</span>
-									</header>
-									<div className="ad-detail-page-body-card-body col-xs-12 p-0">
-										{this.renderElement('share')}
-									</div>
-									<div className="add-team-member-card">
-										{this.state.info &&
-										this.state.info.appInfo &&
-										this.state.info.appInfo.owner !==
-											appbaseService.userInfo.body.email ? (
-											<ShareOwner owner={this.state.info.appInfo.owner} />
-										) : null}
-										{appbaseService.isMyApp(this.state.info) ? (
-											<NewShare
-												newShare={this.newShare}
-												newShareExpand={this.state.newShareExpand}
-											/>
-										) : null}
-									</div>
-								</section>
-							) : null}
-						</div>
+						{!isPaidUser ? (
+							<UpgradePlan {...bannerConfig} />
+						) : (
+							<div className="page-body col-xs-12">
+								{this.state.info &&
+								this.state.info.appInfo &&
+								this.state.info.appInfo.owner ===
+									appbaseService.userInfo.body.email ? (
+									<section className="ad-detail-page-body-card col-xs-12 p-0">
+										<header className="ad-detail-page-body-card-title with-border">
+											<span>Team Members</span>
+											<span className="pull-right">
+												<TransferOwnership
+													appId={this.appId}
+													appName={this.appName}
+												/>
+											</span>
+										</header>
+										<div className="ad-detail-page-body-card-body col-xs-12 p-0">
+											{this.renderElement('share')}
+										</div>
+										<div className="add-team-member-card">
+											{this.state.info &&
+											this.state.info.appInfo &&
+											this.state.info.appInfo.owner !==
+												appbaseService.userInfo.body.email ? (
+												<ShareOwner owner={this.state.info.appInfo.owner} />
+											) : null}
+											{appbaseService.isMyApp(this.state.info) ? (
+												<NewShare
+													newShare={this.newShare}
+													newShareExpand={this.state.newShareExpand}
+												/>
+											) : null}
+										</div>
+									</section>
+								) : null}
+							</div>
+						)}
 					</div>
 				</div>
 			</AppPage>
