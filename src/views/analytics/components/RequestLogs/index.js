@@ -72,9 +72,8 @@ class RequestLogs extends React.Component {
 					searchHits: normalizeData(filteredHits.searchHits),
 				});
 			})
-			.catch((e) => {
-				// eslint-disable-next-line
-				toastr.error('Error', get(e, 'responseJSON.message', 'Unable to fetch logs.'));
+			.catch(() => {
+				// toastr.error('Error', get(e, 'responseJSON.message', 'Unable to fetch logs.'));
 				this.setState({
 					isFetching: false,
 				});
