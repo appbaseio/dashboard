@@ -475,26 +475,26 @@ export function getRequestLogs(appName) {
 // Banner messages
 export const bannerMessages = {
 	free: {
-		title: 'Unlock more potential',
-		description: `Our analytics feature can do much more! Discover what you could do by enabling our
-		metrics on Clicks and Conversions, Filters, Results.`,
+		title: 'Unlock the ROI impact of your search',
+		description:
+			'Get a paid plan to see actionable analytics on search volume, popular searches, no results, track clicks and conversions.',
 		buttonText: 'Upgrade Now',
 		href: '/billing',
 	},
 	bootstrap: {
-		title: 'Unlock more potential',
-		description: `Our analytics feature can do much more! Discover what you could do by enabling our
-		metrics on Clicks and Conversions, Filters, Results.`,
+		title: 'Get richer analytics on clicks and conversions',
+		description:
+			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
 		buttonText: 'Upgrade To Growth',
 		href: '/billing',
 		isHorizontal: true,
 	},
 	growth: {
-		title: 'Unlock more potential',
-		description: `Our analytics feature can do much more! Discover what you could do by enabling our
-		metrics on Clicks and Conversions, Filters, Results.`,
+		title: 'Learn how to track click analytics',
+		description:
+			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
 		buttonText: 'Read Docs',
 		isHorizontal: true,
-		href: '/billing',
+		href: 'https://docs.appbase.io',
 	},
 };
