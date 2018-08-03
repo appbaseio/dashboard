@@ -22,9 +22,9 @@ class PaidUserDashboard extends React.Component {
 		getAnalytics(this.props.appName)
 			.then((res) => {
 				this.setState({
-					noResults: res.noresults,
-					popularSearches: res.popularsearches,
-					searchVolume: res.searchvolume,
+					noResults: res.noResultSearches,
+					popularSearches: res.popularSearches,
+					searchVolume: res.searchVolume,
 					// isFetching: false,
 				});
 			})

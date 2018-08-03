@@ -344,7 +344,7 @@ export const requestLogs = [
  */
 export function getAnalytics(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/overview`, {
+		fetch(`${ACC_API}/analytics/${appName}/overview`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -352,10 +352,10 @@ export function getAnalytics(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body);
+				resolve(res);
 			})
 			.catch((e) => {
 				reject(e);
@@ -368,7 +368,7 @@ export function getAnalytics(appName) {
  */
 export function getPopularSearches(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularsearches`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularsearches`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -376,10 +376,10 @@ export function getPopularSearches(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.noresults);
+				resolve(res.popularSearches);
 			})
 			.catch((e) => {
 				reject(e);
@@ -392,7 +392,7 @@ export function getPopularSearches(appName) {
  */
 export function getNoResultSearches(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/noresultsearches`, {
+		fetch(`${ACC_API}/analytics/${appName}/noresultsearches`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -400,10 +400,10 @@ export function getNoResultSearches(appName) {
 			},
 		})
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.noresults);
+				resolve(res.noResultSearches);
 			})
 			.catch((e) => {
 				reject(e);
@@ -412,7 +412,7 @@ export function getNoResultSearches(appName) {
 }
 export function getPopularResults(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularResults`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularResults`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -432,7 +432,7 @@ export function getPopularResults(appName) {
 }
 export function getPopularFilters(appName) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/${appName}/analytics/popularFilters`, {
+		fetch(`${ACC_API}/analytics/${appName}/popularFilters`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -472,7 +472,7 @@ export function getRequestLogs(appName) {
 	});
 }
 
-// Banner messgaes
+// Banner messages
 export const bannerMessages = {
 	free: {
 		title: 'Unlock more potential',

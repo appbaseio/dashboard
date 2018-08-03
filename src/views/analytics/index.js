@@ -61,9 +61,9 @@ class Main extends React.Component {
 							getAnalytics(this.pageInfo.appName)
 								.then((res) => {
 									this.setState({
-										noResults: res.noresults,
-										popularSearches: res.popularsearches,
-										searchVolume: res.searchvolume,
+										noResults: res.noResultSearches,
+										popularSearches: res.popularSearches,
+										searchVolume: res.searchVolume,
 										popularResults: res.popularResults,
 										popularFilters: res.popularFilters,
 										isFetching: false,
