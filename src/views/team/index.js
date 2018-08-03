@@ -16,9 +16,8 @@ const ShareOwner = props => (
 );
 
 const bannerConfig = {
-	title: 'Unlock more potential',
-	description: `Our analytics feature can do much more! Discover what you could do by enabling our
-		metrics on Clicks and Conversions, Filters, Results.`,
+	title: 'Upgrade to collaborate with your team',
+	description: 'Invite team members and collaborate together on your app.',
 	buttonText: 'Upgrade Now',
 	href: '/billing',
 };
