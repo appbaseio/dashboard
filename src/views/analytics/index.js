@@ -10,7 +10,7 @@ import PopularSearches from './components/PopularSearches';
 import NoResultsSearch from './components/NoResultsSearch';
 import PopularResults from './components/PopularResults';
 import PopularFilters from './components/PopularFilters';
-// import { checkUserStatus } from './../../../modules/batteries/utils';
+import { checkUserStatus } from './../../../modules/batteries/utils';
 import RequestLogs from './components/RequestLogs';
 
 const { TabPane } = Tabs;
@@ -32,7 +32,7 @@ class Main extends React.Component {
 			popularResults: [],
 			popularFilters: [],
 			searchVolume: [],
-			isPaidUser: true, // change it to true to test paid user
+			isPaidUser: false, // change it to true to test paid user
 			currentPlan: undefined, // change it to growth to test growth plan user
 			activeTabKey: this.tabKeys.includes(props.params.tab)
 				? props.params.tab
@@ -49,46 +49,46 @@ class Main extends React.Component {
 	componentDidMount() {
 		// Comment out the below code to test paid user
 		// COMMENT START
-		// checkUserStatus().then(
-		// 	(response) => {
-		// 		if (response.isPaidUser) {
-		// 			this.setState(
-		// 				{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
-		// 				() => {
-		// COMMENT END
-		getAnalytics(this.pageInfo.appName)
-			.then((res) => {
+		checkUserStatus().then(
+			(response) => {
+				if (response.isPaidUser) {
+					this.setState(
+						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
+						() => {
+							// COMMENT END
+							getAnalytics(this.pageInfo.appName)
+								.then((res) => {
+									this.setState({
+										noResults: res.noresults,
+										popularSearches: res.popularsearches,
+										searchVolume: res.searchvolume,
+										popularResults: res.popularResults,
+										popularFilters: res.popularFilters,
+										isFetching: false,
+									});
+								})
+								.catch(() => {
+									this.setState({
+										isFetching: false,
+									});
+								});
+							// COMMENT START
+						},
+					);
+				} else {
+					this.setState({
+						isFetching: false,
+						isPaidUser: false,
+					});
+				}
+			},
+			() => {
 				this.setState({
-					noResults: res.noresults,
-					popularSearches: res.popularsearches,
-					searchVolume: res.searchvolume,
-					popularResults: res.popularResults,
-					popularFilters: res.popularFilters,
 					isFetching: false,
 				});
-			})
-			.catch(() => {
-				this.setState({
-					isFetching: false,
-				});
-			});
-		// COMMENT START
-		// 				},
-		// 			);
-		// 		} else {
-		// 			this.setState({
-		// 				isFetching: false,
-		// 				isPaidUser: false,
-		// 			});
-		// 		}
-		// 	},
-		// 	() => {
-		// 		this.setState({
-		// 			isFetching: false,
-		// 		});
-		// 		toastr.error('Error', 'Something went wrong');
-		// 	},
-		// );
+				toastr.error('Error', 'Something went wrong');
+			},
+		);
 		// COMMENT END
 	}
 	changeActiveTabKey = (tab) => {
