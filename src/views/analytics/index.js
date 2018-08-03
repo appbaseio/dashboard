@@ -2,8 +2,8 @@ import React from 'react';
 import { Tabs, Icon, Spin } from 'antd';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
-import { getAnalytics } from './utils';
-import UpgradePlan from './components/UpgradePlan';
+import { getAnalytics, bannerMessages } from './utils';
+import UpgradePlan from './../../shared/UpgradePlan';
 import Flex from '../../shared/Flex';
 import Analytics from './components/Analytics';
 import PopularSearches from './components/PopularSearches';
@@ -32,8 +32,10 @@ class Main extends React.Component {
 			popularResults: [],
 			popularFilters: [],
 			searchVolume: [],
-			isPaidUser: false, // change it to true to test paid user
-			currentPlan: undefined, // change it to growth to test growth plan user
+			// change it to true to test paid user
+			isPaidUser: false,
+			// change it to plan for eg. growth, bootstrap to test growth plan user
+			currentPlan: undefined,
 			activeTabKey: this.tabKeys.includes(props.params.tab)
 				? props.params.tab
 				: this.tabKeys[0],
@@ -86,6 +88,7 @@ class Main extends React.Component {
 				this.setState({
 					isFetching: false,
 				});
+				// eslint-disable-next-line
 				toastr.error('Error', 'Something went wrong');
 			},
 		);
@@ -134,45 +137,50 @@ class Main extends React.Component {
 			<AppPage pageInfo={this.pageInfo} key={this.appId}>
 				<div className="ad-detail-page ad-dashboard row" style={{ padding: '40px' }}>
 					{isPaidUser ? (
-						<Tabs onTabClick={this.changeActiveTabKey} activeKey={activeTabKey}>
-							<TabPane tab="Analytics" key={this.tabKeys[0]}>
-								<Analytics
-									loading={isFetching}
-									noResults={noResults}
-									plan={currentPlan}
-									popularSearches={popularSearches}
-									popularFilters={popularFilters}
-									popularResults={popularResults}
-									searchVolume={searchVolume}
-									redirectTo={tab => this.changeActiveTabKey(tab)}
-								/>
-							</TabPane>
-							<TabPane tab="Popular Searches" key={this.tabKeys[1]}>
-								<PopularSearches appName={this.pageInfo.appName} />
-							</TabPane>
-							<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
-								<NoResultsSearch appName={this.pageInfo.appName} />
-							</TabPane>
-							{currentPlan === 'growth' && (
-								<React.Fragment>
-									<TabPane tab="Popular Results" key={this.tabKeys[3]}>
-										<PopularResults appName={this.pageInfo.appName} />
-									</TabPane>
-									<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
-										<PopularFilters appName={this.pageInfo.appName} />
-									</TabPane>
-								</React.Fragment>
+						<React.Fragment>
+							{bannerMessages[currentPlan] && (
+								<UpgradePlan {...bannerMessages[currentPlan]} />
 							)}
-							<TabPane tab="Request Logs" key={this.tabKeys[5]}>
-								<RequestLogs
-									tab={this.props.params.subTab}
-									appName={this.pageInfo.appName}
-									redirectTo={this.redirectTo}
-								/>
-							</TabPane>
-						</Tabs>
+							<Tabs onTabClick={this.changeActiveTabKey} activeKey={activeTabKey}>
+								<TabPane tab="Analytics" key={this.tabKeys[0]}>
+									<Analytics
+										loading={isFetching}
+										noResults={noResults}
+										plan={currentPlan}
+										popularSearches={popularSearches}
+										popularFilters={popularFilters}
+										popularResults={popularResults}
+										searchVolume={searchVolume}
+										redirectTo={tab => this.changeActiveTabKey(tab)}
+									/>
+								</TabPane>
+								<TabPane tab="Popular Searches" key={this.tabKeys[1]}>
+									<PopularSearches appName={this.pageInfo.appName} />
+								</TabPane>
+								<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
+									<NoResultsSearch appName={this.pageInfo.appName} />
+								</TabPane>
+								{currentPlan === 'growth' && (
+									<React.Fragment>
+										<TabPane tab="Popular Results" key={this.tabKeys[3]}>
+											<PopularResults appName={this.pageInfo.appName} />
+										</TabPane>
+										<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
+											<PopularFilters appName={this.pageInfo.appName} />
+										</TabPane>
+									</React.Fragment>
+								)}
+								<TabPane tab="Request Logs" key={this.tabKeys[5]}>
+									<RequestLogs
+										tab={this.props.params.subTab}
+										appName={this.pageInfo.appName}
+										redirectTo={this.redirectTo}
+									/>
+								</TabPane>
+							</Tabs>
+						</React.Fragment>
 					) : (
-						<UpgradePlan />
+						<UpgradePlan {...bannerMessages.free} />
 					)}
 				</div>
 			</AppPage>

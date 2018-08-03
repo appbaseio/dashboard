@@ -471,3 +471,30 @@ export function getRequestLogs(appName) {
 			});
 	});
 }
+
+// Banner messgaes
+export const bannerMessages = {
+	free: {
+		title: 'Unlock more potential',
+		description: `Our analytics feature can do much more! Discover what you could do by enabling our
+		metrics on Clicks and Conversions, Filters, Results.`,
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	bootstrap: {
+		title: 'Unlock more potential',
+		description: `Our analytics feature can do much more! Discover what you could do by enabling our
+		metrics on Clicks and Conversions, Filters, Results.`,
+		buttonText: 'Upgrade To Growth',
+		href: '/billing',
+		isHorizontal: true,
+	},
+	growth: {
+		title: 'Unlock more potential',
+		description: `Our analytics feature can do much more! Discover what you could do by enabling our
+		metrics on Clicks and Conversions, Filters, Results.`,
+		buttonText: 'Read Docs',
+		isHorizontal: true,
+		href: '/billing',
+	},
+};
