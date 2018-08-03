@@ -64,9 +64,6 @@ const Importer = AsyncComponent(() => import('./views/importer').then(module => 
 const SearchEditor = AsyncComponent(() => import('../modules/batteries/components/SearchSandbox/containers/Editor').then(module => module.default), {
 	name: 'SearchEditor',
 });
-const SearchDemos = AsyncComponent(() => import('../modules/batteries/components/SearchSandbox/containers/Demos').then(module => module.default), {
-	name: 'SearchDemos',
-});
 
 const NotFound = () => {
 	helper.appDashboard.onNotFound();
@@ -208,7 +205,6 @@ class MainApp extends React.Component {
 					>
 						<IndexRedirect to="editor" />
 						<Route path="editor" component={SearchEditor} />
-						<Route path="ui-demos" component={SearchDemos} />
 					</Route>
 					<Route
 						path="browser/:appId"
