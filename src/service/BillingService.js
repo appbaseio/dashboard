@@ -14,7 +14,7 @@ class BillingService {
 			},
 			bootstrap: {
 				action: 1000000,
-				records: 100000,
+				records: 50000,
 			},
 			growth: {
 				action: 10000000,
@@ -24,12 +24,12 @@ class BillingService {
 		this.prices = {
 			monthly: {
 				bootstrap: 29,
-				growth: 89,
+				growth: 99,
 				dedicated: 499,
 			},
 			annual: {
 				bootstrap: 19,
-				growth: 59,
+				growth: 69,
 				dedicated: 299,
 			},
 		};
