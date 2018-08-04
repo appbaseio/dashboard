@@ -1,4 +1,4 @@
-# appbase.io dashboard
+# appbase.io dashboard v2
 
 ### Development Setup
 
