@@ -138,7 +138,7 @@ export default class Nav extends Component {
 									Apps
 								</Link>
 							</li>
-							<li>
+							{/* <li>
 								<Link to="/clusters" onClick={() => this.setActiveParentView('Clusters')}>
 									<span className="icon-container">
 										<img
@@ -149,7 +149,7 @@ export default class Nav extends Component {
 									</span>
 									Clusters
 								</Link>
-							</li>
+							</li> */}
 						</ul>
 					</li>
 				);
