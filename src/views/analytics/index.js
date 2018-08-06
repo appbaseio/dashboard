@@ -34,7 +34,7 @@ class Main extends React.Component {
 			searchVolume: [],
 			// change it to true to test paid user
 			isPaidUser: false,
-			// change it to plan for eg. growth, bootstrap to test growth plan user
+			// change it to plan for eg. growth, bootstrap to test user with different plans
 			currentPlan: undefined,
 			activeTabKey: this.tabKeys.includes(props.params.tab)
 				? props.params.tab
@@ -58,7 +58,7 @@ class Main extends React.Component {
 						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
 						() => {
 							// COMMENT END
-							getAnalytics(this.pageInfo.appName)
+							getAnalytics(this.pageInfo.appName, this.state.currentPlan)
 								.then((res) => {
 									this.setState({
 										noResults: res.noResultSearches,
