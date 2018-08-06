@@ -59,7 +59,7 @@ const SearchSandbox = AsyncComponent(
 		name: 'SearchSandbox',
 	},
 );
-const Billing = AsyncComponent(() => import('./views/billing').then(module => module.default), {
+const Billing = AsyncComponent(() => import('./views/newbilling').then(module => module.default), {
 	name: 'Billing',
 });
 const Importer = AsyncComponent(() => import('./views/importer').then(module => module.default), {

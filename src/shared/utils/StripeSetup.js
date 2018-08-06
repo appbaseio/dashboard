@@ -14,12 +14,12 @@ class StripeSetup {
 			this.handler.close();
 		});
 	}
-	checkoutOpen(description, plan, mode) {
-		const desc = description || `charged ${mode}`;
+	checkoutOpen(description, plan, price) {
+		const desc = description || 'charged monthly';
 		this.handler.open({
 			name: `appbase.io ${plan} plan`,
 			description: desc,
-			amount: this.getAmount(mode, plan),
+			amount: price * 100,
 			opened() {
 				// $scope.footer(false);
 			},
@@ -35,7 +35,7 @@ class StripeSetup {
 	}
 }
 
-const checkoutCb = function(customer, userProfile, response) {
+const checkoutCb = function (customer, userProfile, response) {
 	function updateStripeCustomer(response) {
 		const requestData = {
 			email: userProfile.email,
