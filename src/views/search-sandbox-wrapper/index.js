@@ -10,10 +10,10 @@ export default class SearchSandboxWrapper extends Component {
 
 		this.state = {
 			credentials: null,
+			appName: props.params.appId,
 		};
 
-		this.appName = props.params.appId;
-		this.appId = appbaseService.userInfo.body.apps[this.appName];
+		this.appId = appbaseService.userInfo.body.apps[this.state.appName];
 	}
 
 	componentDidMount() {
@@ -27,10 +27,29 @@ export default class SearchSandboxWrapper extends Component {
 			.catch(() => {});
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.params.appId && nextProps.params.appId !== this.state.appName) {
+			this.initialize(nextProps.params.appId);
+		}
+	}
+
+	initialize = (appName) => {
+		this.appId = appbaseService.userInfo.body.apps[appName];
+		getCredentials(this.appId)
+			.then((user) => {
+				const { username, password } = user;
+				this.setState({
+					credentials: `${username}:${password}`,
+					appName,
+				});
+			})
+			.catch(() => {});
+	}
+
 	render() {
 		this.pageInfo = {
 			currentView: 'search-sandbox',
-			appName: this.appName,
+			appName: this.state.appName,
 			appId: this.appId,
 		};
 
@@ -41,8 +60,9 @@ export default class SearchSandboxWrapper extends Component {
 		return (
 			<AppPage pageInfo={this.pageInfo}>
 				<SearchSandbox
+					key={this.state.appName}
 					appId={this.appId}
-					appName={this.appName}
+					appName={this.state.appName}
 					credentials={this.state.credentials}
 					isDashboard
 				>
