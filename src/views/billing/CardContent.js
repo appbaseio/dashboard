@@ -57,7 +57,7 @@ const FreeDescription = props => {
 			<li>
 				<div className="text-container text-center">
 					<div className="figure light">
-						<a href="/poweredby_logo_placement.zip" className="logo-link">
+						<a href="https://appbase.io/static/poweredby_logo_placement.zip" className="logo-link">
 							<i className="fa fa-arrow-down" /> Requires logo placement
 						</a>
 					</div>
@@ -115,7 +115,7 @@ const BootstrapDescription = props => {
 						<div className="summary">&nbsp;Records</div>
 					</div>
 					<div className="small-fonts">
-						$5 per additional <br /> 100k records
+						$5 per additional <br /> 50k records
 					</div>
 				</div>
 			</li>
@@ -158,7 +158,7 @@ const GrowthDescription = props => {
 						<div className="summary">&nbsp;API calls</div>
 					</div>
 					<div className="small-fonts">
-						$5 per additional <br /> 1M API calls
+						$50 per additional <br /> 10M API calls
 					</div>
 				</div>
 			</li>
@@ -176,7 +176,7 @@ const GrowthDescription = props => {
 						<div className="summary">&nbsp;Records</div>
 					</div>
 					<div className="small-fonts">
-						$5 per additional <br /> 100k records
+						$50 per additional <br /> 1M records
 					</div>
 				</div>
 			</li>
