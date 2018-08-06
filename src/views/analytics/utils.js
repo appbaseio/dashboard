@@ -382,8 +382,8 @@ export function getPopularSearches(appName, clickanalytics = true) {
 			.then(res => res.json())
 			.then((res) => {
 				// resolve the promise with response
-				// resolve(res.popularSearches);
-				resolve(data.body.popularSearches);
+				resolve(res.popularSearches);
+				// resolve(data.body.popularSearches);
 			})
 			.catch((e) => {
 				reject(e);
