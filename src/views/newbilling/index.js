@@ -10,8 +10,8 @@ import Flex from '../../shared/Flex';
 
 const planCls = css`
 	color: rgb(35, 46, 68);
-	font-size: 2.5rem;
-	font-weight: 600;
+	font-size: 2rem;
+	font-weight: 300;
 	padding: 30px 0px;
 `;
 const updateText = () => 'Your old plan amount will be adjust in new plan.';
@@ -85,7 +85,7 @@ class Billing extends React.Component {
 		if (!this.stripeSetup) {
 			this.stripeSetup = new StripeSetup(this.stripeKey, this.stripeCb.bind(this));
 		}
-		this.stripeSetup.checkoutOpen(description, plan, this.price);
+		this.stripeSetup.checkoutOpen(description, plan);
 	};
 
 	subscribePlan = (plan, price) => {
@@ -203,6 +203,49 @@ class Billing extends React.Component {
 					loadingModal: false,
 				});
 			});
+	};
+	setRefund = (paymentInfo) => {
+		const obj = {
+			amount: 0,
+			explain: null,
+		};
+		paymentInfo.current_prorations.forEach((info) => {
+			if (info.plan.id === `${this.state.plan}-${this.state.mode}`) {
+				obj.amount = info.amount / 100;
+				obj.amount = obj.amount < 0 ? -obj.amount : obj.amount;
+				obj.explain = info.description;
+			}
+		});
+		return obj;
+	};
+
+	setPayment = (paymentInfo) => {
+		const obj = {
+			amount: 0,
+			explain: null,
+		};
+		if (this.customerCopy.plan !== 'free') {
+			let found = false;
+			paymentInfo.invoice.lines.data.forEach((info) => {
+				if (
+					!found &&
+					info.plan.id === `${this.customerCopy.plan}-${this.customerCopy.mode}`
+				) {
+					found = true;
+					obj.amount = info.amount / 100;
+					obj.explain =
+						`The charge for ${
+							this.customerCopy.mode === 'annual' ? 'annual' : 'month'
+						} ${this.customerCopy.plan} plan` +
+						` is $${
+							this.customerCopy.mode === 'annual'
+								? `${(obj.amount / 12).toFixed(2)} x12`
+								: obj.amount
+						}`;
+				}
+			});
+		}
+		return obj;
 	};
 	render() {
 		return (

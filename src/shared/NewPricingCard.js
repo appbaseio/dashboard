@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, node, string, object } from 'prop-types';
+import { array, node, string, func } from 'prop-types';
 import styled, { css } from 'react-emotion';
 import { media } from './utils';
 import ClickToShow from './ClickToShow';
@@ -69,8 +69,14 @@ export default class NewPricingCard extends Component {
 	state = {};
 	render() {
 		const {
- price, pricingList = [], name, link, children, ...rest
-} = this.props;
+			price,
+			pricingList = [],
+			name,
+			onClickLink,
+			children,
+			linkColor,
+			...rest
+		} = this.props;
 		return (
 			<PricingCard {...rest}>
 				<PricingCardHeader>
@@ -79,8 +85,9 @@ export default class NewPricingCard extends Component {
 						{price}
 						<div>/month</div>
 					</PriceWrapper>
-					<Link href={link.to} css={{ color: link.color }}>
-						{link.label || 'Get Started'}
+					{/* eslint-disable-next-line */}
+					<Link onClick={onClickLink} css={{ color: linkColor }}>
+						Subscribe
 					</Link>
 				</PricingCardHeader>
 				<PricingList css={{ fontWeight: 700 }}>
@@ -100,8 +107,9 @@ export default class NewPricingCard extends Component {
 
 NewPricingCard.propTypes = {
 	price: string,
+	linkColor: string,
 	pricingList: array,
 	name: string,
-	link: object,
+	onClickLink: func,
 	children: node,
 };

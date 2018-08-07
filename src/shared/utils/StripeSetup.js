@@ -14,12 +14,12 @@ class StripeSetup {
 			this.handler.close();
 		});
 	}
-	checkoutOpen(description, plan, price) {
+	checkoutOpen(description, plan) {
 		const desc = description || 'charged monthly';
 		this.handler.open({
 			name: `appbase.io ${plan} plan`,
 			description: desc,
-			amount: price * 100,
+			amount: billingService.prices.monthly[plan] * 100,
 			opened() {
 				// $scope.footer(false);
 			},

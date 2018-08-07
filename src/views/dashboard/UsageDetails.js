@@ -10,8 +10,9 @@ import { Button as UpgradeButton } from './../../../modules/batteries/components
 
 const percentCls = css`
 	top: 40px;
-	left: 35px;
 	position: absolute;
+	width: 100%;
+	text-align: center;
 `;
 const upgradeBtnDanger = css`
 	background-color: red;
@@ -38,7 +39,7 @@ const shouldShowUpgrade = (plan, appCount) => {
 const UsageDetails = ({ plan, appCount }) => {
 	const showUpgrade = shouldShowUpgrade(plan, appCount);
 	return (
-		<Card title="Usage this month" css="width: 300px">
+		<Card title="Usage this month" css="width: 300px;height: 100%">
 			<Flex justifyContent="center" alignItems="center">
 				<div css="width: 100px;position: relative">
 					<div css={percentCls}>{`${get(appCount, 'action.percentage')}%`}</div>

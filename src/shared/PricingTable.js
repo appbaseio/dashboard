@@ -241,7 +241,7 @@ export default class PricingTable extends Component {
 		const growth = {
 			records: [],
 			apiCalls: [],
-			basePrice: 99,
+			basePrice: 89,
 		};
 
 		for (let i = 1; i <= 20; i += 1) {
@@ -556,7 +556,7 @@ export default class PricingTable extends Component {
 									color="#FFFFFF"
 									backgroundColor={theme.badge.blue}
 									css={{ marginTop: 40 }}
-									onClick={() => onClickButton('bootstrap', this.calcPrice('bootstrap'))}
+									onClick={() => onClickButton('bootstrap', 29)}
 								>
 									Subscribe
 								</AppButton>
@@ -570,7 +570,7 @@ export default class PricingTable extends Component {
 									color="#FFFFFF"
 									backgroundColor={theme.badge.darkBlue}
 									css={{ marginTop: 40 }}
-									onClick={() => onClickButton('growth', this.calcPrice('growth'))}
+									onClick={() => onClickButton('growth', 89)}
 								>
 									Subscribe
 								</AppButton>
@@ -593,7 +593,7 @@ export default class PricingTable extends Component {
 						css={{ color: theme.colors.accentText }}
 						name="Free"
 						price="$0"
-						link={{ to: 'https://dashboard.appbase.io/signup' }}
+						onClickLink={() => onClickButton('free', 0)}
 						pricingList={['10K Records', '100K API Calls']}
 					>
 						<CheckList list={['Weekly analytics e-mail', 'Community support']} />
@@ -602,11 +602,8 @@ export default class PricingTable extends Component {
 						css={{ backgroundColor: theme.badge.blue }}
 						name="Bootstrap"
 						price="$29"
-						link={{
-							to: 'https://dashboard.appbase.io/signup',
-							color: 'inherit',
-							label: 'Get Started',
-						}}
+						onClickLink={() => onClickButton('bootstrap', 29)}
+						linkColor="inherit"
 						pricingList={['50K Records', '1M API Calls']}
 					>
 						<ListCaption>Features</ListCaption>
@@ -632,11 +629,8 @@ export default class PricingTable extends Component {
 						css={{ backgroundColor: theme.badge.darkBlue }}
 						name="Growth"
 						price="$99"
-						link={{
-							to: 'https://dashboard.appbase.io/signup',
-							color: 'inherit',
-							label: 'Get Started',
-						}}
+						onClickLink={() => onClickButton('growth', 89)}
+						linkColor="inherit"
 						pricingList={['1M Records', '10M API Calls']}
 					>
 						<ListCaption>Features</ListCaption>
