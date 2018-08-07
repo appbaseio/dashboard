@@ -5,7 +5,6 @@ import { billingService } from '../../service/BillingService';
 import UsageDashboard from './UsageDetails';
 import HighChartView from './HighChartView';
 import AppPage from '../../shared/AppPage';
-import Upgrade from './Upgrade';
 import DashboardGettingStarted from './DashboardGettingStarted';
 import PaidUserDashboard from './PaidUserDashboard';
 import Loader from '../analytics/components/Loader';
@@ -168,7 +167,7 @@ export default class Dashboard extends Component {
 			>
 				<div className="ad-detail-page ad-dashboard row">
 					{/* Change plan here to test paid user */}
-					{this.state.plan === 'free' ? (
+					{this.state.plan === 'free' || !displayCharts ? (
 						<div className="ad-detail-page-body col-xs-12">
 							<section className="col-xs-12 col-sm-8">
 								{displayCharts ? (
@@ -186,7 +185,6 @@ export default class Dashboard extends Component {
 							</section>
 							<section className="col-xs-12 col-sm-4">
 								<UsageDashboard plan={this.state.plan} appCount={this.appCount()} />
-								<Upgrade plan={this.state.plan} appCount={this.appCount()} />
 							</section>
 						</div>
 					) : (
