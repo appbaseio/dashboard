@@ -7310,6 +7310,12 @@ react-emotion@^9.0.0, react-emotion@^9.2.3:
     babel-plugin-emotion "^9.2.5"
     create-emotion-styled "^9.2.5"
 
+react-expand-collapse@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-expand-collapse/-/react-expand-collapse-0.2.0.tgz#fc29916400a47bf089cb146e18195f82fc0e1028"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-highcharts@^16.0.2:
   version "16.0.2"
   resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-16.0.2.tgz#7bdae039f9abb3f753ba88b6578d52630c18537a"
