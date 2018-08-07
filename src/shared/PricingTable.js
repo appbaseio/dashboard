@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled, { css } from 'react-emotion';
 import { Check } from 'react-feather';
 import ReactToolTip from 'react-tooltip';
-import AnchorLink from 'react-anchor-link-smooth-scroll';
 import AppButton from './AppButton';
 import PlusMinus from './PlusMinus';
 import NewPricingCard from './NewPricingCard';
@@ -300,7 +299,7 @@ export default class PricingTable extends Component {
 									<small>/month</small>
 								</Price>
 								<Caption>
-									<a href="/static/poweredby_logo_placement.zip">
+									<a href="https://appbase.io/static/poweredby_logo_placement.zip">
 										Requires appbase.io logo placement
 									</a>
 								</Caption>
@@ -413,7 +412,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Set fine-grained access control policies per API key. <br/>Secure using HTTP Referers, IP sources and more.">
-									<AnchorLink href="#addons">ACLs & Security</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#features"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										ACLs & Security
+									</a>
 								</span>
 							</td>
 							<td>-</td>
@@ -423,7 +428,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Edit your app schema on the fly <br/> without worrying about data loss.">
-									<AnchorLink href="#addons">Editable Mappings</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#features"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Editable Mappings
+									</a>
 								</span>
 							</td>
 							<td>-</td>
@@ -437,7 +448,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Test-drive and tune your search relevancy<br/> without breaking a sweat.">
-									<AnchorLink href="#addons">Search Sandbox</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#features"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Search Sandbox
+									</a>
 								</span>
 							</td>
 							<td>Basic</td>
@@ -447,7 +464,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Get actionable analytics on popular searches,<br/> no result searches and clicks and conversions.">
-									Analytics
+									<a
+										href="https://appbase.io/pricing#features"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Analytics
+									</a>
 								</span>
 							</td>
 							<td>-</td>
@@ -470,9 +493,13 @@ export default class PricingTable extends Component {
 							<td>
 								Support and Guidance
 								<small>
-									<AnchorLink href="#support">
+									<a
+										href="https://appbase.io/pricing#support"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
 										Get premium support and business SLAs
-									</AnchorLink>
+									</a>
 								</small>
 							</td>
 							<td />
@@ -492,7 +519,7 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Support on non-core libraries, tools <br/> and open-source projects.">
-									<AnchorLink href="#support">Tools Support</AnchorLink>
+									Tools Support
 								</span>
 							</td>
 							<td>Community</td>
@@ -502,7 +529,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="One time support on getting started, <br/> migrations and setup.">
-									<AnchorLink href="#support">Onboarding Support</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#support"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Onboarding Support
+									</a>
 								</span>
 							</td>
 							<td>-</td>
@@ -512,7 +545,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="1:1 reviews with an engineer on data modeling, <br/> best practices and scaling.">
-									<AnchorLink href="#support">Architecture Reviews</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#support"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Architecture Reviews
+									</a>
 								</span>
 							</td>
 							<td>-</td>
@@ -522,7 +561,13 @@ export default class PricingTable extends Component {
 						<tr>
 							<td>
 								<span data-tip="Get dedicated onsite support with 1-day SLAs.">
-									<AnchorLink href="#support">Premium Support</AnchorLink>
+									<a
+										href="https://appbase.io/pricing#support"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Premium Support
+									</a>
 								</span>
 							</td>
 							<td>-</td>
