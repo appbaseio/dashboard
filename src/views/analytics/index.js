@@ -155,20 +155,32 @@ class Main extends React.Component {
 									/>
 								</TabPane>
 								<TabPane tab="Popular Searches" key={this.tabKeys[1]}>
-									<PopularSearches appName={this.pageInfo.appName} />
+									<PopularSearches
+										plan={currentPlan}
+										appName={this.pageInfo.appName}
+									/>
 								</TabPane>
 								<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
-									<NoResultsSearch appName={this.pageInfo.appName} />
+									<NoResultsSearch
+										plan={currentPlan}
+										appName={this.pageInfo.appName}
+									/>
 								</TabPane>
 								{currentPlan === 'growth' && (
-									<React.Fragment>
-										<TabPane tab="Popular Results" key={this.tabKeys[3]}>
-											<PopularResults appName={this.pageInfo.appName} />
-										</TabPane>
-										<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
-											<PopularFilters appName={this.pageInfo.appName} />
-										</TabPane>
-									</React.Fragment>
+									<TabPane tab="Popular Results" key={this.tabKeys[3]}>
+										<PopularResults
+											plan={currentPlan}
+											appName={this.pageInfo.appName}
+										/>
+									</TabPane>
+								)}
+								{currentPlan === 'growth' && (
+									<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
+										<PopularFilters
+											plan={currentPlan}
+											appName={this.pageInfo.appName}
+										/>
+									</TabPane>
 								)}
 								<TabPane tab="Request Logs" key={this.tabKeys[5]}>
 									<RequestLogs
