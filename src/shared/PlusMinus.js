@@ -17,12 +17,19 @@ const Switcher = styled('div')`
 `;
 
 export default class PlusMinus extends Component {
-	state = { values: [], selectedValueIndex: 0 };
+	state = { values: this.props.values, selectedValueIndex: 0 };
 	componentWillReceiveProps(nextProps) {
 		this.setState(prevState => ({
 			values: nextProps.values,
 			selectedValueIndex: nextProps.selected || prevState.selectedValueIndex,
 		}));
+	}
+
+	static getDerivedStateFromProps(props, { selectedValueIndex }) {
+		return {
+			values: props.values,
+			selectedValueIndex: props.selected || selectedValueIndex,
+		};
 	}
 
 	handleRecordsMinus = () => {
