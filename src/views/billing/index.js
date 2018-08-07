@@ -34,10 +34,6 @@ export default class Billing extends Component {
 				plan: 'free',
 				mode: 'annual',
 			},
-			pricingError: {
-				show: false,
-				text: '',
-			},
 			loading: null,
 			loadingModal: false,
 			showPlanChange: false,
@@ -65,7 +61,7 @@ export default class Billing extends Component {
 		this.count++;
 		billingService
 			.getCustomer(requestData)
-			.then(data => {
+			.then((data) => {
 				this.customer = data;
 				this.customer.mode = data.mode ? data.mode : this.state.mode;
 				this.plan = this.allowedPlan.indexOf(data.plan) > -1 ? data.plan : 'free';
@@ -81,7 +77,7 @@ export default class Billing extends Component {
 					activePlan: this.customer.plan,
 				});
 			})
-			.catch(data => {
+			.catch((data) => {
 				if (data && data.message === 'NOTEXISTS') {
 					this.createCustomer();
 				} else if (data.message === 'Error fetching client from mssql') {
@@ -97,10 +93,10 @@ export default class Billing extends Component {
 		};
 		billingService
 			.createCustomer(customerObj)
-			.then(data => {
+			.then((data) => {
 				this.checkCustomer();
 			})
-			.catch(data => {});
+			.catch((data) => {});
 	}
 
 	changePlanModal(billingText, customerCopy, tempPlan) {
@@ -139,7 +135,7 @@ export default class Billing extends Component {
 			loadingModal: true,
 		});
 		checkoutCb(this.state.customer, this.userProfile, response)
-			.then(data => {
+			.then((data) => {
 				this.setState(
 					{
 						customerCopy: this.state.customer,
@@ -149,7 +145,7 @@ export default class Billing extends Component {
 					this.confirmPlan.bind(this),
 				);
 			})
-			.catch(e => {
+			.catch((e) => {
 				this.setState({
 					loading: null,
 					loadingModal: false,
@@ -171,7 +167,7 @@ export default class Billing extends Component {
 		});
 		billingService
 			.updateCustomer(this.customerCopy, 'planChange')
-			.then(data => {
+			.then((data) => {
 				this.customer = data;
 				this.plan = data.plan;
 				this.setState({
@@ -183,7 +179,7 @@ export default class Billing extends Component {
 				});
 				this.closeModal();
 			})
-			.catch(data => {
+			.catch((data) => {
 				this.setState({
 					show: true,
 					text:
@@ -214,6 +210,7 @@ export default class Billing extends Component {
 					/>
 				));
 				break;
+			default:
 		}
 		return generatedEle;
 	}
@@ -231,6 +228,7 @@ export default class Billing extends Component {
 						<div className="row cards-container">{this.renderElement('cards')}</div>
 					</section>
 				</div>
+				{this.renderElement('cards')}
 				<ConfirmPlanChange
 					billingText={this.state.billingText}
 					showPlanChange={this.state.showPlanChange}

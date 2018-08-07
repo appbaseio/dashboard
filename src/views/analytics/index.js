@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tabs, Icon, Spin } from 'antd';
+import get from 'lodash/get';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
 import { getAnalytics, bannerMessages } from './utils';
@@ -34,7 +35,7 @@ class Main extends React.Component {
 			searchVolume: [],
 			// change it to true to test paid user
 			isPaidUser: false,
-			// change it to plan for eg. growth, bootstrap to test growth plan user
+			// change it to plan for eg. growth, bootstrap to test user with different plans
 			currentPlan: undefined,
 			activeTabKey: this.tabKeys.includes(props.params.tab)
 				? props.params.tab
@@ -57,24 +58,24 @@ class Main extends React.Component {
 					this.setState(
 						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
 						() => {
-							// COMMENT END
-							getAnalytics(this.pageInfo.appName)
-								.then((res) => {
-									this.setState({
-										noResults: res.noResultSearches,
-										popularSearches: res.popularSearches,
-										searchVolume: res.searchVolume,
-										popularResults: res.popularResults,
-										popularFilters: res.popularFilters,
-										isFetching: false,
-									});
-								})
-								.catch(() => {
-									this.setState({
-										isFetching: false,
-									});
-								});
-							// COMMENT START
+		// COMMENT END
+		getAnalytics(this.pageInfo.appName, this.state.currentPlan)
+			.then((res) => {
+				this.setState({
+					noResults: res.noResultSearches,
+					popularSearches: res.popularSearches,
+					searchVolume: res.searchVolume,
+					popularResults: res.popularResults,
+					popularFilters: res.popularFilters,
+					isFetching: false,
+				});
+			})
+			.catch(() => {
+				this.setState({
+					isFetching: false,
+				});
+			});
+		// COMMENT START
 						},
 					);
 				} else {
@@ -93,6 +94,11 @@ class Main extends React.Component {
 			},
 		);
 		// COMMENT END
+	}
+	componentWillReceiveProps(nextProps) {
+		if (get(nextProps, 'location.pathname') !== get(this.props, 'location.pathname')) {
+			window.location.reload();
+		}
 	}
 	changeActiveTabKey = (tab) => {
 		this.setState(
@@ -155,20 +161,32 @@ class Main extends React.Component {
 									/>
 								</TabPane>
 								<TabPane tab="Popular Searches" key={this.tabKeys[1]}>
-									<PopularSearches appName={this.pageInfo.appName} />
+									<PopularSearches
+										plan={currentPlan}
+										appName={this.pageInfo.appName}
+									/>
 								</TabPane>
 								<TabPane tab="No Result Searches" key={this.tabKeys[2]}>
-									<NoResultsSearch appName={this.pageInfo.appName} />
+									<NoResultsSearch
+										plan={currentPlan}
+										appName={this.pageInfo.appName}
+									/>
 								</TabPane>
 								{currentPlan === 'growth' && (
-									<React.Fragment>
-										<TabPane tab="Popular Results" key={this.tabKeys[3]}>
-											<PopularResults appName={this.pageInfo.appName} />
-										</TabPane>
-										<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
-											<PopularFilters appName={this.pageInfo.appName} />
-										</TabPane>
-									</React.Fragment>
+									<TabPane tab="Popular Results" key={this.tabKeys[3]}>
+										<PopularResults
+											plan={currentPlan}
+											appName={this.pageInfo.appName}
+										/>
+									</TabPane>
+								)}
+								{currentPlan === 'growth' && (
+									<TabPane tab="Popular Filters" key={this.tabKeys[4]}>
+										<PopularFilters
+											plan={currentPlan}
+											appName={this.pageInfo.appName}
+										/>
+									</TabPane>
 								)}
 								<TabPane tab="Request Logs" key={this.tabKeys[5]}>
 									<RequestLogs

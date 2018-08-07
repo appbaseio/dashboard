@@ -19,7 +19,8 @@
 			border-radius: 20px;
 			background: $n-lblue;
 			color: $blue-pricing;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 			letter-spacing: 1px;
 			font-size: 0.9rem;
 			padding: 0.7em 2em;
@@ -47,11 +48,13 @@
 		margin-top: 15px;
 		color: $n-navy;
 		font-size: 1.2rem;
-		font-family: $font-regular; font-weight: 600;
+		font-family: $font-regular;
+		font-weight: 600;
 	}
 	.new-btn {
 		font-size: 1rem;
-		font-family: $font-regular; font-weight: 600;
+		font-family: $font-regular;
+		font-weight: 600;
 		text-transform: uppercase;
 		background: $n-green;
 		color: $d-green;
@@ -85,10 +88,7 @@
 	}
 	#top-container {
 		background: $lblue;
-		padding-bottom: 340px;
-		@media all and (max-width: 768px) {
-			padding-bottom: 210px;
-		}
+		padding-bottom: 50px;
 	}
 	#cards {
 		margin-top: -210px;
@@ -105,7 +105,8 @@
 		.price-header {
 			font-size: 2.1rem;
 			text-transform: uppercase;
-			font-family: $font-regular; font-weight: 700;
+			font-family: $font-regular;
+			font-weight: 700;
 			text-align: center;
 			margin: 15px 0;
 		}
@@ -147,7 +148,8 @@
 					}
 					.big-description {
 						font-size: 1.2rem;
-						font-family: $font-regular; font-weight: 700;
+						font-family: $font-regular;
+						font-weight: 700;
 						margin: 20px 0 20px 20px;
 						&:before {
 							content: '\2022';
@@ -166,7 +168,8 @@
 					}
 					.big-description {
 						font-size: 1.2rem;
-						font-family: $font-regular; font-weight: 700;
+						font-family: $font-regular;
+						font-weight: 700;
 						margin: 20px 0 20px 20px;
 						&:before {
 							content: '\2022';
@@ -199,7 +202,8 @@
 						background: #3bc7f6;
 						color: $n-navy;
 						font-size: 8rem;
-						font-family: $font-regular; font-weight: 300;
+						font-family: $font-regular;
+						font-weight: 300;
 						text-align: center;
 						border-top-left-radius: 10px;
 						border-top-right-radius: 10px;
@@ -213,7 +217,8 @@
 						}
 						.unit {
 							font-size: 2.5rem;
-							font-family: $font-regular; font-weight: 600;
+							font-family: $font-regular;
+							font-weight: 600;
 						}
 						.superscript {
 							font-size: 20px;
@@ -225,13 +230,15 @@
 							top: -60px;
 							font-size: 2rem;
 							left: 0;
-							font-family: $font-regular; font-weight: 700;
+							font-family: $font-regular;
+							font-weight: 700;
 						}
 						.subscript {
 							font-size: 1.4rem;
 							height: auto;
 							text-align: center;
-							font-family: $font-regular; font-weight: 600;
+							font-family: $font-regular;
+							font-weight: 600;
 						}
 					}
 					.description {
@@ -275,7 +282,8 @@
 								padding: 15px 0;
 							}
 							.text-container {
-								font-family: $font-regular; font-weight: 300;
+								font-family: $font-regular;
+								font-weight: 300;
 								.big-description {
 									font-size: 1.8em;
 									line-height: 1em;
@@ -287,10 +295,12 @@
 								.figure {
 									font-size: 1.4em;
 									line-height: 1.9em;
-									font-family: $font-regular; font-weight: 700;
+									font-family: $font-regular;
+									font-weight: 700;
 								}
 								.summary {
-									font-family: $font-regular; font-weight: 300;
+									font-family: $font-regular;
+									font-weight: 300;
 									@media all and (max-width: 1278px) {
 										margin-left: -3px;
 										margin-top: -10px;
@@ -387,7 +397,8 @@
 		padding-bottom: 40px;
 		h3 {
 			font-size: 4em;
-			font-family: $font-regular; font-weight: 300;
+			font-family: $font-regular;
+			font-weight: 300;
 			padding-bottom: 30px;
 			.figure {
 				font-size: 2em;
@@ -428,16 +439,19 @@
 					padding: 0 15px;
 				}
 				.text-container {
-					font-family: $font-regular; font-weight: 300;
+					font-family: $font-regular;
+					font-weight: 300;
 					.figure {
 						font-size: 1.8em;
-						font-family: $font-regular; font-weight: 700;
+						font-family: $font-regular;
+						font-weight: 700;
 						&.regular {
 							font-family: $font-regular;
 						}
 					}
 					.summary {
-						font-family: $font-regular; font-weight: 300;
+						font-family: $font-regular;
+						font-weight: 300;
 						font-size: 1em;
 					}
 				}
@@ -451,12 +465,14 @@
 		padding-bottom: 40px;
 		h3 {
 			font-size: 3em;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 			padding-bottom: 30px;
 			text-transform: uppercase;
 		}
 		.single-point {
-			font-family: $font-regular; font-weight: 700;
+			font-family: $font-regular;
+			font-weight: 700;
 			margin-bottom: 80px;
 			h4.title {
 				font-size: 2em;
@@ -490,11 +506,13 @@
 	p {
 		margin-bottom: 0;
 		font-size: 24px;
-		font-family: $font-regular; font-weight: 300;
+		font-family: $font-regular;
+		font-weight: 300;
 	}
 	h1 {
 		padding-bottom: 40px;
-		font-family: $font-regular; font-weight: 700;
+		font-family: $font-regular;
+		font-weight: 700;
 		color: $n-navy;
 		font-size: 3.3em;
 		@media all and (max-width: 768px) {
@@ -505,7 +523,8 @@
 		padding-top: 30px;
 		.new-btn {
 			color: $n-navy !important;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 		}
 	}
 }
@@ -518,14 +537,16 @@
 		.title {
 			text-transform: uppercase;
 			color: $n-navy;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 			margin-bottom: 15px;
 			font-size: 2.5em;
 			letter-spacing: 2px;
 		}
 		.pricing .line .plan-title b {
 			color: $n-navy;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 		}
 	}
 	#faq-container {
@@ -535,7 +556,8 @@
 		.btitle {
 			text-transform: uppercase;
 			color: $n-navy;
-			font-family: $font-regular; font-weight: 600;
+			font-family: $font-regular;
+			font-weight: 600;
 			font-size: 2.5em;
 			letter-spacing: 2px;
 			margin-top: 20px;

@@ -35,6 +35,7 @@ const Analytics = ({
 						onClick={() => redirectTo('popularSearches')}
 						dataSource={popularSearches}
 						title="Popular Searches"
+						plan={plan}
 					/>
 				</div>
 				<div css="flex: 50%;margin-left: 10px">
@@ -42,6 +43,7 @@ const Analytics = ({
 						onClick={() => redirectTo('noResultSearches')}
 						dataSource={noResults}
 						title="No Result Searches"
+						plan={plan}
 					/>
 				</div>
 			</Flex>
@@ -50,7 +52,7 @@ const Analytics = ({
 					<div css="flex: 50%;margin-right: 10px">
 						<Searches
 							dataSource={popularResults}
-							columns={popularResultsCol}
+							columns={popularResultsCol(plan)}
 							title="Popular Results"
 							onClick={() => redirectTo('popularResults')}
 						/>
@@ -58,7 +60,7 @@ const Analytics = ({
 					<div css="flex: 50%;margin-left: 10px">
 						<Searches
 							dataSource={popularFilters}
-							columns={popularFiltersCol}
+							columns={popularFiltersCol(plan)}
 							title="Popular Filters"
 							onClick={() => redirectTo('popularFilters')}
 						/>

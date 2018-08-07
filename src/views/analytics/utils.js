@@ -13,6 +13,17 @@ const requestOpt = css`
 	border-radius: 3px;
 	border: solid 1px #00ff88;
 `;
+const getQueryParams = (paramObj) => {
+	let queryString = '';
+	Object.keys(paramObj).forEach((o, i) => {
+		if (i === 0) {
+			queryString = `?${o}=${paramObj[o]}`;
+		} else {
+			queryString = `&${o}=${paramObj[o]}`;
+		}
+	});
+	return queryString;
+};
 export const getTimeDuration = (time) => {
 	const timeInMs = moment.duration(moment().diff(time)).asMilliseconds();
 	if (timeInMs >= 24 * 60 * 60 * 1000) {
@@ -52,78 +63,113 @@ export const getTimeDuration = (time) => {
 		time: parseInt(timeInMs / 1000, 10),
 	};
 };
-export const popularFiltersCol = [
-	{
-		title: 'Polpular Filters',
-		dataIndex: 'key',
-		key: 'key',
-	},
-	{
-		title: 'Impressions',
-		dataIndex: 'count',
-		key: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-		key: 'clickrate',
-	},
-];
-export const popularResultsCol = [
-	{
-		title: 'Polpular Results',
-		dataIndex: 'key',
-		key: 'key',
-	},
-	{
-		title: 'Impressions',
-		dataIndex: 'count',
-		key: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-		key: 'clickrate',
-	},
-];
-export const defaultColumns = [
-	{
-		title: 'Search Terms',
-		dataIndex: 'key',
-		key: 'key',
-	},
-	{
-		title: 'Total Queries',
-		dataIndex: 'count',
-		key: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-		key: 'clickrate',
-	},
-];
-export const popularSearchesFull = [
-	...defaultColumns,
-	{
-		title: 'Clicks',
-		dataIndex: 'clicks',
-		key: 'clicks',
-	},
-	{
-		title: 'Click Position',
-		dataIndex: 'clickposition',
-		key: 'clickposition',
-	},
-	{
-		title: 'Conversion Rate',
-		dataIndex: 'conversionrate',
-		key: 'conversionrate',
-	},
-];
+export const popularFiltersCol = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Polpular Filters',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Impressions',
+				dataIndex: 'count',
+			}
+		];
+	}
+	return [
+		{
+			title: 'Polpular Filters',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Impressions',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const popularResultsCol = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Polpular Results',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Impressions',
+				dataIndex: 'count',
+			},
+		];
+	}
+	return [
+		{
+			title: 'Polpular Results',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Impressions',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const defaultColumns = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Search Terms',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Total Queries',
+				dataIndex: 'count',
+			},
+		];
+	}
+	return [
+		{
+			title: 'Search Terms',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Total Queries',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const popularSearchesFull = (plan) => {
+	if (!plan || plan === 'free') {
+		return defaultColumns(plan);
+	}
+	return [
+		...defaultColumns(plan),
+		{
+			title: 'Clicks',
+			dataIndex: 'clicks',
+		},
+		{
+			title: 'Click Position',
+			dataIndex: 'clickposition',
+		},
+		{
+			title: 'Conversion Rate',
+			dataIndex: 'conversionrate',
+		},
+	];
+};
 const data = {
 	body: {
-		popularsearches: [
+		popularSearches: [
 			{
 				key: 'Iphone X',
 				count: 23,
@@ -149,7 +195,7 @@ const data = {
 				conversionrate: 1.35,
 			},
 		],
-		noresults: [
+		noResultSearches: [
 			{
 				key: 'Iphone 10',
 				count: 15,
@@ -175,7 +221,7 @@ const data = {
 				conversionrate: 1.35,
 			},
 		],
-		searchvolume: [
+		searchVolume: [
 			{
 				key: 1531333800000,
 				key_as_string: '2018-07-12T00:00:00.000Z',
@@ -286,29 +332,33 @@ const data = {
 		],
 	},
 };
-export const popularResultsFull = [
-	...defaultColumns,
-	{
-		title: 'Clicks',
-		dataIndex: 'clicks',
-		key: 'clicks',
-	},
-	{
-		title: 'Source',
-		dataIndex: 'source',
-		key: 'source',
-	},
-	{
-		title: 'Conversion Rate',
-		dataIndex: 'conversionrate',
-		key: 'conversionrate',
-	},
-];
+export const popularResultsFull = (plan) => {
+	if (plan === 'free') {
+		return defaultColumns(plan);
+	}
+	return [
+		...defaultColumns(plan),
+		{
+			title: 'Clicks',
+			dataIndex: 'clicks',
+			key: 'clicks',
+		},
+		{
+			title: 'Source',
+			dataIndex: 'source',
+			key: 'source',
+		},
+		{
+			title: 'Conversion Rate',
+			dataIndex: 'conversionrate',
+			key: 'conversionrate',
+		},
+	];
+};
 export const requestLogs = [
 	{
 		title: 'Operation',
 		dataIndex: 'operation',
-		key: 'operation',
 		render: operation => (
 			<div>
 				<Flex>
@@ -325,26 +375,28 @@ export const requestLogs = [
 	{
 		title: 'Classifier',
 		dataIndex: 'classifier',
-		key: 'classifier',
 	},
 	{
 		title: 'Time',
 		dataIndex: 'timeTaken',
-		key: 'timeTaken',
 	},
 	{
 		title: 'Status',
 		dataIndex: 'status',
-		key: 'status',
 	},
 ];
 /**
  * Get the analytics
  * @param {string} appName
  */
-export function getAnalytics(appName) {
+export function getAnalytics(appName, userPlan, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/analytics/${appName}/overview`, {
+		const url =
+			userPlan === 'growth'
+				? `${ACC_API}/analytics/${appName}/advanced`
+				: `${ACC_API}/analytics/${appName}/overview`;
+		const queryParams = getQueryParams({ clickanalytics });
+		fetch(url + queryParams, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -366,20 +418,24 @@ export function getAnalytics(appName) {
  * Get the popular seraches
  * @param {string} appName
  */
-export function getPopularSearches(appName) {
+export function getPopularSearches(appName, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/analytics/${appName}/popularsearches`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		fetch(
+			`${ACC_API}/analytics/${appName}/popularsearches${getQueryParams({ clickanalytics })}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			},
-		})
+		)
 			// Comment out this line
 			.then(res => res.json())
 			.then((res) => {
 				// resolve the promise with response
 				resolve(res.popularSearches);
+				// resolve(data.body.popularSearches);
 			})
 			.catch((e) => {
 				reject(e);
@@ -390,15 +446,18 @@ export function getPopularSearches(appName) {
  * Get the no results seraches
  * @param {string} appName
  */
-export function getNoResultSearches(appName) {
+export function getNoResultSearches(appName, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/analytics/${appName}/noresultsearches`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		fetch(
+			`${ACC_API}/analytics/${appName}/noresultsearches${getQueryParams({ clickanalytics })}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			},
-		})
+		)
 			// Comment out this line
 			.then(res => res.json())
 			.then((res) => {
@@ -410,40 +469,46 @@ export function getNoResultSearches(appName) {
 			});
 	});
 }
-export function getPopularResults(appName) {
+export function getPopularResults(appName, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/analytics/${appName}/popularResults`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		fetch(
+			`${ACC_API}/analytics/${appName}/popularResults${getQueryParams({ clickanalytics })}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			},
-		})
+		)
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.popularResults);
+				resolve(res.popularResults);
 			})
 			.catch((e) => {
 				reject(e);
 			});
 	});
 }
-export function getPopularFilters(appName) {
+export function getPopularFilters(appName, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/analytics/${appName}/popularFilters`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		fetch(
+			`${ACC_API}/analytics/${appName}/popularFilters${getQueryParams({ clickanalytics })}`,
+			{
+				method: 'GET',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			},
-		})
+		)
 			// Comment out this line
-			// .then(res => res.json())
-			.then(() => {
+			.then(res => res.json())
+			.then((res) => {
 				// resolve the promise with response
-				resolve(data.body.popularFilters);
+				resolve(res.popularFilters);
 			})
 			.catch((e) => {
 				reject(e);

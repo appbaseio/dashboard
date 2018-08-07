@@ -183,8 +183,8 @@ class RequestLogs extends React.Component {
 							show={showDetails}
 							handleCancel={this.handleCancel}
 							headers={get(this.currentRequest, '_source.request.headers', {})}
-							request={get(this.currentRequest, '_source.request.body', {})}
-							response={get(this.currentRequest, '_source.response.body', {})}
+							request={JSON.parse(get(this.currentRequest, '_source.request.body') || null) || {}}
+							response={JSON.parse(get(this.currentRequest, '_source.response.body') || null) || {}}
 							time={get(this.currentRequest, '_source.timestamp', '')}
 							method={get(this.currentRequest, '_source.request.method', '')}
 							url={get(this.currentRequest, '_source.request.uri', '')}
