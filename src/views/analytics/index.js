@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tabs, Icon, Spin } from 'antd';
+import get from 'lodash/get';
 import AppPage from '../../shared/AppPage';
 import { appbaseService } from '../../service/AppbaseService';
 import { getAnalytics, bannerMessages } from './utils';
@@ -57,24 +58,24 @@ class Main extends React.Component {
 					this.setState(
 						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
 						() => {
-							// COMMENT END
-							getAnalytics(this.pageInfo.appName, this.state.currentPlan)
-								.then((res) => {
-									this.setState({
-										noResults: res.noResultSearches,
-										popularSearches: res.popularSearches,
-										searchVolume: res.searchVolume,
-										popularResults: res.popularResults,
-										popularFilters: res.popularFilters,
-										isFetching: false,
-									});
-								})
-								.catch(() => {
-									this.setState({
-										isFetching: false,
-									});
-								});
-							// COMMENT START
+		// COMMENT END
+		getAnalytics(this.pageInfo.appName, this.state.currentPlan)
+			.then((res) => {
+				this.setState({
+					noResults: res.noResultSearches,
+					popularSearches: res.popularSearches,
+					searchVolume: res.searchVolume,
+					popularResults: res.popularResults,
+					popularFilters: res.popularFilters,
+					isFetching: false,
+				});
+			})
+			.catch(() => {
+				this.setState({
+					isFetching: false,
+				});
+			});
+		// COMMENT START
 						},
 					);
 				} else {
@@ -93,6 +94,11 @@ class Main extends React.Component {
 			},
 		);
 		// COMMENT END
+	}
+	componentWillReceiveProps(nextProps) {
+		if (get(nextProps, 'location.pathname') !== get(this.props, 'location.pathname')) {
+			window.location.reload();
+		}
 	}
 	changeActiveTabKey = (tab) => {
 		this.setState(
