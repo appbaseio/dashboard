@@ -46,7 +46,7 @@ const RequestDetails = ({
 			<span css="font-weight: 500;color: black;font-size: 16px;">Log Details</span>
 			<Grid label="Time" component={time} />
 			<Grid label="Method" component={method.toUpperCase()} />
-			<Grid label="Url" component={url} />
+			<Grid label="URL" component={url} />
 			<Grid label="IP" component={ip} />
 			<Grid label="Response Code" component={status} />
 			{processingTime && (
