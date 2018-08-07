@@ -68,6 +68,7 @@
 		"react-bootstrap": "^0.32.1",
 		"react-dom": "16.2.0",
 		"react-emotion": "^9.2.3",
+		"react-expand-collapse": "^0.2.0",
 		"react-feather": "^1.1.1",
 		"react-highcharts": "^16.0.2",
 		"react-intl-tel-input": "^5.0.5",
