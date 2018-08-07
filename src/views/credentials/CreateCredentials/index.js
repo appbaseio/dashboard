@@ -38,7 +38,7 @@ class CreateCredentials extends React.Component {
 			],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, [Validators.required, isNegative]],
 		});
-		this.mappings = traverseMapping(this.props.mappings);
+		this.mappings = traverseMapping(this.props.mappings, true);
 	}
 	componentDidMount() {
 		const includeFieldsHandler = this.form.get('include_fields');

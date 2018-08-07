@@ -63,63 +63,110 @@ export const getTimeDuration = (time) => {
 		time: parseInt(timeInMs / 1000, 10),
 	};
 };
-export const popularFiltersCol = [
-	{
-		title: 'Polpular Filters',
-		dataIndex: 'key',
-	},
-	{
-		title: 'Impressions',
-		dataIndex: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-	},
-];
-export const popularResultsCol = [
-	{
-		title: 'Polpular Results',
-		dataIndex: 'key',
-	},
-	{
-		title: 'Impressions',
-		dataIndex: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-	},
-];
-export const defaultColumns = [
-	{
-		title: 'Search Terms',
-		dataIndex: 'key',
-	},
-	{
-		title: 'Total Queries',
-		dataIndex: 'count',
-	},
-	{
-		title: 'Click Rate',
-		dataIndex: 'clickrate',
-	},
-];
-export const popularSearchesFull = [
-	...defaultColumns,
-	{
-		title: 'Clicks',
-		dataIndex: 'clicks',
-	},
-	{
-		title: 'Click Position',
-		dataIndex: 'clickposition',
-	},
-	{
-		title: 'Conversion Rate',
-		dataIndex: 'conversionrate',
-	},
-];
+export const popularFiltersCol = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Polpular Filters',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Impressions',
+				dataIndex: 'count',
+			}
+		];
+	}
+	return [
+		{
+			title: 'Polpular Filters',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Impressions',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const popularResultsCol = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Polpular Results',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Impressions',
+				dataIndex: 'count',
+			},
+		];
+	}
+	return [
+		{
+			title: 'Polpular Results',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Impressions',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const defaultColumns = (plan) => {
+	if (!plan || plan === 'free') {
+		return [
+			{
+				title: 'Search Terms',
+				dataIndex: 'key',
+			},
+			{
+				title: 'Total Queries',
+				dataIndex: 'count',
+			},
+		];
+	}
+	return [
+		{
+			title: 'Search Terms',
+			dataIndex: 'key',
+		},
+		{
+			title: 'Total Queries',
+			dataIndex: 'count',
+		},
+		{
+			title: 'Click Rate',
+			dataIndex: 'clickrate',
+		},
+	];
+};
+export const popularSearchesFull = (plan) => {
+	if (!plan || plan === 'free') {
+		return defaultColumns(plan);
+	}
+	return [
+		...defaultColumns(plan),
+		{
+			title: 'Clicks',
+			dataIndex: 'clicks',
+		},
+		{
+			title: 'Click Position',
+			dataIndex: 'clickposition',
+		},
+		{
+			title: 'Conversion Rate',
+			dataIndex: 'conversionrate',
+		},
+	];
+};
 const data = {
 	body: {
 		popularSearches: [
@@ -285,24 +332,29 @@ const data = {
 		],
 	},
 };
-export const popularResultsFull = [
-	...defaultColumns,
-	{
-		title: 'Clicks',
-		dataIndex: 'clicks',
-		key: 'clicks',
-	},
-	{
-		title: 'Source',
-		dataIndex: 'source',
-		key: 'source',
-	},
-	{
-		title: 'Conversion Rate',
-		dataIndex: 'conversionrate',
-		key: 'conversionrate',
-	},
-];
+export const popularResultsFull = (plan) => {
+	if (plan === 'free') {
+		return defaultColumns(plan);
+	}
+	return [
+		...defaultColumns(plan),
+		{
+			title: 'Clicks',
+			dataIndex: 'clicks',
+			key: 'clicks',
+		},
+		{
+			title: 'Source',
+			dataIndex: 'source',
+			key: 'source',
+		},
+		{
+			title: 'Conversion Rate',
+			dataIndex: 'conversionrate',
+			key: 'conversionrate',
+		},
+	];
+};
 export const requestLogs = [
 	{
 		title: 'Operation',

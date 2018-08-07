@@ -3,13 +3,13 @@ import { Card, Table, Button } from 'antd';
 import { defaultColumns } from './../utils';
 
 const Searches = ({
- title, dataSource, columns, showViewOption, onClick,
+ title, dataSource, columns, showViewOption, onClick, plan,
 }) => (
 	<Card title={title}>
 		<Table
 			rowKey={record => record.key}
 			dataSource={dataSource}
-			columns={columns}
+			columns={columns || defaultColumns(plan)}
 			pagination={false}
 		/>
 		{showViewOption && (
@@ -21,7 +21,6 @@ const Searches = ({
 );
 
 Searches.defaultProps = {
-	columns: defaultColumns,
 	showViewOption: true,
 };
 

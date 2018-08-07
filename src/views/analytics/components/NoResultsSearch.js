@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Searches from './Searches';
 import { getNoResultSearches, popularSearchesFull } from './../utils';
 import Loader from './Loader';
@@ -33,12 +34,15 @@ class NoResultsSearch extends React.Component {
 		return (
 			<Searches
 				showViewOption={false}
-				columns={popularSearchesFull}
+				columns={popularSearchesFull(this.props.plan)}
 				dataSource={this.state.noResults}
 				title="No Results Searches"
 			/>
 		);
 	}
 }
-
+NoResultsSearch.propTypes = {
+	plan: PropTypes.string,
+	appName: PropTypes.string,
+};
 export default NoResultsSearch;

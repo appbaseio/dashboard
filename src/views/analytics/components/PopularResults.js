@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Searches from './Searches';
 import { getPopularResults, popularResultsFull } from './../utils';
 import Loader from './Loader';
@@ -33,7 +34,7 @@ class PopularResults extends React.Component {
 		return (
 			<Searches
 				showViewOption={false}
-				columns={popularResultsFull}
+				columns={popularResultsFull(this.props.plan)}
 				dataSource={this.state.popularResults}
 				title="Popular Results"
 			/>
@@ -41,4 +42,8 @@ class PopularResults extends React.Component {
 	}
 }
 
+PopularResults.propTypes = {
+	plan: PropTypes.string,
+	appName: PropTypes.string,
+};
 export default PopularResults;
