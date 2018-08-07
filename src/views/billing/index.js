@@ -34,10 +34,6 @@ export default class Billing extends Component {
 				plan: 'free',
 				mode: 'annual',
 			},
-			pricingError: {
-				show: false,
-				text: '',
-			},
 			loading: null,
 			loadingModal: false,
 			showPlanChange: false,
