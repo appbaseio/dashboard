@@ -167,6 +167,7 @@ export default class Credentials extends Component {
 							<PermissionCard
 								appId={this.appId}
 								key={index}
+								isOwner={this.isOwner()}
 								permissionInfo={permissionInfo}
 								isPaidUser={this.state.isPaidUser}
 								mappings={this.state.mappings}
@@ -231,21 +232,20 @@ export default class Credentials extends Component {
 							<section className="ad-detail-page-body-card col-xs-12 p-0">
 								<div className="ad-detail-page-body-card-body col-xs-12 p-0">
 									{this.renderElement('permissions')}
-									{this.isOwner() ? (
-										<NewPermission
-											appId={this.props.params.appId}
-											appName={this.appName}
-											isSubmitting={this.state.isSubmitting}
-											newPermission={this.newPermission}
-											updatePermission={this.updatePermission}
-											showForm={this.showForm}
-											showCredForm={this.state.showCredForm}
-											handleCancel={this.handleCancel}
-											isPaidUser={this.state.isPaidUser}
-											mappings={this.state.mappings}
-											initialValues={this.state.currentPermissionInfo}
-										/>
-									) : null}
+									<NewPermission
+										appId={this.props.params.appId}
+										appName={this.appName}
+										isSubmitting={this.state.isSubmitting}
+										newPermission={this.newPermission}
+										updatePermission={this.updatePermission}
+										showForm={this.showForm}
+										showCredForm={this.state.showCredForm}
+										handleCancel={this.handleCancel}
+										isPaidUser={this.state.isPaidUser}
+										isOwner={this.isOwner()}
+										mappings={this.state.mappings}
+										initialValues={this.state.currentPermissionInfo}
+									/>
 								</div>
 							</section>
 						</div>

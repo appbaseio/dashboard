@@ -38,27 +38,31 @@ class CreateCredentials extends React.Component {
 			],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, [Validators.required, isNegative]],
 		});
-		this.mappings = traverseMapping(this.props.mappings, true);
+		this.mappings = traverseMapping(this.props.mappings);
 	}
 	componentDidMount() {
-		const includeFieldsHandler = this.form.get('include_fields');
-		const excludeFieldsHandler = this.form.get('exclude_fields');
-		includeFieldsHandler.valueChanges.subscribe((value) => {
-			if (value.includes('*')) {
-				excludeFieldsHandler.disable({ emitEvent: false });
-				excludeFieldsHandler.reset([]);
-			} else {
-				excludeFieldsHandler.enable({ emitEvent: false });
-			}
-		});
-		excludeFieldsHandler.valueChanges.subscribe((value) => {
-			if (value.includes('*')) {
-				includeFieldsHandler.disable({ emitEvent: false });
-				includeFieldsHandler.reset([]);
-			} else {
-				includeFieldsHandler.enable({ emitEvent: false });
-			}
-		});
+		if (!this.props.isOwner) {
+			this.form.disable();
+		} else {
+			const includeFieldsHandler = this.form.get('include_fields');
+			const excludeFieldsHandler = this.form.get('exclude_fields');
+			includeFieldsHandler.valueChanges.subscribe((value) => {
+				if (value.includes('*')) {
+					excludeFieldsHandler.disable({ emitEvent: false });
+					excludeFieldsHandler.reset([]);
+				} else {
+					excludeFieldsHandler.enable({ emitEvent: false });
+				}
+			});
+			excludeFieldsHandler.valueChanges.subscribe((value) => {
+				if (value.includes('*')) {
+					includeFieldsHandler.disable({ emitEvent: false });
+					includeFieldsHandler.reset([]);
+				} else {
+					includeFieldsHandler.enable({ emitEvent: false });
+				}
+			});
+		}
 		if (this.props.initialValues) {
 			this.form.patchValue(this.props.initialValues);
 		}
@@ -72,6 +76,12 @@ class CreateCredentials extends React.Component {
 		this.form.get('include_fields').valueChanges.unsubscribe();
 		this.form.get('exclude_fields').valueChanges.unsubscribe();
 	}
+	get getText() {
+		if (this.props.isOwner) {
+			return this.isEditing ? 'Edit credential' : 'Create a new credential';
+		}
+		return 'Credentials Details';
+	}
 	get isEditing() {
 		return !!this.props.initialValues;
 	}
@@ -80,7 +90,7 @@ class CreateCredentials extends React.Component {
 	};
 	render() {
 		const {
- show, handleCancel, isPaidUser, isSubmitting,
+ show, handleCancel, isPaidUser, isSubmitting, isOwner,
 } = this.props;
 		return (
 			<FieldGroup
@@ -88,11 +98,12 @@ class CreateCredentials extends React.Component {
 				control={this.form}
 				render={({ invalid }) => (
 					<Modal
+						destroyOnClose={false}
 						style={{
 							width: '600px',
 						}}
 						css={modal}
-						footer={[
+						footer={isOwner ? [
 							<Button key="back" onClick={handleCancel}>
 								Cancel
 							</Button>,
@@ -105,13 +116,18 @@ class CreateCredentials extends React.Component {
 							>
 								{this.isEditing ? 'Save' : 'Generate'}
 							</Button>,
-						]}
+						] : [
+								<Button key="back" onClick={handleCancel}>
+									Cancel
+								</Button>,
+							]
+						}
 						visible={show}
 						onCancel={handleCancel}
 					>
 						<div css="position: relative">
 							<span css="font-weight: 500;color: black;font-size: 16px;">
-								{this.isEditing ? 'Edit credential' : 'Create a new credential'}
+								{this.getText}
 							</span>
 							<FieldControl
 								strict={false}
@@ -270,8 +286,7 @@ class CreateCredentials extends React.Component {
 															if (!excludedFields.includes(v)) {
 																return (
 																	<Option
-																		value={v}
-																		key={v}
+																		key={i + v}
 																		title={v}
 																	>
 																		{v}
@@ -320,7 +335,7 @@ class CreateCredentials extends React.Component {
 														this.mappings[i].map((v) => {
 															if (!includedFields.includes(v)) {
 																return (
-																	<Option value={v} key={v}>
+																	<Option key={i + v}>
 																		{v}
 																		<span
 																			css={styles.fieldBadge}
@@ -413,6 +428,7 @@ CreateCredentials.propTypes = {
 		ttl: PropTypes.number,
 		meta: PropTypes.object,
 	}),
+	isOwner: PropTypes.bool,
 };
 
 export default CreateCredentials;
