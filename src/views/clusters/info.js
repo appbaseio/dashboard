@@ -20,6 +20,7 @@ export default class Clusters extends Component {
 			error: '',
 			deploymentError: '',
 			showError: false,
+			loadingError: false,
 		};
 	}
 
@@ -66,6 +67,10 @@ export default class Clusters extends Component {
 					if (cluster.status === 'in progress') {
 						setTimeout(this.init, 30000);
 					}
+				} else {
+					this.setState({
+						loadingError: true,
+					});
 				}
 			})
 			.catch((e) => {
@@ -270,6 +275,35 @@ export default class Clusters extends Component {
 		}
 
 		if (!this.state.cluster) {
+			if (this.state.loadingError) {
+				return (
+					<div style={vcenter}>
+						Cluster is taking too long to respond...
+
+						<div style={{ marginTop: 20 }}>
+							<button
+								className="ad-theme-btn"
+								onClick={() => browserHistory.push('/clusters')}
+							>
+								<i className="fas fa-arrow-left" />
+								&nbsp; &nbsp; Go Back
+							</button>
+
+							<button
+								className="ad-theme-btn"
+								onClick={this.deleteCluster}
+								style={{
+									marginLeft: 12,
+									color: 'tomato',
+								}}
+							>
+								Delete Cluster &nbsp; &nbsp;
+								<i className="fas fa-trash-alt" />
+							</button>
+						</div>
+					</div>
+				)
+			}
 			return (
 				<div style={vcenter}>
 					Loading cluster data...
