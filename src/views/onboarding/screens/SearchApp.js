@@ -42,7 +42,7 @@ const renderFilters = fields => {
 						<MultiList
 							key={field}
 							componentId={field}
-							dataField="genres.raw"
+							dataField="genres.keyword"
 							title="Genres"
 							size={15}
 							sortBy="count"
@@ -59,7 +59,7 @@ const renderFilters = fields => {
 						<MultiList
 							key={field}
 							componentId={field}
-							dataField="original_language.raw"
+							dataField="original_language.keyword"
 							title="Language"
 							size={15}
 							sortBy="count"
