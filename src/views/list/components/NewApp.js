@@ -307,9 +307,8 @@ export default class NewApp extends Component {
 									onClick={this.handleSubmit}
 								>
 									{this.props.createAppLoading || this.state.createAppLoading ? (
-										<Loading />
-									) : null}
-									Create App
+										'Please wait...'
+									) : 'Create App'}
 								</button>
 							</div>
 						</Modal.Body>
