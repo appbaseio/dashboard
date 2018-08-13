@@ -30,9 +30,7 @@ export default () => (
 								alt="Webapp"
 							/>
 							<h3>Learn how to build a web app</h3>
-							<p>
-								appbase.io UI components for building data-driven web apps.
-							</p>
+							<p>appbase.io UI components for building data-driven web apps.</p>
 							<a
 								className="button"
 								href="https://opensource.appbase.io/reactive-manual/getting-started/reactivesearch.html"
@@ -64,7 +62,10 @@ export default () => (
 					>
 						Create an app or browse your current apps via the dashboard.
 					</p>
-					<a className="button" href="/">
+					<a
+						className="button"
+						href={`/dashboard/${window.location.search.split('=')[1]}`}
+					>
 						Go to Dashboard
 					</a>
 				</div>
@@ -77,9 +78,7 @@ export default () => (
 						src="/assets/images/onboarding/finish-screen/ReactiveNative.svg"
 						alt="Reactive search"
 					/>
-					<p>
-						appbase.io UI components for building mobile apps.
-					</p>
+					<p>appbase.io UI components for building mobile apps.</p>
 					<a
 						className="button"
 						href="https://opensource.appbase.io/reactive-manual/native/getting-started/reactivesearch.html"
@@ -93,10 +92,11 @@ export default () => (
 						src="/assets/images/onboarding/finish-screen/ReactiveMaps.svg"
 						alt="Reactive maps"
 					/>
-					<p>
-						appbase.io UI components for building realtime geolocation apps.
-					</p>
-					<a className="button" href="https://opensource.appbase.io/reactive-manual/getting-started/reactivemaps.html">
+					<p>appbase.io UI components for building realtime geolocation apps.</p>
+					<a
+						className="button"
+						href="https://opensource.appbase.io/reactive-manual/getting-started/reactivemaps.html"
+					>
 						Learn More
 					</a>
 				</div>
@@ -109,10 +109,13 @@ export default () => (
 						alt="API"
 					/>
 					<p>
-						Get started with the APIs for indexing, querying and streaming
-						data with appbase.
+						Get started with the APIs for indexing, querying and streaming data with
+						appbase.
 					</p>
-					<a className="button" href="https://docs.appbase.io/interactive/javascript.html">
+					<a
+						className="button"
+						href="https://docs.appbase.io/interactive/javascript.html"
+					>
 						Learn More
 					</a>
 				</div>

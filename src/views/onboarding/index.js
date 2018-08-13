@@ -103,6 +103,12 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	setAppName = (newApp) => {
+		this.setState({
+			newApp,
+		});
+	};
+
 	renderCurrentScreen = () => {
 		const RenderScreen = screens[this.state.currentScreen];
 		let props = {};
@@ -132,6 +138,7 @@ export default class Onboarding extends Component {
 			props = {
 				facetFields: this.state.facetFields,
 				searchFields: this.state.searchFields,
+				app: this.state.newApp,
 			};
 		}
 
@@ -139,6 +146,7 @@ export default class Onboarding extends Component {
 			<RenderScreen
 				nextScreen={this.nextScreen}
 				previousScreen={this.previousScreen}
+				setAppName={this.setAppName}
 				{...props}
 			/>
 		);

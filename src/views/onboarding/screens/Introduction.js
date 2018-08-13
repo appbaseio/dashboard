@@ -16,7 +16,7 @@ export default class Introduction extends Component {
 		};
 	}
 
-	setError = e => {
+	setError = (e) => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -45,15 +45,13 @@ export default class Introduction extends Component {
 			this.setError('App name cannot be left empty.');
 			this.input.focus();
 		} else if (!pattern.test(value)) {
-			this.setError(
-				'Please use only alphanumerics (a-z,A-Z,0-9) and any of -._+$@ characters for the app name.',
-			);
+			this.setError('Please use only alphanumerics (a-z,A-Z,0-9) and any of -._+$@ characters for the app name.');
 			this.input.focus();
 		} else {
 			appbaseHelpers
 				.createApp(value)
 				.then(res => res.json())
-				.then(res => {
+				.then((res) => {
 					if (res.body && res.body.id) {
 						app = {
 							appName: value,
@@ -62,16 +60,15 @@ export default class Introduction extends Component {
 							username: res.body.username,
 						};
 						appbaseHelpers.updateApp(app);
+						this.props.setAppName(value);
 					} else {
-						this.setError(
-							'Your app name is not unique. Please try with a different app name.',
-						);
+						this.setError('Your app name is not unique. Please try with a different app name.');
 						this.input.focus();
 					}
 				})
-				.then(res => {
+				.then((res) => {
 					if (app.appName) {
-						appbaseHelpers.getWritePermissions().then(permission => {
+						appbaseHelpers.getWritePermissions().then((permission) => {
 							app = Object.assign(app, permission);
 							appbaseHelpers.updateApp(app);
 							this.setState(
@@ -85,10 +82,8 @@ export default class Introduction extends Component {
 						});
 					}
 				})
-				.catch(e => {
-					this.setError(
-						'Some error occurred. Please try again with a different app name.',
-					);
+				.catch((e) => {
+					this.setError('Some error occurred. Please try again with a different app name.');
 				});
 		}
 	};
@@ -103,7 +98,7 @@ export default class Introduction extends Component {
 				<input
 					autoFocus
 					className="input"
-					ref={ref => {
+					ref={(ref) => {
 						this.input = ref;
 					}}
 					type="text"
