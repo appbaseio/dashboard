@@ -124,6 +124,7 @@ export default class NewPermission extends Component {
 				{this.props.showCredForm && (
 					<CreateCredentials
 						isPaidUser={this.props.isPaidUser}
+						plan={this.props.plan}
 						isSubmitting={this.props.isSubmitting}
 						isOwner={this.props.isOwner}
 						onSubmit={this.handleSubmit}

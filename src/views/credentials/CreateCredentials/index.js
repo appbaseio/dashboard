@@ -10,7 +10,7 @@ import Grid from './Grid';
 import Flex from './../../../shared/Flex';
 import { createCredentials as Messages, hoverMessage } from './../../../utils/messages';
 import { traverseMapping } from './../../../../modules/batteries/utils/mappings';
-import { Types, aclOptions, aclOptionsLabel, defaultAclOptions, isNegative } from '../utils';
+import { Types, getDefaultAclOptionsByPlan, aclOptionsLabel, getAclOptionsByPlan, isNegative } from '../utils';
 import WhiteList from './WhiteList';
 
 const { Option } = Select;
@@ -27,7 +27,8 @@ class CreateCredentials extends React.Component {
 		this.form = FormBuilder.group({
 			description: '',
 			operationType: [Types.read, Validators.required],
-			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
+			acl: [{ value: getDefaultAclOptionsByPlan(props.plan), disabled: !props.isPaidUser },
+				Validators.required],
 			referers: [{ value: ['*'], disabled: !props.isPaidUser }],
 			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
 			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
@@ -90,7 +91,7 @@ class CreateCredentials extends React.Component {
 	};
 	render() {
 		const {
- show, handleCancel, isPaidUser, isSubmitting, isOwner,
+ show, handleCancel, isPaidUser, isSubmitting, isOwner, plan,
 } = this.props;
 		return (
 			<FieldGroup
@@ -202,7 +203,7 @@ class CreateCredentials extends React.Component {
 												<CheckboxGroup
 													css="label { font-weight: 100 }"
 													{...inputHandler}
-													options={aclOptions.map(o => aclOptionsLabel[o])}
+													options={getAclOptionsByPlan(plan).map(o => aclOptionsLabel[o])}
 													value={inputHandler.value.map(o => aclOptionsLabel[o])}
 													onChange={(value) => {
 														inputHandler.onChange(value.map(v => v.toLowerCase()));
@@ -429,6 +430,7 @@ CreateCredentials.propTypes = {
 		meta: PropTypes.object,
 	}),
 	isOwner: PropTypes.bool,
+	plan: PropTypes.oneOf(['free', 'growth', 'bootstrap']).isRequired,
 };
 
 export default CreateCredentials;

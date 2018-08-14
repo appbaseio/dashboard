@@ -6,6 +6,7 @@ import { getCredentials, checkUserStatus } from './../../../modules/batteries/ut
 import PermissionCard from './PermissionCard';
 import NewPermission from './NewPermission';
 import AppPage from '../../shared/AppPage';
+import Loader from './../../shared/Loader';
 import DeleteApp from './DeleteApp';
 
 export default class Credentials extends Component {
@@ -13,6 +14,8 @@ export default class Credentials extends Component {
 		super(props);
 		this.state = {
 			info: null,
+			isLoading: true,
+			plan: undefined,
 			isSubmitting: false,
 			showCredForm: false,
 			isPaidUser: false,
@@ -30,12 +33,23 @@ export default class Credentials extends Component {
 	componentDidMount() {
 		checkUserStatus().then(
 			(response) => {
-				if (response.isPaidUser) {
-					this.setState({ isPaidUser: response.isPaidUser });
-				}
+				this.setState({
+					isPaidUser: response.isPaidUser,
+					plan: response.plan,
+					isLoading: false,
+				});
 			},
 			(error) => {
-				toastr.error('Error', get(error, 'responseJSON.message', 'Something went wrong'));
+				this.setState(
+					{
+						isLoading: false,
+					},
+					() =>
+						toastr.error(
+							'Error',
+							get(error, 'responseJSON.message', 'Something went wrong'),
+						),
+				);
 			},
 		);
 		if (this.props.params.appId) {
@@ -55,23 +69,14 @@ export default class Credentials extends Component {
 				});
 		}
 	}
-
-	componentWillUnmount() {
-		this.stopUpdate = true;
-	}
-
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.params.appId != this.appName) {
+		if (nextProps.params.appId !== this.appName) {
 			this.initialize(nextProps);
 		}
 	}
-
-	initialize(props) {
-		this.appName = props.params.appId;
-		this.appId = appbaseService.userInfo.body.apps[this.appName];
-		this.getInfo();
+	componentWillUnmount() {
+		this.stopUpdate = true;
 	}
-
 	getInfo() {
 		this.info = {};
 		appbaseService.getPermission(this.appId).then((data) => {
@@ -86,6 +91,11 @@ export default class Credentials extends Component {
 				this.setState({ info: this.info });
 			}
 		});
+	}
+	initialize(props) {
+		this.appName = props.params.appId;
+		this.appId = appbaseService.userInfo.body.apps[this.appName];
+		this.getInfo();
 	}
 	handleCancel = () => {
 		this.setState({
@@ -147,6 +157,26 @@ export default class Credentials extends Component {
 		);
 	};
 
+	isOwner() {
+		return (
+			this.state.info &&
+			this.state.info.appInfo &&
+			this.state.info.appInfo.owner === appbaseService.userInfo.body.email
+		);
+	}
+	showForm = (permissionInfo) => {
+		if (permissionInfo) {
+			this.setState({
+				showCredForm: true,
+				currentPermissionInfo: permissionInfo,
+			});
+		} else {
+			this.setState({
+				showCredForm: true,
+				currentPermissionInfo: undefined,
+			});
+		}
+	};
 	renderElement(method) {
 		let element = null;
 		switch (method) {
@@ -196,28 +226,10 @@ export default class Credentials extends Component {
 		}
 		return element;
 	}
-
-	isOwner() {
-		return (
-			this.state.info &&
-			this.state.info.appInfo &&
-			this.state.info.appInfo.owner === appbaseService.userInfo.body.email
-		);
-	}
-	showForm = (permissionInfo) => {
-		if (permissionInfo) {
-			this.setState({
-				showCredForm: true,
-				currentPermissionInfo: permissionInfo,
-			});
-		} else {
-			this.setState({
-				showCredForm: true,
-				currentPermissionInfo: undefined,
-			});
-		}
-	};
 	render() {
+		if (this.state.isLoading) {
+			return <Loader />;
+		}
 		return (
 			<AppPage
 				pageInfo={{
@@ -242,6 +254,7 @@ export default class Credentials extends Component {
 										showCredForm={this.state.showCredForm}
 										handleCancel={this.handleCancel}
 										isPaidUser={this.state.isPaidUser}
+										plan={this.state.plan}
 										isOwner={this.isOwner()}
 										mappings={this.state.mappings}
 										initialValues={this.state.currentPermissionInfo}
