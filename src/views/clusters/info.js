@@ -205,12 +205,12 @@ export default class Clusters extends Component {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
-			const url = (source.url || source.dashboard_url).substring(7);
+			const { protocol, url } = (source.url || source.dashboard_url).split('://');
 			return (
 				<div key={source.name} className="cluster-endpoint">
 					<h4>
 						<a
-							href={`http://${username}:${password}@${url}`}
+							href={`${protocol}://${username}:${password}@${url}`}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
