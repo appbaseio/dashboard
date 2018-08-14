@@ -53,10 +53,10 @@ const Mappings = AsyncComponent(
 		name: 'Mappings',
 	},
 );
-const SearchSandbox = AsyncComponent(
-	() => import('./views/search-sandbox').then(module => module.default),
+const SearchSandboxWrapper = AsyncComponent(
+	() => import('./views/search-sandbox-wrapper').then(module => module.default),
 	{
-		name: 'SearchSandbox',
+		name: 'SearchSandboxWrapper',
 	},
 );
 const Billing = AsyncComponent(() => import('./views/newbilling').then(module => module.default), {
@@ -70,13 +70,11 @@ const Analytics = AsyncComponent(() => import('./views/analytics').then(module =
 });
 
 // SearchSandbox routes
-const SearchEditor = AsyncComponent(
-	() => import('./views/search-sandbox/pages/Editor').then(module => module.default),
-	{
-		name: 'SearchEditor',
-	},
-);
+const SearchEditor = AsyncComponent(() => import('../modules/batteries/components/SearchSandbox/containers/Editor').then(module => module.default), {
+	name: 'SearchEditor',
+});
 
+// clusters routes
 const Clusters = AsyncComponent(() => import('./views/clusters').then(module => module.default), {
 	name: 'Clusters',
 });
@@ -259,7 +257,7 @@ class MainApp extends React.Component {
 					/>
 					<Route
 						path="search-sandbox/:appId"
-						component={SearchSandbox}
+						component={SearchSandboxWrapper}
 						{...appChangesEvent}
 						onEnter={params =>
 							helper.appDashboard.onEnter(params.params.appId, 'search-sandbox')

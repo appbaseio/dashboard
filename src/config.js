@@ -7,7 +7,7 @@ export default {
 	logoText: null,
 	cardIcon: '',
 	// add 'search-sandbox' here when needed
-	appDashboard: ['dashboard', 'mappings', 'analytics', 'browser', 'mirage', 'credentials', 'team'],
+	appDashboard: ['dashboard', 'search-sandbox', 'mappings', 'analytics', 'browser', 'credentials', 'team'],
 	navbar: ['Tutorial', 'Docs', 'Billing'],
 	document: 'https://docs.appbase.io',
 	tutorial: {
