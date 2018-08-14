@@ -47,6 +47,17 @@ export default class SearchSandboxWrapper extends Component {
 	}
 
 	render() {
+		const vcenter = {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
+			padding: 20,
+			height: 300,
+			fontSize: 16,
+			lineHeight: 26,
+		};
+
 		this.pageInfo = {
 			currentView: 'search-sandbox',
 			appName: this.state.appName,
@@ -54,7 +65,7 @@ export default class SearchSandboxWrapper extends Component {
 		};
 
 		if (!this.state.credentials) {
-			return 'Loading...';
+			return <div style={vcenter}>Loading...</div>;
 		}
 
 		return (
