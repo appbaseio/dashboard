@@ -21,7 +21,10 @@ export default props => (
 		</div>
 		<div className="right-column">
 			{props.label === 'Finish' ? (
-				<a className={`button has-icon ${props.disabled ? 'disabled' : ''}`} href="/tutorial/finish">
+				<a
+					className={`button has-icon ${props.disabled ? 'disabled' : ''}`}
+					href={`/tutorial/finish?app=${props.app}`}
+				>
 					Finish &nbsp; <img width="13" src="/assets/images/next.svg" alt=">" />
 				</a>
 			) : (

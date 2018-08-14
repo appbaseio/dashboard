@@ -68,7 +68,7 @@ export default class PermissionCard extends Component {
 	ccSuccess() {
 		toastr.success(`${this.state.description} Credentials have been copied successully!`);
 		if (this.state.keyType === 'admin') {
-			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.' );
+			toastr.warning('The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate <a href="guide-link">read-only credentials</a>.');
 		}
 	}
 	ccError() {
@@ -152,7 +152,7 @@ export default class PermissionCard extends Component {
 			},
 		};
 		showForm(formPayload);
-	}
+	};
 	render() {
 		const cx = classNames({
 			active: this.state.showKey,
@@ -198,21 +198,40 @@ export default class PermissionCard extends Component {
 										<i className="far fa-clone" />
 									</a>
 								</CopyToClipboard>
-								<a
-									onClick={this.editCredentials}
-									className="ad-credential-btn ad-permission-key-copy-btn"
-								>
-										<i className={`far fa-edit`} />
+								{this.props.isOwner ? (
+									<a
+										onClick={this.editCredentials}
+										className="ad-credential-btn ad-permission-key-copy-btn"
+									>
+										<i className="far fa-edit" />
 									</a>
+								) : (
+									<a
+										onClick={this.editCredentials}
+										className="ad-credential-btn ad-permission-key-copy-btn"
+									>
+										<i className="fa fa-info-circle" />
+									</a>
+								)}
 							</div>
 						</div>
+
 						<aside className="permission-key-delete">
 							<ConfirmBox
 								info={this.confirmBoxInfo}
 								onConfirm={this.deletePermission}
 								type="danger"
 							>
-								<a className="permission-delete animation">
+								<a
+									className="permission-delete animation"
+									style={
+										this.props.isOwner
+											? undefined
+											: {
+													pointerEvents: 'none',
+											  }
+									}
+								>
 									<i className="fa fa-trash-alt" />
 								</a>
 							</ConfirmBox>

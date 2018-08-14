@@ -73,7 +73,9 @@ class WhiteList extends React.Component {
 			label,
 			inputProps,
 			defaultSuggestionValue,
-			control: { value, handler, hasError },
+			control: {
+ value, handler, hasError, disabled, enabled,
+},
 			type,
 			toolTipMessage,
 		} = this.props;
@@ -98,12 +100,14 @@ class WhiteList extends React.Component {
 										</div>
 									)}
 								</div>
-								<div css="cursor:pointer">
-									<Icon
-										onClick={() => this.removeItem(item)}
-										type="close-circle-o"
-									/>
-								</div>
+								{enabled && (
+									<div css="cursor:pointer">
+										<Icon
+											onClick={() => this.removeItem(item)}
+											type="close-circle-o"
+										/>
+									</div>
+								)}
 							</Flex>
 						))}
 						<div>
@@ -118,6 +122,7 @@ class WhiteList extends React.Component {
 									defaultActiveFirstOption={!!text}
 									showArrow={false}
 									filterOption={false}
+									disabled={disabled}
 									style={{ width: '100%' }}
 								>
 									{text === '*' && text.length === 1 ? (

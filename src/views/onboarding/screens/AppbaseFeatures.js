@@ -44,9 +44,8 @@ export default class AppbaseFeatures extends Component {
 			<div>
 				<h3>Streaming updates</h3>
 				<p>
-					We will add a new movie to our dataset. Once added,
-					it will appear in realtime in the existing results if it matches
-					the search query.
+					We will add a new movie to our dataset. Once added, it will appear in realtime
+					in the existing results if it matches the search query.
 				</p>
 			</div>
 			<div
@@ -71,10 +70,10 @@ export default class AppbaseFeatures extends Component {
 	);
 
 	renderSearchApp = () => (
-			<div>
-				<SearchApp fields={this.props.searchFields} facets={this.props.facetFields} />
-			</div>
-		);
+		<div>
+			<SearchApp fields={this.props.searchFields} facets={this.props.facetFields} />
+		</div>
+	);
 
 	render() {
 		return (
@@ -91,8 +90,8 @@ export default class AppbaseFeatures extends Component {
 							<h2>Stream realtime updates</h2>
 						</header>
 						<p>
-							appbase.io has built-in support for streaming realtime (aka live) updates
-							on search queries
+							appbase.io has built-in support for streaming realtime (aka live)
+							updates on search queries
 						</p>
 					</div>
 				</div>
@@ -102,6 +101,7 @@ export default class AppbaseFeatures extends Component {
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					label="Finish"
+					app={this.props.app}
 				/>
 			</div>
 		);

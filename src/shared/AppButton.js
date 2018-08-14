@@ -11,6 +11,7 @@ const styles = (color, backgroundColor) =>
 			backgroundColor,
 			'&:hover, &:focus': {
 				backgroundColor: shade(backgroundColor, -0.1),
+				color,
 			},
 		},
 		color && {

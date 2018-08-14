@@ -21,6 +21,7 @@ const hideOnLarge = css`
 		display: none;
 	`)};
 	margin: 50px auto;
+	user-select: none;
 `;
 
 const showOnLarge = css`
@@ -28,6 +29,7 @@ const showOnLarge = css`
 	${media.ipadPro(css`
 		display: flex;
 	`)};
+	user-select: none;
 `;
 
 const Title = styled('div')`
@@ -70,8 +72,7 @@ const Table = styled('table')`
 	}
 	> thead > tr > td,
 	> tbody > tr > td {
-		min-width: 205px;
-		max-width: 237px;
+		width: 205px;
 		border: 1.5px solid #f4f4f4;
 		border-bottom: 0;
 		padding: 11px 2px;
@@ -179,6 +180,7 @@ const ListCaption = styled('div')`
 `;
 
 const HeadingTr = css`
+	height: 100px;
 	&:hover {
 		td {
 			&:nth-child(1) {
@@ -210,8 +212,7 @@ const HeadingTr = css`
 		line-height: 28px !important;
 		text-transform: uppercase;
 		text-decoration: none !important;
-		padding-bottom: 0 !important;
-		padding-top: 20px !important;
+		padding-bottom: 20px !important;
 		> small {
 			display: block;
 			clear: both;
@@ -261,10 +262,22 @@ export default class PricingTable extends Component {
 				record: 0,
 				apiCall: 0,
 			},
+			active: undefined,
 			plans: this.plans,
 		};
 	}
-
+	get getText() {
+		if (this.state.active) {
+			if (
+				this.state.active === 'bootstrap' &&
+				this.calcPrice('bootstrap') > this.calcPrice('growth')
+			) {
+				return 'Growth plan will be cheaper.';
+			}
+			return 'Plan scales as usage.';
+		}
+		return undefined;
+	}
 	calcPrice(planName) {
 		const { basePrice } = this.state.plans[planName];
 
@@ -280,7 +293,6 @@ export default class PricingTable extends Component {
 		const incrementedApiCall = apiCall * apiIncrement;
 		return basePrice + incrementedRecord + incrementedApiCall;
 	}
-
 	render() {
 		const { plans, bootstrap, growth } = this.state;
 		const { onClickButton } = this.props;
@@ -326,8 +338,8 @@ export default class PricingTable extends Component {
 						<tr className={HeadingTr}>
 							<td>Core Platform</td>
 							<td />
-							<td />
-							<td />
+							<td>{this.state.active === 'bootstrap' && this.getText}</td>
+							<td>{this.state.active === 'growth' && this.getText}</td>
 						</tr>
 						<tr>
 							<td>
@@ -341,6 +353,7 @@ export default class PricingTable extends Component {
 									values={plans.bootstrap.records}
 									onChange={(value, index) => {
 										this.setState({
+											active: 'bootstrap',
 											bootstrap: Object.assign(bootstrap, { record: index }),
 										});
 									}}
@@ -351,6 +364,7 @@ export default class PricingTable extends Component {
 									values={plans.growth.records}
 									onChange={(value, index) => {
 										this.setState({
+											active: 'growth',
 											growth: Object.assign(growth, {
 												record: index,
 											}),
@@ -372,6 +386,7 @@ export default class PricingTable extends Component {
 									onChange={(value, index) => {
 										this.setState({
 											bootstrap: Object.assign(bootstrap, { apiCall: index }),
+											active: 'bootstrap',
 										});
 									}}
 								/>
@@ -384,6 +399,7 @@ export default class PricingTable extends Component {
 											growth: Object.assign(growth, {
 												apiCall: index,
 											}),
+											active: 'growth',
 										});
 									}}
 								/>

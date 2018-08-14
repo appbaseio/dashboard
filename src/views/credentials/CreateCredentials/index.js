@@ -10,7 +10,7 @@ import Grid from './Grid';
 import Flex from './../../../shared/Flex';
 import { createCredentials as Messages, hoverMessage } from './../../../utils/messages';
 import { traverseMapping } from './../../../../modules/batteries/utils/mappings';
-import { Types, aclOptions, aclOptionsLabel, defaultAclOptions, isNegative } from '../utils';
+import { Types, getDefaultAclOptionsByPlan, aclOptionsLabel, getAclOptionsByPlan, isNegative } from '../utils';
 import WhiteList from './WhiteList';
 
 const { Option } = Select;
@@ -27,7 +27,8 @@ class CreateCredentials extends React.Component {
 		this.form = FormBuilder.group({
 			description: '',
 			operationType: [Types.read, Validators.required],
-			acl: [{ value: defaultAclOptions, disabled: !props.isPaidUser }, Validators.required],
+			acl: [{ value: getDefaultAclOptionsByPlan(props.plan), disabled: !props.isPaidUser },
+				Validators.required],
 			referers: [{ value: ['*'], disabled: !props.isPaidUser }],
 			sources: [{ value: ['0.0.0.0/0'], disabled: !props.isPaidUser }],
 			include_fields: [{ value: ['*'], disabled: !props.isPaidUser }],
@@ -38,27 +39,31 @@ class CreateCredentials extends React.Component {
 			],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, [Validators.required, isNegative]],
 		});
-		this.mappings = traverseMapping(this.props.mappings, true);
+		this.mappings = traverseMapping(this.props.mappings);
 	}
 	componentDidMount() {
-		const includeFieldsHandler = this.form.get('include_fields');
-		const excludeFieldsHandler = this.form.get('exclude_fields');
-		includeFieldsHandler.valueChanges.subscribe((value) => {
-			if (value.includes('*')) {
-				excludeFieldsHandler.disable({ emitEvent: false });
-				excludeFieldsHandler.reset([]);
-			} else {
-				excludeFieldsHandler.enable({ emitEvent: false });
-			}
-		});
-		excludeFieldsHandler.valueChanges.subscribe((value) => {
-			if (value.includes('*')) {
-				includeFieldsHandler.disable({ emitEvent: false });
-				includeFieldsHandler.reset([]);
-			} else {
-				includeFieldsHandler.enable({ emitEvent: false });
-			}
-		});
+		if (!this.props.isOwner) {
+			this.form.disable();
+		} else {
+			const includeFieldsHandler = this.form.get('include_fields');
+			const excludeFieldsHandler = this.form.get('exclude_fields');
+			includeFieldsHandler.valueChanges.subscribe((value) => {
+				if (value.includes('*')) {
+					excludeFieldsHandler.disable({ emitEvent: false });
+					excludeFieldsHandler.reset([]);
+				} else {
+					excludeFieldsHandler.enable({ emitEvent: false });
+				}
+			});
+			excludeFieldsHandler.valueChanges.subscribe((value) => {
+				if (value.includes('*')) {
+					includeFieldsHandler.disable({ emitEvent: false });
+					includeFieldsHandler.reset([]);
+				} else {
+					includeFieldsHandler.enable({ emitEvent: false });
+				}
+			});
+		}
 		if (this.props.initialValues) {
 			this.form.patchValue(this.props.initialValues);
 		}
@@ -72,6 +77,12 @@ class CreateCredentials extends React.Component {
 		this.form.get('include_fields').valueChanges.unsubscribe();
 		this.form.get('exclude_fields').valueChanges.unsubscribe();
 	}
+	get getText() {
+		if (this.props.isOwner) {
+			return this.isEditing ? 'Edit credential' : 'Create a new credential';
+		}
+		return 'Credentials Details';
+	}
 	get isEditing() {
 		return !!this.props.initialValues;
 	}
@@ -80,7 +91,7 @@ class CreateCredentials extends React.Component {
 	};
 	render() {
 		const {
- show, handleCancel, isPaidUser, isSubmitting,
+ show, handleCancel, isPaidUser, isSubmitting, isOwner, plan,
 } = this.props;
 		return (
 			<FieldGroup
@@ -88,11 +99,12 @@ class CreateCredentials extends React.Component {
 				control={this.form}
 				render={({ invalid }) => (
 					<Modal
+						destroyOnClose={false}
 						style={{
 							width: '600px',
 						}}
 						css={modal}
-						footer={[
+						footer={isOwner ? [
 							<Button key="back" onClick={handleCancel}>
 								Cancel
 							</Button>,
@@ -105,13 +117,18 @@ class CreateCredentials extends React.Component {
 							>
 								{this.isEditing ? 'Save' : 'Generate'}
 							</Button>,
-						]}
+						] : [
+								<Button key="back" onClick={handleCancel}>
+									Cancel
+								</Button>,
+							]
+						}
 						visible={show}
 						onCancel={handleCancel}
 					>
 						<div css="position: relative">
 							<span css="font-weight: 500;color: black;font-size: 16px;">
-								{this.isEditing ? 'Edit credential' : 'Create a new credential'}
+								{this.getText}
 							</span>
 							<FieldControl
 								strict={false}
@@ -186,7 +203,7 @@ class CreateCredentials extends React.Component {
 												<CheckboxGroup
 													css="label { font-weight: 100 }"
 													{...inputHandler}
-													options={aclOptions.map(o => aclOptionsLabel[o])}
+													options={getAclOptionsByPlan(plan).map(o => aclOptionsLabel[o])}
 													value={inputHandler.value.map(o => aclOptionsLabel[o])}
 													onChange={(value) => {
 														inputHandler.onChange(value.map(v => v.toLowerCase()));
@@ -270,8 +287,7 @@ class CreateCredentials extends React.Component {
 															if (!excludedFields.includes(v)) {
 																return (
 																	<Option
-																		value={v}
-																		key={v}
+																		key={i + v}
 																		title={v}
 																	>
 																		{v}
@@ -320,7 +336,7 @@ class CreateCredentials extends React.Component {
 														this.mappings[i].map((v) => {
 															if (!includedFields.includes(v)) {
 																return (
-																	<Option value={v} key={v}>
+																	<Option key={i + v}>
 																		{v}
 																		<span
 																			css={styles.fieldBadge}
@@ -413,6 +429,8 @@ CreateCredentials.propTypes = {
 		ttl: PropTypes.number,
 		meta: PropTypes.object,
 	}),
+	isOwner: PropTypes.bool,
+	plan: PropTypes.oneOf(['free', 'growth', 'bootstrap']).isRequired,
 };
 
 export default CreateCredentials;

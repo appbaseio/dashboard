@@ -75,6 +75,28 @@ export const Types = {
 };
 // Acl options
 export const aclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
+// Default Selected Acl
+export const defaultAclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
+/**
+ * To get acl options according to the users plan
+ * @param {string} plan
+ */
+export const getAclOptionsByPlan = (plan) => {
+	if (plan === 'growth') {
+		return [...aclOptions, 'analytics'];
+	}
+	return aclOptions;
+};
+/**
+ * To get default selected acl options according to the users plan
+ * @param {string} plan
+ */
+export const getDefaultAclOptionsByPlan = (plan) => {
+	if (plan === 'growth') {
+		return [...defaultAclOptions, 'analytics'];
+	}
+	return defaultAclOptions;
+};
 // Acl options label
 export const aclOptionsLabel = {
 	index: 'Index',
@@ -84,6 +106,5 @@ export const aclOptionsLabel = {
 	stream: 'Stream',
 	bulk: 'Bulk',
 	delete: 'Delete',
+	analytics: 'Analytics',
 };
-// Default Selected Acl
-export const defaultAclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];

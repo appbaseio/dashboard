@@ -124,7 +124,9 @@ export default class NewPermission extends Component {
 				{this.props.showCredForm && (
 					<CreateCredentials
 						isPaidUser={this.props.isPaidUser}
+						plan={this.props.plan}
 						isSubmitting={this.props.isSubmitting}
+						isOwner={this.props.isOwner}
 						onSubmit={this.handleSubmit}
 						show={this.props.showCredForm}
 						handleCancel={this.props.handleCancel}
@@ -132,27 +134,34 @@ export default class NewPermission extends Component {
 						initialValues={this.props.initialValues}
 					/>
 				)}
-				<div className="ad-create-collapse">
-					<a className="ad-theme-btn primary" onClick={() => this.props.showForm()}>
-						New Credentials
-					</a>
-				</div>
-				<div className="ad-create-expand flex align-center justify-between">
-					<div>
-						{this.renderElement('description')}
-						<div className="ad-create-button-group-container">
-							{this.renderElement('buttonGroup')}
+				{this.props.isOwner && (
+					<React.Fragment>
+						<div className="ad-create-collapse">
+							<a
+								className="ad-theme-btn primary"
+								onClick={() => this.props.showForm()}
+							>
+								New Credentials
+							</a>
 						</div>
-					</div>
-					<div>
-						<button
-							className="ad-theme-btn primary ad-create-submit"
-							onClick={this.newPermission}
-						>
-							Create
-						</button>
-					</div>
-				</div>
+						<div className="ad-create-expand flex align-center justify-between">
+							<div>
+								{this.renderElement('description')}
+								<div className="ad-create-button-group-container">
+									{this.renderElement('buttonGroup')}
+								</div>
+							</div>
+							<div>
+								<button
+									className="ad-theme-btn primary ad-create-submit"
+									onClick={this.newPermission}
+								>
+									Create
+								</button>
+							</div>
+						</div>
+					</React.Fragment>
+				)}
 			</div>
 		);
 	}
