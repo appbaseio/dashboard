@@ -278,7 +278,9 @@ export default class Clusters extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster is taking too long to respond...
+						Cluster status isn{"'"}t available yet
+						<br />
+						It typically takes 15-30 minutes before a cluster comes live.
 
 						<div style={{ marginTop: 20 }}>
 							<button
