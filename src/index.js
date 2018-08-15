@@ -2,12 +2,20 @@ import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { injectGlobal } from 'emotion';
+import Loadable from 'react-loadable';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Layout } from 'antd';
 
 import configureStore from './store';
+import Loader from './components/Loader';
 
 // routes
-import Wrapper from './pages/Wrapper';
+const Wrapper = Loadable({
+	loader: () => import('./pages/Wrapper'),
+	loading: Loader,
+});
+
+const { Content } = Layout;
 
 // global styles
 // eslint-disable-next-line
@@ -21,13 +29,15 @@ injectGlobal`
 const store = configureStore();
 
 const App = () => (
-	<Provider store={store}>
-		<Router>
-			<Fragment>
-				<Route component={Wrapper} />
-			</Fragment>
-		</Router>
-	</Provider>
+	<Content>
+		<Provider store={store}>
+			<Router>
+				<Fragment>
+					<Route component={Wrapper} />
+				</Fragment>
+			</Router>
+		</Provider>
+	</Content>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

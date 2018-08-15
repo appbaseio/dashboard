@@ -1,15 +1,22 @@
 import React, { Fragment } from 'react';
-import { Layout } from 'antd';
 import { Switch, Route } from 'react-router-dom';
+import Loadable from 'react-loadable';
 
 import FullHeader from '../../components/FullHeader';
-import ClusterPage from '../ClusterPage';
-import HomePage from '../HomePage';
+import Loader from '../../components/Loader';
 
-const { Content } = Layout;
+const ClusterPage = Loadable({
+	loader: () => import('../ClusterPage'),
+	loading: Loader,
+});
 
-const Wrapper = ({ children }) => (
-	<Content>
+const HomePage = Loadable({
+	loader: () => import('../HomePage'),
+	loading: Loader,
+});
+
+const Wrapper = () => (
+	<Fragment>
 		<FullHeader />
 
 		<Switch>
@@ -18,7 +25,7 @@ const Wrapper = ({ children }) => (
 				<Route exact path="/clusters" component={ClusterPage} />
 			</Fragment>
 		</Switch>
-	</Content>
+	</Fragment>
 );
 
 export default Wrapper;
