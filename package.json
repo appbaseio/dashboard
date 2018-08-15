@@ -1,0 +1,44 @@
+{
+	"name": "dashboard",
+	"version": "2.0.0",
+	"description": "appbase.io dashboard",
+	"main": "src/index.js",
+	"repository": "git@github.com:appbaseio/dashboard.git",
+	"author": "Deepak Grover <deepakgrover333@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"start": "webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
+		"build": "webpack --mode production"
+	},
+	"lint-staged": {
+		"*.js": [
+			"eslint"
+		]
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.0.0-rc.1",
+		"@babel/core": "^7.0.0-rc.1",
+		"@babel/preset-env": "^7.0.0-rc.1",
+		"@babel/preset-react": "^7.0.0-rc.1",
+		"babel-eslint": "^8.2.6",
+		"babel-loader": "^8.0.0-beta",
+		"babel-plugin-emotion": "^9.2.6",
+		"babel-plugin-import": "^1.8.0",
+		"eslint": "^5.3.0",
+		"eslint-config-airbnb": "^17.1.0",
+		"eslint-plugin-import": "^2.14.0",
+		"eslint-plugin-jsx-a11y": "^6.1.1",
+		"eslint-plugin-react": "^7.11.1",
+		"less-loader": "^4.1.0",
+		"webpack": "^4.16.5",
+		"webpack-cli": "^3.1.0",
+		"webpack-dev-server": "^3.1.5"
+	},
+	"dependencies": {
+		"antd": "^3.8.1",
+		"emotion": "^9.2.6",
+		"react": "^16.4.2",
+		"react-dom": "^16.4.2"
+	}
+}
