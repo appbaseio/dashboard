@@ -9,7 +9,8 @@
 	"private": false,
 	"scripts": {
 		"start": "webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
-		"build": "webpack --mode production"
+		"build": "webpack --mode production",
+		"glow": "glow --watch"
 	},
 	"lint-staged": {
 		"*.js": [
@@ -20,6 +21,7 @@
 		"@babel/cli": "^7.0.0-rc.1",
 		"@babel/core": "^7.0.0-rc.1",
 		"@babel/preset-env": "^7.0.0-rc.1",
+		"@babel/preset-flow": "^7.0.0-rc.1",
 		"@babel/preset-react": "^7.0.0-rc.1",
 		"babel-eslint": "^8.2.6",
 		"babel-loader": "^8.0.0-beta",
@@ -30,6 +32,8 @@
 		"eslint-plugin-import": "^2.14.0",
 		"eslint-plugin-jsx-a11y": "^6.1.1",
 		"eslint-plugin-react": "^7.11.1",
+		"flow-bin": "^0.78.0",
+		"glow": "^1.2.2",
 		"less-loader": "^4.1.0",
 		"webpack": "^4.16.5",
 		"webpack-cli": "^3.1.0",
@@ -39,6 +43,9 @@
 		"antd": "^3.8.1",
 		"emotion": "^9.2.6",
 		"react": "^16.4.2",
-		"react-dom": "^16.4.2"
+		"react-dom": "^16.4.2",
+		"react-redux": "^5.0.7",
+		"redux": "^4.0.0",
+		"redux-saga": "^0.16.0"
 	}
 }
