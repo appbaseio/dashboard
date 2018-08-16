@@ -93,7 +93,7 @@ export default class Clusters extends Component {
 			return (
 				<div style={vcenter}>
 					<i className="fas fa-gift" style={{ fontSize: 36 }} />
-					<h2 style={{ fontSize: 22 }}>You{"'"}ve unlocked 14 days free trial</h2>
+					<h2 style={{ marginTop: 24, fontSize: 22 }}>You{"'"}ve unlocked 14 days free trial</h2>
 					<p style={{ margin: '15px 0 20px', fontSize: 16 }}>Get started with clusters today</p>
 					<div style={{ textAlign: 'center' }}>
 						<Link to="/clusters/new">

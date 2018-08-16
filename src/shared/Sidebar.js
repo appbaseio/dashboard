@@ -68,7 +68,7 @@ export default class Sidebar extends Component {
 					<img
 						className="img-responsive"
 						alt="search-sandbox"
-						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
+						src={`../../../assets/images/${this.config.name}/sidebar/sandbox.svg`}
 					/>
 				),
 			},
