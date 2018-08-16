@@ -391,10 +391,11 @@ export const requestLogs = [
  */
 export function getAnalytics(appName, userPlan, clickanalytics = true) {
 	return new Promise((resolve, reject) => {
-		const url =
-			userPlan === 'growth'
-				? `${ACC_API}/analytics/${appName}/advanced`
-				: `${ACC_API}/analytics/${appName}/overview`;
+		// const url =
+		// 	userPlan === 'growth'
+		// 		? `${ACC_API}/analytics/${appName}/advanced`
+		// 		: `${ACC_API}/analytics/${appName}/overview`;
+		const url = `${ACC_API}/analytics/${appName}/overview`;
 		const queryParams = getQueryParams({ clickanalytics });
 		fetch(url + queryParams, {
 			method: 'GET',
