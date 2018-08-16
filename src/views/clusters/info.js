@@ -205,7 +205,7 @@ export default class Clusters extends Component {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
-			const { protocol, url } = (source.url || source.dashboard_url).split('://');
+			const [protocol, url] = (source.url || source.dashboard_url).split('://');
 			return (
 				<div key={source.name} className="cluster-endpoint">
 					<h4>
@@ -268,6 +268,8 @@ export default class Clusters extends Component {
 			height: 'calc(100vh - 200px)',
 			width: '100%',
 			fontSize: '20px',
+			textAlign: 'center',
+			lineHeight: '36px',
 		};
 
 		if (this.state.error) {
