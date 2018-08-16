@@ -9,7 +9,7 @@
             <g id="Search-Sandbox" transform="translate(38.000000, 250.000000)">
                 <g id="Group" transform="translate(7.000000, 7.000000)">
                     <circle id="Oval-3" cx="4" cy="4" r="4"></circle>
-                    <path d="M6.5,6.5 L9.66666667,9.66666667" id="Line-6" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M7.5,7.5 L9.66666667,9.66666667" id="Line-6" stroke-linecap="round" stroke-linejoin="round"></path>
                 </g>
                 <rect id="Rectangle-14-Copy-4" x="0.75" y="0.75" width="22.5" height="22.5" rx="4"></rect>
             </g>
