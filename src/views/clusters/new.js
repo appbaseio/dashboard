@@ -308,15 +308,15 @@ export default class NewCluster extends Component {
 							</ul>
 							<ul className="region-list">
 								<li
-									onClick={() => this.setConfig('region', 'canandacentral')}
-									className={this.state.region === 'canandacentral' ? 'active' : ''}
+									onClick={() => this.setConfig('region', 'canadacentral')}
+									className={this.state.region === 'canadacentral' ? 'active' : ''}
 								>
 									<img src="/assets/images/flags/canada.png" alt="CA" />
 									<span>Canada Central</span>
 								</li>
 								<li
-									onClick={() => this.setConfig('region', 'canandaeast')}
-									className={this.state.region === 'canandaeast' ? 'active' : ''}
+									onClick={() => this.setConfig('region', 'canadaeast')}
+									className={this.state.region === 'canadaeast' ? 'active' : ''}
 								>
 									<img src="/assets/images/flags/canada.png" alt="CA" />
 									<span>Canada East</span>

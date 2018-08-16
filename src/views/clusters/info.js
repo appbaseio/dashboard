@@ -205,12 +205,12 @@ export default class Clusters extends Component {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
-			const url = (source.url || source.dashboard_url).substring(7);
+			const { protocol, url } = (source.url || source.dashboard_url).split('://');
 			return (
 				<div key={source.name} className="cluster-endpoint">
 					<h4>
 						<a
-							href={`http://${username}:${password}@${url}`}
+							href={`${protocol}://${username}:${password}@${url}`}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -278,7 +278,9 @@ export default class Clusters extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster is taking too long to respond...
+						Cluster status isn{"'"}t available yet
+						<br />
+						It typically takes 15-30 minutes before a cluster comes live.
 
 						<div style={{ marginTop: 20 }}>
 							<button

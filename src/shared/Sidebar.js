@@ -45,20 +45,6 @@ export default class Sidebar extends Component {
 				),
 			},
 			{
-				label: 'Search Sandbox',
-				link: `${this.contextPath}search-sandbox/`,
-				type: 'internal',
-				name: 'search-sandbox',
-				tooltip: 'Update search preferences',
-				img: (
-					<img
-						className="img-responsive"
-						alt="search-sandbox"
-						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
-					/>
-				),
-			},
-			{
 				label: 'Browser',
 				link: `${this.contextPath}browser/`,
 				type: 'internal',
@@ -69,6 +55,20 @@ export default class Sidebar extends Component {
 						className="img-responsive"
 						alt="browser"
 						src={`../../../assets/images/${this.config.name}/sidebar/browser.svg`}
+					/>
+				),
+			},
+			{
+				label: 'Search Sandbox',
+				link: `${this.contextPath}search-sandbox/`,
+				type: 'internal',
+				name: 'search-sandbox',
+				tooltip: 'Update search preferences',
+				img: (
+					<img
+						className="img-responsive"
+						alt="search-sandbox"
+						src={`../../../assets/images/${this.config.name}/sidebar/dashboard.svg`}
 					/>
 				),
 			},

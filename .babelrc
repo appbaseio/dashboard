@@ -16,6 +16,14 @@
 		"syntax-dynamic-import",
 		"transform-class-properties",
 		"transform-object-rest-spread",
-		"lodash"
+		"lodash",
+		[
+			"import",
+			{
+				"libraryName": "antd",
+				"libraryDirectory": "es",
+				"style": "css"
+			}
+		]
 	]
 }

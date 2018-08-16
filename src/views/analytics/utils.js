@@ -373,7 +373,7 @@ export const requestLogs = [
 		),
 	},
 	{
-		title: 'Classifier',
+		title: 'Type',
 		dataIndex: 'classifier',
 	},
 	{
