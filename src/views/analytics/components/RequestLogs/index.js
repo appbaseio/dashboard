@@ -71,6 +71,15 @@ class RequestLogs extends React.Component {
 					errorHits: normalizeData(filteredHits.errorHits),
 					searchHits: normalizeData(filteredHits.searchHits),
 				});
+				// Update the request time locally
+				setInterval(() => {
+					this.setState({
+						hits: normalizeData(res.hits),
+						successHits: normalizeData(filteredHits.successHits),
+						errorHits: normalizeData(filteredHits.errorHits),
+						searchHits: normalizeData(filteredHits.searchHits),
+					});
+				}, 60000);
 			})
 			.catch(() => {
 				// toastr.error('Error', get(e, 'responseJSON.message', 'Unable to fetch logs.'));
@@ -183,8 +192,12 @@ class RequestLogs extends React.Component {
 							show={showDetails}
 							handleCancel={this.handleCancel}
 							headers={get(this.currentRequest, '_source.request.headers', {})}
-							request={JSON.parse(get(this.currentRequest, '_source.request.body') || null) || {}}
-							response={JSON.parse(get(this.currentRequest, '_source.response.body') || null) || {}}
+							request={
+								JSON.parse(get(this.currentRequest, '_source.request.body') || null) || {}
+							}
+							response={
+								JSON.parse(get(this.currentRequest, '_source.response.body') || null) || {}
+							}
 							time={get(this.currentRequest, '_source.timestamp', '')}
 							method={get(this.currentRequest, '_source.request.method', '')}
 							url={get(this.currentRequest, '_source.request.uri', '')}
