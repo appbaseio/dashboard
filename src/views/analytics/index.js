@@ -34,7 +34,7 @@ class Main extends React.Component {
 			popularFilters: [],
 			searchVolume: [],
 			// change it to true to test paid user
-			isPaidUser: false,
+			isPaidUser: true,
 			// change it to plan for eg. growth, bootstrap to test user with different plans
 			currentPlan: undefined,
 			activeTabKey: this.tabKeys.includes(props.params.tab)
@@ -52,12 +52,12 @@ class Main extends React.Component {
 	componentDidMount() {
 		// Comment out the below code to test paid user
 		// COMMENT START
-		checkUserStatus().then(
-			(response) => {
-				if (response.isPaidUser) {
-					this.setState(
-						{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
-						() => {
+		// checkUserStatus().then(
+		// 	(response) => {
+		// 		if (response.isPaidUser) {
+		// 			this.setState(
+		// 				{ isPaidUser: response.isPaidUser, currentPlan: response.plan },
+		// 				() => {
 		// COMMENT END
 		getAnalytics(this.pageInfo.appName, this.state.currentPlan)
 			.then((res) => {
@@ -76,23 +76,23 @@ class Main extends React.Component {
 				});
 			});
 		// COMMENT START
-						},
-					);
-				} else {
-					this.setState({
-						isFetching: false,
-						isPaidUser: false,
-					});
-				}
-			},
-			() => {
-				this.setState({
-					isFetching: false,
-				});
-				// eslint-disable-next-line
-				toastr.error('Error', 'Something went wrong');
-			},
-		);
+		// 				},
+		// 			);
+		// 		} else {
+		// 			this.setState({
+		// 				isFetching: false,
+		// 				isPaidUser: false,
+		// 			});
+		// 		}
+		// 	},
+		// 	() => {
+		// 		this.setState({
+		// 			isFetching: false,
+		// 		});
+		// 		// eslint-disable-next-line
+		// 		toastr.error('Error', 'Something went wrong');
+		// 	},
+		// );
 		// COMMENT END
 	}
 	componentWillReceiveProps(nextProps) {
