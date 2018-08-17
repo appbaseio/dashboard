@@ -73,7 +73,7 @@ export const popularFiltersCol = (plan) => {
 			{
 				title: 'Impressions',
 				dataIndex: 'count',
-			}
+			},
 		];
 	}
 	return [
@@ -396,7 +396,7 @@ export function getAnalytics(appName, userPlan, clickanalytics = true) {
 		// 		? `${ACC_API}/analytics/${appName}/advanced`
 		// 		: `${ACC_API}/analytics/${appName}/overview`;
 		const url = `${ACC_API}/analytics/${appName}/overview`;
-		const queryParams = getQueryParams({ clickanalytics });
+		const queryParams = getQueryParams({ clickanalytics: false });
 		fetch(url + queryParams, {
 			method: 'GET',
 			credentials: 'include',
