@@ -13,5 +13,6 @@ export async function getUser() {
 		c_id: data.body.c_id,
 	};
 
-	return user;
+	const { apps } = data.body;
+	return { user, apps };
 }

@@ -1,5 +1,5 @@
 // @flow
-import { USER } from '../constants';
+import { USER, APPS } from '../constants';
 
 export function loadUser(): Object {
 	return {
@@ -17,6 +17,27 @@ export function setUser(user: Object): Object {
 export function setUserError(error: Object): Object {
 	return {
 		type: USER.LOAD_FAIL,
+		error,
+	};
+}
+
+export function loadApps(apps: Array<Object>): Object {
+	return {
+		type: APPS.LOAD,
+		apps,
+	};
+}
+
+export function setApps(apps: Array<Object>): Object {
+	return {
+		type: APPS.LOAD_SUCCESS,
+		apps,
+	};
+}
+
+export function setAppsError(error: Object): Object {
+	return {
+		type: APPS.LOAD_FAIL,
 		error,
 	};
 }
