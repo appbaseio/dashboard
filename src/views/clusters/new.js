@@ -23,18 +23,18 @@ export const machineMarks = {
 	0: {
 		label: 'Sandbox',
 		storage: 30,
-		memory: 1.75,
+		memory: 4,
 		nodes: 1,
-		cost: 49,
-		machine: 'Standard_A1',
+		cost: 59,
+		machine: 'Standard_B2s',
 	},
 	25: {
 		label: 'Hobby',
 		storage: 60,
-		memory: 2,
+		memory: 4,
 		nodes: 2,
-		cost: 99,
-		machine: 'Standard_A1_v2',
+		cost: 119,
+		machine: 'Standard_B2s',
 	},
 	50: {
 		label: 'Production I',
@@ -54,7 +54,7 @@ export const machineMarks = {
 	},
 	100: {
 		label: 'Production III',
-		storage: 512,
+		storage: 480,
 		memory: 16,
 		nodes: 3,
 		cost: 799,
@@ -139,7 +139,7 @@ export default class NewCluster extends Component {
 			elasticsearch: {
 				nodes: selectedMachine.nodes,
 				version: this.state.clusterVersion,
-				volume_size: selectedMachine.storage,
+				volume_size: selectedMachine.storage / selectedMachine.nodes,
 				plugins: Object.keys(plugins).filter(item => this.state[item]),
 			},
 			cluster: {
