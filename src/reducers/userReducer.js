@@ -1,13 +1,37 @@
 // @flow
 import { USER } from '../constants';
 
-export default function userReducer(state: ?Object = null, action: Object): ?Object {
-	if (action.type === USER.LOAD_SUCCESS) {
-		return action.user;
+export default function userReducer(
+	state: Object = {
+		isLoading: true,
+		data: null,
+		error: null,
+	},
+	action: Object,
+): ?Object {
+	switch (action.type) {
+		case USER.LOAD: {
+			return {
+				isLoading: true,
+				data: null,
+				error: null,
+			};
+		}
+		case USER.LOAD_SUCCESS: {
+			return {
+				isLoading: false,
+				data: action.user,
+				error: null,
+			};
+		}
+		case USER.LOAD_FAIL: {
+			return {
+				isLoading: false,
+				data: null,
+				error: action.error,
+			};
+		}
+		default:
+			return state;
 	}
-	if (action.type === USER.LOAD_FAIL) {
-		return null;
-	}
-
-	return state;
 }

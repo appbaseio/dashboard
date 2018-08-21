@@ -10,7 +10,8 @@ const container = css`
 `;
 
 const card = css`
-	width: 450px;
+	width: 90%;
+	max-width: 450px;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
@@ -26,8 +27,12 @@ const card = css`
 		margin-bottom: 25px;
 	}
 
-	button {
+	a {
 		margin: 4px 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
 		letter-spacing: 0.02rem;
 		font-size: 15px;
 		font-weight: 700;
@@ -62,7 +67,7 @@ const googleBtn = css`
 
 	&:hover,
 	&:focus {
-		background-color: #e80029;
+		background-color: rgb(245, 106, 94);
 		color: #fff;
 		border-color: #f7d2cf;
 	}

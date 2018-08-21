@@ -13,3 +13,10 @@ export function setUser(user: Object): Object {
 		user,
 	};
 }
+
+export function setUserError(error: Object): Object {
+	return {
+		type: USER.LOAD_FAIL,
+		error,
+	};
+}
