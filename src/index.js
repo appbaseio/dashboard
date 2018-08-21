@@ -8,10 +8,16 @@ import { Layout } from 'antd';
 
 import configureStore from './store';
 import Loader from './components/Loader';
+import PrivateRoute from './pages/LoginPage/PrivateRoute';
 
 // routes
 const Wrapper = Loadable({
 	loader: () => import('./pages/Wrapper'),
+	loading: Loader,
+});
+
+const LoginPage = Loadable({
+	loader: () => import('./pages/LoginPage'),
 	loading: Loader,
 });
 
@@ -22,7 +28,7 @@ const { Content } = Layout;
 injectGlobal`
 	* {
 		box-sizing: border-box;
-		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif'
+		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif';
 	}
 `;
 
@@ -33,7 +39,8 @@ const App = () => (
 		<Provider store={store}>
 			<Router>
 				<Fragment>
-					<Route component={Wrapper} />
+					<Route exact path="/login" component={LoginPage} />
+					<PrivateRoute component={Wrapper} />
 				</Fragment>
 			</Router>
 		</Provider>
