@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Card } from 'antd';
 import Flex from '../../shared/Flex';
 import UsageDetails from './UsageDetails';
-import { getAnalytics } from '../analytics/utils';
-import SearchVolumeChart from '../../shared/SearchVolumeChart';
-import Searches from '../analytics/components/Searches';
-import RequestLogs from '../analytics/components/RequestLogs';
+import { getAnalytics } from './../../../modules/batteries/components/analytics/utils';
+import SearchVolumeChart from './../../../modules/batteries/components/shared/Chart/SearchVolume';
+import Searches from './../../../modules/batteries/components/analytics/components/Searches';
+import RequestLogs from './../../../modules/batteries/components/analytics/components/RequestLogs';
 
 class PaidUserDashboard extends React.Component {
 	constructor(props) {

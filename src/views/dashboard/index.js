@@ -7,7 +7,7 @@ import HighChartView from './HighChartView';
 import AppPage from '../../shared/AppPage';
 import DashboardGettingStarted from './DashboardGettingStarted';
 import PaidUserDashboard from './PaidUserDashboard';
-import Loader from '../analytics/components/Loader';
+import Loader from './../../../modules/batteries/components/shared/Loader/Spinner';
 
 const getApiCalls = (data) => {
 	let total = 0;
