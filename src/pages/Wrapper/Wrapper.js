@@ -20,10 +20,8 @@ const Wrapper = () => (
 		<FullHeader />
 
 		<Switch>
-			<Fragment>
-				<Route exact path="/" component={HomePage} />
-				<Route exact path="/clusters" component={ClusterPage} />
-			</Fragment>
+			<Route exact path="/" component={HomePage} />
+			<Route exact path="/clusters" component={ClusterPage} />
 		</Switch>
 	</Fragment>
 );

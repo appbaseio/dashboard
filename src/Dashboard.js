@@ -35,7 +35,7 @@ class Dashboard extends Component {
 		return (
 			<Router>
 				<Fragment>
-					<PrivateRoute component={Wrapper} />
+					<PrivateRoute user={user} component={Wrapper} />
 					<Route exact path="/login" component={LoginPage} />
 				</Fragment>
 			</Router>
