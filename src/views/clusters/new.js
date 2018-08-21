@@ -54,7 +54,7 @@ export const machineMarks = {
 	},
 	100: {
 		label: 'Production III',
-		storage: 512,
+		storage: 480,
 		memory: 16,
 		nodes: 3,
 		cost: 799,
@@ -139,7 +139,7 @@ export default class NewCluster extends Component {
 			elasticsearch: {
 				nodes: selectedMachine.nodes,
 				version: this.state.clusterVersion,
-				volume_size: selectedMachine.storage,
+				volume_size: selectedMachine.storage / selectedMachine.nodes,
 				plugins: Object.keys(plugins).filter(item => this.state[item]),
 			},
 			cluster: {
