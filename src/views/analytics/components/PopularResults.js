@@ -37,6 +37,9 @@ class PopularResults extends React.Component {
 				columns={popularResultsFull(this.props.plan)}
 				dataSource={this.state.popularResults}
 				title="Popular Results"
+				pagination={{
+					pageSize: 10,
+				}}
 			/>
 		);
 	}

@@ -127,6 +127,7 @@ class RequestLogs extends React.Component {
 			errorHits,
 			searchHits,
 		} = this.state;
+		const { pageSize } = this.props;
 		if (isFetching) {
 			return <Loader />;
 		}
@@ -143,7 +144,9 @@ class RequestLogs extends React.Component {
 							rowKey={record => record.id}
 							dataSource={hits}
 							columns={requestLogs}
-							pagination={false}
+							pagination={{
+								pageSize,
+							}}
 							onRow={record => ({
 								onClick: () => this.handleLogClick(record),
 							})}
@@ -155,7 +158,9 @@ class RequestLogs extends React.Component {
 							rowKey={record => record.id}
 							dataSource={searchHits}
 							columns={requestLogs}
-							pagination={false}
+							pagination={{
+								pageSize,
+							}}
 							onRow={record => ({
 								onClick: () => this.handleLogClick(record),
 							})}
@@ -167,7 +172,9 @@ class RequestLogs extends React.Component {
 							rowKey={record => record.id}
 							dataSource={successHits}
 							columns={requestLogs}
-							pagination={false}
+							pagination={{
+								pageSize,
+							}}
 							onRow={record => ({
 								onClick: () => this.handleLogClick(record),
 							})}
@@ -179,7 +186,9 @@ class RequestLogs extends React.Component {
 							rowKey={record => record.id}
 							dataSource={errorHits}
 							columns={requestLogs}
-							pagination={false}
+							pagination={{
+								pageSize,
+							}}
 							onRow={record => ({
 								onClick: () => this.handleLogClick(record),
 							})}
@@ -219,10 +228,12 @@ class RequestLogs extends React.Component {
 }
 RequestLogs.defaultProps = {
 	changeUrlOnTabChange: true,
+	pageSize: 10,
 };
 RequestLogs.propTypes = {
 	appName: PropTypes.string.isRequired,
 	changeUrlOnTabChange: PropTypes.bool,
+	pageSize: PropTypes.number,
 };
 
 export default RequestLogs;

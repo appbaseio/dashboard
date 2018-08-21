@@ -37,6 +37,9 @@ class NoResultsSearch extends React.Component {
 				columns={popularSearchesFull(this.props.plan)}
 				dataSource={this.state.noResults}
 				title="No Results Searches"
+				pagination={{
+					pageSize: 10,
+				}}
 			/>
 		);
 	}

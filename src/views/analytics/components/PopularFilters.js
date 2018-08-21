@@ -37,6 +37,9 @@ class PopularFilters extends React.Component {
 				columns={popularSearchesFull(this.props.plan)}
 				dataSource={this.state.popularFilters}
 				title="Popular Filters"
+				pagination={{
+					pageSize: 10,
+				}}
 			/>
 		);
 	}

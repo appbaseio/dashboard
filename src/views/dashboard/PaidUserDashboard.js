@@ -72,7 +72,11 @@ class PaidUserDashboard extends React.Component {
 					</div>
 				</Flex>
 				<div css="margin-top: 20px">
-					<RequestLogs changeUrlOnTabChange={false} appName={this.props.appName} />
+					<RequestLogs
+						pageSize={5}
+						changeUrlOnTabChange={false}
+						appName={this.props.appName}
+					/>
 				</div>
 			</div>
 		);
