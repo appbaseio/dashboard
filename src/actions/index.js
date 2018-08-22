@@ -21,23 +21,23 @@ export function setUserError(error: Object): Object {
 	};
 }
 
-export function loadApps(apps: Array<Object>): Object {
+export function loadApps(apps: Object): Object {
 	return {
 		type: APPS.LOAD,
 		apps,
 	};
 }
 
-export function setApps(apps: Array<Object>): Object {
+export function setAppsMetrics(metrics: Object): Object {
 	return {
-		type: APPS.LOAD_SUCCESS,
-		apps,
+		type: APPS.LOAD_METRICS_SUCCESS,
+		metrics,
 	};
 }
 
-export function setAppsError(error: Object): Object {
+export function setAppsMetricsError(error: Object): Object {
 	return {
-		type: APPS.LOAD_FAIL,
+		type: APPS.LOAD_METRICS_FAIL,
 		error,
 	};
 }
