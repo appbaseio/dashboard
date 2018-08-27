@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 
 import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
+import AppWrapper from '../AppWrapper';
 
 const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
@@ -16,14 +17,11 @@ const HomePage = Loadable({
 });
 
 const Wrapper = () => (
-	<Fragment>
-		<FullHeader />
-
-		<Switch>
-			<Route exact path="/" component={HomePage} />
-			<Route exact path="/clusters" component={ClusterPage} />
-		</Switch>
-	</Fragment>
+	<Switch>
+		<Route exact path="/" component={HomePage} />
+		<Route exact path="/clusters" component={ClusterPage} />
+		<Route path="/app" component={AppWrapper} />
+	</Switch>
 );
 
 export default Wrapper;

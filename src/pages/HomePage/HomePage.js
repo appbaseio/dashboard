@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
-import {
- Row, Col, Icon, Button, Card,
-} from 'antd';
+import { Row, Col, Icon, Button, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 
@@ -29,6 +28,7 @@ class HomePage extends Component {
 
 		return (
 			<Fragment>
+				<FullHeader />
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>

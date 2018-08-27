@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Loader from './components/Loader';
@@ -11,6 +11,11 @@ import { loadUser } from './actions';
 // routes
 const Wrapper = Loadable({
 	loader: () => import('./pages/Wrapper'),
+	loading: Loader,
+});
+
+const AppWrapper = Loadable({
+	loader: () => import('./pages/AppWrapper'),
 	loading: Loader,
 });
 
@@ -35,8 +40,8 @@ class Dashboard extends Component {
 		return (
 			<Router>
 				<Fragment>
-					<PrivateRoute user={user} component={Wrapper} />
 					<Route exact path="/login" component={LoginPage} />
+					<PrivateRoute user={user} component={Wrapper} />
 				</Fragment>
 			</Router>
 		);
