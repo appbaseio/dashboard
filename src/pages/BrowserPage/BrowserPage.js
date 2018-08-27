@@ -3,13 +3,13 @@ import { Row, Col, Button, Icon } from 'antd';
 
 import Header from '../../components/Header';
 
-export default class MappingsPage extends Component {
+export default class BrowserPage extends Component {
 	render() {
 		return (
 			<Header compact>
 				<Row type="flex" justify="space-between" gutter={16}>
 					<Col md={18}>
-						<h2>Manage Mappings</h2>
+						<h2>Browse Data</h2>
 
 						<Row>
 							<Col span={18}>
@@ -30,9 +30,21 @@ export default class MappingsPage extends Component {
 						}}
 					>
 						<Button size="large" type="primary">
-							<Icon type="to-top" />
-							Upgrade your Plan
+							<Icon type="customer-service" />
+							Talk to Support
 						</Button>
+						<p
+							css={{
+								marginTop: 20,
+								fontSize: 13,
+								textAlign: 'center',
+								lineHeight: '20px',
+							}}
+						>
+							Need help with your dataset?
+							<br />
+							We now offer paid support.
+						</p>
 					</Col>
 				</Row>
 			</Header>

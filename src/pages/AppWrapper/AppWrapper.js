@@ -3,6 +3,7 @@ import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 
+import AppHeader from '../../components/AppHeader';
 import Loader from '../../components/Loader';
 import Logo from '../../components/Logo';
 
@@ -14,8 +15,18 @@ const DashboardPage = Loadable({
 	loading: Loader,
 });
 
+const ImporterPage = Loadable({
+	loader: () => import('../ImporterPage'),
+	loading: Loader,
+});
+
 const MappingsPage = Loadable({
 	loader: () => import('../MappingsPage'),
+	loading: Loader,
+});
+
+const BrowserPage = Loadable({
+	loader: () => import('../BrowserPage'),
 	loading: Loader,
 });
 
@@ -28,7 +39,9 @@ const routes = {
 	Develop: {
 		icon: 'dashboard',
 		menu: [
-			{ label: 'Mappings', link: '/app/mappings' },
+			{ label: 'Import Data', link: '/app/import' },
+			{ label: 'Manage Mappings', link: '/app/mappings' },
+			{ label: 'Browse Data', link: '/app/browse' },
 			{ label: 'Search Sandbox', link: '/app/sandbox' },
 		],
 	},
@@ -115,10 +128,12 @@ export default class AppWrapper extends Component {
 					</Menu>
 				</Sider>
 				<Layout>
-					<Header style={{ background: '#fff', padding: 0 }} />
+					<AppHeader />
 					<section style={{ minHeight: '100vh' }}>
 						<Switch>
+							<Route exact path="/app/import" component={ImporterPage} />
 							<Route exact path="/app/mappings" component={MappingsPage} />
+							<Route exact path="/app/browse" component={BrowserPage} />
 							<Route exact path="/app/sandbox" component={SandboxPage} />
 							<Route exact path="/app/" component={DashboardPage} />
 						</Switch>

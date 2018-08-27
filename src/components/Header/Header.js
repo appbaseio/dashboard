@@ -14,9 +14,9 @@ const WhiteHeader = ({ children, ...props }) => (
 	>
 		<div
 			css={{
-				padding: '45px 20px',
+				padding: props.compact ? '25px 0px' : '45px 25px',
 				margin: '0 auto',
-				maxWidth: 1300,
+				maxWidth: props.compact ? 'none' : 1300,
 			}}
 		>
 			{children}
