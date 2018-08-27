@@ -24,6 +24,16 @@ const SandboxPage = Loadable({
 	loading: Loader,
 });
 
+const routes = {
+	Develop: {
+		icon: 'dashboard',
+		menu: [
+			{ label: 'Mappings', link: '/app/mappings' },
+			{ label: 'Search Sandbox', link: '/app/sandbox' },
+		],
+	},
+};
+
 export default class AppWrapper extends Component {
 	state = {
 		collapsed: false,
@@ -33,7 +43,32 @@ export default class AppWrapper extends Component {
 		this.setState({ collapsed });
 	};
 
+	getActiveMenu = () => {
+		let activeSubMenu = null;
+		let activeMenuItem = null;
+		const { pathname } = this.props.location;
+
+		Object.keys(routes).some(route => {
+			if (routes[route].menu) {
+				const active = routes[route].menu.find(item => pathname.startsWith(item.link));
+
+				if (active) {
+					activeSubMenu = route;
+					activeMenuItem = active.label;
+					return true;
+				}
+			}
+		});
+
+		return {
+			activeSubMenu,
+			activeMenuItem,
+		};
+	};
+
 	render() {
+		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
+
 		return (
 			<Layout>
 				<Sider
@@ -44,27 +79,39 @@ export default class AppWrapper extends Component {
 				>
 					<Menu
 						theme="dark"
-						defaultOpenKeys={['sub1']}
-						defaultSelectedKeys={['1']}
+						defaultOpenKeys={[activeSubMenu]}
+						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
 					>
-						<Logo style={{ fill: 'yellow' }} />
-						<SubMenu
-							key="sub1"
-							title={
-								<span>
-									<Icon type="dashboard" />
-									<span>Develop</span>
-								</span>
+						<Logo />
+						{Object.keys(routes).map(route => {
+							if (routes[route].menu) {
+								return (
+									<SubMenu
+										key={route}
+										title={
+											<span>
+												<Icon type={routes[route].icon} />
+												<span>{route}</span>
+											</span>
+										}
+									>
+										{routes[route].menu.map(item => (
+											<Menu.Item key={item.label}>
+												<Link to={item.link}>{item.label}</Link>
+											</Menu.Item>
+										))}
+									</SubMenu>
+								);
+							} else {
+								return (
+									<Menu.Item key={route}>
+										<Icon type={routes[route].icon} />
+										{route}
+									</Menu.Item>
+								);
 							}
-						>
-							<Menu.Item key="1">
-								<Link to="/app/mappings">Mappings</Link>
-							</Menu.Item>
-							<Menu.Item key="2">
-								<Link to="/app/sandbox">Search Sandbox</Link>
-							</Menu.Item>
-						</SubMenu>
+						})}
 					</Menu>
 				</Sider>
 				<Layout>
