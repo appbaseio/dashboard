@@ -1,8 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
-import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import AppWrapper from '../AppWrapper';
 
@@ -20,7 +19,7 @@ const Wrapper = () => (
 	<Switch>
 		<Route exact path="/" component={HomePage} />
 		<Route exact path="/clusters" component={ClusterPage} />
-		<Route path="/app" component={AppWrapper} />
+		<Route path="/app/:route?/:appname?" component={AppWrapper} />
 	</Switch>
 );
 

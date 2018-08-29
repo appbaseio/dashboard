@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Icon } from 'antd';
+import {
+ Row, Col, Button, Icon,
+} from 'antd';
 
 import Header from '../../components/Header';
 

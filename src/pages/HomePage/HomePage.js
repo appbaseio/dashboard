@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
-import { Row, Col, Icon, Button, Card } from 'antd';
+import {
+ Row, Col, Icon, Button, Card,
+} from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -20,7 +22,7 @@ const link = css`
 
 class HomePage extends Component {
 	state = {
-		showModal: false,
+		showModal: false, // modal for create new app
 	};
 
 	render() {
@@ -73,7 +75,10 @@ class HomePage extends Component {
 					<Row gutter={20}>
 						{Object.keys(apps).map(name => (
 							<Col key={name} span={8}>
-								<Link to="/" css={{ marginBottom: 20, display: 'block' }}>
+								<Link
+									to={`/app/overview/${name}`}
+									css={{ marginBottom: 20, display: 'block' }}
+								>
 									<Card title={name}>Card content</Card>
 								</Link>
 							</Col>
