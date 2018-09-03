@@ -19,6 +19,11 @@ const LoginPage = Loadable({
 	loading: Loader,
 });
 
+const SignupPage = Loadable({
+	loader: () => import('./pages/SignupPage'),
+	loading: Loader,
+});
+
 class Dashboard extends Component {
 	componentDidMount() {
 		const { loadAppbaseUser } = this.props;
@@ -36,6 +41,7 @@ class Dashboard extends Component {
 			<Router>
 				<Fragment>
 					<Route exact path="/login" component={LoginPage} />
+					<Route exact path="/signup" component={SignupPage} />
 					<PrivateRoute user={user} component={Wrapper} />
 				</Fragment>
 			</Router>
