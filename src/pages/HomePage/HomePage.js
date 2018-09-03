@@ -76,7 +76,7 @@ class HomePage extends Component {
 						{Object.keys(apps).map(name => (
 							<Col key={name} span={8}>
 								<Link
-									to={`/app/overview/${name}`}
+									to={`/app/${name}/overview`}
 									css={{ marginBottom: 20, display: 'block' }}
 								>
 									<Card title={name}>Card content</Card>

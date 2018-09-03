@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
- Link, Switch, Route, Redirect,
-} from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -11,6 +9,11 @@ import Logo from '../../components/Logo';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
+
+const AnalyticsPage = Loadable({
+	loader: () => import('../AnalyticsPage'),
+	loading: Loader,
+});
 
 const OverviewPage = Loadable({
 	loader: () => import('../OverviewPage'),
@@ -37,18 +40,50 @@ const SandboxPage = Loadable({
 	loading: Loader,
 });
 
+const PopularSearches = Loadable({
+	loader: () => import('../PopularSearches'),
+	loading: Loader,
+});
+const PopularResults = Loadable({
+	loader: () => import('../PopularResults'),
+	loading: Loader,
+});
+const PopularFilters = Loadable({
+	loader: () => import('../PopularFilters'),
+	loading: Loader,
+});
+const NoResultSearches = Loadable({
+	loader: () => import('../NoResultSearches'),
+	loading: Loader,
+});
+const RequestLogs = Loadable({
+	loader: () => import('../RequestLogs'),
+	loading: Loader,
+});
+
 const routes = {
 	'App Overview': {
 		icon: 'home',
-		link: '/app/overview',
+		link: '',
 	},
 	Develop: {
 		icon: 'dashboard',
 		menu: [
-			{ label: 'Import Data', link: '/app/import' },
-			{ label: 'Manage Mappings', link: '/app/mappings' },
-			{ label: 'Browse Data', link: '/app/browse' },
-			{ label: 'Search Sandbox', link: '/app/sandbox' },
+			{ label: 'Import Data', link: 'import' },
+			{ label: 'Manage Mappings', link: 'mappings' },
+			{ label: 'Browse Data', link: 'browse' },
+			{ label: 'Search Sandbox', link: 'sandbox' },
+		],
+	},
+	Analytics: {
+		icon: 'dashboard',
+		menu: [
+			{ label: 'Overview', link: 'analytics' },
+			{ label: 'Popular Searches', link: 'popular-searches' },
+			{ label: 'No Result Searches', link: 'no-results-searches' },
+			{ label: 'Popular Results', link: 'popular-results' },
+			{ label: 'Popular Filters', link: 'popular-filters' },
+			{ label: 'Request Logs', link: 'request-logs' },
 		],
 	},
 };
@@ -142,7 +177,7 @@ export default class AppWrapper extends Component {
 									<SubMenu key={route} title={Title}>
 										{routes[route].menu.map(item => (
 											<Menu.Item key={item.label}>
-												<Link to={`${item.link}/${appname}`}>
+												<Link replace to={item.link}>
 													{item.label}
 												</Link>
 											</Menu.Item>
@@ -152,7 +187,7 @@ export default class AppWrapper extends Component {
 							}
 							return (
 								<Menu.Item key={route}>
-									<Link to={`${routes[route].link}/${appname}`}>
+									<Link replace to={`${appname}/${routes[route].link}`}>
 										<Icon type={routes[route].icon} />
 										<span>{route}</span>
 									</Link>
@@ -165,12 +200,43 @@ export default class AppWrapper extends Component {
 					<AppHeader />
 					<section style={{ minHeight: '100vh' }}>
 						<Switch>
-							<Route exact path="/app/overview/:appname?" component={OverviewPage} />
-							<Route exact path="/app/import/:appname?" component={ImporterPage} />
-							<Route exact path="/app/mappings/:appname?" component={MappingsPage} />
-							<Route exact path="/app/browse/:appname?" component={BrowserPage} />
-							<Route exact path="/app/sandbox/:appname?" component={SandboxPage} />
-							<Redirect from="/app" to="/app/overview/" />
+							<Route exact path="/app/:appname" component={OverviewPage} />
+							<Route exact path="/app/:appname/overview" component={OverviewPage} />
+							{/* <Route exact path="/app/:appname/analytics" component={AnalyticsPage} /> */}
+							<Route
+								exact
+								path="/app/:appname/analytics/:tab?/:subTab?"
+								component={AnalyticsPage}
+							/>
+							<Route
+								exact
+								path="/app/:appname/popular-searches"
+								component={PopularSearches}
+							/>
+							<Route
+								exact
+								path="/app/:appname/popular-results"
+								component={PopularResults}
+							/>
+							<Route
+								exact
+								path="/app/:appname/popular-filters"
+								component={PopularFilters}
+							/>
+							<Route
+								exact
+								path="/app/:appname/request-logs/:tab?"
+								component={RequestLogs}
+							/>
+							<Route
+								exact
+								path="/app/:appname/no-results-searches"
+								component={NoResultSearches}
+							/>
+							<Route exact path="/app/:appname/popular" component={ImporterPage} />
+							<Route exact path="/app/:appname/mappings" component={MappingsPage} />
+							<Route exact path="/app/:appname/browse" component={BrowserPage} />
+							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
 						</Switch>
 					</section>
 				</Layout>

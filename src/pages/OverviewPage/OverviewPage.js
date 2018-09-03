@@ -10,7 +10,6 @@ export default class OverviewPage extends Component {
 				<Row type="flex" justify="space-between" gutter={16}>
 					<Col md={18}>
 						<h2>Welcome to your app dashboard</h2>
-
 						<Row>
 							<Col span={18}>
 								<p>
