@@ -19,7 +19,7 @@ const Wrapper = () => (
 	<Switch>
 		<Route exact path="/" component={HomePage} />
 		<Route exact path="/clusters" component={ClusterPage} />
-		<Route path="/app/:appname/:route?" component={AppWrapper} />
+		<Route path="/app/:appname?/:route?" component={AppWrapper} />
 	</Switch>
 );
 
