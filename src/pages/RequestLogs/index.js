@@ -1,6 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
-import RequestLogs from '../../../modules/batteries/components/analytics/components/RequestLogs';
+import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
 
 export default (props) => {
 	const appName = get(props, 'match.params.appname');

@@ -1,0 +1,3 @@
+[submodule "src/batteries"]
+	path = src/batteries
+	url = git@github.com:appbaseio/batteries.git
