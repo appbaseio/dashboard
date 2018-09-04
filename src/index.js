@@ -35,7 +35,9 @@ export default class Main extends Component {
 
 	onGetUserCatch() {
 		localStorage.setItem('ad-login', window.location.href);
-		browserHistory.push('/login');
+		if (window.location.pathname !== '/signup') {
+			browserHistory.push('/login');
+		}
 		this.setState({
 			loading: false,
 		});
