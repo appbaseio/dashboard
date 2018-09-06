@@ -171,7 +171,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:1.7.0',
+					image: 'appbaseio/dejavu:2.0.0',
 					exposed_port: 1358,
 				},
 			];
@@ -195,7 +195,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.4.0',
+					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
 					exposed_port: 5000,
 				},
 			];

@@ -13,8 +13,8 @@ const AnalyticsView = (props) => {
 		<AppPage pageInfo={pageInfo} key={pageInfo.appId}>
 			<Analytics
 				appName={pageInfo.appName}
-				activeTab={props.params.tab}
-				activeSubTab={props.params.subTab}
+				tab={props.params.tab}
+				subTab={props.params.subTab}
 			/>
 		</AppPage>
 	);
