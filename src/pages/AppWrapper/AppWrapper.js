@@ -16,6 +16,11 @@ const AnalyticsPage = Loadable({
 	loading: Loader,
 });
 
+const CredentialsPage = Loadable({
+	loader: () => import('../CredentialsPage'),
+	loading: Loader,
+});
+
 const OverviewPage = Loadable({
 	loader: () => import('../OverviewPage'),
 	loading: Loader,
@@ -77,7 +82,7 @@ const routes = {
 		],
 	},
 	Analytics: {
-		icon: 'dashboard',
+		icon: 'line-chart',
 		menu: [
 			{ label: 'Overview', link: 'analytics' },
 			{ label: 'Popular Searches', link: 'popular-searches' },
@@ -85,6 +90,13 @@ const routes = {
 			{ label: 'Popular Results', link: 'popular-results' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Request Logs', link: 'request-logs' },
+		],
+	},
+	Security: {
+		icon: 'key',
+		menu: [
+			{ label: 'API Credentials', link: 'credentials' },
+			{ label: 'Sharing Settings', link: 'popular-searches' },
 		],
 	},
 };
@@ -214,6 +226,11 @@ class AppWrapper extends Component {
 								exact
 								path="/app/:appname/popular-searches"
 								component={PopularSearches}
+							/>
+							<Route
+								exact
+								path="/app/:appname/credentials"
+								component={CredentialsPage}
 							/>
 							<Route
 								exact

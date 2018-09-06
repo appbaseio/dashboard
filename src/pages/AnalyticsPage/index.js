@@ -1,6 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
-import Analytics from '../../batteries/components/analytics/components/Analytics';
+import Analytics from '../../batteries/components/analytics';
 
 const AnalyticsView = (props) => {
 	const appName = get(props, 'match.params.appname');
