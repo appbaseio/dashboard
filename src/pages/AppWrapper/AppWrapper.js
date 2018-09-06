@@ -137,8 +137,7 @@ export default class AppWrapper extends Component {
 	getActiveMenu = () => {
 		let activeSubMenu = 'App Overview';
 		let activeMenuItem = 'App Overview';
-		const { route: activeRoute } = this.props.match.params; // eslint-disable-line
-		const pathname = `/app/${activeRoute}`;
+		const { route: pathname, appname } = this.props.match.params; // eslint-disable-line
 
 		Object.keys(routes).some((route) => {
 			if (routes[route].menu) {
@@ -199,7 +198,7 @@ export default class AppWrapper extends Component {
 							}
 							return (
 								<Menu.Item key={route}>
-									<Link replace to={`${appname}/${routes[route].link}`}>
+									<Link replace to={`/app/${appname}/${routes[route].link}`}>
 										<Icon type={routes[route].icon} />
 										<span>{route}</span>
 									</Link>
@@ -250,7 +249,7 @@ export default class AppWrapper extends Component {
 								path="/app/:appname/no-results-searches"
 								component={NoResultSearches}
 							/>
-							<Route exact path="/app/:appname/popular" component={ImporterPage} />
+							<Route exact path="/app/:appname/import" component={ImporterPage} />
 							<Route exact path="/app/:appname/mappings" component={MappingsPage} />
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
