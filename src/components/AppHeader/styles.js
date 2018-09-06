@@ -9,7 +9,7 @@ const header = css`
 	background-color: #fff;
 	overflow: hidden;
 	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
-	z-index: 1000;
+	z-index: 999;
 	position: relative;
 
 	ul {

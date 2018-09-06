@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
+import { connect } from 'react-redux';
 
 import AppHeader from '../../components/AppHeader';
 import Loader from '../../components/Loader';
@@ -100,7 +101,7 @@ const routes = {
 	},
 };
 
-export default class AppWrapper extends Component {
+class AppWrapper extends Component {
 	state = {
 		collapsed: false,
 		appname: this.props.match.params.appname, // eslint-disable-line
@@ -165,6 +166,8 @@ export default class AppWrapper extends Component {
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
 		const { collapsed, appname } = this.state;
+
+		const appId = this.props.apps[appname];
 
 		return (
 			<Layout>
@@ -250,7 +253,11 @@ export default class AppWrapper extends Component {
 								component={NoResultSearches}
 							/>
 							<Route exact path="/app/:appname/import" component={ImporterPage} />
-							<Route exact path="/app/:appname/mappings" component={MappingsPage} />
+							<Route
+								exact
+								path="/app/:appname/mappings"
+								render={() => <MappingsPage appname={appname} appId={appId} />}
+							/>
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
 						</Switch>
@@ -260,3 +267,9 @@ export default class AppWrapper extends Component {
 		);
 	}
 }
+
+const mapStateToProps = ({ apps }) => ({
+	apps,
+});
+
+export default connect(mapStateToProps)(AppWrapper);

@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 
 const { Header } = Layout;
 
-const WhiteHeader = ({ children, ...props }) => (
+const WhiteHeader = ({ children, compact, ...props }) => (
 	<Header
 		css={{
 			backgroundColor: '#fff',
@@ -14,9 +14,9 @@ const WhiteHeader = ({ children, ...props }) => (
 	>
 		<div
 			css={{
-				padding: props.compact ? '25px 0px' : '45px 25px',
+				padding: compact ? '25px 0px' : '45px 25px',
 				margin: '0 auto',
-				maxWidth: props.compact ? 'none' : 1300,
+				maxWidth: compact ? 'none' : 1300,
 			}}
 		>
 			{children}
