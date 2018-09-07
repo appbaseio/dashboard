@@ -258,7 +258,7 @@ Credentials.propTypes = {
 	handleDeleteApp: func.isRequired,
 };
 const mapStateToProps = (state, ownProps) => {
-	const appName = get(ownProps, 'match.params.appname');
+	const appName = get(ownProps, 'match.params.appName');
 	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
 	return {

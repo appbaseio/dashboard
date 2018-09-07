@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
 
 export default (props) => {
-	const appName = get(props, 'match.params.appname');
+	const appName = get(props, 'match.params.appName');
 	const activeTab = get(props, 'match.params.tab');
 	return (
 		<RequestLogs

@@ -5,7 +5,7 @@ import {
 
 import Header from '../../components/Header';
 
-const BrowsePage = ({ appname, appId }) => (
+const BrowsePage = ({ appName, appId }) => (
 	<Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
@@ -52,7 +52,7 @@ const BrowsePage = ({ appname, appId }) => (
 );
 
 BrowsePage.propTypes = {
-	appname: string.isRequired,
+	appName: string.isRequired,
 	appId: string.isRequired,
 };
 
