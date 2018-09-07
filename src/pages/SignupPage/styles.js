@@ -11,7 +11,7 @@ const container = css`
 
 const card = css`
 	width: 90%;
-	max-width: 450px;
+	max-width: 550px;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
@@ -85,6 +85,12 @@ const gitlabBtn = css`
 	}
 `;
 
+const checkbox = css`
+	margin-left: 8px;
+	text-align: left;
+	margin-bottom: 8px;
+`;
+
 export {
- container, card, githubBtn, googleBtn, gitlabBtn,
+ container, card, githubBtn, googleBtn, gitlabBtn, checkbox,
 };
