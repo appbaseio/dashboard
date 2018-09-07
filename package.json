@@ -46,6 +46,7 @@
 	"dependencies": {
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
 		"antd": "^3.8.1",
+		"appbase-js": "4.0.0-beta",
 		"emotion": "^9.2.6",
 		"lodash": "^4.17.10",
 		"moment": "^2.22.2",
