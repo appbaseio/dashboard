@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
-import { notification, Card, Table } from 'antd';
+import {
+	Card, Table, Popconfirm, Tooltip,
+} from 'antd';
 import { connect } from 'react-redux';
 import {
  string, func, bool, array,
 } from 'prop-types';
 import CreateCredentials from './CreateCredentials';
-import { getMappings } from '../../batteries/utils/mappings';
 import Container from '../../components/Container';
 import { getCredntialsFromPermissions } from '../../batteries/utils';
 import Button from '../../batteries/components/shared/Button/Primary';
@@ -17,14 +18,12 @@ import {
 	getAppInfo,
 	getAppMappings,
 	getPermission,
-	getAppCredentials,
 	createPermission,
 	deletePermission,
 	updatePermission,
+	deleteApp,
 } from '../../batteries/modules/actions';
-import PermissionCard from './PermissionCard';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
-import DeleteApp from './DeleteApp';
 
 const columns = [
 	{
@@ -45,26 +44,28 @@ class Credentials extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isSubmitting: false,
 			showCredForm: false,
-			mappings: {},
 			currentPermissionInfo: undefined,
 		};
 	}
 
 	componentDidMount() {
-		this.initialize();
-		const { checkUserStatus, getAppCred, appId } = this.props;
+		const {
+			checkUserStatus, fetchAppInfo, appId, fetchPermissions,
+		} = this.props;
 		checkUserStatus();
-		getAppCred(appId);
+		fetchAppInfo(appId);
+		fetchPermissions(appId);
 	}
 
 	componentDidUpdate(prevProps) {
-		const { appName, errors, permissions, fetchMappings } = this.props;
+		const {
+ appName, errors, permissions, fetchMappings,
+} = this.props;
 		if (prevProps.appName !== appName) {
 			this.initialize();
 		}
-		if (permissions !== prevProps.permissions) {
+		if (permissions !== prevProps.permissions && permissions.length) {
 			// Fetch Mappings if permissions are present
 			const credentials = getCredntialsFromPermissions(permissions);
 			const { username, password } = credentials;
@@ -73,10 +74,9 @@ class Credentials extends Component {
 		displayErrors(errors, prevProps.errors);
 	}
 
-	getInfo = () => {
-		const { appId, fetchPermissions, fetchAppInfo } = this.props;
+	refetchPermissions = () => {
+		const { appId, fetchPermissions } = this.props;
 		fetchPermissions(appId);
-		fetchAppInfo(appId);
 	};
 
 	handleCancel = () => {
@@ -86,36 +86,17 @@ class Credentials extends Component {
 	};
 
 	updatePermission = (request, username) => {
-		const { appId } = this.props;
-		this.setState(
-			{
-				isSubmitting: true,
-			},
-			() => {
-				updatePermission(appId, username, request).then(
-					() => {
-						this.getInfo();
-						this.setState({
-							isSubmitting: false,
-							showCredForm: false,
-						});
-					},
-					(e) => {
-						notification.error({
-							message: 'Error',
-							description: get(
-								e,
-								'responseJSON.message',
-								'Unable to save credentials',
-							),
-						});
-						this.setState({
-							isSubmitting: false,
-						});
-					},
-				);
-			},
-		);
+		const { appId, handleEditPermission } = this.props;
+		handleEditPermission(appId, username, request)
+		.then(({ payload }) => {
+			if (payload) {
+				this.setState({
+					showCredForm: false,
+				}, () => {
+					this.refetchPermissions();
+				});
+			}
+		});
 	};
 
 	showForm = (permissionInfo) => {
@@ -133,44 +114,36 @@ class Credentials extends Component {
 	};
 
 	newPermission = (request) => {
-		// const { appId, handleCreatePermission } = this.props;
-		// handleCreatePermission(appId, request).then((action) => {
-		// 	if(action.payload) {
-		// 		this.setState({
-		// 			isSubmitting: false,
-		// 		});
-		// 	}
-		// })
-		// this.setState(
-		// 	{
-		// 		isSubmitting: true,
-		// 	},
-		// 	() => {
-		// 		newPermission(appId, request).then(
-		// 			() => {
-		// 				this.getInfo();
-		// 				this.setState({
-		// 					isSubmitting: false,
-		// 					showCredForm: false,
-		// 				});
-		// 			},
-		// 			(e) => {
-		// 				notification.error({
-		// 					message: 'Error',
-		// 					description: get(
-		// 						e,
-		// 						'responseJSON.message',
-		// 						'Unable to save credentials',
-		// 					),
-		// 				});
-		// 				this.setState({
-		// 					isSubmitting: false,
-		// 				});
-		// 			},
-		// 		);
-		// 	},
-		// );
+		const { appId, handleCreatePermission } = this.props;
+		handleCreatePermission(appId, request).then(({ payload }) => {
+			if (payload) {
+				this.setState({
+					showCredForm: false,
+				}, () => {
+					this.refetchPermissions();
+				});
+			}
+		});
 	};
+
+	deletePermission = (username) => {
+		const { appId, handleDeletePermission } = this.props;
+		handleDeletePermission(appId, username).then(({ payload }) => {
+			if (payload) {
+				this.refetchPermissions();
+			}
+		});
+	}
+
+	deleteApp = () => {
+		const { handleDeleteApp, appId } = this.props;
+		handleDeleteApp(appId).then(({ payload }) => {
+			if (payload) {
+				// Redirect to home
+				window.location = window.origin;
+			}
+		});
+	}
 
 	handleSubmit = (form, username) => {
 		const { currentPermissionInfo } = this.state;
@@ -193,71 +166,9 @@ class Credentials extends Component {
 		}
 	};
 
-	initialize() {
-		this.getInfo();
-	}
-
-	renderElement(method) {
-		let element = null;
-		const { info, mappings } = this.state;
-		const { appId, appName, isOwner } = this.props;
-		switch (method) {
-			case 'permissions':
-				if (info && info.permission) {
-					element = info.permission.body
-						.sort((a, b) => {
-							const first = a.description;
-							const second = b.description;
-							if (first < second) {
-								return -1;
-							}
-							if (first > second) {
-								return 1;
-							}
-							return 0;
-						})
-						.map((permissionInfo, index) => (
-							<PermissionCard
-								// eslint-disable-next-line
-								key={index}
-								appId={appId}
-								appName={appName}
-								isOwner={isOwner}
-								permissionInfo={permissionInfo}
-								mappings={mappings}
-								getInfo={this.getInfo}
-								showForm={this.showForm}
-							/>
-						));
-				}
-				break;
-			case 'deleteApp':
-				if (isOwner) {
-					element = (
-						<footer className="ad-detail-page-body other-page-body col-xs-12 delete-app-body">
-							<div className="page-body col-xs-12">
-								<section className="col-xs-12 p-0">
-									<div className="col-xs-12 p-0">
-										<DeleteApp appName={appName} appId={appId} />
-									</div>
-								</section>
-							</div>
-						</footer>
-					);
-				}
-				break;
-			default:
-		}
-		return element;
-	}
-
 	render() {
-		const {
- isSubmitting, showCredForm, currentPermissionInfo, mappings,
-} = this.state;
-		const {
- appId, isLoading, permissions, isOwner,
-} = this.props;
+		const { showCredForm, currentPermissionInfo, mappings } = this.state;
+		const { isLoading, permissions, isOwner } = this.props;
 		if (isLoading) {
 			return <Loader />;
 		}
@@ -267,9 +178,8 @@ class Credentials extends Component {
 					<Table
 						dataSource={permissions.map(permission => ({
 							permissionInfo: permission,
-							appId,
+							deletePermission: this.deletePermission,
 							showForm: this.showForm,
-							getInfo: this.getInfo,
 						}))}
 						rowKey={row => `${get(row, 'permissionInfo.username')}${get(
 								row,
@@ -284,7 +194,6 @@ class Credentials extends Component {
 				</Card>
 				{showCredForm && (
 					<CreateCredentials
-						isSubmitting={isSubmitting}
 						isOwner={isOwner}
 						onSubmit={this.handleSubmit}
 						show={showCredForm}
@@ -293,10 +202,40 @@ class Credentials extends Component {
 						initialValues={currentPermissionInfo}
 					/>
 				)}
-				{isOwner && <Button onClick={() => this.showForm()}>New Credentials</Button>}
+				{isOwner && (
+					<Button
+						style={{
+							margin: '10px 0px',
+						}}
+						onClick={() => this.showForm()}
+					>
+						New Credentials
+					</Button>
+				)}
+				{
+					isOwner && (
+						<Tooltip placement="rightTop" title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings.">
+							<Popconfirm
+								title="Are you sure delete this app?"
+								onConfirm={this.deleteApp}
+								okText="Yes"
+								cancelText="No"
+							>
+								<Button
+									style={{
+										margin: '10px 10px',
+									}}
+									danger
+								>
+									Delete App
+								</Button>
+							</Popconfirm>
+						</Tooltip>
+
+					)
+				}
 			</Container>
 		);
-		// {this.renderElement('deleteApp')}
 	}
 }
 Credentials.defaultProps = {
@@ -306,31 +245,40 @@ Credentials.propTypes = {
 	appName: string.isRequired,
 	appId: string.isRequired,
 	checkUserStatus: func.isRequired,
+	fetchAppInfo: func.isRequired,
 	permissions: array.isRequired,
 	fetchPermissions: func.isRequired,
+	handleCreatePermission: func.isRequired,
+	handleDeletePermission: func.isRequired,
+	handleEditPermission: func.isRequired,
+	fetchMappings: func.isRequired,
 	isOwner: bool.isRequired,
 	isLoading: bool,
 	errors: array.isRequired,
+	handleDeleteApp: func.isRequired,
 };
 const mapStateToProps = (state, ownProps) => {
 	const appName = get(ownProps, 'match.params.appname');
-	const appOwner = get(state, 'getAppInfo.app.owner');
+	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
 		appName,
 		appId: get(state, 'apps', {})[appName],
-		userEmail: get(state, 'user.data.email'),
-		permissions: get(state, '$permission.permissions'),
+		permissions: get(state, '$getAppPermissions.results', []),
 		isPaidUser: get(state, '$getUserStatus.isPaidUser'),
 		isOwner: appOwner === userEmail,
 		isLoading:
 			get(state, '$getUserStatus.isFetching')
-			|| get(state, '$permission.isFetching')
+			|| get(state, '$getAppPermissions.isFetching')
 			|| get(state, '$getAppInfo.isFetching'),
 		errors: [
 			get(state, '$getUserStatus.error'),
-			get(state, '$permission.error'),
+			get(state, '$getAppPermissions.error'),
 			get(state, '$getAppInfo.error'),
+			get(state, '$createAppPermission.error'),
+			get(state, '$deleteAppPermission.error'),
+			get(state, '$updateAppPermission.error'),
+			get(state, '$deleteApp.error'),
 		],
 	};
 };
@@ -340,9 +288,9 @@ const mapDispatchToProps = dispatch => ({
 	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 	fetchMappings: (appName, credentials) => dispatch(getAppMappings(appName, credentials)),
 	handleCreatePermission: (appId, payload) => dispatch(createPermission(appId, payload)),
-	handleDeletePermission: (appId, payload) => dispatch(deletePermission(appId, payload)),
-	handleEditPermission: (appId, payload) => dispatch(updatePermission(appId, payload)),
-	getAppCred: (appId) => dispatch(getAppCredentials(appId))
+	handleDeletePermission: (appId, username) => dispatch(deletePermission(appId, username)),
+	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),
+	handleDeleteApp: appId => dispatch(deleteApp(appId)),
 });
 
 export default connect(

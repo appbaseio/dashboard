@@ -8,13 +8,13 @@ import {
 import {
 	FormBuilder, Validators, FieldGroup, FieldControl,
 } from 'react-reactive-form';
+import { connect } from 'react-redux';
 import get from 'lodash/get';
 import styles from './styles';
 import Flex from '../../../batteries/components/shared/Flex';
 import { Button as UpgradeButton } from '../../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { createCredentials as Messages, hoverMessage } from '../../../utils/messages';
-import { traverseMapping } from '../../../batteries/utils/mappings';
 import {
 	Types, getDefaultAclOptionsByPlan,
 	aclOptionsLabel, getAclOptionsByPlan, isNegative,
@@ -47,11 +47,11 @@ class CreateCredentials extends React.Component {
 			],
 			ttl: [{ value: 0, disabled: !props.isPaidUser }, [Validators.required, isNegative]],
 		});
-		this.mappings = traverseMapping(this.props.mappings);
 	}
 
 	componentDidMount() {
-		if (!this.props.isOwner) {
+		const { isOwner, initialValues } = this.props;
+		if (!isOwner) {
 			this.form.disable();
 		} else {
 			const includeFieldsHandler = this.form.get('include_fields');
@@ -73,14 +73,8 @@ class CreateCredentials extends React.Component {
 				}
 			});
 		}
-		if (this.props.initialValues) {
-			this.form.patchValue(this.props.initialValues);
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.mappings !== this.props.mappings) {
-			this.mappings = traverseMapping(nextProps.mappings);
+		if (initialValues) {
+			this.form.patchValue(initialValues);
 		}
 	}
 
@@ -90,22 +84,26 @@ class CreateCredentials extends React.Component {
 	}
 
 	get getText() {
-		if (this.props.isOwner) {
+		const { isOwner } = this.props;
+		if (isOwner) {
 			return this.isEditing ? 'Edit credential' : 'Create a new credential';
 		}
 		return 'Credentials Details';
 	}
 
 	get isEditing() {
-		return !!this.props.initialValues;
+		const { initialValues } = this.props;
+		return !!initialValues;
 	}
+
 	handleSubmit = () => {
-		this.props.onSubmit(this.form, get(this.props, 'initialValues.meta.username'));
+		const { onSubmit } = this.props;
+		onSubmit(this.form, get(this.props, 'initialValues.meta.username'));
 	};
 
 	render() {
 		const {
- show, handleCancel, isPaidUser, isSubmitting, isOwner, plan,
+ show, handleCancel, isPaidUser, isSubmitting, isOwner, plan, mappings,
 } = this.props;
 		return (
 			<FieldGroup
@@ -151,13 +149,13 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="Description"
 										toolTipMessage={Messages.description}
-										component={
+										component={(
 											<Input
 												autoFocus={!this.isEditing}
 												placeholder="Add an optional description for this credential"
 												{...handler()}
 											/>
-										}
+										)}
 									/>
 								)}
 							/>
@@ -167,7 +165,7 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="Key Type"
 										toolTipMessage={Messages.operationType}
-										component={
+										component={(
 											<Radio.Group
 												{...handler()}
 												css="label { font-weight: 100 }"
@@ -178,7 +176,7 @@ class CreateCredentials extends React.Component {
 													</Radio>
 												))}
 											</Radio.Group>
-										}
+										)}
 									/>
 								)}
 							/>
@@ -213,7 +211,7 @@ class CreateCredentials extends React.Component {
 										<Grid
 											label="ACLs"
 											toolTipMessage={Messages.acls}
-											component={
+											component={(
 												<CheckboxGroup
 													css="label { font-weight: 100 }"
 													{...inputHandler}
@@ -223,7 +221,7 @@ class CreateCredentials extends React.Component {
 														inputHandler.onChange(value.map(v => v.toLowerCase()));
 													}}
 												/>
-											}
+											)}
 										/>
 									);
 								}}
@@ -281,7 +279,7 @@ class CreateCredentials extends React.Component {
 										<Grid
 											label={<span css={styles.subHeader}>Include</span>}
 											toolTipMessage={Messages.include}
-											component={
+											component={(
 												<Select
 													placeholder="Select field value"
 													mode="multiple"
@@ -296,8 +294,7 @@ class CreateCredentials extends React.Component {
 													}}
 												>
 													<Option key="*">* (Include all fields)</Option>
-													{Object.keys(this.mappings).map(i =>
-														this.mappings[i].map((v) => {
+													{Object.keys(mappings).map(i => mappings[i].map((v) => {
 															if (!excludedFields.includes(v)) {
 																return (
 																	<Option
@@ -316,7 +313,7 @@ class CreateCredentials extends React.Component {
 															return null;
 														}))}
 												</Select>
-											}
+											)}
 										/>
 									);
 								}}
@@ -331,7 +328,7 @@ class CreateCredentials extends React.Component {
 										<Grid
 											label={<span css={styles.subHeader}>Exclude</span>}
 											toolTipMessage={Messages.exclude}
-											component={
+											component={(
 												<Select
 													placeholder="Select field value"
 													mode="multiple"
@@ -346,8 +343,7 @@ class CreateCredentials extends React.Component {
 													}}
 												>
 													<Option key="*">* (Exclude all fields)</Option>
-													{Object.keys(this.mappings).map(i =>
-														this.mappings[i].map((v) => {
+													{Object.keys(mappings).map(i => mappings[i].map((v) => {
 															if (!includedFields.includes(v)) {
 																return (
 																	<Option key={i + v}>
@@ -363,7 +359,7 @@ class CreateCredentials extends React.Component {
 															return null;
 														}))}
 												</Select>
-											}
+											)}
 										/>
 									);
 								}}
@@ -374,7 +370,7 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="Max API calls/IP/hour"
 										toolTipMessage={Messages.ipLimit}
-										component={
+										component={(
 											<Flex justifyContent="center" alignItems="center">
 												<Input
 													type="number"
@@ -387,7 +383,7 @@ class CreateCredentials extends React.Component {
 													</span>
 												)}
 											</Flex>
-										}
+										)}
 									/>
 								)}
 							/>
@@ -397,7 +393,7 @@ class CreateCredentials extends React.Component {
 									<Grid
 										label="TTL"
 										toolTipMessage={Messages.ttl}
-										component={
+										component={(
 											<Flex justifyContent="center" alignItems="center">
 												<Input
 													type="number"
@@ -410,7 +406,7 @@ class CreateCredentials extends React.Component {
 													</span>
 												)}
 											</Flex>
-										}
+										)}
 									/>
 								)}
 							/>
@@ -424,13 +420,14 @@ class CreateCredentials extends React.Component {
 CreateCredentials.defaultProps = {
 	show: false,
 	isSubmitting: false,
+	isPaidUser: false,
+	initialValues: undefined,
 };
 CreateCredentials.propTypes = {
 	isPaidUser: PropTypes.bool,
 	isSubmitting: PropTypes.bool,
 	show: PropTypes.bool,
-	cancel: PropTypes.func,
-	onSubmit: PropTypes.func,
+	onSubmit: PropTypes.func.isRequired,
 	initialValues: PropTypes.shape({
 		description: PropTypes.string,
 		operationType: PropTypes.object,
@@ -443,8 +440,15 @@ CreateCredentials.propTypes = {
 		ttl: PropTypes.number,
 		meta: PropTypes.object,
 	}),
-	isOwner: PropTypes.bool,
+	isOwner: PropTypes.bool.isRequired,
 	plan: PropTypes.oneOf(['free', 'growth', 'bootstrap']).isRequired,
 };
 
-export default CreateCredentials;
+const mapStateToProps = state => ({
+	isPaidUser: get(state, '$getUserStatus.isPaidUser'),
+	mappings: get(state, '$getAppMappings.traversedMappings'),
+	plan: get(state, '$getUserStatus.plan'),
+	isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching'),
+});
+
+export default connect(mapStateToProps)(CreateCredentials);

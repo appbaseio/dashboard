@@ -6,7 +6,6 @@ import { css } from 'react-emotion';
 import { string, object, func } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Flex from '../../batteries/components/shared/Flex';
-import { deletePermission } from '../../batteries/utils/app';
 import { Types } from './utils';
 
 const EyeIcon = require('react-feather/dist/icons/eye').default;
@@ -84,16 +83,8 @@ class Permission extends React.Component {
 	};
 
 	handleDeleteCred = async () => {
-		const { appId, permissionInfo, getInfo } = this.props;
-		try {
-			await deletePermission(appId, permissionInfo.username);
-			// Re fetch info
-			getInfo();
-		} catch (e) {
-			notification.error({
-				message: 'Unable to delete credentials',
-			});
-		}
+		const { permissionInfo, deletePermission } = this.props;
+		deletePermission(permissionInfo.username);
 	};
 
 	render() {
@@ -142,9 +133,8 @@ class Permission extends React.Component {
 
 Permission.propTypes = {
 	permissionInfo: object.isRequired,
-	appId: string.isRequired,
 	showForm: func.isRequired,
-	getInfo: func.isRequired,
+	deletePermission: func.isRequired,
 };
 
 export default Permission;
