@@ -1,5 +1,5 @@
 // @flow
-import { USER, APPS } from '../constants';
+import { USER, APPS, CREATE_APP } from '../constants';
 
 export function loadUser(): Object {
 	return {
@@ -38,6 +38,27 @@ export function setAppsMetrics(metrics: Object): Object {
 export function setAppsMetricsError(error: Object): Object {
 	return {
 		type: APPS.LOAD_METRICS_FAIL,
+		error,
+	};
+}
+
+export function createApp(options:Object):Object {
+	return {
+		type: CREATE_APP.LOAD,
+		options,
+	};
+}
+
+export function setCreateApp(data:Object):Object {
+	return {
+		type: CREATE_APP.CREATE_APP_SUCCESS,
+		data,
+	};
+}
+
+export function createAppFail(error:Object):Object {
+	return {
+		type: CREATE_APP.CREATE_APP_FAIL,
 		error,
 	};
 }

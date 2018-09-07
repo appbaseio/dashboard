@@ -25,3 +25,23 @@ export async function getAppsMetrics() {
 
 	return data.body;
 }
+
+export async function getCreateApp(options) {
+	const response = await fetch(`${ACC_API}/app/${options.appName}`, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			category: options.category,
+			es_version: options.es_version,
+		}),
+	});
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data.message);
+	}
+	const { body, message } = data;
+	return { ...body, message };
+}
