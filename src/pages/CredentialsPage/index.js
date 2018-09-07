@@ -10,7 +10,6 @@ import {
 import CreateCredentials from './CreateCredentials';
 import Container from '../../components/Container';
 import { getCredentialsFromPermissions } from '../../batteries/utils';
-import { getAppInfoByName } from '../../batteries/modules/selectors';
 import Button from '../../batteries/components/shared/Button/Primary';
 import Permission from './Permission';
 import { displayErrors } from '../../utils/helper';
@@ -252,13 +251,12 @@ Credentials.propTypes = {
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
 };
-const mapStateToProps = (state, ownProps) => {
-	const appName = get(ownProps, 'match.params.appname');
-	const appOwner = get(getAppInfoByName(state), 'owner');
+const mapStateToProps = (state) => {
+	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
-		appName,
-		appId: get(state, 'apps', {})[appName],
+		appName: get(state, '$getCurrentApp.name'),
+		appId: get(state, '$getCurrentApp.id'),
 		permissions: get(state, '$getAppPermissions.results', []),
 		isPaidUser: get(state, '$getUserStatus.isPaidUser'),
 		isOwner: appOwner === userEmail,

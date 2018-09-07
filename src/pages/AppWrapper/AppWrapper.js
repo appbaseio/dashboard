@@ -3,7 +3,7 @@ import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'react-redux';
-import PageContainer from '../../components/PageContainer';
+import AppPageContainer from '../../components/AppPageContainer';
 import AppHeader from '../../components/AppHeader';
 import ShareSettings from '../ShareSettingsPage';
 import Loader from '../../components/Loader';
@@ -106,32 +106,34 @@ const routes = {
 class AppWrapper extends Component {
 	state = {
 		collapsed: false,
-		appname: this.props.match.params.appname, // eslint-disable-line
+		appName: this.props.match.params.appName, // eslint-disable-line
 	};
 
 	static getDerivedStateFromProps(props, state) {
 		console.log('called getDerivedStateFromProps');
-		const { appname } = props.match.params;
-		if (appname && appname !== state.appname) {
-			return { appname };
+		const { appName } = props.match.params;
+		if (appName && appName !== state.appName) {
+			return { appName };
 		}
 
-		if (!appname && !state.appname) {
-			// get last known appname from localstorage
-			return { appname: 'marketplacev6' };
+		if (!appName && !state.appName) {
+			// get last known appName from localstorage
+			return { appName: 'marketplacev6' };
 		}
 		return null;
 	}
 
 	componentDidMount() {
 		console.log('mounted');
-		const { apps, updateCurrentApp, match } = this.props;
-		const { appname } = match.params;
-		updateCurrentApp(appname, apps[appname]);
+		// const { apps, updateCurrentApp, match } = this.props;
+		// const { appname } = match.params;
+		// updateCurrentApp(appname, apps[appname]);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		console.log('updated called');
+		if (prevState.appName !== this.state.appName) {
+		}
 	}
 
 	onCollapse = (collapsed) => {
@@ -141,7 +143,7 @@ class AppWrapper extends Component {
 	getActiveMenu = () => {
 		let activeSubMenu = 'App Overview';
 		let activeMenuItem = 'App Overview';
-		const { route: pathname, appname } = this.props.match.params; // eslint-disable-line
+		const { route: pathname, appName } = this.props.match.params; // eslint-disable-line
 
 		Object.keys(routes).some((route) => {
 			if (routes[route].menu) {
@@ -168,9 +170,9 @@ class AppWrapper extends Component {
 
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
-		const { collapsed, appname } = this.state;
+		const { collapsed, appName } = this.state;
 
-		const appId = this.props.apps[appname];
+		const appId = this.props.apps[appName];
 
 		return (
 			<Layout>
@@ -204,7 +206,7 @@ class AppWrapper extends Component {
 							}
 							return (
 								<Menu.Item key={route}>
-									<Link replace to={`/app/${appname}/${routes[route].link}`}>
+									<Link replace to={`/app/${appName}/${routes[route].link}`}>
 										<Icon type={routes[route].icon} />
 										<span>{route}</span>
 									</Link>
@@ -221,49 +223,49 @@ class AppWrapper extends Component {
 							<Route exact path="/app/:appname/overview" component={OverviewPage} />
 							<Route
 								exact
-								path="/app/:appname/analytics/:tab?/:subTab?"
+								path="/app/:appName/analytics/:tab?/:subTab?"
 								component={AnalyticsPage}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-searches"
+								path="/app/:appName/popular-searches"
 								component={PopularSearches}
 							/>
 							<Route
 								exact
 								path="/app/:appname/credentials"
-								component={props => (<PageContainer {...props} component={CredentialsPage} />)}
+								component={props => (<AppPageContainer {...props} component={CredentialsPage} />)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-results"
+								path="/app/:appName/popular-results"
 								component={PopularResults}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-filters"
+								path="/app/:appName/popular-filters"
 								component={PopularFilters}
 							/>
 							<Route
 								exact
-								path="/app/:appname/request-logs/:tab?"
+								path="/app/:appName/request-logs/:tab?"
 								component={RequestLogs}
 							/>
 							<Route
 								exact
-								path="/app/:appname/no-results-searches"
+								path="/app/:appName/no-results-searches"
 								component={NoResultSearches}
 							/>
-							<Route exact path="/app/:appname/import" component={ImporterPage} />
+							<Route exact path="/app/:appName/import" component={ImporterPage} />
 							<Route
 								exact
-								path="/app/:appname/mappings"
-								render={() => <MappingsPage appname={appname} appId={appId} />}
+								path="/app/:appName/mappings"
+								render={() => <MappingsPage appName={appName} appId={appId} />}
 							/>
 							<Route
 								exact
 								path="/app/:appname/share-settings"
-								render={() => <ShareSettings appname={appname} appId={appId} />}
+								render={() => <ShareSettings appname={appName} appId={appId} />}
 							/>
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />

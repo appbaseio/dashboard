@@ -7,7 +7,7 @@ import { string } from 'prop-types';
 import Header from '../../components/Header';
 import Mappings from '../../batteries/components/Mappings';
 
-const MappingsPage = ({ appname, appId }) => (
+const MappingsPage = ({ appName, appId }) => (
 	<Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
@@ -39,13 +39,13 @@ const MappingsPage = ({ appname, appId }) => (
 			</Row>
 		</Header>
 		<section>
-			<Mappings appName={appname} appId={appId} />
+			<Mappings appName={appName} appId={appId} />
 		</section>
 	</Fragment>
 );
 
 MappingsPage.propTypes = {
-	appname: string.isRequired,
+	appName: string.isRequired,
 	appId: string.isRequired,
 };
 

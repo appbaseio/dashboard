@@ -10,19 +10,28 @@ import {
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { displayErrors } from '../../utils/helper';
 
-class PageContainer extends React.Component {
-    componentDidMount() {
-        // Fetch some common api calls
+class AppPageContainer extends React.Component {
+	constructor(props) {
+		super(props);
 		const {
 			appName,
 			appId,
+			updateCurrentApp,
+		} = props;
+		if (appName && appId) {
+			updateCurrentApp(appName, appId);
+		}
+	}
+
+    componentDidMount() {
+        // Fetch some common api calls
+		const {
+			appId,
 			checkUserStatus,
 			fetchAppInfo,
-			updateCurrentApp,
 			shouldFetchAppInfo,
 			shouldFetchUserStatus,
 		} = this.props;
-		updateCurrentApp(appName, appId);
 		if (shouldFetchUserStatus) {
 			checkUserStatus();
 		}
@@ -44,13 +53,13 @@ class PageContainer extends React.Component {
 			return React.createElement(component, rest);
     }
 }
-PageContainer.defaultProps = {
+AppPageContainer.defaultProps = {
 	isLoading: false,
 	errors: [],
 	shouldFetchUserStatus: true,
 	shouldFetchAppInfo: true,
 };
-PageContainer.propTypes = {
+AppPageContainer.propTypes = {
 	appName: PropTypes.string.isRequired,
 	appId: PropTypes.string.isRequired,
 	isLoading: PropTypes.bool,
@@ -85,5 +94,5 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps,
-)(PageContainer);
+)(AppPageContainer);
 
