@@ -15,6 +15,7 @@ import Flex from '../../../batteries/components/shared/Flex';
 import { Button as UpgradeButton } from '../../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { createCredentials as Messages, hoverMessage } from '../../../utils/messages';
+import { getTraversedMappingsByAppName } from '../../../batteries/modules/selectors';
 import {
 	Types, getDefaultAclOptionsByPlan,
 	aclOptionsLabel, getAclOptionsByPlan, isNegative,
@@ -446,7 +447,7 @@ CreateCredentials.propTypes = {
 
 const mapStateToProps = state => ({
 	isPaidUser: get(state, '$getUserStatus.isPaidUser'),
-	mappings: get(state, '$getAppMappings.traversedMappings'),
+	mappings: getTraversedMappingsByAppName(state) || [],
 	plan: get(state, '$getUserStatus.plan'),
 	isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching'),
 });

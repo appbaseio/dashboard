@@ -9,13 +9,12 @@ import {
 } from 'prop-types';
 import CreateCredentials from './CreateCredentials';
 import Container from '../../components/Container';
-import { getCredntialsFromPermissions } from '../../batteries/utils';
+import { getCredentialsFromPermissions } from '../../batteries/utils';
+import { getAppInfoByName } from '../../batteries/modules/selectors';
 import Button from '../../batteries/components/shared/Button/Primary';
 import Permission from './Permission';
 import { displayErrors } from '../../utils/helper';
 import {
-	getUserStatus,
-	getAppInfo,
 	getAppMappings,
 	getPermission,
 	createPermission,
@@ -51,10 +50,8 @@ class Credentials extends Component {
 
 	componentDidMount() {
 		const {
-			checkUserStatus, fetchAppInfo, appId, fetchPermissions,
+			appId, fetchPermissions,
 		} = this.props;
-		checkUserStatus();
-		fetchAppInfo(appId);
 		fetchPermissions(appId);
 	}
 
@@ -67,7 +64,7 @@ class Credentials extends Component {
 		}
 		if (permissions !== prevProps.permissions && permissions.length) {
 			// Fetch Mappings if permissions are present
-			const credentials = getCredntialsFromPermissions(permissions);
+			const credentials = getCredentialsFromPermissions(permissions);
 			const { username, password } = credentials;
 			fetchMappings(appName, `${username}:${password}`);
 		}
@@ -188,8 +185,8 @@ class Credentials extends Component {
 						}
 						columns={columns}
 						css="tr:hover td {
-                            background: transparent;
-                          }"
+							background: transparent;
+						}"
 					/>
 				</Card>
 				{showCredForm && (
@@ -244,8 +241,6 @@ Credentials.defaultProps = {
 Credentials.propTypes = {
 	appName: string.isRequired,
 	appId: string.isRequired,
-	checkUserStatus: func.isRequired,
-	fetchAppInfo: func.isRequired,
 	permissions: array.isRequired,
 	fetchPermissions: func.isRequired,
 	handleCreatePermission: func.isRequired,
@@ -259,7 +254,7 @@ Credentials.propTypes = {
 };
 const mapStateToProps = (state, ownProps) => {
 	const appName = get(ownProps, 'match.params.appname');
-	const appOwner = get(state, '$getAppInfo.app.owner');
+	const appOwner = get(getAppInfoByName(state), 'owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
 		appName,
@@ -267,14 +262,9 @@ const mapStateToProps = (state, ownProps) => {
 		permissions: get(state, '$getAppPermissions.results', []),
 		isPaidUser: get(state, '$getUserStatus.isPaidUser'),
 		isOwner: appOwner === userEmail,
-		isLoading:
-			get(state, '$getUserStatus.isFetching')
-			|| get(state, '$getAppPermissions.isFetching')
-			|| get(state, '$getAppInfo.isFetching'),
+		isLoading: get(state, '$getAppPermissions.isFetching'),
 		errors: [
-			get(state, '$getUserStatus.error'),
 			get(state, '$getAppPermissions.error'),
-			get(state, '$getAppInfo.error'),
 			get(state, '$createAppPermission.error'),
 			get(state, '$deleteAppPermission.error'),
 			get(state, '$updateAppPermission.error'),
@@ -283,9 +273,7 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	checkUserStatus: () => dispatch(getUserStatus()),
 	fetchPermissions: appId => dispatch(getPermission(appId)),
-	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 	fetchMappings: (appName, credentials) => dispatch(getAppMappings(appName, credentials)),
 	handleCreatePermission: (appId, payload) => dispatch(createPermission(appId, payload)),
 	handleDeletePermission: (appId, username) => dispatch(deletePermission(appId, username)),

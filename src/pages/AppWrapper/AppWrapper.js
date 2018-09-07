@@ -3,9 +3,11 @@ import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'react-redux';
-
+import PageContainer from '../../components/PageContainer';
 import AppHeader from '../../components/AppHeader';
+import ShareSettings from '../ShareSettingsPage';
 import Loader from '../../components/Loader';
+import { setCurrentApp } from '../../batteries/modules/actions';
 import Logo from '../../components/Logo';
 
 const { Sider } = Layout;
@@ -96,7 +98,7 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
-			{ label: 'Sharing Settings', link: 'popular-searches' },
+			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
 };
@@ -123,12 +125,13 @@ class AppWrapper extends Component {
 
 	componentDidMount() {
 		console.log('mounted');
+		const { apps, updateCurrentApp, match } = this.props;
+		const { appname } = match.params;
+		updateCurrentApp(appname, apps[appname]);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		console.log('updated called');
-		if (prevState.appname !== this.state.appname) {
-		}
 	}
 
 	onCollapse = (collapsed) => {
@@ -216,7 +219,6 @@ class AppWrapper extends Component {
 						<Switch>
 							<Route exact path="/app/:appname" component={OverviewPage} />
 							<Route exact path="/app/:appname/overview" component={OverviewPage} />
-							{/* <Route exact path="/app/:appname/analytics" component={AnalyticsPage} /> */}
 							<Route
 								exact
 								path="/app/:appname/analytics/:tab?/:subTab?"
@@ -230,7 +232,7 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appname/credentials"
-								component={CredentialsPage}
+								component={props => (<PageContainer {...props} component={CredentialsPage} />)}
 							/>
 							<Route
 								exact
@@ -258,6 +260,11 @@ class AppWrapper extends Component {
 								path="/app/:appname/mappings"
 								render={() => <MappingsPage appname={appname} appId={appId} />}
 							/>
+							<Route
+								exact
+								path="/app/:appname/share-settings"
+								render={() => <ShareSettings appname={appname} appId={appId} />}
+							/>
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
 						</Switch>
@@ -272,4 +279,7 @@ const mapStateToProps = ({ apps }) => ({
 	apps,
 });
 
-export default connect(mapStateToProps)(AppWrapper);
+const mapDispatchToProps = dispatch => ({
+	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);
