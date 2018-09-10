@@ -8,9 +8,11 @@ import PropTypes from 'prop-types';
 
 import Logo from '../../components/Logo';
 import { ACC_API } from '../../constants/config';
+
 import {
- container, card, githubBtn, googleBtn, gitlabBtn, checkbox,
-} from './styles';
+ container, card, githubBtn, googleBtn, gitlabBtn,
+} from '../LoginPage/styles';
+import { checkbox } from './styles';
 
 const getSignupURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
 
