@@ -1,26 +1,25 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Card } from 'antd';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import Container from '../../components/Container';
-import {
-	getUserStatus,
-} from '../../batteries/modules/actions';
-import UpgradePlanBanner from './../../batteries/components/shared/UpgradePlan/Banner';
+import EditSettings from './EditSettings';
+import { getSharedApp } from '../../batteries/modules/actions';
+import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 
 const columns = [
 	{
 		title: 'Team Members',
-		key: 'description',
+		dataIndex: 'email',
 	},
 	{
 		title: 'Access',
-		key: 'credentials',
-    },
-    {
+		dataIndex: 'description',
+	},
+	{
 		title: 'Edit',
-		key: 'credentialss',
+		render: setting => <EditSettings setting={setting} />,
 	},
 ];
 const bannerConfig = {
@@ -31,48 +30,56 @@ const bannerConfig = {
 };
 
 class ShareSettingsView extends React.Component {
-    componentDidMount() {
-        const { checkUserStatus } = this.props;
-        checkUserStatus();
-    }
-    render() {
-        console.log("THSI IS PROPS", this.props)
-        const { isPaidUser } = this.props;
-        return (<Container>
-            {
-                !isPaidUser ? <UpgradePlanBanner {...bannerConfig}/> : <Table columns={columns} dataSource={[]}/>
-            }
-            </Container>)
-    }
+	componentDidMount() {
+		const { fetchAppShare, appId } = this.props;
+		fetchAppShare(appId);
+	}
+
+	render() {
+		const { isPaidUser, sharedUsers } = this.props;
+		console.log(sharedUsers);
+		return (
+			<Container>
+				{!isPaidUser ? (
+					<UpgradePlanBanner {...bannerConfig} />
+				) : (
+					<Card>
+						<Table
+							rowKey={item => item.email}
+							columns={columns}
+							dataSource={sharedUsers}
+							css="tr:hover td {
+								background: transparent;
+							}"
+						/>
+					</Card>
+				)}
+			</Container>
+		);
+	}
 }
 
 ShareSettingsView.propTypes = {
-    checkUserStatus: PropTypes.func.isRequired
-}
+	checkUserStatus: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => {
 	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
 		isPaidUser: get(state, '$getUserStatus.isPaidUser'),
+		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
 		isLoading:
 			get(state, '$getUserStatus.isFetching')
 			|| get(state, '$getAppPermissions.isFetching')
 			|| get(state, '$getAppInfo.isFetching'),
-		errors: [
-			get(state, '$getUserStatus.error'),
-			get(state, '$getAppPermissions.error'),
-			get(state, '$getAppInfo.error'),
-			get(state, '$createAppPermission.error'),
-			get(state, '$deleteAppPermission.error'),
-			get(state, '$updateAppPermission.error'),
-			get(state, '$deleteApp.error'),
-		],
+		errors: [get(state, '$getSharedApp.error')],
+		sharedUsers: get(state, '$getSharedApp.results'),
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	checkUserStatus: () => dispatch(getUserStatus()),
+	fetchAppShare: appId => dispatch(getSharedApp(appId)),
 });
 
 export default connect(

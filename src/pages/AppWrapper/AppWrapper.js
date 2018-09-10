@@ -265,7 +265,7 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appname/share-settings"
-								render={() => <ShareSettings appname={appName} appId={appId} />}
+								component={props => (<AppPageContainer {...props} component={ShareSettings} />)}
 							/>
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
