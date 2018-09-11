@@ -3,7 +3,7 @@ import {
  Button, Popconfirm, Tooltip, notification,
 } from 'antd';
 import { css } from 'react-emotion';
-import { string, object, func } from 'prop-types';
+import { object, func } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Flex from '../../batteries/components/shared/Flex';
 import { Types } from './utils';

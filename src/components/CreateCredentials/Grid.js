@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip } from 'antd';
+import { Tooltip, Icon } from 'antd';
 import styles from './styles';
-import Flex from '../../../batteries/components/shared/Flex';
+import Flex from '../../batteries/components/shared/Flex';
 
 const Grid = ({ label, component, toolTipMessage }) => (
 	<Flex css="margin-top: 30px">
@@ -15,8 +15,9 @@ const Grid = ({ label, component, toolTipMessage }) => (
 							css="margin-left: 5px;color:#898989"
 							overlay={toolTipMessage}
 							mouseLeaveDelay={0}
+							placement="rightTop"
 						>
-							<i className="fas fa-info-circle" />
+							<Icon type="info-circle" theme="outlined" />
 						</Tooltip>
 					)}
 				</span>

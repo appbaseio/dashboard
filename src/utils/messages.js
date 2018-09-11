@@ -7,6 +7,7 @@ export const hoverMessage = () => (
 	</div>
 );
 export const createCredentials = {
+	email: () => <div style={{ maxWidth: 220 }}>An email to share credential key.</div>,
 	description: () => (
 		<div style={{ maxWidth: 220 }}>An optional description for your credential key.</div>
 	),

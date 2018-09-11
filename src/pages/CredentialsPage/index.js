@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
 import {
-	Card, Table, Popconfirm, Tooltip,
+ Card, Table, Popconfirm, Tooltip,
 } from 'antd';
 import { connect } from 'react-redux';
 import {
  string, func, bool, array,
 } from 'prop-types';
-import CreateCredentials from './CreateCredentials';
+import CreateCredentials from '../../components/CreateCredentials';
 import Container from '../../components/Container';
-import { getCredentialsFromPermissions } from '../../batteries/utils';
+import { getAppInfoByName } from '../../batteries/modules/selectors';
 import Button from '../../batteries/components/shared/Button/Primary';
 import Permission from './Permission';
 import { displayErrors } from '../../utils/helper';
 import {
-	getAppMappings,
 	getPermission,
 	createPermission,
 	deletePermission,
@@ -48,24 +47,14 @@ class Credentials extends Component {
 	}
 
 	componentDidMount() {
-		const {
-			appId, fetchPermissions,
-		} = this.props;
+		const { appId, fetchPermissions } = this.props;
 		fetchPermissions(appId);
 	}
 
 	componentDidUpdate(prevProps) {
-		const {
- appName, errors, permissions, fetchMappings,
-} = this.props;
+		const { appName, errors } = this.props;
 		if (prevProps.appName !== appName) {
 			this.initialize();
-		}
-		if (permissions !== prevProps.permissions && permissions.length) {
-			// Fetch Mappings if permissions are present
-			const credentials = getCredentialsFromPermissions(permissions);
-			const { username, password } = credentials;
-			fetchMappings(appName, `${username}:${password}`);
 		}
 		displayErrors(errors, prevProps.errors);
 	}
@@ -83,14 +72,16 @@ class Credentials extends Component {
 
 	updatePermission = (request, username) => {
 		const { appId, handleEditPermission } = this.props;
-		handleEditPermission(appId, username, request)
-		.then(({ payload }) => {
+		handleEditPermission(appId, username, request).then(({ payload }) => {
 			if (payload) {
-				this.setState({
-					showCredForm: false,
-				}, () => {
-					this.refetchPermissions();
-				});
+				this.setState(
+					{
+						showCredForm: false,
+					},
+					() => {
+						this.refetchPermissions();
+					},
+				);
 			}
 		});
 	};
@@ -113,11 +104,14 @@ class Credentials extends Component {
 		const { appId, handleCreatePermission } = this.props;
 		handleCreatePermission(appId, request).then(({ payload }) => {
 			if (payload) {
-				this.setState({
-					showCredForm: false,
-				}, () => {
-					this.refetchPermissions();
-				});
+				this.setState(
+					{
+						showCredForm: false,
+					},
+					() => {
+						this.refetchPermissions();
+					},
+				);
 			}
 		});
 	};
@@ -129,7 +123,7 @@ class Credentials extends Component {
 				this.refetchPermissions();
 			}
 		});
-	}
+	};
 
 	deleteApp = () => {
 		const { handleDeleteApp, appId } = this.props;
@@ -139,7 +133,7 @@ class Credentials extends Component {
 				window.location = window.origin;
 			}
 		});
-	}
+	};
 
 	handleSubmit = (form, username) => {
 		const { currentPermissionInfo } = this.state;
@@ -190,7 +184,8 @@ class Credentials extends Component {
 				</Card>
 				{showCredForm && (
 					<CreateCredentials
-						isOwner={isOwner}
+						disabled={!isOwner}
+						titleText={!isOwner ? 'Credentials Details' : undefined}
 						onSubmit={this.handleSubmit}
 						show={showCredForm}
 						handleCancel={this.handleCancel}
@@ -208,28 +203,28 @@ class Credentials extends Component {
 						New Credentials
 					</Button>
 				)}
-				{
-					isOwner && (
-						<Tooltip placement="rightTop" title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings.">
-							<Popconfirm
-								title="Are you sure delete this app?"
-								onConfirm={this.deleteApp}
-								okText="Yes"
-								cancelText="No"
+				{isOwner && (
+					<Tooltip
+						placement="rightTop"
+						title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings."
+					>
+						<Popconfirm
+							title="Are you sure delete this app?"
+							onConfirm={this.deleteApp}
+							okText="Yes"
+							cancelText="No"
+						>
+							<Button
+								style={{
+									margin: '10px 10px',
+								}}
+								danger
 							>
-								<Button
-									style={{
-										margin: '10px 10px',
-									}}
-									danger
-								>
-									Delete App
-								</Button>
-							</Popconfirm>
-						</Tooltip>
-
-					)
-				}
+								Delete App
+							</Button>
+						</Popconfirm>
+					</Tooltip>
+				)}
 			</Container>
 		);
 	}
@@ -245,20 +240,19 @@ Credentials.propTypes = {
 	handleCreatePermission: func.isRequired,
 	handleDeletePermission: func.isRequired,
 	handleEditPermission: func.isRequired,
-	fetchMappings: func.isRequired,
 	isOwner: bool.isRequired,
 	isLoading: bool,
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
 };
 const mapStateToProps = (state) => {
-	const appOwner = get(state, '$getAppInfo.app.owner');
+	const appOwner = get(getAppInfoByName(state), 'owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
 		permissions: get(state, '$getAppPermissions.results', []),
-		isPaidUser: get(state, '$getUserStatus.isPaidUser'),
+		isPaidUser: get(state, '$getAppPlan.isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),
 		errors: [
@@ -272,7 +266,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = dispatch => ({
 	fetchPermissions: appId => dispatch(getPermission(appId)),
-	fetchMappings: (appName, credentials) => dispatch(getAppMappings(appName, credentials)),
 	handleCreatePermission: (appId, payload) => dispatch(createPermission(appId, payload)),
 	handleDeletePermission: (appId, username) => dispatch(deletePermission(appId, username)),
 	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),

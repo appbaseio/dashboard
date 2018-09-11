@@ -31,6 +31,7 @@ class AppPageContainer extends React.Component {
 			shouldFetchAppInfo,
 			shouldFetchUserStatus,
 			shouldFetchAppPlan,
+			isAppPlanFetched,
 		} = this.props;
 		if (shouldFetchUserStatus) {
 			checkUserStatus();
@@ -38,7 +39,7 @@ class AppPageContainer extends React.Component {
 		if (shouldFetchAppInfo) {
 			fetchAppInfo(appId);
 		}
-		if (shouldFetchAppPlan) {
+		if (shouldFetchAppPlan && !isAppPlanFetched) {
 			fetchAppPlan(appName);
 		}
 	}
@@ -76,6 +77,7 @@ AppPageContainer.propTypes = {
 	fetchAppInfo: PropTypes.func.isRequired,
 	fetchAppPlan: PropTypes.func.isRequired,
 	updateCurrentApp: PropTypes.func.isRequired,
+	isAppPlanFetched: PropTypes.bool.isRequired,
 };
 const mapStateToProps = (state, ownProps) => {
 	const appName = get(ownProps, 'match.params.appname');
@@ -86,6 +88,7 @@ const mapStateToProps = (state, ownProps) => {
 			get(state, '$getUserStatus.isFetching')
 			|| get(state, '$getAppInfo.isFetching')
 			|| get(state, '$getAppPlan.isFetching'),
+		isAppPlanFetched: get(state, '$getAppPlan.success'),
 		errors: [
 			ownProps.shouldFetchUserStatus !== false && get(state, '$getUserStatus.error'),
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),

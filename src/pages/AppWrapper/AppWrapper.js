@@ -8,6 +8,7 @@ import AppHeader from '../../components/AppHeader';
 import ShareSettings from '../ShareSettingsPage';
 import Loader from '../../components/Loader';
 import { setCurrentApp } from '../../batteries/modules/actions';
+import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
 const { Sider } = Layout;
@@ -15,6 +16,11 @@ const { SubMenu } = Menu;
 
 const AnalyticsPage = Loadable({
 	loader: () => import('../AnalyticsPage'),
+	loading: Loader,
+});
+
+const BillingPage = Loadable({
+	loader: () => import('../BillingPage'),
 	loading: Loader,
 });
 
@@ -213,6 +219,7 @@ class AppWrapper extends Component {
 								</Menu.Item>
 							);
 						})}
+						<UpgradeButton link={`/app/${appName}/billing`} />
 					</Menu>
 				</Sider>
 				<Layout>
@@ -234,7 +241,9 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appname/credentials"
-								component={props => (<AppPageContainer {...props} component={CredentialsPage} />)}
+								component={props => (
+									<AppPageContainer {...props} component={CredentialsPage} />
+								)}
 							/>
 							<Route
 								exact
@@ -265,7 +274,16 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appname/share-settings"
-								component={props => (<AppPageContainer {...props} component={ShareSettings} />)}
+								component={props => (
+									<AppPageContainer {...props} component={ShareSettings} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appname/billing"
+								component={props => (
+									<AppPageContainer {...props} component={BillingPage} />
+								)}
 							/>
 							<Route exact path="/app/:appname/browse" component={BrowserPage} />
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
@@ -284,4 +302,7 @@ const mapStateToProps = ({ apps }) => ({
 const mapDispatchToProps = dispatch => ({
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(AppWrapper);
