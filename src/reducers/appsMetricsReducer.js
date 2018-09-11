@@ -20,7 +20,7 @@ export default function appsMetricsReducer(
 		case APPS.LOAD_METRICS_SUCCESS: {
 			return {
 				isLoading: false,
-				data: action.metrics,
+				data: action.payload,
 				error: null,
 			};
 		}

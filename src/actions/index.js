@@ -1,43 +1,27 @@
 // @flow
 import { USER, APPS } from '../constants';
+import { createAction } from '../batteries/modules/actions/utils';
 
 export function loadUser(): Object {
-	return {
-		type: USER.LOAD,
-	};
+	return createAction(USER.LOAD, null, null, null);
 }
 
 export function setUser(user: Object): Object {
-	return {
-		type: USER.LOAD_SUCCESS,
-		user,
-	};
+	return createAction(USER.LOAD_SUCCESS, user, null, null);
 }
 
 export function setUserError(error: Object): Object {
-	return {
-		type: USER.LOAD_FAIL,
-		error,
-	};
+	return createAction(USER.LOAD_FAIL, null, error, null);
 }
 
 export function loadApps(apps: Object): Object {
-	return {
-		type: APPS.LOAD,
-		apps,
-	};
+	return createAction(APPS.LOAD, apps, null, null);
 }
 
 export function setAppsMetrics(metrics: Object): Object {
-	return {
-		type: APPS.LOAD_METRICS_SUCCESS,
-		metrics,
-	};
+	return createAction(APPS.LOAD_METRICS_SUCCESS, metrics, null, null);
 }
 
 export function setAppsMetricsError(error: Object): Object {
-	return {
-		type: APPS.LOAD_METRICS_FAIL,
-		error,
-	};
+	return createAction(APPS.LOAD_METRICS_FAIL, null, error, null);
 }
