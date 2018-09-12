@@ -44,10 +44,12 @@
 		"webpack-dev-server": "^3.1.5"
 	},
 	"dependencies": {
+		"@appbaseio/designkit": "^0.9.1",
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
 		"antd": "^3.8.1",
 		"appbase-js": "4.0.0-beta",
 		"emotion": "^9.2.6",
+		"hex-rgb": "^3.0.0",
 		"lodash": "^4.17.10",
 		"moment": "^2.22.2",
 		"prop-types": "^15.6.2",
@@ -60,6 +62,7 @@
 		"react-reactive-form": "^1.0.28",
 		"react-redux": "^5.0.7",
 		"react-router-dom": "^4.3.1",
+		"react-stripe-checkout": "^2.6.3",
 		"recharts": "^1.1.0",
 		"redux": "^4.0.0",
 		"redux-saga": "^0.16.0",

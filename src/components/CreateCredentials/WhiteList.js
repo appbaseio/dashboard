@@ -3,8 +3,8 @@ import { Icon, Input, Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './styles';
 import Grid from './Grid';
-import Flex from '../../../batteries/components/shared/Flex';
-import { Suggestions, getSuggestionCode, ipValidator } from '../utils';
+import Flex from '../../batteries/components/shared/Flex';
+import { Suggestions, getSuggestionCode, ipValidator } from './utils';
 
 class WhiteList extends React.Component {
 	constructor(props) {
