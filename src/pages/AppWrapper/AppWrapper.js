@@ -285,7 +285,11 @@ class AppWrapper extends Component {
 									<AppPageContainer {...props} component={BillingPage} />
 								)}
 							/>
-							<Route exact path="/app/:appname/browse" component={BrowserPage} />
+							<Route
+								exact
+								path="/app/:appname/browse"
+								render={() => <BrowserPage appName={appName} appId={appId} />}
+							/>
 							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
 						</Switch>
 					</section>
