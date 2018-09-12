@@ -116,7 +116,6 @@ class AppWrapper extends Component {
 	};
 
 	static getDerivedStateFromProps(props, state) {
-		console.log('called getDerivedStateFromProps');
 		const { appName } = props.match.params;
 		if (appName && appName !== state.appName) {
 			return { appName };
@@ -130,16 +129,9 @@ class AppWrapper extends Component {
 	}
 
 	componentDidMount() {
-		console.log('mounted');
-		// const { apps, updateCurrentApp, match } = this.props;
-		// const { appname } = match.params;
-		// updateCurrentApp(appname, apps[appname]);
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		console.log('updated called');
-		if (prevState.appName !== this.state.appName) {
-		}
+		const { apps, updateCurrentApp, match } = this.props;
+		const { appname } = match.params;
+		updateCurrentApp(appname, apps[appname]);
 	}
 
 	onCollapse = (collapsed) => {
@@ -290,7 +282,11 @@ class AppWrapper extends Component {
 								path="/app/:appname/browse"
 								render={() => <BrowserPage appName={appName} appId={appId} />}
 							/>
-							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
+							<Route
+								exact
+								path="/app/:appname/sandbox"
+								render={() => <SandboxPage appName={appName} appId={appId} />}
+							/>
 						</Switch>
 					</section>
 				</Layout>
