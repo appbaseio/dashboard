@@ -226,7 +226,13 @@ class AppWrapper extends Component {
 					<AppHeader />
 					<section style={{ minHeight: '100vh' }}>
 						<Switch>
-							<Route exact path="/app/:appname" component={OverviewPage} />
+							<Route
+								exact
+								path="/app/:appname"
+								component={props => (
+									<AppPageContainer {...props} component={OverviewPage} />
+								)}
+							/>
 							<Route exact path="/app/:appname/overview" component={OverviewPage} />
 							<Route
 								exact

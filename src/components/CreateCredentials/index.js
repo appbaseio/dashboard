@@ -14,7 +14,7 @@ import styles from './styles';
 import Flex from '../../batteries/components/shared/Flex';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { displayErrors } from '../../utils/helper';
-import { getCredentialsFromPermissions } from '../../batteries/utils';
+import { getPermission } from '../../batteries/modules/actions/permission';
 import { Button as UpgradeButton } from '../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { getAppMappings } from '../../batteries/modules/actions';
@@ -97,12 +97,19 @@ class CreateCredentials extends React.Component {
 	}
 
 	getMappings() {
-		const { appName, permissions, fetchMappings } = this.props;
-		if (permissions && permissions.length) {
+		const {
+			appId, appName, fetchMappings, fetchPermissions, credentials,
+		} = this.props;
+		if (credentials) {
 			// Fetch Mappings if permissions are present
-			const credentials = getCredentialsFromPermissions(permissions);
 			const { username, password } = credentials;
 			fetchMappings(appName, `${username}:${password}`);
+		} else {
+			fetchPermissions(appId).then(({ payload }) => {
+				if (payload && payload.length) {
+					this.getMappings();
+				}
+			});
 		}
 	}
 
@@ -481,6 +488,7 @@ CreateCredentials.propTypes = {
 	isSubmitting: PropTypes.bool,
 	show: PropTypes.bool,
 	onSubmit: PropTypes.func.isRequired,
+	fetchPermissions: PropTypes.func.isRequired,
 	initialValues: PropTypes.shape({
 		description: PropTypes.string,
 		operationType: PropTypes.object,
@@ -495,6 +503,7 @@ CreateCredentials.propTypes = {
 	}),
 	isMappingsFetched: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
+	appId: PropTypes.string.isRequired,
 	handleCancel: PropTypes.func.isRequired,
 	isLoadingMappings: PropTypes.bool.isRequired,
 	disabled: PropTypes.bool,
@@ -511,10 +520,11 @@ const mapStateToProps = (state) => {
 	return {
 		isPaidUser: get(state, '$getAppPlan.isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
+		appId: get(state, '$getCurrentApp.id'),
 		mappings: mappings || [],
 		isMappingsFetched: !!mappings,
-		isLoadingMappings: get(state, '$getAppMappings.isFetching'),
-		permissions: get(state, '$getAppPermissions.results', []),
+		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
+		credentials: get(state, '$getAppPermissions.credentials'),
 		plan: get(state, '$getAppPlan.plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
@@ -525,6 +535,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
 	fetchMappings: (appName, credentials) => dispatch(getAppMappings(appName, credentials)),
+	fetchPermissions: appId => dispatch(getPermission(appId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCredentials);
