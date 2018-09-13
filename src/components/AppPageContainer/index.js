@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-	getUserStatus,
-	getAppInfo,
-	setCurrentApp,
-	getAppPlan,
-} from '../../batteries/modules/actions';
-import Loader from '../../batteries/components/shared/Loader/Spinner';
+
+import { getAppInfo, setCurrentApp, getAppPlan } from '../../batteries/modules/actions';
+import Loader from '../Loader';
 import { displayErrors } from '../../utils/helper';
 
-class AppPageContainer extends React.Component {
+class AppPageContainer extends Component {
 	constructor(props) {
 		super(props);
+
 		const { appName, appId, updateCurrentApp } = props;
+
 		if (appName && appId) {
 			updateCurrentApp(appName, appId);
 		}
@@ -25,17 +23,13 @@ class AppPageContainer extends React.Component {
 		const {
 			appId,
 			appName,
-			checkUserStatus,
 			fetchAppInfo,
 			fetchAppPlan,
 			shouldFetchAppInfo,
-			shouldFetchUserStatus,
 			shouldFetchAppPlan,
 			isAppPlanFetched,
 		} = this.props;
-		if (shouldFetchUserStatus) {
-			checkUserStatus();
-		}
+
 		if (shouldFetchAppInfo) {
 			fetchAppInfo(appId);
 		}
@@ -50,54 +44,52 @@ class AppPageContainer extends React.Component {
 	}
 
 	render() {
-		const { isLoading, component, ...rest } = this.props;
+		const { isLoading, component, ...props } = this.props;
+
 		if (isLoading) {
 			return <Loader />;
 		}
-		return React.createElement(component, rest);
+
+		return <div key={props.appName}>{React.createElement(component, props)}</div>;
 	}
 }
+
 AppPageContainer.defaultProps = {
 	isLoading: false,
 	errors: [],
-	shouldFetchUserStatus: true,
 	shouldFetchAppInfo: true,
 	shouldFetchAppPlan: true,
 };
+
 AppPageContainer.propTypes = {
 	appName: PropTypes.string.isRequired,
 	appId: PropTypes.string.isRequired,
 	isLoading: PropTypes.bool,
 	errors: PropTypes.array,
-	shouldFetchUserStatus: PropTypes.bool,
 	shouldFetchAppPlan: PropTypes.bool,
 	shouldFetchAppInfo: PropTypes.bool,
 	component: PropTypes.func.isRequired,
-	checkUserStatus: PropTypes.func.isRequired,
 	fetchAppInfo: PropTypes.func.isRequired,
 	fetchAppPlan: PropTypes.func.isRequired,
 	updateCurrentApp: PropTypes.func.isRequired,
 	isAppPlanFetched: PropTypes.bool.isRequired,
 };
+
 const mapStateToProps = (state, ownProps) => {
-	const appName = get(ownProps, 'match.params.appname');
+	const appName = get(ownProps, 'match.params.appName');
 	return {
 		appName,
 		appId: get(state, 'apps', {})[appName],
-		isLoading:
-			get(state, '$getUserStatus.isFetching')
-			|| get(state, '$getAppInfo.isFetching')
-			|| get(state, '$getAppPlan.isFetching'),
+		isLoading: get(state, '$getAppInfo.isFetching') || get(state, '$getAppPlan.isFetching'),
 		isAppPlanFetched: get(state, '$getAppPlan.success'),
 		errors: [
-			ownProps.shouldFetchUserStatus !== false && get(state, '$getUserStatus.error'),
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),
 			ownProps.shouldFetchAppPlan !== false && get(state, '$getAppPlan.error'),
 		],
 	};
 };
+
 const mapDispatchToProps = dispatch => ({
-	checkUserStatus: () => dispatch(getUserStatus()),
 	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 	fetchAppPlan: appName => dispatch(getAppPlan(appName)),
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),

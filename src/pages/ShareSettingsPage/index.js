@@ -86,7 +86,6 @@ class ShareSettingsView extends React.Component {
 		const { appId, shareApp } = this.props;
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
-		console.log(JSON.stringify(requestPayload));
 		shareApp(appId, requestPayload);
 	};
 

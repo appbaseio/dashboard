@@ -3,6 +3,8 @@ import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
+
 import AppPageContainer from '../../components/AppPageContainer';
 import AppHeader from '../../components/AppHeader';
 import ShareSettings from '../ShareSettingsPage';
@@ -58,18 +60,22 @@ const PopularSearches = Loadable({
 	loader: () => import('../PopularSearches'),
 	loading: Loader,
 });
+
 const PopularResults = Loadable({
 	loader: () => import('../PopularResults'),
 	loading: Loader,
 });
+
 const PopularFilters = Loadable({
 	loader: () => import('../PopularFilters'),
 	loading: Loader,
 });
+
 const NoResultSearches = Loadable({
 	loader: () => import('../NoResultSearches'),
 	loading: Loader,
 });
+
 const RequestLogs = Loadable({
 	loader: () => import('../RequestLogs'),
 	loading: Loader,
@@ -122,7 +128,7 @@ class AppWrapper extends Component {
 		}
 
 		if (!appName && !state.appName) {
-			// TODO: get last known appName from localstorage
+			// TODO: get last known appName from redux-persist
 			return { appName: 'marketplacev6' };
 		}
 		return null;
@@ -131,8 +137,20 @@ class AppWrapper extends Component {
 	componentDidMount() {
 		const { appName } = this.state;
 		const { history, match } = this.props;
+
 		if (!match.params.appName && appName) {
 			history.push(`/app/${appName}/`);
+		}
+	}
+
+	componentDidUpdate() {
+		const { history, currentApp, match } = this.props;
+		const { appName } = this.state;
+
+		const route = match.params.route || '';
+
+		if (currentApp && appName !== currentApp) {
+			history.push(`/app/${currentApp}/${route}`);
 		}
 	}
 
@@ -171,9 +189,6 @@ class AppWrapper extends Component {
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
 		const { collapsed, appName } = this.state;
-		const { apps } = this.props;
-
-		const appId = apps[appName];
 
 		return (
 			<Layout>
@@ -223,12 +238,12 @@ class AppWrapper extends Component {
 						<Switch>
 							<Route
 								exact
-								path="/app/:appname"
+								path="/app/:appName"
 								component={props => (
 									<AppPageContainer {...props} component={OverviewPage} />
 								)}
 							/>
-							<Route exact path="/app/:appname/overview" component={OverviewPage} />
+							<Route exact path="/app/:appName/overview" component={OverviewPage} />
 							<Route
 								exact
 								path="/app/:appName/analytics/:tab?/:subTab?"
@@ -241,7 +256,7 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appname/credentials"
+								path="/app/:appName/credentials"
 								component={props => (
 									<AppPageContainer {...props} component={CredentialsPage} />
 								)}
@@ -266,35 +281,66 @@ class AppWrapper extends Component {
 								path="/app/:appName/no-results-searches"
 								component={NoResultSearches}
 							/>
-							<Route exact path="/app/:appName/import" component={ImporterPage} />
 							<Route
 								exact
-								path="/app/:appName/mappings"
-								render={() => <MappingsPage appName={appName} appId={appId} />}
+								path="/app/:appName/import"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={ImporterPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/share-settings"
+								path="/app/:appName/mappings"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={MappingsPage}
+										shouldFetchAppInfo={false}
+									/>
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/share-settings"
 								component={props => (
 									<AppPageContainer {...props} component={ShareSettings} />
 								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/billing"
+								path="/app/:appName/billing"
 								component={props => (
 									<AppPageContainer {...props} component={BillingPage} />
 								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/browse"
-								render={() => <BrowserPage appName={appName} appId={appId} />}
+								path="/app/:appName/browse"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={BrowserPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/sandbox"
-								render={() => <SandboxPage appName={appName} appId={appId} />}
+								path="/app/:appName/sandbox"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={SandboxPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
 							/>
 						</Switch>
 					</section>
@@ -304,13 +350,14 @@ class AppWrapper extends Component {
 	}
 }
 
-const mapStateToProps = ({ apps }) => ({
-	apps,
+const mapStateToProps = state => ({
+	currentApp: get(state, '$getCurrentApp.name'),
 });
 
 const mapDispatchToProps = dispatch => ({
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
 });
+
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps,

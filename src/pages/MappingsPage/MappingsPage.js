@@ -39,7 +39,7 @@ const MappingsPage = ({ appName, appId }) => (
 			</Row>
 		</Header>
 		<section>
-			<Mappings appName={appName} appId={appId} />
+			<Mappings key={appName} appName={appName} appId={appId} />
 		</section>
 	</Fragment>
 );
