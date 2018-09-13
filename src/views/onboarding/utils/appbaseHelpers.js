@@ -153,9 +153,9 @@ class AppbaseUtils {
 			finalData.push(indexObj);
 			finalData.push(record);
 		});
-		this.appbaseRef = new Appbase({
+		this.appbaseRef = Appbase({
 			url: this.address,
-			appname: this.app.appName,
+			app: this.app.appName,
 			username: this.app.username,
 			password: this.app.password,
 		});
@@ -165,10 +165,10 @@ class AppbaseUtils {
 					type: this.app.type,
 					body: finalData,
 				})
-				.on('data', () => {
+				.then(() => {
 					resolve();
 				})
-				.on('error', (e) => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
@@ -181,10 +181,10 @@ class AppbaseUtils {
 					type: this.app.type,
 					body: streamingData,
 				})
-				.on('data', () => {
+				.then(() => {
 					resolve();
 				})
-				.on('error', (e) => {
+				.catch((e) => {
 					reject(e);
 				});
 		});
