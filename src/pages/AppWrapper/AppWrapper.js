@@ -122,16 +122,18 @@ class AppWrapper extends Component {
 		}
 
 		if (!appName && !state.appName) {
-			// get last known appName from localstorage
+			// TODO: get last known appName from localstorage
 			return { appName: 'marketplacev6' };
 		}
 		return null;
 	}
 
 	componentDidMount() {
-		const { apps, updateCurrentApp, match } = this.props;
-		const { appname } = match.params;
-		updateCurrentApp(appname, apps[appname]);
+		const { appName } = this.state;
+		const { history, match } = this.props;
+		if (!match.params.appName && appName) {
+			history.push(`/app/${appName}/`);
+		}
 	}
 
 	onCollapse = (collapsed) => {
@@ -141,7 +143,7 @@ class AppWrapper extends Component {
 	getActiveMenu = () => {
 		let activeSubMenu = 'App Overview';
 		let activeMenuItem = 'App Overview';
-		const { route: pathname, appName } = this.props.match.params; // eslint-disable-line
+		const { route: pathname } = this.props.match.params; // eslint-disable-line
 
 		Object.keys(routes).some((route) => {
 			if (routes[route].menu) {
@@ -169,8 +171,9 @@ class AppWrapper extends Component {
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
 		const { collapsed, appName } = this.state;
+		const { apps } = this.props;
 
-		const appId = this.props.apps[appName];
+		const appId = apps[appName];
 
 		return (
 			<Layout>
