@@ -86,13 +86,17 @@ class HomePage extends Component {
 								>
 									<Card title={name}>
 										{/* Free Plan is taken as default */}
-										<UsageRenderer
-											computedMetrics={{
-												calls: data[apps[name]].api_calls,
-												records: data[apps[name]].records,
-											}}
-											plan="free"
-										/>
+										{data && data[apps[name]] ? (
+											<UsageRenderer
+												computedMetrics={{
+													calls: data[apps[name]].api_calls,
+													records: data[apps[name]].records,
+												}}
+												plan="free"
+											/>
+										) : (
+											'Loading ...'
+										)}
 									</Card>
 								</Link>
 							</Col>
