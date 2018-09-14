@@ -12,9 +12,10 @@ const upgradeButton = css`
 	border-top: solid 1px #000c17;
 	border-bottom: solid 1px #000c17;
 	padding: 10px 24px;
-	margin-top: 100px;
 	position: fixed;
-	bottom: 70px;
+	background-color: inherit;
+	z-index: 10;
+	bottom: 48px;
 `;
 
 const button = css`

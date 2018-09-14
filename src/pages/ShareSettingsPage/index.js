@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import Container from '../../components/Container';
-import { getSharedApp, createAppShare } from '../../batteries/modules/actions';
+import { getSharedApp, createAppShare, updatePermission } from '../../batteries/modules/actions';
 import ButtonBtr from '../../batteries/components/shared/Button/Primary';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
@@ -83,9 +83,13 @@ class ShareSettingsView extends React.Component {
 	};
 
 	handleSubmit = (form) => {
-		const { appId, shareApp } = this.props;
+		const { appId, shareApp, handleEditPermission } = this.props;
+		const { selectedSettings } = this.state;
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
+		if (selectedSettings && selectedSettings.username) {
+			handleEditPermission(appId, selectedSettings.username, requestPayload);
+		}
 		shareApp(appId, requestPayload);
 	};
 
@@ -141,7 +145,6 @@ class ShareSettingsView extends React.Component {
 }
 
 ShareSettingsView.propTypes = {
-	checkUserStatus: PropTypes.func.isRequired,
 	shareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
 };
@@ -163,6 +166,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	fetchAppShare: appId => dispatch(getSharedApp(appId)),
 	shareApp: (appId, payload) => dispatch(createAppShare(appId, payload)),
+	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),
 });
 
 export default connect(

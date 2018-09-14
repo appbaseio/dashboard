@@ -243,7 +243,13 @@ class AppWrapper extends Component {
 									<AppPageContainer {...props} component={OverviewPage} />
 								)}
 							/>
-							<Route exact path="/app/:appName/overview" component={OverviewPage} />
+							<Route
+								exact
+								path="/app/:appName/overview"
+								component={props => (
+									<AppPageContainer {...props} component={OverviewPage} />
+								)}
+							/>
 							<Route
 								exact
 								path="/app/:appName/analytics/:tab?/:subTab?"
