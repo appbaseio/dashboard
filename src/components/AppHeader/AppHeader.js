@@ -20,16 +20,16 @@ const noBorder = css`
 		color: #1890ff !important;
 	}
 `;
-const list = css`
-	max-height: 300px;
-	overflow-y: scroll;
+// const list = css`
+// 	max-height: 300px;
+// 	overflow-y: scroll;
 
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-`;
+// 	ul {
+// 		list-style: none;
+// 		margin: 0;
+// 		padding: 0;
+// 	}
+// `;
 
 const AppHeader = ({ currentApp }) => (
 	<Header className={headerStyles}>
