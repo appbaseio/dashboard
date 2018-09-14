@@ -145,7 +145,6 @@ class ShareSettingsView extends React.Component {
 }
 
 ShareSettingsView.propTypes = {
-	checkUserStatus: PropTypes.func.isRequired,
 	shareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
 };

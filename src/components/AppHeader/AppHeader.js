@@ -1,13 +1,11 @@
 import React from 'react';
-import {
- Layout, Menu, Dropdown, Icon,
-} from 'antd';
+import { Layout, Menu } from 'antd';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 import headerStyles from './styles';
-import { setCurrentApp } from '../../batteries/modules/actions';
+// import { setCurrentApp } from '../../batteries/modules/actions';
 
 const { Header } = Layout;
 const noBorder = css`
@@ -33,48 +31,30 @@ const list = css`
 	}
 `;
 
-const AppHeader = ({ currentApp, apps, updateCurrentApp }) => {
-	const menu = (
-		<Menu>
-			<Menu.ItemGroup className={list}>
-				{Object.keys(apps).map(app => (
-					<Menu.Item key={app}>
-						<a title={app} role="link" onClick={() => updateCurrentApp(app, apps[app])}>
-							{app}
-						</a>
-					</Menu.Item>
-				))}
-			</Menu.ItemGroup>
-			<Menu.Divider />
-			<Menu.Item key="3">Create a new app</Menu.Item>
-		</Menu>
-	);
-
-	return (
-		<Header className={headerStyles}>
-			<Menu mode="horizontal">
-				<Menu.Item key="1" className={noBorder}>
-					<Dropdown overlay={menu} trigger={['click']}>
+const AppHeader = ({ currentApp }) => (
+	<Header className={headerStyles}>
+		<Menu mode="horizontal">
+			<Menu.Item key="1" className={noBorder}>
+				<span>{currentApp || 'Loading...'}</span>
+				{/* <Dropdown overlay={menu} trigger={['click']}>
 						<span>
 							{currentApp || 'Loading...'} <Icon type="down" />
 						</span>
-					</Dropdown>
-				</Menu.Item>
-			</Menu>
-		</Header>
-	);
-};
-
+					</Dropdown> */}
+			</Menu.Item>
+		</Menu>
+	</Header>
+);
 const mapStateToProps = state => ({
 	currentApp: get(state, '$getCurrentApp.name'),
-	apps: state.apps,
+	// apps: state.apps,
 });
 
-const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
-});
+// const mapDispatchToProps = dispatch => ({
+// 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+// });
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps,
+	// mapDispatchToProps,
 )(AppHeader);

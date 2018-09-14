@@ -29,7 +29,6 @@ class AppPageContainer extends Component {
 			shouldFetchAppPlan,
 			isAppPlanFetched,
 		} = this.props;
-
 		if (shouldFetchAppInfo) {
 			fetchAppInfo(appId);
 		}
