@@ -9,7 +9,7 @@ import {
 } from 'prop-types';
 import CreateCredentials from '../../components/CreateCredentials';
 import Container from '../../components/Container';
-import { getAppInfoByName } from '../../batteries/modules/selectors';
+import { getAppInfoByName, getAppPermissionsByName } from '../../batteries/modules/selectors';
 import Button from '../../batteries/components/shared/Button/Primary';
 import Permission from './Permission';
 import { displayErrors } from '../../utils/helper';
@@ -251,7 +251,7 @@ const mapStateToProps = (state) => {
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
-		permissions: get(state, '$getAppPermissions.results', []),
+		permissions: get(getAppPermissionsByName(state), 'results', []),
 		isPaidUser: get(state, '$getAppPlan.isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),

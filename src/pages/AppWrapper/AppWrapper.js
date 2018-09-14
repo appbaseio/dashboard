@@ -131,7 +131,7 @@ class AppWrapper extends Component {
 	componentDidMount() {
 		const { apps, updateCurrentApp, match } = this.props;
 		const { appname } = match.params;
-		updateCurrentApp(appname, apps[appname]);
+		// updateCurrentApp(appname, apps[appname]);
 	}
 
 	onCollapse = (collapsed) => {
@@ -225,16 +225,26 @@ class AppWrapper extends Component {
 									<AppPageContainer {...props} component={OverviewPage} />
 								)}
 							/>
-							<Route exact path="/app/:appname/overview" component={OverviewPage} />
 							<Route
 								exact
-								path="/app/:appName/analytics/:tab?/:subTab?"
-								component={AnalyticsPage}
+								path="/app/:appname/overview"
+								component={props => (
+									<AppPageContainer {...props} component={OverviewPage} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appName/popular-searches"
-								component={PopularSearches}
+								path="/app/:appname/analytics/:tab?/:subTab?"
+								component={props => (
+									<AppPageContainer {...props} component={AnalyticsPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appname/popular-searches"
+								component={props => (
+									<AppPageContainer {...props} component={PopularSearches} />
+								)}
 							/>
 							<Route
 								exact
@@ -245,23 +255,31 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appName/popular-results"
-								component={PopularResults}
+								path="/app/:appname/popular-results"
+								component={props => (
+									<AppPageContainer {...props} component={PopularResults} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appName/popular-filters"
-								component={PopularFilters}
+								path="/app/:appname/popular-filters"
+								component={props => (
+									<AppPageContainer {...props} component={PopularFilters} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appName/request-logs/:tab?"
-								component={RequestLogs}
+								path="/app/:appname/request-logs/:tab?"
+								component={props => (
+									<AppPageContainer {...props} component={RequestLogs} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appName/no-results-searches"
-								component={NoResultSearches}
+								path="/app/:appname/no-results-searches"
+								component={props => (
+									<AppPageContainer {...props} component={NoResultSearches} />
+								)}
 							/>
 							<Route exact path="/app/:appName/import" component={ImporterPage} />
 							<Route

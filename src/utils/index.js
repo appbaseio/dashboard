@@ -8,8 +8,8 @@ export async function getUser() {
 	}
 
 	const user = {
+		...data.body,
 		...data.body.details,
-		c_id: data.body.c_id,
 	};
 
 	const { apps } = data.body;

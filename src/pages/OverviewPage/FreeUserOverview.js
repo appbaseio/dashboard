@@ -18,7 +18,7 @@ const appLink = css`
 `;
 
 const FreeUserOverview = () => (
-	<Container>
+	<React.Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col md={18}>
@@ -62,7 +62,9 @@ const FreeUserOverview = () => (
 				</Col>
 			</Row>
 		</Header>
-		<DemoCards cardConfig={exampleConfig} />
-	</Container>
+		<Container>
+			<DemoCards cardConfig={exampleConfig} />
+		</Container>
+	</React.Fragment>
 );
 export default FreeUserOverview;

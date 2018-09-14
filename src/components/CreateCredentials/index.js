@@ -15,6 +15,7 @@ import Flex from '../../batteries/components/shared/Flex';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { displayErrors } from '../../utils/helper';
 import { getPermission } from '../../batteries/modules/actions/permission';
+import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 import { Button as UpgradeButton } from '../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { getAppMappings } from '../../batteries/modules/actions';
@@ -517,6 +518,7 @@ CreateCredentials.propTypes = {
 
 const mapStateToProps = (state) => {
 	const mappings = getTraversedMappingsByAppName(state);
+	const appPermissions = getAppPermissionsByName(state);
 	return {
 		isPaidUser: get(state, '$getAppPlan.isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
@@ -524,7 +526,7 @@ const mapStateToProps = (state) => {
 		mappings: mappings || [],
 		isMappingsFetched: !!mappings,
 		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
-		credentials: get(state, '$getAppPermissions.credentials'),
+		credentials: get(appPermissions, 'credentials'),
 		plan: get(state, '$getAppPlan.plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
