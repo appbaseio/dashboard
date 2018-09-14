@@ -253,7 +253,9 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appName/analytics/:tab?/:subTab?"
-								component={AnalyticsPage}
+								component={props => (
+									<AppPageContainer {...props} component={AnalyticsPage} />
+								)}
 							/>
 							<Route
 								exact

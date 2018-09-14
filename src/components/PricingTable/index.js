@@ -295,7 +295,7 @@ class PricingTable extends Component {
 	calcPrice(planName) {
 		const { plans } = this.state;
 		const { basePrice } = plans[planName];
-
+		// eslint-disable-next-line
 		const { record, apiCall } = this.state[planName];
 
 		let recordIncrement = 5;
