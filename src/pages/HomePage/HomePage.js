@@ -11,6 +11,8 @@ import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 
+import UsageRenderer from './UsageRenderer';
+
 const link = css`
 	font-size: 16px;
 	margin-right: 30px;
@@ -26,7 +28,10 @@ class HomePage extends Component {
 	};
 
 	render() {
-		const { apps } = this.props;
+		const {
+			apps,
+			appsMetrics: { data },
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -79,7 +84,16 @@ class HomePage extends Component {
 									to={`/app/${name}/overview`}
 									css={{ marginBottom: 20, display: 'block' }}
 								>
-									<Card title={name}>Card content</Card>
+									<Card title={name}>
+										{/* Free Plan is taken as default */}
+										<UsageRenderer
+											computedMetrics={{
+												calls: data[apps[name]].api_calls,
+												records: data[apps[name]].records,
+											}}
+											plan="free"
+										/>
+									</Card>
 								</Link>
 							</Col>
 						))}
@@ -92,6 +106,7 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
 	apps: PropTypes.object.isRequired,
+	appsMetrics: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ apps, appsMetrics }) => ({
