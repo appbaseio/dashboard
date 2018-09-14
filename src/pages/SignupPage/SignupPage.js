@@ -26,15 +26,19 @@ class SignupPage extends React.Component {
 	}
 
 	handleChange = (e) => {
-		const { target: { name: checkboxName } } = e;
+		const {
+			target: { name: checkboxName },
+		} = e;
 
 		this.setState({
 			[checkboxName]: !this.state[checkboxName],
 		});
-	}
+	};
 
 	render() {
-		const { user: { data } } = this.props;
+		const {
+			user: { data },
+		} = this.props;
 		const { hasSubscribed, hasAgreedTOS } = this.state;
 		if (data) {
 			return <Redirect to="/" />;
@@ -42,16 +46,45 @@ class SignupPage extends React.Component {
 		return (
 			<section className={container}>
 				<Logo width={200} />
+
 				<Card className={card} bordered={false}>
-					<h2>Sign up to create an appbase.io app.</h2>
-					<section>
-						<Checkbox onChange={this.handleChange} className={checkbox} name="hasAgreedTOS" checked={hasAgreedTOS}>
-							By creating an account, you agree to our Terms of Service and Privacy Policy.
+					<h2>Sign up to get started</h2>
+
+					<section style={{ marginBottom: 20 }}>
+						<Checkbox
+							onChange={this.handleChange}
+							className={checkbox}
+							name="hasAgreedTOS"
+							checked={hasAgreedTOS}
+						>
+							<div
+								style={{
+									display: 'inline-block',
+									paddingLeft: 5,
+								}}
+							>
+								By creating an account, you agree to our Terms of Service and
+								Privacy Policy.
+							</div>
 						</Checkbox>
-						<Checkbox onChange={this.handleChange} className={checkbox} name="hasSubscribed" checked={hasSubscribed}>
-							Yes, I would like to receive a monthly e-mail on Appbase products, use-cases and promotions via e-mail.
+						<Checkbox
+							onChange={this.handleChange}
+							className={checkbox}
+							name="hasSubscribed"
+							checked={hasSubscribed}
+						>
+							<div
+								style={{
+									display: 'inline-block',
+									paddingLeft: 5,
+								}}
+							>
+								Yes, I would like to receive a monthly e-mail on Appbase products,
+								use-cases and promotions via e-mail.
+							</div>
 						</Checkbox>
 					</section>
+
 					<Button
 						href={getSignupURL('github')}
 						icon="github"
@@ -61,6 +94,7 @@ class SignupPage extends React.Component {
 					>
 						Sign up with GitHub
 					</Button>
+
 					<Button
 						href={getSignupURL('google')}
 						icon="google"
@@ -70,6 +104,7 @@ class SignupPage extends React.Component {
 					>
 						Sign up with Google
 					</Button>
+
 					<Button
 						href={getSignupURL('gitlab')}
 						icon="gitlab"
@@ -91,6 +126,7 @@ class SignupPage extends React.Component {
 						fontSize: 18,
 						letterSpacing: '0.02rem',
 					}}
+					href="/login"
 				>
 					Already have account? &nbsp; Login here
 					<Icon type="arrow-right" />
@@ -108,4 +144,7 @@ const mapStateToProps = ({ user }) => ({
 	user,
 });
 
-export default connect(mapStateToProps, null)(SignupPage);
+export default connect(
+	mapStateToProps,
+	null,
+)(SignupPage);

@@ -40,15 +40,15 @@ const LoginPage = ({ user }) => {
 				>
 					Sign in via Google
 				</Button>
-        <Button
-          href={getLoginURL('gitlab')}
-          icon="gitlab"
-          className={gitlabBtn}
-          size="small"
-          block
-        >
-          Sign in via Gitlab
-        </Button>
+				<Button
+					href={getLoginURL('gitlab')}
+					icon="gitlab"
+					className={gitlabBtn}
+					size="small"
+					block
+				>
+					Sign in via Gitlab
+				</Button>
 			</Card>
 
 			<Button
@@ -61,6 +61,7 @@ const LoginPage = ({ user }) => {
 					fontSize: 18,
 					letterSpacing: '0.02rem',
 				}}
+				href="/signup"
 			>
 				New to appbase? &nbsp; Signup here
 				<Icon type="arrow-right" />
