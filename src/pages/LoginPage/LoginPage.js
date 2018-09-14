@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Logo from '../../components/Logo';
 import { ACC_API } from '../../constants/config';
 import {
- container, card, githubBtn, googleBtn,
+ container, card, githubBtn, googleBtn, gitlabBtn,
 } from './styles';
 
 const getLoginURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
@@ -40,6 +40,15 @@ const LoginPage = ({ user }) => {
 				>
 					Sign in via Google
 				</Button>
+				<Button
+					href={getLoginURL('gitlab')}
+					icon="gitlab"
+					className={gitlabBtn}
+					size="small"
+					block
+				>
+					Sign in via Gitlab
+				</Button>
 			</Card>
 
 			<Button
@@ -52,6 +61,7 @@ const LoginPage = ({ user }) => {
 					fontSize: 18,
 					letterSpacing: '0.02rem',
 				}}
+				href="/signup"
 			>
 				New to appbase? &nbsp; Signup here
 				<Icon type="arrow-right" />

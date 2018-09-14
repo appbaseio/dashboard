@@ -4,6 +4,7 @@ const header = css`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: space-between;
 	height: 60px;
 	padding: 0 25px 0 0;
 	background-color: #fff;
