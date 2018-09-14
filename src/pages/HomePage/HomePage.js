@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Card,
+ Row, Col, Icon, Button, Card, Skeleton,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -86,17 +86,19 @@ class HomePage extends Component {
 								>
 									<Card title={name}>
 										{/* Free Plan is taken as default */}
-										{data && data[apps[name]] ? (
+										<Skeleton loading={!(data && data[apps[name]])}>
 											<UsageRenderer
-												computedMetrics={{
-													calls: data[apps[name]].api_calls,
-													records: data[apps[name]].records,
-												}}
 												plan="free"
+												computedMetrics={
+													data && data[apps[name]]
+														? {
+																calls: data[apps[name]].api_calls,
+																records: data[apps[name]].records,
+														  }
+														: null
+												}
 											/>
-										) : (
-											'Loading ...'
-										)}
+										</Skeleton>
 									</Card>
 								</Link>
 							</Col>
