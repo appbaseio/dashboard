@@ -86,18 +86,20 @@ class HomePage extends Component {
 								>
 									<Card title={name}>
 										{/* Free Plan is taken as default */}
-										<Skeleton loading={!(data && data[apps[name]])}>
-											<UsageRenderer
-												plan="free"
-												computedMetrics={
-													data && data[apps[name]]
-														? {
-																calls: data[apps[name]].api_calls,
-																records: data[apps[name]].records,
-														  }
-														: null
-												}
-											/>
+										<Skeleton
+											title={false}
+											paragraph={{ rows: 2 }}
+											loading={!(data && data[apps[name]])}
+										>
+											{data && data[apps[name]] ? (
+												<UsageRenderer
+													plan="free"
+													computedMetrics={{
+														calls: data[apps[name]].api_calls,
+														records: data[apps[name]].records,
+													}}
+												/>
+											) : null}
 										</Skeleton>
 									</Card>
 								</Link>
