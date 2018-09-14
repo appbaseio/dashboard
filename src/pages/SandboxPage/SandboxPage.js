@@ -7,6 +7,7 @@ import {
 	setCurrentApp,
 	getPermission as getPermissionFromAppbase,
 } from '../../batteries/modules/actions';
+import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 import SearchSandbox from '../../batteries/components/SearchSandbox';
 import Editor from '../../batteries/components/SearchSandbox/containers/Editor';
 import Loader from '../../components/Loader';
@@ -62,7 +63,7 @@ SandboxPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-	const { username, password } = get(state, '$getAppPermissions.credentials') || {};
+	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
 		credentials: username ? `${username}:${password}` : null,
 	};

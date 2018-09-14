@@ -10,6 +10,8 @@ import {
 	setCurrentApp,
 	getPermission as getPermissionFromAppbase,
 } from '../../batteries/modules/actions';
+import { getAppPermissionsByName } from '../../batteries/modules/selectors';
+
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 
@@ -121,9 +123,9 @@ BrowserPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-	const { username, password } = get(state, '$getAppPermissions.credentials') || {};
+	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
-		credentials: username ? `${username}:${password}` : null,
+		credentials: username ? `${username}:${password}` : '',
 	};
 };
 
