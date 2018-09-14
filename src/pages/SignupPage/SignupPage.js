@@ -17,22 +17,20 @@ import { checkbox } from './styles';
 const getSignupURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
 
 class SignupPage extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			hasAgreedTOS: false,
-			hasSubscribed: false,
-		};
-	}
+	state = {
+		hasAgreedTOS: false,
+		hasSubscribed: false,
+	};
 
 	handleChange = (e) => {
 		const {
 			target: { name: checkboxName },
 		} = e;
 
-		this.setState({
-			[checkboxName]: !this.state[checkboxName],
-		});
+		this.setState(state => ({
+			...state,
+			[checkboxName]: !state[checkboxName],
+		}));
 	};
 
 	render() {

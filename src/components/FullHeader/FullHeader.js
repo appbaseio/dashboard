@@ -1,8 +1,11 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { object } from 'prop-types';
+import { connect } from 'react-redux';
 
 import Logo from '../Logo';
+import UserMenu from '../AppHeader/UserMenu';
 import headerStyles from './styles';
 
 const { Header } = Layout;
@@ -17,23 +20,34 @@ const getSelectedKeys = (pathname) => {
 			return '1';
 	}
 };
-const FullHeader = () => (
+
+const FullHeader = ({ user }) => (
 	<Header className={headerStyles}>
-		<Logo />
-		<Menu mode="horizontal" defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}>
-			<Menu.Item key="1">
-				<Link to="/">Apps</Link>
-			</Menu.Item>
+		<div className="row">
+			<Logo />
+			<Menu
+				mode="horizontal"
+				defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
+			>
+				<Menu.Item key="1">
+					<Link to="/">Apps</Link>
+				</Menu.Item>
 
-			<Menu.Item key="2">
-				<Link to="/clusters">Clusters</Link>
-			</Menu.Item>
-
-			<Menu.Item key="3">
-				<Link to="/profile">Profile</Link>
-			</Menu.Item>
-		</Menu>
+				<Menu.Item key="2">
+					<Link to="/clusters">Clusters</Link>
+				</Menu.Item>
+			</Menu>
+		</div>
+		<UserMenu user={user} />
 	</Header>
 );
 
-export default FullHeader;
+FullHeader.propTypes = {
+	user: object.isRequired,
+};
+
+const mapStateToProps = state => ({
+	user: state.user.data,
+});
+
+export default connect(mapStateToProps)(FullHeader);
