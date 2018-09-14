@@ -1,5 +1,7 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import {
+ Layout, Menu, Avatar, Dropdown, Icon, Button,
+} from 'antd';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -20,6 +22,13 @@ const noBorder = css`
 		color: #1890ff !important;
 	}
 `;
+
+const menuButton = css`
+	color: rgba(0, 0, 0, 0.65);
+	border: 0;
+	width: 100%;
+	text-align: left;
+`;
 // const list = css`
 // 	max-height: 300px;
 // 	overflow-y: scroll;
@@ -31,7 +40,42 @@ const noBorder = css`
 // 	}
 // `;
 
-const AppHeader = ({ currentApp }) => (
+const renderUserDropdown = (user) => {
+	const menu = (
+		<Menu
+			onClick={(e) => {
+				window.location.href = e.key;
+			}}
+		>
+			<Menu.Item key="/profile">
+				<Button ghost className={menuButton}>
+					{user.email}
+					<Icon type="edit" />
+				</Button>
+			</Menu.Item>
+			<Menu.Item key="/logout">
+				<Button ghost className={menuButton}>
+					Logout
+					<Icon type="poweroff" />
+				</Button>
+			</Menu.Item>
+		</Menu>
+	);
+
+	return (
+		<div>
+			<Avatar src={user.picture} />
+			<Dropdown overlay={menu} trigger={['click']}>
+				<Button className={noBorder}>
+					{user.name}
+					<Icon type="down" />
+				</Button>
+			</Dropdown>
+		</div>
+	);
+};
+
+const AppHeader = ({ currentApp, user }) => (
 	<Header className={headerStyles}>
 		<Menu mode="horizontal">
 			<Menu.Item key="1" className={noBorder}>
@@ -43,10 +87,12 @@ const AppHeader = ({ currentApp }) => (
 					</Dropdown> */}
 			</Menu.Item>
 		</Menu>
+		{renderUserDropdown(user)}
 	</Header>
 );
 const mapStateToProps = state => ({
 	currentApp: get(state, '$getCurrentApp.name'),
+	user: state.user.data,
 	// apps: state.apps,
 });
 
