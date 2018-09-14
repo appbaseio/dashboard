@@ -8,6 +8,9 @@ import { headingText, statsText } from './styles';
 
 const UsageRenderer = ({ computedMetrics, plan }) => {
 	const appCount = getAppCount(computedMetrics, plan);
+	const action = Math.ceil(get(appCount, 'action.percentage'));
+	const record = Math.ceil(get(appCount, 'records.percentage'));
+
 	return (
 		<Row gutter={20}>
 			<Col span={12}>
@@ -16,7 +19,9 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 						<Progress
 							width={60}
 							type="circle"
-							percent={get(appCount, 'action.percentage')}
+							percent={action}
+							format={percent => `${percent}%`}
+							status={action > 90 ? 'exception' : null}
 						/>
 					</Col>
 					<Col span={14}>
@@ -35,7 +40,9 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 						<Progress
 							width={60}
 							type="circle"
-							percent={get(appCount, 'records.percentage')}
+							percent={record}
+							format={percent => `${percent}%`}
+							status={record > 90 ? 'exception' : null}
 						/>
 					</Col>
 					<Col span={14}>

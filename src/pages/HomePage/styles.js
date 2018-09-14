@@ -4,7 +4,11 @@ const headingText = css`
 	margin-bottom: 0;
 	margin-top: 0.5em;
 	justify-content: center;
-	font-weight: 500;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 13px;
+	color: #999;
+	letter-spacing: 0.012rem;
 `;
 
 const statsText = css`
