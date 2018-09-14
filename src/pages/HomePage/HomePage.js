@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Card,
+ Row, Col, Icon, Button, Card, Skeleton,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
+
+import UsageRenderer from './UsageRenderer';
 
 const link = css`
 	font-size: 16px;
@@ -26,7 +28,10 @@ class HomePage extends Component {
 	};
 
 	render() {
-		const { apps } = this.props;
+		const {
+			apps,
+			appsMetrics: { data },
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -79,7 +84,24 @@ class HomePage extends Component {
 									to={`/app/${name}/overview`}
 									css={{ marginBottom: 20, display: 'block' }}
 								>
-									<Card title={name}>Card content</Card>
+									<Card title={name}>
+										{/* Free Plan is taken as default */}
+										<Skeleton
+											title={false}
+											paragraph={{ rows: 2 }}
+											loading={!(data && data[apps[name]])}
+										>
+											{data && data[apps[name]] ? (
+												<UsageRenderer
+													plan="free"
+													computedMetrics={{
+														calls: data[apps[name]].api_calls,
+														records: data[apps[name]].records,
+													}}
+												/>
+											) : null}
+										</Skeleton>
+									</Card>
 								</Link>
 							</Col>
 						))}
@@ -92,6 +114,7 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
 	apps: PropTypes.object.isRequired,
+	appsMetrics: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ apps, appsMetrics }) => ({
