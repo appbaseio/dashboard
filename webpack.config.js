@@ -34,6 +34,16 @@ module.exports = {
 					},
 				],
 			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader'],
+			},
+			{
+				test: /\.(ttf|eot|svg|png)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				use: {
+					loader: 'file-loader',
+				},
+			},
 		],
 	},
 };

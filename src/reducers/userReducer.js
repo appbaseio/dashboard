@@ -20,7 +20,7 @@ export default function userReducer(
 		case USER.LOAD_SUCCESS: {
 			return {
 				isLoading: false,
-				data: action.user,
+				data: action.payload,
 				error: null,
 			};
 		}

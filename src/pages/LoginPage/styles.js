@@ -73,6 +73,18 @@ const googleBtn = css`
 	}
 `;
 
+const gitlabBtn = css`
+	color: #fff;
+	background-color: rgb(230, 83, 40);
+
+	&:hover,
+	&:focus {
+		background-color: rgb(201, 61, 43);
+		color: #fff;
+		border-color: #f7d2cf;
+	}
+`;
+
 export {
- container, card, githubBtn, googleBtn,
+ container, card, githubBtn, googleBtn, gitlabBtn,
 };

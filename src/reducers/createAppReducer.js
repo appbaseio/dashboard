@@ -16,14 +16,14 @@ export default function userReducer(
 				isLoading: true,
 			};
 		}
-		case CREATE_APP.CREATE_APP_SUCCESS: {
+		case CREATE_APP.LOAD_SUCCESS: {
 			return {
 				isLoading: false,
-				data: action.data,
+				data: action.payload,
 				error: null,
 			};
 		}
-		case CREATE_APP.CREATE_APP_FAIL: {
+		case CREATE_APP.LOAD_FAIL: {
 			return {
 				isLoading: false,
 				data: null,

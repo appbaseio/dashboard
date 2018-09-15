@@ -1,48 +1,50 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
+import { string, object } from 'prop-types';
 import { css } from 'react-emotion';
+import { connect } from 'react-redux';
+import get from 'lodash/get';
 
+import UserMenu from './UserMenu';
 import headerStyles from './styles';
 
 const { Header } = Layout;
 const noBorder = css`
 	border: 0 !important;
 
-	a {
+	span {
 		color: rgba(0, 0, 0, 0.65) !important;
 	}
 
-	&:hover a,
-	&:focus a {
+	&:hover span,
+	&:focus span {
 		color: #1890ff !important;
 	}
 `;
 
-const menu = (
-	<Menu>
-		<Menu.Item key="0">
-			<a href="http://www.alipay.com/">1st menu item</a>
-		</Menu.Item>
-		<Menu.Item key="1">
-			<a href="http://www.taobao.com/">2nd menu item</a>
-		</Menu.Item>
-		<Menu.Divider />
-		<Menu.Item key="3">Create a new app</Menu.Item>
-	</Menu>
-);
-
-const ApHeader = () => (
+const AppHeader = ({ currentApp, user }) => (
 	<Header className={headerStyles}>
 		<Menu mode="horizontal">
 			<Menu.Item key="1" className={noBorder}>
-				<Dropdown overlay={menu} trigger={['click']}>
-					<a className="ant-dropdown-link" href="#">
-						App name goes here <Icon type="down" />
-					</a>
-				</Dropdown>
+				<span>{currentApp || 'Loading...'}</span>
 			</Menu.Item>
 		</Menu>
+		<UserMenu user={user} />
 	</Header>
 );
 
-export default ApHeader;
+AppHeader.propTypes = {
+	currentApp: string,
+	user: object.isRequired,
+};
+
+AppHeader.defaultProps = {
+	currentApp: null,
+};
+
+const mapStateToProps = state => ({
+	currentApp: get(state, '$getCurrentApp.name'),
+	user: state.user.data,
+});
+
+export default connect(mapStateToProps)(AppHeader);

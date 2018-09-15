@@ -1,10 +1,11 @@
 import React from 'react';
 import get from 'lodash/get';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
 
-export default (props) => {
-	const appName = get(props, 'match.params.appname');
-	const activeTab = get(props, 'match.params.tab');
+const RequestLogsWrapper = ({ appName, match }) => {
+	const activeTab = get(match, 'params.tab');
 	return (
 		<RequestLogs
 			appName={appName}
@@ -19,3 +20,13 @@ export default (props) => {
 		/>
 	);
 };
+
+RequestLogsWrapper.propTypes = {
+	appName: PropTypes.string.isRequired,
+	match: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+	appName: get(state, '$getCurrentApp.name'),
+});
+export default connect(mapStateToProps)(RequestLogsWrapper);

@@ -9,6 +9,10 @@ const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
 	loading: Loader,
 });
+const ProfilePage = Loadable({
+	loader: () => import('../ProfilePage'),
+	loading: Loader,
+});
 
 const HomePage = Loadable({
 	loader: () => import('../HomePage'),
@@ -19,7 +23,8 @@ const Wrapper = () => (
 	<Switch>
 		<Route exact path="/" component={HomePage} />
 		<Route exact path="/clusters" component={ClusterPage} />
-		<Route path="/app/:appname?/:route?" component={AppWrapper} />
+		<Route exact path="/profile" component={ProfilePage} />
+		<Route path="/app/:appName?/:route?" component={AppWrapper} />
 	</Switch>
 );
 

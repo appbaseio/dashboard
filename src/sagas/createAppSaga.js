@@ -14,7 +14,7 @@ function* createAppWorker(options) {
 
 function* watchCreateApp(action) {
 	if (action.type === CREATE_APP.LOAD) {
-		yield call(createAppWorker, action.options);
+		yield call(createAppWorker, action.payload);
 	}
 }
 

@@ -1,64 +1,39 @@
 // @flow
 import { USER, APPS, CREATE_APP } from '../constants';
+import { createAction } from '../batteries/modules/actions/utils';
 
 export function loadUser(): Object {
-	return {
-		type: USER.LOAD,
-	};
+	return createAction(USER.LOAD, null, null, null);
 }
 
 export function setUser(user: Object): Object {
-	return {
-		type: USER.LOAD_SUCCESS,
-		user,
-	};
+	return createAction(USER.LOAD_SUCCESS, user, null, null);
 }
 
 export function setUserError(error: Object): Object {
-	return {
-		type: USER.LOAD_FAIL,
-		error,
-	};
+	return createAction(USER.LOAD_FAIL, null, error, null);
 }
 
 export function loadApps(apps: Object): Object {
-	return {
-		type: APPS.LOAD,
-		apps,
-	};
+	return createAction(APPS.LOAD, apps, null, null);
 }
 
 export function setAppsMetrics(metrics: Object): Object {
-	return {
-		type: APPS.LOAD_METRICS_SUCCESS,
-		metrics,
-	};
+	return createAction(APPS.LOAD_METRICS_SUCCESS, metrics, null, null);
 }
 
 export function setAppsMetricsError(error: Object): Object {
-	return {
-		type: APPS.LOAD_METRICS_FAIL,
-		error,
-	};
+	return createAction(APPS.LOAD_METRICS_FAIL, null, error, null);
 }
 
 export function createApp(options:Object):Object {
-	return {
-		type: CREATE_APP.LOAD,
-		options,
-	};
+	return createAction(CREATE_APP.LOAD, options, null, null);
 }
 
 export function setCreateApp(data:Object):Object {
-	return {
-		type: CREATE_APP.CREATE_APP_SUCCESS,
-		data,
-	};
+	return createAction(CREATE_APP.LOAD_SUCCESS, data, null, null);
 }
 
 export function createAppFail(error:Object):Object {
-	return {
-		type: CREATE_APP.CREATE_APP_FAIL,
-		error,
-	};
+	return createAction(CREATE_APP.LOAD_FAIL, null, error, null);
 }

@@ -3,9 +3,14 @@ import { Link, Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import { Layout, Menu, Icon } from 'antd';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 
+import AppPageContainer from '../../components/AppPageContainer';
 import AppHeader from '../../components/AppHeader';
+import ShareSettings from '../ShareSettingsPage';
 import Loader from '../../components/Loader';
+import { setCurrentApp } from '../../batteries/modules/actions';
+import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
 const { Sider } = Layout;
@@ -13,6 +18,11 @@ const { SubMenu } = Menu;
 
 const AnalyticsPage = Loadable({
 	loader: () => import('../AnalyticsPage'),
+	loading: Loader,
+});
+
+const BillingPage = Loadable({
+	loader: () => import('../BillingPage'),
 	loading: Loader,
 });
 
@@ -50,18 +60,22 @@ const PopularSearches = Loadable({
 	loader: () => import('../PopularSearches'),
 	loading: Loader,
 });
+
 const PopularResults = Loadable({
 	loader: () => import('../PopularResults'),
 	loading: Loader,
 });
+
 const PopularFilters = Loadable({
 	loader: () => import('../PopularFilters'),
 	loading: Loader,
 });
+
 const NoResultSearches = Loadable({
 	loader: () => import('../NoResultSearches'),
 	loading: Loader,
 });
+
 const RequestLogs = Loadable({
 	loader: () => import('../RequestLogs'),
 	loading: Loader,
@@ -96,7 +110,7 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
-			{ label: 'Sharing Settings', link: 'popular-searches' },
+			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
 };
@@ -104,30 +118,39 @@ const routes = {
 class AppWrapper extends Component {
 	state = {
 		collapsed: false,
-		appname: this.props.match.params.appname, // eslint-disable-line
+		appName: this.props.match.params.appName, // eslint-disable-line
 	};
 
 	static getDerivedStateFromProps(props, state) {
-		console.log('called getDerivedStateFromProps');
-		const { appname } = props.match.params;
-		if (appname && appname !== state.appname) {
-			return { appname };
+		const { appName } = props.match.params;
+		if (appName && appName !== state.appName) {
+			return { appName };
 		}
 
-		if (!appname && !state.appname) {
-			// get last known appname from localstorage
-			return { appname: 'marketplacev6' };
+		if (!appName && !state.appName) {
+			// TODO: get last known appName from redux-persist
+			return { appName: 'marketplacev6' };
 		}
 		return null;
 	}
 
 	componentDidMount() {
-		console.log('mounted');
+		const { appName } = this.state;
+		const { history, match } = this.props;
+
+		if (!match.params.appName && appName) {
+			history.push(`/app/${appName}/`);
+		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		console.log('updated called');
-		if (prevState.appname !== this.state.appname) {
+	componentDidUpdate() {
+		const { history, currentApp, match } = this.props;
+		const { appName } = this.state;
+
+		const route = match.params.route || '';
+
+		if (currentApp && appName !== currentApp) {
+			history.push(`/app/${currentApp}/${route}`);
 		}
 	}
 
@@ -138,7 +161,7 @@ class AppWrapper extends Component {
 	getActiveMenu = () => {
 		let activeSubMenu = 'App Overview';
 		let activeMenuItem = 'App Overview';
-		const { route: pathname, appname } = this.props.match.params; // eslint-disable-line
+		const { route: pathname } = this.props.match.params; // eslint-disable-line
 
 		Object.keys(routes).some((route) => {
 			if (routes[route].menu) {
@@ -165,9 +188,7 @@ class AppWrapper extends Component {
 
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
-		const { collapsed, appname } = this.state;
-
-		const appId = this.props.apps[appname];
+		const { collapsed, appName } = this.state;
 
 		return (
 			<Layout>
@@ -201,65 +222,134 @@ class AppWrapper extends Component {
 							}
 							return (
 								<Menu.Item key={route}>
-									<Link replace to={`/app/${appname}/${routes[route].link}`}>
+									<Link replace to={`/app/${appName}/${routes[route].link}`}>
 										<Icon type={routes[route].icon} />
 										<span>{route}</span>
 									</Link>
 								</Menu.Item>
 							);
 						})}
+						<UpgradeButton link={`/app/${appName}/billing`} />
 					</Menu>
 				</Sider>
 				<Layout>
 					<AppHeader />
 					<section style={{ minHeight: '100vh' }}>
 						<Switch>
-							<Route exact path="/app/:appname" component={OverviewPage} />
-							<Route exact path="/app/:appname/overview" component={OverviewPage} />
-							{/* <Route exact path="/app/:appname/analytics" component={AnalyticsPage} /> */}
 							<Route
 								exact
-								path="/app/:appname/analytics/:tab?/:subTab?"
-								component={AnalyticsPage}
+								path="/app/:appName"
+								component={props => (
+									<AppPageContainer {...props} component={OverviewPage} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-searches"
+								path="/app/:appName/overview"
+								component={props => (
+									<AppPageContainer {...props} component={OverviewPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/analytics/:tab?/:subTab?"
+								component={props => (
+									<AppPageContainer {...props} component={AnalyticsPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/popular-searches"
 								component={PopularSearches}
 							/>
 							<Route
 								exact
-								path="/app/:appname/credentials"
-								component={CredentialsPage}
+								path="/app/:appName/credentials"
+								component={props => (
+									<AppPageContainer {...props} component={CredentialsPage} />
+								)}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-results"
+								path="/app/:appName/popular-results"
 								component={PopularResults}
 							/>
 							<Route
 								exact
-								path="/app/:appname/popular-filters"
+								path="/app/:appName/popular-filters"
 								component={PopularFilters}
 							/>
 							<Route
 								exact
-								path="/app/:appname/request-logs/:tab?"
+								path="/app/:appName/request-logs/:tab?"
 								component={RequestLogs}
 							/>
 							<Route
 								exact
-								path="/app/:appname/no-results-searches"
+								path="/app/:appName/no-results-searches"
 								component={NoResultSearches}
 							/>
-							<Route exact path="/app/:appname/import" component={ImporterPage} />
 							<Route
 								exact
-								path="/app/:appname/mappings"
-								render={() => <MappingsPage appname={appname} appId={appId} />}
+								path="/app/:appName/import"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={ImporterPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
 							/>
-							<Route exact path="/app/:appname/browse" component={BrowserPage} />
-							<Route exact path="/app/:appname/sandbox" component={SandboxPage} />
+							<Route
+								exact
+								path="/app/:appName/mappings"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={MappingsPage}
+										shouldFetchAppInfo={false}
+									/>
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/share-settings"
+								component={props => (
+									<AppPageContainer {...props} component={ShareSettings} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/billing"
+								component={props => (
+									<AppPageContainer {...props} component={BillingPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/browse"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={BrowserPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/sandbox"
+								render={props => (
+									<AppPageContainer
+										{...props}
+										component={SandboxPage}
+										shouldFetchAppInfo={false}
+										shouldFetchAppPlan={false}
+									/>
+								)}
+							/>
 						</Switch>
 					</section>
 				</Layout>
@@ -268,8 +358,15 @@ class AppWrapper extends Component {
 	}
 }
 
-const mapStateToProps = ({ apps }) => ({
-	apps,
+const mapStateToProps = state => ({
+	currentApp: get(state, '$getCurrentApp.name'),
 });
 
-export default connect(mapStateToProps)(AppWrapper);
+const mapDispatchToProps = dispatch => ({
+	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(AppWrapper);
