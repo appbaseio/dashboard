@@ -56,8 +56,8 @@ class CreateAppModal extends Component {
 		});
 	};
 
-	componentWillReceiveProps = (nextProps) => {
-		const { createdApp, history } = nextProps; //eslint-disable-line
+  componentDidUpdate = () => {
+    const { createdApp, history } = this.props; //eslint-disable-line
 		const { hasJSON, appName } = this.state;
 		if (createdApp.data && createdApp.data.id) {
 			if (hasJSON) {
@@ -66,7 +66,7 @@ class CreateAppModal extends Component {
 				history.push(`app/${appName}`);
 			}
 		}
-	};
+  }
 
 	renderCategoryDropdown = () => {
 		const { category } = this.state;
