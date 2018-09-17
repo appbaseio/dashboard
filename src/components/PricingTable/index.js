@@ -3,15 +3,20 @@ import styled, { css } from 'react-emotion';
 import { Check } from 'react-feather';
 import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-import { Tooltip } from 'antd';
-// import get from 'lodash/get';
+import {
+	Tooltip, Card, Modal, Button,
+} from 'antd';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import AppButton from './AppButton';
 import PlusMinus from './PlusMinus';
 import NewPricingCard from './NewPricingCard';
 import theme from './theme';
 import { media, hexToRgb } from '../../utils/media';
-import { createAppSubscription } from '../../batteries/modules/actions/app';
+import Grid from '../CreateCredentials/Grid';
+import { planBasePrice, displayErrors } from '../../utils/helper';
+import { createAppSubscription, deleteAppSubscription } from '../../batteries/modules/actions/app';
+import Flex from '../../batteries/components/shared/Flex';
 
 const CheckList = ({ list }) => list.map(item => (
 		<li key={item}>
@@ -239,13 +244,13 @@ class PricingTable extends Component {
 		const bootstrap = {
 			records: [],
 			apiCalls: [],
-			basePrice: 29,
+			basePrice: planBasePrice.bootstrap,
 		};
 
 		const growth = {
 			records: [],
 			apiCalls: [],
-			basePrice: 89,
+			basePrice: planBasePrice.growth,
 		};
 
 		for (let i = 1; i <= 20; i += 1) {
@@ -268,11 +273,17 @@ class PricingTable extends Component {
 			},
 			active: undefined,
 			plans: this.plans,
+			showConfirmBox: false,
 		};
 		// test key
-        this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
-        // live key
-        // this.stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+		this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+		// live key
+		// this.stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+	}
+
+	componentDidUpdate(prevProps) {
+		const { errors } = this.props;
+		displayErrors(errors, prevProps.errors);
 	}
 
 	get getText() {
@@ -286,11 +297,31 @@ class PricingTable extends Component {
 		return undefined;
 	}
 
+	handleToken = (token, plan) => {
+		const { createSubscription } = this.props;
+		createSubscription(token, plan);
+	};
 
-    handleToken = (token, plan) => {
-        const { createSubscription } = this.props;
-        createSubscription(token, plan);
-    }
+	deleteSubscription = () => {
+		const { deleteSubscription } = this.props;
+		deleteSubscription().then(({ payload }) => {
+			if (payload) {
+				this.cancelConfirmBox();
+			}
+		});
+	}
+
+	showConfirmBox = () => {
+		this.setState({
+			showConfirmBox: true,
+		});
+	}
+
+	cancelConfirmBox = () => {
+		this.setState({
+			showConfirmBox: false,
+		});
+	}
 
 	calcPrice(planName) {
 		const { plans } = this.state;
@@ -307,12 +338,81 @@ class PricingTable extends Component {
 		const incrementedRecord = record * recordIncrement;
 		const incrementedApiCall = apiCall * apiIncrement;
 		return basePrice + incrementedRecord + incrementedApiCall;
-    }
+	}
 
 	render() {
-        const { plans, bootstrap, growth } = this.state;
+		const {
+			plans,
+			bootstrap,
+			growth,
+			active,
+			showConfirmBox,
+		} = this.state;
+		const {
+			plan,
+			isFreePlan,
+			isBootstrapPlan,
+			isGrowthPlan,
+			planValidity,
+			isOnTrial,
+			isSubmitting,
+		} = this.props;
 		return (
 			<React.Fragment>
+				<Modal
+					title="Delete Subscription"
+					visible={showConfirmBox}
+					onCancel={this.cancelConfirmBox}
+					footer={[
+						<Button key="back" onClick={this.cancelConfirmBox}>
+							Cancel
+						</Button>,
+						<Button
+							loading={isSubmitting}
+							key="submit"
+							type="primary"
+							onClick={this.deleteSubscription}
+						>
+							Unsubscribe
+						</Button>,
+					]}
+				>
+					<p>Are you sure to unsubscribe current subscription?</p>
+				</Modal>
+				<Card css="margin-bottom: 20px">
+					<Flex flexDirection="column">
+						<Flex alignItems="center">
+							<Grid
+								style={{
+								width: '400px',
+								}}
+								gridRatio={0.25}
+								label="Plan"
+								component={`- ${plan}`}
+							/>
+						</Flex>
+						<Flex alignItems="center">
+							<Grid
+								style={{
+								width: '400px',
+								}}
+								gridRatio={0.25}
+								label="Valid till"
+								component={`- ${new Date(planValidity + (new Date()).getTime()).toDateString()}`}
+							/>
+						</Flex>
+						<Flex alignItems="center">
+							<Grid
+								style={{
+								width: '400px',
+								}}
+								gridRatio={0.25}
+								label="Trial peroid"
+								component={isOnTrial ? '- Yes' : '- Expired'}
+							/>
+						</Flex>
+					</Flex>
+				</Card>
 				<Table className={hideOnLarge}>
 					<thead>
 						<tr colSpan="1">
@@ -354,8 +454,8 @@ class PricingTable extends Component {
 						<tr className={HeadingTr}>
 							<td>Core Platform</td>
 							<td />
-							<td>{this.state.active === 'bootstrap' && this.getText}</td>
-							<td>{this.state.active === 'growth' && this.getText}</td>
+							<td>{active === 'bootstrap' && this.getText}</td>
+							<td>{active === 'growth' && this.getText}</td>
 						</tr>
 						<tr>
 							<td>
@@ -668,6 +768,7 @@ class PricingTable extends Component {
 									name="Appbase.io Free Plan"
 									amount={0}
 									token={token => this.handleToken(token, 'free')}
+									disabled={isFreePlan}
 									stripeKey={this.stripeKey}
 								>
 									<AppButton
@@ -678,9 +779,8 @@ class PricingTable extends Component {
 										color={theme.colors.accentText}
 										backgroundColor={theme.colors.accent}
 										css={{ marginTop: 40 }}
-										// onClick={() => onClickButton('free', 0)}
 									>
-										Subscribe
+										{isFreePlan ? 'Current Plan' : 'Subscribe'}
 									</AppButton>
 								</Stripe>
 							</td>
@@ -690,6 +790,7 @@ class PricingTable extends Component {
 									amount={this.plans.bootstrap.basePrice * 100}
 									token={token => this.handleToken(token, 'bootstrap-monthly')}
 									stripeKey={this.stripeKey}
+									disabled={isBootstrapPlan}
 								>
 									<AppButton
 										uppercase
@@ -699,14 +800,16 @@ class PricingTable extends Component {
 										color="#FFFFFF"
 										backgroundColor={theme.badge.blue}
 										css={{ marginTop: 40 }}
+										onClick={isBootstrapPlan ? this.showConfirmBox : undefined}
 									>
-										Subscribe
+										{isBootstrapPlan ? 'Unsubscribe' : 'Subscribe'}
 									</AppButton>
 								</Stripe>
 							</td>
 							<td>
 								<Stripe
 									name="Appbase.io Growth Plan"
+									disabled={isGrowthPlan}
 									amount={this.plans.growth.basePrice * 100}
 									token={token => this.handleToken(token, 'growth-monthly')}
 									stripeKey={this.stripeKey}
@@ -718,9 +821,10 @@ class PricingTable extends Component {
 										shadow
 										color="#FFFFFF"
 										backgroundColor={theme.badge.darkBlue}
+										onClick={isGrowthPlan ? this.showConfirmBox : undefined}
 										css={{ marginTop: 40 }}
 									>
-										Subscribe
+										{isGrowthPlan ? 'Unsubscribe' : 'Subscribe'}
 									</AppButton>
 								</Stripe>
 							</td>
@@ -741,11 +845,13 @@ class PricingTable extends Component {
 					<NewPricingCard
 						css={{ color: theme.colors.accentText }}
 						name="Free"
+						isCurrentPlan={isFreePlan}
+						buttonText={isFreePlan ? 'Current Plan' : undefined}
 						price="$0"
-                        stripeName="Appbase.io Free Plan"
-                        amount={0}
-                        token={token => this.handleToken(token, 'free')}
-                        stripeKey={this.stripeKey}
+						stripeName="Appbase.io Free Plan"
+						amount={0}
+						token={token => this.handleToken(token, 'free')}
+						stripeKey={this.stripeKey}
 						pricingList={['10K Records', '100K API Calls']}
 					>
 						<CheckList list={['Weekly analytics e-mail', 'Community support']} />
@@ -753,13 +859,16 @@ class PricingTable extends Component {
 					<NewPricingCard
 						css={{ backgroundColor: theme.badge.blue }}
 						name="Bootstrap"
+						isCurrentPlan={isBootstrapPlan}
 						price={`$${this.plans.bootstrap.basePrice}`}
-                        stripeName="Appbase.io Bootstrap Plan"
-                        amount={this.plans.bootstrap.basePrice * 100}
-                        token={token => this.handleToken(token, 'bootstrap-monthly')}
-                        stripeKey={this.stripeKey}
+						stripeName="Appbase.io Bootstrap Plan"
+						amount={this.plans.bootstrap.basePrice * 100}
+						token={token => this.handleToken(token, 'bootstrap-monthly')}
+						stripeKey={this.stripeKey}
 						linkColor="inherit"
 						pricingList={['50K Records', '1M API Calls']}
+						buttonText={isBootstrapPlan ? 'Unsubscribe' : undefined}
+						onClickButton={isBootstrapPlan ? this.showConfirmBox : undefined}
 					>
 						<ListCaption>Features</ListCaption>
 						<CheckList
@@ -783,13 +892,16 @@ class PricingTable extends Component {
 					<NewPricingCard
 						css={{ backgroundColor: theme.badge.darkBlue }}
 						name="Growth"
+						isCurrentPlan={isGrowthPlan}
 						price={`$${this.plans.growth.basePrice}`}
-                        stripeName="Appbase.io Growth Plan"
-                        amount={this.plans.growth.basePrice * 100}
-                        token={token => this.handleToken(token, 'growth-monthly')}
-                        stripeKey={this.stripeKey}
+						stripeName="Appbase.io Growth Plan"
+						amount={this.plans.growth.basePrice * 100}
+						token={token => this.handleToken(token, 'growth-monthly')}
+						stripeKey={this.stripeKey}
 						linkColor="inherit"
 						pricingList={['1M Records', '10M API Calls']}
+						buttonText={isGrowthPlan ? 'Unsubscribe' : undefined}
+						onClickButton={isGrowthPlan ? this.showConfirmBox : undefined}
 					>
 						<ListCaption>Features</ListCaption>
 						<CheckList
@@ -818,15 +930,36 @@ class PricingTable extends Component {
 }
 
 PricingTable.propTypes = {
-    // isLoading: PropTypes.bool.isRequired,
-    createSubscription: PropTypes.func.isRequired,
+	plan: PropTypes.string.isRequired,
+	createSubscription: PropTypes.func.isRequired,
+	deleteSubscription: PropTypes.func.isRequired,
+	isSubmitting: PropTypes.bool.isRequired,
+	isFreePlan: PropTypes.bool.isRequired,
+	isBootstrapPlan: PropTypes.bool.isRequired,
+	isGrowthPlan: PropTypes.bool.isRequired,
+	planValidity: PropTypes.number.isRequired,
+	isOnTrial: PropTypes.bool.isRequired,
+	errors: PropTypes.array.isRequired,
 };
-// const mapStateToProps = state => ({
-//     isLoading: get(state, '$createAppSubscription.isFetching'),
-// });
-
-const mapDispatchToProps = dispatch => ({
-    createSubscription: (plan, stripeToken) => dispatch(createAppSubscription(plan, stripeToken)),
+const mapStateToProps = state => ({
+	plan: get(state, '$getAppPlan.results.tier'),
+	planValidity: get(state, '$getAppPlan.results.tier_validity'),
+	isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
+	isOnTrial: get(state, '$getAppPlan.results.trial'),
+	isFreePlan: !get(state, '$getAppPlan.isPaid'),
+	isBootstrapPlan: get(state, '$getAppPlan.isBootstrap'),
+	isGrowthPlan: get(state, '$getAppPlan.isGrowth'),
+	errors: [
+		get(state, '$deleteAppSubscription.error'),
+	],
 });
 
-export default connect(null, mapDispatchToProps)(PricingTable);
+const mapDispatchToProps = dispatch => ({
+	createSubscription: (plan, stripeToken) => dispatch(createAppSubscription(plan, stripeToken)),
+	deleteSubscription: appName => dispatch(deleteAppSubscription(appName)),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(PricingTable);

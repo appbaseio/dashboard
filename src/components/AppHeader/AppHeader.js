@@ -29,7 +29,13 @@ const AppHeader = ({ currentApp, user }) => (
 				<span>{currentApp || 'Loading...'}</span>
 			</Menu.Item>
 		</Menu>
-		<UserMenu user={user} />
+		<div>
+			{/* <Button active href={`/app/${currentApp}/billing`} css="border: none">
+				<Icon type="credit-card" />
+			</Button> */}
+
+			<UserMenu user={user} />
+		</div>
 	</Header>
 );
 

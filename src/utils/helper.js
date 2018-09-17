@@ -62,6 +62,11 @@ export const planLimits = {
 	},
 };
 
+export const planBasePrice = {
+	bootstrap: 29,
+	growth: 89,
+};
+
 const calcPercentage = (appStats, plan, field) => {
 	let count;
 	if (field === 'action') {
