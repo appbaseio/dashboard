@@ -26,7 +26,7 @@ const noBorder = css`
 const AppHeader = ({ currentApp, user }) => (
 	<Header className={headerStyles}>
 		<Menu mode="horizontal">
-			<Menu.Item key="back" className={noBorder}>
+			<Menu.Item key="back" className={noBorder} style={{ padding: 0 }}>
 				<Link to="/">
 					<Icon type="arrow-left" />
 				</Link>
