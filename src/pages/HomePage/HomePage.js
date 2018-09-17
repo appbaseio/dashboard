@@ -84,7 +84,7 @@ class HomePage extends Component {
 									to={`/app/${name}/overview`}
 									css={{ marginBottom: 20, display: 'block' }}
 								>
-									<Card title={name}>
+									<Card title={name} style={{ height: 166 }}>
 										{/* Free Plan is taken as default */}
 										<Skeleton
 											title={false}
