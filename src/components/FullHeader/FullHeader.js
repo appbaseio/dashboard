@@ -14,10 +14,10 @@ const getSelectedKeys = (pathname) => {
 	switch (pathname) {
 		case '/clusters':
 			return '2';
-		case '/profile':
-			return '3';
-		default:
+		case '/':
 			return '1';
+		default:
+			return null;
 	}
 };
 

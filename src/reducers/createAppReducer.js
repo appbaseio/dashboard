@@ -30,6 +30,13 @@ export default function userReducer(
 				error: action.error,
 			};
 		}
+		case CREATE_APP.RESET: {
+			return {
+				isLoading: false,
+				data: null,
+				error: null,
+			};
+		}
 		default:
 			return state;
 	}

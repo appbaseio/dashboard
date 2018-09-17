@@ -40,7 +40,7 @@ export async function getCreateApp(options) {
 	});
 	const data = await response.json();
 	if (response.status >= 400) {
-		throw new Error(data.message);
+		throw new Error(JSON.stringify(data));
 	}
 	const { body, message } = data;
 	return { ...body, message };

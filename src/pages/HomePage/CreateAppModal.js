@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import {
  Row, Col, Icon, Button, Modal, Input, Radio, Menu, Dropdown,
 } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { label, input, radiobtn } from './styles';
+import {
+ label, input, radiobtn, pricebtn, sectionCluster,
+} from './styles';
 
-import { createApp } from '../../actions';
+import { createApp, resetCreatedApp } from '../../actions';
 
 const RadioGroup = Radio.Group;
 
@@ -21,6 +24,11 @@ class CreateAppModal extends Component {
 			category: 'generic',
 			elasticVersion: '5',
 		};
+	}
+
+	componentDidMount() {
+		const { resetApp } = this.props;
+		resetApp();
 	}
 
 	handleOk = async () => {
@@ -56,8 +64,8 @@ class CreateAppModal extends Component {
 		});
 	};
 
-  componentDidUpdate = () => {
-    const { createdApp, history } = this.props; //eslint-disable-line
+	componentDidUpdate = () => {
+		const { createdApp, history } = this.props; //eslint-disable-line
 		const { hasJSON, appName } = this.state;
 		if (createdApp.data && createdApp.data.id) {
 			if (hasJSON) {
@@ -66,7 +74,23 @@ class CreateAppModal extends Component {
 				history.push(`app/${appName}`);
 			}
 		}
-  }
+	};
+
+	generateGrid = ({
+ type, price, records, calls,
+}) => (
+		<Row type="flex" justify="space-between">
+			<Col span={4}>{type}</Col>
+			<Col span={6}>{price}</Col>
+			<Col span={4}>{records}</Col>
+			<Col span={4}>{calls}</Col>
+			<Col>
+				<Link to="/billings">
+					<Icon type="info-circle" />
+				</Link>
+			</Col>
+		</Row>
+	);
 
 	renderCategoryDropdown = () => {
 		const { category } = this.state;
@@ -106,48 +130,65 @@ class CreateAppModal extends Component {
 			<Modal
 				visible={showModal}
 				onOk={this.handleOk}
+				destroyOnClose
 				okButtonProps={{ loading: createdApp.isLoading }}
+				okText="Create"
 				title="Create App"
 				onCancel={this.handleCancel}
 			>
-				<p className={label}>Name</p>
-				<Row gutter={8}>
-					<Col span={10}>
-						<Input
-							placeholder="Enter App Name"
-							name="appName"
-							className={input}
-							onChange={this.handleChange}
-							value={appName}
-						/>
-					</Col>
-					<Col span={14} style={{ fontSize: '12px' }}>
+				<section className={sectionCluster}>
+					<Icon type="info-circle" style={{ color: 'rgb(24,144,255)' }} theme="filled" />
+					<p style={{ margin: 0 }}>Click to create a dedicated Cluster instead.</p>
+					<Link to="/clusters">Go to Cluster</Link>
+				</section>
+				<p className={label}>
+					Name <br />
+					<span>
 						App names are unique across appbase.io and should not contain spaces.
-					</Col>
-					{createdApp && createdApp.error ? (
-						<span>{createdApp.error.message}</span>
-					) : null}
-				</Row>
+					</span>
+				</p>
+				<Input
+					placeholder="Enter App Name"
+					name="appName"
+					className={input}
+					onChange={this.handleChange}
+					value={appName}
+				/>
+
+				{createdApp && createdApp.error ? (
+					<span style={{ color: 'red' }}>{createdApp.error.actual.message}</span>
+				) : null}
 
 				<p className={label}>Choose Plan</p>
-				<RadioGroup value={plan} name="plan" onChange={this.handleChange}>
-					<Radio value="free">
-						<span>Free</span>
-						<span>$0 per app/Month</span>
-						<span>10k records</span>
-						<span>100k API</span>
+				<RadioGroup
+					value={plan}
+					name="plan"
+					onChange={this.handleChange}
+					style={{ width: '100%' }}
+				>
+					<Radio value="free" className={pricebtn}>
+						{this.generateGrid({
+							type: 'Free',
+							price: '$0 per app/Month',
+							records: '10K records',
+							calls: '100k API',
+						})}
 					</Radio>
-					<Radio value="bootstrap">
-						<span>Bootstrap</span>
-						<span>$19 per app/Month</span>
-						<span>100k records</span>
-						<span>1MM API</span>
+					<Radio value="bootstrap" className={pricebtn}>
+						{this.generateGrid({
+							type: 'Bootstrap',
+							price: '$19 per app/Month',
+							records: '100K records',
+							calls: '1MM API',
+						})}
 					</Radio>
-					<Radio value="growth">
-						<span>Growth</span>
-						<span>$99 per app/Month</span>
-						<span>1MM records</span>
-						<span>10MM API</span>
+					<Radio value="growth" className={pricebtn}>
+						{this.generateGrid({
+							type: 'Growth',
+							price: '$99 per app/Month',
+							records: '1MM records',
+							calls: '10MM API',
+						})}
 					</Radio>
 				</RadioGroup>
 
@@ -193,6 +234,7 @@ CreateAppModal.propTypes = {
 	showModal: PropTypes.bool.isRequired,
 	handleModal: PropTypes.func.isRequired,
 	createdApp: PropTypes.object.isRequired,
+	resetApp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ apps, appsMetrics, createdApp }) => ({
@@ -202,9 +244,8 @@ const mapStateToProps = ({ apps, appsMetrics, createdApp }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	handleCreateApp(options) {
-		dispatch(createApp(options));
-	},
+	handleCreateApp: options => dispatch(createApp(options)),
+	resetApp: () => dispatch(resetCreatedApp()),
 });
 
 export default connect(

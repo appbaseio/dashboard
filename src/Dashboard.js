@@ -6,14 +6,10 @@ import PropTypes from 'prop-types';
 
 import Loader from './components/Loader';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
+import Wrapper from './pages/Wrapper';
 import { loadUser } from './actions';
 
 // routes
-const Wrapper = Loadable({
-	loader: () => import('./pages/Wrapper'),
-	loading: Loader,
-});
-
 const LoginPage = Loadable({
 	loader: () => import('./pages/LoginPage'),
 	loading: Loader,
@@ -21,6 +17,16 @@ const LoginPage = Loadable({
 
 const SignupPage = Loadable({
 	loader: () => import('./pages/SignupPage'),
+	loading: Loader,
+});
+
+const OnboardingPage = Loadable({
+	loader: () => import('./pages/OnboardingPage'),
+	loading: Loader,
+});
+
+const EndPage = Loadable({
+	loader: () => import('./pages/OnboardingPage/EndScreen'),
 	loading: Loader,
 });
 
@@ -42,6 +48,8 @@ class Dashboard extends Component {
 				<Fragment>
 					<Route exact path="/login" component={LoginPage} />
 					<Route exact path="/signup" component={SignupPage} />
+					<Route exact path="/tutorial" component={OnboardingPage} />
+					<Route exact path="/tutorial/finish" component={EndPage} />
 					<PrivateRoute user={user} component={Wrapper} />
 				</Fragment>
 			</Router>

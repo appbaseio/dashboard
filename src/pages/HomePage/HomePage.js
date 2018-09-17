@@ -61,7 +61,7 @@ class HomePage extends Component {
 								</Col>
 							</Row>
 
-							<Link to="/" className={link}>
+							<Link to="/tutorial" className={link}>
 								<Icon type="book" /> Interactive Tutorial
 							</Link>
 							<Link to="/" className={link}>
