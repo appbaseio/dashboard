@@ -9,6 +9,7 @@ const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
 	loading: Loader,
 });
+
 const ProfilePage = Loadable({
 	loader: () => import('../ProfilePage'),
 	loading: Loader,

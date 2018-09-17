@@ -92,7 +92,7 @@ const routes = {
 			{ label: 'Import Data', link: 'import' },
 			{ label: 'Manage Mappings', link: 'mappings' },
 			{ label: 'Browse Data', link: 'browse' },
-			{ label: 'Search Sandbox', link: 'sandbox' },
+			{ label: 'Search Preview', link: 'search-preview' },
 		],
 	},
 	Analytics: {
@@ -203,7 +203,15 @@ class AppWrapper extends Component {
 						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
 					>
-						<Logo />
+						<Menu.Item style={{ margin: '15px auto' }}>
+							<Link to="/">
+								{collapsed ? (
+									<Logo type="small" width={20} />
+								) : (
+									<Logo type="white" width={160} />
+								)}
+							</Link>
+						</Menu.Item>
 						{Object.keys(routes).map((route) => {
 							if (routes[route].menu) {
 								const Title = (
@@ -352,7 +360,7 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appName/sandbox"
+								path="/app/:appName/search-preview"
 								render={props => (
 									<AppPageContainer
 										{...props}
