@@ -199,7 +199,15 @@ class AppWrapper extends Component {
 						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
 					>
-						<Logo />
+						<Menu.Item style={{ margin: '15px auto' }}>
+							<Link to="/">
+								{collapsed ? (
+									<Logo type="small" width={20} />
+								) : (
+									<Logo type="white" width={160} />
+								)}
+							</Link>
+						</Menu.Item>
 						{Object.keys(routes).map((route) => {
 							if (routes[route].menu) {
 								const Title = (
