@@ -92,7 +92,7 @@ const routes = {
 			{ label: 'Import Data', link: 'import' },
 			{ label: 'Manage Mappings', link: 'mappings' },
 			{ label: 'Browse Data', link: 'browse' },
-			{ label: 'Search Sandbox', link: 'sandbox' },
+			{ label: 'Search Preview', link: 'sandbox' },
 		],
 	},
 	Analytics: {
