@@ -388,7 +388,7 @@ class PricingTable extends Component {
 								}}
 								gridRatio={0.25}
 								label="Plan"
-								component={`- ${plan}`}
+								component={plan}
 							/>
 						</Flex>
 						<Flex alignItems="center">
@@ -398,7 +398,7 @@ class PricingTable extends Component {
 								}}
 								gridRatio={0.25}
 								label="Valid till"
-								component={`- ${new Date(planValidity + (new Date()).getTime()).toDateString()}`}
+								component={new Date(planValidity + (new Date()).getTime()).toDateString()}
 							/>
 						</Flex>
 						<Flex alignItems="center">
@@ -408,7 +408,7 @@ class PricingTable extends Component {
 								}}
 								gridRatio={0.25}
 								label="Trial peroid"
-								component={isOnTrial ? '- Yes' : '- Expired'}
+								component={isOnTrial ? 'Yes' : 'Expired'}
 							/>
 						</Flex>
 					</Flex>

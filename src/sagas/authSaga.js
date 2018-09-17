@@ -7,8 +7,8 @@ import { setUser, loadApps, setUserError } from '../actions';
 function* authWorker() {
 	try {
 		const { user, apps } = yield call(getUser);
-		yield put(setUser(user));
 		yield put(loadApps(apps));
+		yield put(setUser(user));
 	} catch (e) {
 		yield put(setUserError(e));
 	}

@@ -13,7 +13,6 @@ class AppPageContainer extends Component {
 		super(props);
 
 		const { appName, appId, updateCurrentApp } = props;
-
 		if (appName && appId) {
 			updateCurrentApp(appName, appId);
 		}
