@@ -92,7 +92,7 @@ const routes = {
 			{ label: 'Import Data', link: 'import' },
 			{ label: 'Manage Mappings', link: 'mappings' },
 			{ label: 'Browse Data', link: 'browse' },
-			{ label: 'Search Preview', link: 'sandbox' },
+			{ label: 'Search Preview', link: 'search-preview' },
 		],
 	},
 	Analytics: {
@@ -340,7 +340,7 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appName/sandbox"
+								path="/app/:appName/search-preview"
 								render={props => (
 									<AppPageContainer
 										{...props}
