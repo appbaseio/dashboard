@@ -75,13 +75,13 @@ const googleBtn = css`
 
 const gitlabBtn = css`
 	color: #fff;
-	background-color: rgb(230, 83, 40);
+	background-color: rgb(85, 68, 136);
 
 	&:hover,
 	&:focus {
-		background-color: rgb(201, 61, 43);
+		background-color: rgb(64, 51, 104);
 		color: #fff;
-		border-color: #f7d2cf;
+		border-color: #473281;
 	}
 `;
 
