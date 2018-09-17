@@ -8,6 +8,7 @@ import { getSharedApp, createAppShare, updatePermission } from '../../batteries/
 import ButtonBtr from '../../batteries/components/shared/Button/Primary';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 let lastIndex = 0;
 const updateIndex = () => {
@@ -153,7 +154,7 @@ const mapStateToProps = (state) => {
 	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
 	return {
-		isPaidUser: get(state, '$getAppPlan.isPaid'),
+		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
 		isLoading:

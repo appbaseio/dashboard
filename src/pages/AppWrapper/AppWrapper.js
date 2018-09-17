@@ -272,7 +272,9 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appName/popular-searches"
-								component={PopularSearches}
+								component={props => (
+									<AppPageContainer {...props} component={PopularSearches} />
+								)}
 							/>
 							<Route
 								exact

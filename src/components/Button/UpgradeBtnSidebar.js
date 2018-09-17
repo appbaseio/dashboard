@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import Flex from '../../batteries/components/shared/Flex';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 import { capitalizeFirstLetter, planBasePrice } from '../../utils/helper';
 
 const upgradeButton = css`
@@ -54,6 +55,6 @@ UpgradeBtnSidebar.propTypes = {
 	link: PropTypes.string.isRequired,
 };
 const mapStateToProps = state => ({
-	plan: get(state, '$getAppPlan.plan', 'free'),
+	plan: get(getAppPlanByName(state), 'plan', 'free'),
 });
 export default connect(mapStateToProps)(UpgradeBtnSidebar);

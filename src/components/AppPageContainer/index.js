@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getAppInfo, setCurrentApp, getAppPlan } from '../../batteries/modules/actions';
-import { getAppInfoByName } from '../../batteries/modules/selectors';
+import { getAppInfoByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import Loader from '../Loader';
 import { displayErrors } from '../../utils/helper';
 
@@ -82,7 +82,7 @@ const mapStateToProps = (state, ownProps) => {
 		appName,
 		appId: get(state, 'apps', {})[appName],
 		isLoading: get(state, '$getAppInfo.isFetching') || get(state, '$getAppPlan.isFetching'),
-		isAppPlanFetched: get(state, '$getAppPlan.success'),
+		isAppPlanFetched: !!getAppPlanByName(state),
 		isAppInfoPresent: !!getAppInfoByName(state),
 		errors: [
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),

@@ -19,7 +19,7 @@ import { Button as UpgradeButton } from '../../batteries/components/Mappings/sty
 import Grid from './Grid';
 import { getAppMappings } from '../../batteries/modules/actions';
 import { createCredentials as Messages, hoverMessage } from '../../utils/messages';
-import { getTraversedMappingsByAppName, getAppPermissionsByName } from '../../batteries/modules/selectors';
+import { getTraversedMappingsByAppName, getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import {
 	Types, getDefaultAclOptionsByPlan,
 	aclOptionsLabel, getAclOptionsByPlan, isNegative,
@@ -518,15 +518,16 @@ CreateCredentials.propTypes = {
 const mapStateToProps = (state) => {
 	const mappings = getTraversedMappingsByAppName(state);
 	const appPermissions = getAppPermissionsByName(state);
+	const plan = getAppPlanByName(state);
 	return {
-		isPaidUser: get(state, '$getAppPlan.isPaid'),
+		isPaidUser: get(plan, 'isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
 		mappings: mappings || [],
 		isMappingsFetched: !!mappings,
 		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
 		credentials: get(appPermissions, 'credentials'),
-		plan: get(state, '$getAppPlan.plan'),
+		plan: get(plan, 'plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
 			get(state, '$getAppMappings.error'),

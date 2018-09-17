@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NoResultSearch from '../../batteries/components/analytics/components/NoResultsSearch';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const NoResultSearchWrapper = ({ appName, plan }) => (
 	<NoResultSearch appName={appName} plan={plan} />
@@ -16,6 +17,6 @@ NoResultSearchWrapper.propTypes = {
 
 const mapStateToProps = state => ({
 	appName: get(state, '$getCurrentApp.name'),
-	plan: get(state, '$getAppPlan.plan'),
+	plan: get(getAppPlanByName(state), 'plan'),
 });
 export default connect(mapStateToProps)(NoResultSearchWrapper);

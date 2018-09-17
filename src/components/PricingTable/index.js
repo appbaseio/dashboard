@@ -15,7 +15,8 @@ import theme from './theme';
 import { media, hexToRgb } from '../../utils/media';
 import Grid from '../CreateCredentials/Grid';
 import { planBasePrice, displayErrors } from '../../utils/helper';
-import { createAppSubscription, deleteAppSubscription } from '../../batteries/modules/actions/app';
+import { createAppSubscription, deleteAppSubscription } from '../../batteries/modules/actions';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 import Flex from '../../batteries/components/shared/Flex';
 
 const CheckList = ({ list }) => list.map(item => (
@@ -941,18 +942,21 @@ PricingTable.propTypes = {
 	isOnTrial: PropTypes.bool.isRequired,
 	errors: PropTypes.array.isRequired,
 };
-const mapStateToProps = state => ({
-	plan: get(state, '$getAppPlan.results.tier'),
-	planValidity: get(state, '$getAppPlan.results.tier_validity'),
-	isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
-	isOnTrial: get(state, '$getAppPlan.results.trial'),
-	isFreePlan: !get(state, '$getAppPlan.isPaid'),
-	isBootstrapPlan: get(state, '$getAppPlan.isBootstrap'),
-	isGrowthPlan: get(state, '$getAppPlan.isGrowth'),
-	errors: [
-		get(state, '$deleteAppSubscription.error'),
-	],
-});
+const mapStateToProps = (state) => {
+	const appPlan = getAppPlanByName(state);
+	return {
+		plan: get(appPlan, 'tier'),
+		planValidity: get(appPlan, 'tier_validity'),
+		isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
+		isOnTrial: get(appPlan, 'trial'),
+		isFreePlan: !get(appPlan, 'isPaid'),
+		isBootstrapPlan: get(appPlan, 'isBootstrap'),
+		isGrowthPlan: get(appPlan, 'isGrowth'),
+		errors: [
+			get(state, '$deleteAppSubscription.error'),
+		],
+	}
+};
 
 const mapDispatchToProps = dispatch => ({
 	createSubscription: (plan, stripeToken) => dispatch(createAppSubscription(plan, stripeToken)),
