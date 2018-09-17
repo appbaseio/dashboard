@@ -33,9 +33,6 @@ const onboardingStyles = css`
 			text-decoration: none;
 		}
 	}
-	.Select--multi .Select-value-icon {
-		padding: 3px 5px 2px;
-	}
 	mark {
 		background-color: #ff0;
 	}
@@ -284,6 +281,10 @@ const onboardingStyles = css`
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+
+			& > div {
+				width: 100%;
+			}
 		}
 		h3 {
 			font-size: 18px;
@@ -298,10 +299,6 @@ const onboardingStyles = css`
 			border: 1px solid #ccc;
 			padding: 8px 4px;
 			height: 36px;
-		}
-		.Select {
-			display: block;
-			width: 100%;
 		}
 		p {
 			color: #888;
@@ -410,9 +407,12 @@ const onboardingStyles = css`
 	}
 `;
 
-const endScreenStyles = `
+const endScreenStyles = css`
 	width: 100%;
-	padding-top: 130px;
+	padding: 20px;
+	max-width: 1500px;
+	margin: 0 auto;
+	background-color: #fff;
 	font-family: 'Open Sans';
 	.banner-row {
 		display: flex;
@@ -432,7 +432,7 @@ const endScreenStyles = `
 				width: 200px;
 				margin: 0px auto 20px;
 			}
-			&>div {
+			& > div {
 				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
@@ -475,22 +475,24 @@ const endScreenStyles = `
 		.card {
 			background-color: #c7f4ff;
 			width: 32%;
-			padding: 20px;
+			padding: 40px 20px;
 			color: #232e44;
 			text-align: center;
 			flex-direction: column;
-			height: 450px;
+			min-height: 420px;
 			justify-content: space-between;
 			align-items: center;
 			h2 {
 				font-size: 18px;
 				line-height: 28px;
 				font-weight: 700;
+				margin-bottom: 30px;
 			}
 			p {
 				font-size: 16px;
 				line-height: 26px;
 				max-width: 280px;
+				min-height: 78px;
 				margin: 15px auto 10px auto;
 			}
 			img,

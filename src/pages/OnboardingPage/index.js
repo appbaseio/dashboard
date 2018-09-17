@@ -124,6 +124,7 @@ export default class Onboarding extends Component {
 				setFacetFields: this.setFacetFields,
 				facetFields,
 				searchFields,
+				app: newApp,
 			};
 		} else {
 			props = {
@@ -194,14 +195,14 @@ export default class Onboarding extends Component {
 								Set aggregation fields
 							</a>
 						</li>
-						<li>
+						{/* <li>
 							<a
 								className={currentScreen === 4 ? 'active' : null}
 								onClick={() => this.setScreen(4)}
 							>
 								Stream realtime updates
 							</a>
-						</li>
+						</li> */}
 					</ul>
 				</div>
 				<div className="right">

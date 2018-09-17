@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from 'antd';
 
 const Footer = ({
- previousScreen, disabled, app, label,
+ previousScreen, disabled, app, label, nextScreen,
 }) => (
 	<footer>
 		<div className="left-column">
@@ -29,7 +29,7 @@ const Footer = ({
 				<a
 					className={`button has-icon ${disabled ? 'disabled' : ''}`}
 					onClick={() => {
-						!disabled && props.nextScreen();
+						!disabled && nextScreen();
 					}}
 				>
 					{label || 'Next'} &nbsp;{' '}

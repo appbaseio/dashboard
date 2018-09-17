@@ -11,6 +11,7 @@ export default class Search extends Component {
 	};
 
 	handleChange = (selectedOption) => {
+		console.log('you selected', selectedOption);
 		this.setState({ selectedOption });
 	};
 
@@ -63,8 +64,8 @@ export default class Search extends Component {
 					value={this.state.selectedOption}
 					onChange={this.handleChange}
 					placeholder="Select aggregation fields"
-					multi
-					clearable={false}
+					isMulti
+					isClearable={false}
 					options={[
 						{ value: 'release_year', label: 'release_year' },
 						{ value: 'genres', label: 'genres' },
@@ -90,9 +91,9 @@ export default class Search extends Component {
 							<h2>Set aggregation fields</h2>
 							<p>
 								Similarly, we can also set certain fields to be of{' '}
-								<strong>Aggregation</strong>{' '}
-								kind. These fields will be indexed into data-structures that are
-								optimized for performing computations and sorting functionalites.
+								<strong>Aggregation</strong> kind. These fields will be indexed into
+								data-structures that are optimized for performing computations and
+								sorting functionalites.
 							</p>
 							<p>
 								We will start by letting you set some
@@ -105,17 +106,18 @@ export default class Search extends Component {
 
 				{this.props.facetFields.length ? this.renderSearchApp() : null}
 
-				<Footer
-					nextScreen={this.props.nextScreen}
-					previousScreen={this.props.previousScreen}
-					disabled={!this.props.facetFields.length}
-				/>
 				{/* <Footer
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					disabled={!this.props.facetFields.length}
-					label="Finish"
 				/> */}
+				<Footer
+					nextScreen={this.props.nextScreen}
+					previousScreen={this.props.previousScreen}
+					disabled={!this.props.facetFields.length}
+					label="Finish"
+					app={this.props.app}
+				/>
 			</div>
 		);
 	}

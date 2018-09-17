@@ -25,6 +25,7 @@ export default class Search extends Component {
 	};
 
 	handleChange = (selectedOption) => {
+		console.log(selectedOption);
 		if (!selectedOption.length) {
 			this.setError('There should be at least one field set for search.');
 		} else {
@@ -62,8 +63,8 @@ export default class Search extends Component {
 					value={this.state.selectedOption}
 					onChange={this.handleChange}
 					placeholder="Select fields"
-					multi
-					clearable={false}
+					isMulti
+					isClearable={false}
 					options={[
 						{ value: 'original_title', label: 'original_title' },
 						{ value: 'overview', label: 'overview' },
@@ -92,7 +93,8 @@ export default class Search extends Component {
 								querying performance.
 							</p>
 							<p>
-								However, all fields aren{'’'}t created equal. When you set a field as{' '}
+								However, all fields aren
+								{'’'}t created equal. When you set a field as{' '}
 								<strong>Searchable</strong>, it gets an additional n-gram based
 								analyzer applied which enables blazing fast auto-completion and
 								partial match features.
