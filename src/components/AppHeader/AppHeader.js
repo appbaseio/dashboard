@@ -1,12 +1,12 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 import { string, object } from 'prop-types';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 import UserMenu from './UserMenu';
-import Back from './Back';
 import headerStyles from './styles';
 
 const { Header } = Layout;
@@ -26,7 +26,11 @@ const noBorder = css`
 const AppHeader = ({ currentApp, user }) => (
 	<Header className={headerStyles}>
 		<Menu mode="horizontal">
-			<Back url="/" />
+			<Menu.Item key="back" className={noBorder}>
+				<Link to="/">
+					<Icon type="arrow-left" />
+				</Link>
+			</Menu.Item>
 			<Menu.Item key="1" className={noBorder}>
 				<span>{currentApp || 'Loading...'}</span>
 			</Menu.Item>
