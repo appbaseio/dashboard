@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 
 import Loader from '../../components/Loader';
 import AppWrapper from '../AppWrapper';
+import NoMatch from '../../NoMatch';
 
 const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
@@ -26,6 +27,7 @@ const Wrapper = () => (
 		<Route exact path="/clusters" component={ClusterPage} />
 		<Route exact path="/profile" component={ProfilePage} />
 		<Route path="/app/:appName?/:route?" component={AppWrapper} />
+		<Route component={NoMatch} />
 	</Switch>
 );
 
