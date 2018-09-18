@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Card, Skeleton,
+ Row, Col, Icon, Button, Card, Skeleton, Dropdown, Menu,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -23,8 +23,53 @@ const link = css`
 `;
 
 class HomePage extends Component {
-	state = {
-		showModal: false, // modal for create new app
+	constructor() {
+		super();
+		this.sortOptions = [{ label: 'Name', key: 'name' }, { label: 'Most Recent', key: 'time' }];
+		this.state = {
+			showModal: false, // modal for create new app
+			sortBy: 'name',
+		};
+	}
+
+	handleSortOption = (e) => {
+		const { key } = e;
+		this.setState({
+			sortBy: key,
+		});
+	};
+
+	renderSortOptions = () => {
+		const { sortBy } = this.state;
+		const selectedOption = this.sortOptions.find(option => option.key === sortBy);
+		const menu = (
+			<Menu onClick={this.handleSortOption}>
+				{this.sortOptions.map(option => (
+					<Menu.Item key={option.key}>{option.label}</Menu.Item>
+				))}
+			</Menu>
+		);
+		return (
+			<Dropdown overlay={menu} trigger={['click']}>
+				<Button>
+					Sort by {selectedOption.label} <Icon type="down" />
+				</Button>
+			</Dropdown>
+		);
+	};
+
+	renderApps = () => {
+		const { apps } = this.props;
+		const { sortBy } = this.state;
+
+		switch (sortBy) {
+			case 'time':
+				return Object.entries(apps)
+					.sort((prevApp, nextApp) => nextApp[1] - prevApp[1])
+					.map(app => app[0]);
+			default:
+				return Object.entries(apps).map(app => app[0]);
+		}
 	};
 
 	render() {
@@ -33,6 +78,7 @@ class HomePage extends Component {
 			appsMetrics: { data },
 		} = this.props;
 
+		const sortedValues = this.renderApps();
 		return (
 			<Fragment>
 				<FullHeader />
@@ -78,7 +124,11 @@ class HomePage extends Component {
 
 				<Container>
 					<Row gutter={20}>
-						{Object.keys(apps).map(name => (
+						<Row type="flex" justify="space-between" gutter={16}>
+							<h2>All Apps</h2>
+							{this.renderSortOptions()}
+						</Row>
+						{sortedValues.map(name => (
 							<Col key={name} span={8}>
 								<Link
 									to={`/app/${name}/overview`}
