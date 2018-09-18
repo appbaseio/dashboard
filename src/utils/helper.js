@@ -12,7 +12,7 @@ export const displayErrors = (nextErrors = [], prevErrors = []) => {
 		if (error && error !== prevErrors[index]) {
 			notification.error({
 				message: 'Error',
-				description: get(error, 'responseJSON.message', 'Something went wrong'),
+				description: error.message,
 			});
 		}
 		return null;

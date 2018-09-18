@@ -34,6 +34,17 @@ const modal = css`
 		width: 580px;
 	}
 `;
+const calculateValue = (value) => {
+	const index = value.indexOf('*');
+	if (index > -1) {
+		if (index === 0 && value.length !== 1) {
+			value.splice(index, 1);
+			return value;
+		}
+		return ['*'];
+	}
+	return value;
+}
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
@@ -338,11 +349,7 @@ class CreateCredentials extends React.Component {
 														style={{ width: '100%' }}
 														{...inputHandler}
 														onChange={(value) => {
-															if (value.includes('*')) {
-																inputHandler.onChange(['*']);
-															} else {
-																inputHandler.onChange(value);
-															}
+																inputHandler.onChange(calculateValue(value));
 														}}
 													>
 														<Option key="*">* (Include all fields)</Option>
@@ -350,7 +357,7 @@ class CreateCredentials extends React.Component {
 																if (!excludedFields.includes(v)) {
 																	return (
 																		<Option
-																			key={i + v}
+																			key={v}
 																			title={v}
 																		>
 																			{v}
@@ -387,18 +394,14 @@ class CreateCredentials extends React.Component {
 														style={{ width: '100%' }}
 														{...inputHandler}
 														onChange={(value) => {
-															if (!value.length || !value.includes('*')) {
-																inputHandler.onChange(value);
-															} else {
-																inputHandler.onChange(['*']);
-															}
+															inputHandler.onChange(calculateValue(value));
 														}}
 													>
 														<Option key="*">* (Exclude all fields)</Option>
 														{Object.keys(mappings).map(i => mappings[i].map((v) => {
 																if (!includedFields.includes(v)) {
 																	return (
-																		<Option key={i + v}>
+																		<Option key={v}>
 																			{v}
 																			<span
 																				css={styles.fieldBadge}
