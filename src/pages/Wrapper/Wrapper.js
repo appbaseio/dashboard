@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 import Loader from '../../components/Loader';
 import AppWrapper from '../AppWrapper';
 import NoMatch from '../../NoMatch';
+import HelpChat from '../HelpChat';
 
 const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
