@@ -9,5 +9,5 @@ export default {
 	apps: appsReducer,
 	appsMetrics: appsMetricsReducer,
 	appsOwners: appsOwnersReducer,
-  createdApp: createAppReducer,
+	createdApp: createAppReducer,
 };

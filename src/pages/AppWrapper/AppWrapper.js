@@ -224,7 +224,7 @@ class AppWrapper extends Component {
 									<SubMenu key={route} title={Title}>
 										{routes[route].menu.map(item => (
 											<Menu.Item key={item.label}>
-												<Link replace to={item.link}>
+												<Link replace to={`/app/${appName}/${item.link}`}>
 													{item.label}
 												</Link>
 											</Menu.Item>

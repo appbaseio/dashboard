@@ -48,10 +48,12 @@ export async function getCreateApp(options) {
 			es_version: options.es_version,
 		}),
 	});
+
 	const data = await response.json();
 	if (response.status >= 400) {
 		throw new Error(JSON.stringify(data));
 	}
+
 	const { body, message } = data;
 	return { ...body, message };
 }

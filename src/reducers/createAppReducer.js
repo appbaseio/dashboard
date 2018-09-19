@@ -1,7 +1,7 @@
 // @flow
 import { CREATE_APP } from '../constants';
 
-export default function userReducer(
+export default function createAppReducer(
 	state: Object = {
 		isLoading: false,
 		data: null,

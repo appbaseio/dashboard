@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
- label, input, radiobtn, pricebtn, sectionCluster,
+ modalHeading, input, radiobtn, pricebtn, clusterInfo,
 } from './styles';
 
 import { createApp, resetCreatedApp } from '../../actions';
@@ -77,8 +77,12 @@ class CreateAppModal extends Component {
 	};
 
 	generateGrid = ({
- type, price, records, calls,
-}) => (
+		// prettier-ignore
+		type,
+		price,
+		records,
+		calls,
+	}) => (
 		<Row type="flex" justify="space-between">
 			<Col span={4}>{type}</Col>
 			<Col span={6}>{price}</Col>
@@ -122,8 +126,12 @@ class CreateAppModal extends Component {
 
 	render() {
 		const {
- appName, hasJSON, plan, elasticVersion,
-} = this.state;
+			// prettier-ignore
+			appName,
+			hasJSON,
+			plan,
+			elasticVersion,
+		} = this.state;
 		const { createdApp, showModal } = this.props;
 
 		return (
@@ -135,78 +143,92 @@ class CreateAppModal extends Component {
 				okText="Create"
 				title="Create App"
 				onCancel={this.handleCancel}
+				width={600}
 			>
-				<section className={sectionCluster}>
-					<Icon type="info-circle" style={{ color: 'rgb(24,144,255)' }} theme="filled" />
-					<p style={{ margin: 0 }}>Click to create a dedicated Cluster instead.</p>
+				<section className={clusterInfo}>
+					<div>
+						<Icon
+							type="info-circle"
+							css={{
+								color: 'rgb(24,144,255)',
+								marginRight: 8,
+							}}
+							theme="filled"
+						/>
+						<span>Click to create a dedicated Cluster instead</span>
+					</div>
 					<Link to="/clusters">Go to Cluster</Link>
 				</section>
-				<p className={label}>
-					Name <br />
-					<span>
+
+				<div>
+					<h3 className={modalHeading}>Name</h3>
+					<p css={{ fontSize: 14, margin: '-8px 0 8px 0' }}>
 						App names are unique across appbase.io and should not contain spaces.
-					</span>
-				</p>
-				<Input
-					placeholder="Enter App Name"
-					name="appName"
-					className={input}
-					onChange={this.handleChange}
-					value={appName}
-				/>
+					</p>
+					<Input
+						placeholder="Enter App Name"
+						name="appName"
+						className={input}
+						onChange={this.handleChange}
+						value={appName}
+					/>
+					{createdApp && createdApp.error ? (
+						<div css={{ color: 'tomato', marginTop: 8 }}>{createdApp.error.actual.message}</div>
+					) : null}
+				</div>
 
-				{createdApp && createdApp.error ? (
-					<span style={{ color: 'red' }}>{createdApp.error.actual.message}</span>
-				) : null}
+				<div>
+					<h3 className={modalHeading}>Choose Plan</h3>
+					<RadioGroup
+						value={plan}
+						name="plan"
+						onChange={this.handleChange}
+						style={{ width: '100%' }}
+					>
+						<Radio value="free" className={pricebtn}>
+							{this.generateGrid({
+								type: 'Free',
+								price: '$0 per app/Month',
+								records: '10K records',
+								calls: '100k API',
+							})}
+						</Radio>
+						<Radio value="bootstrap" className={pricebtn}>
+							{this.generateGrid({
+								type: 'Bootstrap',
+								price: '$19 per app/Month',
+								records: '100K records',
+								calls: '1MM API',
+							})}
+						</Radio>
+						<Radio value="growth" className={pricebtn}>
+							{this.generateGrid({
+								type: 'Growth',
+								price: '$99 per app/Month',
+								records: '1MM records',
+								calls: '10MM API',
+							})}
+						</Radio>
+					</RadioGroup>
+				</div>
 
-				<p className={label}>Choose Plan</p>
-				<RadioGroup
-					value={plan}
-					name="plan"
-					onChange={this.handleChange}
-					style={{ width: '100%' }}
-				>
-					<Radio value="free" className={pricebtn}>
-						{this.generateGrid({
-							type: 'Free',
-							price: '$0 per app/Month',
-							records: '10K records',
-							calls: '100k API',
-						})}
-					</Radio>
-					<Radio value="bootstrap" className={pricebtn}>
-						{this.generateGrid({
-							type: 'Bootstrap',
-							price: '$19 per app/Month',
-							records: '100K records',
-							calls: '1MM API',
-						})}
-					</Radio>
-					<Radio value="growth" className={pricebtn}>
-						{this.generateGrid({
-							type: 'Growth',
-							price: '$99 per app/Month',
-							records: '1MM records',
-							calls: '10MM API',
-						})}
-					</Radio>
-				</RadioGroup>
-
-				<p className={label}>
-					Do you have a JSON or CSV dataset that you would like to import into the app?
-				</p>
-				<RadioGroup value={hasJSON} name="hasJSON" onChange={this.handleChange}>
-					<Radio className={radiobtn} value>
-						Yes
-					</Radio>
-					<Radio className={radiobtn} value={false}>
-						No
-					</Radio>
-				</RadioGroup>
+				<div>
+					<h3 className={modalHeading}>
+						Do you have a JSON or CSV dataset to import into this app?
+					</h3>
+					<RadioGroup value={hasJSON} name="hasJSON" onChange={this.handleChange}>
+						<Radio className={radiobtn} value>
+							Yes
+						</Radio>
+						<Radio className={radiobtn} value={false}>
+							No
+						</Radio>
+					</RadioGroup>
+				</div>
 
 				<Row>
 					<Col span={14}>
-						<p className={label}>Elasticsearch version</p>
+						<h3 className={modalHeading}>Elasticsearch version</h3>
 						<RadioGroup
 							value={elasticVersion}
 							name="elasticVersion"
@@ -221,7 +243,7 @@ class CreateAppModal extends Component {
 						</RadioGroup>
 					</Col>
 					<Col span={10}>
-						<p className={label}>Category</p>
+						<h3 className={modalHeading}>Category</h3>
 						{this.renderCategoryDropdown()}
 					</Col>
 				</Row>

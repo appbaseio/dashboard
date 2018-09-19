@@ -1,16 +1,11 @@
 import { css } from 'emotion';
 
-const label = css`
-	padding: 5px;
-	padding-left: 0;
-	margin-top: 8px;
-	font-weight: 600;
-	margin-bottom: 4px;
-	span {
-		font-size: 13px;
-		font-weight: 400;
-		color: #777;
-	}
+const modalHeading = css`
+	font-weight: 700;
+	color: #555;
+	font-size: 14px;
+	line-height: 24px;
+	margin: 24px 0 8px 0;
 `;
 
 const input = css`
@@ -24,7 +19,7 @@ const radiobtn = css`
 const pricebtn = css`
 	display: flex !important;
 	align-items: center;
-	padding: 10px 6px;
+	padding: 10px 6px 10px 12px;
 	border-radius: 4px;
 	margin-bottom: 10px;
 	border: 1px solid #d9d9d9;
@@ -35,7 +30,7 @@ const pricebtn = css`
 	}
 `;
 
-const sectionCluster = css`
+const clusterInfo = css`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -62,5 +57,5 @@ const statsText = css`
 `;
 
 export {
- statsText, headingText, label, radiobtn, input, pricebtn, sectionCluster,
+ statsText, headingText, modalHeading, radiobtn, input, pricebtn, clusterInfo,
 };

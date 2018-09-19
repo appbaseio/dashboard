@@ -36,10 +36,10 @@ class HomePage extends Component {
 		}
 	}
 
-  handleChange = () => {
-    this.setState((state) => {
-      showModal: !state.showModal,
-    });
+	handleChange = () => {
+		this.setState(state => ({
+			showModal: !state.showModal,
+		}));
 	};
 
 	render() {
