@@ -47,7 +47,10 @@ class Credentials extends Component {
 	}
 
 	componentDidMount() {
-		this.refetchPermissions();
+		const { isPermissionsPresent } = this.props;
+		if (!isPermissionsPresent) {
+			this.refetchPermissions();
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -240,6 +243,7 @@ Credentials.propTypes = {
 	handleDeletePermission: func.isRequired,
 	handleEditPermission: func.isRequired,
 	isOwner: bool.isRequired,
+	isPermissionsPresent: bool.isRequired,
 	isLoading: bool,
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
@@ -247,10 +251,12 @@ Credentials.propTypes = {
 const mapStateToProps = (state) => {
 	const appOwner = get(getAppInfoByName(state), 'owner');
 	const userEmail = get(state, 'user.data.email');
+	const appPermissions = getAppPermissionsByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
-		permissions: get(getAppPermissionsByName(state), 'results', []),
+		isPermissionsPresent: !!appPermissions,
+		permissions: get(appPermissions, 'results', []),
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),

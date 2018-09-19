@@ -20,6 +20,10 @@ const AnalyticsPage = Loadable({
 	loader: () => import('../AnalyticsPage'),
 	loading: Loader,
 });
+const GeoDistributionPage = Loadable({
+	loader: () => import('../GeoDistributionPage'),
+	loading: Loader,
+});
 
 const BillingPage = Loadable({
 	loader: () => import('../BillingPage'),
@@ -104,6 +108,7 @@ const routes = {
 			{ label: 'Popular Results', link: 'popular-results' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Geo Distribution', link: 'geo-distribution' },
 		],
 	},
 	Security: {
@@ -288,6 +293,13 @@ class AppWrapper extends Component {
 								path="/app/:appName/popular-results"
 								component={props => (
 									<AppPageContainer {...props} component={PopularResults} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/geo-distribution"
+								component={props => (
+									<AppPageContainer {...props} component={GeoDistributionPage} />
 								)}
 							/>
 							<Route

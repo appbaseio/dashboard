@@ -66,7 +66,7 @@ class CreateCredentials extends React.Component {
 	}
 
 	componentDidMount() {
-		const { disabled, initialValues, isMappingsFetched } = this.props;
+		const { disabled, initialValues, isPermissionPresent } = this.props;
 		if (disabled) {
 			this.form.disable();
 		} else {
@@ -101,7 +101,7 @@ class CreateCredentials extends React.Component {
 			});
 			this.form.patchValue({ ...initialValues, operationType });
 		}
-		if (!isMappingsFetched) {
+		if (!isPermissionPresent) {
 			const { fetchPermissions } = this.props;
 			fetchPermissions();
 		}
@@ -510,7 +510,7 @@ CreateCredentials.propTypes = {
 		ttl: PropTypes.number,
 		meta: PropTypes.object,
 	}),
-	isMappingsFetched: PropTypes.bool.isRequired,
+	isPermissionPresent: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
 	handleCancel: PropTypes.func.isRequired,
 	isLoadingMappings: PropTypes.bool.isRequired,
@@ -525,14 +525,15 @@ CreateCredentials.propTypes = {
 
 const mapStateToProps = (state) => {
 	const mappings = getTraversedMappingsByAppName(state);
+	const appPermissions = getAppPermissionsByName(state);
 	const plan = getAppPlanByName(state);
 	return {
 		isPaidUser: get(plan, 'isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
 		mappings: mappings || [],
-		isMappingsFetched: !!mappings,
+		isPermissionPresent: !!appPermissions,
 		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
-		credentials: get(getAppPermissionsByName(state), 'credentials'),
+		credentials: get(appPermissions, 'credentials'),
 		plan: get(plan, 'plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
