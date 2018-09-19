@@ -1,7 +1,11 @@
-import { take, call, put } from 'redux-saga/effects';
+import {
+ take, takeEvery, call, put,
+} from 'redux-saga/effects';
 import { APPS } from '../constants';
-import { getAppsMetrics } from '../utils';
-import { setAppsMetrics, setAppsMetricsError } from '../actions';
+import { getAppsMetrics, getAppsOwners } from '../utils';
+import {
+ setAppsMetrics, setAppsMetricsError, setAppsOwners, setAppsOwnersError,
+} from '../actions';
 
 function* appWorker() {
 	try {
@@ -12,7 +16,17 @@ function* appWorker() {
 	}
 }
 
+function* appsOwnersWorker() {
+	try {
+		const owners = yield call(getAppsOwners);
+		yield put(setAppsOwners(owners));
+	} catch (e) {
+		yield put(setAppsOwnersError(e));
+	}
+}
+
 export default function* appSaga() {
+	yield takeEvery(APPS.LOAD_OWNERS, appsOwnersWorker);
 	yield take(APPS.LOAD);
 	yield call(appWorker);
 }

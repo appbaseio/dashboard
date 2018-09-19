@@ -25,3 +25,13 @@ export async function getAppsMetrics() {
 
 	return data.body;
 }
+
+export async function getAppsOwners() {
+	const response = await fetch(`${ACC_API}/user/apps`, { credentials: 'include' });
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data);
+	}
+
+	return data.body;
+}
