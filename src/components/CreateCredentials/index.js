@@ -44,7 +44,7 @@ const calculateValue = (value) => {
 		return ['*'];
 	}
 	return value;
-}
+};
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
@@ -90,15 +90,28 @@ class CreateCredentials extends React.Component {
 			});
 		}
 		if (initialValues) {
-			this.form.patchValue(initialValues);
+			let operationType;
+			Object.keys(Types).every((k) => {
+				const type = Types[k];
+				if (type.read === initialValues.read && type.write === initialValues.write) {
+					operationType = type;
+					return false;
+				}
+				return true;
+			});
+			this.form.patchValue({ ...initialValues, operationType });
 		}
 		if (!isMappingsFetched) {
-			this.getMappings();
+			const { fetchPermissions } = this.props;
+			fetchPermissions();
 		}
 	}
 
 	componentDidUpdate(prevProps) {
-		const { errors } = this.props;
+		const { errors, credentials } = this.props;
+		if (credentials && credentials !== prevProps.credentials) {
+			this.getMappings();
+		}
 		displayErrors(errors, prevProps.errors);
 	}
 
@@ -108,19 +121,11 @@ class CreateCredentials extends React.Component {
 	}
 
 	getMappings() {
-		const {
-			appId, appName, fetchMappings, fetchPermissions, credentials,
-		} = this.props;
+		const { appName, fetchMappings, credentials } = this.props;
 		if (credentials) {
 			// Fetch Mappings if permissions are present
 			const { username, password } = credentials;
 			fetchMappings(appName, `${username}:${password}`);
-		} else {
-			fetchPermissions(appId).then(({ payload }) => {
-				if (payload && payload.length) {
-					this.getMappings();
-				}
-			});
 		}
 	}
 
@@ -150,7 +155,6 @@ class CreateCredentials extends React.Component {
 				control={this.form}
 				render={({ invalid }) => (
 					<Modal
-						destroyOnClose={false}
 						style={{
 							width: '600px',
 						}}
@@ -494,6 +498,8 @@ CreateCredentials.propTypes = {
 	fetchPermissions: PropTypes.func.isRequired,
 	initialValues: PropTypes.shape({
 		description: PropTypes.string,
+		read: PropTypes.bool,
+		write: PropTypes.bool,
 		operationType: PropTypes.object,
 		acl: PropTypes.arrayOf(PropTypes.string),
 		referers: PropTypes.arrayOf(PropTypes.string),
@@ -506,7 +512,6 @@ CreateCredentials.propTypes = {
 	}),
 	isMappingsFetched: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
-	appId: PropTypes.string.isRequired,
 	handleCancel: PropTypes.func.isRequired,
 	isLoadingMappings: PropTypes.bool.isRequired,
 	disabled: PropTypes.bool,
@@ -520,27 +525,28 @@ CreateCredentials.propTypes = {
 
 const mapStateToProps = (state) => {
 	const mappings = getTraversedMappingsByAppName(state);
-	const appPermissions = getAppPermissionsByName(state);
 	const plan = getAppPlanByName(state);
 	return {
 		isPaidUser: get(plan, 'isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
-		appId: get(state, '$getCurrentApp.id'),
 		mappings: mappings || [],
 		isMappingsFetched: !!mappings,
 		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
-		credentials: get(appPermissions, 'credentials'),
+		credentials: get(getAppPermissionsByName(state), 'credentials'),
 		plan: get(plan, 'plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
 			get(state, '$getAppMappings.error'),
+			get(state, '$createAppPermission.error'),
+			get(state, '$updateAppPermission.error'),
+			get(state, '$createAppShare.error'),
 		],
 	};
 };
 
 const mapDispatchToProps = dispatch => ({
 	fetchMappings: (appName, credentials) => dispatch(getAppMappings(appName, credentials)),
-	fetchPermissions: appId => dispatch(getPermission(appId)),
+	fetchPermissions: appName => dispatch(getPermission(appName)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCredentials);

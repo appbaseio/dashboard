@@ -59,7 +59,7 @@ class ShareSettingsView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const { success } = this.props;
-		if (success !== prevProps.success) {
+		if (success && success !== prevProps.success) {
 			this.handleCancel();
 			this.getAppShare();
 		}
@@ -157,8 +157,7 @@ const mapStateToProps = (state) => {
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
-		isLoading:
-			get(state, '$getAppPermissions.isFetching') || get(state, '$getAppInfo.isFetching'),
+		isLoading: get(state, '$getSharedApp.isFetching'),
 		errors: [get(state, '$getSharedApp.error')],
 		sharedUsers: get(state, '$getSharedApp.results', []),
 		success: get(state, '$createAppShare.success'),
