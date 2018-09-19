@@ -6,7 +6,7 @@ import { Circle } from 'rc-progress';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Flex from '../../batteries/components/shared/Flex';
-import { getAppMetricsByName } from '../../batteries/modules/selectors';
+import { getAppMetricsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import { compressNumber, planLimits, getAppCount } from '../../utils/helper';
 import UpgradeButton from '../../batteries/components/shared/Button/Primary';
 
@@ -113,7 +113,7 @@ UsageDetails.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	plan: get(state, '$getAppPlan.plan'),
+	plan: get(getAppPlanByName(state), 'plan'),
 	computedMetrics: get(getAppMetricsByName(state), 'computedMetrics'),
 });
 export default connect(mapStateToProps)(UsageDetails);

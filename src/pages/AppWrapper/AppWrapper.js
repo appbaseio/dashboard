@@ -113,6 +113,10 @@ const routes = {
 			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
+	Billing: {
+		icon: 'credit-card',
+		link: 'billing',
+	},
 };
 
 class AppWrapper extends Component {
@@ -237,7 +241,7 @@ class AppWrapper extends Component {
 								</Menu.Item>
 							);
 						})}
-						<UpgradeButton link={`/app/${appName}/billing`} />
+						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
 				<Layout>
@@ -268,7 +272,9 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appName/popular-searches"
-								component={PopularSearches}
+								component={props => (
+									<AppPageContainer {...props} component={PopularSearches} />
+								)}
 							/>
 							<Route
 								exact
@@ -280,22 +286,30 @@ class AppWrapper extends Component {
 							<Route
 								exact
 								path="/app/:appName/popular-results"
-								component={PopularResults}
+								component={props => (
+									<AppPageContainer {...props} component={PopularResults} />
+								)}
 							/>
 							<Route
 								exact
 								path="/app/:appName/popular-filters"
-								component={PopularFilters}
+								component={props => (
+									<AppPageContainer {...props} component={PopularFilters} />
+								)}
 							/>
 							<Route
 								exact
 								path="/app/:appName/request-logs/:tab?"
-								component={RequestLogs}
+								component={props => (
+									<AppPageContainer {...props} component={RequestLogs} />
+								)}
 							/>
 							<Route
 								exact
 								path="/app/:appName/no-results-searches"
-								component={NoResultSearches}
+								component={props => (
+									<AppPageContainer {...props} component={NoResultSearches} />
+								)}
 							/>
 							<Route
 								exact

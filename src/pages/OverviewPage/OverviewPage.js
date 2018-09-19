@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FreeUserOverview from './FreeUserOverview';
 import PaidUserOverview from './PaidUserOverview';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const OverviewPage = ({ plan }) => {
 	if (!plan || plan === 'free') {
@@ -16,6 +17,6 @@ OverviewPage.propTypes = {
 	plan: PropTypes.string.isRequired,
 };
 const mapStateToProps = state => ({
-	plan: get(state, '$getAppPlan.plan'),
+	plan: get(getAppPlanByName(state), 'plan'),
 });
 export default connect(mapStateToProps)(OverviewPage);

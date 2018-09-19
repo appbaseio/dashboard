@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
- array, node, string, func,
+ array, node, string, func, bool,
 } from 'prop-types';
 import styled, { css } from 'react-emotion';
 import Stripe from 'react-stripe-checkout';
@@ -68,7 +68,7 @@ const PricingList = styled('ul')`
 	}
 `;
 
-export default class NewPricingCard extends Component {
+class NewPricingCard extends Component {
 	state = {};
 
 	render() {
@@ -83,6 +83,9 @@ export default class NewPricingCard extends Component {
 			amount,
 			token,
 			stripeKey,
+			isCurrentPlan,
+			buttonText,
+			onClickButton,
 			...rest
 		} = this.props;
 		return (
@@ -93,9 +96,17 @@ export default class NewPricingCard extends Component {
 						{price}
 						<div>/month</div>
 					</PriceWrapper>
-					<Stripe name={stripeName} amount={amount} token={token} stripeKey={stripeKey}>
+					<Stripe
+						disabled={isCurrentPlan}
+						name={stripeName}
+						amount={amount}
+						token={token}
+						stripeKey={stripeKey}
+					>
 						{/* eslint-disable-next-line */}
-						<Link css={{ color: linkColor }}>Subscribe</Link>
+						<Link onClick={onClickButton} css={{ color: linkColor }}>
+							{buttonText}
+						</Link>
 					</Stripe>
 				</PricingCardHeader>
 				<PricingList css={{ fontWeight: 700 }}>
@@ -114,7 +125,16 @@ export default class NewPricingCard extends Component {
 		);
 	}
 }
-
+NewPricingCard.defaultProps = {
+	price: undefined,
+	linkColor: undefined,
+	pricingList: undefined,
+	name: undefined,
+	onClickLink: undefined,
+	children: undefined,
+	onClickButton: undefined,
+	buttonText: 'Subscribe',
+};
 NewPricingCard.propTypes = {
 	price: string,
 	linkColor: string,
@@ -122,4 +142,8 @@ NewPricingCard.propTypes = {
 	name: string,
 	onClickLink: func,
 	children: node,
+	isCurrentPlan: bool.isRequired,
+	buttonText: string,
+	onClickButton: func,
 };
+export default NewPricingCard;

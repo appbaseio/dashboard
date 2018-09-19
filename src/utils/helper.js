@@ -12,7 +12,7 @@ export const displayErrors = (nextErrors = [], prevErrors = []) => {
 		if (error && error !== prevErrors[index]) {
 			notification.error({
 				message: 'Error',
-				description: get(error, 'responseJSON.message', 'Something went wrong'),
+				description: error.message,
 			});
 		}
 		return null;
@@ -60,6 +60,11 @@ export const planLimits = {
 		action: 10000000,
 		records: 1000000,
 	},
+};
+
+export const planBasePrice = {
+	bootstrap: 29,
+	growth: 89,
 };
 
 const calcPercentage = (appStats, plan, field) => {

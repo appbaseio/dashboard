@@ -26,6 +26,16 @@ export async function getAppsMetrics() {
 	return data.body;
 }
 
+export async function getAppsOwners() {
+	const response = await fetch(`${ACC_API}/user/apps`, { credentials: 'include' });
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data);
+	}
+
+	return data.body;
+}
+
 export async function getCreateApp(options) {
 	const response = await fetch(`${ACC_API}/app/${options.appName}`, {
 		method: 'PUT',

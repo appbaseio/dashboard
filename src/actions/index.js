@@ -30,6 +30,18 @@ export function setAppsMetricsError(error: Object): Object {
 	return createAction(APPS.LOAD_METRICS_FAIL, null, error, null);
 }
 
+export function getAppsOwners(): Object {
+	return createAction(APPS.LOAD_OWNERS, null, null, null);
+}
+
+export function setAppsOwners(owners: Object): Object {
+	return createAction(APPS.LOAD_OWNERS_SUCCESS, owners, null, null);
+}
+
+export function setAppsOwnersError(error: Object): Object {
+	return createAction(APPS.LOAD_OWNERS_FAIL, null, error, null);
+}
+
 export function createApp(options:Object):Object {
 	return createAction(CREATE_APP.LOAD, options, null, null);
 }
