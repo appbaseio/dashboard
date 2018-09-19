@@ -361,11 +361,11 @@ class CreateCredentials extends React.Component {
 																			title={v}
 																		>
 																			{v}
-																			<span
+																			{/* <span
 																				css={styles.fieldBadge}
 																			>
 																				{i}
-																			</span>
+																			</span> */}
 																		</Option>
 																	);
 																}
@@ -403,11 +403,11 @@ class CreateCredentials extends React.Component {
 																	return (
 																		<Option key={v}>
 																			{v}
-																			<span
+																			{/* <span
 																				css={styles.fieldBadge}
 																			>
 																				{i}
-																			</span>
+																			</span> */}
 																		</Option>
 																	);
 																}
