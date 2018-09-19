@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getAppInfo, setCurrentApp, getAppPlan } from '../../batteries/modules/actions';
+import { getAppInfoByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import Loader from '../Loader';
 import { displayErrors } from '../../utils/helper';
 
@@ -12,7 +13,6 @@ class AppPageContainer extends Component {
 		super(props);
 
 		const { appName, appId, updateCurrentApp } = props;
-
 		if (appName && appId) {
 			updateCurrentApp(appName, appId);
 		}
@@ -28,8 +28,9 @@ class AppPageContainer extends Component {
 			shouldFetchAppInfo,
 			shouldFetchAppPlan,
 			isAppPlanFetched,
+			isAppInfoPresent,
 		} = this.props;
-		if (shouldFetchAppInfo) {
+		if (shouldFetchAppInfo && !isAppInfoPresent) {
 			fetchAppInfo(appId);
 		}
 		if (shouldFetchAppPlan && !isAppPlanFetched) {
@@ -72,6 +73,7 @@ AppPageContainer.propTypes = {
 	fetchAppPlan: PropTypes.func.isRequired,
 	updateCurrentApp: PropTypes.func.isRequired,
 	isAppPlanFetched: PropTypes.bool.isRequired,
+	isAppInfoPresent: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -80,7 +82,8 @@ const mapStateToProps = (state, ownProps) => {
 		appName,
 		appId: get(state, 'apps', {})[appName],
 		isLoading: get(state, '$getAppInfo.isFetching') || get(state, '$getAppPlan.isFetching'),
-		isAppPlanFetched: get(state, '$getAppPlan.success'),
+		isAppPlanFetched: !!getAppPlanByName(state),
+		isAppInfoPresent: !!getAppInfoByName(state),
 		errors: [
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),
 			ownProps.shouldFetchAppPlan !== false && get(state, '$getAppPlan.error'),

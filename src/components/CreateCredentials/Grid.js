@@ -4,9 +4,15 @@ import { Tooltip, Icon } from 'antd';
 import styles from './styles';
 import Flex from '../../batteries/components/shared/Flex';
 
-const Grid = ({ label, component, toolTipMessage }) => (
-	<Flex css="margin-top: 30px">
-		<Flex css="flex: 25%">
+const Grid = ({
+ label, component, toolTipMessage, gridRatio, ...rest
+}) => (
+	<Flex css="margin-top: 30px" {...rest}>
+		<Flex
+			css={`
+				flex: ${gridRatio * 100}%;
+			`}
+		>
 			<div>
 				<span css={styles.formLabel}>
 					{label}
@@ -23,7 +29,14 @@ const Grid = ({ label, component, toolTipMessage }) => (
 				</span>
 			</div>
 		</Flex>
-		<Flex css="flex: 75%; margin-left: 20px">{component}</Flex>
+		<Flex
+			css={`
+				flex: ${(1 - gridRatio) * 100}%;
+				margin-left: 20px;
+			`}
+		>
+			{component}
+		</Flex>
 	</Flex>
 );
 
@@ -31,11 +44,13 @@ Grid.defaultProps = {
 	label: '',
 	component: null,
 	toolTipMessage: undefined,
+	gridRatio: 0.25,
 };
 Grid.propTypes = {
 	label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 	component: PropTypes.node,
 	toolTipMessage: PropTypes.any,
+	gridRatio: PropTypes.number,
 };
 
 export default Grid;

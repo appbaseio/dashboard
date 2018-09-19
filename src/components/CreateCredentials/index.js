@@ -15,12 +15,11 @@ import Flex from '../../batteries/components/shared/Flex';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { displayErrors } from '../../utils/helper';
 import { getPermission } from '../../batteries/modules/actions/permission';
-import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 import { Button as UpgradeButton } from '../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { getAppMappings } from '../../batteries/modules/actions';
 import { createCredentials as Messages, hoverMessage } from '../../utils/messages';
-import { getTraversedMappingsByAppName } from '../../batteries/modules/selectors';
+import { getTraversedMappingsByAppName, getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import {
 	Types, getDefaultAclOptionsByPlan,
 	aclOptionsLabel, getAclOptionsByPlan, isNegative,
@@ -35,6 +34,17 @@ const modal = css`
 		width: 580px;
 	}
 `;
+const calculateValue = (value) => {
+	const index = value.indexOf('*');
+	if (index > -1) {
+		if (index === 0 && value.length !== 1) {
+			value.splice(index, 1);
+			return value;
+		}
+		return ['*'];
+	}
+	return value;
+}
 class CreateCredentials extends React.Component {
 	constructor(props) {
 		super(props);
@@ -339,11 +349,7 @@ class CreateCredentials extends React.Component {
 														style={{ width: '100%' }}
 														{...inputHandler}
 														onChange={(value) => {
-															if (value.includes('*')) {
-																inputHandler.onChange(['*']);
-															} else {
-																inputHandler.onChange(value);
-															}
+																inputHandler.onChange(calculateValue(value));
 														}}
 													>
 														<Option key="*">* (Include all fields)</Option>
@@ -351,15 +357,15 @@ class CreateCredentials extends React.Component {
 																if (!excludedFields.includes(v)) {
 																	return (
 																		<Option
-																			key={i + v}
+																			key={v}
 																			title={v}
 																		>
 																			{v}
-																			<span
+																			{/* <span
 																				css={styles.fieldBadge}
 																			>
 																				{i}
-																			</span>
+																			</span> */}
 																		</Option>
 																	);
 																}
@@ -388,24 +394,20 @@ class CreateCredentials extends React.Component {
 														style={{ width: '100%' }}
 														{...inputHandler}
 														onChange={(value) => {
-															if (!value.length || !value.includes('*')) {
-																inputHandler.onChange(value);
-															} else {
-																inputHandler.onChange(['*']);
-															}
+															inputHandler.onChange(calculateValue(value));
 														}}
 													>
 														<Option key="*">* (Exclude all fields)</Option>
 														{Object.keys(mappings).map(i => mappings[i].map((v) => {
 																if (!includedFields.includes(v)) {
 																	return (
-																		<Option key={i + v}>
+																		<Option key={v}>
 																			{v}
-																			<span
+																			{/* <span
 																				css={styles.fieldBadge}
 																			>
 																				{i}
-																			</span>
+																			</span> */}
 																		</Option>
 																	);
 																}
@@ -519,15 +521,16 @@ CreateCredentials.propTypes = {
 const mapStateToProps = (state) => {
 	const mappings = getTraversedMappingsByAppName(state);
 	const appPermissions = getAppPermissionsByName(state);
+	const plan = getAppPlanByName(state);
 	return {
-		isPaidUser: get(state, '$getAppPlan.isPaid'),
+		isPaidUser: get(plan, 'isPaid'),
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
 		mappings: mappings || [],
 		isMappingsFetched: !!mappings,
 		isLoadingMappings: get(state, '$getAppMappings.isFetching') || get(state, '$getAppPermissions.isFetching'),
 		credentials: get(appPermissions, 'credentials'),
-		plan: get(state, '$getAppPlan.plan'),
+		plan: get(plan, 'plan'),
 		isSubmitting: get(state, '$createAppPermission.isFetching') || get(state, '$updateAppPermission.isFetching') || get(state, '$createAppShare.isFetching'),
 		errors: [
 			get(state, '$getAppMappings.error'),

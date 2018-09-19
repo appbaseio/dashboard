@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import Flex from '../../batteries/components/shared/Flex';
-import { capitalizeFirstLetter } from '../../utils/helper';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
+import { capitalizeFirstLetter, planBasePrice } from '../../utils/helper';
 
 const upgradeButton = css`
 	border-top: solid 1px #000c17;
@@ -14,8 +15,10 @@ const upgradeButton = css`
 	padding: 10px 24px;
 	position: fixed;
 	background-color: inherit;
-	z-index: 10;
+	width: 260px;
+	z-index: 1;
 	bottom: 48px;
+	transition: all 0.2s;
 `;
 
 const button = css`
@@ -35,9 +38,11 @@ const planDetails = css`
 
 const UpgradeBtnSidebar = ({ plan, link }) => (
 	<Flex css={upgradeButton} justifyContent="space-between" alignItems="center">
-		<Flex flexDirection="column">
+		<Flex flexDirection="column" justifyContent="space-between">
 			<span>{capitalizeFirstLetter(plan)}</span>
-			<span css={planDetails}>$29 per app/month</span>
+			{planBasePrice[plan] && (
+				<span css={planDetails}>{`$${planBasePrice[plan]} per app/month`}</span>
+			)}
 		</Flex>
 		<Link css="color: inherit;" replace to={link}>
 			<Button css={button}>Upgrade</Button>
@@ -50,6 +55,6 @@ UpgradeBtnSidebar.propTypes = {
 	link: PropTypes.string.isRequired,
 };
 const mapStateToProps = state => ({
-	plan: get(state, '$getAppPlan.plan', 'free'),
+	plan: get(getAppPlanByName(state), 'plan', 'free'),
 });
 export default connect(mapStateToProps)(UpgradeBtnSidebar);
