@@ -96,34 +96,6 @@ class CreateAppModal extends Component {
 		</Row>
 	);
 
-	renderCategoryDropdown = () => {
-		const { category } = this.state;
-		const categoryOptions = [
-			{ label: 'General', key: 'generic' },
-			{ label: 'ReactiveSearch', key: 'reactive-apps' },
-			{ label: 'Reactivemaps', key: 'reactive-maps' },
-		];
-
-		const selectedCategory = categoryOptions.find(option => option.key === category);
-
-		const menu = (
-			<Menu onClick={this.handleMenuClick} name="category">
-				{categoryOptions.map(option => (
-					<Menu.Item key={option.key}>{option.label}</Menu.Item>
-				))}
-			</Menu>
-		);
-
-		return (
-			<Dropdown overlay={menu}>
-				<Button>
-					{selectedCategory.label}
-					<Icon type="down" />
-				</Button>
-			</Dropdown>
-		);
-	};
-
 	render() {
 		const {
 			// prettier-ignore
@@ -140,7 +112,7 @@ class CreateAppModal extends Component {
 				onOk={this.handleOk}
 				destroyOnClose
 				okButtonProps={{ loading: createdApp.isLoading }}
-				okText="Create"
+				okText="Create App"
 				title="Create App"
 				onCancel={this.handleCancel}
 				width={600}
@@ -155,18 +127,18 @@ class CreateAppModal extends Component {
 							}}
 							theme="filled"
 						/>
-						<span>Click to create a dedicated Cluster instead</span>
+						<span>Click to create a dedicated Cluster instead.</span>
 					</div>
-					<Link to="/clusters">Go to Cluster</Link>
+					<Link to="/clusters">Create a Cluster</Link>
 				</section>
 
 				<div>
-					<h3 className={modalHeading}>Name</h3>
+					<h3 className={modalHeading}>App Name</h3>
 					<p css={{ fontSize: 14, margin: '-8px 0 8px 0' }}>
 						App names are unique across appbase.io and should not contain spaces.
 					</p>
 					<Input
-						placeholder="Enter App Name"
+						placeholder="Enter a unique app name"
 						name="appName"
 						className={input}
 						onChange={this.handleChange}
@@ -188,25 +160,25 @@ class CreateAppModal extends Component {
 						<Radio value="free" className={pricebtn}>
 							{this.generateGrid({
 								type: 'Free',
-								price: '$0 per app/Month',
+								price: '$0 per month',
 								records: '10K records',
-								calls: '100k API',
+								calls: '100K API calls',
 							})}
 						</Radio>
 						<Radio value="bootstrap" className={pricebtn}>
 							{this.generateGrid({
 								type: 'Bootstrap',
-								price: '$19 per app/Month',
+								price: '$29 per month',
 								records: '100K records',
-								calls: '1MM API',
+								calls: '1M API calls',
 							})}
 						</Radio>
 						<Radio value="growth" className={pricebtn}>
 							{this.generateGrid({
 								type: 'Growth',
-								price: '$99 per app/Month',
-								records: '1MM records',
-								calls: '10MM API',
+								price: '$89 per month',
+								records: '1M records',
+								calls: '10M API calls',
 							})}
 						</Radio>
 					</RadioGroup>
@@ -228,23 +200,19 @@ class CreateAppModal extends Component {
 
 				<Row>
 					<Col span={14}>
-						<h3 className={modalHeading}>Elasticsearch version</h3>
+						<h3 className={modalHeading}>Pick Your Elasticsearch Version</h3>
 						<RadioGroup
 							value={elasticVersion}
 							name="elasticVersion"
 							onChange={this.handleChange}
 						>
-							<Radio className={radiobtn} value="2">
-								2
-							</Radio>
 							<Radio className={radiobtn} value="5">
 								5
 							</Radio>
+							<Radio className={radiobtn} value="6">
+								6
+							</Radio>
 						</RadioGroup>
-					</Col>
-					<Col span={10}>
-						<h3 className={modalHeading}>Category</h3>
-						{this.renderCategoryDropdown()}
 					</Col>
 				</Row>
 			</Modal>
