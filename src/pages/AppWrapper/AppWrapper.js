@@ -251,9 +251,9 @@ class AppWrapper extends Component {
 						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
-				<Layout>
-					<AppHeader />
-					<section style={{ minHeight: '100vh' }}>
+				<Layout css={{ paddingTop: 60, minHeight: '100vh' }}>
+					<AppHeader big={collapsed} />
+					<section>
 						<Switch>
 							<Route
 								exact

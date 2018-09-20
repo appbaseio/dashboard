@@ -39,7 +39,7 @@ class BrowserPage extends Component {
 			getPermission,
 		} = this.props;
 		updateCurrentApp(appName, appId);
-		getPermission(appId);
+		getPermission(appName);
 	}
 
 	render() {
