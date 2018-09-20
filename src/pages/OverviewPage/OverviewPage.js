@@ -14,9 +14,11 @@ const OverviewPage = ({ plan }) => {
 };
 
 OverviewPage.propTypes = {
-	plan: PropTypes.string.isRequired,
+	plan: PropTypes.string, // eslint-disable-line
 };
+
 const mapStateToProps = state => ({
 	plan: get(getAppPlanByName(state), 'plan'),
 });
+
 export default connect(mapStateToProps)(OverviewPage);

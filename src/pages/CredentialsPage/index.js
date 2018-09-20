@@ -47,8 +47,10 @@ class Credentials extends Component {
 	}
 
 	componentDidMount() {
-		const { appId, fetchPermissions } = this.props;
-		fetchPermissions(appId);
+		const { isPermissionsPresent } = this.props;
+		if (!isPermissionsPresent) {
+			this.refetchPermissions();
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -60,8 +62,8 @@ class Credentials extends Component {
 	}
 
 	refetchPermissions = () => {
-		const { appId, fetchPermissions } = this.props;
-		fetchPermissions(appId);
+		const { appName, fetchPermissions } = this.props;
+		fetchPermissions(appName);
 	};
 
 	handleCancel = () => {
@@ -71,8 +73,8 @@ class Credentials extends Component {
 	};
 
 	updatePermission = (request, username) => {
-		const { appId, handleEditPermission } = this.props;
-		handleEditPermission(appId, username, request).then(({ payload }) => {
+		const { appName, handleEditPermission } = this.props;
+		handleEditPermission(appName, username, request).then(({ payload }) => {
 			if (payload) {
 				this.setState(
 					{
@@ -101,8 +103,8 @@ class Credentials extends Component {
 	};
 
 	newPermission = (request) => {
-		const { appId, handleCreatePermission } = this.props;
-		handleCreatePermission(appId, request).then(({ payload }) => {
+		const { appName, handleCreatePermission } = this.props;
+		handleCreatePermission(appName, request).then(({ payload }) => {
 			if (payload) {
 				this.setState(
 					{
@@ -117,8 +119,8 @@ class Credentials extends Component {
 	};
 
 	deletePermission = (username) => {
-		const { appId, handleDeletePermission } = this.props;
-		handleDeletePermission(appId, username).then(({ payload }) => {
+		const { appName, handleDeletePermission } = this.props;
+		handleDeletePermission(appName, username).then(({ payload }) => {
 			if (payload) {
 				this.refetchPermissions();
 			}
@@ -241,6 +243,7 @@ Credentials.propTypes = {
 	handleDeletePermission: func.isRequired,
 	handleEditPermission: func.isRequired,
 	isOwner: bool.isRequired,
+	isPermissionsPresent: bool.isRequired,
 	isLoading: bool,
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
@@ -248,10 +251,12 @@ Credentials.propTypes = {
 const mapStateToProps = (state) => {
 	const appOwner = get(getAppInfoByName(state), 'owner');
 	const userEmail = get(state, 'user.data.email');
+	const appPermissions = getAppPermissionsByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
-		permissions: get(getAppPermissionsByName(state), 'results', []),
+		isPermissionsPresent: !!appPermissions,
+		permissions: get(appPermissions, 'results', []),
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),
@@ -265,10 +270,10 @@ const mapStateToProps = (state) => {
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	fetchPermissions: appId => dispatch(getPermission(appId)),
-	handleCreatePermission: (appId, payload) => dispatch(createPermission(appId, payload)),
-	handleDeletePermission: (appId, username) => dispatch(deletePermission(appId, username)),
-	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),
+	fetchPermissions: appName => dispatch(getPermission(appName)),
+	handleCreatePermission: (appName, payload) => dispatch(createPermission(appName, payload)),
+	handleDeletePermission: (appName, username) => dispatch(deletePermission(appName, username)),
+	handleEditPermission: (appName, username, payload) => dispatch(updatePermission(appName, username, payload)),
 	handleDeleteApp: appId => dispatch(deleteApp(appId)),
 });
 

@@ -6,6 +6,9 @@ export default function appsReducer(state: Object = {}, action: Object): ?Object
 		case APPS.LOAD: {
 			return action.payload;
 		}
+		case APPS.APPEND: {
+			return { ...state, ...action.payload };
+		}
 		default:
 			return state;
 	}

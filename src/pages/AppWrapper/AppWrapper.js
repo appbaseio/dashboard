@@ -20,6 +20,10 @@ const AnalyticsPage = Loadable({
 	loader: () => import('../AnalyticsPage'),
 	loading: Loader,
 });
+const GeoDistributionPage = Loadable({
+	loader: () => import('../GeoDistributionPage'),
+	loading: Loader,
+});
 
 const BillingPage = Loadable({
 	loader: () => import('../BillingPage'),
@@ -104,6 +108,7 @@ const routes = {
 			{ label: 'Popular Results', link: 'popular-results' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Geo Distribution', link: 'geo-distribution' },
 		],
 	},
 	Security: {
@@ -127,13 +132,15 @@ class AppWrapper extends Component {
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
+		const { currentApp } = props;
+
 		if (appName && appName !== state.appName) {
 			return { appName };
 		}
 
-		if (!appName && !state.appName) {
-			// TODO: get last known appName from redux-persist
-			return { appName: 'marketplacev6' };
+		if (!appName && !state.appName && currentApp) {
+			// gets last used appName from redux-persist
+			return { appName: currentApp };
 		}
 		return null;
 	}
@@ -224,7 +231,7 @@ class AppWrapper extends Component {
 									<SubMenu key={route} title={Title}>
 										{routes[route].menu.map(item => (
 											<Menu.Item key={item.label}>
-												<Link replace to={item.link}>
+												<Link replace to={`/app/${appName}/${item.link}`}>
 													{item.label}
 												</Link>
 											</Menu.Item>
@@ -288,6 +295,13 @@ class AppWrapper extends Component {
 								path="/app/:appName/popular-results"
 								component={props => (
 									<AppPageContainer {...props} component={PopularResults} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/geo-distribution"
+								component={props => (
+									<AppPageContainer {...props} component={GeoDistributionPage} />
 								)}
 							/>
 							<Route
