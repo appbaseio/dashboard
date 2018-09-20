@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Loader from '../../batteries/components/shared/Loader';
 import Container from '../../components/Container';
 import { getSharedApp, createAppShare, updatePermission } from '../../batteries/modules/actions';
-import ButtonBtr from '../../batteries/components/shared/Button/Primary';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
@@ -115,7 +114,13 @@ class ShareSettingsView extends React.Component {
 					<UpgradePlanBanner {...bannerConfig} />
 				) : (
 					<React.Fragment>
-						<Card extra={<ButtonBtr onClick={this.handleShare}>Share</ButtonBtr>}>
+						<Card
+							extra={(
+<Button onClick={this.handleShare} size="large" type="primary">
+									Share
+</Button>
+)}
+						>
 							<Table
 								dataSource={sharedUsers.map(user => ({
 									settingInfo: user,
