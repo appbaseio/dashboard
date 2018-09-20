@@ -24,6 +24,10 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../GeoDistributionPage'),
 	loading: Loader,
 });
+const SearchPerformance = Loadable({
+	loader: () => import('../SearchPerformance'),
+	loading: Loader,
+});
 
 const BillingPage = Loadable({
 	loader: () => import('../BillingPage'),
@@ -109,6 +113,7 @@ const routes = {
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Request Logs', link: 'request-logs' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
+			{ label: 'Search Performance', link: 'search-performance' },
 		],
 	},
 	Security: {
@@ -302,6 +307,13 @@ class AppWrapper extends Component {
 								path="/app/:appName/geo-distribution"
 								component={props => (
 									<AppPageContainer {...props} component={GeoDistributionPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/search-performance"
+								component={props => (
+									<AppPageContainer {...props} component={SearchPerformance} />
 								)}
 							/>
 							<Route

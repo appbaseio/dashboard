@@ -3,11 +3,14 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Container from '../../components/Container';
 import NoResultSearch from '../../batteries/components/analytics/components/NoResultsSearch';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const NoResultSearchWrapper = ({ appName, plan }) => (
-	<NoResultSearch appName={appName} plan={plan} />
+	<Container>
+		<NoResultSearch appName={appName} plan={plan} />
+	</Container>
 );
 
 NoResultSearchWrapper.propTypes = {
