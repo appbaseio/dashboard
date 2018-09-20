@@ -56,6 +56,66 @@ const statsText = css`
 	font-weight: 300;
 `;
 
+const cardActions = css`
+	position: relative;
+	overflow: hidden;
+	padding: 25px auto;
+	.card-actions {
+		width: calc(100% - 20px);
+		position: absolute;
+		bottom: -50%;
+		background: #fafafa;
+		border: 1px solid #e8e8e8;
+		z-index: -1;
+		opacity: 0;
+		transition: all ease 0.2s;
+	}
+	&:hover {
+		.card-actions {
+			bottom: 20px;
+			z-index: 2;
+			opacity: 1;
+		}
+	}
+`;
+
+const columnSeparator = css`
+	text-align: center;
+	font-size: 12px;
+	text-transform: capitalize;
+	border-right: 1px solid #e8e8e8;
+	cursor: pointer;
+	padding: 10px;
+	transition: all ease 0.2s;
+	&:hover {
+		background: #ececec;
+		color: #1890ff;
+	}
+`;
+
+const deleteButton = css`
+	${columnSeparator};
+	color: tomato;
+	border: 0;
+	&:hover {
+		color: red;
+	}
+`;
+
+const actionIcon = css`
+	margin-right: 5px;
+`;
+
 export {
- statsText, headingText, modalHeading, radiobtn, input, pricebtn, clusterInfo,
+	statsText,
+	headingText,
+	modalHeading,
+	radiobtn,
+	input,
+	pricebtn,
+	clusterInfo,
+	columnSeparator,
+	actionIcon,
+	deleteButton,
+	cardActions,
 };

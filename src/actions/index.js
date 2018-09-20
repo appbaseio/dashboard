@@ -1,5 +1,7 @@
 // @flow
-import { USER, APPS, CREATE_APP } from '../constants';
+import {
+ USER, APPS, DELETE_APP, CREATE_APP,
+} from '../constants';
 import { createAction } from '../batteries/modules/actions/utils';
 
 export function loadUser(): Object {
@@ -42,19 +44,35 @@ export function setAppsOwnersError(error: Object): Object {
 	return createAction(APPS.LOAD_OWNERS_FAIL, null, error, null);
 }
 
-export function createApp(options:Object):Object {
+export function createApp(options: Object): Object {
 	return createAction(CREATE_APP.LOAD, options, null, null);
 }
 
-export function setCreateApp(data:Object):Object {
+export function setCreateApp(data: Object): Object {
 	return createAction(CREATE_APP.LOAD_SUCCESS, data, null, null);
 }
 
-export function resetCreatedApp():Object {
+export function resetCreatedApp(): Object {
 	return createAction(CREATE_APP.RESET, null, null, null);
 }
 
-export function createAppFail(error:Object):Object {
+export function createAppFail(error: Object): Object {
 	const e = JSON.parse(error.message);
 	return createAction(CREATE_APP.LOAD_FAIL, null, e, null);
+}
+
+export function removeAppMetrics(app: String): Object {
+	return createAction(APPS.REMOVE_APP_METRICS, app, null, null);
+}
+
+export function removeAppData(options: Object): Object {
+	return createAction(DELETE_APP.LOAD, options, null, null);
+}
+
+export function removeAppFromList(app: String): Object {
+	return createAction(APPS.REMOVE_APP, app, null, null);
+}
+
+export function removeAppOwner(app: String): Object {
+	return createAction(APPS.REMOVE_APP_OWNER, app, null, null);
 }

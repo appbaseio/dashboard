@@ -57,3 +57,16 @@ export async function getCreateApp(options) {
 	const { body, message } = data;
 	return { ...body, message };
 }
+
+export async function deleteApp(appId) {
+	const response = await fetch(`${ACC_API}/app/${appId}`, {
+		credentials: 'include',
+		method: 'DELETE',
+	});
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data);
+	}
+
+	return data.message;
+}

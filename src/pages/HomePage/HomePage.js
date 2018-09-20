@@ -12,7 +12,9 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import CreateAppModal from './CreateAppModal';
 import UsageRenderer from './UsageRenderer';
+import ActionButtons from './ActionButtons';
 
+import { cardActions } from './styles';
 import { getAppsOwners as getOwners } from '../../actions';
 
 const link = css`
@@ -119,12 +121,16 @@ class HomePage extends Component {
 							);
 
 							return (
-								<Col key={name} span={8}>
+								<Col key={name} span={8} className={cardActions}>
 									<Link
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
 									>
-										<Card title={title} style={{ height: 174 }}>
+										<Card
+											title={title}
+											style={{ paddingBottom: '15px' }}
+											bodyStyle={{ paddingBottom: '40px' }}
+										>
 											{/* Free Plan is taken as default */}
 											<Skeleton
 												title={false}
@@ -143,6 +149,13 @@ class HomePage extends Component {
 											</Skeleton>
 										</Card>
 									</Link>
+									{data && data[apps[name]] ? (
+										<ActionButtons
+											appName={name}
+											appId={apps[name]}
+											shared={owners[name] && user !== owners[name]}
+										/>
+									) : null}
 								</Col>
 							);
 						})}

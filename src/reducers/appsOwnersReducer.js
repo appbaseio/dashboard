@@ -38,6 +38,15 @@ export default function appsOwnersReducer(
 				error: action.error,
 			};
 		}
+		case APPS.REMOVE_APP_OWNER: {
+			const appOwners = state.data;
+			delete appOwners[action.payload];
+			return {
+				isFetching: false,
+				data: appOwners,
+				error: null,
+			};
+		}
 		default:
 			return state;
 	}
