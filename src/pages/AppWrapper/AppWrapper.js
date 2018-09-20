@@ -132,13 +132,15 @@ class AppWrapper extends Component {
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
+		const { currentApp } = props;
+
 		if (appName && appName !== state.appName) {
 			return { appName };
 		}
 
-		if (!appName && !state.appName) {
-			// TODO: get last known appName from redux-persist
-			return { appName: 'marketplacev6' };
+		if (!appName && !state.appName && currentApp) {
+			// gets last used appName from redux-persist
+			return { appName: currentApp };
 		}
 		return null;
 	}

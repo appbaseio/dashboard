@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { injectGlobal } from 'emotion';
 import { Layout } from 'antd';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import configureStore from './store';
 import Dashboard from './Dashboard';
@@ -31,13 +32,15 @@ p {
 `;
 
 const { Content } = Layout;
-const store = configureStore();
+const { store, persistor } = configureStore();
 
 const App = () => (
 	<Content>
-		<Provider store={store}>
-			<Dashboard />
-		</Provider>
+		<PersistGate loading={null} persistor={persistor}>
+			<Provider store={store}>
+				<Dashboard />
+			</Provider>
+		</PersistGate>
 	</Content>
 );
 
