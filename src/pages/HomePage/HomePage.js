@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Card, Skeleton, Tooltip, Dropdown, Menu,
+ Row, Col, Icon, Button, Tooltip, Dropdown, Menu,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import CreateAppModal from './CreateAppModal';
-import UsageRenderer from './UsageRenderer';
+import AppCard from '../../components/AppCard';
 
 import { getAppsOwners as getOwners } from '../../actions';
 
@@ -67,17 +67,18 @@ class HomePage extends Component {
 		);
 	};
 
-	renderApps = () => {
-		const { apps } = this.props;
+	getSortedApps = () => {
+		const {
+			apps,
+			appsMetrics: { data },
+		} = this.props;
 		const { sortBy } = this.state;
 
 		switch (sortBy) {
 			case 'time':
-				return Object.entries(apps)
-					.sort((prevApp, nextApp) => nextApp[1] - prevApp[1])
-					.map(app => app[0]);
+				return Object.keys(data).reverse();
 			default:
-				return Object.entries(apps).map(app => app[0]);
+				return Object.keys(apps);
 		}
 	};
 
@@ -91,14 +92,13 @@ class HomePage extends Component {
 		const { showModal } = this.state;
 		const {
 			user,
-			apps,
 			appsMetrics: { data },
 			history,
 			appsOwners,
 		} = this.props;
 
 		const owners = appsOwners.data || {};
-		const sortedValues = this.renderApps();
+		const sortedApps = this.getSortedApps();
 
 		return (
 			<Fragment>
@@ -145,11 +145,28 @@ class HomePage extends Component {
 
 				<Container>
 					<Row gutter={20}>
-						<Row type="flex" justify="space-between" gutter={16}>
-							<h2>All Apps</h2>
+						<Row
+							type="flex"
+							justify="space-between"
+							gutter={16}
+							style={{
+								height: 60,
+								alignItems: 'center',
+								padding: '0px 18px',
+							}}
+						>
+							<h2
+								style={{
+									paddingLeft: 0,
+									lineHeight: '21px',
+									margin: 0,
+								}}
+							>
+								All Apps
+							</h2>
 							{this.renderSortOptions()}
 						</Row>
-						{sortedValues.map((name) => {
+						{sortedApps.map((name) => {
 							const title = (
 								<div
 									css={{
@@ -174,24 +191,12 @@ class HomePage extends Component {
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
 									>
-										<Card title={title} style={{ height: 174 }}>
-											{/* Free Plan is taken as default */}
-											<Skeleton
-												title={false}
-												paragraph={{ rows: 2 }}
-												loading={!(data && data[apps[name]])}
-											>
-												{data && data[apps[name]] ? (
-													<UsageRenderer
-														plan="free"
-														computedMetrics={{
-															calls: data[apps[name]].api_calls,
-															records: data[apps[name]].records,
-														}}
-													/>
-												) : null}
-											</Skeleton>
-										</Card>
+										<AppCard
+											key={name}
+											title={title}
+											data={data}
+											appName={name}
+										/>
 									</Link>
 								</Col>
 							);
@@ -209,6 +214,7 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
+	user: PropTypes.string.isRequired,
 	apps: PropTypes.object.isRequired,
 	appsMetrics: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
