@@ -40,22 +40,6 @@ const clusterInfo = css`
 	border: solid 1px rgba(24, 144, 255);
 `;
 
-const headingText = css`
-	margin-bottom: 0;
-	margin-top: 0.5em;
-	justify-content: center;
-	font-weight: 700;
-	text-transform: uppercase;
-	font-size: 13px;
-	color: #999;
-	letter-spacing: 0.012rem;
-`;
-
-const statsText = css`
-	margin-bottom: 0;
-	font-weight: 300;
-`;
-
 const cardActions = css`
 	position: relative;
 	overflow: hidden;
@@ -82,6 +66,7 @@ const cardActions = css`
 const columnSeparator = css`
 	text-align: center;
 	font-size: 12px;
+	flex-grow: 1;
 	text-transform: capitalize;
 	border-right: 1px solid #e8e8e8;
 	cursor: pointer;
@@ -107,8 +92,6 @@ const actionIcon = css`
 `;
 
 export {
-	statsText,
-	headingText,
 	modalHeading,
 	radiobtn,
 	input,

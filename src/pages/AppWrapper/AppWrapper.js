@@ -24,6 +24,10 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../GeoDistributionPage'),
 	loading: Loader,
 });
+const SearchPerformance = Loadable({
+	loader: () => import('../SearchPerformance'),
+	loading: Loader,
+});
 
 const BillingPage = Loadable({
 	loader: () => import('../BillingPage'),
@@ -109,6 +113,7 @@ const routes = {
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Request Logs', link: 'request-logs' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
+			{ label: 'Search Performance', link: 'search-performance' },
 		],
 	},
 	Security: {
@@ -132,13 +137,15 @@ class AppWrapper extends Component {
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
+		const { currentApp } = props;
+
 		if (appName && appName !== state.appName) {
 			return { appName };
 		}
 
-		if (!appName && !state.appName) {
-			// TODO: get last known appName from redux-persist
-			return { appName: 'marketplacev6' };
+		if (!appName && !state.appName && currentApp) {
+			// gets last used appName from redux-persist
+			return { appName: currentApp };
 		}
 		return null;
 	}
@@ -249,9 +256,9 @@ class AppWrapper extends Component {
 						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
-				<Layout>
-					<AppHeader />
-					<section style={{ minHeight: '100vh' }}>
+				<Layout css={{ paddingTop: 60, minHeight: '100vh' }}>
+					<AppHeader big={collapsed} />
+					<section>
 						<Switch>
 							<Route
 								exact
@@ -300,6 +307,13 @@ class AppWrapper extends Component {
 								path="/app/:appName/geo-distribution"
 								component={props => (
 									<AppPageContainer {...props} component={GeoDistributionPage} />
+								)}
+							/>
+							<Route
+								exact
+								path="/app/:appName/search-performance"
+								component={props => (
+									<AppPageContainer {...props} component={SearchPerformance} />
 								)}
 							/>
 							<Route
