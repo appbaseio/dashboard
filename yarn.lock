@@ -4166,12 +4166,6 @@ emotion-theming@^9.0.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-emotion-theming@^9.2.9:
-  version "9.2.9"
-  resolved "https://registry.yarnpkg.com/emotion-theming/-/emotion-theming-9.2.9.tgz#2bfd77fdd47d3f5e60d59d97dd4cea4622657220"
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
-
 emotion@^9.0.0, emotion@^9.1.2:
   version "9.2.8"
   resolved "https://registry.yarnpkg.com/emotion/-/emotion-9.2.8.tgz#b89e754be1a109f4e47ff0031928f94e40d7984a"
@@ -8795,6 +8789,10 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
   dependencies:
     balanced-match "^0.4.2"
+
+redux-persist@^5.10.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
 
 redux-saga@^0.16.0:
   version "0.16.0"

@@ -36,7 +36,7 @@ class SandboxPage extends Component {
 			getPermission,
 		} = this.props;
 		updateCurrentApp(appName, appId);
-		getPermission(appId);
+		getPermission(appName);
 	}
 
 	render() {
@@ -47,7 +47,25 @@ class SandboxPage extends Component {
 		}
 
 		return (
-			<SearchSandbox appId={appId} appName={appName} credentials={credentials} isDashboard>
+			<SearchSandbox
+				appId={appId}
+				appName={appName}
+				credentials={credentials}
+				isDashboard
+				customProps={{
+					ReactiveList: {
+						onData: res => (
+							<div style={{ background: 'aqua' }}>{JSON.stringify(res)}</div>
+						),
+						style: { background: 'red' },
+					},
+					DataSearch: {
+						renderSuggestions: res => (
+							<div style={{ background: 'yellow' }}>{JSON.stringify(res)}</div>
+						),
+					},
+				}}
+			>
 				<Editor />
 			</SearchSandbox>
 		);

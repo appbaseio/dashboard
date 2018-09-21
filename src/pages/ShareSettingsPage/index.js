@@ -3,9 +3,9 @@ import { Table, Card, Button } from 'antd';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
+import Loader from '../../batteries/components/shared/Loader';
 import Container from '../../components/Container';
 import { getSharedApp, createAppShare, updatePermission } from '../../batteries/modules/actions';
-import ButtonBtr from '../../batteries/components/shared/Button/Primary';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
@@ -59,7 +59,7 @@ class ShareSettingsView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const { success } = this.props;
-		if (success !== prevProps.success) {
+		if (success && success !== prevProps.success) {
 			this.handleCancel();
 			this.getAppShare();
 		}
@@ -90,8 +90,9 @@ class ShareSettingsView extends React.Component {
 		delete requestPayload.operationType;
 		if (selectedSettings && selectedSettings.username) {
 			handleEditPermission(appId, selectedSettings.username, requestPayload);
+		} else {
+			shareApp(appId, requestPayload);
 		}
-		shareApp(appId, requestPayload);
 	};
 
 	handleEdit = (setting) => {
@@ -102,15 +103,24 @@ class ShareSettingsView extends React.Component {
 	};
 
 	render() {
-		const { isPaidUser, sharedUsers } = this.props;
+		const { isPaidUser, sharedUsers, isLoading } = this.props;
 		const { showForm, selectedSettings } = this.state;
+		if (isLoading) {
+			return <Loader />;
+		}
 		return (
 			<Container>
 				{!isPaidUser ? (
 					<UpgradePlanBanner {...bannerConfig} />
 				) : (
 					<React.Fragment>
-						<Card extra={<ButtonBtr onClick={this.handleShare}>Share</ButtonBtr>}>
+						<Card
+							extra={(
+<Button onClick={this.handleShare} size="large" type="primary">
+									Share
+</Button>
+)}
+						>
 							<Table
 								dataSource={sharedUsers.map(user => ({
 									settingInfo: user,
@@ -148,6 +158,7 @@ class ShareSettingsView extends React.Component {
 ShareSettingsView.propTypes = {
 	shareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
+	isLoading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -157,11 +168,11 @@ const mapStateToProps = (state) => {
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
-		isLoading:
-			get(state, '$getAppPermissions.isFetching') || get(state, '$getAppInfo.isFetching'),
+		isLoading: get(state, '$getSharedApp.isFetching'),
 		errors: [get(state, '$getSharedApp.error')],
 		sharedUsers: get(state, '$getSharedApp.results', []),
-		success: get(state, '$createAppShare.success'),
+		success:
+			get(state, '$createAppShare.success') || get(state, '$updateAppPermission.success'),
 	};
 };
 const mapDispatchToProps = dispatch => ({

@@ -6,7 +6,6 @@ import { css } from 'react-emotion';
 import { object, func } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Flex from '../../batteries/components/shared/Flex';
-import { Types } from './utils';
 
 const EyeIcon = require('react-feather/dist/icons/eye').default;
 const EyeOffIcon = require('react-feather/dist/icons/eye-off').default;
@@ -56,18 +55,10 @@ class Permission extends React.Component {
 
 	handleEditCred = () => {
 		const { permissionInfo, showForm } = this.props;
-		let operationType = '';
-		Object.keys(Types).every((k) => {
-			const type = Types[k];
-			if (type.read === permissionInfo.read && type.write === permissionInfo.write) {
-				operationType = type;
-				return false;
-			}
-			return true;
-		});
 		const formPayload = {
 			description: permissionInfo.description,
-			operationType,
+			read: permissionInfo.read,
+			write: permissionInfo.write,
 			acl: permissionInfo.acl,
 			referers: permissionInfo.referers,
 			sources: permissionInfo.sources,

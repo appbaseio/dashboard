@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Button, Icon } from 'antd';
 import { css } from 'emotion';
 import { connect } from 'react-redux';
 import { Circle } from 'rc-progress';
@@ -8,19 +8,13 @@ import get from 'lodash/get';
 import Flex from '../../batteries/components/shared/Flex';
 import { getAppMetricsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import { compressNumber, planLimits, getAppCount } from '../../utils/helper';
-import UpgradeButton from '../../batteries/components/shared/Button/Primary';
+// import UpgradeButton from '../../batteries/components/shared/Button/Primary';
 
 const percentCls = css`
 	top: 40px;
 	position: absolute;
 	width: 100%;
 	text-align: center;
-`;
-const upgradeBtnDanger = css`
-	background-color: red;
-	color: #fff;
-	margin-top: 30px;
-	width: 100%;
 `;
 const upgradeBtn = css`
 	margin-top: 30px;
@@ -39,7 +33,7 @@ const shouldShowUpgrade = (plan, appCount) => {
 	}
 	return { show: true };
 };
-const UsageDetails = ({ plan, computedMetrics }) => {
+const UsageDetails = ({ plan, computedMetrics, appName }) => {
 	const appCount = getAppCount(computedMetrics, plan);
 	const showUpgrade = shouldShowUpgrade(plan, appCount);
 	return (
@@ -92,13 +86,16 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 			</Flex>
 			<Flex justifyContent="center" alignItems="center">
 				{showUpgrade.show && (
-					<UpgradeButton
-						css={showUpgrade.danger ? upgradeBtnDanger : upgradeBtn}
-						href="/billing"
+					<Button
+						css={upgradeBtn}
+						href="billing"
 						target="_blank"
+						size="large"
+						type={showUpgrade.danger ? 'danger' : 'primary'}
 					>
-						Upgrade Now
-					</UpgradeButton>
+						<Icon type="to-top" />
+						Upgrade your Plan
+					</Button>
 				)}
 			</Flex>
 		</Card>
@@ -109,10 +106,12 @@ UsageDetails.defaultProps = {
 };
 UsageDetails.propTypes = {
 	plan: PropTypes.string.isRequired,
+	appName: PropTypes.string.isRequired,
 	computedMetrics: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
+	appName: get(state, '$getCurrentApp.name'),
 	plan: get(getAppPlanByName(state), 'plan'),
 	computedMetrics: get(getAppMetricsByName(state), 'computedMetrics'),
 });

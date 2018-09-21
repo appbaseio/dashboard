@@ -11,7 +11,9 @@ const header = css`
 	overflow: hidden;
 	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
 	z-index: 999;
-	position: relative;
+	position: fixed;
+	top: 0px;
+	width: calc(100% - 260px);
 
 	ul {
 		line-height: 56px;

@@ -36,7 +36,7 @@ class HelpButton extends React.Component {
 		const { user } = this.props;
 		if (issue) {
 			fetch(
-				'https://api.hsforms.com/submissions/v3/integration/submit/4709730/e2465ba7-75c6-4e40-b4be-0c8dfe553bbb',
+				'https://api.hsforms.com/submissions/v3/integration/submit/4709730/389ccf8c-b434-4060-970c-0e6e8defc9c7',
 				{
 					method: 'POST',
 					headers: {
