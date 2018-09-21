@@ -4,7 +4,7 @@ import { Check } from 'react-feather';
 import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
 import {
-	Tooltip, Card, Modal, Button,
+	Tooltip, Modal, Button,
 } from 'antd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -13,11 +13,9 @@ import PlusMinus from './PlusMinus';
 import NewPricingCard from './NewPricingCard';
 import theme from './theme';
 import { media, hexToRgb } from '../../utils/media';
-import Grid from '../CreateCredentials/Grid';
 import { planBasePrice, displayErrors } from '../../utils/helper';
 import { createAppSubscription, deleteAppSubscription } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
-import Flex from '../../batteries/components/shared/Flex';
 
 const CheckList = ({ list }) => list.map(item => (
 		<li key={item}>
@@ -350,12 +348,9 @@ class PricingTable extends Component {
 			showConfirmBox,
 		} = this.state;
 		const {
-			plan,
 			isFreePlan,
 			isBootstrapPlan,
 			isGrowthPlan,
-			planValidity,
-			isOnTrial,
 			isSubmitting,
 		} = this.props;
 		return (
@@ -380,40 +375,6 @@ class PricingTable extends Component {
 				>
 					<p>Are you sure to unsubscribe current subscription?</p>
 				</Modal>
-				<Card css="margin-bottom: 20px">
-					<Flex flexDirection="column">
-						<Flex alignItems="center">
-							<Grid
-								style={{
-								width: '400px',
-								}}
-								gridRatio={0.25}
-								label="Plan"
-								component={plan}
-							/>
-						</Flex>
-						<Flex alignItems="center">
-							<Grid
-								style={{
-								width: '400px',
-								}}
-								gridRatio={0.25}
-								label="Valid till"
-								component={new Date(planValidity + (new Date()).getTime()).toDateString()}
-							/>
-						</Flex>
-						<Flex alignItems="center">
-							<Grid
-								style={{
-								width: '400px',
-								}}
-								gridRatio={0.25}
-								label="Trial peroid"
-								component={isOnTrial ? 'Yes' : 'Expired'}
-							/>
-						</Flex>
-					</Flex>
-				</Card>
 				<Table className={hideOnLarge}>
 					<thead>
 						<tr colSpan="1">
@@ -931,31 +892,25 @@ class PricingTable extends Component {
 }
 
 PricingTable.propTypes = {
-	plan: PropTypes.string.isRequired,
 	createSubscription: PropTypes.func.isRequired,
 	deleteSubscription: PropTypes.func.isRequired,
 	isSubmitting: PropTypes.bool.isRequired,
 	isFreePlan: PropTypes.bool.isRequired,
 	isBootstrapPlan: PropTypes.bool.isRequired,
 	isGrowthPlan: PropTypes.bool.isRequired,
-	planValidity: PropTypes.number.isRequired,
-	isOnTrial: PropTypes.bool.isRequired,
 	errors: PropTypes.array.isRequired,
 };
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
 	return {
-		plan: get(appPlan, 'tier'),
-		planValidity: get(appPlan, 'tier_validity'),
 		isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
-		isOnTrial: get(appPlan, 'trial'),
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
 		errors: [
 			get(state, '$deleteAppSubscription.error'),
 		],
-	}
+	};
 };
 
 const mapDispatchToProps = dispatch => ({

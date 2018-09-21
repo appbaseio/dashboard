@@ -2,11 +2,14 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Container from '../../components/Container';
 import PopularResults from '../../batteries/components/analytics/components/PopularResults';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const PopularResultsWrapper = ({ appName, plan }) => (
-	<PopularResults appName={appName} plan={plan} />
+	<Container>
+		<PopularResults appName={appName} plan={plan} />
+	</Container>
 );
 
 PopularResultsWrapper.propTypes = {

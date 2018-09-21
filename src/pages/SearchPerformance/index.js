@@ -1,9 +1,9 @@
 import React from 'react';
 import Container from '../../components/Container';
-import GeoDistributionPage from '../../batteries/components/analytics/components/GeoDistribution';
+import SearchPerformance from '../../batteries/components/analytics/components/SearchLatency';
 
 export default () => (
 	<Container>
-		<GeoDistributionPage />
+		<SearchPerformance />
 	</Container>
 );

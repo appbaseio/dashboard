@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
 import {
- Card, Table, Popconfirm, Tooltip,
+ Card, Table, Popconfirm, Tooltip, Button,
 } from 'antd';
 import { connect } from 'react-redux';
 import {
@@ -9,8 +9,11 @@ import {
 } from 'prop-types';
 import CreateCredentials from '../../components/CreateCredentials';
 import Container from '../../components/Container';
-import { getAppInfoByName, getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
-import Button from '../../batteries/components/shared/Button/Primary';
+import {
+	getAppInfoByName,
+	getAppPermissionsByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 import Permission from './Permission';
 import { displayErrors } from '../../utils/helper';
 import {
@@ -201,6 +204,8 @@ class Credentials extends Component {
 							margin: '10px 0px',
 						}}
 						onClick={() => this.showForm()}
+						size="large"
+						type="primary"
 					>
 						New Credentials
 					</Button>
@@ -220,7 +225,8 @@ class Credentials extends Component {
 								style={{
 									margin: '10px 10px',
 								}}
-								danger
+								type="danger"
+								size="large"
 							>
 								Delete App
 							</Button>

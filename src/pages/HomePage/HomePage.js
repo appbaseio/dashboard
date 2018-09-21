@@ -111,9 +111,8 @@ class HomePage extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Our analytics feature can do much more! Discover what you
-										could do by enabling our metrics on Clicks and Conversions,
-										Filters, Results.
+										This is your apps manager view. Here, you can create a new
+										app and manage your existing apps.
 									</p>
 								</Col>
 							</Row>
@@ -121,12 +120,22 @@ class HomePage extends Component {
 							<Link to="/tutorial" className={link}>
 								<Icon type="book" /> Interactive Tutorial
 							</Link>
-							<Link to="/" className={link}>
+							<a
+								href="https://docs.appbase.io/javascript/quickstart.html"
+								className={link}
+								target="_blank"
+								rel="noopener noreferer"
+							>
 								<Icon type="rocket" /> JS Quickstart
-							</Link>
-							<Link to="/" className={link}>
+							</a>
+							<a
+								href="https://docs.appbase.io/rest-quickstart.html"
+								className={link}
+								target="_blank"
+								rel="noopener noreferer"
+							>
 								<Icon type="code-o" /> REST Quickstart
-							</Link>
+							</a>
 						</Col>
 						<Col
 							md={6}
