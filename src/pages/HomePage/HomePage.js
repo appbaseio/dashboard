@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Card, Skeleton, Tooltip,
+ Row, Col, Icon, Button, Tooltip, Dropdown, Menu,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import CreateAppModal from './CreateAppModal';
-import UsageRenderer from './UsageRenderer';
+import AppCard from '../../components/AppCard';
 
 import { getAppsOwners as getOwners } from '../../actions';
 
@@ -25,9 +25,14 @@ const link = css`
 `;
 
 class HomePage extends Component {
-	state = {
-		showModal: false,
-	};
+	constructor() {
+		super();
+		this.sortOptions = [{ label: 'Name', key: 'name' }, { label: 'Most Recent', key: 'time' }];
+		this.state = {
+			showModal: false, // modal for create new app
+			sortBy: 'name',
+		};
+	}
 
 	componentDidMount() {
 		const { appsOwners, getAppsOwners } = this.props;
@@ -35,6 +40,47 @@ class HomePage extends Component {
 			getAppsOwners();
 		}
 	}
+
+	handleSortOption = (e) => {
+		const { key } = e;
+		this.setState({
+			sortBy: key,
+		});
+	};
+
+	renderSortOptions = () => {
+		const { sortBy } = this.state;
+		const selectedOption = this.sortOptions.find(option => option.key === sortBy);
+		const menu = (
+			<Menu onClick={this.handleSortOption}>
+				{this.sortOptions.map(option => (
+					<Menu.Item key={option.key}>{option.label}</Menu.Item>
+				))}
+			</Menu>
+		);
+		return (
+			<Dropdown overlay={menu} trigger={['click']}>
+				<Button>
+					Sort by {selectedOption.label} <Icon type="down" />
+				</Button>
+			</Dropdown>
+		);
+	};
+
+	getSortedApps = () => {
+		const {
+			apps,
+			appsMetrics: { data },
+		} = this.props;
+		const { sortBy } = this.state;
+
+		switch (sortBy) {
+			case 'time':
+				return Object.keys(data).reverse();
+			default:
+				return Object.keys(apps);
+		}
+	};
 
 	handleChange = () => {
 		this.setState(state => ({
@@ -46,13 +92,13 @@ class HomePage extends Component {
 		const { showModal } = this.state;
 		const {
 			user,
-			apps,
 			appsMetrics: { data },
 			history,
 			appsOwners,
 		} = this.props;
 
 		const owners = appsOwners.data || {};
+		const sortedApps = this.getSortedApps();
 
 		return (
 			<Fragment>
@@ -99,7 +145,28 @@ class HomePage extends Component {
 
 				<Container>
 					<Row gutter={20}>
-						{Object.keys(apps).map((name) => {
+						<Row
+							type="flex"
+							justify="space-between"
+							gutter={16}
+							style={{
+								height: 60,
+								alignItems: 'center',
+								padding: '0px 18px',
+							}}
+						>
+							<h2
+								style={{
+									paddingLeft: 0,
+									lineHeight: '21px',
+									margin: 0,
+								}}
+							>
+								All Apps
+							</h2>
+							{this.renderSortOptions()}
+						</Row>
+						{sortedApps.map((name) => {
 							const title = (
 								<div
 									css={{
@@ -124,24 +191,12 @@ class HomePage extends Component {
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
 									>
-										<Card title={title} style={{ height: 174 }}>
-											{/* Free Plan is taken as default */}
-											<Skeleton
-												title={false}
-												paragraph={{ rows: 2 }}
-												loading={!(data && data[apps[name]])}
-											>
-												{data && data[apps[name]] ? (
-													<UsageRenderer
-														plan="free"
-														computedMetrics={{
-															calls: data[apps[name]].api_calls,
-															records: data[apps[name]].records,
-														}}
-													/>
-												) : null}
-											</Skeleton>
-										</Card>
+										<AppCard
+											key={name}
+											title={title}
+											data={data}
+											appName={name}
+										/>
 									</Link>
 								</Col>
 							);
@@ -159,6 +214,7 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
+	user: PropTypes.string.isRequired,
 	apps: PropTypes.object.isRequired,
 	appsMetrics: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
