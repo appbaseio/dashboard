@@ -127,7 +127,7 @@ class CreateAppModal extends Component {
 							}}
 							theme="filled"
 						/>
-						<span>Click to create a dedicated Cluster instead.</span>
+						<span>Alternatively, you can also create a dedicated cluster.</span>
 					</div>
 					<Link to="/clusters">Create a Cluster</Link>
 				</section>
@@ -145,7 +145,9 @@ class CreateAppModal extends Component {
 						value={appName}
 					/>
 					{createdApp && createdApp.error ? (
-						<div css={{ color: 'tomato', marginTop: 8 }}>{createdApp.error.actual.message}</div>
+						<div css={{ color: 'tomato', marginTop: 8 }}>
+							{createdApp.error.actual.message}
+						</div>
 					) : null}
 				</div>
 
