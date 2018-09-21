@@ -57,3 +57,14 @@ export async function getCreateApp(options) {
 	const { body, message } = data;
 	return { ...body, message };
 }
+
+// returns the required param from the url
+export function getParam(name, url) {
+	/* eslint-disable */
+	if (!url) url = window.location.href;
+	const param = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+	const regexS = '[\\?&]' + param + '=([^&#]*)';
+	const regex = new RegExp(regexS);
+	const results = regex.exec(url);
+	return results == null ? null : results[1];
+}
