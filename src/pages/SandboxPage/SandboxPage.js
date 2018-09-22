@@ -52,19 +52,6 @@ class SandboxPage extends Component {
 				appName={appName}
 				credentials={credentials}
 				isDashboard
-				customProps={{
-					ReactiveList: {
-						onData: res => (
-							<div style={{ background: 'aqua' }}>{JSON.stringify(res)}</div>
-						),
-						style: { background: 'red' },
-					},
-					DataSearch: {
-						renderSuggestions: res => (
-							<div style={{ background: 'yellow' }}>{JSON.stringify(res)}</div>
-						),
-					},
-				}}
 			>
 				<Editor />
 			</SearchSandbox>

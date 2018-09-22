@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import HelpChat from '../HelpChat';
+import HelpChat from '../../components/HelpChat';
 
 const AUTH_ROUTES = ['/login', '/signup'];
 
