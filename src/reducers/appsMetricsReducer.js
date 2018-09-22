@@ -31,7 +31,7 @@ export default function appsMetricsReducer(
 				error: action.error,
 			};
 		}
-		case APPS.REMOVE_APP_METRICS: {
+		case APPS.DELETE_APP: {
 			const { data: allAppMetrics } = state;
 			delete allAppMetrics[action.payload];
 			return {

@@ -13,6 +13,8 @@ import { setCurrentApp } from '../../batteries/modules/actions';
 import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
+import { getParam } from '../../utils';
+
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -153,9 +155,10 @@ class AppWrapper extends Component {
 	componentDidMount() {
 		const { appName } = this.state;
 		const { history, match } = this.props;
+		const view = getParam('view') || '';
 
 		if (!match.params.appName && appName) {
-			history.push(`/app/${appName}/`);
+			history.push(`/app/${appName}/${view}`);
 		}
 	}
 
@@ -177,7 +180,11 @@ class AppWrapper extends Component {
 	getActiveMenu = () => {
 		let activeSubMenu = 'App Overview';
 		let activeMenuItem = 'App Overview';
-		const { route: pathname } = this.props.match.params; // eslint-disable-line
+		let { route: pathname } = this.props.match.params; // eslint-disable-line
+
+		if (!pathname) {
+			pathname = getParam('view') || '';
+		}
 
 		Object.keys(routes).some((route) => {
 			if (routes[route].menu) {
@@ -204,7 +211,7 @@ class AppWrapper extends Component {
 
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
-		const { collapsed, appName } = this.state;
+		const { collapsed, appName, view } = this.state;
 
 		return (
 			<Layout>

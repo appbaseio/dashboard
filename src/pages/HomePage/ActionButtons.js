@@ -25,8 +25,8 @@ class ActionButtons extends React.Component {
 		});
 	};
 
-	handleClone = (e) => {
-		const { appName, appId, permissions } = this.props;
+	handleClone = () => {
+		const { appName, permissions } = this.props;
 		const { username, password } = permissions.results[0];
 		const parameters = {
 			platform: 'appbase',
@@ -36,7 +36,6 @@ class ActionButtons extends React.Component {
 			},
 		};
 		window.open(`${IMPORTER_LINK}${JSON.stringify(parameters)}`, '_blank');
-		e.stopPropagation();
 	};
 
 	copyWriteKey = () => {
@@ -139,11 +138,11 @@ class ActionButtons extends React.Component {
 	}
 }
 
-HomePage.propTypes = {
-	shared: PropTypes.bool.isRequired,
+ActionButtons.propTypes = {
+	shared: PropTypes.bool,
 	appName: PropTypes.string.isRequired,
-	appId: PropTypes.number.isRequired,
-	permissions: PropTypes.object.isRequired,
+	appId: PropTypes.string.isRequired,
+	permissions: PropTypes.object,
 };
 
 export default ActionButtons;

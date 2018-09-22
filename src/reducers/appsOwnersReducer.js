@@ -38,7 +38,7 @@ export default function appsOwnersReducer(
 				error: action.error,
 			};
 		}
-		case APPS.REMOVE_APP_OWNER: {
+		case APPS.DELETE_APP: {
 			const appOwners = state.data;
 			delete appOwners[action.payload];
 			return {

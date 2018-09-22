@@ -1,6 +1,6 @@
 // @flow
 import {
- USER, APPS, DELETE_APP, CREATE_APP,
+ USER, APPS, CREATE_APP,
 } from '../constants';
 import { createAction } from '../batteries/modules/actions/utils';
 
@@ -61,18 +61,6 @@ export function createAppFail(error: Object): Object {
 	return createAction(CREATE_APP.LOAD_FAIL, null, e, null);
 }
 
-export function removeAppMetrics(app: String): Object {
-	return createAction(APPS.REMOVE_APP_METRICS, app, null, null);
-}
-
 export function removeAppData(options: Object): Object {
-	return createAction(DELETE_APP.LOAD, options, null, null);
-}
-
-export function removeAppFromList(app: String): Object {
-	return createAction(APPS.REMOVE_APP, app, null, null);
-}
-
-export function removeAppOwner(app: String): Object {
-	return createAction(APPS.REMOVE_APP_OWNER, app, null, null);
+	return createAction(APPS.DELETE_APP, options, null, null);
 }

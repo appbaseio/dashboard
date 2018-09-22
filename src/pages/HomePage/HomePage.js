@@ -248,7 +248,7 @@ HomePage.propTypes = {
 	history: PropTypes.object.isRequired,
 	appsOwners: PropTypes.object.isRequired,
 	getAppsOwners: PropTypes.func.isRequired,
-	permissions: PropTypes.object.isRequired,
+	permissions: PropTypes.object,
 	fetchPermissions: PropTypes.func.isRequired,
 };
 

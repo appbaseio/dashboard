@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
- Row, Col, Icon, Button, Modal, Input, Radio, Menu, Dropdown,
+ Row, Col, Icon, Modal, Input, Radio,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -89,9 +89,9 @@ class CreateAppModal extends Component {
 			<Col span={4}>{records}</Col>
 			<Col span={4}>{calls}</Col>
 			<Col>
-				<Link to="/billings">
+				<a href="https://appbase.io/pricing/" target="_blank" rel="noopener noreferrer">
 					<Icon type="info-circle" />
-				</Link>
+				</a>
 			</Col>
 		</Row>
 	);
