@@ -113,23 +113,15 @@ class HelpButton extends React.Component {
 			<Menu onClick={this.handleClick}>
 				<Menu.Item key="chat" style={{ padding: '10px auto' }}>
 					<h3 className={heading}>
-						Chat with Us{' '}
+						Ask us anything!{' '}
 						<span role="img" aria-label="Wave">
 							👋
 						</span>
 					</h3>
-					<p className={subHeading}>We reply to every message.</p>
+					<p className={subHeading}>We reply to every issue.</p>
 				</Menu.Item>
 				<Menu.Item key="support">
 					<h3 className={heading}>Get Support!</h3>
-				</Menu.Item>
-				<Menu.Item key="updates">
-					<h3 className={heading}>
-						New Updates{' '}
-						<span role="img" aria-label="Sparkle">
-							✨
-						</span>
-					</h3>
 				</Menu.Item>
 				<Menu.Item key="twitter">
 					<p className={subHeading}>@appbaseio - Twitter</p>
@@ -147,13 +139,13 @@ class HelpButton extends React.Component {
 				<Modal
 					visible={modal}
 					destroyOnClose
-					title="Chat with Us"
+					title="Ask us anything!"
 					onOk={this.handleSubmitIssue}
 					okText="Submit"
 					onCancel={this.handleCancel}
 				>
 					<Input
-						placeholder="Write your issue"
+						placeholder="What is the issue you're seeing?"
 						name="issue"
 						style={{ marginBottom: '10px' }}
 						required
@@ -161,7 +153,7 @@ class HelpButton extends React.Component {
 						value={issue}
 					/>
 					<TextArea
-						placeholder="Give Details"
+						placeholder="Describe details about the issue you are seeing..."
 						name="details"
 						onChange={this.handleChange}
 						value={details}
