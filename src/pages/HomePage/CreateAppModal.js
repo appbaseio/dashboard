@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
- Row, Col, Icon, Button, Modal, Input, Radio, Menu, Dropdown,
+ Row, Col, Icon, Modal, Input, Radio,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
