@@ -4,6 +4,7 @@ import { css } from 'react-emotion';
 import {
  Row, Col, Icon, Button, Tooltip, Dropdown, Menu,
 } from 'antd';
+import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -12,8 +13,11 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import CreateAppModal from './CreateAppModal';
 import AppCard from '../../components/AppCard';
+import ActionButtons from './ActionButtons';
 
+import { cardActions } from './styles';
 import { getAppsOwners as getOwners } from '../../actions';
+import { getUserPermissions } from '../../batteries/modules/actions';
 
 const link = css`
 	font-size: 16px;
@@ -35,9 +39,14 @@ class HomePage extends Component {
 	}
 
 	componentDidMount() {
-		const { appsOwners, getAppsOwners } = this.props;
+		const {
+ appsOwners, getAppsOwners, permissions, fetchPermissions,
+} = this.props;
 		if (!appsOwners.isFetching && !getAppsOwners.data) {
 			getAppsOwners();
+		}
+		if (!permissions) {
+			fetchPermissions();
 		}
 	}
 
@@ -93,8 +102,10 @@ class HomePage extends Component {
 		const {
 			user,
 			appsMetrics: { data },
+			apps,
 			history,
 			appsOwners,
+			permissions,
 		} = this.props;
 
 		const owners = appsOwners.data || {};
@@ -195,7 +206,7 @@ class HomePage extends Component {
 							);
 
 							return (
-								<Col key={name} span={8}>
+								<Col key={name} span={8} className={cardActions}>
 									<Link
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
@@ -207,6 +218,14 @@ class HomePage extends Component {
 											appName={name}
 										/>
 									</Link>
+									{data && data[name] ? (
+										<ActionButtons
+											appName={name}
+											appId={apps[name]}
+											permissions={permissions ? permissions[name] : null}
+											shared={owners[name] && user !== owners[name]}
+										/>
+									) : null}
 								</Col>
 							);
 						})}
@@ -229,19 +248,21 @@ HomePage.propTypes = {
 	history: PropTypes.object.isRequired,
 	appsOwners: PropTypes.object.isRequired,
 	getAppsOwners: PropTypes.func.isRequired,
+	permissions: PropTypes.object,
+	fetchPermissions: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({
- user, apps, appsMetrics, appsOwners,
-}) => ({
-	user: user.data.email,
-	apps,
-	appsMetrics,
-	appsOwners,
+const mapStateToProps = state => ({
+	user: state.user.data.email,
+	apps: state.apps,
+	appsMetrics: state.appsMetrics,
+	appsOwners: state.appsOwners,
+	permissions: get(state, '$getAppPermissions.results'),
 });
 
 const mapDispatchToProps = dispatch => ({
 	getAppsOwners: () => dispatch(getOwners()),
+	fetchPermissions: () => dispatch(getUserPermissions()),
 });
 
 export default connect(

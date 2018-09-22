@@ -68,3 +68,16 @@ export function getParam(name, url) {
 	const results = regex.exec(url);
 	return results == null ? null : results[1];
 }
+
+export async function deleteApp(appId) {
+	const response = await fetch(`${ACC_API}/app/${appId}`, {
+		credentials: 'include',
+		method: 'DELETE',
+	});
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data);
+	}
+
+	return data.message;
+}

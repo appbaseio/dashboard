@@ -9,6 +9,11 @@ export default function appsReducer(state: Object = {}, action: Object): ?Object
 		case APPS.APPEND: {
 			return { ...state, ...action.payload };
 		}
+		case APPS.DELETE_APP: {
+			const apps = state;
+			delete apps[action.payload];
+			return apps;
+		}
 		default:
 			return state;
 	}

@@ -31,6 +31,15 @@ export default function appsMetricsReducer(
 				error: action.error,
 			};
 		}
+		case APPS.DELETE_APP: {
+			const { data: allAppMetrics } = state;
+			delete allAppMetrics[action.payload];
+			return {
+				isLoading: false,
+				data: allAppMetrics,
+				error: null,
+			};
+		}
 		default:
 			return state;
 	}
