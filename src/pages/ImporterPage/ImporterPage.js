@@ -15,8 +15,20 @@ const ImporterPage = () => (
 					<Row>
 						<Col span={18}>
 							<p>
-								Our analytics feature can do much more! Discover what you could do
-								by enabling our metrics on Clicks and Conversions, Filters, Results.
+								Bring your data from JSON or CSV files into appbase.io via the
+								Import GUI.
+								<br />
+								<br />
+								Or use our CLI tool for importing data from data sources like
+								MongoDB, Postgres, MySQL -{' '}
+								<a
+									href="https://medium.appbase.io/abc-import-import-your-mongodb-sql-json-csv-data-into-elasticsearch-a202cafafc0d"
+									target="_blank"
+									rel="noopener noreferer"
+								>
+									learn more
+								</a>
+								.
 							</p>
 						</Col>
 					</Row>
@@ -30,8 +42,8 @@ const ImporterPage = () => (
 					}}
 				>
 					<Button size="large" type="primary">
-						<Icon type="customer-service" />
-						Talk to Support
+						<Icon type="form" />
+						Contact Us
 					</Button>
 					<p
 						css={{
