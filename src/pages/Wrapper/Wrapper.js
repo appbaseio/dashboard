@@ -21,9 +21,21 @@ const HomePage = Loadable({
 	loading: Loader,
 });
 
+const OnboardingPage = Loadable({
+	loader: () => import('../OnboardingPage'),
+	loading: Loader,
+});
+
+const EndPage = Loadable({
+	loader: () => import('../OnboardingPage/EndScreen'),
+	loading: Loader,
+});
+
 const Wrapper = () => (
 	<Switch>
 		<Route exact path="/" component={HomePage} />
+		<Route exact path="/tutorial" component={OnboardingPage} />
+		<Route exact path="/tutorial/finish" component={EndPage} />
 		<Route exact path="/clusters" component={ClusterPage} />
 		<Route exact path="/profile" component={ProfilePage} />
 		<Route path="/app/:appName?/:route?" component={AppWrapper} />
