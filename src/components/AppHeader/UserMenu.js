@@ -4,8 +4,9 @@ import { object } from 'prop-types';
 import {
  Menu, Avatar, Dropdown, Icon,
 } from 'antd';
+import { ACC_API } from '../../constants/config';
 
-const logoutURL = 'https://accapi.appbase.io/logout?next=https://appbase.io';
+const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
 
 const UserMenu = ({ user }) => {
 	const menu = (

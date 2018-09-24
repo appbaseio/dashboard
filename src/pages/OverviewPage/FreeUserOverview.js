@@ -15,6 +15,7 @@ const appLink = css`
 	color: #1a74ff;
 	border: none;
 	padding: 0px;
+	box-shadow: none;
 `;
 
 const FreeUserOverview = () => (
