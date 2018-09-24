@@ -2,12 +2,15 @@ import React, { Fragment } from 'react';
 import {
  Row, Col, Button, Icon,
 } from 'antd';
-import { string } from 'prop-types';
+import { string, bool } from 'prop-types';
+import { connect } from 'react-redux';
+import get from 'lodash/get';
 
 import Header from '../../components/Header';
 import Mappings from '../../batteries/components/Mappings';
+import { getAppPlanByName } from '../../batteries/modules/selectors';
 
-const MappingsPage = ({ appName, appId }) => (
+const MappingsPage = ({ appName, appId, isPaidUser }) => (
 	<Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
@@ -30,25 +33,27 @@ const MappingsPage = ({ appName, appId }) => (
 						</Col>
 					</Row>
 				</Col>
-				<Col
-					md={6}
-					css={{
-						display: 'flex',
-						flexDirection: 'column-reverse',
-						paddingBottom: 20,
-					}}
-				>
-					<Button
-						size="large"
-						type="primary"
-						href="https://appbase.io/pricing#features"
-						target="_blank"
-						rel="noopener noreferrer"
+				{isPaidUser ? null : (
+					<Col
+						md={6}
+						css={{
+							display: 'flex',
+							flexDirection: 'column-reverse',
+							paddingBottom: 20,
+						}}
 					>
-						<Icon type="info-circle" />
-						Requires A Paid Plan
-					</Button>
-				</Col>
+						<Button
+							size="large"
+							type="primary"
+							href="https://appbase.io/pricing#features"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Icon type="info-circle" />
+							Requires A Paid Plan
+						</Button>
+					</Col>
+				)}
 			</Row>
 		</Header>
 		<section>
@@ -60,6 +65,14 @@ const MappingsPage = ({ appName, appId }) => (
 MappingsPage.propTypes = {
 	appName: string.isRequired,
 	appId: string.isRequired,
+	isPaidUser: bool.isRequired,
 };
 
-export default MappingsPage;
+const mapStateToProps = (state) => {
+	const appPlan = getAppPlanByName(state);
+	return {
+		isPaidUser: get(appPlan, 'isPaid') || false,
+	};
+};
+
+export default connect(mapStateToProps)(MappingsPage);
