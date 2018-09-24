@@ -13,8 +13,12 @@ class DeleteAppModal extends React.Component {
 
 	handleDelete = () => {
 		const {
- appId, appName, handleDeleteModal, handleRemoveApp,
-} = this.props;
+			// prettier-ignore
+			appId,
+			appName,
+			handleDeleteModal,
+			handleRemoveApp,
+		} = this.props;
 
 		deleteApp(appId)
 			.then(() => {

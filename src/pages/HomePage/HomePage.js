@@ -13,9 +13,7 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import CreateAppModal from './CreateAppModal';
 import AppCard from '../../components/AppCard';
-import ActionButtons from './ActionButtons';
 
-import { cardActions } from './styles';
 import { getAppsOwners as getOwners } from '../../actions';
 import { getUserPermissions } from '../../batteries/modules/actions';
 
@@ -40,8 +38,13 @@ class HomePage extends Component {
 
 	componentDidMount() {
 		const {
- appsOwners, getAppsOwners, permissions, fetchPermissions,
-} = this.props;
+			// prettier-ignore
+			appsOwners,
+			getAppsOwners,
+			permissions,
+			fetchPermissions,
+		} = this.props;
+
 		if (!appsOwners.isFetching && !getAppsOwners.data) {
 			getAppsOwners();
 		}
@@ -135,7 +138,7 @@ class HomePage extends Component {
 								href="https://docs.appbase.io/javascript/quickstart.html"
 								className={link}
 								target="_blank"
-								rel="noopener noreferer"
+								rel="noopener noreferrer"
 							>
 								<Icon type="rocket" /> JS Quickstart
 							</a>
@@ -143,7 +146,7 @@ class HomePage extends Component {
 								href="https://docs.appbase.io/rest-quickstart.html"
 								className={link}
 								target="_blank"
-								rel="noopener noreferer"
+								rel="noopener noreferrer"
 							>
 								<Icon type="code-o" /> REST Quickstart
 							</a>
@@ -206,7 +209,7 @@ class HomePage extends Component {
 							);
 
 							return (
-								<Col key={name} span={8} className={cardActions}>
+								<Col key={name} span={8}>
 									<Link
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
@@ -216,16 +219,11 @@ class HomePage extends Component {
 											title={title}
 											data={data}
 											appName={name}
-										/>
-									</Link>
-									{data && data[name] ? (
-										<ActionButtons
-											appName={name}
 											appId={apps[name]}
 											permissions={permissions ? permissions[name] : null}
 											shared={owners[name] && user !== owners[name]}
 										/>
-									) : null}
+									</Link>
 								</Col>
 							);
 						})}
@@ -248,7 +246,7 @@ HomePage.propTypes = {
 	history: PropTypes.object.isRequired,
 	appsOwners: PropTypes.object.isRequired,
 	getAppsOwners: PropTypes.func.isRequired,
-	permissions: PropTypes.object,
+	permissions: PropTypes.object, // eslint-disable-line
 	fetchPermissions: PropTypes.func.isRequired,
 };
 
