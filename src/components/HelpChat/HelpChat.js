@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom';
 import {
  Button, Dropdown, Menu, Modal, Input, message,
 } from 'antd';
+import { css } from 'emotion';
 
 import { heading, subHeading } from './styles';
 
 const { TextArea } = Input;
+
+const helpIcon = css`
+	i {
+		font-size: 22px !important;
+		position: relative;
+		top: 2px;
+	}
+`;
 
 class HelpButton extends React.Component {
 	constructor() {
@@ -111,7 +120,7 @@ class HelpButton extends React.Component {
 		const { modal, issue, details } = this.state;
 		const menu = (
 			<Menu onClick={this.handleClick}>
-				<Menu.Item key="chat" style={{ padding: '10px auto' }}>
+				<Menu.Item key="chat" style={{ padding: '10px 15px' }}>
 					<h3 className={heading}>
 						Ask us anything!{' '}
 						<span role="img" aria-label="Wave">
@@ -134,7 +143,13 @@ class HelpButton extends React.Component {
 		return (
 			<React.Fragment>
 				<Dropdown overlay={menu} trigger={['click']} placement="topLeft">
-					<Button type="primary" size="large" shape="circle" icon="question" />
+					<Button
+						className={helpIcon}
+						type="primary"
+						size="large"
+						shape="circle"
+						icon="question"
+					/>
 				</Dropdown>
 				<Modal
 					visible={modal}
