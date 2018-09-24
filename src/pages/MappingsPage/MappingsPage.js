@@ -17,8 +17,15 @@ const MappingsPage = ({ appName, appId }) => (
 					<Row>
 						<Col span={18}>
 							<p>
-								Our analytics feature can do much more! Discover what you could do
-								by enabling our metrics on Clicks and Conversions, Filters, Results.
+								View mappings, edit use-case and data types, add or delete fields -{' '}
+								<a
+									href="https://docs.appbase.io/concepts/mappings.html"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									learn more
+								</a>
+								.
 							</p>
 						</Col>
 					</Row>
@@ -31,9 +38,15 @@ const MappingsPage = ({ appName, appId }) => (
 						paddingBottom: 20,
 					}}
 				>
-					<Button size="large" type="primary">
-						<Icon type="to-top" />
-						Upgrade your Plan
+					<Button
+						size="large"
+						type="primary"
+						href="https://appbase.io/pricing#features"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Icon type="info-circle" />
+						Requires A Paid Plan
 					</Button>
 				</Col>
 			</Row>

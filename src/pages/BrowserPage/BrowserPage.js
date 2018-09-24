@@ -62,9 +62,25 @@ class BrowserPage extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Our analytics feature can do much more! Discover what you
-										could do by enabling our metrics on Clicks and Conversions,
-										Filters, Results.
+										This is a database view of your appbase.io app. You can
+										create, edit, view and delete your data from here -{' '}
+										<a
+											href="https://docs.appbase.io/concepts/databrowser.html"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											learn more
+										</a>
+										. <br /> <br />
+										You can also do the same operations via the{' '}
+										<a
+											href="https://rest.appbase.io"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											REST API
+										</a>
+										.
 									</p>
 								</Col>
 							</Row>
@@ -78,8 +94,8 @@ class BrowserPage extends Component {
 							}}
 						>
 							<Button size="large" type="primary">
-								<Icon type="customer-service" />
-								Talk to Support
+								<Icon type="form" />
+								Contact Us
 							</Button>
 							<p
 								css={{

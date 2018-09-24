@@ -24,7 +24,7 @@ const ImporterPage = () => (
 								<a
 									href="https://medium.appbase.io/abc-import-import-your-mongodb-sql-json-csv-data-into-elasticsearch-a202cafafc0d"
 									target="_blank"
-									rel="noopener noreferer"
+									rel="noopener noreferrer"
 								>
 									learn more
 								</a>
