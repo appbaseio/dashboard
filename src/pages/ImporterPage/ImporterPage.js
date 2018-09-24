@@ -41,7 +41,13 @@ const ImporterPage = () => (
 						paddingBottom: 20,
 					}}
 				>
-					<Button size="large" type="primary">
+					<Button
+						size="large"
+						type="primary"
+						href="https://appbase.io/contact/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						<Icon type="form" />
 						Contact Us
 					</Button>
