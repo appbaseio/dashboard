@@ -43,15 +43,15 @@ class HomePage extends Component {
 			getAppsOwners,
 			permissions,
 			fetchPermissions,
-      apps,
-      history,
+			apps,
+			history,
 		} = this.props;
 
-    const hasVisitedTutorial = JSON.parse(localStorage.getItem('hasVisitedTutorial'));
+		const hasVisitedTutorial = JSON.parse(localStorage.getItem('hasVisitedTutorial'));
 
-    if (!hasVisitedTutorial && !apps.length) {
-     history.push('/tutorial');
-   }
+		if (!hasVisitedTutorial && !apps.length) {
+			history.push('/tutorial');
+		}
 
 		if (!appsOwners.isFetching && !getAppsOwners.data) {
 			getAppsOwners();
@@ -176,27 +176,48 @@ class HomePage extends Component {
 
 				<Container>
 					<Row gutter={20}>
-						<Row
-							type="flex"
-							justify="space-between"
-							gutter={16}
-							style={{
-								height: 60,
-								alignItems: 'center',
-								padding: '0px 18px',
-							}}
-						>
-							<h2
+						{sortedApps.length ? (
+							<Row
+								type="flex"
+								justify="space-between"
+								gutter={16}
 								style={{
-									paddingLeft: 0,
-									lineHeight: '21px',
-									margin: 0,
+									height: 60,
+									alignItems: 'center',
+									padding: '0px 18px',
 								}}
 							>
-								{sortedApps.length ? 'All Apps' : 'Create an app to get Started'}
-							</h2>
-							{sortedApps.length && this.renderSortOptions()}
-						</Row>
+								<h2
+									style={{
+										paddingLeft: 0,
+										lineHeight: '21px',
+										margin: 0,
+									}}
+								>
+									All Apps
+								</h2>
+								{this.renderSortOptions()}
+							</Row>
+						) : (
+							<section
+								css={{
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'center',
+									alignItems: 'center',
+									paddingTop: '80px',
+								}}
+							>
+								<Icon
+									type="exclamation-circle"
+									theme="outlined"
+									style={{ fontSize: 34, marginBottom: 10 }}
+								/>
+								<h2>No apps found</h2>
+								<p>Create an app to get started</p>
+							</section>
+						)}
+
 						{sortedApps.map((name) => {
 							const title = (
 								<div

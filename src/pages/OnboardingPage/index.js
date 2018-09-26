@@ -30,7 +30,7 @@ export default class Onboarding extends Component {
 
 	nextScreen = () => {
 		this.setState((state) => {
-			const currentScreen =				state.currentScreen + 1 < state.totalScreen
+			const currentScreen =	state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
 					: state.currentScreen;
 

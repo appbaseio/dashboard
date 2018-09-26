@@ -20,7 +20,7 @@ const UserMenu = ({ user }) => {
 				<Link to="/profile">{user.email}</Link>
 			</Menu.Item>
 			<Menu.Divider />
-			<Menu.Item onClick={() => handleLogout()}>
+			<Menu.Item onClick={handleLogout}>
 				Logout
 			</Menu.Item>
 		</Menu>
