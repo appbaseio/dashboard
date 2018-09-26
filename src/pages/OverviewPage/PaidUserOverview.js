@@ -22,6 +22,10 @@ class PaidUserOverview extends React.Component {
 		fetchAppAnalytics();
 	}
 
+	redirectTo = (url) => {
+		window.location = url;
+	};
+
 	render() {
 		const {
  isFetching, popularSearches, noResults, appName, searchVolume,
@@ -46,16 +50,22 @@ class PaidUserOverview extends React.Component {
 				<Flex css="width: 100%;margin-top: 20px">
 					<div css="flex: 50%;margin-right: 10px">
 						<Searches
-							onClick={() => this.redirectTo('popularSearches')}
+							onClick={() => this.redirectTo('popular-searches')}
 							dataSource={popularSearches}
 							title="Popular Searches"
+							pagination={{
+								pageSize: 5,
+							}}
 						/>
 					</div>
 					<div css="flex: 50%;margin-left: 10px">
 						<Searches
-							onClick={() => this.redirectTo('noResultSearches')}
+							onClick={() => this.redirectTo('no-results-searches')}
 							dataSource={noResults}
 							title="No Result Searches"
+							pagination={{
+								pageSize: 5,
+							}}
 						/>
 					</div>
 				</Flex>

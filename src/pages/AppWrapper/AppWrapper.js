@@ -26,8 +26,8 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../GeoDistributionPage'),
 	loading: Loader,
 });
-const SearchPerformance = Loadable({
-	loader: () => import('../SearchPerformance'),
+const SearchLatency = Loadable({
+	loader: () => import('../SearchLatency'),
 	loading: Loader,
 });
 
@@ -111,11 +111,11 @@ const routes = {
 			{ label: 'Overview', link: 'analytics' },
 			{ label: 'Popular Searches', link: 'popular-searches' },
 			{ label: 'No Result Searches', link: 'no-results-searches' },
-			{ label: 'Popular Results', link: 'popular-results' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
-			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Popular Results', link: 'popular-results' },
+			{ label: 'Search Latency', link: 'search-latency' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
-			{ label: 'Search Performance', link: 'search-performance' },
+			{ label: 'Request Logs', link: 'request-logs' },
 		],
 	},
 	Security: {
@@ -318,9 +318,9 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appName/search-performance"
+								path="/app/:appName/search-latency"
 								component={props => (
-									<AppPageContainer {...props} component={SearchPerformance} />
+									<AppPageContainer {...props} component={SearchLatency} />
 								)}
 							/>
 							<Route

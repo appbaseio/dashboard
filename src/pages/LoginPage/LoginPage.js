@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Button, Icon } from 'antd';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Logo from '../../components/Logo';
@@ -51,21 +51,23 @@ const LoginPage = ({ user }) => {
 				</Button>
 			</Card>
 
-			<Button
-				size="large"
-				ghost
-				css={{
-					border: 0,
-					color: '#424242',
-					margin: '20px 0',
-					fontSize: 18,
-					letterSpacing: '0.02rem',
-				}}
-				href="/signup"
-			>
-				New to appbase? &nbsp; Signup here
-				<Icon type="arrow-right" />
-			</Button>
+			<Link to="/signup">
+				<Button
+					size="large"
+					ghost
+					css={{
+						border: 0,
+						boxShadow: 'none',
+						color: '#424242',
+						margin: '20px 0',
+						fontSize: 18,
+						letterSpacing: '0.02rem',
+					}}
+				>
+					New to appbase? &nbsp; Signup here
+					<Icon type="arrow-right" />
+				</Button>
+			</Link>
 		</section>
 	);
 };

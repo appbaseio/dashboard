@@ -83,7 +83,15 @@ class ActionButtons extends React.Component {
 		const writeKey = this.getWriteKey();
 
 		return (
-			<div className="card-actions" key={appName}>
+			// eslint-disable-next-line
+			<div
+				className="card-actions"
+				key={appName}
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+				}}
+			>
 				<Row type="flex" justify="space-between">
 					<Col
 						span={shared ? 12 : 6}
@@ -139,10 +147,10 @@ class ActionButtons extends React.Component {
 }
 
 ActionButtons.propTypes = {
-	shared: PropTypes.bool,
 	appName: PropTypes.string.isRequired,
 	appId: PropTypes.string.isRequired,
-	permissions: PropTypes.object,
+	shared: PropTypes.bool, // eslint-disable-line
+	permissions: PropTypes.object, // eslint-disable-line
 };
 
 export default ActionButtons;
