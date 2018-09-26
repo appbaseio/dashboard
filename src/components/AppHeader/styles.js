@@ -13,7 +13,7 @@ const header = css`
 	z-index: 999;
 	position: fixed;
 	top: 0px;
-	width: calc(100% - 260px);
+	transition: width 0.3s ease;
 
 	ul {
 		line-height: 56px;
