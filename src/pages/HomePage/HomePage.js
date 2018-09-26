@@ -49,7 +49,7 @@ class HomePage extends Component {
 
 		const hasVisitedTutorial = JSON.parse(localStorage.getItem('hasVisitedTutorial'));
 
-		if (!hasVisitedTutorial && !apps.length) {
+		if (!hasVisitedTutorial && !Object.keys(apps).length) {
 			history.push('/tutorial');
 		}
 
