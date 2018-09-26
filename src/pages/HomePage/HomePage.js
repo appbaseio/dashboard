@@ -43,7 +43,15 @@ class HomePage extends Component {
 			getAppsOwners,
 			permissions,
 			fetchPermissions,
+      apps,
+      history,
 		} = this.props;
+
+    const hasVisitedTutorial = JSON.parse(localStorage.getItem('hasVisitedTutorial'));
+
+    if (!hasVisitedTutorial && !apps.length) {
+     history.push('/tutorial');
+   }
 
 		if (!appsOwners.isFetching && !getAppsOwners.data) {
 			getAppsOwners();
@@ -185,9 +193,9 @@ class HomePage extends Component {
 									margin: 0,
 								}}
 							>
-								All Apps
+								{sortedApps.length ? 'All Apps' : 'Create an app to get Started'}
 							</h2>
-							{this.renderSortOptions()}
+							{sortedApps.length && this.renderSortOptions()}
 						</Row>
 						{sortedApps.map((name) => {
 							const title = (
