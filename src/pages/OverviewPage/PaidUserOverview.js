@@ -11,6 +11,7 @@ import { getAppAnalyticsByName } from '../../batteries/modules/selectors';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { exampleConfig } from '../../constants/config';
 import { getAppMetrics, getAppAnalytics } from '../../batteries/modules/actions';
+import { getFilteredResults } from '../../batteries/utils/heplers';
 import UsageDetails from '../../components/UsageDetails';
 import Searches from '../../batteries/components/analytics/components/Searches';
 import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
@@ -39,7 +40,7 @@ class PaidUserOverview extends React.Component {
 					<div css="margin-right: 10px">
 						<UsageDetails />
 					</div>
-					<Card css="margin-left: 10px" title="Daily Search Volume">
+					<Card css="margin-left: 10px;width: 100%" title="Daily Search Volume">
 						<SearchVolumeChart
 							width={window.innerWidth - 670}
 							height={210}
@@ -50,22 +51,18 @@ class PaidUserOverview extends React.Component {
 				<Flex css="width: 100%;margin-top: 20px">
 					<div css="flex: 50%;margin-right: 10px">
 						<Searches
+							css="height: 100%"
 							onClick={() => this.redirectTo('popular-searches')}
-							dataSource={popularSearches}
+							dataSource={getFilteredResults(popularSearches)}
 							title="Popular Searches"
-							pagination={{
-								pageSize: 5,
-							}}
 						/>
 					</div>
 					<div css="flex: 50%;margin-left: 10px">
 						<Searches
+							css="height: 100%"
 							onClick={() => this.redirectTo('no-results-searches')}
-							dataSource={noResults}
+							dataSource={getFilteredResults(noResults)}
 							title="No Result Searches"
-							pagination={{
-								pageSize: 5,
-							}}
 						/>
 					</div>
 				</Flex>
