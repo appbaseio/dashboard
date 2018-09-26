@@ -30,8 +30,7 @@ export default class Onboarding extends Component {
 
 	nextScreen = () => {
 		this.setState((state) => {
-			const currentScreen =
-				state.currentScreen + 1 < state.totalScreen
+			const currentScreen =	state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
 					: state.currentScreen;
 
@@ -97,6 +96,12 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	skipTutorial = () => {
+		const { history } = this.props;
+		localStorage.setItem('hasVisitedTutorial', true);
+		history.push('/');
+	}
+
 	renderCurrentScreen = () => {
 		const {
 			currentScreen, hasJSON, url, searchFields, facetFields, newApp,
@@ -145,7 +150,7 @@ export default class Onboarding extends Component {
 	};
 
 	render() {
-		const  { currentScreen, totalScreen } = this.state;
+		const { currentScreen, totalScreen } = this.state;
 
 		return (
 			<div className={onboardingStyles}>
@@ -160,8 +165,8 @@ export default class Onboarding extends Component {
 						<div
 							className="color"
 							style={{
-								width: `${((currentScreen + 1) * 100) /
-									totalScreen}%`,
+								width: `${((currentScreen + 1) * 100)
+									/ totalScreen}%`,
 							}}
 						/>
 					</div>
@@ -206,9 +211,9 @@ export default class Onboarding extends Component {
 					</ul>
 				</div>
 				<div className="right">
-					<a className="skip-link" href="/">
+					<button type="button" className="skip-link" onClick={this.skipTutorial}>
 						&#10005; &nbsp; Skip Tutorial
-					</a>
+					</button>
 					<div className="container">{this.renderCurrentScreen()}</div>
 				</div>
 			</div>

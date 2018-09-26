@@ -8,6 +8,11 @@ import { ACC_API } from '../../constants/config';
 
 const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
 
+const handleLogout = () => {
+  localStorage.setItem('hasVisitedTutorial', false);
+  window.location.href = logoutURL;
+};
+
 const UserMenu = ({ user }) => {
 	const menu = (
 		<Menu>
@@ -15,8 +20,8 @@ const UserMenu = ({ user }) => {
 				<Link to="/profile">{user.email}</Link>
 			</Menu.Item>
 			<Menu.Divider />
-			<Menu.Item>
-				<a href={logoutURL}>Logout</a>
+			<Menu.Item onClick={handleLogout}>
+				Logout
 			</Menu.Item>
 		</Menu>
 	);

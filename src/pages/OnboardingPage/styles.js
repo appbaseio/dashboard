@@ -23,6 +23,8 @@ const onboardingStyles = css`
 		top: 30px;
 		right: 40px;
 		padding: 5px 10px;
+		border:0;
+		cursor: pointer;
 		border-radius: 4px;
 		background-color: rgba(255, 255, 255, 0.5);
 		transition: all 0.3s ease;
