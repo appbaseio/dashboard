@@ -211,7 +211,7 @@ class AppWrapper extends Component {
 
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
-		const { collapsed, appName, view } = this.state;
+		const { collapsed, appName } = this.state;
 
 		return (
 			<Layout>
