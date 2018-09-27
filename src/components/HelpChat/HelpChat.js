@@ -52,7 +52,6 @@ class HelpButton extends React.Component {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						submittedAt: Date.now(),
 						fields: [
 							{
 								name: 'email',
@@ -85,6 +84,9 @@ class HelpButton extends React.Component {
 						details: '',
 						modal: false,
 					});
+				})
+				.catch(() => {
+					message.error('Something went wrong.Please try again.');
 				});
 		} else {
 			message.error('Please write the issue');
