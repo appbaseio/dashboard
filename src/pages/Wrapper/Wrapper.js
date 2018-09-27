@@ -3,8 +3,16 @@ import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
 import Loader from '../../components/Loader';
-import AppWrapper from '../AppWrapper';
-import NoMatch from '../../NoMatch';
+
+const AppWrapper = Loadable({
+	loader: () => import('../AppWrapper'),
+	loading: () => <div />,
+});
+
+const NoMatch = Loadable({
+	loader: () => import('../../NoMatch'),
+	loading: () => <div />,
+});
 
 const ClusterPage = Loadable({
 	loader: () => import('../ClusterPage'),
