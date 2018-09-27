@@ -215,7 +215,18 @@ class AppWrapper extends Component {
 
 		return (
 			<Layout>
-				<Sider width={260} collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+				<Sider
+					width={260}
+					css={{
+						overflow: 'auto',
+						height: '100vh',
+						position: 'fixed',
+						left: 0,
+					}}
+					collapsible
+					collapsed={collapsed}
+					onCollapse={this.onCollapse}
+				>
 					<Menu
 						theme="dark"
 						defaultOpenKeys={[activeSubMenu]}
@@ -263,7 +274,13 @@ class AppWrapper extends Component {
 						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
-				<Layout css={{ paddingTop: 60, minHeight: '100vh' }}>
+				<Layout
+					css={{
+						paddingTop: 60,
+						minHeight: '100vh',
+						marginLeft: collapsed ? '80px' : '260px',
+					}}
+				>
 					<AppHeader big={collapsed} />
 					<section>
 						<Switch>
