@@ -4,6 +4,8 @@ import { object } from 'prop-types';
 import {
  Menu, Avatar, Dropdown, Icon,
 } from 'antd';
+import { css } from 'react-emotion';
+import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
 
 const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
@@ -12,6 +14,12 @@ const handleLogout = () => {
 	localStorage.setItem('hasVisitedTutorial', false);
 	window.location.href = logoutURL;
 };
+
+const userMenu = css`
+	${media.small(css`
+		display: none;
+	`)};
+`;
 
 const UserMenu = ({ user }) => {
 	const menu = (
@@ -25,7 +33,7 @@ const UserMenu = ({ user }) => {
 	);
 
 	return (
-		<Dropdown overlay={menu} className="usermenu" trigger={['click']}>
+		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
 			<span style={{ cursor: 'pointer' }}>
 				<Avatar src={user.picture} />
 				&nbsp;&nbsp;
