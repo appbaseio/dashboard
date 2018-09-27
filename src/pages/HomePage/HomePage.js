@@ -127,7 +127,6 @@ class HomePage extends Component {
 
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
-
 		return (
 			<Fragment>
 				<FullHeader />

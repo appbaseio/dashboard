@@ -27,7 +27,7 @@ const UserMenu = ({ user }) => {
 	);
 
 	return (
-		<Dropdown overlay={menu} trigger={['click']}>
+		<Dropdown overlay={menu} className="usermenu" trigger={['click']}>
 			<span style={{ cursor: 'pointer' }}>
 				<Avatar src={user.picture} />
 				&nbsp;&nbsp;
