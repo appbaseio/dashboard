@@ -1,6 +1,8 @@
 import React from 'react';
 import { Layout } from 'antd';
 
+import { mediaKey } from '../../utils/media';
+
 const { Header } = Layout;
 
 const WhiteHeader = ({ children, compact, ...props }) => (
@@ -17,6 +19,10 @@ const WhiteHeader = ({ children, compact, ...props }) => (
 				padding: compact ? '25px 0px' : '45px 25px',
 				margin: '0 auto',
 				maxWidth: compact ? 'none' : 1300,
+
+				[mediaKey.medium]: {
+					padding: '40px 0 25px',
+				},
 			}}
 		>
 			{children}
