@@ -40,7 +40,7 @@ const AppHeader = ({ currentApp, user, big }) => (
 			</Menu.Item>
 		</Menu>
 		<UserMenu user={user} />
-		<MenuSlider isAppHeader />
+		<MenuSlider />
 	</Header>
 );
 

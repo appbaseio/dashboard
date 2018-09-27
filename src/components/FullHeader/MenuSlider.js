@@ -55,7 +55,7 @@ class MenuSlider extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { defaultSelectedKeys, isAppHeader } = this.props;
+		const { defaultSelectedKeys, isHomepage } = this.props;
 		return (
 			<div className={menuSlider}>
 				<Button className={menuBtn} icon="menu-fold" onClick={this.handleDrawer} />
@@ -73,13 +73,13 @@ class MenuSlider extends React.Component {
 						className={menuItems}
 						defaultSelectedKeys={defaultSelectedKeys}
 					>
-						{!isAppHeader && (
+						{isHomepage && (
 							<Menu.Item key="1">
 								<Link to="/">Apps</Link>
 							</Menu.Item>
 						)}
 
-						{!isAppHeader && (
+						{isHomepage && (
 							<Menu.Item key="2">
 								<Link to="/clusters">Clusters</Link>
 							</Menu.Item>
@@ -99,12 +99,12 @@ class MenuSlider extends React.Component {
 
 MenuSlider.defaultProps = {
 	defaultSelectedKeys: [],
-	isAppHeader: false,
+	isHomepage: false,
 };
 
 MenuSlider.propTypes = {
 	defaultSelectedKeys: array,
-	isAppHeader: bool,
+	isHomepage: bool,
 };
 
 export default MenuSlider;

@@ -43,7 +43,7 @@ const FullHeader = ({ user }) => (
 			</Menu>
 		</div>
 		<UserMenu user={user} />
-		<MenuSlider defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]} />
+		<MenuSlider isHomepage defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]} />
 	</Header>
 );
 
