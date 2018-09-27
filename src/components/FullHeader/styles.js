@@ -27,12 +27,6 @@ const header = css`
 		align-items: center;
 	}
 
-	.usermenu {
-		${media.small(css`
-			display: none;
-		`)};
-	}
-
 	ul {
 		line-height: 56px;
 		border: 0;

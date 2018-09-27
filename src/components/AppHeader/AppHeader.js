@@ -6,6 +6,7 @@ import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
+import MenuSlider from '../FullHeader/MenuSlider';
 import UserMenu from './UserMenu';
 import headerStyles from './styles';
 
@@ -39,6 +40,7 @@ const AppHeader = ({ currentApp, user, big }) => (
 			</Menu.Item>
 		</Menu>
 		<UserMenu user={user} />
+		<MenuSlider />
 	</Header>
 );
 

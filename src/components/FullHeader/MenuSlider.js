@@ -2,7 +2,7 @@ import React from 'react';
 import { Drawer, Button, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { css } from 'react-emotion';
-import { string } from 'prop-types';
+import { array, bool } from 'prop-types';
 
 import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
@@ -55,7 +55,7 @@ class MenuSlider extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { defaultSelectedKeys } = this.props;
+		const { defaultSelectedKeys, isHomepage } = this.props;
 		return (
 			<div className={menuSlider}>
 				<Button className={menuBtn} icon="menu-fold" onClick={this.handleDrawer} />
@@ -73,13 +73,17 @@ class MenuSlider extends React.Component {
 						className={menuItems}
 						defaultSelectedKeys={defaultSelectedKeys}
 					>
-						<Menu.Item key="1">
-							<Link to="/">Apps</Link>
-						</Menu.Item>
+						{isHomepage && (
+							<Menu.Item key="1">
+								<Link to="/">Apps</Link>
+							</Menu.Item>
+						)}
 
-						<Menu.Item key="2">
-							<Link to="/clusters">Clusters</Link>
-						</Menu.Item>
+						{isHomepage && (
+							<Menu.Item key="2">
+								<Link to="/clusters">Clusters</Link>
+							</Menu.Item>
+						)}
 
 						<Menu.Item key="3">
 							<Link to="/profile">Profile</Link>
@@ -93,8 +97,14 @@ class MenuSlider extends React.Component {
 	}
 }
 
+MenuSlider.defaultProps = {
+	defaultSelectedKeys: [],
+	isHomepage: false,
+};
+
 MenuSlider.propTypes = {
-	defaultSelectedKeys: string.isRequired,
+	defaultSelectedKeys: array,
+	isHomepage: bool,
 };
 
 export default MenuSlider;
