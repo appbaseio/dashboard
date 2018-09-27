@@ -86,7 +86,7 @@ class HelpButton extends React.Component {
 					});
 				})
 				.catch(() => {
-					message.error('Something went wrong.Please try again.');
+					message.error('Something went wrong. Please try again later.');
 				});
 		} else {
 			message.error('Please write the issue');
