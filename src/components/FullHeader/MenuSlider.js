@@ -2,7 +2,7 @@ import React from 'react';
 import { Drawer, Button, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import { css } from 'react-emotion';
-import { string, bool } from 'prop-types';
+import { array, bool } from 'prop-types';
 
 import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
@@ -98,12 +98,12 @@ class MenuSlider extends React.Component {
 }
 
 MenuSlider.defaultProps = {
-	defaultSelectedKeys: '',
+	defaultSelectedKeys: [],
 	isAppHeader: false,
 };
 
 MenuSlider.propTypes = {
-	defaultSelectedKeys: string,
+	defaultSelectedKeys: array,
 	isAppHeader: bool,
 };
 
