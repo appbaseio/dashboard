@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
-import Analytics from '../../batteries/components/analytics';
+import SearchPerformance from '../../batteries/components/analytics/components/SearchLatency';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const bannerMessagesAnalytics = {
@@ -31,32 +31,31 @@ const bannerMessagesAnalytics = {
 	},
 };
 
-const AnalyticsView = ({ appName, isPaidUser, plan }) => (
+const SearchLatencyWrapper = ({ plan, isGrowth }) => (
 	<React.Fragment>
-		{isPaidUser ? (
+		{isGrowth ? (
 			<React.Fragment>
 				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
 				<Container>
-					<Analytics chartWidth={window.innerWidth - 400} appName={appName} />
+					<SearchPerformance />
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<Banner {...bannerMessagesAnalytics[plan]} />
 		)}
 	</React.Fragment>
 );
-AnalyticsView.propTypes = {
-	appName: PropTypes.string.isRequired,
-	isPaidUser: PropTypes.bool.isRequired,
+
+SearchLatencyWrapper.propTypes = {
 	plan: PropTypes.string.isRequired,
+	isGrowth: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
 	return {
-		appName: get(state, '$getCurrentApp.name'),
-		plan: get(appPlan, 'plan'),
-		isPaidUser: get(appPlan, 'isPaid'),
+		plan: get(appPlan, 'plan', 'free'),
+		isGrowth: get(appPlan, 'isGrowth'),
 	};
 };
-export default connect(mapStateToProps)(AnalyticsView);
+export default connect(mapStateToProps)(SearchLatencyWrapper);

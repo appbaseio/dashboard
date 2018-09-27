@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+import { media } from '../../utils/media';
 
 const header = css`
 	display: flex;
@@ -13,6 +14,12 @@ const header = css`
 	z-index: 999;
 	position: relative;
 	justify-content: space-between;
+
+	.options {
+		${media.small(css`
+			display: none;
+		`)};
+	}
 
 	.row {
 		display: flex;

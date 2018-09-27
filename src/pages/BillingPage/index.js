@@ -12,9 +12,17 @@ import Flex from '../../batteries/components/shared/Flex';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const heading = css`
-	font-weight: 510;
+	font-weight: 600;
+	font-size: 14px;
 	min-width: 100px;
+	letter-spacing: 0.01rem;
+	color: #888;
 `;
+
+const uppercase = css`
+	text-transform: uppercase;
+`;
+
 const Billing = ({ plan, isOnTrial, planValidity }) => (
 	<React.Fragment>
 		<BannerHeader
@@ -22,7 +30,7 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 			description="Manage who can access your app data. Lorem iprum dolor sit amet lorem ipsum dolor sit. "
 			component={(
 <Row>
-					<Flex alignItems="center">
+					<Flex alignItems="center" className={uppercase}>
 						<Grid
 							style={{
 								width: '400px',
@@ -35,7 +43,7 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 					</Flex>
 
 					{planValidity && (
-						<Flex alignItems="center">
+						<Flex alignItems="center" className={uppercase}>
 							<Grid
 								style={{
 									width: '400px',
@@ -51,7 +59,7 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 						</Flex>
 					)}
 					{isOnTrial && (
-						<Flex alignItems="center">
+						<Flex alignItems="center" className={uppercase}>
 							<Grid
 								style={{
 									width: '400px',

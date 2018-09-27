@@ -14,6 +14,7 @@ import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
 import { getParam } from '../../utils';
+import { breakpoints } from '../../utils/media';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -26,8 +27,8 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../GeoDistributionPage'),
 	loading: Loader,
 });
-const SearchPerformance = Loadable({
-	loader: () => import('../SearchPerformance'),
+const SearchLatency = Loadable({
+	loader: () => import('../SearchLatency'),
 	loading: Loader,
 });
 
@@ -111,11 +112,11 @@ const routes = {
 			{ label: 'Overview', link: 'analytics' },
 			{ label: 'Popular Searches', link: 'popular-searches' },
 			{ label: 'No Result Searches', link: 'no-results-searches' },
-			{ label: 'Popular Results', link: 'popular-results' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
-			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Popular Results', link: 'popular-results' },
+			{ label: 'Search Latency', link: 'search-latency' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
-			{ label: 'Search Performance', link: 'search-performance' },
+			{ label: 'Request Logs', link: 'request-logs' },
 		],
 	},
 	Security: {
@@ -132,10 +133,14 @@ const routes = {
 };
 
 class AppWrapper extends Component {
-	state = {
-		collapsed: false,
-		appName: this.props.match.params.appName, // eslint-disable-line
-	};
+	constructor(props) {
+		super(props);
+		const collapsed = window.innerWidth <= breakpoints.medium;
+		this.state = {
+			collapsed,
+			appName: props.match.params.appName, // eslint-disable-line
+		};
+	}
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
@@ -211,16 +216,32 @@ class AppWrapper extends Component {
 
 	render() {
 		const { activeSubMenu, activeMenuItem } = this.getActiveMenu();
-		const { collapsed, appName, view } = this.state;
+		const { collapsed, appName } = this.state;
 
 		return (
 			<Layout>
-				<Sider width={260} collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+				<Sider
+					width={260}
+					css={{
+						height: '100vh',
+						position: 'fixed',
+						left: 0,
+					}}
+					collapsible
+					collapsed={collapsed}
+					onCollapse={this.onCollapse}
+				>
 					<Menu
 						theme="dark"
 						defaultOpenKeys={[activeSubMenu]}
 						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
+						css={{
+							overflow: 'auto',
+							position: 'absolute',
+							width: '100%',
+							height: 'calc(100% - 102px)',
+						}}
 					>
 						<Menu.Item style={{ margin: '15px auto' }}>
 							<Link to="/">
@@ -263,7 +284,13 @@ class AppWrapper extends Component {
 						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
-				<Layout css={{ paddingTop: 60, minHeight: '100vh' }}>
+				<Layout
+					css={{
+						paddingTop: 60,
+						minHeight: '100vh',
+						marginLeft: collapsed ? '80px' : '260px',
+					}}
+				>
 					<AppHeader big={collapsed} />
 					<section>
 						<Switch>
@@ -318,9 +345,9 @@ class AppWrapper extends Component {
 							/>
 							<Route
 								exact
-								path="/app/:appName/search-performance"
+								path="/app/:appName/search-latency"
 								component={props => (
-									<AppPageContainer {...props} component={SearchPerformance} />
+									<AppPageContainer {...props} component={SearchLatency} />
 								)}
 							/>
 							<Route

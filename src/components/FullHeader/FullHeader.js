@@ -6,12 +6,15 @@ import { connect } from 'react-redux';
 
 import Logo from '../Logo';
 import UserMenu from '../AppHeader/UserMenu';
+import MenuSlider from './MenuSlider';
 import headerStyles from './styles';
 
 const { Header } = Layout;
 
 const getSelectedKeys = (pathname) => {
 	switch (pathname) {
+		case '/profile':
+			return '3';
 		case '/clusters':
 			return '2';
 		case '/':
@@ -27,6 +30,7 @@ const FullHeader = ({ user }) => (
 			<Logo />
 			<Menu
 				mode="horizontal"
+				className="options"
 				defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
 			>
 				<Menu.Item key="1">
@@ -39,6 +43,7 @@ const FullHeader = ({ user }) => (
 			</Menu>
 		</div>
 		<UserMenu user={user} />
+		<MenuSlider isHomepage defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]} />
 	</Header>
 );
 
