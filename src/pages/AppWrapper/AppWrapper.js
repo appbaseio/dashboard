@@ -218,7 +218,6 @@ class AppWrapper extends Component {
 				<Sider
 					width={260}
 					css={{
-						overflow: 'auto',
 						height: '100vh',
 						position: 'fixed',
 						left: 0,
@@ -232,6 +231,12 @@ class AppWrapper extends Component {
 						defaultOpenKeys={[activeSubMenu]}
 						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
+						css={{
+							overflow: 'auto',
+							position: 'absolute',
+							width: '100%',
+							height: 'calc(100% - 102px)',
+						}}
 					>
 						<Menu.Item style={{ margin: '15px auto' }}>
 							<Link to="/">
