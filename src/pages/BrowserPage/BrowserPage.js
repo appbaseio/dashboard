@@ -56,11 +56,11 @@ class BrowserPage extends Component {
 			<Fragment>
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
-						<Col md={18}>
+						<Col lg={18}>
 							<h2>Browse Data</h2>
 
 							<Row>
-								<Col span={18}>
+								<Col lg={18}>
 									<p>
 										This is a database view of your appbase.io app. You can
 										create, edit, view and delete your data from here -{' '}
@@ -86,17 +86,20 @@ class BrowserPage extends Component {
 							</Row>
 						</Col>
 						<Col
-							md={6}
+							lg={6}
 							css={{
 								display: 'flex',
 								flexDirection: 'column-reverse',
 								paddingBottom: 20,
 							}}
 						>
-							<Button size="large" type="primary"
+							<Button
+								size="large"
+								type="primary"
 								href="https://appbase.io/contact/"
 								target="_blank"
-								rel="noopener noreferrer">
+								rel="noopener noreferrer"
+							>
 								<Icon type="form" />
 								Contact Us
 							</Button>

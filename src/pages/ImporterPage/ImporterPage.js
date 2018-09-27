@@ -9,11 +9,11 @@ const ImporterPage = () => (
 	<Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
-				<Col md={18}>
+				<Col lg={18}>
 					<h2>Import Data</h2>
 
 					<Row>
-						<Col span={18}>
+						<Col lg={18}>
 							<p>
 								Bring your data from JSON or CSV files into appbase.io via the
 								Import GUI.
@@ -34,7 +34,7 @@ const ImporterPage = () => (
 					</Row>
 				</Col>
 				<Col
-					md={6}
+					lg={6}
 					css={{
 						display: 'flex',
 						flexDirection: 'column-reverse',
