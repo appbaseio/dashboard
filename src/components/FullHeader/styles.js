@@ -15,9 +15,9 @@ const header = css`
 	position: relative;
 	justify-content: space-between;
 
-	.options{
+	.options {
 		${media.small(css`
-			display:none;
+			display: none;
 		`)};
 	}
 
@@ -27,9 +27,9 @@ const header = css`
 		align-items: center;
 	}
 
-	.usermenu{
+	.usermenu {
 		${media.small(css`
-			display:none;
+			display: none;
 		`)};
 	}
 
