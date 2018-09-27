@@ -14,6 +14,7 @@ import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
 import { getParam } from '../../utils';
+import { breakpoints } from '../../utils/media';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -132,10 +133,14 @@ const routes = {
 };
 
 class AppWrapper extends Component {
-	state = {
-		collapsed: false,
-		appName: this.props.match.params.appName, // eslint-disable-line
-	};
+	constructor(props) {
+		super(props);
+		const collapsed = window.innerWidth <= breakpoints.medium;
+		this.state = {
+			collapsed,
+			appName: props.match.params.appName, // eslint-disable-line
+		};
+	}
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
