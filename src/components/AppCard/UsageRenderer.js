@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 
 import { compressNumber, planLimits, getAppCount } from '../../utils/helper';
-import { headingText, statsText } from './styles';
+import { headingText, statsText, statsContainer } from './styles';
 
 const UsageRenderer = ({ computedMetrics, plan }) => {
 	const appCount = getAppCount(computedMetrics, plan);
@@ -15,7 +15,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 		<Row gutter={20}>
 			<Col span={12}>
 				<Row gutter={15}>
-					<Col span={10}>
+					<Col span={10} className={statsContainer}>
 						<Progress
 							width={60}
 							type="circle"
@@ -24,7 +24,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 							status={action > 90 ? 'exception' : null}
 						/>
 					</Col>
-					<Col span={14}>
+					<Col span={14} className={statsContainer}>
 						<h3 className={headingText}>API Calls</h3>
 						<h4 className={statsText}>
 							{`${compressNumber(get(appCount, 'action.count'))}/${compressNumber(
@@ -36,7 +36,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 			</Col>
 			<Col span={12}>
 				<Row gutter={15}>
-					<Col span={10}>
+					<Col span={10} className={statsContainer}>
 						<Progress
 							width={60}
 							type="circle"
@@ -45,7 +45,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 							status={record > 90 ? 'exception' : null}
 						/>
 					</Col>
-					<Col span={14}>
+					<Col span={14} className={statsContainer}>
 						<h3 className={headingText}>Records</h3>
 						<h4 className={statsText}>
 							{`${compressNumber(get(appCount, 'records.count'))}/${compressNumber(
