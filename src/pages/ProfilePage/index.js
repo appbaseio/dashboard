@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Input, Select, Icon, notification,
+ Input, Select, Icon, notification, Button,
 } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -13,10 +13,10 @@ import {
 import { updateUser } from '../../batteries/modules/actions';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
-import SubmitButton from '../../batteries/components/shared/Button/Primary';
 import Flex from '../../batteries/components/shared/Flex';
 import Banner from '../../components/Banner/Header';
 import countryCodes from '../../utils/countryCodes';
+import { displayErrors } from '../../batteries/utils/heplers';
 
 const formCls = css`
 	margin: auto;
@@ -92,12 +92,13 @@ class ProfilePage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { isSuccess } = this.props;
+		const { isSuccess, errors } = this.props;
 		if (isSuccess && isSuccess !== prevProps.isSuccess) {
 			notification.success({
 				message: 'Updated user successfully!',
 			});
 		}
+		displayErrors(errors, prevProps.errors);
 	}
 
 	handleSubmit = () => {
@@ -232,7 +233,8 @@ class ProfilePage extends React.Component {
 									)}
 								/>
 								<Flex justifyContent="center" alignItems="center">
-									<SubmitButton
+									<Button
+										type="primary"
 										onClick={this.handleSubmit}
 										disabled={invalid || pristine}
 									>
@@ -245,7 +247,7 @@ class ProfilePage extends React.Component {
 											/>
 										)}
 										Submit
-									</SubmitButton>
+									</Button>
 								</Flex>
 							</div>
 						)}
@@ -259,6 +261,7 @@ const mapStateToProps = (state) => {
 	const phoneInfo = get(state, 'user.data.phone');
 	return {
 		isSubmitting: get(state, '$updateUser.isFetching'),
+		errors: [get(state, '$updateUser.error')],
 		isSuccess: get(state, '$updateUser.success'),
 		usecase: get(state, 'user.data.usecase'),
 		deploymentTimeframe: get(state, 'user.data.deployment-timeframe'),

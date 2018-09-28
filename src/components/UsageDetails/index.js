@@ -8,7 +8,6 @@ import get from 'lodash/get';
 import Flex from '../../batteries/components/shared/Flex';
 import { getAppMetricsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import { compressNumber, planLimits, getAppCount } from '../../utils/helper';
-// import UpgradeButton from '../../batteries/components/shared/Button/Primary';
 
 const percentCls = css`
 	top: 40px;
