@@ -120,6 +120,7 @@ class HomePage extends Component {
 			user,
 			appsMetrics: { data },
 			apps,
+			username,
 			history,
 			appsOwners,
 			permissions,
@@ -133,7 +134,7 @@ class HomePage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Howdy, bud. Welcome to your dashboard!</h2>
+							<h2>Howdy, {username}. Welcome to your dashboard!</h2>
 
 							<Row>
 								<Col lg={18}>
@@ -279,6 +280,7 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
 	user: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
 	apps: PropTypes.object.isRequired,
 	appsMetrics: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
@@ -290,6 +292,7 @@ HomePage.propTypes = {
 
 const mapStateToProps = state => ({
 	user: state.user.data.email,
+	username: state.user.data.name,
 	apps: state.apps,
 	appsMetrics: state.appsMetrics,
 	appsOwners: state.appsOwners,
