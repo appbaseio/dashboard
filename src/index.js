@@ -8,6 +8,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './store';
 import Dashboard from './Dashboard';
 
+import { mediaKey } from './utils/media';
+
 // global styles
 // eslint-disable-next-line
 injectGlobal`
@@ -22,12 +24,21 @@ h1, h2 {
 	margin: 0 0 8px;
 	font-weight: 700;
 	line-height: 2.5rem;
+
+	${mediaKey.medium} {
+		line-height: 2.1rem;
+	}
 }
 p {
 	font-size: 16px;
 	letter-spacing: 0.01rem;
 	word-spacing: 0.05em;
 	line-height: 26px;
+
+	${mediaKey.medium} {
+		font-size: 18px;
+		line-height: 28px;
+	}
 }
 `;
 

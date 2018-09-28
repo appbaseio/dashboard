@@ -14,6 +14,7 @@ import UpgradeButton from '../../components/Button/UpgradeBtnSidebar';
 import Logo from '../../components/Logo';
 
 import { getParam } from '../../utils';
+import { breakpoints } from '../../utils/media';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -132,10 +133,14 @@ const routes = {
 };
 
 class AppWrapper extends Component {
-	state = {
-		collapsed: false,
-		appName: this.props.match.params.appName, // eslint-disable-line
-	};
+	constructor(props) {
+		super(props);
+		const collapsed = window.innerWidth <= breakpoints.medium;
+		this.state = {
+			collapsed,
+			appName: props.match.params.appName, // eslint-disable-line
+		};
+	}
 
 	static getDerivedStateFromProps(props, state) {
 		const { appName } = props.match.params;
@@ -215,12 +220,28 @@ class AppWrapper extends Component {
 
 		return (
 			<Layout>
-				<Sider width={260} collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+				<Sider
+					width={260}
+					css={{
+						height: '100vh',
+						position: 'fixed',
+						left: 0,
+					}}
+					collapsible
+					collapsed={collapsed}
+					onCollapse={this.onCollapse}
+				>
 					<Menu
 						theme="dark"
 						defaultOpenKeys={[activeSubMenu]}
 						defaultSelectedKeys={[activeMenuItem]}
 						mode="inline"
+						css={{
+							overflow: 'auto',
+							position: 'absolute',
+							width: '100%',
+							height: 'calc(100% - 102px)',
+						}}
 					>
 						<Menu.Item style={{ margin: '15px auto' }}>
 							<Link to="/">
@@ -263,7 +284,13 @@ class AppWrapper extends Component {
 						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
 					</Menu>
 				</Sider>
-				<Layout css={{ paddingTop: 60, minHeight: '100vh' }}>
+				<Layout
+					css={{
+						paddingTop: 60,
+						minHeight: '100vh',
+						marginLeft: collapsed ? '80px' : '260px',
+					}}
+				>
 					<AppHeader big={collapsed} />
 					<section>
 						<Switch>

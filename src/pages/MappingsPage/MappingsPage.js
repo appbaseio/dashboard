@@ -16,11 +16,11 @@ const MappingsPage = ({
 	<Fragment>
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
-				<Col md={18}>
+				<Col lg={18}>
 					<h2>Manage Mappings</h2>
 
 					<Row>
-						<Col span={18}>
+						<Col lg={18}>
 							<p>
 								View mappings, edit use-case and data types, add or delete fields -{' '}
 								<a
@@ -38,7 +38,7 @@ const MappingsPage = ({
 				{isPaidUser /* eslint-disable-line */ ? (
 					isUsingTrial ? (
 						<Col
-							md={6}
+							lg={6}
 							css={{
 								display: 'flex',
 								flexDirection: 'column-reverse',
@@ -69,7 +69,7 @@ const MappingsPage = ({
 					) : null
 				) : (
 					<Col
-						md={6}
+						lg={6}
 						css={{
 							display: 'flex',
 							flexDirection: 'column-reverse',

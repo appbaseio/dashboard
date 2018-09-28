@@ -7,7 +7,13 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
- modalHeading, input, radiobtn, pricebtn, clusterInfo,
+	modalHeading,
+	input,
+	radiobtn,
+	pricebtn,
+	clusterInfo,
+	planDetails,
+	planInfo,
 } from './styles';
 
 import { createApp, resetCreatedApp } from '../../actions';
@@ -84,11 +90,19 @@ class CreateAppModal extends Component {
 		calls,
 	}) => (
 		<Row type="flex" justify="space-between">
-			<Col span={4}>{type}</Col>
-			<Col span={6}>{price}</Col>
-			<Col span={4}>{records}</Col>
-			<Col span={4}>{calls}</Col>
-			<Col>
+			<Col span={4} className={planDetails}>
+				{type}
+			</Col>
+			<Col span={6} className={planDetails}>
+				{price}
+			</Col>
+			<Col span={4} className={planDetails}>
+				{records}
+			</Col>
+			<Col span={4} className={planDetails}>
+				{calls}
+			</Col>
+			<Col className={planInfo}>
 				<a href="https://appbase.io/pricing/" target="_blank" rel="noopener noreferrer">
 					<Icon type="info-circle" />
 				</a>

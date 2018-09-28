@@ -1,4 +1,5 @@
 import { css } from 'emotion';
+import { media } from '../../utils/media';
 
 const modalHeading = css`
 	font-weight: 700;
@@ -40,6 +41,18 @@ const clusterInfo = css`
 	border: solid 1px rgba(24, 144, 255);
 `;
 
+const planDetails = css`
+	${media.small(css`
+		width: 50%;
+	`)};
+`;
+
+const planInfo = css`
+	${media.small(css`
+		display: none;
+	`)};
+`;
+
 export {
- modalHeading, radiobtn, input, pricebtn, clusterInfo,
+ modalHeading, radiobtn, input, pricebtn, clusterInfo, planDetails, planInfo,
 };

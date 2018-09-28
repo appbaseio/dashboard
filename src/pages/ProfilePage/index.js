@@ -20,7 +20,7 @@ import { displayErrors } from '../../batteries/utils/heplers';
 
 const formCls = css`
 	margin: auto;
-	width: 300px;
+	max-width: 300px;
 `;
 const fieldTitle = css``;
 const fieldWrapper = css`
@@ -188,7 +188,7 @@ class ProfilePage extends React.Component {
 												<span css={fieldTitle}>Phone Number</span>
 												<PhoneInput
 													style={{
-														width: '300px',
+														width: '100%',
 														marginTop: '7px',
 													}}
 													{...handler()}

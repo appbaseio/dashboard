@@ -1,5 +1,7 @@
 import { css } from 'emotion';
 
+import { mediaKey } from '../../utils/media';
+
 const headingText = css`
 	margin-bottom: 0;
 	margin-top: 0.5em;
@@ -32,6 +34,16 @@ const cardActions = css`
 		z-index: -1;
 		opacity: 0;
 		transition: all ease 0.2s;
+
+		${mediaKey.medium} {
+			bottom: 0;
+			z-index: 2;
+			opacity: 1;
+
+			i {
+				display: none;
+			}
+		}
 	}
 
 	&:hover {

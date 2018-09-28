@@ -16,6 +16,7 @@ import AppCard from '../../components/AppCard';
 
 import { getAppsOwners as getOwners } from '../../actions';
 import { getUserPermissions } from '../../batteries/modules/actions';
+import { mediaKey } from '../../utils/media';
 
 const link = css`
 	font-size: 16px;
@@ -23,6 +24,11 @@ const link = css`
 
 	i {
 		margin-right: 4px;
+	}
+
+	${mediaKey.small} {
+		display: block;
+		line-height: 48px;
 	}
 `;
 
@@ -121,17 +127,16 @@ class HomePage extends Component {
 
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
-
 		return (
 			<Fragment>
 				<FullHeader />
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
-						<Col md={18}>
+						<Col lg={18}>
 							<h2>Howdy, bud. Welcome to your dashboard!</h2>
 
 							<Row>
-								<Col span={18}>
+								<Col lg={18}>
 									<p>
 										This is your apps manager view. Here, you can create a new
 										app and manage your existing apps.
@@ -160,11 +165,15 @@ class HomePage extends Component {
 							</a>
 						</Col>
 						<Col
-							md={6}
+							lg={6}
 							css={{
 								display: 'flex',
 								flexDirection: 'column-reverse',
 								paddingBottom: 20,
+
+								[mediaKey.small]: {
+									paddingTop: 20,
+								},
 							}}
 						>
 							<Button size="large" type="primary" block onClick={this.handleChange}>
@@ -238,7 +247,7 @@ class HomePage extends Component {
 							);
 
 							return (
-								<Col key={name} span={8}>
+								<Col key={name} lg={8} md={12} sm={24}>
 									<Link
 										to={`/app/${name}/overview`}
 										css={{ marginBottom: 20, display: 'block' }}
