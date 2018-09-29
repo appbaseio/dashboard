@@ -73,7 +73,7 @@ class CreateCredentials extends React.Component {
 			const includeFieldsHandler = this.form.get('include_fields');
 			const excludeFieldsHandler = this.form.get('exclude_fields');
 			includeFieldsHandler.valueChanges.subscribe((value) => {
-				if (value.includes('*')) {
+				if (value && value.includes('*')) {
 					excludeFieldsHandler.disable({ emitEvent: false });
 					excludeFieldsHandler.reset([]);
 				} else {
@@ -81,7 +81,7 @@ class CreateCredentials extends React.Component {
 				}
 			});
 			excludeFieldsHandler.valueChanges.subscribe((value) => {
-				if (value.includes('*')) {
+				if (value && value.includes('*')) {
 					includeFieldsHandler.disable({ emitEvent: false });
 					includeFieldsHandler.reset([]);
 				} else {

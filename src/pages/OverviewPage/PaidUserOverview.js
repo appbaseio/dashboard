@@ -52,7 +52,7 @@ class PaidUserOverview extends React.Component {
 					<div css="flex: 50%;margin-right: 10px">
 						<Searches
 							css="height: 100%"
-							onClick={() => this.redirectTo('popular-searches')}
+							href="popular-searches"
 							dataSource={getFilteredResults(popularSearches)}
 							title="Popular Searches"
 						/>
@@ -60,7 +60,7 @@ class PaidUserOverview extends React.Component {
 					<div css="flex: 50%;margin-left: 10px">
 						<Searches
 							css="height: 100%"
-							onClick={() => this.redirectTo('no-results-searches')}
+							href="no-results-searches"
 							dataSource={getFilteredResults(noResults)}
 							title="No Result Searches"
 						/>

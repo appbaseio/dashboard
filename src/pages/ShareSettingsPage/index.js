@@ -9,6 +9,7 @@ import { getSharedApp, createAppShare, updatePermission } from '../../batteries/
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
+import { displayErrors } from '../../utils/helper';
 
 let lastIndex = 0;
 const updateIndex = () => {
@@ -58,7 +59,8 @@ class ShareSettingsView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { success } = this.props;
+		const { success, errors } = this.props;
+		displayErrors(errors, prevProps.errors);
 		if (success && success !== prevProps.success) {
 			this.handleCancel();
 			this.getAppShare();
@@ -159,6 +161,7 @@ ShareSettingsView.propTypes = {
 	shareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
 	isLoading: PropTypes.bool.isRequired,
+	errors: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {
