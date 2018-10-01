@@ -61,6 +61,7 @@
 		"rc-progress": "^2.2.5",
 		"react": "^16.4.2",
 		"react-ace": "^6.1.4",
+		"react-animated-number": "^0.4.4",
 		"react-copy-to-clipboard": "^5.0.1",
 		"react-dom": "^16.4.2",
 		"react-element-to-jsx-string": "^14.0.1",
