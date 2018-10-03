@@ -30,7 +30,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 							<span style={{ fontWeight: '600' }}>
 								{compressNumber(get(appCount, 'action.count'))}{' '}
 							</span>
-							<span>/{compressNumber(planLimits[plan].action)}</span>
+							<span>/ {compressNumber(planLimits[plan].action)}</span>
 						</h4>
 					</Col>
 				</Row>
@@ -52,7 +52,7 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 							<span style={{ fontWeight: '600' }}>
 								{compressNumber(get(appCount, 'records.count'))}{' '}
 							</span>
-							<span>/{compressNumber(planLimits[plan].records)}</span>
+							<span>/ {compressNumber(planLimits[plan].records)}</span>
 						</h4>
 					</Col>
 				</Row>

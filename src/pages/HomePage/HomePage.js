@@ -101,10 +101,17 @@ class HomePage extends Component {
 		const { sortBy } = this.state;
 
 		switch (sortBy) {
-			case 'time':
-				return Object.keys(data).reverse();
+			case 'time': {
+				const sortedApps = Object.entries(data)
+					.sort(
+						(prevApp, nextApp) => new Date(nextApp[1].timestamp).getTime()
+							- new Date(prevApp[1].timestamp).getTime(),
+					)
+					.map(app => app[0]);
+				return sortedApps;
+			}
 			default:
-				return Object.keys(apps);
+				return Object.keys(apps).sort();
 		}
 	};
 
@@ -126,6 +133,7 @@ class HomePage extends Component {
 			permissions,
 		} = this.props;
 
+		const firstName = username ? username.split(' ')[0] : 'Bud';
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
 		return (
@@ -134,7 +142,7 @@ class HomePage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Howdy, {username}. Welcome to your dashboard!</h2>
+							<h2>Howdy, {firstName}. Welcome to your dashboard!</h2>
 
 							<Row>
 								<Col lg={18}>
