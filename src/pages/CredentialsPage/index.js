@@ -217,10 +217,12 @@ class Credentials extends Component {
 							onConfirm={this.deleteApp}
 							okText="Yes"
 							cancelText="No"
+							placement="topLeft"
 						>
 							<Button
 								style={{
 									margin: '10px 10px',
+									float: 'right',
 								}}
 								type="danger"
 								size="large"
