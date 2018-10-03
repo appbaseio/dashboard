@@ -9,12 +9,13 @@ import {
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import AppButton from './AppButton';
+import Loader from '../../batteries/components/shared/Loader';
 import PlusMinus from './PlusMinus';
 import NewPricingCard from './NewPricingCard';
 import theme from './theme';
 import { media, hexToRgb } from '../../utils/media';
 import { planBasePrice, displayErrors } from '../../utils/helper';
-import { createAppSubscription, deleteAppSubscription } from '../../batteries/modules/actions';
+import { createAppSubscription, deleteAppSubscription, getAppPlan } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const CheckList = ({ list }) => list.map(item => (
@@ -297,14 +298,19 @@ class PricingTable extends Component {
 	}
 
 	handleToken = (token, plan) => {
-		const { createSubscription } = this.props;
-		createSubscription(token, plan);
+		const { createSubscription, fetchAppPlan } = this.props;
+		createSubscription(token, plan).then(({ payload }) => {
+			if (payload) {
+				fetchAppPlan();
+			}
+		});
 	};
 
 	deleteSubscription = () => {
-		const { deleteSubscription } = this.props;
+		const { deleteSubscription, fetchAppPlan } = this.props;
 		deleteSubscription().then(({ payload }) => {
 			if (payload) {
+				fetchAppPlan();
 				this.cancelConfirmBox();
 			}
 		});
@@ -352,7 +358,11 @@ class PricingTable extends Component {
 			isBootstrapPlan,
 			isGrowthPlan,
 			isSubmitting,
+			isLoading,
 		} = this.props;
+		if (isLoading) {
+			return <Loader show message="Updating Plan... Please wait!" />;
+		}
 		return (
 			<React.Fragment>
 				<Modal
@@ -894,6 +904,8 @@ class PricingTable extends Component {
 PricingTable.propTypes = {
 	createSubscription: PropTypes.func.isRequired,
 	deleteSubscription: PropTypes.func.isRequired,
+	fetchAppPlan: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool.isRequired,
 	isSubmitting: PropTypes.bool.isRequired,
 	isFreePlan: PropTypes.bool.isRequired,
 	isBootstrapPlan: PropTypes.bool.isRequired,
@@ -904,6 +916,7 @@ const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
+		isLoading: get(state, '$createAppSubscription.isFetching'),
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
@@ -916,6 +929,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	createSubscription: (plan, stripeToken) => dispatch(createAppSubscription(plan, stripeToken)),
 	deleteSubscription: appName => dispatch(deleteAppSubscription(appName)),
+	fetchAppPlan: () => dispatch(getAppPlan()),
 });
 
 export default connect(
