@@ -52,9 +52,7 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 								}}
 								gridRatio={0.25}
 								label={<h3 css={heading}>Valid till</h3>}
-								component={new Date(
-									planValidity + new Date().getTime(),
-								).toDateString()}
+								component={new Date(planValidity * 1000).toDateString()}
 							/>
 						</Flex>
 					)}

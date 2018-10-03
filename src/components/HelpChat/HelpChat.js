@@ -174,6 +174,7 @@ class HelpButton extends React.Component {
 						name="details"
 						onChange={this.handleChange}
 						value={details}
+						autosize={{ minRows: 4 }}
 					/>
 				</Modal>
 			</React.Fragment>

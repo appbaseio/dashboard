@@ -120,11 +120,13 @@ class HomePage extends Component {
 			user,
 			appsMetrics: { data },
 			apps,
+			username,
 			history,
 			appsOwners,
 			permissions,
 		} = this.props;
 
+    const firstName = username ? username.split(' ')[0] : 'Bud';
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
 		return (
@@ -133,7 +135,7 @@ class HomePage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Howdy, bud. Welcome to your dashboard!</h2>
+							<h2>Howdy, {firstName}. Welcome to your dashboard!</h2>
 
 							<Row>
 								<Col lg={18}>
@@ -279,6 +281,7 @@ class HomePage extends Component {
 
 HomePage.propTypes = {
 	user: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
 	apps: PropTypes.object.isRequired,
 	appsMetrics: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
@@ -289,10 +292,11 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	user: state.user.data.email,
-	apps: state.apps,
-	appsMetrics: state.appsMetrics,
-	appsOwners: state.appsOwners,
+	user: get(state, 'user.data.email'),
+	username: get(state, 'user.data.name'),
+	apps: get(state, 'apps'),
+	appsMetrics: get(state, 'appsMetrics'),
+	appsOwners: get(state, 'appsOwners'),
 	permissions: get(state, '$getAppPermissions.results'),
 });
 
