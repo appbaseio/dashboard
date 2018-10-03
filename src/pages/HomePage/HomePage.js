@@ -126,6 +126,7 @@ class HomePage extends Component {
 			permissions,
 		} = this.props;
 
+    const firstName = username ? username.split(' ')[0] : 'Bud';
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
 		return (
@@ -134,7 +135,7 @@ class HomePage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Howdy, {username}. Welcome to your dashboard!</h2>
+							<h2>Howdy, {firstName}. Welcome to your dashboard!</h2>
 
 							<Row>
 								<Col lg={18}>

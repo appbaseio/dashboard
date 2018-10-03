@@ -105,7 +105,7 @@ class ActionButtons extends React.Component {
 					{!shared ? (
 						<CopyToClipboard text={writeKey} onCopy={this.copyWriteKey}>
 							<Col span={6} className={columnSeparator}>
-								<Icon className={actionIcon} type="edit" />
+								<Icon className={actionIcon} type="copy" />
 								Write Key
 							</Col>
 						</CopyToClipboard>
@@ -114,7 +114,7 @@ class ActionButtons extends React.Component {
 					{readKey ? (
 						<CopyToClipboard text={readKey} onCopy={this.copyReadKey}>
 							<Col span={shared ? 12 : 6} className={columnSeparator}>
-								<Icon className={actionIcon} type="file-text" />
+								<Icon className={actionIcon} type="copy" />
 								Read Key
 							</Col>
 						</CopyToClipboard>
