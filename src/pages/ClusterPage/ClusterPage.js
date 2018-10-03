@@ -13,7 +13,7 @@ import { getClusters } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
-import regions from './utils/regions';
+import { regions } from './utils/regions';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
