@@ -5,11 +5,10 @@ import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import PricingSlider from './components/PricingSlider';
 
-import {
-	clusterContainer, card, settingsItem,
-} from './styles';
+import { clusterContainer, card, settingsItem } from './styles';
 import { deployCluster } from './utils';
 import plugins from './utils/plugins';
+import regions from './utils/regions';
 
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -260,6 +259,64 @@ export default class NewCluster extends Component {
 		</div>
 	);
 
+	renderRegions = () => {
+		const regionsList1 = {};
+		const regionsList2 = {};
+		Object.keys(regions).forEach((region, i) => {
+			if (i % 2 === 0) {
+				regionsList1[region] = regions[region];
+			} else {
+				regionsList2[region] = regions[region];
+			}
+		});
+		return (
+			<React.Fragment>
+				<ul className="region-list">
+					{Object.keys(regionsList1).map((region) => {
+						const regionValue = regionsList1[region];
+						return (
+							<ul className="region-list">
+								{/* eslint-disable-next-line */}
+								<li
+									key={region}
+									onClick={() => this.setConfig('region', region)}
+									className={this.state.region === region ? 'active' : ''}
+								>
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+									<span>{regionValue.name}</span>
+								</li>
+							</ul>
+						);
+					})}
+				</ul>
+				<ul className="region-list">
+					{Object.keys(regionsList2).map((region) => {
+						const regionValue = regionsList2[region];
+						return (
+							<ul className="region-list">
+								{/* eslint-disable-next-line */}
+								<li
+									key={region}
+									onClick={() => this.setConfig('region', region)}
+									className={this.state.region === region ? 'active' : ''}
+								>
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+									<span>{regionValue.name}</span>
+								</li>
+							</ul>
+						);
+					})}
+				</ul>
+			</React.Fragment>
+		);
+	};
+
 	render() {
 		return (
 			<Fragment>
@@ -290,64 +347,7 @@ export default class NewCluster extends Component {
 									<p>All around the globe</p>
 								</div>
 								<div className="col grow region-container">
-									<ul className="region-list">
-										<li
-											onClick={() => this.setConfig('region', 'eastus')}
-											className={
-												this.state.region === 'eastus' ? 'active' : ''
-											}
-										>
-											<img
-												src="/static/images/flags/united-states.png"
-												alt="US"
-											/>
-											<span>East US</span>
-										</li>
-										<li
-											onClick={() => this.setConfig('region', 'centralus')}
-											className={
-												this.state.region === 'centralus' ? 'active' : ''
-											}
-										>
-											<img
-												src="/static/images/flags/united-states.png"
-												alt="US"
-											/>
-											<span>Central US</span>
-										</li>
-										<li
-											onClick={() => this.setConfig('region', 'westeurope')}
-											className={
-												this.state.region === 'westeurope' ? 'active' : ''
-											}
-										>
-											<img src="/static/images/flags/europe.png" alt="EU" />
-											<span>West Europe</span>
-										</li>
-									</ul>
-									<ul className="region-list">
-										<li
-											onClick={() => this.setConfig('region', 'canadacentral')
-											}
-											className={
-												this.state.region === 'canadacentral'
-													? 'active'
-													: ''
-											}
-										>
-											<img src="/static/images/flags/canada.png" alt="CA" />
-											<span>Canada Central</span>
-										</li>
-										<li
-											onClick={() => this.setConfig('region', 'canadaeast')}
-											className={
-												this.state.region === 'canadaeast' ? 'active' : ''
-											}
-										>
-											<img src="/static/images/flags/canada.png" alt="CA" />
-											<span>Canada East</span>
-										</li>
-									</ul>
+									{this.renderRegions()}
 								</div>
 							</div>
 
@@ -501,11 +501,7 @@ export default class NewCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								<Button
-									type="primary"
-									size="large"
-									onClick={this.createCluster}
-								>
+								<Button type="primary" size="large" onClick={this.createCluster}>
 									Create Cluster
 									<Icon type="arrow-right" theme="outlined" />
 								</Button>
