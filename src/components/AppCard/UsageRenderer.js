@@ -27,9 +27,10 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 					<Col span={14} className={statsContainer}>
 						<h3 className={headingText}>API Calls</h3>
 						<h4 className={statsText}>
-							{`${compressNumber(get(appCount, 'action.count'))}/${compressNumber(
-								planLimits[plan].action,
-							)}`}
+							<span style={{ fontWeight: '600' }}>
+								{compressNumber(get(appCount, 'action.count'))}{' '}
+							</span>
+							<span>/{compressNumber(planLimits[plan].action)}</span>
 						</h4>
 					</Col>
 				</Row>
@@ -48,9 +49,10 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 					<Col span={14} className={statsContainer}>
 						<h3 className={headingText}>Records</h3>
 						<h4 className={statsText}>
-							{`${compressNumber(get(appCount, 'records.count'))}/${compressNumber(
-								planLimits[plan].records,
-							)}`}
+							<span style={{ fontWeight: '600' }}>
+								{compressNumber(get(appCount, 'records.count'))}{' '}
+							</span>
+							<span>/{compressNumber(planLimits[plan].records)}</span>
 						</h4>
 					</Col>
 				</Row>
