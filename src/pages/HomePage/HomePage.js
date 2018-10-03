@@ -101,8 +101,15 @@ class HomePage extends Component {
 		const { sortBy } = this.state;
 
 		switch (sortBy) {
-			case 'time':
-				return Object.keys(data).reverse();
+			case 'time': {
+				const sortedApps = Object.entries(data)
+					.sort(
+						(prevApp, nextApp) => new Date(nextApp[1].timestamp).getTime()
+							- new Date(prevApp[1].timestamp).getTime(),
+					)
+					.map(app => app[0]);
+				return sortedApps;
+			}
 			default:
 				return Object.keys(apps).sort();
 		}
@@ -126,7 +133,7 @@ class HomePage extends Component {
 			permissions,
 		} = this.props;
 
-    const firstName = username ? username.split(' ')[0] : 'Bud';
+		const firstName = username ? username.split(' ')[0] : 'Bud';
 		const owners = appsOwners.data || {};
 		const sortedApps = this.getSortedApps();
 		return (

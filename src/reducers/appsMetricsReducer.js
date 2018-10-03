@@ -34,6 +34,7 @@ export default function appsMetricsReducer(
 		case APPS.APPEND: {
 			const { data: allAppMetrics } = state;
 			const appName = Object.keys(action.payload)[0];
+			const timestamp = new Date().toISOString();
 			return {
 				isLoading: false,
 				data: {
@@ -41,6 +42,7 @@ export default function appsMetricsReducer(
 					[appName]: {
 						records: 0,
 						api_calls: 0,
+						timestamp,
 					},
 				},
 				error: null,
