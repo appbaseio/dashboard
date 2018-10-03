@@ -104,7 +104,7 @@ class HomePage extends Component {
 			case 'time':
 				return Object.keys(data).reverse();
 			default:
-				return Object.keys(apps);
+				return Object.keys(apps).sort();
 		}
 	};
 
