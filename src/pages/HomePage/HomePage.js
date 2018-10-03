@@ -291,11 +291,11 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	user: state.user.data.email,
-	username: state.user.data.name,
-	apps: state.apps,
-	appsMetrics: state.appsMetrics,
-	appsOwners: state.appsOwners,
+	user: get(state, 'user.data.email'),
+	username: get(state, 'user.data.name'),
+	apps: get(state, 'apps'),
+	appsMetrics: get(state, 'appsMetrics'),
+	appsOwners: get(state, 'appsOwners'),
 	permissions: get(state, '$getAppPermissions.results'),
 });
 
