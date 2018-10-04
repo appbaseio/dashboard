@@ -67,7 +67,7 @@ export default class ClusterPage extends Component {
 		const { name, flag } = regions[region];
 		return (
 			<div className="region-info">
-				<img src={`/static/images/flags/${flag}`} alt={name} />
+				{flag && <img src={`/static/images/flags/${flag}`} alt={name} />}
 				<span>{name}</span>
 			</div>
 		);

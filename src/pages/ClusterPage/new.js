@@ -293,10 +293,11 @@ export default class NewCluster extends Component {
 												: ''
 									}
 								>
+									{regionValue.flag && (
 									<img
 										src={`/static/images/flags/${regionValue.flag}`}
 										alt={regionValue.name}
-									/>
+									/>)}
 									<span>{regionValue.name}</span>
 								</li>
 							</ul>
