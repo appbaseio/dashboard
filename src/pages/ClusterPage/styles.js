@@ -40,6 +40,9 @@ const clusterContainer = css`
 		padding: 0;
 		width: 270px;
 		list-style: none;
+		${media.small(css`
+			width:100%;
+		`)};
 		li {
 			cursor: pointer;
 			width: 240px;
@@ -53,6 +56,9 @@ const clusterContainer = css`
 			margin-bottom: 12px;
 			background-color: #fff;
 			transition: all 0.3s ease;
+			${media.small(css`
+				width:100%;
+			`)};
 			img {
 				width: 40px;
 				margin-right: 8px;
@@ -144,6 +150,10 @@ const card = css`
 				align-items: center;
 				justify-content: space-between;
 			`)};
+			${media.small(css`
+				flex-direction: column;
+				align-items: flex-start;
+			`)};
 		}
 		&.grow {
 			flex-grow: 1;
@@ -208,9 +218,21 @@ const clustersList = css`
 			display: flex;
 			flex-direction: row;
 			margin-top: 20px;
+			${media.medium(css`
+				display: block;
+			`)};
 			& > div {
 				flex: 1;
 				flex-direction: column;
+				${media.medium(css`
+					display: inline-block;
+					padding: 10px;
+					width: 33%;
+				`)};
+				${media.xsmall(css`
+					padding: 10px;
+					width: 45%;
+				`)}
 			}
 			.region-info {
 				display: flex;
@@ -219,6 +241,9 @@ const clustersList = css`
 					width: 40px;
 					height: 21px;
 					margin-right: 12px;
+					${media.small(css`
+						display: none;
+					`)};
 				}
 				span {
 					font-weight: 600;
