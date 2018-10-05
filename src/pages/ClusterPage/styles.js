@@ -177,9 +177,12 @@ const settingsItem = css`
 	h4 {
 		width: 140px;
 		text-align: right;
-		margin: 15px 30px 0;
+		margin: 8px 30px 0;
 		font-weight: 600;
 		font-size: 14px;
+		${media.medium(css`
+			text-align: left;
+		`)};
 	}
 	&.grow h4 {
 		width: 240px;
@@ -198,6 +201,23 @@ const settingsItem = css`
 			top: -1px;
 			margin-right: 8px;
 		}
+	}
+	.settings-label{
+		${media.medium(css`
+			display: flex;
+			flex-direction: column;
+		`)};
+	}
+`;
+
+const clusterButtons = css`
+	justify-content: space-between;
+	display: flex;
+	${media.xsmall(css`
+		flex-direction:column;
+	`)}
+	.delete{
+		margin-bottom: 10px;
 	}
 `;
 
@@ -361,4 +381,5 @@ export {
 	clusterEndpoint,
 	credsBox,
 	invoiceTable,
+	clusterButtons,
 };
