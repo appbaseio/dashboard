@@ -270,6 +270,9 @@ const clusterEndpoint = css`
 	display: flex;
 	flex-direction: row;
 	margin: 12px 0 25px;
+	${media.small(css`
+		flex-direction:column;
+	`)}
 	h4 {
 		color: #326bdc;
 		font-size: 16px;
@@ -278,6 +281,9 @@ const clusterEndpoint = css`
 		margin: 0;
 		display: flex;
 		align-items: center;
+		${media.small(css`
+			margin-bottom: 10px;
+		`)}
 		i {
 			font-size: 14px;
 			margin-right: 10px;
@@ -290,6 +296,11 @@ const credsBox = css`
 	border-radius: 3px;
 	border: 1px solid #d9d8e4;
 	color: #555;
+	${media.small(css`
+		flex-direction:column;
+		justify-content:space-around;
+		overflow-x:scroll;
+	`)};
 	a {
 		cursor: pointer;
 	}
@@ -309,6 +320,9 @@ const credsBox = css`
 		&:last-child {
 			padding: 0;
 			border-left: 1px solid #d9d8e4;
+			${media.small(css`
+				border:0;
+			`)};
 		}
 		& > a {
 			padding: 6px 12px;

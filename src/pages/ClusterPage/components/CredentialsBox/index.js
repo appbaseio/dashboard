@@ -30,7 +30,7 @@ export default class CredentialsBox extends Component {
 
 		return (
 			<div className={credsBox}>
-				<span style={{ width: 402 }}>
+				<span>
 					{hidden ? '#######################################' : text}
 				</span>
 				<span>
