@@ -16,6 +16,7 @@ import FullHeader from '../../components/FullHeader';
 import Flex from '../../batteries/components/shared/Flex';
 import Banner from '../../components/Banner/Header';
 import countryCodes from '../../utils/countryCodes';
+import { displayErrors } from '../../batteries/utils/heplers';
 
 const formCls = css`
 	margin: auto;
@@ -91,12 +92,13 @@ class ProfilePage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { isSuccess } = this.props;
+		const { isSuccess, errors } = this.props;
 		if (isSuccess && isSuccess !== prevProps.isSuccess) {
 			notification.success({
 				message: 'Updated user successfully!',
 			});
 		}
+		displayErrors(errors, prevProps.errors);
 	}
 
 	handleSubmit = () => {
@@ -259,6 +261,7 @@ const mapStateToProps = (state) => {
 	const phoneInfo = get(state, 'user.data.phone');
 	return {
 		isSubmitting: get(state, '$updateUser.isFetching'),
+		errors: [get(state, '$updateUser.error')],
 		isSuccess: get(state, '$updateUser.success'),
 		usecase: get(state, 'user.data.usecase'),
 		deploymentTimeframe: get(state, 'user.data.deployment-timeframe'),

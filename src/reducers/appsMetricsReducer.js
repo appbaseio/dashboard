@@ -31,6 +31,23 @@ export default function appsMetricsReducer(
 				error: action.error,
 			};
 		}
+		case APPS.APPEND: {
+			const { data: allAppMetrics } = state;
+			const appName = Object.keys(action.payload)[0];
+			const timestamp = new Date().toISOString();
+			return {
+				isLoading: false,
+				data: {
+					...allAppMetrics,
+					[appName]: {
+						records: 0,
+						api_calls: 0,
+						timestamp,
+					},
+				},
+				error: null,
+			};
+		}
 		case APPS.DELETE_APP: {
 			const { data: allAppMetrics } = state;
 			delete allAppMetrics[action.payload];

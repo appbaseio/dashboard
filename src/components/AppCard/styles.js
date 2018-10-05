@@ -65,6 +65,10 @@ const columnSeparator = css`
 	padding: 10px;
 	transition: all ease 0.2s;
 
+	${mediaKey.xsmall} {
+		padding: 10px 0;
+	}
+
 	&:hover {
 		background: #ececec;
 		color: #1890ff;
@@ -80,10 +84,23 @@ const deleteButton = css`
 	}
 `;
 
+const statsContainer = css`
+	${mediaKey.xsmall} {
+		width: 100%;
+		text-align: center;
+	}
+`;
+
 const actionIcon = css`
 	margin-right: 5px;
 `;
 
 export {
- statsText, headingText, cardActions, columnSeparator, deleteButton, actionIcon,
+	statsText,
+	headingText,
+	cardActions,
+	columnSeparator,
+	deleteButton,
+	actionIcon,
+	statsContainer,
 };

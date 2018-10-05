@@ -8308,6 +8308,13 @@ react-ace@^6.1.4:
     lodash.isequal "^4.1.1"
     prop-types "^15.5.8"
 
+react-animated-number@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-animated-number/-/react-animated-number-0.4.4.tgz#cec986b95a861f97c00ab33037513534798a7f5f"
+  dependencies:
+    prop-types "^15.5.8"
+    raf "^3.2.0"
+
 react-copy-to-clipboard@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.1.tgz#8eae107bb400be73132ed3b6a7b4fb156090208e"
