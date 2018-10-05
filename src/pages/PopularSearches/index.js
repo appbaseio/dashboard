@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import PopularSearches from '../../batteries/components/analytics/components/PopularSearches';
@@ -41,7 +42,13 @@ const PopularSearchesWrapper = ({ appName, plan, isPaidUser }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics.free} />
+				<Overlay
+					src="/static/images/analytics/PopularSearches.png"
+					alt="popular searches"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
@@ -40,7 +41,19 @@ const RequestLogsWrapper = ({ appName, plan, isPaidUser }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics.free} />
+				<Overlay
+					style={{
+						maxWidth: '100%',
+					}}
+					lockSectionStyle={{
+						marginTop: '10%',
+					}}
+					src="/static/images/analytics/LastOperations.png"
+					alt="request logs"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

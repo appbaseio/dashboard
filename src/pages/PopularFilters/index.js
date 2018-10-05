@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import PopularFilters from '../../batteries/components/analytics/components/PopularFilters';
@@ -40,7 +41,10 @@ const PopularFiltersWrapper = ({ appName, plan, isGrowth }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics[plan]} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics[plan]} />
+				<Overlay src="/static/images/analytics/PopularFilters.png" alt="popular filters" />
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

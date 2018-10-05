@@ -257,16 +257,17 @@ class CreateCredentials extends React.Component {
 											<Tooltip overlay={hoverMessage} mouseLeaveDelay={0}>
 												<i className="fas fa-info-circle" />
 											</Tooltip>
-											<UpgradeButton
+											<Button
+												type="primary"
 												css="margin-top: 10px"
-												href="/billing"
+												href="billing"
 												target="_blank"
 												style={{
 													marginTop: 20,
 												}}
 											>
 												Upgrade Now
-											</UpgradeButton>
+											</Button>
 										</div>
 									</div>
 								)}
