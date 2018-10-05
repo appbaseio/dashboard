@@ -18,14 +18,14 @@ const bannerMessagesAnalytics = {
 	bootstrap: {
 		title: 'Get richer analytics on clicks and conversions',
 		description:
-			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
+			'By upgrading to the Growth plan, you can track clicks and conversions, get a 30-day retention on analytics along with being able to view actionable analytics on popular filters, popular results, search latency and geo distribution.',
 		buttonText: 'Upgrade To Growth',
 		href: 'billing',
 	},
 	growth: {
 		title: 'Learn how to track click analytics',
 		description:
-			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
+			'See our docs on how to track search, filters, click events, conversions and add your own custom events.',
 		buttonText: 'Read Docs',
 		href: 'https://docs.appbase.io',
 	},
