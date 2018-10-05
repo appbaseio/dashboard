@@ -1,11 +1,16 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import {
+ Layout, Menu, Icon, Button,
+} from 'antd';
 import { Link } from 'react-router-dom';
-import { string, object, bool } from 'prop-types';
+import {
+ string, object, bool, number,
+} from 'prop-types';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-
+import { getAppPlanByName } from '../../batteries/modules/selectors';
+import { media } from '../../utils/media';
 import MenuSlider from '../FullHeader/MenuSlider';
 import UserMenu from './UserMenu';
 import headerStyles from './styles';
@@ -23,8 +28,19 @@ const noBorder = css`
 		color: #1890ff !important;
 	}
 `;
+const trialText = css`
+	line-height: 2em;
+	font-size: 0.9em;
+`;
+const trialBtn = css`
+	${media.small(css`
+		display: none;
+	`)};
+`;
 
-const AppHeader = ({ currentApp, user, big }) => (
+const AppHeader = ({
+ currentApp, user, big, isUsingTrial, daysLeft,
+}) => (
 	<Header
 		className={headerStyles}
 		css={{ width: big ? 'calc(100% - 80px)' : 'calc(100% - 260px)' }}
@@ -39,6 +55,18 @@ const AppHeader = ({ currentApp, user, big }) => (
 				<span>{currentApp || 'Loading...'}</span>
 			</Menu.Item>
 		</Menu>
+		{isUsingTrial && (
+			<Button
+				css={trialBtn}
+				style={{
+					height: 'auto',
+				}}
+				type="danger"
+				href="billing"
+			>
+				<span css={trialText}>Trial expires in {daysLeft} day(s). Upgrade now</span>
+			</Button>
+		)}
 		<UserMenu user={user} />
 		<MenuSlider />
 	</Header>
@@ -47,6 +75,8 @@ const AppHeader = ({ currentApp, user, big }) => (
 AppHeader.propTypes = {
 	currentApp: string,
 	user: object.isRequired,
+	isUsingTrial: bool.isRequired,
+	daysLeft: number.isRequired,
 	big: bool.isRequired,
 };
 
@@ -54,9 +84,14 @@ AppHeader.defaultProps = {
 	currentApp: null,
 };
 
-const mapStateToProps = state => ({
-	currentApp: get(state, '$getCurrentApp.name'),
-	user: state.user.data,
-});
+const mapStateToProps = (state) => {
+	const appPlan = getAppPlanByName(state);
+	return {
+		isUsingTrial: get(appPlan, 'trial', false),
+		daysLeft: get(appPlan, 'daysLeft'),
+		currentApp: get(state, '$getCurrentApp.name'),
+		user: state.user.data,
+	};
+};
 
 export default connect(mapStateToProps)(AppHeader);
