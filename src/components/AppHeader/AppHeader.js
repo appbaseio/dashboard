@@ -9,7 +9,6 @@ import {
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { getAppPlanByName } from '../../batteries/modules/selectors';
 import { media } from '../../utils/media';
 import MenuSlider from '../FullHeader/MenuSlider';
 import UserMenu from './UserMenu';
@@ -64,7 +63,9 @@ const AppHeader = ({
 				type="danger"
 				href="billing"
 			>
-				<span css={trialText}>Trial expires in {daysLeft} day(s). Upgrade now</span>
+				<span css={trialText}>
+					Trial expires in {daysLeft} {daysLeft > 1 ? 'days' : 'day'}. Upgrade now
+				</span>
 			</Button>
 		)}
 		<UserMenu user={user} />
@@ -84,14 +85,11 @@ AppHeader.defaultProps = {
 	currentApp: null,
 };
 
-const mapStateToProps = (state) => {
-	const appPlan = getAppPlanByName(state);
-	return {
-		isUsingTrial: get(appPlan, 'trial', false),
-		daysLeft: get(appPlan, 'daysLeft'),
-		currentApp: get(state, '$getCurrentApp.name'),
-		user: state.user.data,
-	};
-};
+const mapStateToProps = state => ({
+	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+	daysLeft: get(state, '$getUserPlan.daysLeft'),
+	currentApp: get(state, '$getCurrentApp.name'),
+	user: state.user.data,
+});
 
 export default connect(mapStateToProps)(AppHeader);

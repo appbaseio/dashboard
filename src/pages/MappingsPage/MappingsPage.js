@@ -63,7 +63,10 @@ const MappingsPage = ({
 									lineHeight: '20px',
 								}}
 							>
-								<strong>Trial expires in {trialValidity} days</strong>
+								<strong>
+									Trial expires in {trialValidity}{' '}
+									{trialValidity > 1 ? 'days' : 'day'}
+								</strong>
 							</p>
 						</Col>
 					) : null
@@ -107,9 +110,9 @@ MappingsPage.propTypes = {
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
 	return {
+		isUsingTrial: get(state, '$getUserPlan.trial') || false,
 		isPaidUser: get(appPlan, 'isPaid') || false,
-		isUsingTrial: get(appPlan, 'trial') || false,
-		trialValidity: get(appPlan, 'daysLeft'), // eslint-disable-line
+		trialValidity: get(state, '$getUserPlan.daysLeft'), // eslint-disable-line
 	};
 };
 
