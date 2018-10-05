@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { Icon, message } from 'antd';
 import { string } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { credsBox } from '../../styles';
@@ -21,12 +21,7 @@ export default class CredentialsBox extends Component {
 
 	copySuccess = (source) => {
 		// eslint-disable-next-line
-		toastr.success(`${source} credentials have been copied successully!`);
-	};
-
-	copyError = () => {
-		// eslint-disable-next-line
-		toastr.error('Error', e);
+		message.success(`${source} credentials have been copied successully!`);
 	};
 
 	render() {
@@ -47,9 +42,8 @@ export default class CredentialsBox extends Component {
 						)}
 					</a>
 					<CopyToClipboard
-						type="danger"
-						onSuccess={() => this.copySuccess(name)}
-						onError={() => this.copyError(name)}
+						text={text}
+						onCopy={() => this.copySuccess(name)}
 					>
 						<a data-clipboard-text={text}>
 							<Icon type="copy" theme="outlined" />
