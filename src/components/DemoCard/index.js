@@ -5,10 +5,9 @@ import DemoCard from './card';
 import Flex from '../../batteries/components/shared/Flex';
 
 const demoCard = css`
-	margin-right: 20px;
 	margin-top: 20px;
 	min-width: 265px;
-	max-width: 300px;
+	max-width: 265px;
 	flex: 20%;
 	:last-child {
 		margin-right: 0px;
@@ -16,7 +15,7 @@ const demoCard = css`
 `;
 
 const DemoCards = ({ cardConfig }) => (
-	<Flex css="flex-wrap: wrap;">
+	<Flex css="flex-wrap: wrap;" justifyContent="space-between">
 		{cardConfig.map((config, index) => (
 			// eslint-disable-next-line
 			<div key={index} css={demoCard}>
