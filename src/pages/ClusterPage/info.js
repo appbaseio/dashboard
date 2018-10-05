@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Modal, Button, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { regions } from './ClusterPage';
+import { regions } from './utils/regions';
 import { machineMarks } from './new';
 import FullHeader from '../../components/FullHeader';
 import CredentialsBox from './components/CredentialsBox';
@@ -323,7 +323,7 @@ export default class Clusters extends Component {
 							</Button>
 						</div>
 					</div>
-				)
+				);
 			}
 			return (
 				<Loader />
