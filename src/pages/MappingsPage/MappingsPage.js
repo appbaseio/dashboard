@@ -106,11 +106,10 @@ MappingsPage.propTypes = {
 
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
-	const validity = get(appPlan, 'tier_validity') || 0;
 	return {
 		isPaidUser: get(appPlan, 'isPaid') || false,
 		isUsingTrial: get(appPlan, 'trial') || false,
-		trialValidity: Math.floor(validity / (24 * 60 * 60 * 1000)), // eslint-disable-line
+		trialValidity: get(appPlan, 'daysLeft'), // eslint-disable-line
 	};
 };
 
