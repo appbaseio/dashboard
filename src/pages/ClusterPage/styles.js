@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+import { media } from '../../utils/media';
 
 const clusterContainer = css`
 	.tag {
@@ -30,6 +31,9 @@ const clusterContainer = css`
 	.region-container {
 		display: flex;
 		flex-direction: row;
+		${media.ipadPro(css`
+			justify-content: space-around;
+		`)};
 	}
 	.region-list {
 		margin: 0;
@@ -112,6 +116,9 @@ const card = css`
 	.col {
 		padding: 30px 25px;
 		min-width: 270px;
+		${media.ipadPro(css`
+			width:100%;
+		`)};
 		&.vcenter {
 			display: flex;
 			align-items: center;
@@ -130,11 +137,27 @@ const card = css`
 		}
 		&.grey {
 			background-color: #f9f9f9;
+			width:300px;
+			${media.ipadPro(css`
+				display: flex;
+				width: 100%;
+				align-items: center;
+				justify-content: space-between;
+			`)};
 		}
 		&.grow {
 			flex-grow: 1;
 		}
+		&.pricing{
+			padding: 55px 70px 0 55px;
+			${media.ipadPro(css`
+				padding: 40px 50px;
+			`)};
+		}
 	}
+	${media.ipadPro(css`
+		flex-direction:column;
+	`)};
 `;
 
 const settingsItem = css`
