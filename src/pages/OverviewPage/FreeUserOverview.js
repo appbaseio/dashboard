@@ -86,7 +86,7 @@ const FreeUserOverview = () => (
 				</Col>
 			</Row>
 		</Header>
-		<Container isFreeUser>
+		<Container compact>
 			<DemoCards cardConfig={exampleConfig} />
 		</Container>
 	</React.Fragment>
