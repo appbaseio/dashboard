@@ -64,7 +64,11 @@ const AppHeader = ({
 				href="billing"
 			>
 				<span css={trialText}>
-					Trial expires in {daysLeft} {daysLeft > 1 ? 'days' : 'day'}. Upgrade now
+					{daysLeft > 0
+						? `Trial expires in ${daysLeft} ${
+								daysLeft > 1 ? 'days' : 'day'
+						  }. Upgrade now`
+						: 'Trial expired. Upgrade now'}
 				</span>
 			</Button>
 		)}
