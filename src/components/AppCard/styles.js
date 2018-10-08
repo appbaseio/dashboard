@@ -22,6 +22,7 @@ const cardActions = css`
 	position: relative;
 	overflow: hidden;
 	padding: 25px auto;
+	max-height: 205px;
 
 	.card-actions {
 		width: calc(100% - 20px);
@@ -95,6 +96,10 @@ const actionIcon = css`
 	margin-right: 5px;
 `;
 
+const skeleton = css`
+	max-height: 205px;
+`;
+
 export {
 	statsText,
 	headingText,
@@ -103,4 +108,5 @@ export {
 	deleteButton,
 	actionIcon,
 	statsContainer,
+	skeleton,
 };
