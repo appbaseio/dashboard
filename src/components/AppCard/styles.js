@@ -23,6 +23,9 @@ const cardActions = css`
 	overflow: hidden;
 	padding: 25px auto;
 	max-height: 205px;
+	${mediaKey.xsmall} {
+		max-height: none;
+	}
 
 	.card-actions {
 		width: calc(100% - 20px);
@@ -98,6 +101,9 @@ const actionIcon = css`
 
 const skeleton = css`
 	max-height: 205px;
+	${mediaKey.xsmall} {
+		max-height: none;
+	}
 `;
 
 export {
