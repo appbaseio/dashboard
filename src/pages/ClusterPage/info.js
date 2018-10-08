@@ -437,6 +437,11 @@ export default class Clusters extends Component {
 															.filter(item => item !== 'addons')
 															.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
 													}
+													{
+														this.state.deployment.addons.map(
+															key => this.renderClusterEndpoint(key),
+														)
+													}
 												</div>
 											</li>
 										)
