@@ -113,11 +113,12 @@ class ProfilePage extends React.Component {
 
 	render() {
 		const { submitCountryCode } = this.state;
-		const { isSubmitting } = this.props;
+		const { isSubmitting, username } = this.props;
+		const firstName = username ? username.split(' ')[0] : 'Bud';
 		return (
 			<React.Fragment>
 				<FullHeader />
-				<Banner title="Hi," description="This is your profile view." />
+				<Banner title={`Hi ${firstName},`} description="This is your profile view." />
 				<Container>
 					<FieldGroup control={this.profileForm} strict={false}>
 						{({ invalid, pristine }) => (
@@ -267,6 +268,7 @@ const mapStateToProps = (state) => {
 		deploymentTimeframe: get(state, 'user.data.deployment-timeframe'),
 		phone: get(phoneInfo, 'length') ? phoneInfo.split('-')[1] : '',
 		company: get(state, 'user.data.company'),
+		username: get(state, 'user.data.name'),
 		countryCode: get(phoneInfo, 'length')
 			? get(countryCodes.find(item => item.dial_code === phoneInfo.split('-')[0]), 'code', '')
 			: '',
