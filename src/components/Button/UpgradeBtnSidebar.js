@@ -40,9 +40,7 @@ const UpgradeBtnSidebar = ({ plan, link }) => (
 	<Flex css={upgradeButton} justifyContent="space-between" alignItems="center">
 		<Flex flexDirection="column" justifyContent="space-between">
 			<span>{capitalizeFirstLetter(plan)}</span>
-			{planBasePrice[plan] && (
-				<span css={planDetails}>{`$${planBasePrice[plan]} per app/month`}</span>
-			)}
+			{planBasePrice[plan] && <span css={planDetails}>{`$${planBasePrice[plan]}/mo`}</span>}
 		</Flex>
 		<Link css="color: inherit;" replace to={link}>
 			<Button css={button}>Upgrade</Button>

@@ -22,6 +22,10 @@ const cardActions = css`
 	position: relative;
 	overflow: hidden;
 	padding: 25px auto;
+	max-height: 205px;
+	${mediaKey.xsmall} {
+		max-height: none;
+	}
 
 	.card-actions {
 		width: calc(100% - 20px);
@@ -65,6 +69,10 @@ const columnSeparator = css`
 	padding: 10px;
 	transition: all ease 0.2s;
 
+	${mediaKey.xsmall} {
+		padding: 10px 0;
+	}
+
 	&:hover {
 		background: #ececec;
 		color: #1890ff;
@@ -80,10 +88,31 @@ const deleteButton = css`
 	}
 `;
 
+const statsContainer = css`
+	${mediaKey.xsmall} {
+		width: 100%;
+		text-align: center;
+	}
+`;
+
 const actionIcon = css`
 	margin-right: 5px;
 `;
 
+const skeleton = css`
+	max-height: 205px;
+	${mediaKey.xsmall} {
+		max-height: none;
+	}
+`;
+
 export {
- statsText, headingText, cardActions, columnSeparator, deleteButton, actionIcon,
+	statsText,
+	headingText,
+	cardActions,
+	columnSeparator,
+	deleteButton,
+	actionIcon,
+	statsContainer,
+	skeleton,
 };

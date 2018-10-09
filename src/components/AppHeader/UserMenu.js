@@ -21,14 +21,23 @@ const userMenu = css`
 	`)};
 `;
 
+const menuItem = css`
+	display: flex;
+	align-items: center;
+`;
+
 const UserMenu = ({ user }) => {
 	const menu = (
 		<Menu>
-			<Menu.Item>
+			<Menu.Item className={menuItem}>
+				<Icon type="edit" />
 				<Link to="/profile">{user.email}</Link>
 			</Menu.Item>
 			<Menu.Divider />
-			<Menu.Item onClick={handleLogout}>Logout</Menu.Item>
+			<Menu.Item onClick={handleLogout}>
+				<Icon type="poweroff" theme="outlined" />
+				Logout
+			</Menu.Item>
 		</Menu>
 	);
 

@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import RequestLogs from '../../batteries/components/analytics/components/RequestLogs';
@@ -9,24 +10,23 @@ import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const bannerMessagesAnalytics = {
 	free: {
-		title: 'Unlock the ROI impact of your search',
+		title: 'Request Logs',
 		description:
-			'Get a paid plan to see actionable analytics on search volume, popular searches, no results, track clicks and conversions.',
+			"View the last 100 request logs to glean insights into your app's behavior. Get a paid plan to view 10x more request logs.",
 		buttonText: 'Upgrade Now',
 		href: 'billing',
 	},
 	bootstrap: {
-		title: 'Get richer analytics on clicks and conversions',
+		title: 'Request Logs',
 		description:
-			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
-		buttonText: 'Upgrade To Growth',
-		href: 'billing',
+			"View the last 1,000 request logs to glean insights into your app's behaviors.",
+		buttonText: 'Read More',
+		href: 'https://docs.appbase.io',
 	},
 	growth: {
-		title: 'Learn how to track click analytics',
-		description:
-			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
-		buttonText: 'Read Docs',
+		title: 'Request Logs',
+		description: "View the last 1,000 request logs to glean insights into your app's behavior.",
+		buttonText: 'Read More',
 		href: 'https://docs.appbase.io',
 	},
 };
@@ -41,7 +41,19 @@ const RequestLogsWrapper = ({ appName, plan, isPaidUser }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics.free} />
+				<Overlay
+					style={{
+						maxWidth: '100%',
+					}}
+					lockSectionStyle={{
+						marginTop: '10%',
+					}}
+					src="/static/images/analytics/LastOperations.png"
+					alt="request logs"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

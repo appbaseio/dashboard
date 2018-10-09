@@ -16,16 +16,16 @@ const bannerMessagesAnalytics = {
 		href: 'billing',
 	},
 	bootstrap: {
-		title: 'Get richer analytics on clicks and conversions',
+		title: 'Get search latency analytics with Growth plan',
 		description:
-			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
+			'By upgrading to the Growth plan, you can drill down into the performance of your search.',
 		buttonText: 'Upgrade To Growth',
 		href: 'billing',
 	},
 	growth: {
-		title: 'Learn how to track click analytics',
+		title: 'Search Latency',
 		description:
-			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
+			'Understand the performance of your search. Learn how to make the most of search latency insights.',
 		buttonText: 'Read Docs',
 		href: 'https://docs.appbase.io',
 	},

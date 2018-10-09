@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 
@@ -17,16 +18,16 @@ const bannerMessagesAnalytics = {
 		href: 'billing',
 	},
 	bootstrap: {
-		title: 'Get richer analytics on clicks and conversions',
+		title: 'Get geo distribution analytics with Growth plan',
 		description:
-			'By upgrading to the Growth plan, you can get more actionable analytics on popular filters, popular results, and track clicks and conversions along with a 30-day retention.',
+			'By upgrading to the Growth plan, you can visualize where your search traffic is coming from.',
 		buttonText: 'Upgrade To Growth',
 		href: 'billing',
 	},
 	growth: {
-		title: 'Learn how to track click analytics',
+		title: 'Geo Distribution',
 		description:
-			'See our docs on how to track search, filters, click events, conversions and your own custom events.',
+			'Understand where you search traffic is coming from. Learn how to make the most of geo distribution insights.',
 		buttonText: 'Read Docs',
 		href: 'https://docs.appbase.io',
 	},
@@ -42,7 +43,16 @@ const PopularResultsWrapper = ({ plan, isGrowth }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics[plan]} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics[plan]} />
+				<Overlay
+					style={{
+						maxWidth: '70%',
+					}}
+					src="/static/images/analytics/GeoDistribution.png"
+					alt="analytics"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

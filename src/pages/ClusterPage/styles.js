@@ -60,6 +60,10 @@ const clusterContainer = css`
 			&.active {
 				border: 2px solid #4fee4f;
 			}
+			&.disabled {
+				pointer-events: none;
+				opacity: 0.2;
+			}
 		}
 	}
 `;

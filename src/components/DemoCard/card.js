@@ -16,7 +16,7 @@ const DemoCard = ({
 			description={description}
 		/>
 		<Flex css="margin-top: 40px" alignItems="center" justifyContent="center">
-			<Button href={href}>Read more</Button>
+			<Button href={href} target="_blank">Read more</Button>
 		</Flex>
 	</Card>
 );

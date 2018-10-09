@@ -50,10 +50,7 @@ class Credentials extends Component {
 	}
 
 	componentDidMount() {
-		const { isPermissionsPresent } = this.props;
-		if (!isPermissionsPresent) {
-			this.refetchPermissions();
-		}
+		this.refetchPermissions();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -220,10 +217,12 @@ class Credentials extends Component {
 							onConfirm={this.deleteApp}
 							okText="Yes"
 							cancelText="No"
+							placement="topLeft"
 						>
 							<Button
 								style={{
 									margin: '10px 10px',
+									float: 'right',
 								}}
 								type="danger"
 								size="large"
@@ -249,7 +248,6 @@ Credentials.propTypes = {
 	handleDeletePermission: func.isRequired,
 	handleEditPermission: func.isRequired,
 	isOwner: bool.isRequired,
-	isPermissionsPresent: bool.isRequired,
 	isLoading: bool,
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
@@ -261,7 +259,6 @@ const mapStateToProps = (state) => {
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		appId: get(state, '$getCurrentApp.id'),
-		isPermissionsPresent: !!appPermissions,
 		permissions: get(appPermissions, 'results', []),
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		isOwner: appOwner === userEmail,

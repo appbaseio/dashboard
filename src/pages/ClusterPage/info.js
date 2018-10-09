@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Modal, Button, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { regions } from './ClusterPage';
+import { regions } from './utils/regions';
 import { machineMarks } from './new';
 import FullHeader from '../../components/FullHeader';
 import CredentialsBox from './components/CredentialsBox';
@@ -323,7 +323,7 @@ export default class Clusters extends Component {
 							</Button>
 						</div>
 					</div>
-				)
+				);
 			}
 			return (
 				<Loader />
@@ -427,8 +427,8 @@ export default class Clusters extends Component {
 										: (
 											<li className={card}>
 												<div className="col light">
-													<h3>Endpoints</h3>
-													<p>Plug-ins and Add-ons</p>
+													<h3>Elasticsearch</h3>
+													<p>Live cluster endpoint</p>
 												</div>
 
 												<div className="col">
@@ -436,6 +436,27 @@ export default class Clusters extends Component {
 														Object.keys(this.state.deployment)
 															.filter(item => item !== 'addons')
 															.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
+													}
+												</div>
+											</li>
+										)
+								}
+
+								{
+									this.state.cluster.status === 'in progress'
+										? null
+										: (
+											<li className={card}>
+												<div className="col light">
+													<h3>Add-ons</h3>
+													<p>Elasticsearch add-ons endpoint</p>
+												</div>
+
+												<div className="col">
+													{
+														this.state.deployment.addons.map(
+															key => this.renderClusterEndpoint(key),
+														)
 													}
 												</div>
 											</li>

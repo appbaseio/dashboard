@@ -13,14 +13,7 @@ import { getClusters } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
-
-export const regions = {
-	eastus: { name: 'East US', flag: 'united-states.png' },
-	centralus: { name: 'East US', flag: 'united-states.png' },
-	westeurope: { name: 'West Europe', flag: 'europe.png' },
-	canadacentral: { name: 'Canada Central', flag: 'canada.png' },
-	canadaeast: { name: 'Canada East', flag: 'canada.png' },
-};
+import { regions } from './utils/regions';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
@@ -74,7 +67,7 @@ export default class ClusterPage extends Component {
 		const { name, flag } = regions[region];
 		return (
 			<div className="region-info">
-				<img src={`/static/images/flags/${flag}`} alt="US" />
+				{flag && <img src={`/static/images/flags/${flag}`} alt={name} />}
 				<span>{name}</span>
 			</div>
 		);
