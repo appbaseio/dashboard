@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import UsageRenderer from './UsageRenderer';
 import ActionButtons from './ActionButtons';
-import { cardActions } from './styles';
+import { cardActions, skeleton } from './styles';
 
 const AppCard = ({
  title, data, appName, appId, permissions, shared,
@@ -19,7 +19,7 @@ const AppCard = ({
 		className={cardActions}
 	>
 		{/* Free Plan is taken as default */}
-		<Skeleton title={false} paragraph={{ rows: 2 }} loading={!(data && data[appName])}>
+		<Skeleton className={skeleton} title={false} paragraph={{ rows: 2 }} loading={!(data && data[appName])}>
 			{data && data[appName] ? (
 				<UsageRenderer
 					plan="free"

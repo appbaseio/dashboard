@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Container = ({ children, ...props }) => (
+const Container = ({ children, compact, ...props }) => (
 	<div
 		css={{
 			width: '100%',
 			maxWidth: 1300,
 			margin: '0 auto',
-			padding: '45px 20px',
+			padding: compact ? '0px 20px 20px' : '45px 20px',
 		}}
 		{...props}
 	>
