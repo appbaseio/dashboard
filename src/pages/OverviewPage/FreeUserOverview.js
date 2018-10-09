@@ -9,6 +9,8 @@ import Header from '../../components/Header';
 
 const image = css`
 	max-height: 52px;
+	margin: 2px auto;
+	display: block;
 `;
 
 const appLink = css`
@@ -23,7 +25,7 @@ const FreeUserOverview = () => (
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col md={18}>
-					<h2>Welcome to your app's dashboard view</h2>
+					<h2>Welcome to your app{'\''}s dashboard view</h2>
 					<Row>
 						<Col span={18}>
 							<p>
@@ -36,7 +38,6 @@ const FreeUserOverview = () => (
 			</Row>
 			<Row type="flex" gutter={16}>
 				<Col>
-					<img alt="Web Apps" css={image} src="../../../static/images/WebApp@2x.png" />
 					<div>
 						<Button
 							css={appLink}
@@ -44,16 +45,12 @@ const FreeUserOverview = () => (
 							target="_blank"
 							rel="noreferrer noopener"
 						>
+							<img alt="Web Apps" css={image} src="../../../static/images/WebApp@2x.png" />
 							Web App
 						</Button>
 					</div>
 				</Col>
 				<Col css="margin-left: 50px">
-					<img
-						alt="Mobile Apps"
-						css={image}
-						src="../../../static/images/ReactiveNative@2x.png"
-					/>
 					<div>
 						<Button
 							css={appLink}
@@ -61,16 +58,16 @@ const FreeUserOverview = () => (
 							target="_blank"
 							rel="noreferrer noopener"
 						>
+							<img
+								alt="Mobile Apps"
+								css={image}
+								src="../../../static/images/ReactiveNative@2x.png"
+							/>
 							Mobile App
 						</Button>
 					</div>
 				</Col>
 				<Col css="margin-left: 50px">
-					<img
-						alt="Maps Apps"
-						css={image}
-						src="../../../static/images/ReactiveMaps@2x.png"
-					/>
 					<div>
 						<Button
 							css={appLink}
@@ -78,13 +75,18 @@ const FreeUserOverview = () => (
 							target="_blank"
 							rel="noreferrer noopener"
 						>
+							<img
+								alt="Maps Apps"
+								css={image}
+								src="../../../static/images/ReactiveMaps@2x.png"
+							/>
 							Maps App
 						</Button>
 					</div>
 				</Col>
 			</Row>
 		</Header>
-		<Container>
+		<Container compact>
 			<DemoCards cardConfig={exampleConfig} />
 		</Container>
 	</React.Fragment>
