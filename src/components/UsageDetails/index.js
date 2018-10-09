@@ -32,11 +32,11 @@ const shouldShowUpgrade = (plan, appCount) => {
 	}
 	return { show: true };
 };
-const UsageDetails = ({ plan, computedMetrics, appName }) => {
+const UsageDetails = ({ plan, computedMetrics }) => {
 	const appCount = getAppCount(computedMetrics, plan);
 	const showUpgrade = shouldShowUpgrade(plan, appCount);
 	return (
-		<Card title="Usage this month" css="width: 300px;height: 100%">
+		<Card title="Usage this month" css="height: 100%">
 			<Flex justifyContent="center" alignItems="center">
 				<div css="width: 100px;position: relative">
 					<div css={percentCls}>{`${get(appCount, 'action.percentage')}%`}</div>
