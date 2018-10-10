@@ -137,7 +137,7 @@ export default class ClusterPage extends Component {
 	);
 
 renderClusterHeading = (text, length) => (length
-    ? <Divider orientation="left"><b css={{ color: '#999', fontSize: '14px' }}>{text} - {length}</b></Divider>
+    ? <Divider><b css={{ color: '#999', fontSize: '14px' }}>{text} - ({length})</b></Divider>
     : null)
 
 	render() {
