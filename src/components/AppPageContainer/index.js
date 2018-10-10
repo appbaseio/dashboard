@@ -3,7 +3,12 @@ import get from 'lodash/get';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getAppInfo, setCurrentApp, getAppPlan } from '../../batteries/modules/actions';
+import {
+	getAppInfo,
+	setCurrentApp,
+	getAppPlan,
+	getUserPlan,
+} from '../../batteries/modules/actions';
 import { getAppInfoByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import Loader from '../Loader';
 import { displayErrors } from '../../utils/helper';
@@ -25,6 +30,8 @@ class AppPageContainer extends Component {
 			appName,
 			fetchAppInfo,
 			fetchAppPlan,
+			fetchUserPlan,
+			shouldFetchUserPlan,
 			shouldFetchAppInfo,
 			shouldFetchAppPlan,
 			isAppPlanFetched,
@@ -35,6 +42,9 @@ class AppPageContainer extends Component {
 		}
 		if (shouldFetchAppPlan && !isAppPlanFetched) {
 			fetchAppPlan(appName);
+		}
+		if (shouldFetchUserPlan) {
+			fetchUserPlan();
 		}
 	}
 
@@ -59,6 +69,7 @@ AppPageContainer.defaultProps = {
 	errors: [],
 	shouldFetchAppInfo: true,
 	shouldFetchAppPlan: true,
+	shouldFetchUserPlan: true,
 };
 
 AppPageContainer.propTypes = {
@@ -68,9 +79,11 @@ AppPageContainer.propTypes = {
 	errors: PropTypes.array,
 	shouldFetchAppPlan: PropTypes.bool,
 	shouldFetchAppInfo: PropTypes.bool,
+	shouldFetchUserPlan: PropTypes.bool,
 	component: PropTypes.func.isRequired,
 	fetchAppInfo: PropTypes.func.isRequired,
 	fetchAppPlan: PropTypes.func.isRequired,
+	fetchUserPlan: PropTypes.func.isRequired,
 	updateCurrentApp: PropTypes.func.isRequired,
 	isAppPlanFetched: PropTypes.bool.isRequired,
 	isAppInfoPresent: PropTypes.bool.isRequired,
@@ -81,12 +94,16 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		appName,
 		appId: get(state, 'apps', {})[appName],
-		isLoading: get(state, '$getAppInfo.isFetching') || get(state, '$getAppPlan.isFetching'),
+		isLoading:
+			get(state, '$getAppInfo.isFetching')
+			|| get(state, '$getAppPlan.isFetching')
+			|| get(state, '$getUserPlan.isFetching'),
 		isAppPlanFetched: !!getAppPlanByName(state),
 		isAppInfoPresent: !!getAppInfoByName(state),
 		errors: [
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),
 			ownProps.shouldFetchAppPlan !== false && get(state, '$getAppPlan.error'),
+			ownProps.shouldFetchUserPlan !== false && get(state, '$getUserPlan.error'),
 		],
 	};
 };
@@ -94,6 +111,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
 	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 	fetchAppPlan: appName => dispatch(getAppPlan(appName)),
+	fetchUserPlan: () => dispatch(getUserPlan()),
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
 });
 

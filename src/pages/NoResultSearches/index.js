@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import NoResultSearch from '../../batteries/components/analytics/components/NoResultsSearch';
@@ -39,7 +40,10 @@ const NoResultSearchWrapper = ({ appName, plan, isPaidUser }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics.free} />
+				<Overlay src="/static/images/analytics/NoResults.png" alt="no results searches" />
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

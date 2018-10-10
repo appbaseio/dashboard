@@ -232,7 +232,7 @@ class HomePage extends Component {
 									style={{ fontSize: 34, marginBottom: 10 }}
 								/>
 								<h2>No apps found</h2>
-								<p>Create an app to get started</p>
+								<p>Create an app or try out the interactive tutorial to get started</p>
 							</section>
 						)}
 

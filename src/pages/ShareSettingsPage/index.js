@@ -124,6 +124,7 @@ class ShareSettingsView extends React.Component {
 )}
 						>
 							<Table
+								scroll={{ x: 700 }}
 								dataSource={sharedUsers.map(user => ({
 									settingInfo: user,
 									handleEdit: this.handleEdit,

@@ -168,6 +168,7 @@ class Credentials extends Component {
 			<Container>
 				<Card title="Credentials">
 					<Table
+						scroll={{ x: 700 }}
 						dataSource={permissions.map(permission => ({
 							permissionInfo: permission,
 							deletePermission: this.deletePermission,

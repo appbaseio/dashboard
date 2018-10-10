@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Container from '../../components/Container';
+import Overlay from '../../components/Overlay';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import Analytics from '../../batteries/components/analytics';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
@@ -41,7 +42,16 @@ const AnalyticsView = ({ appName, isPaidUser, plan }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics.free} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics.free} />
+				<Overlay
+					style={{
+						maxWidth: '70%',
+					}}
+					src="/static/images/analytics/Analytics.png"
+					alt="analytics"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );
