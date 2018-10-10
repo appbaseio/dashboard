@@ -59,12 +59,8 @@ class ShareSettingsView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { success, errors } = this.props;
+		const { errors } = this.props;
 		displayErrors(errors, prevProps.errors);
-		if (success && success !== prevProps.success) {
-			this.handleCancel();
-			this.getAppShare();
-		}
 	}
 
 	getAppShare() {
@@ -91,9 +87,19 @@ class ShareSettingsView extends React.Component {
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
 		if (selectedSettings && selectedSettings.username) {
-			handleEditPermission(appId, selectedSettings.username, requestPayload);
+			handleEditPermission(appId, selectedSettings.username, requestPayload).then(
+				({ payload }) => {
+					if (payload) {
+						this.afterSuccess();
+					}
+				},
+			);
 		} else {
-			shareApp(appId, requestPayload);
+			shareApp(appId, requestPayload).then(({ payload }) => {
+				if (payload) {
+					this.afterSuccess();
+				}
+			});
 		}
 	};
 
@@ -103,6 +109,11 @@ class ShareSettingsView extends React.Component {
 			selectedSettings: setting,
 		});
 	};
+
+	afterSuccess() {
+		this.handleCancel();
+		this.getAppShare();
+	}
 
 	render() {
 		const { isPaidUser, sharedUsers, isLoading } = this.props;
