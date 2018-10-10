@@ -174,6 +174,9 @@ const settingsItem = css`
 	display: flex;
 	flex-direction: row;
 	margin: 5px 0 15px;
+	${media.xsmall(css`
+		flex-direction:column;
+	`)};
 	h4 {
 		width: 140px;
 		text-align: right;
@@ -182,6 +185,9 @@ const settingsItem = css`
 		font-size: 14px;
 		${media.medium(css`
 			text-align: left;
+		`)};
+		${media.xsmall(css`
+			margin:0;
 		`)};
 	}
 	&.grow h4 {
