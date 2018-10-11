@@ -9,7 +9,7 @@ import CredentialsBox from './components/CredentialsBox';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import {
-	clusterContainer, clustersList, card, settingsItem, clusterEndpoint,
+	clusterContainer, clustersList, card, settingsItem, clusterEndpoint, clusterButtons,
 } from './styles';
 import { getClusterData, deployCluster, deleteCluster } from './utils';
 
@@ -529,7 +529,7 @@ export default class Clusters extends Component {
 
 													<div className={settingsItem}>
 														<h4>Add-ons</h4>
-														<div>
+														<div className="settings-label">
 															<label htmlFor="dejavu">
 																<input
 																	type="checkbox"
@@ -571,15 +571,13 @@ export default class Clusters extends Component {
 								this.state.cluster.status === 'in progress'
 									? <p style={{ textAlign: 'center' }}>Deployment is in progress. Please wait.</p>
 									: (
-										<div style={{ textAlign: 'right', marginBottom: 40 }}>
+										<div style={{ textAlign: 'right', marginBottom: 40 }} className={clusterButtons}>
 											<Button
 												onClick={this.deleteCluster}
 												type="danger"
 												size="large"
-												style={{
-													marginRight: 12,
-												}}
 												icon="delete"
+												className="delete"
 											>
 												Delete Cluster
 											</Button>
