@@ -148,14 +148,12 @@ class ActionButtons extends React.Component {
 								Shared Key
 							</Col>
 						</CopyToClipboard>
-					) : null}
-
-					{!shared ? (
+					) : (
 						<Col span={6} onClick={this.handleDeleteModal} className={deleteButton}>
 							<Icon className={actionIcon} type="delete" />
 							Delete App
 						</Col>
-					) : null}
+					)}
 				</Row>
 				<DeleteAppModal
 					appName={appName}
