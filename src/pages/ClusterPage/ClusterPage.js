@@ -73,72 +73,62 @@ export default class ClusterPage extends Component {
 		);
 	};
 
-  renderClusterCard = cluster => (
+	renderClusterCard = cluster => (
 		<li key={cluster.name} className="cluster-card compact">
-      <h3>
-        {cluster.name}
-        <span className="tag">
-          {cluster.status === 'delInProg'
-            ? 'deletion in progress'
-            : cluster.status}
-        </span>
-      </h3>
+			<h3>
+				{cluster.name}
+				<span className="tag">
+					{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
+				</span>
+			</h3>
 
-      <div className="info-row">
-        <div>
-          <h4>Region</h4>
-          {this.renderClusterRegion(cluster.region)}
-        </div>
+			<div className="info-row">
+				<div>
+					<h4>Region</h4>
+					{this.renderClusterRegion(cluster.region)}
+				</div>
 
-        <div>
-          <h4>Pricing Plan</h4>
-          <div>{cluster.pricing_plan}</div>
-        </div>
+				<div>
+					<h4>Pricing Plan</h4>
+					<div>{cluster.pricing_plan}</div>
+				</div>
 
-        <div>
-          <h4>ES Version</h4>
-          <div>{cluster.es_version}</div>
-        </div>
+				<div>
+					<h4>ES Version</h4>
+					<div>{cluster.es_version}</div>
+				</div>
 
-        <div>
-          <h4>Memory</h4>
-          <div>
-            {this.getFromPricing(
-              cluster.pricing_plan,
-              'memory',
-            )}{' '}
-            GB
-          </div>
-        </div>
+				<div>
+					<h4>Memory</h4>
+					<div>{this.getFromPricing(cluster.pricing_plan, 'memory')} GB</div>
+				</div>
 
-        <div>
-          <h4>Disk Size</h4>
-          <div>
-            {this.getFromPricing(
-              cluster.pricing_plan,
-              'storage',
-            )}{' '}
-            GB
-          </div>
-        </div>
+				<div>
+					<h4>Disk Size</h4>
+					<div>{this.getFromPricing(cluster.pricing_plan, 'storage')} GB</div>
+				</div>
 
-        <div>
-          <h4>Nodes</h4>
-          <div>{cluster.total_nodes}</div>
-        </div>
+				<div>
+					<h4>Nodes</h4>
+					<div>{cluster.total_nodes}</div>
+				</div>
 
-        <div>
-          <Link to={`/clusters/${cluster.id}`}>
-            <Button type="primary">View Details</Button>
-          </Link>
-        </div>
-      </div>
+				<div>
+					<Link to={`/clusters/${cluster.id}`}>
+						<Button type="primary">View Details</Button>
+					</Link>
+				</div>
+			</div>
 		</li>
 	);
 
-renderClusterHeading = (text, length) => (length
-    ? <Divider><b css={{ color: '#999', fontSize: '14px' }}>{text} - ({length})</b></Divider>
-    : null)
+	renderClusterHeading = (text, length) => (length ? (
+			<Divider>
+				<b css={{ color: '#999', fontSize: '14px' }}>
+					{text} - ({length})
+				</b>
+			</Divider>
+		) : null);
 
 	render() {
 		const vcenter = {
@@ -153,9 +143,11 @@ renderClusterHeading = (text, length) => (length
 
 		const { isLoading, clustersAvailable, clusters } = this.state;
 
-    const deletedClusters = clusters.filter(cluster => cluster.status === 'deleted');
-    const activeClusters = clusters.filter(cluster => cluster.status === 'active');
-    const clustersInProgress = clusters.filter(cluster => cluster.status !== 'deleted' && cluster.status !== 'active');
+		const deletedClusters = clusters.filter(cluster => cluster.status === 'deleted');
+		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
+		const clustersInProgress = clusters.filter(
+			cluster => cluster.status !== 'deleted' && cluster.status !== 'active',
+		);
 
 		if (isLoading) {
 			return <Loader />;
@@ -225,43 +217,31 @@ renderClusterHeading = (text, length) => (length
 				<Container>
 					<section className={clusterContainer}>
 						<article>
-              <h2>My Clusters</h2>
+							<h2>My Clusters</h2>
 
-              {this.renderClusterHeading('Active Clusters', activeClusters.length)}
-              {
-                activeClusters.length ? (
-                  <ul className={clustersList}>
-                    {activeClusters
-                      .map(cluster => (
-                        this.renderClusterCard(cluster)
-                    ))}
-                  </ul>
-                ) : null
-              }
+							{this.renderClusterHeading('Active Clusters', activeClusters.length)}
+							{activeClusters.length ? (
+								<ul className={clustersList}>
+									{activeClusters.map(cluster => this.renderClusterCard(cluster))}
+								</ul>
+							) : null}
 
-              {this.renderClusterHeading('Clusters in progress', clustersInProgress.length)}
-              {
-                clustersInProgress.length ? (
-                  <ul className={clustersList}>
-                    {clustersInProgress
-                      .map(cluster => (
-                        this.renderClusterCard(cluster)
-                    ))}
-                  </ul>
-                ) : null
-              }
+							{this.renderClusterHeading(
+								'Clusters in progress',
+								clustersInProgress.length,
+							)}
+							{clustersInProgress.length ? (
+								<ul className={clustersList}>
+									{clustersInProgress.map(cluster => this.renderClusterCard(cluster))}
+								</ul>
+							) : null}
 
-              {this.renderClusterHeading('Deleted Clusters', deletedClusters.length)}
-              {
-                deletedClusters.length ? (
-                  <ul className={clustersList}>
-                    {deletedClusters
-                      .map(cluster => (
-                        this.renderClusterCard(cluster)
-                    ))}
-                  </ul>
-                ) : null
-              }
+							{this.renderClusterHeading('Deleted Clusters', deletedClusters.length)}
+							{deletedClusters.length ? (
+								<ul className={clustersList}>
+									{deletedClusters.map(cluster => this.renderClusterCard(cluster))}
+								</ul>
+							) : null}
 						</article>
 					</section>
 				</Container>
