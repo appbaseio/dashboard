@@ -41,7 +41,7 @@ const clusterContainer = css`
 		width: 270px;
 		list-style: none;
 		${media.small(css`
-			width:100%;
+			width: 100%;
 		`)};
 		li {
 			cursor: pointer;
@@ -57,7 +57,7 @@ const clusterContainer = css`
 			background-color: #fff;
 			transition: all 0.3s ease;
 			${media.small(css`
-				width:100%;
+				width: 100%;
 			`)};
 			img {
 				width: 40px;
@@ -123,7 +123,7 @@ const card = css`
 		padding: 30px 25px;
 		min-width: 270px;
 		${media.ipadPro(css`
-			width:100%;
+			width: 100%;
 		`)};
 		&.vcenter {
 			display: flex;
@@ -143,7 +143,7 @@ const card = css`
 		}
 		&.grey {
 			background-color: #f9f9f9;
-			width:300px;
+			width: 300px;
 			${media.ipadPro(css`
 				display: flex;
 				width: 100%;
@@ -158,7 +158,7 @@ const card = css`
 		&.grow {
 			flex-grow: 1;
 		}
-		&.pricing{
+		&.pricing {
 			padding: 55px 70px 0 55px;
 			${media.ipadPro(css`
 				padding: 40px 50px;
@@ -166,7 +166,7 @@ const card = css`
 		}
 	}
 	${media.ipadPro(css`
-		flex-direction:column;
+		flex-direction: column;
 	`)};
 `;
 
@@ -175,7 +175,7 @@ const settingsItem = css`
 	flex-direction: row;
 	margin: 5px 0 15px;
 	${media.xsmall(css`
-		flex-direction:column;
+		flex-direction: column;
 	`)};
 	h4 {
 		width: 140px;
@@ -187,7 +187,7 @@ const settingsItem = css`
 			text-align: left;
 		`)};
 		${media.xsmall(css`
-			margin:0;
+			margin: 0;
 		`)};
 	}
 	&.grow h4 {
@@ -208,7 +208,7 @@ const settingsItem = css`
 			margin-right: 8px;
 		}
 	}
-	.settings-label{
+	.settings-label {
 		${media.medium(css`
 			display: flex;
 			flex-direction: column;
@@ -220,9 +220,8 @@ const clusterButtons = css`
 	justify-content: space-between;
 	display: flex;
 	${media.xsmall(css`
-		flex-direction:column;
-	`)}
-	.delete{
+		flex-direction: column;
+	`)} .delete {
 		margin-bottom: 10px;
 	}
 `;
@@ -258,7 +257,7 @@ const clustersList = css`
 				${media.xsmall(css`
 					padding: 10px;
 					width: 45%;
-				`)}
+				`)};
 			}
 			.region-info {
 				display: flex;
@@ -297,9 +296,8 @@ const clusterEndpoint = css`
 	flex-direction: row;
 	margin: 12px 0 25px;
 	${media.small(css`
-		flex-direction:column;
-	`)}
-	h4 {
+		flex-direction: column;
+	`)} h4 {
 		color: #326bdc;
 		font-size: 16px;
 		font-weight: 600;
@@ -309,8 +307,7 @@ const clusterEndpoint = css`
 		align-items: center;
 		${media.small(css`
 			margin-bottom: 10px;
-		`)}
-		i {
+		`)} i {
 			font-size: 14px;
 			margin-right: 10px;
 		}
@@ -323,10 +320,33 @@ const credsBox = css`
 	border: 1px solid #d9d8e4;
 	color: #555;
 	${media.small(css`
-		flex-direction:column;
-		justify-content:space-around;
-		overflow-x:scroll;
+		flex-direction: column;
+		justify-content: space-around;
 	`)};
+	.cred-text {
+		${media.small(css`
+			overflow-x: scroll;
+		`)};
+	}
+	.cred-button a {
+		${media.small(css`
+			width: 50%;
+			border-top: 1px solid #efefef;
+			border-right: 1px solid #efefef;
+		`)};
+		&:last-child {
+			${media.small(css`
+				border-right: 0;
+			`)};
+		}
+		.cred-button-text {
+			display: none;
+			${media.small(css`
+				border: 0;
+				display: inline;
+			`)};
+		}
+	}
 	a {
 		cursor: pointer;
 	}
@@ -347,7 +367,7 @@ const credsBox = css`
 			padding: 0;
 			border-left: 1px solid #d9d8e4;
 			${media.small(css`
-				border:0;
+				border: 0;
 			`)};
 		}
 		& > a {
