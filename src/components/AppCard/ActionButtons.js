@@ -75,30 +75,33 @@ class ActionButtons extends React.Component {
 		});
 	};
 
-  copySharedKey = () => {
-    const { permissions } = this.props;
-    let write = true;
+	copySharedKey = () => {
+		const { permissions } = this.props;
+		let write = true;
 		if (permissions) {
 			write = permissions.results[0].read && permissions.results[0].write;
 		}
 
-    if (write) this.copyWriteKey();
-    else this.copyReadKey();
+		if (write) this.copyWriteKey();
+		else this.copyReadKey();
 	};
 
 	render() {
 		const {
-     appName, appId, shared, permissions,
-    } = this.props;
+			appName,
+			appId,
+			shared,
+			permissions, // prettier-ignore
+		} = this.props;
 		const { deleteModal } = this.state;
 
 		const readKey = this.getReadKey();
 		const writeKey = this.getWriteKey();
-    let sharedKey = '';
-    if (shared && permissions) {
-      // We only get one key for shared app either it will be read key or a write key
-      sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
-    }
+		let sharedKey = '';
+		if (shared && permissions) {
+			// We only get one key for shared app either it will be read key or a write key
+			sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
+		}
 
 		return (
 			// eslint-disable-next-line
@@ -138,7 +141,7 @@ class ActionButtons extends React.Component {
 						</CopyToClipboard>
 					) : null}
 
-          {shared ? (
+					{shared ? (
 						<CopyToClipboard text={sharedKey} onCopy={this.copySharedKey}>
 							<Col span={shared ? 12 : 6} className={columnSeparator}>
 								<Icon className={actionIcon} type="copy" />
