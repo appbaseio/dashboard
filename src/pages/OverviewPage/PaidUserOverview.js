@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
-import { Card } from 'antd';
 import PropTypes from 'prop-types';
 import { mediaKey } from '../../utils/media';
 import SearchVolumeChart from '../../batteries/components/shared/Chart/SearchVolume';
@@ -30,10 +29,7 @@ const chart = css`
 		height: 300px;
 		margin-left: 0;
 		margin-top: 20px;
-		.ant-card-body {
-			padding-left: 0px;
-			padding-right: 0px;
-		}
+		margin-bottom: 20px;
 	}
 `;
 const usage = css`
@@ -88,17 +84,9 @@ class PaidUserOverview extends React.Component {
 					<div css={usage}>
 						<UsageDetails />
 					</div>
-					<Card css={chart} title="Daily Search Volume">
-						<SearchVolumeChart
-							width={
-								window.innerWidth > 670
-									? window.innerWidth - 670
-									: window.innerWidth - 150
-							}
-							height={210}
-							data={searchVolume}
-						/>
-					</Card>
+					<div css={chart}>
+						<SearchVolumeChart margin={10} height={210} data={searchVolume} />
+					</div>
 				</Flex>
 				<Flex css={results}>
 					<div css={searchCls}>
