@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+import { media } from '../../utils/media';
 
 const clusterContainer = css`
 	.tag {
@@ -30,12 +31,18 @@ const clusterContainer = css`
 	.region-container {
 		display: flex;
 		flex-direction: row;
+		${media.ipadPro(css`
+			justify-content: space-around;
+		`)};
 	}
 	.region-list {
 		margin: 0;
 		padding: 0;
 		width: 270px;
 		list-style: none;
+		${media.small(css`
+			width: 100%;
+		`)};
 		li {
 			cursor: pointer;
 			width: 240px;
@@ -49,6 +56,9 @@ const clusterContainer = css`
 			margin-bottom: 12px;
 			background-color: #fff;
 			transition: all 0.3s ease;
+			${media.small(css`
+				width: 100%;
+			`)};
 			img {
 				width: 40px;
 				margin-right: 8px;
@@ -112,6 +122,9 @@ const card = css`
 	.col {
 		padding: 30px 25px;
 		min-width: 270px;
+		${media.ipadPro(css`
+			width: 100%;
+		`)};
 		&.vcenter {
 			display: flex;
 			align-items: center;
@@ -130,23 +143,52 @@ const card = css`
 		}
 		&.grey {
 			background-color: #f9f9f9;
+			width: 300px;
+			${media.ipadPro(css`
+				display: flex;
+				width: 100%;
+				align-items: center;
+				justify-content: space-between;
+			`)};
+			${media.small(css`
+				flex-direction: column;
+				align-items: flex-start;
+			`)};
 		}
 		&.grow {
 			flex-grow: 1;
 		}
+		&.expanded {
+			padding: 55px 70px 0 55px;
+			${media.ipadPro(css`
+				padding: 40px 50px;
+			`)};
+		}
 	}
+	${media.ipadPro(css`
+		flex-direction: column;
+	`)};
 `;
 
 const settingsItem = css`
 	display: flex;
 	flex-direction: row;
 	margin: 5px 0 15px;
+	${media.xsmall(css`
+		flex-direction: column;
+	`)};
 	h4 {
 		width: 140px;
 		text-align: right;
-		margin: 15px 30px 0;
+		margin: 8px 30px 0;
 		font-weight: 600;
 		font-size: 14px;
+		${media.medium(css`
+			text-align: left;
+		`)};
+		${media.xsmall(css`
+			margin: 0;
+		`)};
 	}
 	&.grow h4 {
 		width: 240px;
@@ -165,6 +207,24 @@ const settingsItem = css`
 			top: -1px;
 			margin-right: 8px;
 		}
+	}
+	.settings-label {
+		${media.medium(css`
+			display: flex;
+			flex-direction: column;
+		`)};
+	}
+`;
+
+const clusterButtons = css`
+	justify-content: space-between;
+	text-align: right;
+	margin-bottom: 40px;
+	display: flex;
+	${media.xsmall(css`
+		flex-direction: column;
+	`)} .delete {
+		margin-bottom: 10px;
 	}
 `;
 
@@ -185,9 +245,21 @@ const clustersList = css`
 			display: flex;
 			flex-direction: row;
 			margin-top: 20px;
+			${media.medium(css`
+				display: block;
+			`)};
 			& > div {
 				flex: 1;
 				flex-direction: column;
+				${media.medium(css`
+					display: inline-block;
+					padding: 10px;
+					width: 33%;
+				`)};
+				${media.xsmall(css`
+					padding: 10px;
+					width: 45%;
+				`)};
 			}
 			.region-info {
 				display: flex;
@@ -196,6 +268,9 @@ const clustersList = css`
 					width: 40px;
 					height: 21px;
 					margin-right: 12px;
+					${media.small(css`
+						display: none;
+					`)};
 				}
 				span {
 					font-weight: 600;
@@ -222,7 +297,9 @@ const clusterEndpoint = css`
 	display: flex;
 	flex-direction: row;
 	margin: 12px 0 25px;
-	h4 {
+	${media.small(css`
+		flex-direction: column;
+	`)} h4 {
 		color: #326bdc;
 		font-size: 16px;
 		font-weight: 600;
@@ -230,7 +307,9 @@ const clusterEndpoint = css`
 		margin: 0;
 		display: flex;
 		align-items: center;
-		i {
+		${media.small(css`
+			margin-bottom: 10px;
+		`)} i {
 			font-size: 14px;
 			margin-right: 10px;
 		}
@@ -242,6 +321,34 @@ const credsBox = css`
 	border-radius: 3px;
 	border: 1px solid #d9d8e4;
 	color: #555;
+	${media.small(css`
+		flex-direction: column;
+		justify-content: space-around;
+	`)};
+	.cred-text {
+		${media.small(css`
+			overflow-x: scroll;
+		`)};
+	}
+	.cred-button a {
+		${media.small(css`
+			width: 50%;
+			border-top: 1px solid #efefef;
+			border-right: 1px solid #efefef;
+		`)};
+		&:last-child {
+			${media.small(css`
+				border-right: 0;
+			`)};
+		}
+		.cred-button-text {
+			display: none;
+			${media.small(css`
+				border: 0;
+				display: inline;
+			`)};
+		}
+	}
 	a {
 		cursor: pointer;
 	}
@@ -261,6 +368,9 @@ const credsBox = css`
 		&:last-child {
 			padding: 0;
 			border-left: 1px solid #d9d8e4;
+			${media.small(css`
+				border: 0;
+			`)};
 		}
 		& > a {
 			padding: 6px 12px;
@@ -299,4 +409,5 @@ export {
 	clusterEndpoint,
 	credsBox,
 	invoiceTable,
+	clusterButtons,
 };

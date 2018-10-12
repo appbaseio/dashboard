@@ -30,23 +30,22 @@ export default class CredentialsBox extends Component {
 
 		return (
 			<div className={credsBox}>
-				<span style={{ width: 402 }}>
+				<span className="cred-text">
 					{hidden ? '#######################################' : text}
 				</span>
-				<span>
+				<span className="cred-button">
 					<a onClick={this.toggleHidden}>
 						{hidden ? (
 							<Icon type="eye" theme="outlined" />
 						) : (
 							<Icon type="close-circle" theme="outlined" />
 						)}
+						<span className="cred-button-text">{hidden ? 'Show' : 'Hide'}</span>
 					</a>
-					<CopyToClipboard
-						text={text}
-						onCopy={() => this.copySuccess(name)}
-					>
+					<CopyToClipboard text={text} onCopy={() => this.copySuccess(name)}>
 						<a data-clipboard-text={text}>
 							<Icon type="copy" theme="outlined" />
+							<span className="cred-button-text">Copy</span>
 						</a>
 					</CopyToClipboard>
 				</span>
