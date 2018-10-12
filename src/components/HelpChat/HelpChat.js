@@ -27,6 +27,10 @@ class HelpButton extends React.Component {
 		};
 	}
 
+  componentDidMount() {
+    this.handleContact();
+  }
+
 	handleCancel = () => {
 		this.setState({
 			modal: false,
@@ -91,6 +95,35 @@ class HelpButton extends React.Component {
 		} else {
 			message.error('Please write the issue');
 		}
+	};
+
+  handleContact = () => {
+		const { user } = this.props;
+		fetch(
+			'https://api.hubapi.com/contacts/v1/contact/?hapikey=58ac8afe-7da1-4aa4-8cbb-04eed4ec8c5e',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					properties: [
+						{
+							property: 'email',
+							value: user.email,
+						},
+						{
+							name: 'firstname',
+							value: user.name,
+						},
+					],
+				}),
+			},
+		)
+		.then(res => res.json())
+		.then((data) => {
+      console.log(data.message);
+		});
 	};
 
 	handleClick = (e) => {
