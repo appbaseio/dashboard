@@ -158,7 +158,7 @@ const card = css`
 		&.grow {
 			flex-grow: 1;
 		}
-		&.pricing {
+		&.expanded {
 			padding: 55px 70px 0 55px;
 			${media.ipadPro(css`
 				padding: 40px 50px;
@@ -218,6 +218,8 @@ const settingsItem = css`
 
 const clusterButtons = css`
 	justify-content: space-between;
+	text-align: right;
+	margin-bottom: 40px;
 	display: flex;
 	${media.xsmall(css`
 		flex-direction: column;

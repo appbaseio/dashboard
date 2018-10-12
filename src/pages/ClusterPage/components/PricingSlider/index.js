@@ -72,7 +72,7 @@ export default class PricingSlider extends Component {
 
 		return (
 			<Fragment>
-				<div className="col grow pricing">
+				<div className="col grow expanded">
 					<Slider
 						marks={marks}
 						onChange={this.onChange}

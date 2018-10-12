@@ -571,7 +571,7 @@ export default class Clusters extends Component {
 								this.state.cluster.status === 'in progress'
 									? <p style={{ textAlign: 'center' }}>Deployment is in progress. Please wait.</p>
 									: (
-										<div style={{ textAlign: 'right', marginBottom: 40 }} className={clusterButtons}>
+										<div className={clusterButtons}>
 											<Button
 												onClick={this.deleteCluster}
 												type="danger"
