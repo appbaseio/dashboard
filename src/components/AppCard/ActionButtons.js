@@ -75,12 +75,33 @@ class ActionButtons extends React.Component {
 		});
 	};
 
+	copySharedKey = () => {
+		const { permissions } = this.props;
+		let write = true;
+		if (permissions) {
+			write = permissions.results[0].read && permissions.results[0].write;
+		}
+
+		if (write) this.copyWriteKey();
+		else this.copyReadKey();
+	};
+
 	render() {
-		const { appName, appId, shared } = this.props;
+		const {
+			appName,
+			appId,
+			shared,
+			permissions, // prettier-ignore
+		} = this.props;
 		const { deleteModal } = this.state;
 
 		const readKey = this.getReadKey();
 		const writeKey = this.getWriteKey();
+		let sharedKey = '';
+		if (shared && permissions) {
+			// We only get one key for shared app either it will be read key or a write key
+			sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
+		}
 
 		return (
 			// eslint-disable-next-line
@@ -111,29 +132,28 @@ class ActionButtons extends React.Component {
 						</CopyToClipboard>
 					) : null}
 
-					{readKey ? (
+					{readKey && !shared ? (
 						<CopyToClipboard text={readKey} onCopy={this.copyReadKey}>
 							<Col span={shared ? 12 : 6} className={columnSeparator}>
 								<Icon className={actionIcon} type="copy" />
 								Read Key
 							</Col>
 						</CopyToClipboard>
-					) : (
-						<Col
-							span={shared ? 12 : 6}
-							style={{ cursor: 'not-allowed' }}
-							className={columnSeparator}
-						>
-							No Read Key
-						</Col>
-					)}
+					) : null}
 
-					{!shared ? (
+					{shared ? (
+						<CopyToClipboard text={sharedKey} onCopy={this.copySharedKey}>
+							<Col span={shared ? 12 : 6} className={columnSeparator}>
+								<Icon className={actionIcon} type="copy" />
+								Shared Key
+							</Col>
+						</CopyToClipboard>
+					) : (
 						<Col span={6} onClick={this.handleDeleteModal} className={deleteButton}>
 							<Icon className={actionIcon} type="delete" />
 							Delete App
 						</Col>
-					) : null}
+					)}
 				</Row>
 				<DeleteAppModal
 					appName={appName}
