@@ -11,7 +11,7 @@ git submodule init
 git submodule update --recursive --remote
 ```
 
-## Installation and development
+### Installation and development
 
 ```
 yarn
