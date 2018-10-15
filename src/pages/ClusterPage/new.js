@@ -140,7 +140,7 @@ export default class NewCluster extends Component {
 		}
 
 		const selectedMachine = Object.values(machineMarks).find(
-			item => item.machine === this.state.vm_size,
+			item => item.label === this.state.pricing_plan,
 		);
 
 		const body = {

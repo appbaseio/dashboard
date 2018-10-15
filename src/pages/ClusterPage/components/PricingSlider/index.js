@@ -72,7 +72,7 @@ export default class PricingSlider extends Component {
 
 		return (
 			<Fragment>
-				<div className="col grow" style={{ padding: '55px 70px 0 55px' }}>
+				<div className="col grow expanded">
 					<Slider
 						marks={marks}
 						onChange={this.onChange}
@@ -80,7 +80,7 @@ export default class PricingSlider extends Component {
 						value={value}
 					/>
 				</div>
-				<div className="col grey" style={{ width: 300 }}>
+				<div className="col grey">
 					<div className={clusterInfo}>
 						<div className="cluster-info__item">
 							<div>
