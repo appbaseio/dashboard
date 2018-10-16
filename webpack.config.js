@@ -8,9 +8,6 @@ module.exports = {
 		filename: 'build.js',
 		chunkFilename: '[name].[contenthash].build.js',
 	},
-	// optimization: {
-	// 	runtimeChunk: 'single',
-	// },
 	module: {
 		rules: [
 			{
