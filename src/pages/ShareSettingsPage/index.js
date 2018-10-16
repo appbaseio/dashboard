@@ -1,15 +1,20 @@
 import React from 'react';
 import { Table, Card, Button } from 'antd';
 import { connect } from 'react-redux';
+import { css } from 'react-emotion';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import Loader from '../../batteries/components/shared/Loader';
+import Flex from '../../batteries/components/shared/Flex';
+import { media } from '../../utils/media';
 import Container from '../../components/Container';
 import { getSharedApp, createAppShare, updatePermission } from '../../batteries/modules/actions';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
-import { getAppPlanByName } from '../../batteries/modules/selectors';
+import TransferOwnership from './TransferOwnership';
+import { getAppPlanByName, getAppInfoByName } from '../../batteries/modules/selectors';
 import { displayErrors } from '../../utils/helper';
+
 
 let lastIndex = 0;
 const updateIndex = () => {
@@ -59,8 +64,12 @@ class ShareSettingsView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { errors } = this.props;
+		const { errors, transferSuccess } = this.props;
 		displayErrors(errors, prevProps.errors);
+		if (transferSuccess && transferSuccess !== prevProps.transferSuccess) {
+			// Redirect to home
+			window.location = window.origin;
+		}
 	}
 
 	getAppShare() {
@@ -116,7 +125,9 @@ class ShareSettingsView extends React.Component {
 	}
 
 	render() {
-		const { isPaidUser, sharedUsers, isLoading } = this.props;
+		const {
+			isPaidUser, sharedUsers, isLoading, isOwner,
+		} = this.props;
 		const { showForm, selectedSettings } = this.state;
 		if (isLoading) {
 			return <Loader />;
@@ -127,6 +138,16 @@ class ShareSettingsView extends React.Component {
 					<UpgradePlanBanner {...bannerConfig} />
 				) : (
 					<React.Fragment>
+						{isOwner && (
+						<Flex
+							justifyContent="flex-end"
+							css={`${media.small(css`justify-content: center;`)};`}
+							style={{
+								paddingBottom: '20px',
+							}}
+						>
+							<TransferOwnership />
+						</Flex>)}
 						<Card
 							extra={(
 <Button onClick={this.handleShare} size="large" type="primary">
@@ -172,20 +193,23 @@ class ShareSettingsView extends React.Component {
 ShareSettingsView.propTypes = {
 	shareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
+	transferSuccess: PropTypes.bool.isRequired,
 	isLoading: PropTypes.bool.isRequired,
 	errors: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {
-	const appOwner = get(state, '$getAppInfo.app.owner');
 	const userEmail = get(state, 'user.data.email');
+	const appOwner = get(getAppInfoByName(state), 'owner');
 	return {
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
-		isLoading: get(state, '$getSharedApp.isFetching'),
-		errors: [get(state, '$getSharedApp.error')],
+		isLoading:
+			get(state, '$getSharedApp.isFetching'),
+		errors: [get(state, '$getSharedApp.error'), get(state, '$transferAppOwnership.error')],
 		sharedUsers: get(state, '$getSharedApp.results', []),
+		transferSuccess: get(state, '$transferAppOwnership.success'),
 		success:
 			get(state, '$createAppShare.success') || get(state, '$updateAppPermission.success'),
 	};
