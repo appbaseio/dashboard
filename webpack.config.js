@@ -5,9 +5,12 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/dist/',
-		filename: 'bundle.js',
-		chunkFilename: '[name].bundle.js',
+		filename: 'build.js',
+		chunkFilename: '[name].[contenthash].build.js',
 	},
+	// optimization: {
+	// 	runtimeChunk: 'single',
+	// },
 	module: {
 		rules: [
 			{
