@@ -49,8 +49,12 @@ class ActionButtons extends React.Component {
 	getWriteKey = () => {
 		const { permissions } = this.props;
 		if (permissions) {
-			const { username, password } = getCredentialsFromPermissions(permissions.results);
-			return `${username}:${password}`;
+			const data = getCredentialsFromPermissions(permissions.results);
+			if (data) {
+				const { username, password } = data;
+				return `${username}:${password}`;
+			}
+			return '';
 		}
 		return '';
 	};
@@ -98,7 +102,7 @@ class ActionButtons extends React.Component {
 		const readKey = this.getReadKey();
 		const writeKey = this.getWriteKey();
 		let sharedKey = '';
-		if (shared && permissions) {
+		if (shared && permissions && permissions.results) {
 			// We only get one key for shared app either it will be read key or a write key
 			sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
 		}
@@ -123,7 +127,7 @@ class ActionButtons extends React.Component {
 						Clone
 					</Col>
 
-					{!shared ? (
+					{writeKey && !shared ? (
 						<CopyToClipboard text={writeKey} onCopy={this.copyWriteKey}>
 							<Col span={6} className={columnSeparator}>
 								<Icon className={actionIcon} type="copy" />
