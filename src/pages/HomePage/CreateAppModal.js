@@ -15,6 +15,7 @@ import {
 	planDetails,
 	planInfo,
 } from './styles';
+import { validateAppName } from '../../utils/helper';
 
 import { createApp, resetCreatedApp } from '../../actions';
 
@@ -29,7 +30,7 @@ class CreateAppModal extends Component {
 			hasJSON: false,
 			category: 'generic',
 			elasticVersion: '5',
-      validationPopOver: false,
+			validationPopOver: false,
 		};
 	}
 
@@ -37,17 +38,6 @@ class CreateAppModal extends Component {
 		const { resetApp } = this.props;
 		resetApp();
 	}
-
-  validateAppName = (name) => {
-    const symbolsToCheck = /[\s#&*'"\\|,<>\/?]/; //eslint-disable-line
-    const nameCharacters = name.split('');
-    const startsWith = nameCharacters[0] === '+' || nameCharacters[0] === '-' || nameCharacters[0] === '_';
-
-    if (name === '.' || name === '..' || name === '' || symbolsToCheck.test(name) || startsWith) {
-      return false;
-    }
-    return true;
-  }
 
 	handleOk = async () => {
 		const { appName, category, elasticVersion } = this.state;
@@ -58,18 +48,18 @@ class CreateAppModal extends Component {
 			es_version: elasticVersion,
 		};
 
-    const isValid = this.validateAppName(appName);
-    if (isValid) {
-      handleCreateApp(options);
-    } else {
-      notification.error({
-        message: 'Invalid App name',
-        description: 'Please follow the validations rule.',
-      });
-      this.setState({
-        validationPopOver: true,
-      });
-    }
+		const isValid = validateAppName(appName);
+		if (isValid) {
+			handleCreateApp(options);
+		} else {
+			notification.error({
+				message: 'Invalid App name',
+				description: 'Please follow the validations rule.',
+			});
+			this.setState({
+				validationPopOver: true,
+			});
+		}
 	};
 
 	handleChange = (e) => {
@@ -94,11 +84,11 @@ class CreateAppModal extends Component {
 		});
 	};
 
-  handleValidationPopOver = () => {
-    this.setState(({ validationPopOver }) => ({
-      validationPopOver: !validationPopOver,
-    }));
-  }
+	handleValidationPopOver = () => {
+		this.setState(({ validationPopOver }) => ({
+			validationPopOver: !validationPopOver,
+		}));
+	};
 
 	componentDidUpdate = () => {
 		const { createdApp, history } = this.props; //eslint-disable-line
@@ -147,16 +137,16 @@ class CreateAppModal extends Component {
 			hasJSON,
 			plan,
 			elasticVersion,
-      validationPopOver,
+			validationPopOver,
 		} = this.state;
 		const { createdApp, showModal } = this.props;
 
-    const validationsList = [
-      'Lowercase only',
-      'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
-      'Cannot start with -, _, +',
-      'Cannot be . or ..',
-    ];
+		const validationsList = [
+			'Lowercase only',
+			'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
+			'Cannot start with -, _, +',
+			'Cannot be . or ..',
+		];
 
 		return (
 			<Modal
@@ -185,29 +175,31 @@ class CreateAppModal extends Component {
 				</section>
 
 				<div>
-          <Row type="flex" justify="space-between" align="middle">
-            <h3 className={modalHeading}>App Name</h3>
-            <Popover
-              placement="right"
-              content={(
-                <List
-                  size="small"
-                  dataSource={validationsList}
-                  renderItem={item => (<List.Item>{item}</List.Item>)}
-                />
-              )}
-              title="App name validations"
-              trigger="click"
-              visible={validationPopOver}
-            >
-              <Icon type="info-circle" onClick={this.handleValidationPopOver} />
-            </Popover>
-          </Row>
+					<Row type="flex" justify="space-between" align="middle">
+						<h3 className={modalHeading}>App Name</h3>
+						<Popover
+							placement="right"
+							content={(
+								<List
+									size="small"
+									dataSource={validationsList}
+									renderItem={item => <List.Item>{item}</List.Item>}
+								/>
+							)} // prettier-ignore
+							title="App name validations"
+							trigger="click"
+							visible={validationPopOver}
+						>
+							<Icon type="info-circle" onClick={this.handleValidationPopOver} />
+						</Popover>
+					</Row>
 					<p css={{ fontSize: 14, margin: '-4px 0 8px 0', lineHeight: '20px' }}>
 						App names are unique across appbase.io and should be lowercase. Click
-            <span style={{ color: '#1890ff' }} onClick={this.handleValidationPopOver}>
-              {' '}here
-            </span> to see more rules.
+						<span style={{ color: '#1890ff' }} onClick={this.handleValidationPopOver}>
+							{' '}
+							here
+						</span>{' '}
+						to see more rules.
 					</p>
 					<Input
 						placeholder="Enter a unique app name"

@@ -98,3 +98,14 @@ export const getAppCount = (appStats, plan) => {
 	};
 	return obj;
 };
+
+export const validateAppName = (name) => {
+	const symbolsToCheck = /[\s#&*'"\\|,<>\/?]/; //eslint-disable-line
+	const nameCharacters = name.split('');
+	const startsWith =		nameCharacters[0] === '+' || nameCharacters[0] === '-' || nameCharacters[0] === '_';
+
+	if (name === '.' || name === '..' || name === '' || symbolsToCheck.test(name) || startsWith) {
+		return false;
+	}
+	return true;
+};

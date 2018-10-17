@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { notification, List } from 'antd';
 import Footer from '../components/Footer';
 
 import appbaseHelpers from '../utils/appbaseHelpers';
+import { validateAppName } from '../../../utils/helper';
 
 export default class Introduction extends Component {
 	constructor(props) {
@@ -33,7 +35,7 @@ export default class Introduction extends Component {
 
 	createApp = () => {
 		const { value } = this.input;
-		const pattern = /^[a-zA-Z0-9_+-@$\.]+$/;
+		const isValidAppName = validateAppName(value);
 		let app = {};
 
 		this.setState({
@@ -41,11 +43,30 @@ export default class Introduction extends Component {
 			error: '',
 		});
 
+		const validationsList = [
+			'Lowercase only',
+			'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
+			'Cannot start with -, _, +',
+			'Cannot be . or ..',
+		];
+
 		if (!value || !value.trim()) {
 			this.setError('App name cannot be left empty.');
 			this.input.focus();
-		} else if (!pattern.test(value)) {
-			this.setError('Please use only alphanumerics (a-z,A-Z,0-9) and any of -._+$@ characters for the app name.');
+		} else if (!isValidAppName) {
+			this.setError('Invalid App name. Please follow the validations rules.');
+			notification.error({
+				message: 'Invalid App name',
+				description: (
+					<List
+						bordered={false}
+						size="small"
+						dataSource={validationsList}
+						renderItem={item => <List.Item>{item}</List.Item>}
+					/>
+				),
+				duration: 10,
+			});
 			this.input.focus();
 		} else {
 			appbaseHelpers
@@ -62,7 +83,9 @@ export default class Introduction extends Component {
 						appbaseHelpers.updateApp(app);
 						this.props.setAppName(value);
 					} else {
-						this.setError('Your app name is not unique. Please try with a different app name.');
+						this.setError(
+							'Your app name is not unique. Please try with a different app name.',
+						);
 						this.input.focus();
 					}
 				})
@@ -83,7 +106,9 @@ export default class Introduction extends Component {
 					}
 				})
 				.catch((e) => {
-					this.setError('Some error occurred. Please try again with a different app name.');
+					this.setError(
+						'Some error occurred. Please try again with a different app name.',
+					);
 				});
 		}
 	};
