@@ -27,7 +27,7 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 	<React.Fragment>
 		<BannerHeader
 			title="Upgrade your plan"
-			description="Manage who can access your app data. Lorem iprum dolor sit amet lorem ipsum dolor sit. "
+			description=""
 			component={(
 <Row>
 					<Flex alignItems="center" className={uppercase}>
