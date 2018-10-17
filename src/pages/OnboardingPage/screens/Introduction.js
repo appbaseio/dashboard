@@ -3,7 +3,7 @@ import { notification, List } from 'antd';
 import Footer from '../components/Footer';
 
 import appbaseHelpers from '../utils/appbaseHelpers';
-import { validateAppName } from '../../../utils/helper';
+import { validateAppName, validationsList } from '../../../utils/helper';
 
 export default class Introduction extends Component {
 	constructor(props) {
@@ -42,13 +42,6 @@ export default class Introduction extends Component {
 			status: 'Creating your app... Please wait!',
 			error: '',
 		});
-
-		const validationsList = [
-			'Lowercase only',
-			'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
-			'Cannot start with -, _, +',
-			'Cannot be . or ..',
-		];
 
 		if (!value || !value.trim()) {
 			this.setError('App name cannot be left empty.');

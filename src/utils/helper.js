@@ -109,3 +109,10 @@ export const validateAppName = (name) => {
 	}
 	return true;
 };
+
+export const validationsList = [
+	'Lowercase only',
+	'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
+	'Cannot start with -, _, +',
+	'Cannot be . or ..',
+];

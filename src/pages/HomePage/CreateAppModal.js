@@ -15,7 +15,7 @@ import {
 	planDetails,
 	planInfo,
 } from './styles';
-import { validateAppName } from '../../utils/helper';
+import { validateAppName, validationsList } from '../../utils/helper';
 
 import { createApp, resetCreatedApp } from '../../actions';
 
@@ -140,13 +140,6 @@ class CreateAppModal extends Component {
 			validationPopOver,
 		} = this.state;
 		const { createdApp, showModal } = this.props;
-
-		const validationsList = [
-			'Lowercase only',
-			'Cannot include \\, /, *, ?, ", <, >, |, ` ` (space character), ,, #',
-			'Cannot start with -, _, +',
-			'Cannot be . or ..',
-		];
 
 		return (
 			<Modal
