@@ -28,7 +28,7 @@ class ErrorPage extends React.Component {
 			>
 				<Icon type="frown" theme="outlined" style={{ fontSize: 55, marginBottom: 10 }} />
 				<h2>Something went Wrong!</h2>
-				<p>Our team is working to fix the bug. We will get back to you shortly!</p>
+				<p>Our team has been notified about this.</p>
 				<section
 					css={{
 						display: 'flex',
