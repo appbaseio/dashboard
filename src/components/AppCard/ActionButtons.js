@@ -46,11 +46,23 @@ class ActionButtons extends React.Component {
 		});
 	};
 
+	copyAdminKey = () => {
+		notification.warning({
+			message: 'Admin Credentials copied',
+			description:
+				'The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate read-only credentials.',
+		});
+	};
+
 	getWriteKey = () => {
 		const { permissions } = this.props;
 		if (permissions) {
-			const { username, password } = getCredentialsFromPermissions(permissions.results);
-			return `${username}:${password}`;
+			const data = getCredentialsFromPermissions(permissions.results);
+			if (data) {
+				const { username, password } = data;
+				return `${username}:${password}`;
+			}
+			return '';
 		}
 		return '';
 	};
@@ -77,13 +89,25 @@ class ActionButtons extends React.Component {
 
 	copySharedKey = () => {
 		const { permissions } = this.props;
-		let write = true;
+		let write = false;
+		let read = false;
 		if (permissions) {
-			write = permissions.results[0].read && permissions.results[0].write;
+			write = permissions.results[0].write; // eslint-disable-line
+			read = permissions.results[0].read; // eslint-disable-line
 		}
 
-		if (write) this.copyWriteKey();
-		else this.copyReadKey();
+		if (write && !read) {
+			this.copyWriteKey();
+		} else if (!write && read) {
+			this.copyReadKey();
+		} else if (write && read) {
+			this.copyAdminKey();
+		} else {
+			notification.error({
+				message: 'No Credentials copied',
+				description: '',
+			});
+		}
 	};
 
 	render() {
@@ -98,7 +122,7 @@ class ActionButtons extends React.Component {
 		const readKey = this.getReadKey();
 		const writeKey = this.getWriteKey();
 		let sharedKey = '';
-		if (shared && permissions) {
+		if (shared && permissions && permissions.results) {
 			// We only get one key for shared app either it will be read key or a write key
 			sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
 		}
@@ -123,7 +147,7 @@ class ActionButtons extends React.Component {
 						Clone
 					</Col>
 
-					{!shared ? (
+					{writeKey && !shared ? (
 						<CopyToClipboard text={writeKey} onCopy={this.copyWriteKey}>
 							<Col span={6} className={columnSeparator}>
 								<Icon className={actionIcon} type="copy" />
