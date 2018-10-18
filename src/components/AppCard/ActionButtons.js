@@ -46,6 +46,14 @@ class ActionButtons extends React.Component {
 		});
 	};
 
+	copyAdminKey = () => {
+		notification.warning({
+			message: 'Admin Credentials copied',
+			description:
+				'The copied credentials can modify data in your app, do not use them in code that runs in the web browser. Instead, generate read-only credentials.',
+		});
+	};
+
 	getWriteKey = () => {
 		const { permissions } = this.props;
 		if (permissions) {
@@ -81,13 +89,25 @@ class ActionButtons extends React.Component {
 
 	copySharedKey = () => {
 		const { permissions } = this.props;
-		let write = true;
+		let write = false;
+		let read = false;
 		if (permissions) {
-			write = permissions.results[0].read && permissions.results[0].write;
+			write = permissions.results[0].write; // eslint-disable-line
+			read = permissions.results[0].read; // eslint-disable-line
 		}
 
-		if (write) this.copyWriteKey();
-		else this.copyReadKey();
+		if (write && !read) {
+			this.copyWriteKey();
+		} else if (!write && read) {
+			this.copyReadKey();
+		} else if (write && read) {
+			this.copyAdminKey();
+		} else {
+			notification.error({
+				message: 'No Credentials copied',
+				description: '',
+			});
+		}
 	};
 
 	render() {
