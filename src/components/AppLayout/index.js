@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import AppHeader from '../AppHeader';
 import Loader from '../Loader';
 import AppPageContainer from '../AppPageContainer';
+import ErrorPage from '../../pages/ErrorPage';
 
 const AnalyticsPage = Loadable({
 	loader: () => import('../../pages/AnalyticsPage'),
@@ -95,7 +96,7 @@ class AppLayout extends React.PureComponent {
 				}}
 			>
 				<AppHeader big={collapsed} />
-				<section>
+				<ErrorPage>
 					<Switch>
 						<Route
 							exact
@@ -236,7 +237,7 @@ class AppLayout extends React.PureComponent {
 							)}
 						/>
 					</Switch>
-				</section>
+				</ErrorPage>
 			</Layout>
 		);
 	}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon } from 'antd';
+import { connect } from 'react-redux';
 
 class ErrorPage extends React.Component {
 	state = {
@@ -14,14 +15,11 @@ class ErrorPage extends React.Component {
 
 	render() {
 		const { error } = this.state;
-		const { children } = this.props; // eslint-disable-line
+		const { children, user } = this.props; // eslint-disable-line
 		return error ? (
 			<section
 				css={{
-					top: '50%',
-					left: '50%',
-					position: 'absolute',
-					transform: 'translate(-50%,-50%)',
+					marginTop: '180px',
 					justifyContent: 'center',
 					alignItems: 'center',
 					display: 'flex',
@@ -30,15 +28,15 @@ class ErrorPage extends React.Component {
 			>
 				<Icon type="frown" theme="outlined" style={{ fontSize: 55, marginBottom: 10 }} />
 				<h2>Something went Wrong!</h2>
-				<p>We have seen your error. We may get back at you shortly!</p>
+				<p>Our team is working to fix the bug. We will get back to you shortly!</p>
 				<section
 					css={{
 						display: 'flex',
 					}}
 				>
-					<Button href="/" size="large" type="primary">
-						<Icon type="home" />
-						Back to Home
+					<Button href={user ? '/' : '/login'} size="large" type="primary">
+						<Icon type={user ? 'home' : 'left'} />
+						Back to {user ? 'Home' : 'Login'}
 					</Button>
 					<Button
 						href="mailto:info@appbase.io"
@@ -58,4 +56,11 @@ class ErrorPage extends React.Component {
 	}
 }
 
-export default ErrorPage;
+const mapStateToProps = ({ user }) => ({
+	user,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ErrorPage);
