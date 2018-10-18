@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import Loader from './components/Loader';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
+import ErrorPage from './pages/ErrorPage';
 import Wrapper from './pages/Wrapper';
 import { loadUser } from './actions';
 
@@ -34,13 +35,15 @@ class Dashboard extends Component {
 		}
 
 		return (
-			<Router>
-				<Fragment>
-					<Route exact path="/login" component={LoginPage} />
-					<Route exact path="/signup" component={SignupPage} />
-					<PrivateRoute user={user} component={Wrapper} />
-				</Fragment>
-			</Router>
+			<ErrorPage>
+				<Router>
+					<Fragment>
+						<Route exact path="/login" component={LoginPage} />
+						<Route exact path="/signup" component={SignupPage} />
+						<PrivateRoute user={user} component={Wrapper} />
+					</Fragment>
+				</Router>
+			</ErrorPage>
 		);
 	}
 }
