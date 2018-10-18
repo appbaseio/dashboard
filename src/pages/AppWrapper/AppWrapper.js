@@ -153,8 +153,8 @@ class AppWrapper extends Component {
 
 	render() {
 		const {
- collapsed, appName, activeSubMenu, activeMenuItem,
-} = this.state;
+			collapsed, appName, activeSubMenu, activeMenuItem, // prettier-ignore
+		} = this.state;
 		return (
 			<Layout>
 				<Sider
