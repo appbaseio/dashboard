@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, Menu, Icon } from 'antd';
+import {
+ Layout, Menu, Icon, Tag,
+} from 'antd';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import AppLayout from '../../components/AppLayout';
@@ -23,9 +25,9 @@ const routes = {
 		icon: 'dashboard',
 		menu: [
 			{ label: 'Import Data', link: 'import' },
-			{ label: 'Manage Mappings', link: 'mappings' },
+			{ label: 'Manage Mappings', link: 'mappings', tag: 'Beta' },
 			{ label: 'Browse Data', link: 'browse' },
-			{ label: 'Search Preview', link: 'search-preview' },
+			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
 		],
 	},
 	Analytics: {
@@ -153,7 +155,10 @@ class AppWrapper extends Component {
 
 	render() {
 		const {
-			collapsed, appName, activeSubMenu, activeMenuItem, // prettier-ignore
+			collapsed,
+			appName,
+			activeSubMenu,
+			activeMenuItem, // prettier-ignore
 		} = this.state;
 		return (
 			<Layout>
@@ -208,6 +213,14 @@ class AppWrapper extends Component {
 											<Menu.Item key={item.label}>
 												<Link replace to={`/app/${appName}/${item.link}`}>
 													{item.label}
+													{item.tag ? (
+														<Tag
+															style={{ fontSize: 10, marginLeft: 8 }}
+															color="#001529"
+														>
+															{item.tag}
+														</Tag>
+													) : null}
 												</Link>
 											</Menu.Item>
 										))}
