@@ -7,6 +7,18 @@ class ErrorPage extends React.Component {
 		error: false,
 	};
 
+	componentDidUpdate(prevProps) {
+		const {
+			location: { pathname }, // eslint-disable-line
+		} = this.props;
+		if (prevProps.location.pathname !== pathname) {
+			// eslint-disable-next-line
+			this.setState({
+				error: false,
+			});
+		}
+	}
+
 	componentDidCatch() {
 		this.setState({
 			error: true,
@@ -19,15 +31,15 @@ class ErrorPage extends React.Component {
 		return error ? (
 			<section
 				css={{
-					marginTop: '180px',
 					justifyContent: 'center',
 					alignItems: 'center',
 					display: 'flex',
 					flexDirection: 'column',
+					height: '80vh',
 				}}
 			>
 				<Icon type="frown" theme="outlined" style={{ fontSize: 55, marginBottom: 10 }} />
-				<h2>Something went Wrong!</h2>
+				<h2>Something went wrong!</h2>
 				<p>Our team has been notified about this.</p>
 				<section
 					css={{

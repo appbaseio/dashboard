@@ -19,7 +19,12 @@ const AppCard = ({
 		className={cardActions}
 	>
 		{/* Free Plan is taken as default */}
-		<Skeleton className={skeleton} title={false} paragraph={{ rows: 2 }} loading={!(data && data[appName])}>
+		<Skeleton
+			className={skeleton}
+			title={false}
+			paragraph={{ rows: 2 }}
+			loading={!(data && data[appName])}
+		>
 			{data && data[appName] ? (
 				<UsageRenderer
 					plan="free"

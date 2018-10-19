@@ -7,6 +7,7 @@ import PaidUserOverview from './PaidUserOverview';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const OverviewPage = ({ plan }) => {
+	throw new Error();
 	if (!plan || plan === 'free') {
 		return <FreeUserOverview />;
 	}

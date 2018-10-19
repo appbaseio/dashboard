@@ -96,7 +96,7 @@ class AppLayout extends React.PureComponent {
 				}}
 			>
 				<AppHeader big={collapsed} />
-				<ErrorPage>
+				<ErrorPage {...this.props}>
 					<Switch>
 						<Route
 							exact
