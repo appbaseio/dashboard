@@ -27,15 +27,17 @@ class ActionButtons extends React.Component {
 
 	handleClone = () => {
 		const { appName, permissions } = this.props;
-		const { username, password } = permissions.results[0];
-		const parameters = {
-			platform: 'appbase',
-			importFrom: {
-				appname: appName,
-				hosturl: `https://${username}:${password}@${SCALR_URL}`,
-			},
-		};
-		window.open(`${IMPORTER_LINK}${JSON.stringify(parameters)}`, '_blank');
+		if (permissions) {
+			const { username, password } = permissions.results[0];
+			const parameters = {
+				platform: 'appbase',
+				importFrom: {
+					appname: appName,
+					hosturl: `https://${username}:${password}@${SCALR_URL}`,
+				},
+			};
+			window.open(`${IMPORTER_LINK}${JSON.stringify(parameters)}`, '_blank');
+		}
 	};
 
 	copyWriteKey = () => {

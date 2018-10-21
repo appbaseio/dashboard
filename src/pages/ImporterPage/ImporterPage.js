@@ -4,6 +4,14 @@ import {
 } from 'antd';
 
 import Header from '../../components/Header';
+import { IMPORTER_LINK } from '../../constants/config';
+
+function getLink() {
+	const parameters = {
+		platform: 'appbase',
+	};
+	return `${IMPORTER_LINK}${JSON.stringify(parameters)}`;
+}
 
 const ImporterPage = () => (
 	<Fragment>
@@ -69,7 +77,7 @@ const ImporterPage = () => (
 		<section>
 			<iframe
 				title="Importer"
-				src="https://importer.appbase.io?header=false"
+				src={getLink()}
 				frameBorder="0"
 				width="100%"
 				height={`${window.innerHeight - 243 || 600}px`}
