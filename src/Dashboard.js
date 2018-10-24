@@ -4,12 +4,17 @@ import Loadable from 'react-loadable';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
+import * as Sentry from '@sentry/browser';
 
 import Loader from './components/Loader';
 import Logo from './components/Logo';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
 import Wrapper from './pages/Wrapper';
 import { loadUser } from './actions';
+
+Sentry.init({
+	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
+});
 
 // routes
 const LoginPage = Loadable({
@@ -32,9 +37,15 @@ class Dashboard extends Component {
 		loadAppbaseUser();
 	}
 
-	componentDidCatch() {
+	componentDidCatch(error, errorInfo) {
 		this.setState({
 			error: true,
+		});
+		Sentry.withScope((scope) => {
+			Object.keys(errorInfo).forEach((key) => {
+				scope.setExtra(key, errorInfo[key]);
+			});
+			Sentry.captureException(error);
 		});
 	}
 
