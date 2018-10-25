@@ -7,7 +7,6 @@ export default {
 	'analysis-stempel': 'Stempel Polish Analysis',
 	'ingest-attachment': 'Ingest Attachment Processor',
 	'ingest-user-agent': 'Ingest User Agent Processor',
-	'ingest-geoip': 'Ingest Geoip Processor',
 	'mapper-size': 'Mapper Size',
 	'mapper-murmur3': 'Mapper Murmur3',
 	'x-pack': 'X-Pack',
