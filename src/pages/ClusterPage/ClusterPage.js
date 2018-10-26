@@ -61,10 +61,10 @@ export default class ClusterPage extends Component {
 			});
 	};
 
-	renderClusterRegion = (region) => {
+	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
 
-		const { name, flag } = regions[region];
+		const { name, flag } = regions[provider][region];
 		return (
 			<div className="region-info">
 				{flag && <img src={`/static/images/flags/${flag}`} alt={name} />}
@@ -85,7 +85,7 @@ export default class ClusterPage extends Component {
 			<div className="info-row">
 				<div>
 					<h4>Region</h4>
-					{this.renderClusterRegion(cluster.region)}
+					{this.renderClusterRegion(cluster.region, cluster.provider)}
 				</div>
 
 				<div>
