@@ -1,74 +1,33 @@
 import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { css } from 'react-emotion';
-import { Card, Row } from 'antd';
+import { Card, Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import Container from '../../components/Container';
 import BannerHeader from '../../components/Banner/Header';
 import PricingTable from '../../components/PricingTable';
-import Grid from '../../components/CreateCredentials/Grid';
-import Flex from '../../batteries/components/shared/Flex';
+import { capitalizePlan } from '../../utils/helper';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
-
-const heading = css`
-	font-weight: 600;
-	font-size: 14px;
-	min-width: 100px;
-	letter-spacing: 0.01rem;
-	color: #888;
-`;
-
-const uppercase = css`
-	text-transform: uppercase;
-`;
 
 const Billing = ({ plan, isOnTrial, planValidity }) => (
 	<React.Fragment>
 		<BannerHeader
-			title="Upgrade your plan"
-			description=""
+			title="Billing"
 			component={(
 <Row>
-					<Flex alignItems="center" className={uppercase}>
-						<Grid
-							style={{
-								width: '400px',
-								margin: '0px',
-							}}
-							gridRatio={0.25}
-							label={<h3 css={heading}>Plan</h3>}
-							component={plan}
-						/>
-					</Flex>
-
-					{planValidity && (
-						<Flex alignItems="center" className={uppercase}>
-							<Grid
-								style={{
-									width: '400px',
-									margin: '0px',
-									marginTop: '-35px',
-								}}
-								gridRatio={0.25}
-								label={<h3 css={heading}>Valid till</h3>}
-								component={new Date(planValidity * 1000).toDateString()}
-							/>
-						</Flex>
-					)}
-					{isOnTrial && (
-						<Flex alignItems="center" className={uppercase}>
-							<Grid
-								style={{
-									width: '400px',
-									marginTop: '-35px',
-								}}
-								gridRatio={0.25}
-								label={<h3 css={heading}>Trial peroid</h3>}
-								component={isOnTrial ? 'Yes' : 'Expired'}
-							/>
-						</Flex>
-					)}
+					<Col>
+						<p>Transparent pricing that scales with you.</p>
+						<p>
+							Your plan is <strong>{capitalizePlan(plan)}</strong>{' '}
+							{planValidity ? (
+								<span>
+									Valid till{' '}
+									<strong>{new Date(planValidity * 1000).toDateString()}</strong>.
+								</span>
+							) : null}
+						</p>
+						{isOnTrial ? <p>You are on trial.</p> : null}
+					</Col>
 </Row>
 )}
 		/>
