@@ -26,45 +26,89 @@ const esVersions = [
 ];
 
 export const machineMarks = {
-	0: {
-		label: 'Sandbox',
-		storage: 30,
-		memory: 4,
-		nodes: 1,
-		cost: 59,
-		machine: 'Standard_B2s',
+	azure: {
+		0: {
+			label: 'Sandbox',
+			storage: 30,
+			memory: 4,
+			nodes: 1,
+			cost: 59,
+			machine: 'Standard_B2s',
+		},
+		25: {
+			label: 'Hobby',
+			storage: 60,
+			memory: 4,
+			nodes: 2,
+			cost: 119,
+			machine: 'Standard_B2s',
+		},
+		50: {
+			label: 'Production I',
+			storage: 120,
+			memory: 4,
+			nodes: 3,
+			cost: 199,
+			machine: 'Standard_B2s',
+		},
+		75: {
+			label: 'Production II',
+			storage: 240,
+			memory: 8,
+			nodes: 3,
+			cost: 399,
+			machine: 'Standard_B2ms',
+		},
+		100: {
+			label: 'Production III',
+			storage: 480,
+			memory: 16,
+			nodes: 3,
+			cost: 799,
+			machine: 'Standard_B4ms',
+		},
 	},
-	25: {
-		label: 'Hobby',
-		storage: 60,
-		memory: 4,
-		nodes: 2,
-		cost: 119,
-		machine: 'Standard_B2s',
-	},
-	50: {
-		label: 'Production I',
-		storage: 120,
-		memory: 4,
-		nodes: 3,
-		cost: 199,
-		machine: 'Standard_B2s',
-	},
-	75: {
-		label: 'Production II',
-		storage: 240,
-		memory: 8,
-		nodes: 3,
-		cost: 399,
-		machine: 'Standard_B2ms',
-	},
-	100: {
-		label: 'Production III',
-		storage: 480,
-		memory: 16,
-		nodes: 3,
-		cost: 799,
-		machine: 'Standard_B4ms',
+	gke: {
+		0: {
+			label: 'Sandbox',
+			storage: 30,
+			memory: 1.8,
+			nodes: 1,
+			cost: 59,
+			machine: 'g1-small',
+		},
+		25: {
+			label: 'Hobby',
+			storage: 60,
+			memory: 3.8,
+			nodes: 2,
+			cost: 119,
+			machine: 'n1-standard-1',
+		},
+		50: {
+			label: 'Production I',
+			storage: 120,
+			memory: 3.8,
+			nodes: 3,
+			cost: 199,
+			machine: 'n1-standard-1',
+		},
+		75: {
+			label: 'Production II',
+			storage: 240,
+			memory: 7.6,
+			nodes: 3,
+			cost: 399,
+			machine: 'n1-standard-2',
+		},
+		100: {
+			label: 'Production III',
+			storage: 480,
+			memory: 15,
+			nodes: 3,
+			cost: 799,
+			machine: 'n1-standard-4',
+		},
 	},
 };
 
@@ -77,11 +121,13 @@ export default class NewCluster extends Component {
 			pluginState[item] = item !== 'x-pack';
 		});
 
+		const provider = 'azure';
+
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: machineMarks[0].label,
-			vm_size: machineMarks[0].machine,
+			pricing_plan: machineMarks[provider][0].label,
+			vm_size: machineMarks[provider][0].machine,
 			region: 'eastus',
 			kibana: false,
 			logstash: false,
@@ -91,6 +137,7 @@ export default class NewCluster extends Component {
 			error: '',
 			deploymentError: '',
 			showError: false,
+			provider,
 			...pluginState,
 		};
 	}
@@ -139,7 +186,7 @@ export default class NewCluster extends Component {
 			return;
 		}
 
-		const selectedMachine = Object.values(machineMarks).find(
+		const selectedMachine = Object.values(machineMarks[this.state.provider]).find(
 			item => item.label === this.state.pricing_plan,
 		);
 
@@ -156,6 +203,7 @@ export default class NewCluster extends Component {
 				vm_size: this.state.vm_size,
 				pricing_plan: this.state.pricing_plan,
 				ssh_public_key: SSH_KEY,
+				provider: this.state.provider,
 			},
 		};
 
@@ -263,12 +311,12 @@ export default class NewCluster extends Component {
 	renderRegions = () => {
 		const regionsList1 = {};
 		const regionsList2 = {};
-		const allowedRegions = regionsByPlan[this.state.pricing_plan];
-		Object.keys(regions).forEach((region, i) => {
+		const allowedRegions = regionsByPlan[this.state.provider][this.state.pricing_plan];
+		Object.keys(regions[this.state.provider]).forEach((region, i) => {
 			if (i % 2 === 0) {
-				regionsList1[region] = regions[region];
+				regionsList1[region] = regions[this.state.provider][region];
 			} else {
-				regionsList2[region] = regions[region];
+				regionsList2[region] = regions[this.state.provider][region];
 			}
 		});
 		return (
@@ -295,10 +343,11 @@ export default class NewCluster extends Component {
 									}
 								>
 									{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>)}
+										<img
+											src={`/static/images/flags/${regionValue.flag}`}
+											alt={regionValue.name}
+										/>
+									)}
 									<span>{regionValue.name}</span>
 								</li>
 							</ul>
@@ -327,10 +376,12 @@ export default class NewCluster extends Component {
 												: ''
 									}
 								>
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
+									{regionValue.flag && (
+										<img
+											src={`/static/images/flags/${regionValue.flag}`}
+											alt={regionValue.name}
+										/>
+									)}
 									<span>{regionValue.name}</span>
 								</li>
 							</ul>
@@ -358,11 +409,50 @@ export default class NewCluster extends Component {
 							<h2>Create a new cluster</h2>
 							<div className={card}>
 								<div className="col light">
+									<h3>Pick the provider</h3>
+								</div>
+
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+									}}
+								>
+									<label htmlFor="gke">
+										<input
+											type="radio"
+											name="provider"
+											defaultChecked={this.state.provider === 'gke'}
+											id="gke"
+											onChange={() => this.setConfig('provider', 'gke')}
+										/>
+										Google
+									</label>
+
+									<label htmlFor="azure">
+										<input
+											type="radio"
+											name="provider"
+											defaultChecked={this.state.provider === 'azure'}
+											id="azure"
+											onChange={() => this.setConfig('provider', 'azure')}
+										/>
+										Azure
+									</label>
+								</div>
+							</div>
+
+							<div className={card}>
+								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
 								</div>
 
-								<PricingSlider marks={machineMarks} onChange={this.setPricing} />
+								<PricingSlider
+									key={this.state.provider}
+									marks={machineMarks[this.state.provider]}
+									onChange={this.setPricing}
+								/>
 							</div>
 
 							<div className={card}>
