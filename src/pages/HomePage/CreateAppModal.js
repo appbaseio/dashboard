@@ -66,9 +66,13 @@ class CreateAppModal extends Component {
 		const {
 			target: { name, value },
 		} = e;
+		let inputValue = value;
+		if (name === 'appName') {
+			inputValue = inputValue.toLowerCase();
+		}
 
 		this.setState({
-			[name]: value.toLowerCase(),
+			[name]: inputValue,
 		});
 	};
 
