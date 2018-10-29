@@ -9,9 +9,11 @@ import {
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+
 import { media } from '../../utils/media';
 import MenuSlider from '../FullHeader/MenuSlider';
 import UserMenu from './UserMenu';
+import AppSwitcher from './AppSwitcher';
 import headerStyles from './styles';
 
 const { Header } = Layout;
@@ -51,7 +53,7 @@ const AppHeader = ({
 				</Link>
 			</Menu.Item>
 			<Menu.Item key="1" className={noBorder}>
-				<span>{currentApp || 'Loading...'}</span>
+				<AppSwitcher apps={user.apps} currentApp={currentApp || 'Loading'} />
 			</Menu.Item>
 		</Menu>
 		{isUsingTrial && (
@@ -96,4 +98,7 @@ const mapStateToProps = state => ({
 	user: state.user.data,
 });
 
-export default connect(mapStateToProps)(AppHeader);
+export default connect(
+	mapStateToProps,
+	null,
+)(AppHeader);
