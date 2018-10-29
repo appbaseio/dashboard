@@ -128,7 +128,7 @@ export default class NewCluster extends Component {
 			clusterVersion: esVersions[0],
 			pricing_plan: machineMarks[provider][0].label,
 			vm_size: machineMarks[provider][0].machine,
-			region: 'eastus',
+			region: '',
 			kibana: false,
 			logstash: false,
 			dejavu: true,
@@ -140,6 +140,21 @@ export default class NewCluster extends Component {
 			provider,
 			...pluginState,
 		};
+	}
+
+	componentDidUpdate(_, prevState) {
+		const { provider } = this.state;
+		if (prevState.provider !== provider) {
+			const [currentMachine] = Object.entries(machineMarks[prevState.provider]).find(
+				([, value]) => value.machine === prevState.vm_size,
+			);
+			// eslint-disable-next-line
+			this.setState({
+				pricing_plan: machineMarks[provider][currentMachine].label,
+				vm_size: machineMarks[provider][currentMachine].machine,
+				region: '',
+			});
+		}
 	}
 
 	setConfig = (type, value) => {
@@ -183,6 +198,13 @@ export default class NewCluster extends Component {
 					'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.',
 			});
 			document.getElementById('cluster-name').focus();
+			return;
+		}
+
+		if (!this.state.region) {
+			this.setState({
+				error: 'Please select a region to deploy your cluster',
+			});
 			return;
 		}
 
@@ -311,14 +333,17 @@ export default class NewCluster extends Component {
 	renderRegions = () => {
 		const regionsList1 = {};
 		const regionsList2 = {};
-		const allowedRegions = regionsByPlan[this.state.provider][this.state.pricing_plan];
-		Object.keys(regions[this.state.provider]).forEach((region, i) => {
+		const { provider, pricing_plan: pricingPlan } = this.state;
+		const allowedRegions = regionsByPlan[provider][pricingPlan];
+
+		Object.keys(regions[provider]).forEach((region, i) => {
 			if (i % 2 === 0) {
-				regionsList1[region] = regions[this.state.provider][region];
+				regionsList1[region] = regions[provider][region];
 			} else {
-				regionsList2[region] = regions[this.state.provider][region];
+				regionsList2[region] = regions[provider][region];
 			}
 		});
+
 		return (
 			<React.Fragment>
 				<ul className="region-list">
@@ -328,29 +353,27 @@ export default class NewCluster extends Component {
 							? !allowedRegions.includes(region)
 							: false;
 						return (
-							<ul className="region-list">
-								{/* eslint-disable-next-line */}
-								<li
-									key={region}
-									onClick={() => this.setConfig('region', region)}
-									className={
-										// eslint-disable-next-line
-										isDisabled
-											? 'disabled'
-											: this.state.region === region
-												? 'active'
-												: ''
-									}
-								>
-									{regionValue.flag && (
-										<img
-											src={`/static/images/flags/${regionValue.flag}`}
-											alt={regionValue.name}
-										/>
-									)}
-									<span>{regionValue.name}</span>
-								</li>
-							</ul>
+							// eslint-disable-next-line
+							<li
+								key={region}
+								onClick={() => this.setConfig('region', region)}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+											? 'active'
+											: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
 						);
 					})}
 				</ul>
@@ -361,30 +384,28 @@ export default class NewCluster extends Component {
 							? !allowedRegions.includes(region)
 							: false;
 						return (
-							<ul className="region-list">
-								{/* eslint-disable-next-line */}
-								<li
-									disabled
-									key={region}
-									onClick={() => this.setConfig('region', region)}
-									className={
-										// eslint-disable-next-line
-										isDisabled
-											? 'disabled'
-											: this.state.region === region
-												? 'active'
-												: ''
-									}
-								>
-									{regionValue.flag && (
-										<img
-											src={`/static/images/flags/${regionValue.flag}`}
-											alt={regionValue.name}
-										/>
-									)}
-									<span>{regionValue.name}</span>
-								</li>
-							</ul>
+							// eslint-disable-next-line
+							<li
+								disabled
+								key={region}
+								onClick={() => this.setConfig('region', region)}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+											? 'active'
+											: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
 						);
 					})}
 				</ul>
