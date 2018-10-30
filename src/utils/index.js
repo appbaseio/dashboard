@@ -48,8 +48,15 @@ export async function getCreateApp(options) {
 			es_version: options.es_version,
 		}),
 	});
+	let data;
+	try {
+		data = await response.json();
+	} catch (error) {
+		data = {
+			message: 'Something went Wrong!',
+		};
+	}
 
-	const data = await response.json();
 	if (response.status >= 400) {
 		throw new Error(JSON.stringify(data));
 	}
