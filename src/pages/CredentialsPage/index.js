@@ -160,8 +160,10 @@ class Credentials extends Component {
 
 	render() {
 		const { showCredForm, currentPermissionInfo, mappings } = this.state;
-		const { isLoading, permissions, isOwner } = this.props;
-		if (isLoading) {
+		const {
+			isLoading, permissions, isOwner, isDeleting,
+		} = this.props;
+		if (isLoading && !(permissions && permissions.length)) {
 			return <Loader />;
 		}
 		return (
@@ -183,6 +185,10 @@ class Credentials extends Component {
 						css="tr:hover td {
 							background: transparent;
 						}"
+						style={isDeleting ? {
+							pointerEvents: 'none',
+							opacity: 0.6,
+						} : null}
 					/>
 				</Card>
 				{showCredForm && (
@@ -239,6 +245,7 @@ class Credentials extends Component {
 }
 Credentials.defaultProps = {
 	isLoading: false,
+	isDeleting: false,
 };
 Credentials.propTypes = {
 	appName: string.isRequired,
@@ -250,6 +257,7 @@ Credentials.propTypes = {
 	handleEditPermission: func.isRequired,
 	isOwner: bool.isRequired,
 	isLoading: bool,
+	isDeleting: bool,
 	errors: array.isRequired,
 	handleDeleteApp: func.isRequired,
 };
@@ -264,6 +272,7 @@ const mapStateToProps = (state) => {
 		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),
+		isDeleting: get(state, '$deleteAppPermission.isFetching'),
 		errors: [
 			get(state, '$getAppPermissions.error'),
 			get(state, '$createAppPermission.error'),
