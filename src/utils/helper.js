@@ -21,6 +21,14 @@ export const displayErrors = (nextErrors = [], prevErrors = []) => {
 
 export const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
 
+export const capitalizePlan = (string = '') => {
+	const splitString = string.split('-');
+	if (splitString[1]) {
+		return `${capitalizeFirstLetter(splitString[0])}/${capitalizeFirstLetter(splitString[1])}`;
+	}
+	return capitalizeFirstLetter(string);
+};
+
 export const compressNumber = (amount) => {
 	let mAmount = amount;
 	let finalNum = null;

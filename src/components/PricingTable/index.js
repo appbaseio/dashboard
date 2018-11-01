@@ -59,7 +59,7 @@ const Price = styled('div')`
 	> small {
 		font-family: 'Open Sans';
 		font-size: 12px;
-		font-weight: 600;
+		font-weight: 400;
 		line-height: 22px;
 		text-align: center;
 		padding-left: 4rem;
@@ -86,7 +86,7 @@ const Table = styled('table')`
 		border-bottom: 0;
 		padding: 11px 2px;
 		font-size: 18px;
-		font-weight: 600;
+		font-weight: 400;
 		line-height: 22px;
 		text-align: center;
 
@@ -95,7 +95,7 @@ const Table = styled('table')`
 			border-color: transparent;
 			text-align: left;
 			font-size: 20px;
-			font-weight: 600;
+			font-weight: 400;
 			line-height: 27px;
 			> span {
 				padding-bottom: 0px;
@@ -170,7 +170,7 @@ const Table = styled('table')`
 const Caption = styled('div')`
 	color: ${hexToRgb('#232e44', 0.6)};
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: 400;
 	line-height: 17px;
 	text-align: center;
 	text-decoration: none !important;
@@ -180,7 +180,7 @@ const ListCaption = styled('div')`
 	margin-top: 13px;
 	color: ${hexToRgb('#FFFFFF', 0.8)};
 	font-size: 0.875rem;
-	font-weight: 600;
+	font-weight: 400;
 	line-height: 17px;
 	text-align: left;
 	text-decoration: none !important;
@@ -229,7 +229,7 @@ const HeadingTr = css`
 			font-size: 12px;
 			line-height: 17px;
 			text-transform: none;
-			font-weight: 600;
+			font-weight: 400;
 			a {
 				color: inherit;
 			}

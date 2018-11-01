@@ -66,10 +66,12 @@ class CreateCredentials extends React.Component {
 	}
 
 	componentDidMount() {
-		const { disabled, initialValues, isPermissionPresent } = this.props;
+		const {
+			disabled, initialValues, isPermissionPresent, isPaidUser,
+		} = this.props;
 		if (disabled) {
 			this.form.disable();
-		} else {
+		} else if (isPaidUser) {
 			const includeFieldsHandler = this.form.get('include_fields');
 			const excludeFieldsHandler = this.form.get('exclude_fields');
 			includeFieldsHandler.valueChanges.subscribe((value) => {
