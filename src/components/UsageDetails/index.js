@@ -105,7 +105,6 @@ UsageDetails.defaultProps = {
 };
 UsageDetails.propTypes = {
 	plan: PropTypes.string.isRequired,
-	appName: PropTypes.string.isRequired,
 	computedMetrics: PropTypes.object,
 };
 
