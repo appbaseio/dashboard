@@ -27,14 +27,6 @@ const esVersions = [
 
 export const machineMarks = {
 	azure: {
-		// 0: {
-		// 	label: 'Sandbox',
-		// 	storage: 30,
-		// 	memory: 4,
-		// 	nodes: 1,
-		// 	cost: 39,
-		// 	machine: 'Standard_B2s',
-		// },
 		0: {
 			label: 'Hobby',
 			storage: 60,
@@ -112,6 +104,11 @@ export const machineMarks = {
 	},
 };
 
+const namingConvention = {
+	azure: 'You may use alpha-numerics with "-" in between',
+	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
+};
+
 export default class NewCluster extends Component {
 	constructor(props) {
 		super(props);
@@ -178,9 +175,12 @@ export default class NewCluster extends Component {
 	};
 
 	validateClusterName = () => {
-		const { clusterName } = this.state;
-		const pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
-
+		const { clusterName, provider } = this.state;
+		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		if (provider === 'gke') {
+			// gke cluster names can't start with a number
+			pattern = /^[a-zA-Z]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		}
 		return pattern.test(clusterName);
 	};
 
@@ -414,6 +414,7 @@ export default class NewCluster extends Component {
 	};
 
 	render() {
+		const { provider } = this.state;
 		return (
 			<Fragment>
 				<FullHeader />
@@ -492,19 +493,32 @@ export default class NewCluster extends Component {
 									<h3>Pick a cluster name</h3>
 									<p>Name this bad boy</p>
 								</div>
-								<div className="col grow vcenter">
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
 									<input
 										id="cluster-name"
 										type="name"
 										css={{
 											width: '100%',
 											maxWidth: 400,
+											marginBottom: 10,
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
+									<p>
+										{provider === 'azure'
+											? namingConvention.azure
+											: namingConvention.gke}
+									</p>
 								</div>
 							</div>
 
