@@ -9,7 +9,12 @@ import CredentialsBox from './components/CredentialsBox';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import {
-	clusterContainer, clustersList, card, settingsItem, clusterEndpoint, clusterButtons,
+	clusterContainer,
+	clustersList,
+	card,
+	settingsItem,
+	clusterEndpoint,
+	clusterButtons,
 } from './styles';
 import { getClusterData, deployCluster, deleteCluster } from './utils';
 

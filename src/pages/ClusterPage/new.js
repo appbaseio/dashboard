@@ -27,15 +27,15 @@ const esVersions = [
 
 export const machineMarks = {
 	azure: {
+		// 0: {
+		// 	label: 'Sandbox',
+		// 	storage: 30,
+		// 	memory: 4,
+		// 	nodes: 1,
+		// 	cost: 39,
+		// 	machine: 'Standard_B2s',
+		// },
 		0: {
-			label: 'Sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cost: 59,
-			machine: 'Standard_B2s',
-		},
-		25: {
 			label: 'Hobby',
 			storage: 60,
 			memory: 4,
@@ -43,7 +43,7 @@ export const machineMarks = {
 			cost: 119,
 			machine: 'Standard_B2s',
 		},
-		50: {
+		33: {
 			label: 'Production I',
 			storage: 120,
 			memory: 4,
@@ -51,7 +51,7 @@ export const machineMarks = {
 			cost: 199,
 			machine: 'Standard_B2s',
 		},
-		75: {
+		66: {
 			label: 'Production II',
 			storage: 240,
 			memory: 8,
@@ -74,7 +74,7 @@ export const machineMarks = {
 			storage: 30,
 			memory: 1.8,
 			nodes: 1,
-			cost: 59,
+			cost: 39,
 			machine: 'g1-small',
 		},
 		25: {
@@ -121,7 +121,7 @@ export default class NewCluster extends Component {
 			pluginState[item] = item !== 'x-pack';
 		});
 
-		const provider = 'azure';
+		const provider = 'gke';
 
 		this.state = {
 			clusterName: '',
@@ -428,6 +428,20 @@ export default class NewCluster extends Component {
 						</Modal>
 						<article>
 							<h2>Create a new cluster</h2>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Pick the pricing plan</h3>
+									<p>Scale as you go</p>
+								</div>
+
+								<PricingSlider
+									key={this.state.provider}
+									marks={machineMarks[this.state.provider]}
+									onChange={this.setPricing}
+								/>
+							</div>
+
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
@@ -461,19 +475,6 @@ export default class NewCluster extends Component {
 										Azure
 									</label>
 								</div>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
-									<h3>Pick the pricing plan</h3>
-									<p>Scale as you go</p>
-								</div>
-
-								<PricingSlider
-									key={this.state.provider}
-									marks={machineMarks[this.state.provider]}
-									onChange={this.setPricing}
-								/>
 							</div>
 
 							<div className={card}>
