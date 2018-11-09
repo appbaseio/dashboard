@@ -27,9 +27,9 @@ export const regions = {
 			flag: 'united-states.png',
 		},
 		'europe-north1-b': { name: 'Europe North 1B', flag: 'europe.png' },
-		'asia-southeast1-b': { name: 'Asia South East 1B' },
-		'asia-east1-b': { name: 'Asia East 1B' },
-		'asia-northeast1-a': { name: 'Asia North East 1A' },
+		'asia-southeast1-b': { name: 'Asia South East 1B', flag: 'singapore.png' },
+		'asia-east1-b': { name: 'Asia East 1B', flag: 'taiwan.png' },
+		'asia-northeast1-a': { name: 'Asia North East 1A', flag: 'japan.png' },
 	},
 };
 
