@@ -115,6 +115,14 @@ export default class PricingSlider extends Component {
 							</div>
 							<div>HA</div>
 						</div>
+
+						<div className="cluster-info__item">
+							<div>
+								$
+								<AnimatedNumber value={mark.pph} duration={100} stepPrecision={0} />
+							</div>
+							<div>Price per hour</div>
+						</div>
 					</div>
 					<div className={clusterInfo}>
 						<div>

@@ -28,28 +28,40 @@ const esVersions = [
 export const machineMarks = {
 	azure: {
 		0: {
+			label: 'Sandbox',
+			storage: 30,
+			memory: 4,
+			nodes: 1,
+			cost: 59,
+			machine: 'Standard_B2s',
+			pph: 0.08,
+		},
+		25: {
 			label: 'Hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cost: 119,
 			machine: 'Standard_B2s',
+			pph: 0.17,
 		},
-		33: {
+		50: {
 			label: 'Production I',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cost: 199,
 			machine: 'Standard_B2s',
+			pph: 0.28,
 		},
-		66: {
+		75: {
 			label: 'Production II',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
 			cost: 399,
 			machine: 'Standard_B2ms',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -58,16 +70,18 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'Standard_B4ms',
+			pph: 1.11,
 		},
 	},
 	gke: {
 		0: {
 			label: 'Sandbox',
 			storage: 30,
-			memory: 1.8,
+			memory: 4,
 			nodes: 1,
-			cost: 39,
+			cost: 59,
 			machine: 'g1-small',
+			pph: 0.08,
 		},
 		25: {
 			label: 'Hobby',
@@ -76,6 +90,7 @@ export const machineMarks = {
 			nodes: 2,
 			cost: 119,
 			machine: 'n1-standard-1',
+			pph: 0.17,
 		},
 		50: {
 			label: 'Production I',
@@ -84,6 +99,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 199,
 			machine: 'n1-standard-1',
+			pph: 0.28,
 		},
 		75: {
 			label: 'Production II',
@@ -92,6 +108,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 399,
 			machine: 'n1-standard-2',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -100,6 +117,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'n1-standard-4',
+			pph: 1.11,
 		},
 	},
 };
