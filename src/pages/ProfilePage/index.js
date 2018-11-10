@@ -227,7 +227,7 @@ class ProfilePage extends React.Component {
 												style={{
 													marginTop: '7px',
 												}}
-												placeholder="Username"
+												placeholder="Company name"
 												{...handler()}
 											/>
 										</div>

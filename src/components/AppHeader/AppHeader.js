@@ -1,8 +1,8 @@
 import React from 'react';
 import {
- Layout, Menu, Icon, Button,
+ Layout, Menu, Icon, Button, Tooltip,
 } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {
  string, object, bool, number,
 } from 'prop-types';
@@ -15,6 +15,8 @@ import MenuSlider from '../FullHeader/MenuSlider';
 import UserMenu from './UserMenu';
 import AppSwitcher from './AppSwitcher';
 import headerStyles from './styles';
+
+import { getAppInfoByName } from '../../batteries/modules/selectors';
 
 const { Header } = Layout;
 const noBorder = css`
@@ -40,7 +42,7 @@ const trialBtn = css`
 `;
 
 const AppHeader = ({
- currentApp, user, big, isUsingTrial, daysLeft,
+ currentApp, user, big, isUsingTrial, daysLeft, history, match, appOwner,
 }) => (
 	<Header
 		className={headerStyles}
@@ -53,7 +55,14 @@ const AppHeader = ({
 				</Link>
 			</Menu.Item>
 			<Menu.Item key="1" className={noBorder}>
-				<AppSwitcher apps={user.apps} currentApp={currentApp || 'Loading'} />
+				<AppSwitcher
+					appOwner={appOwner}
+					user={user.email}
+					apps={user.apps}
+					currentApp={currentApp || 'Loading'}
+					history={history}
+					match={match}
+				/>
 			</Menu.Item>
 		</Menu>
 		{isUsingTrial && (
@@ -95,10 +104,13 @@ const mapStateToProps = state => ({
 	isUsingTrial: get(state, '$getUserPlan.trial') || false,
 	daysLeft: get(state, '$getUserPlan.daysLeft', 0),
 	currentApp: get(state, '$getCurrentApp.name'),
+	appOwner: get(getAppInfoByName(state), 'owner'),
 	user: state.user.data,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(AppHeader);
+export default withRouter(
+	connect(
+		mapStateToProps,
+		null,
+	)(AppHeader),
+);
