@@ -1,32 +1,16 @@
 import React, { Component } from 'react';
 import {
- Card, Tooltip, Button, notification, Popconfirm, Spin,
+ Card, Button, notification, Popconfirm, Spin, Row,
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { css } from 'react-emotion';
 
-import Flex from '../../batteries/components/shared/Flex';
 import { ACC_API } from '../../constants/config';
-
-const EyeIcon = require('react-feather/dist/icons/eye').default;
-const EyeOffIcon = require('react-feather/dist/icons/eye-off').default;
-const CopyIcon = require('react-feather/dist/icons/copy').default;
-const ResetIcon = require('react-feather/dist/icons/refresh-ccw').default;
-
-const container = css`
-	border: 1px solid #e8e8e8;
-	padding: 2px 10px;
-	.ant-btn {
-		border: transparent;
-		background-color: transparent;
-		margin-left: 5px;
-		padding: 0 5px;
-	}
-`;
+import credsBox from './styles';
 
 class Credentials extends Component {
 	state = {
-		viewKey: false,
+		isHidden: true,
 		key: '',
 		isLoading: true,
 		isReseting: false,
@@ -51,11 +35,7 @@ class Credentials extends Component {
 	getKey = async () => {
 		try {
 			const response = await fetch(`${ACC_API}/user/credentials`, {
-				method: 'GET',
 				credentials: 'include',
-				headers: {
-					'content-type': 'application/json',
-				},
 			});
 			const data = await response.json();
 			this.toggleLoading();
@@ -71,7 +51,7 @@ class Credentials extends Component {
 
 	handleViewClick = () => {
 		this.setState(prevState => ({
-			viewKey: !prevState.viewKey,
+			isHidden: !prevState.isHidden,
 		}));
 	};
 
@@ -95,7 +75,9 @@ class Credentials extends Component {
 			this.toggleReseting();
 
 			if (response.status >= 400) {
-				throw new Error(data);
+				notification.error({
+					message: data.message,
+				});
 			}
 
 			notification.success({
@@ -105,55 +87,48 @@ class Credentials extends Component {
 			this.getKey();
 		} catch (err) {
 			this.toggleReseting();
-			throw new Error(err);
+			notification.error({
+				message: 'Something went Wrong.Please report if the bug persists.',
+			});
 		}
 	};
 
 	render() {
 		const {
- viewKey, key, isLoading, isReseting,
+ isHidden, key, isLoading, isReseting,
 } = this.state;
 		return (
 			<Card title="Master Credentials" css={{ minHeight: 200 }}>
 				{isLoading ? (
-					<Flex alignItems="center" justifyContent="center">
+					<Row align="middle" justify="center">
 						<Spin />
-					</Flex>
+					</Row>
 				) : (
-					<Flex alignItems="center">
-						<Flex justifyContent="space-between" alignItems="center" css={container}>
-							<span>
-								{viewKey ? key : '########################################'}
-							</span>
-							<Flex>
-								<Tooltip
-									placement="topLeft"
-									title={viewKey ? 'Hide credentials' : 'View credentials'}
-								>
-									<Button onClick={this.handleViewClick} type="normal">
-										{viewKey ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
-									</Button>
-								</Tooltip>
-								<CopyToClipboard text={key} onCopy={this.handleCopyCred}>
-									<Tooltip placement="topLeft" title="Copy To Clipboard">
-										<Button type="normal">
-											<CopyIcon size={16} />
-										</Button>
-									</Tooltip>
-								</CopyToClipboard>
-								<Popconfirm
-									title="Are you sure reset this key?"
-									onConfirm={this.handleKeyReset}
-									okText="Yes"
-									cancelText="No"
-								>
-									<Button disabled={isReseting}>
-										<ResetIcon size={16} />
-									</Button>
-								</Popconfirm>
-							</Flex>
-						</Flex>
-					</Flex>
+					<div className={credsBox}>
+						<span className="cred-text">
+							{isHidden ? '#######################################' : key}
+						</span>
+						<span className="cred-button">
+							<Button
+								css={{ border: 0 }}
+								onClick={this.handleViewClick}
+								icon={isHidden ? 'eye' : 'close-circle'}
+								data-clipboard-text={key}
+								theme="outlined"
+							/>
+							<CopyToClipboard text={key} onCopy={this.handleCopyCred}>
+								<Button css={{ border: 0 }} icon="copy" data-clipboard-text={key} />
+							</CopyToClipboard>
+							<Popconfirm
+								title="Are you sure reset this key?"
+								onConfirm={this.handleKeyReset}
+								okText="Yes"
+								cancelText="No"
+							>
+								<Button disabled={isReseting} css={{ border: 0 }} icon="reload" />
+							</Popconfirm>
+						</span>
+					</div>
 				)}
 			</Card>
 		);
