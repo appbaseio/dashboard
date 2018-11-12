@@ -2,17 +2,20 @@ import {
  take, takeEvery, call, put,
 } from 'redux-saga/effects';
 import { APPS } from '../constants';
-import { getAppsMetrics, getAppsOwners } from '../utils';
+import { getAppsOwners, getAppsOverview } from '../utils';
 import {
- setAppsMetrics, setAppsMetricsError, setAppsOwners, setAppsOwnersError,
+	setAppsOwners,
+	setAppsOwnersError,
+	setAppsOverview,
+	setAppsOverviewError,
 } from '../actions';
 
 function* appWorker() {
 	try {
-		const metrics = yield call(getAppsMetrics);
-		yield put(setAppsMetrics(metrics));
+		const appsOverview = yield call(getAppsOverview);
+		yield put(setAppsOverview(appsOverview));
 	} catch (e) {
-		yield put(setAppsMetricsError(e));
+		yield put(setAppsOverviewError(e));
 	}
 }
 

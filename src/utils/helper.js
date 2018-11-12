@@ -64,7 +64,15 @@ export const planLimits = {
 		action: 1000000,
 		records: 50000,
 	},
+	'bootstrap-monthly': {
+		action: 1000000,
+		records: 50000,
+	},
 	growth: {
+		action: 10000000,
+		records: 1000000,
+	},
+	'growth-monthly': {
 		action: 10000000,
 		records: 1000000,
 	},
