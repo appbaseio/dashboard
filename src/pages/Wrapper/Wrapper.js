@@ -57,7 +57,7 @@ const Wrapper = () => (
 		<Route exact path="/clusters" component={ClusterPage} />
 		<Route path="/clusters/new" component={NewClusterPage} />
 		<Route path="/clusters/:id" component={ClusterInfoPage} />
-		<Route exact path="/profile" component={ProfilePage} />
+		<Route path="/profile" component={ProfilePage} />
 		<Route path="/app/:appName?/:route?" component={AppWrapper} />
 		<Route component={NoMatch} />
 	</Switch>
