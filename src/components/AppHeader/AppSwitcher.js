@@ -3,8 +3,15 @@ import {
  Dropdown, Menu, Button, Icon, Tooltip,
 } from 'antd';
 import { connect } from 'react-redux';
+import { css } from 'react-emotion';
 
 import { setCurrentApp } from '../../batteries/modules/actions';
+
+const ownerButton = css`
+	i {
+		margin-right: 2px !important;
+	}
+`;
 
 const AppSwitcher = ({
  apps, currentApp, history, updateCurrentApp, match, appOwner, user,
@@ -14,7 +21,7 @@ const AppSwitcher = ({
 	} = match;
 	const menu = (
 		<Menu
-			style={{ maxHeight: 250, overflowY: 'scroll' }}
+			css={{ maxHeight: 250, overflowY: 'scroll' }}
 			onClick={(e) => {
 				const appName = e.key;
 				updateCurrentApp(appName, apps[appName]);
@@ -27,22 +34,25 @@ const AppSwitcher = ({
 		</Menu>
 	);
 	return (
-		<Dropdown trigger={['click']} overlay={menu}>
-			<Button style={{ border: 0 }}>
-				<span>{currentApp || 'Loading...'}</span>
-				{appOwner
-					&& (appOwner !== user ? (
-						<Tooltip
-							title={`Shared by ${appOwner}`}
-							trigger={['hover']}
-							placement="bottom"
-						>
-							<Icon style={{ marginLeft: 8 }} shape="circle" type="share-alt" />
-						</Tooltip>
-					) : null)}
-				<Icon type="down" />
-			</Button>
-		</Dropdown>
+		<React.Fragment>
+			<Dropdown trigger={['click']} overlay={menu}>
+				<Button css={{ border: 0, boxShadow: 'none', padding: 0 }}>
+					<span>{currentApp || 'Loading...'}</span>
+					<Icon type="down" />
+				</Button>
+			</Dropdown>
+			{appOwner
+				&& (appOwner !== user ? (
+					<Tooltip title={`Shared by ${appOwner}`} trigger={['hover']} placement="bottom">
+						<Button
+							className={ownerButton}
+							size="small"
+							shape="circle"
+							icon="share-alt"
+						/>
+					</Tooltip>
+				) : null)}
+		</React.Fragment>
 	);
 };
 
