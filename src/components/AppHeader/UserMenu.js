@@ -27,7 +27,7 @@ const menuItem = css`
 `;
 
 const link = css`
-	margin-right: 20px;
+	margin-right: 30px;
 	color: rgba(0, 0, 0, 0.65);
 	i {
 		margin-right: 4px;
