@@ -24,6 +24,7 @@ import {
 	deleteApp,
 } from '../../batteries/modules/actions';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
+import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 
 const columns = [
 	{
@@ -39,6 +40,27 @@ const columns = [
 		width: '50%',
 	},
 ];
+const bannerMessagesCred = {
+	free: {
+		title: 'Upgrade to add more security in credentials',
+		description: '',
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	bootstrap: {
+		title: 'Upgrade to add more security in credentials',
+		description: '',
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	growth: {
+		title: 'Learn how to create credentials',
+		description:
+			'See our docs on how to track search, filters, click events, conversions and add your own custom events.',
+		buttonText: 'Read Docs',
+		href: 'https://docs.appbase.io',
+	},
+};
 
 class Credentials extends Component {
 	constructor(props) {
@@ -161,85 +183,92 @@ class Credentials extends Component {
 	render() {
 		const { showCredForm, currentPermissionInfo, mappings } = this.state;
 		const {
-			isLoading, permissions, isOwner, isDeleting,
-		} = this.props;
+ isLoading, permissions, isOwner, isDeleting, plan,
+} = this.props;
 		if (isLoading && !(permissions && permissions.length)) {
 			return <Loader />;
 		}
 		return (
-			<Container>
-				<Card title="Credentials">
-					<Table
-						scroll={{ x: 700 }}
-						dataSource={permissions.map(permission => ({
-							permissionInfo: permission,
-							deletePermission: this.deletePermission,
-							showForm: this.showForm,
-						}))}
-						rowKey={row => `${get(row, 'permissionInfo.username')}${get(
-								row,
-								'permissionInfo.password',
-							)}`
-						}
-						columns={columns}
-						css="tr:hover td {
-							background: transparent;
-						}"
-						style={isDeleting ? {
-							pointerEvents: 'none',
-							opacity: 0.6,
-						} : null}
-					/>
-				</Card>
-				{showCredForm && (
-					<CreateCredentials
-						disabled={!isOwner}
-						titleText={!isOwner ? 'Credentials Details' : undefined}
-						onSubmit={this.handleSubmit}
-						show={showCredForm}
-						handleCancel={this.handleCancel}
-						mappings={mappings}
-						initialValues={currentPermissionInfo}
-					/>
-				)}
-				{isOwner && (
-					<Button
-						style={{
-							margin: '10px 0px',
-						}}
-						onClick={() => this.showForm()}
-						size="large"
-						type="primary"
-					>
-						New Credentials
-					</Button>
-				)}
-				{isOwner && (
-					<Tooltip
-						placement="rightTop"
-						title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings."
-					>
-						<Popconfirm
-							title="Are you sure delete this app?"
-							onConfirm={this.deleteApp}
-							okText="Yes"
-							cancelText="No"
-							placement="topLeft"
+			<React.Fragment>
+				<Banner {...bannerMessagesCred[plan]} />
+				<Container>
+					<Card title="Credentials">
+						<Table
+							scroll={{ x: 700 }}
+							dataSource={permissions.map(permission => ({
+								permissionInfo: permission,
+								deletePermission: this.deletePermission,
+								showForm: this.showForm,
+							}))}
+							rowKey={row => `${get(row, 'permissionInfo.username')}${get(
+									row,
+									'permissionInfo.password',
+								)}`
+							}
+							columns={columns}
+							css="tr:hover td {
+								background: transparent;
+							}"
+							style={
+								isDeleting
+									? {
+											pointerEvents: 'none',
+											opacity: 0.6,
+									  }
+									: null
+							}
+						/>
+					</Card>
+					{showCredForm && (
+						<CreateCredentials
+							disabled={!isOwner}
+							titleText={!isOwner ? 'Credentials Details' : undefined}
+							onSubmit={this.handleSubmit}
+							show={showCredForm}
+							handleCancel={this.handleCancel}
+							mappings={mappings}
+							initialValues={currentPermissionInfo}
+						/>
+					)}
+					{isOwner && (
+						<Button
+							style={{
+								margin: '10px 0px',
+							}}
+							onClick={() => this.showForm()}
+							size="large"
+							type="primary"
 						>
-							<Button
-								style={{
-									margin: '10px 10px',
-									float: 'right',
-								}}
-								type="danger"
-								size="large"
+							New Credentials
+						</Button>
+					)}
+					{isOwner && (
+						<Tooltip
+							placement="rightTop"
+							title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings."
+						>
+							<Popconfirm
+								title="Are you sure delete this app?"
+								onConfirm={this.deleteApp}
+								okText="Yes"
+								cancelText="No"
+								placement="topLeft"
 							>
-								Delete App
-							</Button>
-						</Popconfirm>
-					</Tooltip>
-				)}
-			</Container>
+								<Button
+									style={{
+										margin: '10px 10px',
+										float: 'right',
+									}}
+									type="danger"
+									size="large"
+								>
+									Delete App
+								</Button>
+							</Popconfirm>
+						</Tooltip>
+					)}
+				</Container>
+			</React.Fragment>
 		);
 	}
 }
@@ -249,6 +278,7 @@ Credentials.defaultProps = {
 };
 Credentials.propTypes = {
 	appName: string.isRequired,
+	plan: string.isRequired,
 	appId: string.isRequired,
 	permissions: array.isRequired,
 	fetchPermissions: func.isRequired,
@@ -265,11 +295,13 @@ const mapStateToProps = (state) => {
 	const appOwner = get(getAppInfoByName(state), 'owner');
 	const userEmail = get(state, 'user.data.email');
 	const appPermissions = getAppPermissionsByName(state);
+	const planState = getAppPlanByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),
+		plan: get(planState, 'plan'),
 		appId: get(state, '$getCurrentApp.id'),
 		permissions: get(appPermissions, 'results', []),
-		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
+		isPaidUser: get(planState, 'isPaid'),
 		isOwner: appOwner === userEmail,
 		isLoading: get(state, '$getAppPermissions.isFetching'),
 		isDeleting: get(state, '$deleteAppPermission.isFetching'),

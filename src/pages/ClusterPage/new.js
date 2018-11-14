@@ -34,6 +34,7 @@ export const machineMarks = {
 			nodes: 1,
 			cost: 59,
 			machine: 'Standard_B2s',
+			pph: 0.08,
 		},
 		25: {
 			label: 'Hobby',
@@ -42,6 +43,7 @@ export const machineMarks = {
 			nodes: 2,
 			cost: 119,
 			machine: 'Standard_B2s',
+			pph: 0.17,
 		},
 		50: {
 			label: 'Production I',
@@ -50,6 +52,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 199,
 			machine: 'Standard_B2s',
+			pph: 0.28,
 		},
 		75: {
 			label: 'Production II',
@@ -58,6 +61,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 399,
 			machine: 'Standard_B2ms',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -66,16 +70,18 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'Standard_B4ms',
+			pph: 1.11,
 		},
 	},
 	gke: {
 		0: {
 			label: 'Sandbox',
 			storage: 30,
-			memory: 1.8,
+			memory: 4,
 			nodes: 1,
 			cost: 59,
 			machine: 'g1-small',
+			pph: 0.08,
 		},
 		25: {
 			label: 'Hobby',
@@ -84,6 +90,7 @@ export const machineMarks = {
 			nodes: 2,
 			cost: 119,
 			machine: 'n1-standard-1',
+			pph: 0.17,
 		},
 		50: {
 			label: 'Production I',
@@ -92,6 +99,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 199,
 			machine: 'n1-standard-1',
+			pph: 0.28,
 		},
 		75: {
 			label: 'Production II',
@@ -100,6 +108,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 399,
 			machine: 'n1-standard-2',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -108,8 +117,14 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'n1-standard-4',
+			pph: 1.11,
 		},
 	},
+};
+
+const namingConvention = {
+	azure: 'You may use alpha-numerics with "-" in between',
+	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
 };
 
 export default class NewCluster extends Component {
@@ -121,7 +136,7 @@ export default class NewCluster extends Component {
 			pluginState[item] = item !== 'x-pack';
 		});
 
-		const provider = 'azure';
+		const provider = 'gke';
 
 		this.state = {
 			clusterName: '',
@@ -178,9 +193,12 @@ export default class NewCluster extends Component {
 	};
 
 	validateClusterName = () => {
-		const { clusterName } = this.state;
-		const pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
-
+		const { clusterName, provider } = this.state;
+		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		if (provider === 'gke') {
+			// gke cluster names can't start with a number
+			pattern = /^[a-zA-Z]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		}
 		return pattern.test(clusterName);
 	};
 
@@ -414,6 +432,7 @@ export default class NewCluster extends Component {
 	};
 
 	render() {
+		const { provider } = this.state;
 		return (
 			<Fragment>
 				<FullHeader />
@@ -428,6 +447,20 @@ export default class NewCluster extends Component {
 						</Modal>
 						<article>
 							<h2>Create a new cluster</h2>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Pick the pricing plan</h3>
+									<p>Scale as you go</p>
+								</div>
+
+								<PricingSlider
+									key={this.state.provider}
+									marks={machineMarks[this.state.provider]}
+									onChange={this.setPricing}
+								/>
+							</div>
+
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
@@ -465,19 +498,6 @@ export default class NewCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Pick the pricing plan</h3>
-									<p>Scale as you go</p>
-								</div>
-
-								<PricingSlider
-									key={this.state.provider}
-									marks={machineMarks[this.state.provider]}
-									onChange={this.setPricing}
-								/>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
 									<h3>Pick a region</h3>
 									<p>All around the globe</p>
 								</div>
@@ -491,19 +511,32 @@ export default class NewCluster extends Component {
 									<h3>Pick a cluster name</h3>
 									<p>Name this bad boy</p>
 								</div>
-								<div className="col grow vcenter">
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
 									<input
 										id="cluster-name"
 										type="name"
 										css={{
 											width: '100%',
 											maxWidth: 400,
+											marginBottom: 10,
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
+									<p>
+										{provider === 'azure'
+											? namingConvention.azure
+											: namingConvention.gke}
+									</p>
 								</div>
 							</div>
 
