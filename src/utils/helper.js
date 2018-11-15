@@ -34,7 +34,7 @@ export const compressNumber = (amount) => {
 	let finalNum = null;
 	try {
 		let unit = '';
-		if (amount > 1000000) {
+		if (amount >= 1000000) {
 			unit = 'M';
 		} else if (amount > 1000) {
 			unit = 'K';
