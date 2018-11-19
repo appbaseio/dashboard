@@ -9,6 +9,12 @@ module.exports = {
 		filename: 'build.js',
 		chunkFilename: '[name].[contenthash].build.js',
 	},
+	plugins: [
+		new SentryPlugin({
+			include: './dist',
+			ignore: ['node_modules', 'webpack.config.js'],
+		}),
+	],
 	module: {
 		rules: [
 			{
@@ -50,12 +56,6 @@ module.exports = {
 					loader: 'file-loader',
 				},
 			},
-		],
-		plugins: [
-			new SentryPlugin({
-				include: './dist',
-				ignore: ['node_modules', 'webpack.config.js'],
-			}),
 		],
 	},
 };
