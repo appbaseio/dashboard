@@ -11,7 +11,7 @@ module.exports = {
 	},
 	plugins: [
 		new SentryPlugin({
-			include: './dist',
+			include: '.',
 			ignore: ['node_modules', 'webpack.config.js'],
 		}),
 	],
