@@ -34,14 +34,15 @@ class Credentials extends Component {
 
 	getKey = async () => {
 		try {
+			this.toggleLoading();
 			const response = await fetch(`${ACC_API}/user/credentials`, {
 				credentials: 'include',
 			});
 			const data = await response.json();
-			this.toggleLoading();
 
 			this.setState({
 				key: data.credentials,
+				isLoading: false,
 			});
 		} catch (err) {
 			this.toggleLoading();
