@@ -47,7 +47,7 @@ class Profile extends Component<Props> {
 						justifyContent: 'center',
 						margin: '0 auto',
 						width: '75%',
-						[mediaKey.small]: {
+						[mediaKey.medium]: {
 							flexDirection: 'column',
 							padding: 0,
 							width: '100%',
@@ -64,8 +64,7 @@ class Profile extends Component<Props> {
 								borderRight: 0,
 								marginRight: 15,
 								width: '180px',
-								[mediaKey.small]: {
-									marginBottom: 10,
+								[mediaKey.medium]: {
 									marginRight: 0,
 									width: '100% !important',
 								},

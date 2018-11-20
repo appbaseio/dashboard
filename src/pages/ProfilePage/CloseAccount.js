@@ -5,6 +5,8 @@ import {
 
 import { ACC_API } from '../../constants/config';
 
+const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
+
 function removeAllCookies() {
 	const cookiesString = document.cookie;
 	const cookies = cookiesString.split(';');
@@ -29,6 +31,7 @@ const deleteUser = async () => {
 		});
 		localStorage.clear();
 		removeAllCookies();
+		window.location.href = logoutURL;
 	} catch (err) {
 		notification.error({
 			message: 'Something went wrong. Please report to us if this bug persists',
