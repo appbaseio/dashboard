@@ -8,9 +8,9 @@ import { ACC_API } from '../../constants/config';
 function removeAllCookies() {
 	const cookiesString = document.cookie;
 	const cookies = cookiesString.split(';');
-	cookies.forEach((cookie) => {
-		const key = cookie.split('=');
-		document.cookie = `${key[0]} =; expires = Thu, 01 Jan 1970 00:00:00 UTC`;
+	cookies.forEach((item) => {
+		const key = item.split('=');
+		document.cookie = `${key[0]} =; expires = Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 	});
 }
 
@@ -25,11 +25,10 @@ const deleteUser = async () => {
 		});
 		const data = await response.json();
 		notification.success({
-			message: 'Your account is permanenetly deleted.',
+			message: data.message,
 		});
 		localStorage.clear();
 		removeAllCookies();
-		window.location.href = 'https://appbase.io';
 	} catch (err) {
 		notification.error({
 			message: 'Something went wrong. Please report to us if this bug persists',
@@ -51,7 +50,7 @@ const CloseAccount = () => (
 		<Popconfirm
 			placement="bottom"
 			title="Are you sure you want to close your account?"
-			onConfirm={() => deleteUser()}
+			onConfirm={deleteUser}
 			okText="Yes"
 			cancelText="No"
 		>
