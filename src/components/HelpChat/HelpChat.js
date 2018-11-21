@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
- Button, Dropdown, Menu, Modal, Input, message,
+ Button, Dropdown, Menu, Modal, Input, message, notification,
 } from 'antd';
 import { css } from 'emotion';
 
@@ -24,6 +24,7 @@ class HelpButton extends React.Component {
 			modal: false,
 			issue: '',
 			details: '',
+			isLoading: false,
 		};
 	}
 
@@ -40,41 +41,64 @@ class HelpButton extends React.Component {
 		});
 	};
 
-	handleSubmitIssue = () => {
+	toggleLoading = () => {
+		this.setState(({ isLoading }) => ({
+			isLoading: !isLoading,
+		}));
+	};
+
+	handleSubmitIssue = async () => {
 		const { issue, details } = this.state;
 		const { user } = this.props;
+
+		const errorMessage = (
+			<p>
+				We couldn{"'"}t send the request but you can send an e - mail instead to{' '}
+				<a href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}>
+					support@appbase.io
+				</a>{' '}
+				which will create a ticket.
+			</p>
+		);
 		if (issue) {
-			fetch(
-				'https://api.hsforms.com/submissions/v3/integration/submit/4709730/389ccf8c-b434-4060-970c-0e6e8defc9c7',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
+			try {
+				this.toggleLoading();
+				const response = await fetch(
+					'https://api.hsforms.com/submissions/v3/integration/submit/4709730/389ccf8c-b434-4060-970c-0e6e8defc9c7',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							fields: [
+								{
+									name: 'email',
+									value: user.email,
+								},
+								{
+									name: 'firstname',
+									value: user.name,
+								},
+								{
+									name: 'subject',
+									value: issue,
+								},
+								{
+									name: 'content',
+									value: details,
+								},
+							],
+						}),
 					},
-					body: JSON.stringify({
-						fields: [
-							{
-								name: 'email',
-								value: user.email,
-							},
-							{
-								name: 'firstname',
-								value: user.name,
-							},
-							{
-								name: 'subject',
-								value: issue,
-							},
-							{
-								name: 'content',
-								value: details,
-							},
-						],
-					}),
-				},
-			)
-				.then(res => res.json())
-				.then((data) => {
+				);
+
+				if (response.status >= 400) {
+					notification.error({ message: errorMessage, duration: 10 });
+					this.toggleLoading();
+				} else {
+					this.toggleLoading();
+					const data = await response.json();
 					const displayMessage = data.inlineMessage
 						.replace('<p>', '')
 						.replace('</p>', '');
@@ -84,10 +108,11 @@ class HelpButton extends React.Component {
 						details: '',
 						modal: false,
 					});
-				})
-				.catch(() => {
-					message.error('Something went wrong. Please try again later.');
-				});
+				}
+			} catch (e) {
+				this.toggleLoading();
+				notification.error({ message: errorMessage, duration: 10 });
+			}
 		} else {
 			message.error('Please write the issue');
 		}
@@ -119,7 +144,9 @@ class HelpButton extends React.Component {
 	};
 
 	render() {
-		const { modal, issue, details } = this.state;
+		const {
+ modal, issue, details, isLoading,
+} = this.state;
 		const menu = (
 			<Menu onClick={this.handleClick}>
 				<Menu.Item key="chat" style={{ padding: '10px 15px' }}>
@@ -158,6 +185,7 @@ class HelpButton extends React.Component {
 					destroyOnClose
 					title="Ask us anything!"
 					onOk={this.handleSubmitIssue}
+					okButtonProps={{ loading: isLoading }}
 					okText="Submit"
 					onCancel={this.handleCancel}
 				>
