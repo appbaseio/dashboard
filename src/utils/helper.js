@@ -34,7 +34,7 @@ export const compressNumber = (amount) => {
 	let finalNum = null;
 	try {
 		let unit = '';
-		if (amount > 1000000) {
+		if (amount >= 1000000) {
 			unit = 'M';
 		} else if (amount > 1000) {
 			unit = 'K';
@@ -64,7 +64,15 @@ export const planLimits = {
 		action: 1000000,
 		records: 50000,
 	},
+	'bootstrap-monthly': {
+		action: 1000000,
+		records: 50000,
+	},
 	growth: {
+		action: 10000000,
+		records: 1000000,
+	},
+	'growth-monthly': {
 		action: 10000000,
 		records: 1000000,
 	},

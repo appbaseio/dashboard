@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import {
- Row, Col, Icon, Button, Tooltip, Dropdown, Menu,
+ Row, Col, Icon, Button, Tooltip, Dropdown, Menu, Tag,
 } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
@@ -96,7 +96,7 @@ class HomePage extends Component {
 	getSortedApps = () => {
 		const {
 			apps,
-			appsMetrics: { data },
+			appsOverview: { data },
 		} = this.props;
 		const { sortBy } = this.state;
 
@@ -125,7 +125,7 @@ class HomePage extends Component {
 		const { showModal } = this.state;
 		const {
 			user,
-			appsMetrics: { data },
+			appsOverview: { data },
 			apps,
 			username,
 			history,
@@ -232,7 +232,9 @@ class HomePage extends Component {
 									style={{ fontSize: 34, marginBottom: 10 }}
 								/>
 								<h2>No apps found</h2>
-								<p>Create an app or try out the interactive tutorial to get started</p>
+								<p>
+									Create an app or try out the interactive tutorial to get started
+								</p>
 							</section>
 						)}
 
@@ -246,7 +248,14 @@ class HomePage extends Component {
 										alignItems: 'center',
 									}}
 								>
-									{name}{' '}
+									<div css={{ display: 'flex', alignItems: 'center' }}>
+										{name}{' '}
+										{data && data[name] && data[name].tier && data[name].tier !== 'free' ? (
+											<Tag css={{ marginLeft: 8 }} color="blue">
+												Paid
+											</Tag>
+										) : null}
+									</div>
 									{owners[name] && user !== owners[name] ? (
 										<Tooltip title={`Shared by ${owners[name]}`}>
 											<Button shape="circle" icon="share-alt" />
@@ -290,7 +299,7 @@ HomePage.propTypes = {
 	user: PropTypes.string.isRequired,
 	username: PropTypes.string.isRequired,
 	apps: PropTypes.object.isRequired,
-	appsMetrics: PropTypes.object.isRequired,
+	appsOverview: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	appsOwners: PropTypes.object.isRequired,
 	getAppsOwners: PropTypes.func.isRequired,
@@ -302,7 +311,7 @@ const mapStateToProps = state => ({
 	user: get(state, 'user.data.email'),
 	username: get(state, 'user.data.name'),
 	apps: get(state, 'apps'),
-	appsMetrics: get(state, 'appsMetrics'),
+	appsOverview: get(state, 'appsOverview'),
 	appsOwners: get(state, 'appsOwners'),
 	permissions: get(state, '$getAppPermissions.results'),
 });

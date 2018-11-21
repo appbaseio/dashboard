@@ -76,9 +76,7 @@ export default class Introduction extends Component {
 						appbaseHelpers.updateApp(app);
 						this.props.setAppName(value);
 					} else {
-						this.setError(
-							'Your app name is not unique. Please try with a different app name.',
-						);
+						this.setError(res.message);
 						this.input.focus();
 					}
 				})
