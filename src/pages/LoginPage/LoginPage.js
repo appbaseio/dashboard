@@ -79,6 +79,7 @@ class LoginPage extends React.Component {
 		try {
 			const response = await fetch(`${ACC_API}/user/verify`, {
 				method: 'POST',
+				credentials: 'include',
 				headers: {
 					'content-type': 'application/json',
 				},
@@ -92,8 +93,9 @@ class LoginPage extends React.Component {
 				message.error(data.message);
 				this.toggleLoading();
 			} else {
-				this.toggleLoading();
 				message.success(data.message);
+				this.toggleLoading();
+				window.location.reload();
 			}
 		} catch (e) {
 			message.error('Something went Wrong.');
