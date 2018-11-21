@@ -36,6 +36,10 @@ const menuSlider = css`
 	`)};
 `;
 
+const link = css`
+	color: rgba(0, 0, 0, 0.65);
+`;
+
 class MenuSlider extends React.Component {
 	state = {
 		visible: false,
@@ -88,6 +92,19 @@ class MenuSlider extends React.Component {
 						<Menu.Item key="3">
 							<Link to="/profile">Profile</Link>
 						</Menu.Item>
+
+						{window.innerWidth < 576 ? (
+							<Menu.Item key="4">
+								<a
+									href="https://docs.appbase.io/javascript/quickstart.html"
+									className={link}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Docs
+								</a>
+							</Menu.Item>
+						) : null}
 
 						<Menu.Item onClick={this.handleLogout}>Logout</Menu.Item>
 					</Menu>
