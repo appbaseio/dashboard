@@ -27,7 +27,7 @@ const AppCard = ({
 		>
 			{data && data[appName] ? (
 				<UsageRenderer
-					plan="free"
+					plan={data[appName].tier || 'free'}
 					computedMetrics={{
 						calls: data[appName].api_calls,
 						records: data[appName].records,
