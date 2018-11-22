@@ -52,13 +52,23 @@ class HelpButton extends React.Component {
 		const { user } = this.props;
 
 		const errorMessage = (
-			<p>
-				We couldn{"'"}t send the request but you can send an e - mail instead to{' '}
-				<a href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}>
-					support@appbase.io
-				</a>{' '}
-				which will create a ticket.
-			</p>
+			<div>
+				<p>
+					We couldn{"'"}t send the request but you can send an e-mail instead to{' '}
+					<a href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}>
+						support@appbase.io
+					</a>{' '}
+					which will create a ticket.
+				</p>
+				<Button
+					href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
+					icon="mail"
+					size="large"
+					type="primary"
+				>
+					Send Mail
+				</Button>
+			</div>
 		);
 		if (issue) {
 			try {
@@ -145,8 +155,8 @@ class HelpButton extends React.Component {
 
 	render() {
 		const {
- modal, issue, details, isLoading,
-} = this.state;
+			modal, issue, details, isLoading,
+		} = this.state; // prettier-ignore
 		const menu = (
 			<Menu onClick={this.handleClick}>
 				<Menu.Item key="chat" style={{ padding: '10px 15px' }}>
