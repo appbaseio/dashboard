@@ -127,11 +127,11 @@ class CreateAppModal extends Component {
 		}
 		if (isError && isError !== prevProps.isError) {
 			confirm({
-				title: `App is created successfully but unable to update the plan to ${capitalizeFirstLetter(
+				title: `Your app has been created successfully, but we were unable to set the plan to ${capitalizeFirstLetter(
 					plan,
-				)}`,
+				)}.`,
 				content:
-					"Don't worry, you can still update your plan by just visiting the billing section of the app.",
+					'You can still update your plan by visiting the billing section of the app.',
 				okText: 'Go To Billing',
 				onOk() {
 					history.push(`app/${appName}/billing`);
