@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { object } from 'prop-types';
 import { connect } from 'react-redux';
@@ -38,7 +38,7 @@ const FullHeader = ({ user }) => (
 				</Menu.Item>
 
 				<Menu.Item key="2">
-					<Link to="/clusters">Clusters</Link>
+					<Link to="/clusters">Clusters <Tag>Preview</Tag></Link>
 				</Menu.Item>
 			</Menu>
 		</div>
