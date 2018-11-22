@@ -15,7 +15,8 @@ import CreateAppModal from './CreateAppModal';
 import AppCard from '../../components/AppCard';
 
 import { getAppsOwners as getOwners } from '../../actions';
-import { getUserPermissions } from '../../batteries/modules/actions';
+import { getUserPermissions, getUserPlan } from '../../batteries/modules/actions';
+
 import { mediaKey } from '../../utils/media';
 
 const link = css`
@@ -49,6 +50,7 @@ class HomePage extends Component {
 			getAppsOwners,
 			permissions,
 			fetchPermissions,
+			fetchUserPlan,
 			apps,
 			history,
 		} = this.props;
@@ -65,6 +67,8 @@ class HomePage extends Component {
 		if (!permissions) {
 			fetchPermissions();
 		}
+		// Fetches the users current plan
+		fetchUserPlan();
 	}
 
 	handleSortOption = (e) => {
@@ -250,7 +254,10 @@ class HomePage extends Component {
 								>
 									<div css={{ display: 'flex', alignItems: 'center' }}>
 										{name}{' '}
-										{data && data[name] && data[name].tier && data[name].tier !== 'free' ? (
+										{data
+										&& data[name]
+										&& data[name].tier
+										&& data[name].tier !== 'free' ? (
 											<Tag css={{ marginLeft: 8 }} color="blue">
 												Paid
 											</Tag>
@@ -303,6 +310,7 @@ HomePage.propTypes = {
 	history: PropTypes.object.isRequired,
 	appsOwners: PropTypes.object.isRequired,
 	getAppsOwners: PropTypes.func.isRequired,
+	fetchUserPlan: PropTypes.func.isRequired,
 	permissions: PropTypes.object, // eslint-disable-line
 	fetchPermissions: PropTypes.func.isRequired,
 };
@@ -318,6 +326,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	getAppsOwners: () => dispatch(getOwners()),
+	fetchUserPlan: () => dispatch(getUserPlan()),
 	fetchPermissions: () => dispatch(getUserPermissions()),
 });
 
