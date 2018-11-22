@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table, Card, Button } from 'antd';
+import {
+ Table, Card, Button, Popconfirm,
+} from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import get from 'lodash/get';
@@ -8,13 +10,41 @@ import Loader from '../../batteries/components/shared/Loader';
 import Flex from '../../batteries/components/shared/Flex';
 import { media } from '../../utils/media';
 import Container from '../../components/Container';
-import { getSharedApp, createAppShare, updatePermission } from '../../batteries/modules/actions';
+import {
+	getSharedApp,
+	createAppShare,
+	updatePermission,
+	deleteAppShare,
+} from '../../batteries/modules/actions';
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
 import TransferOwnership from './TransferOwnership';
 import { getAppPlanByName, getAppInfoByName } from '../../batteries/modules/selectors';
 import { displayErrors } from '../../utils/helper';
 
+const DeleteIcon = require('react-feather/dist/icons/trash-2').default;
+
+const bannerMessagesTeam = {
+	free: {
+		title: 'Upgrade to collaborate with your team',
+		description: 'Invite team members and collaborate together on your app.',
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	bootstrap: {
+		title: 'Upgrade to collaborate with your team',
+		description: 'Invite team members and collaborate together on your app.',
+		buttonText: 'Upgrade Now',
+		href: '/billing',
+	},
+	growth: {
+		title: 'Learn how to collaborate with your team',
+		description:
+			'See our docs on how to track search, filters, click events, conversions and add your own custom events.',
+		buttonText: 'Read Docs',
+		href: 'https://docs.appbase.io',
+	},
+};
 
 let lastIndex = 0;
 const updateIndex = () => {
@@ -45,13 +75,28 @@ const columns = [
 		),
 		key: `edit${updateIndex()}`,
 	},
+	{
+		title: 'Delete',
+		// eslint-disable-next-line
+		render: ({ settingInfo, handleDelete }) => (
+			<Popconfirm
+				placement="leftTop"
+				title={`Are you sure to unshare this app with ${settingInfo.email}?`}
+				onConfirm={() => handleDelete(settingInfo.username, {
+						email: settingInfo.email,
+					})
+				}
+				okText="Yes"
+				cancelText="No"
+			>
+				<Button type="danger" size="default">
+					<DeleteIcon size={16} />
+				</Button>
+			</Popconfirm>
+		),
+		key: `edit${updateIndex()}`,
+	},
 ];
-const bannerConfig = {
-	title: 'Upgrade to collaborate with your team',
-	description: 'Invite team members and collaborate together on your app.',
-	buttonText: 'Upgrade Now',
-	href: '/billing',
-};
 
 class ShareSettingsView extends React.Component {
 	state = {
@@ -119,6 +164,15 @@ class ShareSettingsView extends React.Component {
 		});
 	};
 
+	handleDelete = (username, body) => {
+		const { deleteShareApp } = this.props;
+		deleteShareApp(username, body).then(({ payload }) => {
+			if (payload) {
+				this.getAppShare();
+			}
+		});
+	};
+
 	afterSuccess() {
 		this.handleCancel();
 		this.getAppShare();
@@ -126,88 +180,115 @@ class ShareSettingsView extends React.Component {
 
 	render() {
 		const {
-			isPaidUser, sharedUsers, isLoading, isOwner,
-		} = this.props;
+ isPaidUser, sharedUsers, isLoading, isOwner, isDeleting, plan,
+} = this.props;
 		const { showForm, selectedSettings } = this.state;
-		if (isLoading) {
+		if (isLoading && !(sharedUsers && sharedUsers.length)) {
 			return <Loader />;
 		}
+		if (!isPaidUser) {
+			return <UpgradePlanBanner {...bannerMessagesTeam.free} />;
+		}
 		return (
-			<Container>
-				{!isPaidUser ? (
-					<UpgradePlanBanner {...bannerConfig} />
-				) : (
-					<React.Fragment>
-						{isOwner && (
+			<React.Fragment>
+				<UpgradePlanBanner {...bannerMessagesTeam[plan]} />
+				<Container>
+					{isOwner && (
 						<Flex
 							justifyContent="flex-end"
-							css={`${media.small(css`justify-content: center;`)};`}
+							css={`
+								${media.small(
+									css`
+										justify-content: center;
+									`,
+								)};
+							`}
 							style={{
 								paddingBottom: '20px',
 							}}
 						>
 							<TransferOwnership />
-						</Flex>)}
-						<Card
-							extra={(
+						</Flex>
+					)}
+					<Card
+						css=".ant-card-head-title { margin-top: 10px }"
+						title="Share Credentials"
+						extra={(
 <Button onClick={this.handleShare} size="large" type="primary">
-									Share
+								Share
 </Button>
 )}
-						>
-							<Table
-								scroll={{ x: 700 }}
-								dataSource={sharedUsers.map(user => ({
-									settingInfo: user,
-									handleEdit: this.handleEdit,
-								}))}
-								rowKey={row => `${get(row, 'settingInfo.username')}:${get(
-										row,
-										'settingInfo.password',
-									)}`
-								}
-								columns={columns}
-								css="tr:hover td {
+					>
+						<Table
+							scroll={{ x: 700 }}
+							dataSource={sharedUsers.map(user => ({
+								settingInfo: user,
+								handleEdit: this.handleEdit,
+								handleDelete: this.handleDelete,
+							}))}
+							rowKey={row => `${get(row, 'settingInfo.username')}:${get(
+									row,
+									'settingInfo.password',
+								)}`
+							}
+							columns={columns}
+							css="tr:hover td {
 								background: transparent;
 							}"
-							/>
-						</Card>
-						{showForm && (
-							<CredentialsForm
-								handleCancel={this.handleCancel}
-								shouldHaveEmailField
-								show={showForm}
-								saveButtonText={!selectedSettings ? 'Share Credential' : undefined}
-								onSubmit={this.handleSubmit}
-								initialValues={selectedSettings}
-								titleText={!selectedSettings ? 'Share' : undefined}
-							/>
-						)}
-					</React.Fragment>
-				)}
-			</Container>
+							style={
+								isDeleting
+									? {
+											pointerEvents: 'none',
+											opacity: 0.6,
+									  }
+									: null
+							}
+						/>
+					</Card>
+					{showForm && (
+						<CredentialsForm
+							handleCancel={this.handleCancel}
+							shouldHaveEmailField
+							show={showForm}
+							saveButtonText={!selectedSettings ? 'Share Credential' : undefined}
+							onSubmit={this.handleSubmit}
+							initialValues={selectedSettings}
+							titleText={!selectedSettings ? 'Share' : undefined}
+						/>
+					)}
+				</Container>
+			</React.Fragment>
 		);
 	}
 }
 
 ShareSettingsView.propTypes = {
 	shareApp: PropTypes.func.isRequired,
+	deleteShareApp: PropTypes.func.isRequired,
 	success: PropTypes.bool.isRequired,
+	plan: PropTypes.string.isRequired,
 	transferSuccess: PropTypes.bool.isRequired,
 	isLoading: PropTypes.bool.isRequired,
+	isDeleting: PropTypes.bool.isRequired,
 	errors: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => {
 	const userEmail = get(state, 'user.data.email');
 	const appOwner = get(getAppInfoByName(state), 'owner');
+	const planState = getAppPlanByName(state);
 	return {
-		isPaidUser: get(getAppPlanByName(state), 'isPaid'),
+		isPaidUser: get(planState, 'isPaid'),
+		plan: get(planState, 'plan'),
 		appId: get(state, '$getCurrentApp.id'),
 		isOwner: appOwner === userEmail,
-		isLoading:
-			get(state, '$getSharedApp.isFetching'),
-		errors: [get(state, '$getSharedApp.error'), get(state, '$transferAppOwnership.error')],
+		isLoading: get(state, '$getSharedApp.isFetching'),
+		isDeleting: get(state, '$deleteAppShare.isFetching'),
+		errors: [
+			get(state, '$getSharedApp.error'),
+			get(state, '$transferAppOwnership.error'),
+			get(state, '$deleteAppShare.error'),
+		],
 		sharedUsers: get(state, '$getSharedApp.results', []),
 		transferSuccess: get(state, '$transferAppOwnership.success'),
 		success:
@@ -217,6 +298,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	fetchAppShare: appId => dispatch(getSharedApp(appId)),
 	shareApp: (appId, payload) => dispatch(createAppShare(appId, payload)),
+	deleteShareApp: (username, payload) => dispatch(deleteAppShare(username, payload)),
 	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),
 });
 

@@ -9,7 +9,12 @@ import CredentialsBox from './components/CredentialsBox';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import {
-	clusterContainer, clustersList, card, settingsItem, clusterEndpoint, clusterButtons,
+	clusterContainer,
+	clustersList,
+	card,
+	settingsItem,
+	clusterEndpoint,
+	clusterButtons,
 } from './styles';
 import { getClusterData, deployCluster, deleteCluster } from './utils';
 
@@ -36,7 +41,7 @@ export default class Clusters extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
-		const selectedPlan = Object.values(machineMarks)
+		const selectedPlan = Object.values(machineMarks[this.state.cluster.provider || 'azure'])
 			.find(item => item.label === plan);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
@@ -66,9 +71,8 @@ export default class Clusters extends Component {
 						elasticsearch: deployment.elasticsearch
 							? !!Object.keys(deployment.elasticsearch).length
 							: false,
-						mirage: deployment.mirage
-							? !!Object.keys(deployment.mirage).length
-							: false,
+						mirage: this.hasAddon('mirage', deployment),
+						dejavu: this.hasAddon('dejavu', deployment),
 					});
 
 					if (cluster.status === 'in progress') {
@@ -94,9 +98,11 @@ export default class Clusters extends Component {
 		}));
 	}
 
+	hasAddon = (item, source) => !!source.addons.find(key => key.name === item);
+
 	includedInOriginal = (key) => {
 		const original = this.originalCluster.deployment;
-		return original[key] ? !!Object.keys(original[key]).length : false;
+		return original[key] ? !!Object.keys(original[key]).length : this.hasAddon(key, original);
 	}
 
 	deleteCluster = () => {

@@ -13,12 +13,13 @@ import { regions, regionsByPlan } from './utils/regions';
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'6.4.2',
+	'6.5.1',
+	'6.4.3',
 	'6.3.2',
 	'6.2.4',
 	'6.1.4',
 	'6.0.1',
-	'5.6.12',
+	'5.6.13',
 	'5.5.3',
 	'5.4.3',
 	'5.3.3',
@@ -34,6 +35,7 @@ export const machineMarks = {
 			nodes: 1,
 			cost: 59,
 			machine: 'Standard_B2s',
+			pph: 0.08,
 		},
 		25: {
 			label: 'Hobby',
@@ -42,6 +44,7 @@ export const machineMarks = {
 			nodes: 2,
 			cost: 119,
 			machine: 'Standard_B2s',
+			pph: 0.17,
 		},
 		50: {
 			label: 'Production I',
@@ -50,6 +53,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 199,
 			machine: 'Standard_B2s',
+			pph: 0.28,
 		},
 		75: {
 			label: 'Production II',
@@ -58,6 +62,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 399,
 			machine: 'Standard_B2ms',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -66,16 +71,18 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'Standard_B4ms',
+			pph: 1.11,
 		},
 	},
 	gke: {
 		0: {
 			label: 'Sandbox',
 			storage: 30,
-			memory: 1.8,
+			memory: 4,
 			nodes: 1,
 			cost: 59,
 			machine: 'g1-small',
+			pph: 0.08,
 		},
 		25: {
 			label: 'Hobby',
@@ -84,6 +91,7 @@ export const machineMarks = {
 			nodes: 2,
 			cost: 119,
 			machine: 'n1-standard-1',
+			pph: 0.17,
 		},
 		50: {
 			label: 'Production I',
@@ -92,6 +100,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 199,
 			machine: 'n1-standard-1',
+			pph: 0.28,
 		},
 		75: {
 			label: 'Production II',
@@ -100,6 +109,7 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 399,
 			machine: 'n1-standard-2',
+			pph: 0.55,
 		},
 		100: {
 			label: 'Production III',
@@ -108,8 +118,14 @@ export const machineMarks = {
 			nodes: 3,
 			cost: 799,
 			machine: 'n1-standard-4',
+			pph: 1.11,
 		},
 	},
+};
+
+const namingConvention = {
+	azure: 'You may use alpha-numerics with "-" in between',
+	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
 };
 
 export default class NewCluster extends Component {
@@ -121,18 +137,19 @@ export default class NewCluster extends Component {
 			pluginState[item] = item !== 'x-pack';
 		});
 
-		const provider = 'azure';
+		const provider = 'gke';
 
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
 			pricing_plan: machineMarks[provider][0].label,
 			vm_size: machineMarks[provider][0].machine,
-			region: 'eastus',
+			region: '',
 			kibana: false,
 			logstash: false,
 			dejavu: true,
 			elasticsearchHQ: true,
+			arc: false,
 			mirage: false,
 			error: '',
 			deploymentError: '',
@@ -140,6 +157,21 @@ export default class NewCluster extends Component {
 			provider,
 			...pluginState,
 		};
+	}
+
+	componentDidUpdate(_, prevState) {
+		const { provider } = this.state;
+		if (prevState.provider !== provider) {
+			const [currentMachine] = Object.entries(machineMarks[prevState.provider]).find(
+				([, value]) => value.machine === prevState.vm_size,
+			);
+			// eslint-disable-next-line
+			this.setState({
+				pricing_plan: machineMarks[provider][currentMachine].label,
+				vm_size: machineMarks[provider][currentMachine].machine,
+				region: '',
+			});
+		}
 	}
 
 	setConfig = (type, value) => {
@@ -163,9 +195,12 @@ export default class NewCluster extends Component {
 	};
 
 	validateClusterName = () => {
-		const { clusterName } = this.state;
-		const pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
-
+		const { clusterName, provider } = this.state;
+		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		if (provider === 'gke') {
+			// gke cluster names can't start with a number
+			pattern = /^[a-zA-Z]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+		}
 		return pattern.test(clusterName);
 	};
 
@@ -183,6 +218,13 @@ export default class NewCluster extends Component {
 					'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.',
 			});
 			document.getElementById('cluster-name').focus();
+			return;
+		}
+
+		if (!this.state.region) {
+			this.setState({
+				error: 'Please select a region to deploy your cluster',
+			});
 			return;
 		}
 
@@ -257,6 +299,18 @@ export default class NewCluster extends Component {
 			];
 		}
 
+		if (this.state.arc) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'arc',
+					image: 'siddharthlatest/arc:latest',
+					exposed_port: 8000,
+				},
+			];
+		}
+
 		deployCluster(body)
 			.then(() => {
 				this.props.history.push('/clusters');
@@ -311,14 +365,17 @@ export default class NewCluster extends Component {
 	renderRegions = () => {
 		const regionsList1 = {};
 		const regionsList2 = {};
-		const allowedRegions = regionsByPlan[this.state.provider][this.state.pricing_plan];
-		Object.keys(regions[this.state.provider]).forEach((region, i) => {
+		const { provider, pricing_plan: pricingPlan } = this.state;
+		const allowedRegions = regionsByPlan[provider][pricingPlan];
+
+		Object.keys(regions[provider]).forEach((region, i) => {
 			if (i % 2 === 0) {
-				regionsList1[region] = regions[this.state.provider][region];
+				regionsList1[region] = regions[provider][region];
 			} else {
-				regionsList2[region] = regions[this.state.provider][region];
+				regionsList2[region] = regions[provider][region];
 			}
 		});
+
 		return (
 			<React.Fragment>
 				<ul className="region-list">
@@ -328,29 +385,27 @@ export default class NewCluster extends Component {
 							? !allowedRegions.includes(region)
 							: false;
 						return (
-							<ul className="region-list">
-								{/* eslint-disable-next-line */}
-								<li
-									key={region}
-									onClick={() => this.setConfig('region', region)}
-									className={
-										// eslint-disable-next-line
-										isDisabled
-											? 'disabled'
-											: this.state.region === region
-												? 'active'
-												: ''
-									}
-								>
-									{regionValue.flag && (
-										<img
-											src={`/static/images/flags/${regionValue.flag}`}
-											alt={regionValue.name}
-										/>
-									)}
-									<span>{regionValue.name}</span>
-								</li>
-							</ul>
+							// eslint-disable-next-line
+							<li
+								key={region}
+								onClick={() => this.setConfig('region', region)}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
 						);
 					})}
 				</ul>
@@ -361,30 +416,28 @@ export default class NewCluster extends Component {
 							? !allowedRegions.includes(region)
 							: false;
 						return (
-							<ul className="region-list">
-								{/* eslint-disable-next-line */}
-								<li
-									disabled
-									key={region}
-									onClick={() => this.setConfig('region', region)}
-									className={
-										// eslint-disable-next-line
-										isDisabled
-											? 'disabled'
-											: this.state.region === region
-												? 'active'
-												: ''
-									}
-								>
-									{regionValue.flag && (
-										<img
-											src={`/static/images/flags/${regionValue.flag}`}
-											alt={regionValue.name}
-										/>
-									)}
-									<span>{regionValue.name}</span>
-								</li>
-							</ul>
+							// eslint-disable-next-line
+							<li
+								disabled
+								key={region}
+								onClick={() => this.setConfig('region', region)}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
 						);
 					})}
 				</ul>
@@ -393,6 +446,7 @@ export default class NewCluster extends Component {
 	};
 
 	render() {
+		const { provider } = this.state;
 		return (
 			<Fragment>
 				<FullHeader />
@@ -407,6 +461,20 @@ export default class NewCluster extends Component {
 						</Modal>
 						<article>
 							<h2>Create a new cluster</h2>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Pick the pricing plan</h3>
+									<p>Scale as you go</p>
+								</div>
+
+								<PricingSlider
+									key={this.state.provider}
+									marks={machineMarks[this.state.provider]}
+									onChange={this.setPricing}
+								/>
+							</div>
+
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
@@ -444,19 +512,6 @@ export default class NewCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Pick the pricing plan</h3>
-									<p>Scale as you go</p>
-								</div>
-
-								<PricingSlider
-									key={this.state.provider}
-									marks={machineMarks[this.state.provider]}
-									onChange={this.setPricing}
-								/>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
 									<h3>Pick a region</h3>
 									<p>All around the globe</p>
 								</div>
@@ -470,19 +525,32 @@ export default class NewCluster extends Component {
 									<h3>Pick a cluster name</h3>
 									<p>Name this bad boy</p>
 								</div>
-								<div className="col grow vcenter">
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
 									<input
 										id="cluster-name"
 										type="name"
 										css={{
 											width: '100%',
 											maxWidth: 400,
+											marginBottom: 10,
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
+									<p>
+										{provider === 'azure'
+											? namingConvention.azure
+											: namingConvention.gke}
+									</p>
 								</div>
 							</div>
 
@@ -572,6 +640,16 @@ export default class NewCluster extends Component {
 									<div className={settingsItem}>
 										<h4>Add-ons</h4>
 										<div>
+											<label htmlFor="elasticsearch">
+												<input
+													type="checkbox"
+													defaultChecked={this.state.arc}
+													id="elasticsearch"
+													onChange={() => this.toggleConfig('arc')}
+												/>
+												Arc Middleware
+											</label>
+
 											<label htmlFor="dejavu">
 												<input
 													type="checkbox"

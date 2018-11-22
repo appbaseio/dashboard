@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
+import { Icon, notification } from 'antd';
 
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
@@ -84,16 +84,20 @@ export default class Introduction extends Component {
 			.then(() => {
 				appbaseHelpers.createURL(this.setURL);
 			})
-			.catch(e => {
+			.catch((e) => {
 				if (
-					e._bodyInit ===
-					'{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}'
+					e._bodyInit
+					=== '{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}'
 				) {
 					appbaseHelpers.createURL(this.setURL);
 				}
 				console.log('@error-at-importing-data', e);
 				console.log('@error-at-importing-data-response-type', typeof e);
 				console.log('error', e);
+				notification.error({
+					message: 'Something went wrong',
+					description: 'Please try again & If the problem persists please report to us.',
+				});
 			});
 	};
 
@@ -115,7 +119,7 @@ export default class Introduction extends Component {
 		</div>
 	);
 
-	setURL = url => {
+	setURL = (url) => {
 		this.setState({
 			url,
 		});
@@ -193,8 +197,7 @@ export default class Introduction extends Component {
 									>
 										REST based APIs
 									</a>{' '}
-									enable indexing data in a programming language
-									of your choice.
+									enable indexing data in a programming language of your choice.
 								</p>
 							</div>
 						</div>

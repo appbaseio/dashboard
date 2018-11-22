@@ -36,6 +36,18 @@ export async function getAppsOwners() {
 	return data.body;
 }
 
+export async function getAppsOverview() {
+	const response = await fetch(`${ACC_API}/user/apps/overview`, {
+		credentials: 'include',
+	});
+	const data = await response.json();
+	if (response.status >= 400) {
+		throw new Error(data);
+	}
+
+	return data.body;
+}
+
 export async function getCreateApp(options) {
 	const response = await fetch(`${ACC_API}/app/${options.appName}`, {
 		method: 'PUT',
@@ -48,8 +60,15 @@ export async function getCreateApp(options) {
 			es_version: options.es_version,
 		}),
 	});
+	let data;
+	try {
+		data = await response.json();
+	} catch (error) {
+		data = {
+			message: 'Something went Wrong!',
+		};
+	}
 
-	const data = await response.json();
 	if (response.status >= 400) {
 		throw new Error(JSON.stringify(data));
 	}
