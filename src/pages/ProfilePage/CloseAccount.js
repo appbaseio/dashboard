@@ -44,7 +44,7 @@ const CloseAccount = () => (
 		<Alert
 			showIcon
 			message="Warning"
-			description="Closing your account is permanent and cannot be undone!"
+			description="Closing your account is a permanent action and it cannot be undone!"
 			type="warning"
 			css={{
 				marginBottom: 20,

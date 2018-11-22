@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {
- Card, Button, notification, Popconfirm, Spin, Row,
+ Card, Button, notification, Popconfirm, Spin, Row, Alert,
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { css } from 'react-emotion';
 
 import { ACC_API } from '../../constants/config';
 import credsBox from './styles';
@@ -131,6 +130,14 @@ class Credentials extends Component {
 						</span>
 					</div>
 				)}
+				<Alert
+					showIcon
+					description="Master credentials allow you to perform the same dashboard actions via an API, i.e. you can programmatically create apps, delete apps, get analytics, and more using it. Use them with extreme caution!"
+					type="warning"
+					css={{
+						margin: '20px 0px',
+					}}
+				/>
 			</Card>
 		);
 	}

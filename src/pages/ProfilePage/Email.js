@@ -11,18 +11,17 @@ const data = [
 	{
 		id: 'newsletters',
 		label: 'Newsletter',
-		description: "Our monthly update on what's new with Appbase and the community.",
+		description: 'Get a monthly digest on the latest appbase.io updates and blog posts.',
 	},
 	{
 		id: 'product_updates',
 		label: 'Product & Feature Updates',
-		description:
-			'Everything you need to know about Appbase features, integrations, and launches.',
+		description: 'Keep up-to-date with upcoming features and product updates.',
 	},
 	{
 		id: 'security_updates',
 		label: 'Security Updates',
-		description: 'Security updates affecting your app, cluster and account',
+		description: 'Security updates affecting your app, cluster and account.',
 	},
 ];
 
