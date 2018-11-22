@@ -54,11 +54,12 @@ class HelpButton extends React.Component {
 		const errorMessage = (
 			<div>
 				<p>
-					We couldn{"'"}t send the request but you can send an e-mail instead to{' '}
+					There was an error in sending the issue, but we have saved your issue details.
+					Click below to send a tracked e-mail to{' '}
 					<a href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}>
 						support@appbase.io
-					</a>{' '}
-					which will create a ticket.
+					</a>
+					.
 				</p>
 				<Button
 					href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
