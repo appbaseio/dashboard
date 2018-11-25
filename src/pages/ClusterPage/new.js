@@ -269,7 +269,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:2.0.0',
+					image: 'appbaseio/dejavu:2.0.5',
 					exposed_port: 1358,
 				},
 			];
@@ -305,7 +305,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:latest',
+					image: 'siddharthlatest/arc:0.0.1',
 					exposed_port: 8000,
 				},
 			];

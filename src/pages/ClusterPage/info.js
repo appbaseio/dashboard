@@ -28,6 +28,8 @@ export default class Clusters extends Component {
 			kibana: false,
 			logstash: false,
 			elasticsearch: false,
+			elasticsearchHQ: false,
+			arc: false,
 			mirage: false,
 			error: '',
 			deploymentError: '',
@@ -41,17 +43,18 @@ export default class Clusters extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
-		const selectedPlan = Object.values(machineMarks[this.state.cluster.provider || 'azure'])
-			.find(item => item.label === plan);
+		const selectedPlan = Object.values(
+			machineMarks[this.state.cluster.provider || 'azure'],
+		).find(item => item.label === plan);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
-	}
+	};
 
 	setConfig = (type, value) => {
 		this.setState({
 			[type]: value,
 		});
-	}
+	};
 
 	init = () => {
 		getClusterData(this.props.match.params.id)
@@ -62,9 +65,7 @@ export default class Clusters extends Component {
 					this.setState({
 						cluster,
 						deployment,
-						kibana: deployment.kibana
-							? !!Object.keys(deployment.kibana).length
-							: false,
+						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
 						logstash: deployment.logstash
 							? !!Object.keys(deployment.logstash).length
 							: false,
@@ -73,6 +74,8 @@ export default class Clusters extends Component {
 							: false,
 						mirage: this.hasAddon('mirage', deployment),
 						dejavu: this.hasAddon('dejavu', deployment),
+						arc: this.hasAddon('arc', deployment),
+						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
 					});
 
 					if (cluster.status === 'in progress') {
@@ -89,21 +92,21 @@ export default class Clusters extends Component {
 					error: e,
 				});
 			});
-	}
+	};
 
 	toggleConfig = (type) => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
 		}));
-	}
+	};
 
 	hasAddon = (item, source) => !!source.addons.find(key => key.name === item);
 
 	includedInOriginal = (key) => {
 		const original = this.originalCluster.deployment;
 		return original[key] ? !!Object.keys(original[key]).length : this.hasAddon(key, original);
-	}
+	};
 
 	deleteCluster = () => {
 		deleteCluster(this.props.match.params.id)
@@ -116,7 +119,7 @@ export default class Clusters extends Component {
 					showError: true,
 				});
 			});
-	}
+	};
 
 	saveClusterSettings = () => {
 		const body = {
@@ -147,12 +150,26 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:1.5.0',
+					image: 'appbaseio/dejavu:2.0.5',
 					exposed_port: 1358,
 				},
 			];
 		} else if (!this.state.dejavu && this.includedInOriginal('dejavu')) {
 			body.remove_deployments = [...body.remove_deployments, 'dejavu'];
+		}
+
+		if (this.state.arc && !this.includedInOriginal('arc')) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'arc',
+					image: 'siddharthlatest/arc:0.0.1',
+					exposed_port: 8000,
+				},
+			];
+		} else if (!this.state.arc && this.includedInOriginal('arc')) {
+			body.remove_deployments = [...body.remove_deployments, 'arc'];
 		}
 
 		if (this.state.mirage && !this.includedInOriginal('mirage')) {
@@ -161,7 +178,7 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'mirage',
-					image: 'appbaseio/mirage:0.8.0',
+					image: 'appbaseio/mirage:0.10.1',
 					exposed_port: 3030,
 				},
 			];
@@ -169,20 +186,19 @@ export default class Clusters extends Component {
 			body.remove_deployments = [...body.remove_deployments, 'mirage'];
 		}
 
-		if (this.state.elasticsearch && !this.includedInOriginal('elasticsearch')) {
+		if (this.state.elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
 				{
 					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.4.0',
+					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
 					exposed_port: 5000,
 				},
 			];
-		} else if (!this.state.elasticsearch && this.includedInOriginal('elasticsearch')) {
-			body.remove_deployments = [...body.remove_deployments, 'elasticsearch'];
+		} else if (!this.state.elasticsearchHQ && this.includedInOriginal('elasticsearch-hq')) {
+			body.remove_deployments = [...body.remove_deployments, 'elasticsearch-hq'];
 		}
-
 		deployCluster(body, this.props.match.params.id)
 			.then(() => {
 				this.props.history.push('/clusters');
@@ -193,14 +209,14 @@ export default class Clusters extends Component {
 					showError: true,
 				});
 			});
-	}
+	};
 
 	hideErrorModal = () => {
 		this.setState({
 			showError: false,
 			deploymentError: '',
 		});
-	}
+	};
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
@@ -212,7 +228,7 @@ export default class Clusters extends Component {
 				<span>{name}</span>
 			</div>
 		);
-	}
+	};
 
 	renderClusterEndpoint = (source) => {
 		if (Object.keys(source).length) {
@@ -237,7 +253,7 @@ export default class Clusters extends Component {
 		}
 
 		return null;
-	}
+	};
 
 	renderErrorScreen = () => (
 		<Fragment>
@@ -280,7 +296,7 @@ export default class Clusters extends Component {
 				</section>
 			</Container>
 		</Fragment>
-	)
+	);
 
 	render() {
 		const vcenter = {
@@ -306,7 +322,6 @@ export default class Clusters extends Component {
 						Cluster status isn{"'"}t available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes live.
-
 						<div style={{ marginTop: 20 }}>
 							<Button
 								size="large"
@@ -331,9 +346,7 @@ export default class Clusters extends Component {
 					</div>
 				);
 			}
-			return (
-				<Loader />
-			);
+			return <Loader />;
 		}
 
 		return (
@@ -352,21 +365,21 @@ export default class Clusters extends Component {
 							<h2>
 								{this.state.cluster.name}
 								<span className="tag">
-									{
-										this.state.cluster.status === 'delInProg'
-											? 'Deletion in progress'
-											: this.state.cluster.status
-									}
+									{this.state.cluster.status === 'delInProg'
+										? 'Deletion in progress'
+										: this.state.cluster.status}
 								</span>
 							</h2>
 
 							<ul className={clustersList}>
 								<li key={this.state.cluster.name} className="cluster-card compact">
-
 									<div className="info-row">
 										<div>
 											<h4>Region</h4>
-											{this.renderClusterRegion(this.state.cluster.region, this.state.cluster.provider)}
+											{this.renderClusterRegion(
+												this.state.cluster.region,
+												this.state.cluster.provider,
+											)}
 										</div>
 
 										<div>
@@ -382,24 +395,22 @@ export default class Clusters extends Component {
 										<div>
 											<h4>Memory</h4>
 											<div>
-												{
-													this.getFromPricing(
-														this.state.cluster.pricing_plan,
-														'memory',
-													)
-												} GB
+												{this.getFromPricing(
+													this.state.cluster.pricing_plan,
+													'memory',
+												)}{' '}
+												GB
 											</div>
 										</div>
 
 										<div>
 											<h4>Disk Size</h4>
 											<div>
-												{
-													this.getFromPricing(
-														this.state.cluster.pricing_plan,
-														'storage',
-													)
-												} GB
+												{this.getFromPricing(
+													this.state.cluster.pricing_plan,
+													'storage',
+												)}{' '}
+												GB
 											</div>
 										</div>
 
@@ -410,190 +421,197 @@ export default class Clusters extends Component {
 									</div>
 								</li>
 
-								{
-									this.state.cluster.status === 'in progress'
-										? null
-										: (
-											<li className={card}>
-												<div className="col light">
-													<h3>Dashboard</h3>
-													<p>Manage your cluster</p>
+								{this.state.cluster.status === 'in progress' ? null : (
+									<li className={card}>
+										<div className="col light">
+											<h3>Dashboard</h3>
+											<p>Manage your cluster</p>
+										</div>
+
+										<div className="col">
+											{this.renderClusterEndpoint(this.state.cluster)}
+										</div>
+									</li>
+								)}
+
+								{this.state.cluster.status === 'in progress' ? null : (
+									<li className={card}>
+										<div className="col light">
+											<h3>Elasticsearch</h3>
+											<p>Live cluster endpoint</p>
+										</div>
+
+										<div className="col">
+											{Object.keys(this.state.deployment)
+												.filter(item => item !== 'addons')
+												.map(key => this.renderClusterEndpoint(
+														this.state.deployment[key],
+													))}
+										</div>
+									</li>
+								)}
+
+								{this.state.cluster.status === 'in progress' ? null : (
+									<li className={card}>
+										<div className="col light">
+											<h3>Add-ons</h3>
+											<p>Elasticsearch add-ons endpoint</p>
+										</div>
+
+										<div className="col">
+											{this.state.deployment.addons.map(key => this.renderClusterEndpoint(key))}
+										</div>
+									</li>
+								)}
+
+								{this.state.cluster.status === 'in progress' ? null : (
+									<li className={card}>
+										<div className="col light">
+											<h3>Edit Cluster Settings</h3>
+											<p>Customise as per your needs</p>
+										</div>
+										<div className="col grow">
+											<div className={settingsItem}>
+												<h4>Kibana</h4>
+												<div>
+													<label htmlFor="yes">
+														<input
+															type="radio"
+															name="kibana"
+															defaultChecked={this.state.kibana}
+															id="yes"
+															onChange={() => this.setConfig('kibana', true)
+															}
+														/>
+														Yes
+													</label>
+
+													<label htmlFor="no">
+														<input
+															type="radio"
+															name="kibana"
+															defaultChecked={!this.state.kibana}
+															id="no"
+															onChange={() => this.setConfig('kibana', false)
+															}
+														/>
+														No
+													</label>
 												</div>
+											</div>
 
-												<div className="col">
-													{this.renderClusterEndpoint(this.state.cluster)}
+											<div className={settingsItem}>
+												<h4>Logstash</h4>
+												<div>
+													<label htmlFor="yes2">
+														<input
+															type="radio"
+															name="logstash"
+															defaultChecked={this.state.logstash}
+															id="yes2"
+															onChange={() => this.setConfig('logstash', true)
+															}
+														/>
+														Yes
+													</label>
+
+													<label htmlFor="no2">
+														<input
+															type="radio"
+															name="logstash"
+															defaultChecked={!this.state.logstash}
+															id="no2"
+															onChange={() => this.setConfig('logstash', false)
+															}
+														/>
+														No
+													</label>
 												</div>
-											</li>
-										)
-								}
+											</div>
 
-								{
-									this.state.cluster.status === 'in progress'
-										? null
-										: (
-											<li className={card}>
-												<div className="col light">
-													<h3>Elasticsearch</h3>
-													<p>Live cluster endpoint</p>
+											<div className={settingsItem}>
+												<h4>Add-ons</h4>
+												<div className="settings-label">
+													<label htmlFor="arc">
+														<input
+															type="checkbox"
+															defaultChecked={
+																this.state.arc
+															}
+															id="arc"
+															onChange={() => this.toggleConfig('arc')
+															}
+														/>
+														Arc Middleware
+													</label>
+
+													<label htmlFor="dejavu">
+														<input
+															type="checkbox"
+															defaultChecked={this.state.dejavu}
+															id="dejavu"
+															onChange={() => this.toggleConfig('dejavu')
+															}
+														/>
+														Dejavu
+													</label>
+
+													<label htmlFor="elasticsearchHQ">
+														<input
+															type="checkbox"
+															defaultChecked={
+																this.state.elasticsearchHQ
+															}
+															id="elasticsearchHQ"
+															onChange={() => this.toggleConfig('elasticsearchHQ')
+															}
+														/>
+														Elasticsearch-HQ
+													</label>
+
+													<label htmlFor="mirage">
+														<input
+															type="checkbox"
+															defaultChecked={this.state.mirage}
+															id="mirage"
+															onChange={() => this.toggleConfig('mirage')
+															}
+														/>
+														Mirage
+													</label>
 												</div>
-
-												<div className="col">
-													{
-														Object.keys(this.state.deployment)
-															.filter(item => item !== 'addons')
-															.map(key => this.renderClusterEndpoint(this.state.deployment[key]))
-													}
-												</div>
-											</li>
-										)
-								}
-
-								{
-									this.state.cluster.status === 'in progress'
-										? null
-										: (
-											<li className={card}>
-												<div className="col light">
-													<h3>Add-ons</h3>
-													<p>Elasticsearch add-ons endpoint</p>
-												</div>
-
-												<div className="col">
-													{
-														this.state.deployment.addons.map(
-															key => this.renderClusterEndpoint(key),
-														)
-													}
-												</div>
-											</li>
-										)
-								}
-
-								{
-									this.state.cluster.status === 'in progress'
-										? null
-										: (
-											<li className={card}>
-												<div className="col light">
-													<h3>Edit Cluster Settings</h3>
-													<p>Customise as per your needs</p>
-												</div>
-												<div className="col grow">
-													<div className={settingsItem}>
-														<h4>Kibana</h4>
-														<div>
-															<label htmlFor="yes">
-																<input
-																	type="radio"
-																	name="kibana"
-																	defaultChecked={this.state.kibana}
-																	id="yes"
-																	onChange={() => this.setConfig('kibana', true)}
-																/>
-																Yes
-															</label>
-
-															<label htmlFor="no">
-																<input
-																	type="radio"
-																	name="kibana"
-																	defaultChecked={!this.state.kibana}
-																	id="no"
-																	onChange={() => this.setConfig('kibana', false)}
-																/>
-																No
-															</label>
-														</div>
-													</div>
-
-													<div className={settingsItem}>
-														<h4>Logstash</h4>
-														<div>
-															<label htmlFor="yes2">
-																<input
-																	type="radio"
-																	name="logstash"
-																	defaultChecked={this.state.logstash}
-																	id="yes2"
-																	onChange={() => this.setConfig('logstash', true)}
-																/>
-																Yes
-															</label>
-
-															<label htmlFor="no2">
-																<input
-																	type="radio"
-																	name="logstash"
-																	defaultChecked={!this.state.logstash}
-																	id="no2"
-																	onChange={() => this.setConfig('logstash', false)}
-																/>
-																No
-															</label>
-														</div>
-													</div>
-
-													<div className={settingsItem}>
-														<h4>Add-ons</h4>
-														<div className="settings-label">
-															<label htmlFor="dejavu">
-																<input
-																	type="checkbox"
-																	defaultChecked={this.state.dejavu}
-																	id="dejavu"
-																	onChange={() => this.toggleConfig('dejavu')}
-																/>
-																Dejavu
-															</label>
-
-															<label htmlFor="elasticsearch">
-																<input
-																	type="checkbox"
-																	defaultChecked={this.state.elasticsearch}
-																	id="elasticsearch"
-																	onChange={() => this.toggleConfig('elasticsearch')}
-																/>
-																Elasticsearch-HQ
-															</label>
-
-															<label htmlFor="mirage">
-																<input
-																	type="checkbox"
-																	defaultChecked={this.state.mirage}
-																	id="mirage"
-																	onChange={() => this.toggleConfig('mirage')}
-																/>
-																Mirage
-															</label>
-														</div>
-													</div>
-												</div>
-											</li>
-										)
-								}
+											</div>
+										</div>
+									</li>
+								)}
 							</ul>
 
-							{
-								this.state.cluster.status === 'in progress'
-									? <p style={{ textAlign: 'center' }}>Deployment is in progress. Please wait.</p>
-									: (
-										<div className={clusterButtons}>
-											<Button
-												onClick={this.deleteCluster}
-												type="danger"
-												size="large"
-												icon="delete"
-												className="delete"
-											>
-												Delete Cluster
-											</Button>
+							{this.state.cluster.status === 'in progress' ? (
+								<p style={{ textAlign: 'center' }}>
+									Deployment is in progress. Please wait.
+								</p>
+							) : (
+								<div className={clusterButtons}>
+									<Button
+										onClick={this.deleteCluster}
+										type="danger"
+										size="large"
+										icon="delete"
+										className="delete"
+									>
+										Delete Cluster
+									</Button>
 
-											<Button size="large" icon="save" type="primary" onClick={this.saveClusterSettings}>
-												Save Cluster Settings
-											</Button>
-										</div>
-									)
-							}
+									<Button
+										size="large"
+										icon="save"
+										type="primary"
+										onClick={this.saveClusterSettings}
+									>
+										Save Cluster Settings
+									</Button>
+								</div>
+							)}
 						</article>
 					</section>
 				</Container>
