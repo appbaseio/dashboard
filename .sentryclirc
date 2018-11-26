@@ -1,7 +1,0 @@
-[defaults]
-url = https://sentry.io/
-org = appbase-1
-project = frontend
-
-[auth]
-token = 15efa02440e64d788d524ab260ce636c502653fadcde48cd9446dc07159cf691

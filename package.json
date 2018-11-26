@@ -9,7 +9,7 @@
 	"private": false,
 	"scripts": {
 		"start": "NODE_ENV=development webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
-		"build": "NODE_ENV=production webpack --mode production",
+		"build": "NODE_ENV=production node ./scripts/create-env.js && webpack --mode production",
 		"glow": "glow --watch"
 	},
 	"lint-staged": {
