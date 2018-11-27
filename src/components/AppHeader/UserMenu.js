@@ -21,9 +21,14 @@ const userMenu = css`
 	`)};
 `;
 
-const menuItem = css`
+const userEmailDetail = css`
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	cursor: none;
+	h5,
+	h4 {
+		margin: 0;
+	}
 `;
 
 const link = css`
@@ -39,10 +44,17 @@ const link = css`
 
 const UserMenu = ({ user }) => {
 	const menu = (
-		<Menu>
-			<Menu.Item className={menuItem}>
-				<Icon type="edit" />
-				<Link to="/profile">{user.email}</Link>
+		<Menu style={{ width: '200px' }}>
+			<Menu.Item className={userEmailDetail}>
+				<h5>Logged in as</h5>
+				<h4>{user.email}</h4>
+			</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item>
+				<Link to="/profile">
+					<Icon style={{ marginRight: 8 }} type="setting" theme="outlined" />
+					Account Settings
+				</Link>
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item onClick={handleLogout}>
