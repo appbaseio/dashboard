@@ -52,7 +52,7 @@ class Profile extends Component<Props> {
 						marginRight: 0,
 						width: '100% !important',
 					},
-					[mediaKey.small]: {
+					[mediaKey.xsmall]: {
 						backgroundColor: 'white',
 						width: '100% !important',
 					},

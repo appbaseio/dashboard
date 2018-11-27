@@ -8,6 +8,8 @@ const credsBox = css`
 	color: #555;
 	${media.small(css`
 		flex-direction: column;
+		overflow: hidden;
+		width: 100%;
 		justify-content: space-around;
 	`)};
 	.cred-text {
