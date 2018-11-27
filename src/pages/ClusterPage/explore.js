@@ -11,10 +11,11 @@ import { clusterContainer } from './styles';
 export default class ExploreCluster extends Component {
 	constructor(props) {
 		super(props);
+		const arc = props.location.state ? props.location.state.arc : null;
 
 		this.state = {
-			arc: props.location.state.arc || null,
-			isLoading: !props.location.state.arc,
+			arc,
+			isLoading: !arc,
 			error: null,
 		};
 	}
@@ -30,22 +31,23 @@ export default class ExploreCluster extends Component {
 			.then((res) => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
-					const addon = this.getAddon('arc', deployment);
 					this.setState({
-						arc: addon ? addon.arc : null,
+						arc: this.getAddon('arc', deployment) || null,
+						isLoading: false,
 					});
 
 					if (cluster.status === 'in progress') {
 						setTimeout(this.init, 30000);
 					}
+				} else {
+					this.setState({
+						isLoading: false,
+					});
 				}
-
-				this.setState({
-					isLoading: false,
-				});
 			})
 			.catch((e) => {
 				this.setState({
+					isLoading: false,
 					error: e,
 				});
 			});
@@ -53,7 +55,7 @@ export default class ExploreCluster extends Component {
 
 	getAddon = (item, source) => source.addons.find(key => key.name === item);
 
-	renderErrorScreen = () => (
+	renderErrorScreen = message => (
 		<Fragment>
 			<FullHeader />
 			<Container>
@@ -64,7 +66,7 @@ export default class ExploreCluster extends Component {
 					<article>
 						<Icon css={{ fontSize: 42 }} type="frown" theme="outlined" />
 						<h2>Some error occurred</h2>
-						<p>{this.state.error}</p>
+						<p>{this.state.error || message}</p>
 						<div style={{ marginTop: 30 }}>
 							<Link to={`/clusters/${this.props.match.params.id}`}>
 								<Button size="large" icon="arrow-left">
@@ -83,7 +85,7 @@ export default class ExploreCluster extends Component {
 			if (this.state.isLoading) {
 				return <Loader />;
 			}
-			return 'No Deployment Found';
+			return this.renderErrorScreen('No Deployment Found');
 		}
 
 		if (this.state.error) {
@@ -93,11 +95,17 @@ export default class ExploreCluster extends Component {
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
 		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${
 			this.state.arc.username
-		}&password=${this.state.arc.password}`;
+		}&password=${this.state.arc.password}&header=false`;
 
 		return (
 			<Fragment>
-				<iframe src={url} frameBorder="0" width="100%" height={`${window.innerHeight}px`} />
+				<FullHeader />
+				<iframe
+					src={url}
+					frameBorder="0"
+					width="100%"
+					height={`${window.innerHeight - 60}px`}
+				/>
 			</Fragment>
 		);
 	}
