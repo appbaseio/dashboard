@@ -29,6 +29,11 @@ const ClusterInfoPage = Loadable({
 	loading: Loader,
 });
 
+const ExploreClusterPage = Loadable({
+	loader: () => import('../ClusterPage/explore'),
+	loading: Loader,
+});
+
 const ProfilePage = Loadable({
 	loader: () => import('../ProfilePage'),
 	loading: Loader,
@@ -56,6 +61,7 @@ const Wrapper = () => (
 		<Route exact path="/tutorial/finish" component={EndPage} />
 		<Route exact path="/clusters" component={ClusterPage} />
 		<Route path="/clusters/new" component={NewClusterPage} />
+		<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
 		<Route path="/clusters/:id" component={ClusterInfoPage} />
 		<Route exact path="/profile" component={ProfilePage} />
 		<Route path="/app/:appName?/:route?" component={AppWrapper} />

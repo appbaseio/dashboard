@@ -34,8 +34,6 @@ export const regions = {
 };
 
 export const regionsByPlan = {
-	gke: {
-		Sandbox: ['us-east1-b', 'us-central1-b'],
-	},
+	gke: {},
 	azure: {},
 };
