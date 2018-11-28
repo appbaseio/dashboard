@@ -259,7 +259,7 @@ export default class Clusters extends Component {
 
 	renderErrorScreen = () => (
 		<Fragment>
-			<FullHeader />
+			<FullHeader cluster={this.props.match.params.id} />
 			<Container>
 				<section
 					className={clusterContainer}
@@ -353,7 +353,7 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader />
+				<FullHeader cluster={this.props.match.params.id} />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal

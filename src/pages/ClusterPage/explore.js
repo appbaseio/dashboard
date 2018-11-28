@@ -57,7 +57,7 @@ export default class ExploreCluster extends Component {
 
 	renderErrorScreen = message => (
 		<Fragment>
-			<FullHeader />
+			<FullHeader cluster={this.props.match.params.id} />
 			<Container>
 				<section
 					className={clusterContainer}
@@ -99,7 +99,7 @@ export default class ExploreCluster extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader />
+				<FullHeader cluster={this.props.match.params.id} />
 				<iframe
 					src={url}
 					frameBorder="0"

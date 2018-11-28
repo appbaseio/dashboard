@@ -1,7 +1,9 @@
 import React from 'react';
-import { Layout, Menu, Tag } from 'antd';
+import {
+ Layout, Menu, Tag, Icon,
+} from 'antd';
 import { Link } from 'react-router-dom';
-import { object } from 'prop-types';
+import { object, string } from 'prop-types';
 import { connect } from 'react-redux';
 
 import Logo from '../Logo';
@@ -13,8 +15,6 @@ const { Header } = Layout;
 
 const getSelectedKeys = (pathname) => {
 	switch (pathname) {
-		case '/profile':
-			return '3';
 		case '/clusters':
 			return '2';
 		case '/':
@@ -24,22 +24,34 @@ const getSelectedKeys = (pathname) => {
 	}
 };
 
-const FullHeader = ({ user }) => (
+const FullHeader = ({ user, cluster }) => (
 	<Header className={headerStyles}>
 		<div className="row">
 			<Logo />
 			<Menu
 				mode="horizontal"
 				className="options"
-				defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
+				defaultSelectedKeys={
+					cluster ? ['3'] : [getSelectedKeys(window.location.pathname)]
+				}
 			>
 				<Menu.Item key="1">
 					<Link to="/">Apps</Link>
 				</Menu.Item>
 
 				<Menu.Item key="2">
-					<Link to="/clusters">Clusters <Tag>Preview</Tag></Link>
+					<Link to="/clusters">
+						Clusters <Tag>Preview</Tag>
+					</Link>
 				</Menu.Item>
+
+				{cluster ? (
+					<Menu.Item key="3">
+						<Link to={`/clusters/${cluster}`}>
+							<Icon type="cluster" /> {cluster}
+						</Link>
+					</Menu.Item>
+				) : null}
 			</Menu>
 		</div>
 		<UserMenu user={user} />
@@ -47,8 +59,13 @@ const FullHeader = ({ user }) => (
 	</Header>
 );
 
+FullHeader.defaultProps = {
+	cluster: '',
+};
+
 FullHeader.propTypes = {
 	user: object.isRequired,
+	cluster: string,
 };
 
 const mapStateToProps = state => ({
