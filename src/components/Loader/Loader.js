@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spin } from 'antd';
 import { css } from 'react-emotion';
 
 const styles = css`
@@ -13,7 +12,7 @@ const styles = css`
 
 const Loader = () => (
 	<div className={styles}>
-		<Spin size="large" />
+		<img src="/static/images/loader.svg" alt="loading" />
 	</div>
 );
 
