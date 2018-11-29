@@ -54,19 +54,38 @@ const EndPage = Loadable({
 	loading: Loader,
 });
 
-const Wrapper = () => (
-	<Switch>
-		<Route exact path="/" component={HomePage} />
-		<Route exact path="/tutorial" component={OnboardingPage} />
-		<Route exact path="/tutorial/finish" component={EndPage} />
-		<Route exact path="/clusters" component={ClusterPage} />
-		<Route path="/clusters/new" component={NewClusterPage} />
-		<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
-		<Route path="/clusters/:id" component={ClusterInfoPage} />
-		<Route path="/profile" component={ProfilePage} />
-		<Route path="/app/:appName?/:route?" component={AppWrapper} />
-		<Route component={NoMatch} />
-	</Switch>
-);
+const UserDetails = Loadable({
+	loader: () => import('../UserDetails'),
+	loading: Loader,
+});
+
+function hasFilledDetails(user) {
+	if (user && user.data) {
+		const {
+			data: { usecase, name },
+		} = user;
+		if (usecase && name && user.data['deployment-timeframe']) {
+			return true;
+		}
+	}
+	return false;
+}
+
+const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
+		<Switch>
+			<Route exact path="/" component={HomePage} />
+			<Route exact path="/tutorial" component={OnboardingPage} />
+			<Route exact path="/tutorial/finish" component={EndPage} />
+			<Route exact path="/clusters" component={ClusterPage} />
+			<Route path="/clusters/new" component={NewClusterPage} />
+			<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
+			<Route path="/clusters/:id" component={ClusterInfoPage} />
+			<Route path="/profile" component={ProfilePage} />
+			<Route path="/app/:appName?/:route?" component={AppWrapper} />
+			<Route component={NoMatch} />
+		</Switch>
+	) : (
+		<Route component={UserDetails} />
+	));
 
 export default Wrapper;
