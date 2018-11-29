@@ -38,11 +38,9 @@ const bannerMessagesTeam = {
 		href: '/billing',
 	},
 	growth: {
-		title: 'Learn how to collaborate with your team',
-		description:
-			'See our docs on how to track search, filters, click events, conversions and add your own custom events.',
-		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io',
+		title: 'Sharing Settings',
+		description: 'Collaborate with team members on your apps.',
+		showButton: false
 	},
 };
 

@@ -54,11 +54,10 @@ const bannerMessagesCred = {
 		href: '/billing',
 	},
 	growth: {
-		title: 'Learn how to create credentials',
-		description:
-			'See our docs on how to track search, filters, click events, conversions and add your own custom events.',
+		title: 'API Credentials',
+		description: 'See how to effectively use security credentials to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io',
+		href: 'https://docs.appbase.io/concepts/api-credentials.html',
 	},
 };
 
