@@ -26,21 +26,20 @@ const DeleteIcon = require('react-feather/dist/icons/trash-2').default;
 
 const bannerMessagesTeam = {
 	free: {
-		title: 'Upgrade to collaborate with your team',
+		title: 'Sharing Settings',
 		description: 'Invite team members and collaborate together on your app.',
 		buttonText: 'Upgrade Now',
 		href: '/billing',
 	},
 	bootstrap: {
-		title: 'Upgrade to collaborate with your team',
+		title: 'Sharing Settings',
 		description: 'Invite team members and collaborate together on your app.',
-		buttonText: 'Upgrade Now',
-		href: '/billing',
+		showButton: false,
 	},
 	growth: {
 		title: 'Sharing Settings',
-		description: 'Collaborate with team members on your apps.',
-		showButton: false
+		description: 'Invite team members and collaborate together on your app.',
+		showButton: false,
 	},
 };
 
