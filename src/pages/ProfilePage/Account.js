@@ -15,7 +15,6 @@ import Flex from '../../batteries/components/shared/Flex';
 import countryCodes from '../../utils/countryCodes';
 import { displayErrors } from '../../batteries/utils/heplers';
 
-const formCls = css``;
 const fieldTitle = css``;
 const fieldWrapper = css`
 	margin-bottom: 20px;
@@ -78,8 +77,8 @@ class ProfilePage extends React.Component {
 
 	componentDidMount() {
 		const {
- usecase, deploymentTimeframe, phone, company, username, picture,
-} = this.props;
+			usecase, deploymentTimeframe, phone, company, username, picture,
+		} = this.props; // prettier-ignore
 		this.profileForm.patchValue({
 			usecase,
 			deploymentTimeframe,
@@ -97,11 +96,16 @@ class ProfilePage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { isSuccess, errors } = this.props;
+		const {
+			isSuccess, errors, handleCallback,
+		} = this.props; // prettier-ignore
 		if (isSuccess && isSuccess !== prevProps.isSuccess) {
 			notification.success({
 				message: 'Updated user successfully!',
 			});
+			if (handleCallback) {
+				handleCallback();
+			}
 		}
 		displayErrors(errors, prevProps.errors);
 	}
@@ -122,7 +126,7 @@ class ProfilePage extends React.Component {
 
 	render() {
 		const { submitCountryCode, currentPicture } = this.state;
-		const { isSubmitting } = this.props;
+		const { isSubmitting, title } = this.props;
 		const { name } = this.profileForm.value;
 
 		const avatar = {};
@@ -140,12 +144,12 @@ class ProfilePage extends React.Component {
 			<FieldGroup control={this.profileForm} strict={false}>
 				{({ invalid, pristine }) => (
 					<Card
-						title="Account Details"
+						title={title || 'Account Details'}
 						extra={(
-<Popover
+							<Popover
 								placement="bottom"
 								content={(
-<FieldControl
+									<FieldControl
 										name="picture"
 										render={({ handler }) => (
 											<div css={fieldWrapper}>
@@ -159,14 +163,14 @@ class ProfilePage extends React.Component {
 												/>
 											</div>
 										)}
-/>
-)}
->
+									/>
+								)}
+							>
 								<Avatar {...avatar} size={50} css={{ cursor: 'pointer' }}>
 									{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
 								</Avatar>
-</Popover>
-)}
+							</Popover>
+						)} // prettier-ignore
 						css={{
 							'.ant-card-head-wrapper': {
 								alignItems: 'center',
