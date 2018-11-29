@@ -15,7 +15,7 @@ import {
 } from '../LoginPage/styles';
 import { checkbox } from './styles';
 
-const getSignupURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}/onBoard`;
+const getSignupURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
 
 class SignupPage extends React.Component {
 	state = {
