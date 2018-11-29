@@ -42,16 +42,16 @@ const columns = [
 ];
 const bannerMessagesCred = {
 	free: {
-		title: 'Upgrade to add more security in credentials',
-		description: '',
+		title: 'API Credentials',
+		description: 'Upgrade now to set granular ACLs, restrict by Referers and IP Sources, and more.',
 		buttonText: 'Upgrade Now',
 		href: '/billing',
 	},
 	bootstrap: {
-		title: 'Upgrade to add more security in credentials',
-		description: '',
-		buttonText: 'Upgrade Now',
-		href: '/billing',
+		title: 'API Credentials',
+		description: 'See how to effectively use security credentials to secure your app.',
+		buttonText: 'Read Docs',
+		href: 'https://docs.appbase.io/concepts/api-credentials.html',
 	},
 	growth: {
 		title: 'API Credentials',
