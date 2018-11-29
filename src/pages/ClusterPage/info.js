@@ -103,6 +103,8 @@ export default class Clusters extends Component {
 
 	hasAddon = (item, source) => !!source.addons.find(key => key.name === item);
 
+	getAddon = (item, source) => source.addons.find(key => key.name === item);
+
 	includedInOriginal = (key) => {
 		const original = this.originalCluster.deployment;
 		return original[key] ? !!Object.keys(original[key]).length : this.hasAddon(key, original);
@@ -257,7 +259,7 @@ export default class Clusters extends Component {
 
 	renderErrorScreen = () => (
 		<Fragment>
-			<FullHeader />
+			<FullHeader cluster={this.props.match.params.id} />
 			<Container>
 				<section
 					className={clusterContainer}
@@ -351,7 +353,7 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader />
+				<FullHeader cluster={this.props.match.params.id} />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal
@@ -424,21 +426,30 @@ export default class Clusters extends Component {
 								{this.state.cluster.status === 'in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
-											<h3>Dashboard</h3>
-											<p>Manage your cluster</p>
-										</div>
-
-										<div className="col">
-											{this.renderClusterEndpoint(this.state.cluster)}
-										</div>
-									</li>
-								)}
-
-								{this.state.cluster.status === 'in progress' ? null : (
-									<li className={card}>
-										<div className="col light">
 											<h3>Elasticsearch</h3>
 											<p>Live cluster endpoint</p>
+
+											{
+												this.state.arc
+													? (
+														<Link
+															to={{
+																pathname: `${this.props.match.params.id}/explore`,
+																state: {
+																	arc: this.getAddon(
+																		'arc',
+																		this.originalCluster.deployment,
+																	),
+																},
+															}}
+														>
+															<Button type="primary" size="large">
+																Explore Cluster
+															</Button>
+														</Link>
+													)
+													: null
+											}
 										</div>
 
 										<div className="col">
@@ -447,6 +458,19 @@ export default class Clusters extends Component {
 												.map(key => this.renderClusterEndpoint(
 														this.state.deployment[key],
 													))}
+										</div>
+									</li>
+								)}
+
+								{this.state.cluster.status === 'in progress' ? null : (
+									<li className={card}>
+										<div className="col light">
+											<h3>Dashboard</h3>
+											<p>Manage your cluster</p>
+										</div>
+
+										<div className="col">
+											{this.renderClusterEndpoint(this.state.cluster)}
 										</div>
 									</li>
 								)}
@@ -535,9 +559,7 @@ export default class Clusters extends Component {
 													<label htmlFor="arc">
 														<input
 															type="checkbox"
-															defaultChecked={
-																this.state.arc
-															}
+															defaultChecked={this.state.arc}
 															id="arc"
 															onChange={() => this.toggleConfig('arc')
 															}

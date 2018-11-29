@@ -23,15 +23,7 @@ const persistedReducer = persistCombineReducers(persistConfig, allReducers);
 const configureStore = () => {
 	const sagaMiddleware = createSagaMiddleware();
 	const middlewares = applyMiddleware(...[sagaMiddleware, thunkMiddleware]);
-	const store = createStore(
-		persistedReducer,
-		window.__REDUX_DEVTOOLS_EXTENSION__
-			? compose(
-					middlewares,
-					window.__REDUX_DEVTOOLS_EXTENSION__(),
-			  ) // eslint-disable-line
-			: middlewares,
-	);
+	const store = createStore(persistedReducer, middlewares);
 	const persistor = persistStore(store);
 	sagaMiddleware.run(rootSaga);
 	return { store, persistor };

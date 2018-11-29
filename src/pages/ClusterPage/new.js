@@ -486,27 +486,29 @@ export default class NewCluster extends Component {
 										padding: 30,
 									}}
 								>
-									<label htmlFor="gke">
-										<input
-											type="radio"
-											name="provider"
-											defaultChecked={this.state.provider === 'gke'}
-											id="gke"
-											onChange={() => this.setConfig('provider', 'gke')}
-										/>
-										Google
-									</label>
+									<Button
+										type={this.state.provider === 'gke' ? 'primary' : 'default'}
+										size="large"
+										css={{
+											height: 160,
+											marginRight: 20,
+											backgroundColor: this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
+										}}
+										onClick={() => this.setConfig('provider', 'gke')}
+									>
+										<img width="120" src="/static/images/clusters/google.png" alt="Google" />
+									</Button>
 
-									<label htmlFor="azure">
-										<input
-											type="radio"
-											name="provider"
-											defaultChecked={this.state.provider === 'azure'}
-											id="azure"
-											onChange={() => this.setConfig('provider', 'azure')}
-										/>
-										Azure
-									</label>
+									<Button
+										size="large"
+										css={{
+											height: 160,
+											backgroundColor: this.state.provider === 'azure' ? '#eaf5ff' : '#fff',
+										}}
+										onClick={() => this.setConfig('provider', 'azure')}
+									>
+										<img width="120" src="/static/images/clusters/azure.png" alt="Azure" />
+									</Button>
 								</div>
 							</div>
 

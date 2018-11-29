@@ -1,283 +1,129 @@
-import React from 'react';
+// @flow
+
+import React, { Component, Fragment } from 'react';
 import {
- Input, Select, Icon, notification, Button,
+ Switch, Route, Redirect, withRouter,
+} from 'react-router-dom';
+import {
+ Menu, Dropdown, Button, Icon,
 } from 'antd';
-import get from 'lodash/get';
-import { css } from 'react-emotion';
-import { connect } from 'react-redux';
-import PhoneInput from 'react-intl-tel-input';
-import 'react-intl-tel-input/dist/main.css';
-import {
- FormBuilder, FieldGroup, FieldControl, Validators,
-} from 'react-reactive-form';
-import { updateUser } from '../../batteries/modules/actions';
-import Container from '../../components/Container';
+
+import Account from './Account';
+import Email from './Email';
+import Credentials from './Credentials';
+import CloseAccount from './CloseAccount';
 import FullHeader from '../../components/FullHeader';
 import Flex from '../../batteries/components/shared/Flex';
-import Banner from '../../components/Banner/Header';
-import countryCodes from '../../utils/countryCodes';
-import { displayErrors } from '../../batteries/utils/heplers';
 
-const formCls = css`
-	margin: auto;
-	max-width: 300px;
-`;
-const fieldTitle = css``;
-const fieldWrapper = css`
-	margin-bottom: 20px;
-	input {
-		position: inherit;
-		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-			'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
-		font-variant: tabular-nums;
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		margin-top: 7px;
-		position: relative;
-		display: inline-block;
-		padding: 4px 11px;
-		width: 100%;
-		height: 32px;
-		font-size: 14px;
-		line-height: 1.5;
-		color: rgba(0, 0, 0, 0.65);
-		background-color: #fff;
-		background-image: none;
-		border: 1px solid #d9d9d9;
-		border-radius: 4px;
-		transition: all 0.3s;
-	}
-`;
-const deploymentOptions = [
-	'Within the next week',
-	'Within the next several weeks',
-	'I am currently evaluating',
-	'This is a hobby project',
-];
-const useCaseOptions = [
-	'A web app',
-	'A mobile app (iOS, Android, React Native)',
-	'A backend system',
-	'An IoT app',
-	'Not sure yet',
-];
-const { Option } = Select;
+import { mediaKey, breakpoints } from '../../utils/media';
 
-class ProfilePage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.profileForm = FormBuilder.group({
-			usecase: [undefined, Validators.required],
-			deploymentTimeframe: [undefined, Validators.required],
-			phone: [undefined, [Validators.maxLength(10)]],
-			company: undefined,
-		});
-		this.state = {
-			submitCountryCode: props.countryCode,
-		};
-	}
+const { Item } = Menu;
 
-	componentDidMount() {
+type Props = {
+	history: any,
+};
+
+class Profile extends Component<Props> {
+	handleMenuClick = (item) => {
 		const {
- usecase, deploymentTimeframe, phone, company,
-} = this.props;
-		this.profileForm.patchValue({
-			usecase,
-			deploymentTimeframe,
-			phone,
-			company,
-		});
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSuccess, errors } = this.props;
-		if (isSuccess && isSuccess !== prevProps.isSuccess) {
-			notification.success({
-				message: 'Updated user successfully!',
-			});
-		}
-		displayErrors(errors, prevProps.errors);
-	}
-
-	handleSubmit = () => {
-		const { setUser } = this.props;
-		const { submitCountryCode } = this.state;
-		setUser({
-			...this.profileForm.value,
-			'deployment-timeframe': this.profileForm.value.deploymentTimeframe,
-			phone: `${submitCountryCode}-${this.profileForm.value.phone}`,
-		});
+			history: { push },
+		} = this.props;
+		push(`/profile/${item.key}`);
 	};
 
 	render() {
-		const { submitCountryCode } = this.state;
-		const { isSubmitting, username } = this.props;
-		const firstName = username ? username.split(' ')[0] : 'Bud';
+		const {
+			history: {
+				location: { pathname },
+			},
+		} = this.props;
+		const pathParts = pathname.split('/');
+		const menu = (
+			<Menu
+				onClick={this.handleMenuClick}
+				defaultSelectedKeys={[pathParts[2] || 'account']}
+				mode={window.innerWidth <= breakpoints.medium ? 'horizontal' : 'inline'}
+				css={{
+					backgroundColor: 'transparent',
+					borderRight: 0,
+					marginRight: 15,
+					width: '180px',
+					[mediaKey.medium]: {
+						marginRight: 0,
+						width: '100% !important',
+					},
+					[mediaKey.xsmall]: {
+						backgroundColor: 'white',
+						width: '100% !important',
+					},
+				}}
+			>
+				<Item key="account">Account</Item>
+				<Item key="email">Email</Item>
+				<Item key="credentials">Credentials</Item>
+				<Item key="close">Close Account</Item>
+			</Menu>
+		);
+
 		return (
-			<React.Fragment>
+			<Fragment>
 				<FullHeader />
-				<Banner title={`Hi ${firstName},`} description="This is your profile view." />
-				<Container>
-					<FieldGroup control={this.profileForm} strict={false}>
-						{({ invalid, pristine }) => (
-							<div css={formCls}>
-								<FieldControl
-									name="usecase"
-									render={({ handler }) => {
-										const inputHandler = handler();
-										return (
-											<div css={fieldWrapper}>
-												<span css={fieldTitle}>
-													* What are you building?
-												</span>
-												<Select
-													style={{
-														width: '100%',
-														marginTop: '7px',
-													}}
-													{...inputHandler}
-													value={inputHandler.value || undefined}
-													placeholder="Select"
-												>
-													{useCaseOptions.map(i => (
-														<Option key={i} value={i}>
-															{i}
-														</Option>
-													))}
-												</Select>
-											</div>
-										);
+				<Flex
+					css={{
+						flexDirection: 'row',
+						padding: 40,
+						justifyContent: 'center',
+						margin: '0 auto',
+						width: '75%',
+						[mediaKey.medium]: {
+							flexDirection: 'column',
+							padding: 0,
+							width: '100%',
+						},
+					}}
+				>
+					<div
+						css={{
+							[mediaKey.small]: {
+								padding: 10,
+							},
+						}}
+					>
+						{window.innerWidth <= 425 ? (
+							<Dropdown overlay={menu}>
+								<Button
+									style={{
+										width: '100%',
+										textTransform: 'capitalize',
 									}}
-								/>
-								<FieldControl
-									name="deploymentTimeframe"
-									render={({ handler }) => {
-										const inputHandler = handler();
-										return (
-											<div css={fieldWrapper}>
-												<span css={fieldTitle}>
-													* How soon do you plan to go to production?
-												</span>
-												<Select
-													style={{
-														width: '100%',
-														marginTop: '7px',
-													}}
-													{...inputHandler}
-													value={inputHandler.value || undefined}
-													placeholder="Select"
-												>
-													{deploymentOptions.map(i => (
-														<Option key={i} value={i}>
-															{i}
-														</Option>
-													))}
-												</Select>
-											</div>
-										);
-									}}
-								/>
-								<FieldControl
-									strict={false}
-									name="phone"
-									render={({ handler }) => {
-										const inputHandler = handler();
-										return (
-											<div css={fieldWrapper}>
-												<span css={fieldTitle}>Phone Number</span>
-												<PhoneInput
-													style={{
-														width: '100%',
-														marginTop: '7px',
-													}}
-													{...handler()}
-													preferredCountries={['us', 'in']}
-													// /
-													defaultCountry={submitCountryCode.toLowerCase()}
-													onSelectFlag={(value, { dialCode }) => {
-														this.setState({
-															submitCountryCode: dialCode,
-														});
-													}}
-													onPhoneNumberChange={(
-														status,
-														value,
-														{ dialCode },
-													) => {
-														if (/^\d*$/.test(value)) {
-															inputHandler.onChange(value);
-														}
-														this.setState({
-															submitCountryCode: dialCode,
-														});
-													}}
-												/>
-											</div>
-										);
-									}}
-								/>
-								<FieldControl
-									name="company"
-									render={({ handler }) => (
-										<div css={fieldWrapper}>
-											<span css={fieldTitle}>Company Name</span>
-											<Input
-												style={{
-													marginTop: '7px',
-												}}
-												placeholder="Username"
-												{...handler()}
-											/>
-										</div>
-									)}
-								/>
-								<Flex justifyContent="center" alignItems="center">
-									<Button
-										type="primary"
-										onClick={this.handleSubmit}
-										disabled={invalid || pristine}
-									>
-										{isSubmitting && (
-											<Icon
-												type="loading"
-												style={{
-													marginRight: '10px',
-												}}
-											/>
-										)}
-										Submit
-									</Button>
-								</Flex>
-							</div>
+								>
+									{[pathParts[2] || 'account']} <Icon type="down" />
+								</Button>
+							</Dropdown>
+						) : (
+							menu
 						)}
-					</FieldGroup>
-				</Container>
-			</React.Fragment>
+					</div>
+					<div
+						css={{
+							flex: 1,
+							[mediaKey.small]: {
+								padding: 10,
+							},
+						}}
+					>
+						<Switch>
+							<Route path="/profile/account" component={Account} />
+							<Route path="/profile/email" component={Email} />
+							<Route path="/profile/credentials" component={Credentials} />
+							<Route path="/profile/close" component={CloseAccount} />
+							<Redirect from="/profile" exact to="/profile/account" />
+						</Switch>
+					</div>
+				</Flex>
+			</Fragment>
 		);
 	}
 }
-const mapStateToProps = (state) => {
-	const phoneInfo = get(state, 'user.data.phone');
-	return {
-		isSubmitting: get(state, '$updateUser.isFetching'),
-		errors: [get(state, '$updateUser.error')],
-		isSuccess: get(state, '$updateUser.success'),
-		usecase: get(state, 'user.data.usecase'),
-		deploymentTimeframe: get(state, 'user.data.deployment-timeframe'),
-		phone: get(phoneInfo, 'length') ? phoneInfo.split('-')[1] : '',
-		company: get(state, 'user.data.company'),
-		username: get(state, 'user.data.name'),
-		countryCode: get(phoneInfo, 'length')
-			? get(countryCodes.find(item => item.dial_code === phoneInfo.split('-')[0]), 'code', '')
-			: '',
-	};
-};
-const mapDispatchToProps = dispatch => ({
-	setUser: info => dispatch(updateUser(info)),
-});
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(ProfilePage);
+
+export default withRouter(Profile);
