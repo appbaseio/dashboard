@@ -8,12 +8,13 @@ const containerStyles = css`
 	justify-content: center;
 	align-items: center;
 	display: flex;
+	min-width: 420px;
 `;
 
 const UserDetails = () => (
 	<div className={containerStyles}>
 		<Account
-			title="How are you planning to use appbase.io?"
+			title="How do you plan to use Appbase.io?"
 			handleCallback={() => window.location.reload()}
 		/>
 	</div>

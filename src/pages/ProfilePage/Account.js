@@ -10,6 +10,7 @@ import 'react-intl-tel-input/dist/main.css';
 import {
  FormBuilder, FieldGroup, FieldControl, Validators,
 } from 'react-reactive-form';
+import { inlineArrayTransformer } from 'common-tags';
 import { updateUser } from '../../batteries/modules/actions';
 import Flex from '../../batteries/components/shared/Flex';
 import countryCodes from '../../utils/countryCodes';
@@ -52,7 +53,7 @@ const deploymentOptions = [
 const useCaseOptions = [
 	'A web app',
 	'A mobile app (iOS, Android, React Native)',
-	'A backend system',
+	'An e-commerce store',
 	'An IoT app',
 	'Not sure yet',
 ];
@@ -141,68 +142,148 @@ class ProfilePage extends React.Component {
 			avatar.icon = 'user';
 		}
 		return (
-			<FieldGroup control={this.profileForm} strict={false}>
+			<FieldGroup
+				control={this.profileForm}
+				strict={false}
+			>
 				{({ invalid, pristine }) => (
 					<Card
-						title={title || 'Account Details'}
-						extra={(
-							<Popover
-								placement="bottom"
-								content={(
-									<FieldControl
-										name="picture"
-										render={({ handler }) => (
-											<div css={fieldWrapper}>
-												<span css={fieldTitle}>Profile Picture</span>
-												<Input
-													style={{
-														marginTop: '7px',
-													}}
-													placeholder="Profile Picture Url"
-													{...handler()}
-												/>
-											</div>
-										)}
-									/>
-								)}
-							>
-								<Avatar {...avatar} size={50} css={{ cursor: 'pointer' }}>
-									{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
-								</Avatar>
-							</Popover>
-						)} // prettier-ignore
+						title={(title) || 'Account Details'}
 						css={{
 							'.ant-card-head-wrapper': {
 								alignItems: 'center',
 							},
+							minWidth: '420px',
 						}}
 					>
+						<p>About You</p>
 						<FieldControl
 							name="name"
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
-									<span css={fieldTitle}>* Name</span>
+									<span
+										css={fieldTitle}
+										style={{
+											display: 'block',
+										}}
+									>
+										* Name
+									</span>
+									<Input
+										style={{
+											marginTop: '7px',
+											display: 'inline',
+											width: '70%',
+										}}
+										placeholder="First and Last Name"
+										{...handler()}
+									/>
+									<Popover
+										placement="bottom"
+										content={(
+<FieldControl
+												name="picture"
+												render={({ handler }) => (
+													<div css={fieldWrapper}>
+														<span css={fieldTitle}>
+															Profile Picture
+														</span>
+														<Input
+															style={{
+																marginTop: '7px',
+															}}
+															placeholder="Update by adding an image URL"
+															{...handler()}
+														/>
+													</div>
+												)}
+/>
+)}
+									>
+										<Avatar
+											{...avatar}
+											size={50}
+											css={{
+												cursor: 'pointer',
+												marginLeft: '1rem',
+												marginTop: '-0.4rem',
+											}}
+										>
+											{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
+										</Avatar>
+									</Popover>
+								</div>
+							)}
+						/>
+						<FieldControl
+							strict={false}
+							name="phone"
+							render={({ handler }) => {
+								const inputHandler = handler();
+								return (
+									<div css={fieldWrapper}>
+										<span css={fieldTitle}>Phone Number</span>
+										<PhoneInput
+											style={{
+												width: '100%',
+												marginTop: '7px',
+											}}
+											{...handler()}
+											preferredCountries={['us', 'in']}
+											// /
+											defaultCountry={submitCountryCode.toLowerCase()}
+											onSelectFlag={(value, { dialCode }) => {
+												this.setState({
+													submitCountryCode: dialCode,
+												});
+											}}
+											onPhoneNumberChange={(status, value, { dialCode }) => {
+												if (/^(\d){0,10}$/.test(value)) {
+													inputHandler.onChange(value);
+												}
+												this.setState({
+													submitCountryCode: dialCode,
+												});
+											}}
+										/>
+									</div>
+								);
+							}}
+						/>
+						<FieldControl
+							name="company"
+							render={({ handler }) => (
+								<div css={fieldWrapper}>
+									<span css={fieldTitle}>Company Name</span>
 									<Input
 										style={{
 											marginTop: '7px',
 										}}
-										placeholder="Name"
+										placeholder="Company"
 										{...handler()}
 									/>
 								</div>
 							)}
 						/>
+						<p style={{
+							paddingTop: '1rem',
+						}}
+						>
+							Your Project
+						</p>
 						<FieldControl
 							name="usecase"
 							render={({ handler }) => {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>* What are you building?</span>
+										<span css={fieldTitle}>
+											* What project are you building search for?
+										</span>
 										<Select
 											style={{
-												width: '100%',
 												marginTop: '7px',
+												display: 'block',
 											}}
 											{...inputHandler}
 											value={inputHandler.value || undefined}
@@ -229,8 +310,8 @@ class ProfilePage extends React.Component {
 										</span>
 										<Select
 											style={{
-												width: '100%',
 												marginTop: '7px',
+												display: 'block',
 											}}
 											{...inputHandler}
 											value={inputHandler.value || undefined}
@@ -245,56 +326,6 @@ class ProfilePage extends React.Component {
 									</div>
 								);
 							}}
-						/>
-						<FieldControl
-							strict={false}
-							name="phone"
-							render={({ handler }) => {
-								const inputHandler = handler();
-								return (
-									<div css={fieldWrapper}>
-										<span css={fieldTitle}>Phone Number</span>
-										<PhoneInput
-											style={{
-												width: '100%',
-												marginTop: '7px',
-											}}
-											{...handler()}
-											preferredCountries={['us', 'in']}
-											// /
-											defaultCountry={submitCountryCode.toLowerCase()}
-											onSelectFlag={(value, { dialCode }) => {
-												this.setState({
-													submitCountryCode: dialCode,
-												});
-											}}
-											onPhoneNumberChange={(status, value, { dialCode }) => {
-												if (/^\d*$/.test(value)) {
-													inputHandler.onChange(value);
-												}
-												this.setState({
-													submitCountryCode: dialCode,
-												});
-											}}
-										/>
-									</div>
-								);
-							}}
-						/>
-						<FieldControl
-							name="company"
-							render={({ handler }) => (
-								<div css={fieldWrapper}>
-									<span css={fieldTitle}>Company Name</span>
-									<Input
-										style={{
-											marginTop: '7px',
-										}}
-										placeholder="Company"
-										{...handler()}
-									/>
-								</div>
-							)}
 						/>
 						<Flex justifyContent="left" alignItems="center">
 							<Button
