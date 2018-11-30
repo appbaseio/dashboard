@@ -45,8 +45,9 @@ class BrowserPage extends Component {
 			url: `https://${credentials}@scalr.api.appbase.io`,
 			appname: appName,
 		};
-		const url = JSON.stringify(dejavu);
-		const iframeURL = `https://opensource.appbase.io/dejavu/live/#?app=${url}&hf=false&subscribe=false`;
+		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${
+			dejavu.url
+		}&footer=false&sidebar=false&appswitcher=false&mode=edit`;
 
 		return (
 			<section>
