@@ -29,7 +29,7 @@ const bannerMessagesTeam = {
 		title: 'Sharing Settings',
 		description: 'Invite team members and collaborate together on your app.',
 		buttonText: 'Upgrade Now',
-		href: '/billing',
+		href: 'billing',
 	},
 	bootstrap: {
 		title: 'Sharing Settings',
