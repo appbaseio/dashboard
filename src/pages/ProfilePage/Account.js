@@ -51,7 +51,7 @@ const deploymentOptions = [
 const useCaseOptions = [
 	'A web app',
 	'A mobile app (iOS, Android, React Native)',
-	'A backend system',
+	'An e-commerce store',
 	'An IoT app',
 	'Not sure yet',
 ];
@@ -76,8 +76,8 @@ class ProfilePage extends React.Component {
 
 	componentDidMount() {
 		const {
- usecase, deploymentTimeframe, phone, company, username, picture,
-} = this.props;
+			usecase, deploymentTimeframe, phone, company, username, picture,
+		} = this.props; // prettier-ignore
 		this.profileForm.patchValue({
 			usecase,
 			deploymentTimeframe,
@@ -95,11 +95,16 @@ class ProfilePage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { isSuccess, errors } = this.props;
+		const {
+			isSuccess, errors, handleCallback,
+		} = this.props; // prettier-ignore
 		if (isSuccess && isSuccess !== prevProps.isSuccess) {
 			notification.success({
 				message: 'Updated user successfully!',
 			});
+			if (handleCallback) {
+				handleCallback();
+			}
 		}
 		displayErrors(errors, prevProps.errors);
 	}
@@ -120,7 +125,7 @@ class ProfilePage extends React.Component {
 
 	render() {
 		const { submitCountryCode, currentPicture } = this.state;
-		const { isSubmitting } = this.props;
+		const { isSubmitting, title } = this.props;
 		const { name } = this.profileForm.value;
 
 		const avatar = {};
@@ -138,107 +143,69 @@ class ProfilePage extends React.Component {
 			<FieldGroup control={this.profileForm} strict={false}>
 				{({ invalid, pristine }) => (
 					<Card
-						title="Account Details"
-						extra={(
-<Popover
-								placement="bottom"
-								content={(
-<FieldControl
-										name="picture"
-										render={({ handler }) => (
-											<div css={fieldWrapper}>
-												<span>Profile Picture</span>
-												<Input
-													style={{
-														marginTop: '7px',
-													}}
-													placeholder="Profile Picture Url"
-													{...handler()}
-												/>
-											</div>
-										)}
-/>
-)}
->
-								<Avatar {...avatar} size={50} css={{ cursor: 'pointer' }}>
-									{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
-								</Avatar>
-</Popover>
-)}
+						title={title || 'Account Details'}
 						css={{
 							'.ant-card-head-wrapper': {
 								alignItems: 'center',
 							},
+							minWidth: '420px',
 						}}
 					>
+						<p>About You</p>
 						<FieldControl
 							name="name"
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
-									<span>* Name</span>
+									<span
+										style={{
+											display: 'block',
+										}}
+									>
+										* Name
+									</span>
 									<Input
 										style={{
 											marginTop: '7px',
+											display: 'inline',
+											width: '70%',
 										}}
-										placeholder="Name"
+										placeholder="First and Last Name"
 										{...handler()}
 									/>
+									<Popover
+										placement="bottom"
+										content={(
+<FieldControl
+												name="picture"
+												render={({ handler }) => (
+													<div css={fieldWrapper}>
+														<span>Profile Picture</span>
+														<Input
+															style={{
+																marginTop: '7px',
+															}}
+															placeholder="Update by adding an image URL"
+															{...handler()}
+														/>
+													</div>
+												)}
+/>
+)}
+									>
+										<Avatar
+											{...avatar}
+											size={50}
+											css={{
+												cursor: 'pointer',
+												marginLeft: '1rem',
+												marginTop: '-0.4rem',
+											}}
+										>
+											{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
+										</Avatar>
+									</Popover>
 								</div>
 							)}
-						/>
-						<FieldControl
-							name="usecase"
-							render={({ handler }) => {
-								const inputHandler = handler();
-								return (
-									<div css={fieldWrapper}>
-										<span>* What are you building?</span>
-										<Select
-											style={{
-												width: '100%',
-												marginTop: '7px',
-											}}
-											{...inputHandler}
-											value={inputHandler.value || undefined}
-											placeholder="Select"
-										>
-											{useCaseOptions.map(i => (
-												<Option key={i} value={i}>
-													{i}
-												</Option>
-											))}
-										</Select>
-									</div>
-								);
-							}}
-						/>
-						<FieldControl
-							name="deploymentTimeframe"
-							render={({ handler }) => {
-								const inputHandler = handler();
-								return (
-									<div css={fieldWrapper}>
-										<span>
-											* How soon do you plan to go to production?
-										</span>
-										<Select
-											style={{
-												width: '100%',
-												marginTop: '7px',
-											}}
-											{...inputHandler}
-											value={inputHandler.value || undefined}
-											placeholder="Select"
-										>
-											{deploymentOptions.map(i => (
-												<Option key={i} value={i}>
-													{i}
-												</Option>
-											))}
-										</Select>
-									</div>
-								);
-							}}
 						/>
 						<FieldControl
 							strict={false}
@@ -263,7 +230,7 @@ class ProfilePage extends React.Component {
 												});
 											}}
 											onPhoneNumberChange={(status, value, { dialCode }) => {
-												if (/^\d*$/.test(value)) {
+												if (/^(\d){0,10}$/.test(value)) {
 													inputHandler.onChange(value);
 												}
 												this.setState({
@@ -289,6 +256,65 @@ class ProfilePage extends React.Component {
 									/>
 								</div>
 							)}
+						/>
+						<p
+							style={{
+								paddingTop: '1rem',
+							}}
+						>
+							Your Project
+						</p>
+						<FieldControl
+							name="usecase"
+							render={({ handler }) => {
+								const inputHandler = handler();
+								return (
+									<div css={fieldWrapper}>
+										<span>* What project are you building search for?</span>
+										<Select
+											style={{
+												marginTop: '7px',
+												display: 'block',
+											}}
+											{...inputHandler}
+											value={inputHandler.value || undefined}
+											placeholder="Select"
+										>
+											{useCaseOptions.map(i => (
+												<Option key={i} value={i}>
+													{i}
+												</Option>
+											))}
+										</Select>
+									</div>
+								);
+							}}
+						/>
+						<FieldControl
+							name="deploymentTimeframe"
+							render={({ handler }) => {
+								const inputHandler = handler();
+								return (
+									<div css={fieldWrapper}>
+										<span>* How soon do you plan to go to production?</span>
+										<Select
+											style={{
+												marginTop: '7px',
+												display: 'block',
+											}}
+											{...inputHandler}
+											value={inputHandler.value || undefined}
+											placeholder="Select"
+										>
+											{deploymentOptions.map(i => (
+												<Option key={i} value={i}>
+													{i}
+												</Option>
+											))}
+										</Select>
+									</div>
+								);
+							}}
 						/>
 						<Flex justifyContent="left" alignItems="center">
 							<Button

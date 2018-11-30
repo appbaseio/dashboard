@@ -9,10 +9,10 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
 	<Route
 		{...rest}
 		render={props => (user.data ? (
-			<React.Fragment>
-				<Component {...props} />
-				<HelpChat user={user.data} />
-			</React.Fragment>
+				<React.Fragment>
+					<Component {...props} />
+					<HelpChat user={user.data} />
+				</React.Fragment>
 			) : AUTH_ROUTES.includes(window.location.pathname) ? null : (
 				<Redirect to="/login" />
 			))
