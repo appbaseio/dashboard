@@ -15,8 +15,6 @@ import Flex from '../../batteries/components/shared/Flex';
 import countryCodes from '../../utils/countryCodes';
 import { displayErrors } from '../../batteries/utils/heplers';
 
-const formCls = css``;
-const fieldTitle = css``;
 const fieldWrapper = css`
 	margin-bottom: 20px;
 	input {
@@ -149,7 +147,7 @@ class ProfilePage extends React.Component {
 										name="picture"
 										render={({ handler }) => (
 											<div css={fieldWrapper}>
-												<span css={fieldTitle}>Profile Picture</span>
+												<span>Profile Picture</span>
 												<Input
 													style={{
 														marginTop: '7px',
@@ -177,7 +175,7 @@ class ProfilePage extends React.Component {
 							name="name"
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
-									<span css={fieldTitle}>* Name</span>
+									<span>* Name</span>
 									<Input
 										style={{
 											marginTop: '7px',
@@ -194,7 +192,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>* What are you building?</span>
+										<span>* What are you building?</span>
 										<Select
 											style={{
 												width: '100%',
@@ -220,7 +218,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>
+										<span>
 											* How soon do you plan to go to production?
 										</span>
 										<Select
@@ -249,7 +247,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>Phone Number</span>
+										<span>Phone Number</span>
 										<PhoneInput
 											style={{
 												width: '100%',
@@ -281,7 +279,7 @@ class ProfilePage extends React.Component {
 							name="company"
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
-									<span css={fieldTitle}>Company Name</span>
+									<span>Company Name</span>
 									<Input
 										style={{
 											marginTop: '7px',
