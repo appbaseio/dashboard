@@ -45,7 +45,7 @@ const bannerMessagesCred = {
 		title: 'API Credentials',
 		description: 'Upgrade now to set granular ACLs, restrict by Referers and IP Sources, and more.',
 		buttonText: 'Upgrade Now',
-		href: '/billing',
+		href: 'billing',
 	},
 	bootstrap: {
 		title: 'API Credentials',
