@@ -27,7 +27,6 @@ export default class Clusters extends Component {
 			deployment: null,
 			kibana: false,
 			logstash: false,
-			elasticsearch: false,
 			elasticsearchHQ: false,
 			arc: false,
 			mirage: false,
@@ -68,9 +67,6 @@ export default class Clusters extends Component {
 						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
 						logstash: deployment.logstash
 							? !!Object.keys(deployment.logstash).length
-							: false,
-						elasticsearch: deployment.elasticsearch
-							? !!Object.keys(deployment.elasticsearch).length
 							: false,
 						mirage: this.hasAddon('mirage', deployment),
 						dejavu: this.hasAddon('dejavu', deployment),

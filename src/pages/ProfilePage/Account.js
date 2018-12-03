@@ -10,13 +10,11 @@ import 'react-intl-tel-input/dist/main.css';
 import {
  FormBuilder, FieldGroup, FieldControl, Validators,
 } from 'react-reactive-form';
-import { inlineArrayTransformer } from 'common-tags';
 import { updateUser } from '../../batteries/modules/actions';
 import Flex from '../../batteries/components/shared/Flex';
 import countryCodes from '../../utils/countryCodes';
 import { displayErrors } from '../../batteries/utils/heplers';
 
-const fieldTitle = css``;
 const fieldWrapper = css`
 	margin-bottom: 20px;
 	input {
@@ -142,13 +140,10 @@ class ProfilePage extends React.Component {
 			avatar.icon = 'user';
 		}
 		return (
-			<FieldGroup
-				control={this.profileForm}
-				strict={false}
-			>
+			<FieldGroup control={this.profileForm} strict={false}>
 				{({ invalid, pristine }) => (
 					<Card
-						title={(title) || 'Account Details'}
+						title={title || 'Account Details'}
 						css={{
 							'.ant-card-head-wrapper': {
 								alignItems: 'center',
@@ -162,7 +157,6 @@ class ProfilePage extends React.Component {
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
 									<span
-										css={fieldTitle}
 										style={{
 											display: 'block',
 										}}
@@ -185,9 +179,7 @@ class ProfilePage extends React.Component {
 												name="picture"
 												render={({ handler }) => (
 													<div css={fieldWrapper}>
-														<span css={fieldTitle}>
-															Profile Picture
-														</span>
+														<span>Profile Picture</span>
 														<Input
 															style={{
 																marginTop: '7px',
@@ -222,7 +214,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>Phone Number</span>
+										<span>Phone Number</span>
 										<PhoneInput
 											style={{
 												width: '100%',
@@ -254,7 +246,7 @@ class ProfilePage extends React.Component {
 							name="company"
 							render={({ handler }) => (
 								<div css={fieldWrapper}>
-									<span css={fieldTitle}>Company Name</span>
+									<span>Company Name</span>
 									<Input
 										style={{
 											marginTop: '7px',
@@ -265,9 +257,10 @@ class ProfilePage extends React.Component {
 								</div>
 							)}
 						/>
-						<p style={{
-							paddingTop: '1rem',
-						}}
+						<p
+							style={{
+								paddingTop: '1rem',
+							}}
 						>
 							Your Project
 						</p>
@@ -277,9 +270,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>
-											* What project are you building search for?
-										</span>
+										<span>* What project are you building search for?</span>
 										<Select
 											style={{
 												marginTop: '7px',
@@ -305,9 +296,7 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span css={fieldTitle}>
-											* How soon do you plan to go to production?
-										</span>
+										<span>* How soon do you plan to go to production?</span>
 										<Select
 											style={{
 												marginTop: '7px',

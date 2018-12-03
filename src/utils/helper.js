@@ -83,7 +83,7 @@ export const planLimits = {
 	'business-monthly': {
 		action: 10000000,
 		records: 1000000,
-	}
+	},
 };
 
 export const planBasePrice = {

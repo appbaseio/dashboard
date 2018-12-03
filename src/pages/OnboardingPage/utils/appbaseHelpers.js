@@ -174,8 +174,7 @@ class AppbaseUtils {
 		});
 	};
 
-	indexNewData = () =>
-		new Promise((resolve, reject) => {
+	indexNewData = () => new Promise((resolve, reject) => {
 			this.appbaseRef
 				.index({
 					type: this.app.type,

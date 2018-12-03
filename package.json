@@ -10,7 +10,8 @@
 	"scripts": {
 		"start": "webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
 		"build": "webpack --mode production",
-		"glow": "glow --watch"
+		"glow": "glow --watch",
+		"lint": "eslint ."
 	},
 	"lint-staged": {
 		"*.js": [
