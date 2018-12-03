@@ -49,13 +49,13 @@ export const createCredentials = {
 	),
 	exclude: () => (
 		<div style={{ maxWidth: 220 }}>
-			Selected fields aren't returned in the search response. In case of a field being present
-			in both include and exclude, exclude has a priority.
+			Selected fields aren{"'"}t returned in the search response. In case of a field being
+			present in both include and exclude, exclude has a priority.
 		</div>
 	),
 	ttl: () => (
 		<div style={{ maxWidth: 220 }}>
-			Expiry time for this credential (in seconds). 0 means that it doesn't expire.
+			Expiry time for this credential (in seconds). 0 means that it doesn{"'"}t expire.
 		</div>
 	),
 	ipLimit: (

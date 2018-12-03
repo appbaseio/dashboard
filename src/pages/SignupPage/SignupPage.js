@@ -6,6 +6,7 @@ import {
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import EmailAuth from '../LoginPage/EmailAuth';
 import Logo from '../../components/Logo';
 import { ACC_API } from '../../constants/config';
 
@@ -20,6 +21,13 @@ class SignupPage extends React.Component {
 	state = {
 		hasAgreedTOS: false,
 		hasSubscribed: false,
+		isEmailSignup: false,
+	};
+
+	toggleEmailSignup = () => {
+		this.setState(({ isEmailSignup }) => ({
+			isEmailSignup: !isEmailSignup,
+		}));
 	};
 
 	handleChange = (e) => {
@@ -37,7 +45,7 @@ class SignupPage extends React.Component {
 		const {
 			user: { data },
 		} = this.props;
-		const { hasSubscribed, hasAgreedTOS } = this.state;
+		const { hasSubscribed, hasAgreedTOS, isEmailSignup } = this.state;
 		if (data) {
 			return <Redirect to="/" />;
 		}
@@ -82,36 +90,45 @@ class SignupPage extends React.Component {
 							</div>
 						</Checkbox>
 					</section>
+					{isEmailSignup || (
+						<React.Fragment>
+							<Button
+								href={getSignupURL('github')}
+								icon="github"
+								className={githubBtn}
+								disabled={!hasAgreedTOS}
+								size="small"
+							>
+								Sign up with GitHub
+							</Button>
 
-					<Button
-						href={getSignupURL('github')}
-						icon="github"
-						className={githubBtn}
-						disabled={!hasAgreedTOS}
-						size="small"
-					>
-						Sign up with GitHub
-					</Button>
+							<Button
+								href={getSignupURL('google')}
+								icon="google"
+								disabled={!hasAgreedTOS}
+								className={googleBtn}
+								size="small"
+							>
+								Sign up with Google
+							</Button>
 
-					<Button
-						href={getSignupURL('google')}
-						icon="google"
+							<Button
+								href={getSignupURL('gitlab')}
+								icon="gitlab"
+								disabled={!hasAgreedTOS}
+								className={gitlabBtn}
+								size="small"
+							>
+								Sign up with Gitlab
+							</Button>
+						</React.Fragment>
+					)}
+					<EmailAuth
 						disabled={!hasAgreedTOS}
-						className={googleBtn}
-						size="small"
-					>
-						Sign up with Google
-					</Button>
-
-					<Button
-						href={getSignupURL('gitlab')}
-						icon="gitlab"
-						disabled={!hasAgreedTOS}
-						className={gitlabBtn}
-						size="small"
-					>
-						Sign up with Gitlab
-					</Button>
+						isEmailAuth={isEmailSignup}
+						toggleEmailAuth={this.toggleEmailSignup}
+						authText="Sign up via Email"
+					/>
 				</Card>
 
 				<Link to="/login">

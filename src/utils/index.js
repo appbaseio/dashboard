@@ -3,7 +3,8 @@ import { ACC_API } from '../constants/config';
 export async function getUser() {
 	const response = await fetch(`${ACC_API}/user`, { credentials: 'include' });
 	const data = await response.json();
-	if (response.status >= 400) {
+	if (response.status === 404) {
+		window.location.href = `${ACC_API}/logout?next=https://dashboard.appbase.io/login`;
 		throw new Error(data);
 	}
 

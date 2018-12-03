@@ -13,7 +13,7 @@ export const regions = {
 		northeurope: { name: 'North Europe', flag: 'europe.png' },
 		westus2: { name: 'West US 2', flag: 'united-states.png' },
 		westus: { name: 'West US 1', flag: 'united-states.png' },
-		southeastasia: { name: 'South East Asia' },
+		southeastasia: { name: 'South East Asia', flag: 'singapore.png' },
 	},
 	gke: {
 		'us-east1-b': { name: 'US East 1B', flag: 'united-states.png' },
@@ -34,8 +34,6 @@ export const regions = {
 };
 
 export const regionsByPlan = {
-	gke: {
-		Sandbox: ['us-east1-b', 'us-central1-b'],
-	},
+	gke: {},
 	azure: {},
 };
