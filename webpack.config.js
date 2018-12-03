@@ -1,4 +1,7 @@
 const path = require('path');
+const SentryPlugin = require('@sentry/webpack-plugin');
+
+const isProduction = String(process.env.NODE_ENV) === 'production';
 
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
@@ -8,6 +11,15 @@ module.exports = {
 		filename: 'build.js',
 		chunkFilename: '[name].[contenthash].build.js',
 	},
+	plugins: isProduction
+		? [
+				new SentryPlugin({
+					include: './dist',
+					ignore: ['node_modules', 'webpack.config.js'],
+					configFile: './.env',
+				}),
+		] // prettier-ignore
+		: [],
 	module: {
 		rules: [
 			{
