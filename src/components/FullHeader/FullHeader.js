@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Layout, Menu, Tag, Icon, Button,
+ Layout, Menu, Tag, Icon, Button, Row,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string } from 'prop-types';
@@ -32,7 +32,20 @@ const trialText = css`
 	line-height: 2em;
 	font-size: 0.9em;
 `;
+
 const trialBtn = css`
+	margin-right: 30px;
+	${media.small(css`
+		display: none;
+	`)};
+`;
+
+const link = css`
+	margin-right: 30px;
+	color: rgba(0, 0, 0, 0.65);
+	i {
+		margin-right: 4px;
+	}
 	${media.small(css`
 		display: none;
 	`)};
@@ -68,26 +81,34 @@ const FullHeader = ({
 				) : null}
 			</Menu>
 		</div>
-		{isUsingTrial && (
-			<Button
-				css={trialBtn}
-				style={{
-					height: 'auto',
-				}}
-				type="danger"
-				href="billing"
+		<Row justify="space-between" align="middle">
+			{isUsingTrial && (
+				<Button css={trialBtn} type="danger" href="billing">
+					<span css={trialText}>
+						{daysLeft > 0
+							? `Trial expires in ${daysLeft} ${
+									daysLeft > 1 ? 'days' : 'day'
+							  }. Upgrade now`
+							: 'Trial expired. Upgrade now'}
+					</span>
+				</Button>
+			)}
+			<a
+				href="https://docs.appbase.io/javascript/quickstart.html"
+				className={link}
+				target="_blank"
+				rel="noopener noreferrer"
 			>
-				<span css={trialText}>
-					{daysLeft > 0
-						? `Trial expires in ${daysLeft} ${
-								daysLeft > 1 ? 'days' : 'day'
-						  }. Upgrade now`
-						: 'Trial expired. Upgrade now'}
-				</span>
-			</Button>
-		)}
-		<UserMenu user={user} />
-		<MenuSlider isHomepage defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]} />
+				<Icon type="rocket" /> Docs
+			</a>
+			<UserMenu user={user} />
+		</Row>
+		<MenuSlider
+			isHomepage
+			defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
+			isUsingTrial={isUsingTrial}
+			daysLeft={daysLeft}
+		/>
 	</Header>
 );
 

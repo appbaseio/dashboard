@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Layout, Menu, Icon, Button,
+ Layout, Menu, Icon, Button, Row,
 } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import {
@@ -41,6 +41,17 @@ const trialBtn = css`
 	`)};
 `;
 
+const link = css`
+	margin-right: 30px;
+	color: rgba(0, 0, 0, 0.65);
+	i {
+		margin-right: 4px;
+	}
+	${media.small(css`
+		display: none;
+	`)};
+`;
+
 const AppHeader = ({
  currentApp, user, big, isUsingTrial, daysLeft, history, match, appOwner,
 }) => (
@@ -66,14 +77,7 @@ const AppHeader = ({
 			</Menu.Item>
 		</Menu>
 		{isUsingTrial && (
-			<Button
-				css={trialBtn}
-				style={{
-					height: 'auto',
-				}}
-				type="danger"
-				href="billing"
-			>
+			<Button css={trialBtn} type="danger" href="billing">
 				<span css={trialText}>
 					{daysLeft > 0
 						? `Trial expires in ${daysLeft} ${
@@ -83,7 +87,17 @@ const AppHeader = ({
 				</span>
 			</Button>
 		)}
-		<UserMenu user={user} />
+		<Row justify="space-between" align="middle">
+			<a
+				href="https://docs.appbase.io/javascript/quickstart.html"
+				className={link}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<Icon type="rocket" /> Docs
+			</a>
+			<UserMenu user={user} />
+		</Row>
 		<MenuSlider />
 	</Header>
 );
