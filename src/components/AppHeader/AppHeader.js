@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Layout, Menu, Icon, Button, Tooltip,
+ Layout, Menu, Icon, Button,
 } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import {
