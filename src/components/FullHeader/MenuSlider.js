@@ -59,7 +59,9 @@ class MenuSlider extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { defaultSelectedKeys, isHomepage } = this.props;
+		const {
+			defaultSelectedKeys, isHomepage, isUsingTrial, daysLeft,
+		} = this.props; // prettier-ignore
 		return (
 			<div className={menuSlider}>
 				<Button className={menuBtn} icon="menu-fold" onClick={this.handleDrawer} />
@@ -105,6 +107,18 @@ class MenuSlider extends React.Component {
 								</a>
 							</Menu.Item>
 						) : null}
+
+						{isUsingTrial && (
+							<Menu.Item>
+								<Link to="/billing" css={{ color: 'tomato !important' }}>
+									{daysLeft > 0
+										? `Trial expires in ${daysLeft} ${
+												daysLeft > 1 ? 'days' : 'day'
+										  }. Upgrade now`
+										: 'Trial expired. Upgrade now'}
+								</Link>
+							</Menu.Item>
+						)}
 
 						<Menu.Item onClick={this.handleLogout}>Logout</Menu.Item>
 					</Menu>
