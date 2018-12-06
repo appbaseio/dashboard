@@ -47,7 +47,7 @@ class BrowserPage extends Component {
 		};
 		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${
 			dejavu.url
-		}&footer=false&sidebar=false&appswitcher=false&mode=edit`;
+		}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
 
 		return (
 			<section>
