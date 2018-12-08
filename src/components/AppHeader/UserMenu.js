@@ -33,7 +33,7 @@ const userEmailDetail = css`
 
 const UserMenu = ({ user }) => {
 	const menu = (
-		<Menu style={{ width: '200px' }}>
+		<Menu style={{ width: 'auto' }}>
 			<Menu.Item className={userEmailDetail}>
 				<h5>Logged in as</h5>
 				<h4>{user.email}</h4>

@@ -2,12 +2,10 @@ import React from 'react';
 import { css } from 'react-emotion';
 
 const styles = css`
-	width: 100%;
-	height: 400px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 `;
 
 const Loader = () => (
