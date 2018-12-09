@@ -31,20 +31,9 @@ const userEmailDetail = css`
 	}
 `;
 
-const link = css`
-	margin-right: 30px;
-	color: rgba(0, 0, 0, 0.65);
-	i {
-		margin-right: 4px;
-	}
-	${media.small(css`
-		display: none;
-	`)};
-`;
-
 const UserMenu = ({ user }) => {
 	const menu = (
-		<Menu style={{ width: '200px' }}>
+		<Menu style={{ width: 'auto' }}>
 			<Menu.Item className={userEmailDetail}>
 				<h5>Logged in as</h5>
 				<h4>{user.email}</h4>
@@ -65,25 +54,15 @@ const UserMenu = ({ user }) => {
 	);
 
 	return (
-		<Row justify="space-between" align="middle">
-			<a
-				href="https://docs.appbase.io/javascript/quickstart.html"
-				className={link}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<Icon type="rocket" /> Docs
-			</a>
-			<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
-				<span style={{ cursor: 'pointer' }}>
-					<Avatar src={user.picture} />
-					&nbsp;&nbsp;
-					{user ? user.name : 'Loading...'}
-					&nbsp;&nbsp;
-					<Icon type="down" />
-				</span>
-			</Dropdown>
-		</Row>
+		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
+			<span style={{ cursor: 'pointer' }}>
+				<Avatar src={user.picture} />
+				&nbsp;&nbsp;
+				{user ? user.name : 'Loading...'}
+				&nbsp;&nbsp;
+				<Icon type="down" />
+			</span>
+		</Dropdown>
 	);
 };
 

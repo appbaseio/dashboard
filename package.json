@@ -8,8 +8,8 @@
 	"license": "MIT",
 	"private": false,
 	"scripts": {
-		"start": "webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
-		"build": "webpack --mode production",
+		"start": "NODE_ENV=development webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
+		"build": "NODE_ENV=production node ./scripts/create-env.js && webpack --mode production",
 		"glow": "glow --watch",
 		"lint": "eslint ."
 	},
@@ -24,6 +24,7 @@
 		"@babel/preset-env": "^7.0.0-rc.1",
 		"@babel/preset-flow": "^7.0.0-rc.1",
 		"@babel/preset-react": "^7.0.0-rc.1",
+		"@sentry/webpack-plugin": "^1.6.1",
 		"babel-eslint": "^8.2.6",
 		"babel-loader": "^8.0.0-beta",
 		"babel-plugin-emotion": "^9.2.6",
