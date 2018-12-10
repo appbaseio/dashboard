@@ -100,7 +100,7 @@ class Dashboard extends Component {
 				<Fragment>
 					<Route exact path="/login" component={LoginPage} />
 					<Route exact path="/signup" component={SignupPage} />
-					<PrivateRoute user={user} component={Wrapper} />
+					<PrivateRoute user={user} component={() => <Wrapper user={user} />} />
 				</Fragment>
 			</Router>
 		);

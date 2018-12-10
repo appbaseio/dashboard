@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
  Row, Col, Icon, Modal, Input, Radio, List, Popover, notification,
 } from 'antd';
+import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -15,11 +16,14 @@ import {
 	planDetails,
 	planInfo,
 } from './styles';
-import { validateAppName, validationsList } from '../../utils/helper';
+import { validateAppName, validationsList, capitalizeFirstLetter } from '../../utils/helper';
+import { createAppSubscription } from '../../batteries/modules/actions';
+import Loader from '../../batteries/components/shared/Loader';
 
 import { createApp, resetCreatedApp } from '../../actions';
 
 const RadioGroup = Radio.Group;
+const { confirm } = Modal;
 
 class CreateAppModal extends Component {
 	constructor(props) {
@@ -94,15 +98,49 @@ class CreateAppModal extends Component {
 		}));
 	};
 
-	componentDidUpdate = () => {
-		const { createdApp, history } = this.props; //eslint-disable-line
-		const { hasJSON, appName } = this.state;
-		if (createdApp.data && createdApp.data.id) {
+	componentDidUpdate = (prevProps) => {
+		const {
+			isPaid,
+			createdApp,
+			history, //eslint-disable-line
+			createSubscription,
+			isError,
+			isSuccess,
+			isUsingTrial,
+		} = this.props;
+		const { hasJSON, plan, appName } = this.state;
+		const redirect = () => {
 			if (hasJSON) {
 				history.push(`app/${appName}/import`);
 			} else {
 				history.push(`app/${appName}`);
 			}
+		};
+		if (createdApp.data && createdApp.data.id !== get(prevProps, 'createdApp.data.id')) {
+			if (!isUsingTrial && isPaid && plan !== 'free') {
+				// Only call for previously paid customers
+				createSubscription(plan, appName);
+				this.handleCancel();
+			} else {
+				redirect();
+			}
+		}
+		if (isError && isError !== prevProps.isError) {
+			confirm({
+				title: `Your app has been created successfully, but we were unable to set the plan to ${capitalizeFirstLetter(
+					plan,
+				)}.`,
+				content:
+					'You can still update your plan by visiting the billing section of the app.',
+				okText: 'Go To Billing',
+				onOk() {
+					history.push(`app/${appName}/billing`);
+				},
+				onCancel() {},
+			});
+		}
+		if (isSuccess && isSuccess !== prevProps.isSuccess) {
+			redirect();
 		}
 	};
 
@@ -143,8 +181,10 @@ class CreateAppModal extends Component {
 			elasticVersion,
 			validationPopOver,
 		} = this.state;
-		const { createdApp, showModal } = this.props;
-
+		const { createdApp, showModal, isLoading } = this.props;
+		if (isLoading) {
+			return <Loader show message="Updating Plan... Please wait!" />;
+		}
 		return (
 			<Modal
 				visible={showModal}
@@ -282,23 +322,42 @@ class CreateAppModal extends Component {
 		);
 	}
 }
-
+CreateAppModal.defaultProps = {
+	isError: null,
+};
 CreateAppModal.propTypes = {
 	showModal: PropTypes.bool.isRequired,
 	handleModal: PropTypes.func.isRequired,
+	createSubscription: PropTypes.func.isRequired,
 	createdApp: PropTypes.object.isRequired,
 	resetApp: PropTypes.func.isRequired,
+	isLoading: PropTypes.bool.isRequired,
+	isError: PropTypes.any,
+	isSuccess: PropTypes.any.isRequired,
+	isUsingTrial: PropTypes.bool.isRequired,
+	isPaid: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ apps, appsMetrics, createdApp }) => ({
-	apps,
-	appsMetrics,
-	createdApp,
-});
+const mapStateToProps = (state) => {
+	const {
+ apps, appsMetrics, createdApp, $createAppSubscription,
+} = state;
+	return {
+		apps,
+		appsMetrics,
+		createdApp,
+		isLoading: get($createAppSubscription, 'isFetching'),
+		isError: get($createAppSubscription, 'error') || null,
+		isSuccess: get($createAppSubscription, 'success') || false,
+		isUsingTrial: get(state, '$getUserPlan.trial') || false,
+		isPaid: get(state, '$getUserPlan.isPaid') || false,
+	};
+};
 
 const mapDispatchToProps = dispatch => ({
 	handleCreateApp: options => dispatch(createApp(options)),
 	resetApp: () => dispatch(resetCreatedApp()),
+	createSubscription: (plan, appName) => dispatch(createAppSubscription(undefined, plan, appName)),
 });
 
 export default connect(

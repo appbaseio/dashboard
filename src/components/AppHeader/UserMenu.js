@@ -21,28 +21,29 @@ const userMenu = css`
 	`)};
 `;
 
-const menuItem = css`
+const userEmailDetail = css`
 	display: flex;
-	align-items: center;
-`;
-
-const link = css`
-	margin-right: 30px;
-	color: rgba(0, 0, 0, 0.65);
-	i {
-		margin-right: 4px;
+	flex-direction: column;
+	cursor: none;
+	h5,
+	h4 {
+		margin: 0;
 	}
-	${media.small(css`
-		display: none;
-	`)};
 `;
 
 const UserMenu = ({ user }) => {
 	const menu = (
-		<Menu>
-			<Menu.Item className={menuItem}>
-				<Icon type="edit" />
-				<Link to="/profile">{user.email}</Link>
+		<Menu style={{ width: 'auto' }}>
+			<Menu.Item className={userEmailDetail}>
+				<h5>Logged in as</h5>
+				<h4>{user.email}</h4>
+			</Menu.Item>
+			<Menu.Divider />
+			<Menu.Item>
+				<Link to="/profile">
+					<Icon style={{ marginRight: 8 }} type="setting" theme="outlined" />
+					Account Settings
+				</Link>
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item onClick={handleLogout}>
@@ -53,25 +54,15 @@ const UserMenu = ({ user }) => {
 	);
 
 	return (
-		<Row justify="space-between" align="middle">
-			<a
-				href="https://docs.appbase.io/javascript/quickstart.html"
-				className={link}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<Icon type="rocket" /> Docs
-			</a>
-			<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
-				<span style={{ cursor: 'pointer' }}>
-					<Avatar src={user.picture} />
-					&nbsp;&nbsp;
-					{user ? user.name : 'Loading...'}
-					&nbsp;&nbsp;
-					<Icon type="down" />
-				</span>
-			</Dropdown>
-		</Row>
+		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
+			<span style={{ cursor: 'pointer' }}>
+				<Avatar src={user.picture} />
+				&nbsp;&nbsp;
+				{user ? user.name : 'Loading...'}
+				&nbsp;&nbsp;
+				<Icon type="down" />
+			</span>
+		</Dropdown>
 	);
 };
 

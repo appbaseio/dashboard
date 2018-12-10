@@ -13,12 +13,13 @@ import { regions, regionsByPlan } from './utils/regions';
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'6.4.2',
+	'6.5.1',
+	'6.4.3',
 	'6.3.2',
 	'6.2.4',
 	'6.1.4',
 	'6.0.1',
-	'5.6.12',
+	'5.6.13',
 	'5.5.3',
 	'5.4.3',
 	'5.3.3',
@@ -148,6 +149,7 @@ export default class NewCluster extends Component {
 			logstash: false,
 			dejavu: true,
 			elasticsearchHQ: true,
+			arc: false,
 			mirage: false,
 			error: '',
 			deploymentError: '',
@@ -267,7 +269,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:2.0.0',
+					image: 'appbaseio/dejavu:2.0.5',
 					exposed_port: 1358,
 				},
 			];
@@ -293,6 +295,18 @@ export default class NewCluster extends Component {
 					name: 'elasticsearch-hq',
 					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
 					exposed_port: 5000,
+				},
+			];
+		}
+
+		if (this.state.arc) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'arc',
+					image: 'siddharthlatest/arc:0.0.1',
+					exposed_port: 8000,
 				},
 			];
 		}
@@ -380,8 +394,8 @@ export default class NewCluster extends Component {
 									isDisabled
 										? 'disabled'
 										: this.state.region === region
-											? 'active'
-											: ''
+										? 'active'
+										: ''
 								}
 							>
 								{regionValue.flag && (
@@ -412,8 +426,8 @@ export default class NewCluster extends Component {
 									isDisabled
 										? 'disabled'
 										: this.state.region === region
-											? 'active'
-											: ''
+										? 'active'
+										: ''
 								}
 							>
 								{regionValue.flag && (
@@ -472,27 +486,29 @@ export default class NewCluster extends Component {
 										padding: 30,
 									}}
 								>
-									<label htmlFor="gke">
-										<input
-											type="radio"
-											name="provider"
-											defaultChecked={this.state.provider === 'gke'}
-											id="gke"
-											onChange={() => this.setConfig('provider', 'gke')}
-										/>
-										Google
-									</label>
+									<Button
+										type={this.state.provider === 'gke' ? 'primary' : 'default'}
+										size="large"
+										css={{
+											height: 160,
+											marginRight: 20,
+											backgroundColor: this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
+										}}
+										onClick={() => this.setConfig('provider', 'gke')}
+									>
+										<img width="120" src="/static/images/clusters/google.png" alt="Google" />
+									</Button>
 
-									<label htmlFor="azure">
-										<input
-											type="radio"
-											name="provider"
-											defaultChecked={this.state.provider === 'azure'}
-											id="azure"
-											onChange={() => this.setConfig('provider', 'azure')}
-										/>
-										Azure
-									</label>
+									<Button
+										size="large"
+										css={{
+											height: 160,
+											backgroundColor: this.state.provider === 'azure' ? '#eaf5ff' : '#fff',
+										}}
+										onClick={() => this.setConfig('provider', 'azure')}
+									>
+										<img width="120" src="/static/images/clusters/azure.png" alt="Azure" />
+									</Button>
 								</div>
 							</div>
 
@@ -626,6 +642,16 @@ export default class NewCluster extends Component {
 									<div className={settingsItem}>
 										<h4>Add-ons</h4>
 										<div>
+											<label htmlFor="elasticsearch">
+												<input
+													type="checkbox"
+													defaultChecked={this.state.arc}
+													id="elasticsearch"
+													onChange={() => this.toggleConfig('arc')}
+												/>
+												Arc Middleware
+											</label>
+
 											<label htmlFor="dejavu">
 												<input
 													type="checkbox"

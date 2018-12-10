@@ -49,6 +49,33 @@ const card = css`
 	}
 `;
 
+const emailBtn = css`
+	margin: 4px 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	letter-spacing: 0.02rem;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	line-height: 2.45;
+	height: 50px;
+	border-radius: 6px;
+
+	i {
+		font-size: 18px;
+		position: relative;
+		top: 1px;
+	}
+`;
+
+const inputStyles = css`
+	margin: 5px 0;
+	letter-spacing: 0.02rem;
+	font-size: 15px;
+`;
+
 const githubBtn = css`
 	color: #fff;
 	background: rgb(22, 23, 26);
@@ -86,5 +113,5 @@ const gitlabBtn = css`
 `;
 
 export {
- container, card, githubBtn, googleBtn, gitlabBtn,
+ container, card, githubBtn, googleBtn, gitlabBtn, emailBtn, inputStyles,
 };

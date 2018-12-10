@@ -33,9 +33,9 @@ const onData = res => ({
 	),
 });
 
-const renderFilters = fields => {
+const renderFilters = (fields) => {
 	if (fields && fields.length) {
-		return fields.map(field => {
+		return fields.map((field) => {
 			switch (field) {
 				case 'genres': {
 					return (
@@ -96,15 +96,15 @@ const renderFilters = fields => {
 
 const getFields = (fields, suffix) => {
 	let newFields = [];
-	fields.forEach(item => {
-		suffix.forEach(str => {
+	fields.forEach((item) => {
+		suffix.forEach((str) => {
 			newFields = [...newFields, `${item}${str}`];
 		});
 	});
 	return newFields;
 };
 
-const getWeights = fields => {
+const getWeights = (fields) => {
 	const weights = {
 		original_title: 10,
 		'original_title.raw': 10,
