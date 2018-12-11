@@ -23,6 +23,8 @@ import {
 	updatePermission,
 	deleteApp,
 } from '../../batteries/modules/actions';
+import joyrideSteps from './joyrideSteps';
+import Walkthrough from '../../batteries/components/shared/Walkthrough';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 
@@ -190,6 +192,7 @@ class Credentials extends Component {
 		return (
 			<React.Fragment>
 				<Banner {...bannerMessagesCred[plan]} />
+				<Walkthrough component="Credentials" joyrideSteps={joyrideSteps} />
 				<Container>
 					<Card title="Credentials">
 						<Table
@@ -237,6 +240,7 @@ class Credentials extends Component {
 							onClick={() => this.showForm()}
 							size="large"
 							type="primary"
+							className="credentials-tutorial-1"
 						>
 							New Credentials
 						</Button>
