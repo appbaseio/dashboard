@@ -80,6 +80,15 @@ class Permission extends React.Component {
 
 	render() {
 		const { viewKey } = this.state;
+		const {
+			permissionInfo: { description },
+		} = this.props;
+		let tutorialClass = '';
+		if (description.toLowerCase().includes('admin')) {
+			tutorialClass = 'credentials-tutorial-4';
+		} else if (description.toLowerCase().includes('read')) {
+			tutorialClass = 'credentials-tutorial-3';
+		}
 		return (
 			<Flex css={main} alignItems="center">
 				<Flex justifyContent="space-between" alignItems="center" css={container}>
@@ -95,13 +104,17 @@ class Permission extends React.Component {
 						</Tooltip>
 						<CopyToClipboard text={this.key} onCopy={this.handleCopyCred}>
 							<Tooltip placement="topLeft" title="Copy To Clipboard">
-								<Button type="normal">
+								<Button type="normal" className={tutorialClass}>
 									<CopyIcon size={16} />
 								</Button>
 							</Tooltip>
 						</CopyToClipboard>
 						<Tooltip placement="topLeft" title="Edit credentials">
-							<Button onClick={this.handleEditCred} type="normal">
+							<Button
+								onClick={this.handleEditCred}
+								className="credentials-tutorial-2"
+								type="normal"
+							>
 								<EditIcon size={16} />
 							</Button>
 						</Tooltip>
