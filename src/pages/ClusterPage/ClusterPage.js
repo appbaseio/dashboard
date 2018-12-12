@@ -31,7 +31,9 @@ export default class ClusterPage extends Component {
 	}
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.label === plan);
+		const selectedPlan = Object.values(machineMarks[provider]).find(
+			item => item.label === plan,
+		);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
@@ -100,12 +102,16 @@ export default class ClusterPage extends Component {
 
 				<div>
 					<h4>Memory</h4>
-					<div>{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)} GB</div>
+					<div>
+						{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)} GB
+					</div>
 				</div>
 
 				<div>
 					<h4>Disk Size</h4>
-					<div>{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)} GB</div>
+					<div>
+						{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)} GB
+					</div>
 				</div>
 
 				<div>

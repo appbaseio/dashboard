@@ -23,8 +23,8 @@ import {
 	updatePermission,
 	deleteApp,
 } from '../../batteries/modules/actions';
-import joyrideSteps from './joyrideSteps';
-import Walkthrough from '../../batteries/components/shared/Walkthrough';
+// import joyrideSteps from './joyrideSteps';
+// import Walkthrough from '../../batteries/components/shared/Walkthrough';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 
@@ -192,7 +192,7 @@ class Credentials extends Component {
 		return (
 			<React.Fragment>
 				<Banner {...bannerMessagesCred[plan]} />
-				<Walkthrough component="Credentials" joyrideSteps={joyrideSteps} />
+				{/* <Walkthrough component="Credentials" joyrideSteps={joyrideSteps} /> */}
 				<Container>
 					<Card title="Credentials">
 						<Table
