@@ -81,7 +81,7 @@ class Dashboard extends Component {
 							Back to Dashboard
 						</Button>
 						<Button
-							href="mailto:info@appbase.io"
+							href="mailto:support@appbase.io"
 							target="_blank"
 							size="large"
 							type="danger"
