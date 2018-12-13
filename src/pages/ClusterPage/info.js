@@ -148,7 +148,7 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:2.0.5',
+					image: 'appbaseio/dejavu:3.0.0-alpha',
 					exposed_port: 1358,
 				},
 			];
@@ -162,7 +162,7 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.1',
+					image: 'siddharthlatest/arc:0.0.3',
 					exposed_port: 8000,
 				},
 			];
