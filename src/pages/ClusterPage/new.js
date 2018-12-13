@@ -269,7 +269,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:2.0.5',
+					image: 'appbaseio/dejavu:3.0.0-alpha',
 					exposed_port: 1358,
 				},
 			];
@@ -305,7 +305,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.1',
+					image: 'siddharthlatest/arc:0.0.3',
 					exposed_port: 8000,
 				},
 			];
@@ -492,22 +492,34 @@ export default class NewCluster extends Component {
 										css={{
 											height: 160,
 											marginRight: 20,
-											backgroundColor: this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
+											backgroundColor:
+												this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
 										}}
 										onClick={() => this.setConfig('provider', 'gke')}
 									>
-										<img width="120" src="/static/images/clusters/google.png" alt="Google" />
+										<img
+											width="120"
+											src="/static/images/clusters/google.png"
+											alt="Google"
+										/>
 									</Button>
 
 									<Button
 										size="large"
 										css={{
 											height: 160,
-											backgroundColor: this.state.provider === 'azure' ? '#eaf5ff' : '#fff',
+											backgroundColor:
+												this.state.provider === 'azure'
+													? '#eaf5ff'
+													: '#fff',
 										}}
 										onClick={() => this.setConfig('provider', 'azure')}
 									>
-										<img width="120" src="/static/images/clusters/azure.png" alt="Azure" />
+										<img
+											width="120"
+											src="/static/images/clusters/azure.png"
+											alt="Azure"
+										/>
 									</Button>
 								</div>
 							</div>
