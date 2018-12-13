@@ -47,7 +47,7 @@ export const machineMarks = {
 			pph: 0.17,
 		},
 		50: {
-			label: 'Production I',
+			label: 'Production-I',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -56,7 +56,7 @@ export const machineMarks = {
 			pph: 0.28,
 		},
 		75: {
-			label: 'Production II',
+			label: 'Production-II',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -65,7 +65,7 @@ export const machineMarks = {
 			pph: 0.55,
 		},
 		100: {
-			label: 'Production III',
+			label: 'Production-III',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -94,7 +94,7 @@ export const machineMarks = {
 			pph: 0.17,
 		},
 		50: {
-			label: 'Production I',
+			label: 'Production-I',
 			storage: 120,
 			memory: 3.8,
 			nodes: 3,
@@ -103,7 +103,7 @@ export const machineMarks = {
 			pph: 0.28,
 		},
 		75: {
-			label: 'Production II',
+			label: 'Production-II',
 			storage: 240,
 			memory: 7.6,
 			nodes: 3,
@@ -112,7 +112,7 @@ export const machineMarks = {
 			pph: 0.55,
 		},
 		100: {
-			label: 'Production III',
+			label: 'Production-III',
 			storage: 480,
 			memory: 15,
 			nodes: 3,
