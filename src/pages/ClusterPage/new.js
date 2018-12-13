@@ -81,7 +81,7 @@ export const machineMarks = {
 			memory: 4,
 			nodes: 1,
 			cost: 59,
-			machine: 'g1-small',
+			machine: 'n1-standard-1',
 			pph: 0.08,
 		},
 		25: {

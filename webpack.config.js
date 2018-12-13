@@ -8,8 +8,8 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/dist/',
-		filename: 'build.js',
-		chunkFilename: '[name].[contenthash].build.js',
+		filename: 'bundle.js',
+		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
 		? [

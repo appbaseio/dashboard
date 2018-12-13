@@ -42,8 +42,8 @@ export default class Clusters extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
-		const selectedPlan = Object.values(
-			machineMarks[this.state.cluster.provider || 'azure'],
+		const selectedPlan = (
+			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
 		).find(item => item.label === plan);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
@@ -97,9 +97,9 @@ export default class Clusters extends Component {
 		}));
 	};
 
-	hasAddon = (item, source) => !!source.addons.find(key => key.name === item);
+	hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
 
-	getAddon = (item, source) => source.addons.find(key => key.name === item);
+	getAddon = (item, source) => (source.addons || []).find(key => key.name === item);
 
 	includedInOriginal = (key) => {
 		const original = this.originalCluster.deployment;
@@ -477,7 +477,7 @@ export default class Clusters extends Component {
 										</div>
 
 										<div className="col">
-											{this.state.deployment.addons.map(key => this.renderClusterEndpoint(key))}
+											{(this.state.deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
 										</div>
 									</li>
 								)}
