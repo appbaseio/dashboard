@@ -81,7 +81,7 @@ export const machineMarks = {
 			memory: 4,
 			nodes: 1,
 			cost: 59,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.08,
 		},
 		25: {
@@ -90,7 +90,7 @@ export const machineMarks = {
 			memory: 3.8,
 			nodes: 2,
 			cost: 119,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.17,
 		},
 		50: {
@@ -99,7 +99,7 @@ export const machineMarks = {
 			memory: 3.8,
 			nodes: 3,
 			cost: 199,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
 		75: {
