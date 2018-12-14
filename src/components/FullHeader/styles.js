@@ -23,11 +23,13 @@ const header = css`
 
 	.row {
 		display: flex;
+		flex-grow: 1;
 		flex-direction: row;
 		align-items: center;
 	}
 
 	ul {
+		flex-grow: 1;
 		line-height: 56px;
 		border: 0;
 		margin: 0 30px;
