@@ -20,6 +20,7 @@ module.exports = {
 				}),
 		] // prettier-ignore
 		: [],
+	devtool: 'source-map',
 	module: {
 		rules: [
 			{
