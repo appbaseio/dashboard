@@ -47,7 +47,7 @@ export const machineMarks = {
 			pph: 0.17,
 		},
 		50: {
-			label: 'Production I',
+			label: 'Production-I',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -56,7 +56,7 @@ export const machineMarks = {
 			pph: 0.28,
 		},
 		75: {
-			label: 'Production II',
+			label: 'Production-II',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -65,7 +65,7 @@ export const machineMarks = {
 			pph: 0.55,
 		},
 		100: {
-			label: 'Production III',
+			label: 'Production-III',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -81,7 +81,7 @@ export const machineMarks = {
 			memory: 4,
 			nodes: 1,
 			cost: 59,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.08,
 		},
 		25: {
@@ -90,20 +90,20 @@ export const machineMarks = {
 			memory: 3.8,
 			nodes: 2,
 			cost: 119,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.17,
 		},
 		50: {
-			label: 'Production I',
+			label: 'Production-I',
 			storage: 120,
 			memory: 3.8,
 			nodes: 3,
 			cost: 199,
-			machine: 'n1-standard-1',
+			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
 		75: {
-			label: 'Production II',
+			label: 'Production-II',
 			storage: 240,
 			memory: 7.6,
 			nodes: 3,
@@ -112,7 +112,7 @@ export const machineMarks = {
 			pph: 0.55,
 		},
 		100: {
-			label: 'Production III',
+			label: 'Production-III',
 			storage: 480,
 			memory: 15,
 			nodes: 3,
@@ -269,7 +269,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:2.0.5',
+					image: 'appbaseio/dejavu:3.0.0-alpha',
 					exposed_port: 1358,
 				},
 			];
@@ -305,7 +305,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.1',
+					image: 'siddharthlatest/arc:0.0.5',
 					exposed_port: 8000,
 				},
 			];
@@ -492,22 +492,34 @@ export default class NewCluster extends Component {
 										css={{
 											height: 160,
 											marginRight: 20,
-											backgroundColor: this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
+											backgroundColor:
+												this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
 										}}
 										onClick={() => this.setConfig('provider', 'gke')}
 									>
-										<img width="120" src="/static/images/clusters/google.png" alt="Google" />
+										<img
+											width="120"
+											src="/static/images/clusters/google.png"
+											alt="Google"
+										/>
 									</Button>
 
 									<Button
 										size="large"
 										css={{
 											height: 160,
-											backgroundColor: this.state.provider === 'azure' ? '#eaf5ff' : '#fff',
+											backgroundColor:
+												this.state.provider === 'azure'
+													? '#eaf5ff'
+													: '#fff',
 										}}
 										onClick={() => this.setConfig('provider', 'azure')}
 									>
-										<img width="120" src="/static/images/clusters/azure.png" alt="Azure" />
+										<img
+											width="120"
+											src="/static/images/clusters/azure.png"
+											alt="Azure"
+										/>
 									</Button>
 								</div>
 							</div>

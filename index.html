@@ -1,62 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="shortcut icon" data-icon="favicon" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Dashboard | appbase.io</title>
 
-<head>
-	<meta charset="UTF-8">
-	<link rel="shortcut icon" data-icon="favicon" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Dashboard | appbase.io</title>
+		<link rel="shortcut icon" href="/static/images/favicon.ico" />
+		<link
+			href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+			rel="stylesheet"
+		/>
+		<style media="screen">
+			#help {
+				position: fixed;
+				bottom: 15px;
+				right: 15px;
+				display: inline;
+				z-index: 2;
+			}
+		</style>
+	</head>
 
-	<link rel="shortcut icon" href="/static/images/favicon.ico" />
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<style media="screen">
-		#help {
-			position: fixed;
-			bottom: 15px;
-			right: 15px;
-			display: inline;
-			z-index: 2;
-		}
+	<body>
+		<div id="root"></div>
+		<div id="help"></div>
+		<script src="/dist/bundle.js?v=nocache"></script>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54082612-12"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
 
-	</style>
-</head>
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
 
-<body>
-	<div id="root"></div>
-	<div id="help"></div>
-	<script src="/dist/bundle.js"></script>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54082612-12"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-
-		function gtag() {
-			dataLayer.push(arguments);
-		}
-		gtag('js', new Date());
-
-		gtag('config', 'UA-54082612-12');
-
-	</script>
-	<!-- Hotjar Tracking Code for appbase.io -->
-	<script>
-		(function (h, o, t, j, a, r) {
-			h.hj = h.hj || function () {
-				(h.hj.q = h.hj.q || []).push(arguments)
-			};
-			h._hjSettings = {
-				hjid: 22389,
-				hjsv: 6
-			};
-			a = o.getElementsByTagName('head')[0];
-			r = o.createElement('script');
-			r.async = 1;
-			r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-			a.appendChild(r);
-		})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-
-	</script>
-
-</body>
-
+			gtag('config', 'UA-54082612-12');
+		</script>
+		<!-- Hotjar Tracking Code for appbase.io -->
+		<script>
+			(function(h, o, t, j, a, r) {
+				h.hj =
+					h.hj ||
+					function() {
+						(h.hj.q = h.hj.q || []).push(arguments);
+					};
+				h._hjSettings = {
+					hjid: 22389,
+					hjsv: 6,
+				};
+				a = o.getElementsByTagName('head')[0];
+				r = o.createElement('script');
+				r.async = 1;
+				r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+				a.appendChild(r);
+			})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+		</script>
+	</body>
 </html>
