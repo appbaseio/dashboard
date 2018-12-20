@@ -3,17 +3,23 @@ import { Link } from 'react-router-dom';
 import {
  Row, Col, Icon, Button, Divider,
 } from 'antd';
+import Stripe from 'react-stripe-checkout';
 
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 
-import { getClusters } from './utils';
+import { getClusters, createSubscription } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
+
+// test key
+export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+// live key
+// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
@@ -61,6 +67,18 @@ export default class ClusterPage extends Component {
 					isLoading: false,
 				});
 			});
+	};
+
+	handleToken = async (clusterId, token) => {
+		try {
+			await createSubscription(clusterId, token);
+			this.setState({
+				isLoading: true,
+			});
+			this.initClusters();
+		} catch (e) {
+			console.log('error bro', e);
+		}
 	};
 
 	renderClusterRegion = (region, provider = 'azure') => {
@@ -119,11 +137,37 @@ export default class ClusterPage extends Component {
 					<div>{cluster.total_nodes}</div>
 				</div>
 
-				<div>
-					<Link to={`/clusters/${cluster.id}`}>
-						<Button type="primary">View Details</Button>
-					</Link>
-				</div>
+				{cluster.status === 'active' ? (
+					<div>
+						{cluster.trial || cluster.subscription_id ? (
+							<Link to={`/clusters/${cluster.id}`}>
+								<Button type="primary">View Details</Button>
+							</Link>
+						) : (
+							<div>
+								<p
+									css={{
+										fontSize: 12,
+										lineHeight: '18px',
+										color: '#999',
+										margin: '-20px 0 12px 0',
+									}}
+								>
+									Your regular payment is due for this cluster.
+								</p>
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={(cluster.plan_rate || 0) * 100}
+									token={token => this.handleToken(cluster.id, token)}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+								>
+									<Button>Pay now to access</Button>
+								</Stripe>
+							</div>
+						)}
+					</div>
+				) : <div />}
 			</div>
 		</li>
 	);

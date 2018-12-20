@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Modal, Button, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
@@ -16,7 +17,13 @@ import {
 	clusterEndpoint,
 	clusterButtons,
 } from './styles';
-import { getClusterData, deployCluster, deleteCluster } from './utils';
+import {
+	getClusterData,
+	deployCluster,
+	deleteCluster,
+	createSubscription,
+} from './utils';
+import { STRIPE_KEY } from './ClusterPage';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -35,6 +42,7 @@ export default class Clusters extends Component {
 			showError: false,
 			loadingError: false,
 		};
+		this.paymentButton = React.createRef();
 	}
 
 	componentDidMount() {
@@ -86,6 +94,12 @@ export default class Clusters extends Component {
 			.catch((e) => {
 				this.setState({
 					error: e,
+				}, () => {
+					if (this.props.location.search.startsWith('?subscribe=true')) {
+						if (this.paymentButton.current) {
+							this.paymentButton.current.buttonNode.click();
+						}
+					}
 				});
 			});
 	};
@@ -253,48 +267,85 @@ export default class Clusters extends Component {
 		return null;
 	};
 
-	renderErrorScreen = () => (
-		<Fragment>
-			<FullHeader cluster={this.props.match.params.id} />
-			<Container>
-				<section
-					className={clusterContainer}
-					style={{ textAlign: 'center', paddingTop: 40 }}
-				>
-					<article>
-						<Icon css={{ fontSize: 42 }} type="frown" theme="outlined" />
-						<h2>Some error occurred</h2>
-						<p>{this.state.error}</p>
-						<div style={{ marginTop: 30 }}>
-							<Link to="/clusters">
+	handleToken = async (clusterId, token) => {
+		try {
+			await createSubscription(clusterId, token);
+			this.init();
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	renderErrorScreen = () => {
+		const paymentRequired = this.state.error.toLowerCase().startsWith('payment');
+		const clusterId = this.props.match.params.id;
+		return (
+			<Fragment>
+				<FullHeader cluster={clusterId} />
+				<Container>
+					<section
+						className={clusterContainer}
+						style={{ textAlign: 'center', paddingTop: 40 }}
+					>
+						<article>
+							<Icon css={{ fontSize: 42 }} type="warning" />
+							<h2>{paymentRequired ? 'Payment Required' : 'Some error occurred'}</h2>
+							<p>
+								{paymentRequired
+									? 'Your regular payment is due for this cluster.'
+									: this.state.error}
+							</p>
+							<div style={{ marginTop: 30 }}>
+								<Link to="/clusters">
+									<Button
+										size="large"
+										icon="arrow-left"
+										css={{
+											marginRight: 12,
+										}}
+									>
+										Go Back
+									</Button>
+								</Link>
+
+								{paymentRequired ? (
+									<Stripe
+										name="Appbase.io Clusters"
+										amount={19900}
+										token={token => this.handleToken(clusterId, token)}
+										disabled={false}
+										stripeKey={STRIPE_KEY}
+									>
+										<Button
+											size="large"
+											ref={this.paymentButton}
+											css={{
+												marginRight: 12,
+											}}
+										>
+											Pay now to access
+										</Button>
+									</Stripe>
+								) : null}
+
 								<Button
-									size="large"
-									icon="arrow-left"
-									css={{
+									onClick={this.deleteCluster}
+									type="danger"
+									style={{
 										marginRight: 12,
 									}}
+									size="large"
+									icon="delete"
 								>
-									Go Back
+									Delete Cluster
 								</Button>
-							</Link>
-
-							<Button
-								onClick={this.deleteCluster}
-								type="danger"
-								style={{
-									marginRight: 12,
-								}}
-								size="large"
-								icon="delete"
-							>
-								Delete Cluster
-							</Button>
-						</div>
-					</article>
-				</section>
-			</Container>
-		</Fragment>
-	);
+							</div>
+						</article>
+					</section>
+				</Container>
+			</Fragment>
+		);
+	};
 
 	render() {
 		const vcenter = {
