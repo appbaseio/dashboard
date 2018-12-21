@@ -48,14 +48,7 @@ const AppCard = ({
 			<Icon type="ellipsis" theme="outlined" />
 		</div>
 
-		{data && data[appName] ? (
-			<ActionButtons
-				appName={appName}
-				appId={appId}
-				permissions={permissions}
-				shared={shared}
-			/>
-		) : null}
+		<ActionButtons appName={appName} appId={appId} permissions={permissions} shared={shared} />
 	</Card>
 );
 
