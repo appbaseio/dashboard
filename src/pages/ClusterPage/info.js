@@ -90,19 +90,22 @@ export default class Clusters extends Component {
 						loadingError: true,
 					});
 				}
+				this.triggerPayment();
 			})
 			.catch((e) => {
 				this.setState({
 					error: e,
-				}, () => {
-					if (this.props.location.search.startsWith('?subscribe=true')) {
-						if (this.paymentButton.current) {
-							this.paymentButton.current.buttonNode.click();
-						}
-					}
-				});
+				}, this.triggerPayment);
 			});
 	};
+
+	triggerPayment = () => {
+		if (this.props.location.search.startsWith('?subscribe=true')) {
+			if (this.paymentButton.current) {
+				this.paymentButton.current.buttonNode.click();
+			}
+		}
+	}
 
 	toggleConfig = (type) => {
 		this.setState(state => ({
@@ -669,14 +672,39 @@ export default class Clusters extends Component {
 										Delete Cluster
 									</Button>
 
-									<Button
-										size="large"
-										icon="save"
-										type="primary"
-										onClick={this.saveClusterSettings}
-									>
-										Save Cluster Settings
-									</Button>
+									<div>
+										{
+											this.props.location.search.startsWith('?subscribe=true')
+												? (
+													<Stripe
+														name="Appbase.io Clusters"
+														amount={19900}
+														token={token => this.handleToken(this.props.match.params.id, token)}
+														disabled={false}
+														stripeKey={STRIPE_KEY}
+													>
+														<Button
+															size="large"
+															ref={this.paymentButton}
+															css={{
+																marginRight: 12,
+															}}
+														>
+															Pay now
+														</Button>
+													</Stripe>
+												)
+												: null
+										}
+										<Button
+											size="large"
+											icon="save"
+											type="primary"
+											onClick={this.saveClusterSettings}
+										>
+											Save Cluster Settings
+										</Button>
+									</div>
 								</div>
 							)}
 						</article>
