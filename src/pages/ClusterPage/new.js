@@ -449,7 +449,7 @@ export default class NewCluster extends Component {
 		const { provider } = this.state;
 		return (
 			<Fragment>
-				<FullHeader />
+				<FullHeader isCluster />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal

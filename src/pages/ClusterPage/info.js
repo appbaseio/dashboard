@@ -400,7 +400,7 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader cluster={this.props.match.params.id} />
+				<FullHeader isCluster cluster={this.props.match.params.id} />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal
