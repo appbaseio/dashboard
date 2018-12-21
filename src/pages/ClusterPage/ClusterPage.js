@@ -54,7 +54,7 @@ export default class ClusterPage extends Component {
 				});
 
 				clusters.every((cluster) => {
-					if (cluster.status === 'in progress') {
+					if (cluster.status.endsWith('in progress')) {
 						setTimeout(this.initClusters, 30000);
 						return false;
 					}
@@ -139,7 +139,7 @@ export default class ClusterPage extends Component {
 					<div>{cluster.total_nodes}</div>
 				</div>
 
-				{cluster.status === 'active' ? (
+				{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
 					<div>
 						{cluster.trial || cluster.subscription_id ? (
 							<Link to={`/clusters/${cluster.id}`}>

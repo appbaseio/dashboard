@@ -82,7 +82,7 @@ export default class Clusters extends Component {
 						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
 					});
 
-					if (cluster.status === 'in progress') {
+					if (cluster.status === 'deployments in progress') {
 						setTimeout(this.init, 30000);
 					}
 				} else {
@@ -470,7 +470,7 @@ export default class Clusters extends Component {
 									</div>
 								</li>
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Elasticsearch</h3>
@@ -507,7 +507,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Dashboard</h3>
@@ -520,7 +520,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Add-ons</h3>
@@ -533,7 +533,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Edit Cluster Settings</h3>
@@ -653,7 +653,7 @@ export default class Clusters extends Component {
 								)}
 							</ul>
 
-							{this.state.cluster.status === 'in progress' ? (
+							{this.state.cluster.status === 'deployments in progress' ? (
 								<p style={{ textAlign: 'center' }}>
 									Deployment is in progress. Please wait.
 								</p>
