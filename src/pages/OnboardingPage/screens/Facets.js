@@ -96,7 +96,7 @@ export default class Search extends Component {
 								sorting functionalites.
 							</p>
 							<p>
-								We will start by letting you set some
+								We will start by letting you set some&nbsp;
 								<strong>Aggregation</strong> fields.
 							</p>
 						</header>
@@ -106,18 +106,18 @@ export default class Search extends Component {
 
 				{this.props.facetFields.length ? this.renderSearchApp() : null}
 
-				{/* <Footer
+				<Footer
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					disabled={!this.props.facetFields.length}
-				/> */}
-				<Footer
+				/>
+				{/* <Footer
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					disabled={!this.props.facetFields.length}
 					label="Finish"
 					app={this.props.app}
-				/>
+				/> */}
 			</div>
 		);
 	}
