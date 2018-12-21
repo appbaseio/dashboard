@@ -30,6 +30,7 @@ export const machineMarks = {
 	azure: {
 		0: {
 			label: 'Sandbox',
+			plan: 'sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -39,6 +40,7 @@ export const machineMarks = {
 		},
 		25: {
 			label: 'Hobby',
+			plan: 'hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -48,6 +50,7 @@ export const machineMarks = {
 		},
 		50: {
 			label: 'Production-I',
+			plan: 'production-1',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -57,6 +60,7 @@ export const machineMarks = {
 		},
 		75: {
 			label: 'Production-II',
+			plan: 'production-2',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -66,6 +70,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
+			plan: 'production-3',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -77,6 +82,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
+			plan: 'sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -86,6 +92,7 @@ export const machineMarks = {
 		},
 		25: {
 			label: 'Hobby',
+			plan: 'hobby',
 			storage: 60,
 			memory: 3.8,
 			nodes: 2,
@@ -95,6 +102,7 @@ export const machineMarks = {
 		},
 		50: {
 			label: 'Production-I',
+			plan: 'production-1',
 			storage: 120,
 			memory: 3.8,
 			nodes: 3,
@@ -104,6 +112,7 @@ export const machineMarks = {
 		},
 		75: {
 			label: 'Production-II',
+			plan: 'production-2',
 			storage: 240,
 			memory: 7.6,
 			nodes: 3,
@@ -113,6 +122,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
+			plan: 'production-3',
 			storage: 480,
 			memory: 15,
 			nodes: 3,
@@ -142,7 +152,7 @@ export default class NewCluster extends Component {
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: machineMarks[provider][0].label,
+			pricing_plan: machineMarks[provider][0].plan,
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
@@ -167,7 +177,7 @@ export default class NewCluster extends Component {
 			);
 			// eslint-disable-next-line
 			this.setState({
-				pricing_plan: machineMarks[provider][currentMachine].label,
+				pricing_plan: machineMarks[provider][currentMachine].plan,
 				vm_size: machineMarks[provider][currentMachine].machine,
 				region: '',
 			});
@@ -183,7 +193,7 @@ export default class NewCluster extends Component {
 	setPricing = (plan) => {
 		this.setState({
 			vm_size: plan.machine,
-			pricing_plan: plan.label,
+			pricing_plan: plan.plan,
 		});
 	};
 
@@ -229,7 +239,7 @@ export default class NewCluster extends Component {
 		}
 
 		const selectedMachine = Object.values(machineMarks[this.state.provider]).find(
-			item => item.label === this.state.pricing_plan,
+			item => item.plan === this.state.pricing_plan,
 		);
 
 		const body = {
