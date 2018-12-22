@@ -38,9 +38,8 @@ export default class ClusterPage extends Component {
 
 	getFromPricing = (plan, key, provider = 'azure') => {
 		const selectedPlan = Object.values(machineMarks[provider]).find(
-			item => item.label === plan,
+			item => item.plan === plan,
 		);
-
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 

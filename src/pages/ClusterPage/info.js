@@ -52,7 +52,7 @@ export default class Clusters extends Component {
 	getFromPricing = (plan, key) => {
 		const selectedPlan = (
 			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
-		).find(item => item.label === plan);
+		).find(item => item.plan === plan);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
