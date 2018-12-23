@@ -3,7 +3,7 @@ import {
  Layout, Menu, Tag, Icon, Button, Row,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import { object, string } from 'prop-types';
+import { object, string, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -52,11 +52,13 @@ const link = css`
 `;
 
 const FullHeader = ({
- user, cluster, isUsingTrial, daysLeft,
+ user, cluster, isUsingTrial, daysLeft, currentApp, isCluster,
 }) => (
 	<Header className={headerStyles}>
 		<div className="row">
-			<Logo />
+			<Link to="/">
+				<Logo />
+			</Link>
 			<Menu
 				mode="horizontal"
 				className="options"
@@ -82,16 +84,18 @@ const FullHeader = ({
 			</Menu>
 		</div>
 		<Row justify="space-between" align="middle">
-			{isUsingTrial && (
-				<Button css={trialBtn} type="danger" href="billing">
-					<span css={trialText}>
-						{daysLeft > 0
-							? `Trial expires in ${daysLeft} ${
-									daysLeft > 1 ? 'days' : 'day'
-							  }. Upgrade now`
-							: 'Trial expired. Upgrade now'}
-					</span>
-				</Button>
+			{isUsingTrial && !isCluster && (
+				<Link to={`/app/${currentApp}/billing`}>
+					<Button css={trialBtn} type="danger">
+						<span css={trialText}>
+							{daysLeft > 0
+								? `Trial expires in ${daysLeft} ${
+										daysLeft > 1 ? 'days' : 'day'
+								  }. Upgrade now`
+								: 'Trial expired. Upgrade now'}
+						</span>
+					</Button>
+				</Link>
 			)}
 			<a
 				href="https://docs.appbase.io/javascript/quickstart.html"
@@ -114,18 +118,29 @@ const FullHeader = ({
 
 FullHeader.defaultProps = {
 	cluster: '',
+	isCluster: false,
 };
 
 FullHeader.propTypes = {
 	user: object.isRequired,
 	cluster: string,
+	currentApp: string.isRequired,
+	isCluster: bool,
 };
 
-const mapStateToProps = state => ({
-	user: state.user.data,
-	isUsingTrial: get(state, '$getUserPlan.trial') || false,
-	daysLeft: get(state, '$getUserPlan.daysLeft', 0),
-});
+const mapStateToProps = (state) => {
+	let currentApp = state.apps ? Object.keys(state.apps)[0] : '';
+	const storedApp = get(state, '$getCurrentApp.name');
+	if (storedApp) {
+		currentApp = storedApp;
+	}
+	return {
+		user: state.user.data,
+		isUsingTrial: get(state, '$getUserPlan.trial') || false,
+		daysLeft: get(state, '$getUserPlan.daysLeft', 0),
+		currentApp,
+	};
+};
 
 const mapDispatchToProps = dispatch => ({
 	getPlan: () => dispatch(() => getUserPlan()),

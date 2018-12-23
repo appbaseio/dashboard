@@ -13,13 +13,13 @@ import { regions, regionsByPlan } from './utils/regions';
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'6.5.1',
+	'6.5.4',
 	'6.4.3',
 	'6.3.2',
 	'6.2.4',
 	'6.1.4',
 	'6.0.1',
-	'5.6.13',
+	'5.6.14',
 	'5.5.3',
 	'5.4.3',
 	'5.3.3',
@@ -30,6 +30,7 @@ export const machineMarks = {
 	azure: {
 		0: {
 			label: 'Sandbox',
+			plan: 'sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -39,6 +40,7 @@ export const machineMarks = {
 		},
 		25: {
 			label: 'Hobby',
+			plan: 'hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -48,6 +50,7 @@ export const machineMarks = {
 		},
 		50: {
 			label: 'Production-I',
+			plan: 'production-1',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -57,6 +60,7 @@ export const machineMarks = {
 		},
 		75: {
 			label: 'Production-II',
+			plan: 'production-2',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -66,6 +70,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
+			plan: 'production-3',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -77,6 +82,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
+			plan: 'sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -86,6 +92,7 @@ export const machineMarks = {
 		},
 		25: {
 			label: 'Hobby',
+			plan: 'hobby',
 			storage: 60,
 			memory: 3.8,
 			nodes: 2,
@@ -95,6 +102,7 @@ export const machineMarks = {
 		},
 		50: {
 			label: 'Production-I',
+			plan: 'production-1',
 			storage: 120,
 			memory: 3.8,
 			nodes: 3,
@@ -104,6 +112,7 @@ export const machineMarks = {
 		},
 		75: {
 			label: 'Production-II',
+			plan: 'production-2',
 			storage: 240,
 			memory: 7.6,
 			nodes: 3,
@@ -113,6 +122,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
+			plan: 'production-3',
 			storage: 480,
 			memory: 15,
 			nodes: 3,
@@ -142,7 +152,7 @@ export default class NewCluster extends Component {
 		this.state = {
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: machineMarks[provider][0].label,
+			pricing_plan: machineMarks[provider][0].plan,
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
@@ -167,7 +177,7 @@ export default class NewCluster extends Component {
 			);
 			// eslint-disable-next-line
 			this.setState({
-				pricing_plan: machineMarks[provider][currentMachine].label,
+				pricing_plan: machineMarks[provider][currentMachine].plan,
 				vm_size: machineMarks[provider][currentMachine].machine,
 				region: '',
 			});
@@ -183,7 +193,7 @@ export default class NewCluster extends Component {
 	setPricing = (plan) => {
 		this.setState({
 			vm_size: plan.machine,
-			pricing_plan: plan.label,
+			pricing_plan: plan.plan,
 		});
 	};
 
@@ -229,7 +239,7 @@ export default class NewCluster extends Component {
 		}
 
 		const selectedMachine = Object.values(machineMarks[this.state.provider]).find(
-			item => item.label === this.state.pricing_plan,
+			item => item.plan === this.state.pricing_plan,
 		);
 
 		const body = {
@@ -305,7 +315,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.5',
+					image: 'siddharthlatest/arc:0.0.6',
 					exposed_port: 8000,
 				},
 			];
@@ -449,7 +459,7 @@ export default class NewCluster extends Component {
 		const { provider } = this.state;
 		return (
 			<Fragment>
-				<FullHeader />
+				<FullHeader isCluster />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal

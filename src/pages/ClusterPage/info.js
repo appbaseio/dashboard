@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Modal, Button, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
@@ -16,7 +17,13 @@ import {
 	clusterEndpoint,
 	clusterButtons,
 } from './styles';
-import { getClusterData, deployCluster, deleteCluster } from './utils';
+import {
+	getClusterData,
+	deployCluster,
+	deleteCluster,
+	createSubscription,
+} from './utils';
+import { STRIPE_KEY } from './ClusterPage';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -35,6 +42,7 @@ export default class Clusters extends Component {
 			showError: false,
 			loadingError: false,
 		};
+		this.paymentButton = React.createRef();
 	}
 
 	componentDidMount() {
@@ -44,7 +52,7 @@ export default class Clusters extends Component {
 	getFromPricing = (plan, key) => {
 		const selectedPlan = (
 			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
-		).find(item => item.label === plan);
+		).find(item => item.plan === plan);
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
@@ -61,6 +69,7 @@ export default class Clusters extends Component {
 				this.originalCluster = res;
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
+					const arcData = this.getAddon('arc', deployment);
 					this.setState({
 						cluster,
 						deployment,
@@ -70,11 +79,11 @@ export default class Clusters extends Component {
 							: false,
 						mirage: this.hasAddon('mirage', deployment),
 						dejavu: this.hasAddon('dejavu', deployment),
-						arc: this.hasAddon('arc', deployment),
+						arc: arcData && arcData.url.startsWith('https://'),
 						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
 					});
 
-					if (cluster.status === 'in progress') {
+					if (cluster.status === 'deployments in progress') {
 						setTimeout(this.init, 30000);
 					}
 				} else {
@@ -82,13 +91,22 @@ export default class Clusters extends Component {
 						loadingError: true,
 					});
 				}
+				this.triggerPayment();
 			})
 			.catch((e) => {
 				this.setState({
 					error: e,
-				});
+				}, this.triggerPayment);
 			});
 	};
+
+	triggerPayment = () => {
+		if (this.props.location.search.startsWith('?subscribe=true')) {
+			if (this.paymentButton.current) {
+				this.paymentButton.current.buttonNode.click();
+			}
+		}
+	}
 
 	toggleConfig = (type) => {
 		this.setState(state => ({
@@ -162,7 +180,7 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.5',
+					image: 'siddharthlatest/arc:0.0.6',
 					exposed_port: 8000,
 				},
 			];
@@ -253,47 +271,108 @@ export default class Clusters extends Component {
 		return null;
 	};
 
-	renderErrorScreen = () => (
-		<Fragment>
-			<FullHeader cluster={this.props.match.params.id} />
-			<Container>
-				<section
-					className={clusterContainer}
-					style={{ textAlign: 'center', paddingTop: 40 }}
-				>
-					<article>
-						<Icon css={{ fontSize: 42 }} type="frown" theme="outlined" />
-						<h2>Some error occurred</h2>
-						<p>{this.state.error}</p>
-						<div style={{ marginTop: 30 }}>
-							<Link to="/clusters">
+	handleToken = async (clusterId, token) => {
+		try {
+			await createSubscription(clusterId, token);
+			this.init();
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	renderErrorScreen = () => {
+		const paymentRequired = this.state.error.toLowerCase().startsWith('payment');
+		const clusterId = this.props.match.params.id;
+		return (
+			<Fragment>
+				<FullHeader cluster={clusterId} />
+				<Container>
+					<section
+						className={clusterContainer}
+						style={{ textAlign: 'center', paddingTop: 40 }}
+					>
+						<article>
+							<Icon css={{ fontSize: 42 }} type="warning" />
+							<h2>{paymentRequired ? 'Payment Required' : 'Some error occurred'}</h2>
+							<p>
+								{paymentRequired
+									? 'Your regular payment is due for this cluster.'
+									: this.state.error}
+							</p>
+							<div style={{ marginTop: 30 }}>
+								<Link to="/clusters">
+									<Button
+										size="large"
+										icon="arrow-left"
+										css={{
+											marginRight: 12,
+										}}
+									>
+										Go Back
+									</Button>
+								</Link>
+
+								{paymentRequired ? (
+									<Stripe
+										name="Appbase.io Clusters"
+										amount={(this.state.cluster.plan_rate || 0) * 100}
+										token={token => this.handleToken(clusterId, token)}
+										disabled={false}
+										stripeKey={STRIPE_KEY}
+									>
+										<Button
+											size="large"
+											ref={this.paymentButton}
+											css={{
+												marginRight: 12,
+											}}
+										>
+											Pay now to access
+										</Button>
+									</Stripe>
+								) : null}
+
 								<Button
-									size="large"
-									icon="arrow-left"
-									css={{
+									onClick={this.deleteCluster}
+									type="danger"
+									style={{
 										marginRight: 12,
 									}}
+									size="large"
+									icon="delete"
 								>
-									Go Back
+									Delete Cluster
 								</Button>
-							</Link>
+							</div>
+						</article>
+					</section>
+				</Container>
+			</Fragment>
+		);
+	};
 
-							<Button
-								onClick={this.deleteCluster}
-								type="danger"
-								style={{
-									marginRight: 12,
-								}}
-								size="large"
-								icon="delete"
-							>
-								Delete Cluster
-							</Button>
-						</div>
-					</article>
-				</section>
-			</Container>
-		</Fragment>
+	renderClusterAbsentActionButtons = () => (
+		<div css={{ marginTop: 20, textAlign: 'center' }}>
+			<Button
+				size="large"
+				onClick={() => this.props.history.push('/clusters')}
+				icon="arrow-left"
+			>
+				Go Back
+			</Button>
+
+			<Button
+				size="large"
+				onClick={this.deleteCluster}
+				type="danger"
+				css={{
+					marginLeft: 12,
+				}}
+				icon="delete"
+			>
+				Delete Cluster
+			</Button>
+		</div>
 	);
 
 	render() {
@@ -320,27 +399,7 @@ export default class Clusters extends Component {
 						Cluster status isn{"'"}t available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes live.
-						<div style={{ marginTop: 20 }}>
-							<Button
-								size="large"
-								onClick={() => this.props.history.push('/clusters')}
-							>
-								<i className="fas fa-arrow-left" />
-								&nbsp; &nbsp; Go Back
-							</Button>
-
-							<Button
-								size="large"
-								onClick={this.deleteCluster}
-								type="danger"
-								style={{
-									marginRight: 12,
-								}}
-								icon="delete"
-							>
-								Delete Cluster
-							</Button>
-						</div>
+						{this.renderClusterAbsentActionButtons()}
 					</div>
 				);
 			}
@@ -349,7 +408,7 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader cluster={this.props.match.params.id} />
+				<FullHeader isCluster cluster={this.props.match.params.id} />
 				<Container>
 					<section className={clusterContainer}>
 						<Modal
@@ -419,7 +478,7 @@ export default class Clusters extends Component {
 									</div>
 								</li>
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Elasticsearch</h3>
@@ -456,7 +515,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Dashboard</h3>
@@ -469,7 +528,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Add-ons</h3>
@@ -482,7 +541,7 @@ export default class Clusters extends Component {
 									</li>
 								)}
 
-								{this.state.cluster.status === 'in progress' ? null : (
+								{this.state.cluster.status === 'deployments in progress' ? null : (
 									<li className={card}>
 										<div className="col light">
 											<h3>Edit Cluster Settings</h3>
@@ -602,10 +661,13 @@ export default class Clusters extends Component {
 								)}
 							</ul>
 
-							{this.state.cluster.status === 'in progress' ? (
-								<p style={{ textAlign: 'center' }}>
-									Deployment is in progress. Please wait.
-								</p>
+							{this.state.cluster.status === 'deployments in progress' ? (
+								<div>
+									<p style={{ textAlign: 'center' }}>
+										Deployment is in progress. Please wait.
+									</p>
+									{this.renderClusterAbsentActionButtons()}
+								</div>
 							) : (
 								<div className={clusterButtons}>
 									<Button
@@ -618,14 +680,39 @@ export default class Clusters extends Component {
 										Delete Cluster
 									</Button>
 
-									<Button
-										size="large"
-										icon="save"
-										type="primary"
-										onClick={this.saveClusterSettings}
-									>
-										Save Cluster Settings
-									</Button>
+									<div>
+										{
+											this.props.location.search.startsWith('?subscribe=true')
+												? (
+													<Stripe
+														name="Appbase.io Clusters"
+															amount={(this.state.cluster.plan_rate || 0) * 100}
+														token={token => this.handleToken(this.props.match.params.id, token)}
+														disabled={false}
+														stripeKey={STRIPE_KEY}
+													>
+														<Button
+															size="large"
+															ref={this.paymentButton}
+															css={{
+																marginRight: 12,
+															}}
+														>
+															Pay now
+														</Button>
+													</Stripe>
+												)
+												: null
+										}
+										<Button
+											size="large"
+											icon="save"
+											type="primary"
+											onClick={this.saveClusterSettings}
+										>
+											Save Cluster Settings
+										</Button>
+									</div>
 								</div>
 							)}
 						</article>

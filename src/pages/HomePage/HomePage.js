@@ -91,7 +91,7 @@ class HomePage extends Component {
 		return (
 			<Dropdown overlay={menu} trigger={['click']}>
 				<Button>
-					Sort by {selectedOption.label} <Icon type="down" />
+					{`Sort by ${selectedOption.label}`} <Icon type="down" />
 				</Button>
 			</Dropdown>
 		);

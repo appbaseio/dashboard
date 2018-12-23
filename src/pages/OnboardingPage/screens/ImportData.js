@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, notification } from 'antd';
+import parser from 'url-parser-lite';
 
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
@@ -218,6 +219,17 @@ export default class Introduction extends Component {
 	render() {
 		if (this.state.layout === 0) return this.renderImportContent();
 
+		const { url } = this.state;
+		let iframeURL = null;
+		if (url) {
+			const config = JSON.parse(url);
+			const { protocol, host, auth } = parser(config.url);
+			const dejavuAddress = `${protocol}://${auth}@${host}`;
+			iframeURL = `https://dejavu.appbase.io/?appname=${
+				config.appname
+			}&url=${dejavuAddress}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
+		}
+
 		return (
 			<div>
 				<div className="wrapper">
@@ -239,16 +251,14 @@ export default class Introduction extends Component {
 						)}
 					</div>
 				</div>
-				{this.state.url ? (
+				{iframeURL ? (
 					<div>
 						<iframe
-							src={`https://opensource.appbase.io/dejavu/live/#?app=${
-								this.state.url
-							}&hf=false&subscribe=false&sidebar=false`}
 							height="600px"
 							width="100%"
-							frameBorder="0"
 							title="dejavu"
+							src={iframeURL}
+							frameBorder="0"
 							style={{ marginTop: '-10px' }}
 							onLoad={this.hideLoader}
 						/>

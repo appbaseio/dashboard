@@ -10310,6 +10310,7 @@ url-parse@^1.1.8, url-parse@^1.4.3:
 url-parser-lite@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/url-parser-lite/-/url-parser-lite-0.1.0.tgz#4679720fd7448d42357d1c8c0a6ece95174e864e"
+  integrity sha512-k8eUA7I5qfH6c1ZI9CvdHEk+YH1KroX2ry+FF9k6yJBl7AmDWen2WI+xNzbCBAek6JEvgPBoHub4v8aZIM7Jqw==
 
 url-search-params@^0.10.0:
   version "0.10.2"

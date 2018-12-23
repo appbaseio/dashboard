@@ -87,6 +87,7 @@
 		"redux-saga": "^0.16.0",
 		"redux-thunk": "^2.3.0",
 		"reselect": "^3.0.1",
-		"topojson-client": "^3.0.0"
+		"topojson-client": "^3.0.0",
+		"url-parser-lite": "^0.1.0"
 	}
 }

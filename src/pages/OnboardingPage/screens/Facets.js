@@ -96,7 +96,7 @@ export default class Search extends Component {
 								sorting functionalites.
 							</p>
 							<p>
-								We will start by letting you set some
+								We will start by letting you set some&nbsp;
 								<strong>Aggregation</strong> fields.
 							</p>
 						</header>
