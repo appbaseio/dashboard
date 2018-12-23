@@ -37,9 +37,7 @@ export default class ClusterPage extends Component {
 	}
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(
-			item => item.plan === plan,
-		);
+		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.plan === plan);
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
@@ -168,7 +166,9 @@ export default class ClusterPage extends Component {
 							</div>
 						)}
 					</div>
-				) : <div />}
+				) : (
+					<div />
+				)}
 			</div>
 		</li>
 	);
@@ -194,10 +194,11 @@ export default class ClusterPage extends Component {
 
 		const { isLoading, clustersAvailable, clusters } = this.state;
 
-		const deletedClusters = clusters.filter(cluster => cluster.status === 'deleted');
+		const deleteStatus = ['deleted', 'failed'];
+		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
 		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
 		const clustersInProgress = clusters.filter(
-			cluster => cluster.status !== 'deleted' && cluster.status !== 'active',
+			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
 		);
 
 		if (isLoading) {

@@ -69,6 +69,7 @@ export default class Clusters extends Component {
 				this.originalCluster = res;
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
+					const arcData = this.getAddon('arc', deployment);
 					this.setState({
 						cluster,
 						deployment,
@@ -78,7 +79,7 @@ export default class Clusters extends Component {
 							: false,
 						mirage: this.hasAddon('mirage', deployment),
 						dejavu: this.hasAddon('dejavu', deployment),
-						arc: this.hasAddon('arc', deployment),
+						arc: arcData && arcData.url.startsWith('https://'),
 						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
 					});
 
@@ -350,6 +351,30 @@ export default class Clusters extends Component {
 		);
 	};
 
+	renderClusterAbsentActionButtons = () => (
+		<div css={{ marginTop: 20, textAlign: 'center' }}>
+			<Button
+				size="large"
+				onClick={() => this.props.history.push('/clusters')}
+				icon="arrow-left"
+			>
+				Go Back
+			</Button>
+
+			<Button
+				size="large"
+				onClick={this.deleteCluster}
+				type="danger"
+				css={{
+					marginLeft: 12,
+				}}
+				icon="delete"
+			>
+				Delete Cluster
+			</Button>
+		</div>
+	);
+
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -374,27 +399,7 @@ export default class Clusters extends Component {
 						Cluster status isn{"'"}t available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes live.
-						<div style={{ marginTop: 20 }}>
-							<Button
-								size="large"
-								onClick={() => this.props.history.push('/clusters')}
-							>
-								<i className="fas fa-arrow-left" />
-								&nbsp; &nbsp; Go Back
-							</Button>
-
-							<Button
-								size="large"
-								onClick={this.deleteCluster}
-								type="danger"
-								style={{
-									marginRight: 12,
-								}}
-								icon="delete"
-							>
-								Delete Cluster
-							</Button>
-						</div>
+						{this.renderClusterAbsentActionButtons()}
 					</div>
 				);
 			}
@@ -657,9 +662,12 @@ export default class Clusters extends Component {
 							</ul>
 
 							{this.state.cluster.status === 'deployments in progress' ? (
-								<p style={{ textAlign: 'center' }}>
-									Deployment is in progress. Please wait.
-								</p>
+								<div>
+									<p style={{ textAlign: 'center' }}>
+										Deployment is in progress. Please wait.
+									</p>
+									{this.renderClusterAbsentActionButtons()}
+								</div>
 							) : (
 								<div className={clusterButtons}>
 									<Button
