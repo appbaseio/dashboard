@@ -180,7 +180,7 @@ export default class Clusters extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.5',
+					image: 'siddharthlatest/arc:0.0.6',
 					exposed_port: 8000,
 				},
 			];
