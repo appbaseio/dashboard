@@ -109,7 +109,9 @@ export default class ClusterPage extends Component {
 
 				<div>
 					<h4>Pricing Plan</h4>
-					<div>{cluster.pricing_plan}</div>
+					<div>
+						{cluster.pricing_plan}
+					</div>
 				</div>
 
 				<div>

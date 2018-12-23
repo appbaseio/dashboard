@@ -315,7 +315,7 @@ export default class Clusters extends Component {
 								{paymentRequired ? (
 									<Stripe
 										name="Appbase.io Clusters"
-										amount={19900}
+										amount={(this.state.cluster.plan_rate || 0) * 100}
 										token={token => this.handleToken(clusterId, token)}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
@@ -686,7 +686,7 @@ export default class Clusters extends Component {
 												? (
 													<Stripe
 														name="Appbase.io Clusters"
-														amount={19900}
+															amount={(this.state.cluster.plan_rate || 0) * 100}
 														token={token => this.handleToken(this.props.match.params.id, token)}
 														disabled={false}
 														stripeKey={STRIPE_KEY}
