@@ -11,7 +11,7 @@ import {
 import appbaseHelpers from '../utils/appbaseHelpers';
 
 const onData = res => ({
-	image: `https://image.tmdb.org/t/p/w92${res.poster_path}`,
+	image: `${res.poster_path}`,
 	title: res.original_title,
 	description: (
 		<div>
