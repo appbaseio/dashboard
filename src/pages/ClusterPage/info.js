@@ -9,6 +9,7 @@ import FullHeader from '../../components/FullHeader';
 import CredentialsBox from './components/CredentialsBox';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
+import Overlay from './components/Overlay';
 import {
 	clusterContainer,
 	clustersList,
@@ -41,6 +42,7 @@ export default class Clusters extends Component {
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
+			showOverlay: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -108,7 +110,14 @@ export default class Clusters extends Component {
 				this.paymentTriggered = true;
 			}
 		}
-	}
+	};
+
+	toggleOverlay = () => {
+		this.setState(state => ({
+			...state,
+			showOverlay: !state.showOverlay,
+		}));
+	};
 
 	toggleConfig = (type) => {
 		this.setState(state => ({
@@ -321,6 +330,7 @@ export default class Clusters extends Component {
 										token={token => this.handleToken(clusterId, token)}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
+										closed={this.toggleOverlay}
 									>
 										<Button
 											size="large"
@@ -328,6 +338,7 @@ export default class Clusters extends Component {
 											css={{
 												marginRight: 12,
 											}}
+											onClick={this.toggleOverlay}
 										>
 											Pay now to access
 										</Button>
@@ -408,9 +419,12 @@ export default class Clusters extends Component {
 			return <Loader />;
 		}
 
+		const { showOverlay } = this.state;
+
 		return (
 			<Fragment>
 				<FullHeader isCluster cluster={this.props.match.params.id} />
+				{showOverlay && <Overlay />}
 				<Container>
 					<section className={clusterContainer}>
 						<Modal
@@ -688,10 +702,11 @@ export default class Clusters extends Component {
 												? (
 													<Stripe
 														name="Appbase.io Clusters"
-															amount={(this.state.cluster.plan_rate || 0) * 100}
+														amount={(this.state.cluster.plan_rate || 0) * 100}
 														token={token => this.handleToken(this.props.match.params.id, token)}
 														disabled={false}
 														stripeKey={STRIPE_KEY}
+														closed={this.toggleOverlay}
 													>
 														<Button
 															size="large"
@@ -699,6 +714,7 @@ export default class Clusters extends Component {
 															css={{
 																marginRight: 12,
 															}}
+															onClick={this.toggleOverlay}
 														>
 															Pay now
 														</Button>

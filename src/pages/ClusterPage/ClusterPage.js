@@ -15,6 +15,7 @@ import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
+import Overlay from './components/Overlay';
 
 // test key
 export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
@@ -29,12 +30,20 @@ export default class ClusterPage extends Component {
 			isLoading: true,
 			clustersAvailable: true,
 			clusters: [],
+			showOverlay: false,
 		};
 	}
 
 	componentDidMount() {
 		this.initClusters();
 	}
+
+	toggleOverlay = () => {
+		this.setState(state => ({
+			...state,
+			showOverlay: !state.showOverlay,
+		}));
+	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
 		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.plan === plan);
@@ -109,9 +118,7 @@ export default class ClusterPage extends Component {
 
 				<div>
 					<h4>Pricing Plan</h4>
-					<div>
-						{cluster.pricing_plan}
-					</div>
+					<div>{cluster.pricing_plan}</div>
 				</div>
 
 				<div>
@@ -162,8 +169,9 @@ export default class ClusterPage extends Component {
 									token={token => this.handleToken(cluster.id, token)}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
+									closed={this.toggleOverlay}
 								>
-									<Button>Pay now to access</Button>
+									<Button onClick={this.toggleOverlay}>Pay now to access</Button>
 								</Stripe>
 							</div>
 						)}
@@ -194,7 +202,12 @@ export default class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const { isLoading, clustersAvailable, clusters } = this.state;
+		const {
+			isLoading,
+			clustersAvailable,
+			clusters,
+			showOverlay, // prettier-ignore
+		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
@@ -234,6 +247,7 @@ export default class ClusterPage extends Component {
 		return (
 			<Fragment>
 				<FullHeader isCluster />
+				{showOverlay && <Overlay />}
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
