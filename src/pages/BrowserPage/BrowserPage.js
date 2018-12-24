@@ -13,13 +13,6 @@ import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 import Loader from '../../components/Loader';
 
 class BrowserPage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			clusterHost: 'scalr.api.appbase.io',
-		};
-	}
-
 	componentDidMount() {
 		const { credentials } = this.props;
 		if (!credentials) {
@@ -44,19 +37,15 @@ class BrowserPage extends Component {
 		} = this.props;
 		updateCurrentApp(appName, appId);
 		getPermission(appName);
+	}
+
+	render() {
+		const { appName, credentials } = this.props;
 		const splitHost = SCALR_API.split('https://');
 		let clusterHost = 'scalr.api.appbase.io';
 		if (splitHost.length === 2) {
 			[, clusterHost] = splitHost;
 		}
-		this.setState(clusterHost);
-		console.log('setting state: ', clusterHost);
-	}
-
-	render() {
-		const { appName, credentials } = this.props;
-		const { clusterHost } = this.state;
-
 		const dejavu = {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
