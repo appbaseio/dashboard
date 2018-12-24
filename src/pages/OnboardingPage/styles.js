@@ -23,7 +23,7 @@ const onboardingStyles = css`
 		top: 30px;
 		right: 40px;
 		padding: 5px 10px;
-		border:0;
+		border: 0;
 		cursor: pointer;
 		border-radius: 4px;
 		background-color: rgba(255, 255, 255, 0.5);
@@ -414,40 +414,11 @@ const endScreenStyles = css`
 	padding: 20px;
 	max-width: 1500px;
 	margin: 0 auto;
-	background-color: #fff;
 	font-family: 'Open Sans';
 	.banner-row {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		.big-card {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			background-color: #87ffe7;
-			flex-wrap: wrap;
-			align-items: center;
-			text-align: center;
-			padding: 30px;
-			width: 66%;
-			img {
-				width: 200px;
-				margin: 0px auto 20px;
-			}
-			& > div {
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
-			}
-			.col {
-				display: flex;
-				flex-direction: column;
-				text-align: center;
-				padding: 15px;
-				margin-top: 20px;
-				width: 50%;
-			}
-		}
 		h2,
 		h3 {
 			width: 100%;
@@ -457,49 +428,98 @@ const endScreenStyles = css`
 		h3 {
 			font-size: 18px;
 		}
-		.small-card {
-			width: 33%;
-			padding: 30px;
-			text-align: center;
+		h1 {
+			font-size: 36px;
+			font-weight: normal;
+			line-height: 50px;
+		}
+		.big-card {
 			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			h2 {
-				margin-top: 0px;
+			flex-direction: row;
+			background-color: #fff;
+			padding: 30px;
+			width: 66%;
+			padding: 10px;
+			border-radius: 1px;
+			.img-container {
+				padding: 10px;
+				background-color: #fafafa;
+			}
+			img {
+				width: 600px;
+				height: 400px;
+				object-fit: contain;
+				margin: 0px auto 20px;
+			}
+			.text {
+				padding: 15px;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+
+				> div {
+					flex-grow: 1;
+				}
+			}
+		}
+		.small-card {
+			width: 32%;
+			padding: 15px;
+			display: flex;
+			flex-direction: column !important;
+			background-color: #1a74ff;
+			color: #fff !important;
+			border-radius: 1px;
+			h3 {
+				color: #fff !important;
+			}
+			h1 {
+				color: #fff !important;
+			}
+			.text {
+				padding: 15px;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				height: 100%;
+
+				> div {
+					flex-grow: 1;
+				}
+
+				a {
+					color: #fff !important;
+				}
 			}
 		}
 	}
 	.card-row {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
 		padding: 20px 0 40px;
+		flex-wrap: wrap;
 		.card {
-			background-color: #c7f4ff;
-			width: 32%;
-			padding: 40px 20px;
-			color: #232e44;
-			text-align: center;
+			background-color: #fff;
+			padding: 10px;
 			flex-direction: column;
-			min-height: 420px;
-			justify-content: space-between;
-			align-items: center;
+			min-height: 220px;
+			margin-bottom: 40px;
+			margin-right: 30px;
 			h2 {
 				font-size: 18px;
 				line-height: 28px;
 				font-weight: 700;
-				margin-bottom: 30px;
+				margin-top: 10px;
 			}
 			p {
 				font-size: 16px;
 				line-height: 26px;
 				max-width: 280px;
 				min-height: 78px;
-				margin: 15px auto 10px auto;
 			}
-			img,
-			a {
-				margin: 20px 0;
+			img {
+				height: 220px;
+				object-fit: cover;
 			}
 		}
 	}
@@ -520,6 +540,39 @@ const endScreenStyles = css`
 		&:focus {
 			background-color: #a4f158;
 			text-decoration: none;
+		}
+	}
+	.integration-container {
+		margin: 50px 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		.title {
+			font-size: 28px;
+			text-align: center;
+		}
+
+		.search-input-container {
+			display: flex;
+			margin: 50px 0;
+			justify-content: center;
+			input {
+				background-color: rgba(179, 181, 183, 0.2);
+				padding: 15px;
+				border: 0;
+				outline: 0;
+				border-radius: 3px;
+				min-width: 400px;
+			}
+			button {
+				background: #1a74ff;
+				padding: 10px 20px;
+				color: #fff;
+				border-top-right-radius: 3px;
+				border-bottom-right-radius: 3px;
+				outline: 0;
+				font-size: 18px;
+			}
 		}
 	}
 `;
