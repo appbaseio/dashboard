@@ -89,8 +89,8 @@ export function getParam(name, url) {
 	return results == null ? null : results[1];
 }
 
-export async function deleteApp(appId) {
-	const response = await fetch(`${ACC_API}/app/${appId}`, {
+export async function deleteApp(appName) {
+	const response = await fetch(`${ACC_API}/app/${appName}`, {
 		credentials: 'include',
 		method: 'DELETE',
 	});
