@@ -57,7 +57,9 @@ class AppbaseUtils {
 			})
 				.then(res => res.json())
 				.then((data) => {
-					const permissions = data.body.filter(permission => permission.read && permission.write);
+					const permissions = data.body.filter(
+						permission => permission.read && permission.write,
+					);
 					resolve(permissions[0]);
 				})
 				.catch((e) => {
@@ -195,9 +197,14 @@ class AppbaseUtils {
 	});
 
 	createURL(cb) {
+		const splitHost = SCALR_API.split('https://');
+		let clusterHost = 'scalr.api.appbase.io';
+		if (splitHost.length === 2) {
+			[, clusterHost] = splitHost;
+		}
 		const obj = {
 			appname: this.app.appName,
-			url: `https://${this.app.username}:${this.app.password}@scalr.api.appbase.io`,
+			url: `https://${this.app.username}:${this.app.password}@${clusterHost}`,
 			selectedType: this.app.type ? [this.app.type] : [],
 		};
 
