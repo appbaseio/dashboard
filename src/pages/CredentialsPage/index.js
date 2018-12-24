@@ -152,13 +152,6 @@ class Credentials extends Component {
 	};
 
 	handleDeleteModal = () => {
-		// const { handleDeleteApp, appId } = this.props;
-		// handleDeleteApp(appId).then(({ payload }) => {
-		// 	if (payload) {
-		// 		// Redirect to home
-		// 		window.location = window.origin;
-		// 	}
-		// });
 		const { deleteModal: currentValue } = this.state;
 		this.setState({
 			deleteModal: !currentValue,
