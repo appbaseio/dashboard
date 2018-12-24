@@ -222,25 +222,28 @@ export default class ClusterPage extends Component {
 
 		if (!isLoading && !clustersAvailable) {
 			return (
-				<div style={vcenter}>
-					<i className="fas fa-gift" style={{ fontSize: 36 }} />
-					<h2 style={{ marginTop: 24, fontSize: 22 }}>
-						You
-						{"'"}
-						ve unlocked 14 days free trial
-					</h2>
-					<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
-						Get started with clusters today
-					</p>
-					<div style={{ textAlign: 'center' }}>
-						<Link to="/clusters/new">
-							<Button type="primary">
-								<i className="fas fa-plus" />
-								&nbsp; Create a New Cluster
-							</Button>
-						</Link>
+				<Fragment>
+					<FullHeader isCluster />
+					<div style={vcenter}>
+						<i className="fas fa-gift" style={{ fontSize: 36 }} />
+						<h2 style={{ marginTop: 24, fontSize: 22 }}>
+							You
+							{"'"}
+							ve unlocked 14 days free trial
+						</h2>
+						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
+							Get started with clusters today
+						</p>
+						<div style={{ textAlign: 'center' }}>
+							<Link to="/clusters/new">
+								<Button type="primary">
+									<i className="fas fa-plus" />
+									&nbsp; Create a New Cluster
+								</Button>
+							</Link>
+						</div>
 					</div>
-				</div>
+				</Fragment>
 			);
 		}
 
