@@ -261,7 +261,7 @@ class Credentials extends Component {
 							<DeleteAppModal
 								appName={appName}
 								deleteModal={deleteModal}
-								onDeletion={() => {
+								onDelete={() => {
 									window.location = window.origin;
 								}}
 								handleDeleteModal={this.handleDeleteModal}

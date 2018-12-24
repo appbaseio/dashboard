@@ -16,7 +16,7 @@ class DeleteAppModal extends React.Component {
 			// prettier-ignore
 			appName,
 			handleDeleteModal,
-			onDeletion,
+			onDelete,
 			handleRemoveApp,
 		} = this.props;
 		this.setState({
@@ -28,8 +28,8 @@ class DeleteAppModal extends React.Component {
 				handleRemoveApp(appName);
 				handleDeleteModal();
 				message.success(`${appName} deleted`);
-				if (onDeletion) {
-					onDeletion();
+				if (onDelete) {
+					onDelete();
 				}
 			})
 			.catch(() => {
@@ -81,16 +81,16 @@ class DeleteAppModal extends React.Component {
 	}
 }
 
+DeleteAppModal.defaultProps = {
+	onDelete: null,
+};
+
 DeleteAppModal.propTypes = {
 	deleteModal: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
 	handleDeleteModal: PropTypes.func.isRequired,
 	handleRemoveApp: PropTypes.func.isRequired,
-	onDeletion: PropTypes.func,
-};
-
-DeleteAppModal.defaulProp = {
-	onDeletion: null,
+	onDelete: PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => ({
