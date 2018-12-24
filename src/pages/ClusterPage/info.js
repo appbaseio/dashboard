@@ -43,6 +43,7 @@ export default class Clusters extends Component {
 			loadingError: false,
 		};
 		this.paymentButton = React.createRef();
+		this.paymentTriggered = false;
 	}
 
 	componentDidMount() {
@@ -101,9 +102,10 @@ export default class Clusters extends Component {
 	};
 
 	triggerPayment = () => {
-		if (this.props.location.search.startsWith('?subscribe=true')) {
+		if (!this.paymentTriggered && this.props.location.search.startsWith('?subscribe=true')) {
 			if (this.paymentButton.current) {
 				this.paymentButton.current.buttonNode.click();
+				this.paymentTriggered = true;
 			}
 		}
 	}
