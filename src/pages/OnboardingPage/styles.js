@@ -1,5 +1,7 @@
 import { css } from 'emotion';
 
+import { mediaKey } from '../../utils/media';
+
 const leftColor = 'hsl(220, 32%, 20%)';
 const rightColor = '#c7f4ff';
 
@@ -450,6 +452,11 @@ const endScreenStyles = css`
 				height: 400px;
 				object-fit: contain;
 				margin: 0px auto 20px;
+
+				${mediaKey.small} {
+					width: 100%;
+					height: auto;
+				}
 			}
 			.text {
 				padding: 15px;
@@ -460,6 +467,12 @@ const endScreenStyles = css`
 				> div {
 					flex-grow: 1;
 				}
+			}
+
+			${mediaKey.small} {
+				flex-wrap: wrap;
+				width: auto;
+				margin-bottom: 10px;
 			}
 		}
 		.small-card {
@@ -491,6 +504,14 @@ const endScreenStyles = css`
 					color: #fff !important;
 				}
 			}
+
+			${mediaKey.small} {
+				width: auto;
+			}
+		}
+
+		${mediaKey.small} {
+			flex-wrap: wrap;
 		}
 	}
 	.card-row {
@@ -521,6 +542,13 @@ const endScreenStyles = css`
 				height: 220px;
 				object-fit: cover;
 			}
+
+			${mediaKey.small} {
+				margin-right: 0;
+			}
+		}
+		${mediaKey.small} {
+			justify-content: center;
 		}
 	}
 	.button {
@@ -562,7 +590,11 @@ const endScreenStyles = css`
 				border: 0;
 				outline: 0;
 				border-radius: 3px;
-				min-width: 400px;
+				min-width: 40%;
+
+				${mediaKey.small} {
+					min-width: 80%;
+				}
 			}
 			button {
 				background: #1a74ff;

@@ -91,9 +91,11 @@ class EndScreen extends React.PureComponent {
 											this app.
 										</p>
 									</div>
-									<Link to={`/app/${currentApp}/search-preview`}>
-										Go to Search Preview
-									</Link>
+									{currentApp && (
+										<Link to={`/app/${currentApp}/search-preview`}>
+											Go to Search Preview
+										</Link>
+									)}
 								</div>
 							</div>
 
@@ -102,7 +104,11 @@ class EndScreen extends React.PureComponent {
 									<div>
 										<h3>DASHBOARD</h3>
 										<h1>
-											<Link to={`/app/${currentApp}/overview`}>
+											<Link
+												to={
+													currentApp ? `/app/${currentApp}/overview` : '/'
+												}
+											>
 												Go to your App
 											</Link>
 										</h1>
