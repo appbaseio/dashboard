@@ -453,7 +453,7 @@ const endScreenStyles = css`
 				object-fit: contain;
 				margin: 0px auto 20px;
 
-				${mediaKey.small} {
+				${mediaKey.medium} {
 					width: 100%;
 					height: auto;
 				}
@@ -469,10 +469,14 @@ const endScreenStyles = css`
 				}
 			}
 
-			${mediaKey.small} {
+			${mediaKey.medium} {
 				flex-wrap: wrap;
-				width: auto;
+				width: 100%;
 				margin-bottom: 10px;
+			}
+
+			${mediaKey.ipadPro} {
+				flex-wrap: wrap;
 			}
 		}
 		.small-card {
@@ -505,12 +509,12 @@ const endScreenStyles = css`
 				}
 			}
 
-			${mediaKey.small} {
-				width: auto;
+			${mediaKey.medium} {
+				width: 100%;
 			}
 		}
 
-		${mediaKey.small} {
+		${mediaKey.medium} {
 			flex-wrap: wrap;
 		}
 	}
@@ -548,6 +552,10 @@ const endScreenStyles = css`
 			}
 		}
 		${mediaKey.small} {
+			justify-content: center;
+		}
+
+		${mediaKey.ipadPro} {
 			justify-content: center;
 		}
 	}
