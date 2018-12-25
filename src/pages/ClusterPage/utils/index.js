@@ -22,7 +22,6 @@ export function getClusters() {
 export function getClusterData(id) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		const hasPaymentError = false;
 		fetch(`${ACC_API}/v1/_status/${id}`, {
 			method: 'GET',
 			credentials: 'include',
@@ -38,7 +37,8 @@ export function getClusterData(id) {
 			})
 			.then((data) => {
 				if (hasError) {
-					reject(data.status.message);
+					const { status, ...others } = data;
+					reject(JSON.stringify({ message: status.message, ...others }));
 				}
 				resolve(data);
 			})
@@ -113,7 +113,6 @@ export function createSubscription(id, token) {
 			},
 			body: JSON.stringify({
 				token,
-				plan: 'sandbox',
 			}),
 		})
 			.then(resolve)

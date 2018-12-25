@@ -84,6 +84,7 @@ export default class Clusters extends Component {
 						dejavu: this.hasAddon('dejavu', deployment),
 						arc: arcData && arcData.url.startsWith('https://'),
 						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
+						planRate: cluster.plan_rate || 0,
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -97,9 +98,12 @@ export default class Clusters extends Component {
 				this.triggerPayment();
 			})
 			.catch((e) => {
-				this.setState({
-					error: e,
-				}, this.triggerPayment);
+				const error = JSON.parse(e);
+				this.setState(state => ({
+					...state,
+					error: error.message,
+					planRate: (error.details ? error.details.plan_rate : state.planRate) || 0,
+				}), this.triggerPayment);
 			});
 	};
 
@@ -326,7 +330,7 @@ export default class Clusters extends Component {
 								{paymentRequired ? (
 									<Stripe
 										name="Appbase.io Clusters"
-										amount={(this.state.cluster.plan_rate || 0) * 100}
+										amount={(this.state.planRate || 0) * 100}
 										token={token => this.handleToken(clusterId, token)}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
@@ -400,6 +404,8 @@ export default class Clusters extends Component {
 			textAlign: 'center',
 			lineHeight: '36px',
 		};
+
+		console.log(this.state.error);
 
 		if (this.state.error) {
 			return this.renderErrorScreen();
@@ -702,7 +708,7 @@ export default class Clusters extends Component {
 												? (
 													<Stripe
 														name="Appbase.io Clusters"
-														amount={(this.state.cluster.plan_rate || 0) * 100}
+														amount={(this.state.planRate || 0) * 100}
 														token={token => this.handleToken(this.props.match.params.id, token)}
 														disabled={false}
 														stripeKey={STRIPE_KEY}
