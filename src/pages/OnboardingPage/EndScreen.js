@@ -3,9 +3,9 @@ import { Layout, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
+import get from 'lodash/get';
 
 import FullHeader from '../../components/FullHeader';
-import { getParam } from '../../utils';
 import { endScreenStyles } from './styles';
 
 const integrations = [
@@ -169,11 +169,8 @@ EndScreen.propTypes = {
 	currentApp: string.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const currentApp =		Object.keys(state.apps).find(item => state.apps[item] === getParam('app')) || '';
-	return {
-		currentApp,
-	};
-};
+const mapStateToProps = state => ({
+	currentApp: get(state, '$getCurrentApp.name'),
+});
 
 export default connect(mapStateToProps)(EndScreen);
