@@ -28,7 +28,7 @@ const integrations = [
 		name: 'React Native',
 		image1x: '/static/images/onboarding/finish-screen/ReactNative@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/ReactNative@2x.png',
-		description: 'Build data-driven search experiences for iOS and Android apps',
+		description: 'Build data-driven search experiences for iOS and Android',
 		url: 'https://opensource.appbase.io/reactivesearch/native',
 	},
 	{
@@ -47,7 +47,7 @@ const integrations = [
 	},
 ];
 
-const getFilteredList = (query) => {
+const getFilteredList = query => {
 	const matchQuery = query.toLowerCase();
 	return integrations.filter(item => item.name.toLowerCase().indexOf(matchQuery) > -1);
 };
@@ -57,7 +57,7 @@ class EndScreen extends React.PureComponent {
 		searchQuery: '',
 	};
 
-	handleSearchChange = (e) => {
+	handleSearchChange = e => {
 		const {
 			target: { value },
 		} = e;
@@ -153,7 +153,7 @@ class EndScreen extends React.PureComponent {
 											rel="noopener noreferrer"
 											href={item.url}
 										>
-											View more
+											Start with {item.name}
 										</a>
 									</div>
 								))}
@@ -170,7 +170,7 @@ EndScreen.propTypes = {
 	currentApp: string.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	// for development and testing
 	const urlApp = Object.keys(state.apps).find(item => state.apps[item] === getParam('app')) || '';
 

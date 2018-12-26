@@ -463,6 +463,7 @@ const endScreenStyles = css`
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
+				text-align: center;
 
 				> div {
 					flex-grow: 1;
@@ -487,6 +488,7 @@ const endScreenStyles = css`
 			background-color: #1a74ff;
 			color: #fff !important;
 			border-radius: 1px;
+			text-align: center;
 			h3 {
 				color: #fff !important;
 			}
@@ -540,7 +542,6 @@ const endScreenStyles = css`
 				font-size: 16px;
 				line-height: 26px;
 				max-width: 280px;
-				min-height: 78px;
 			}
 			img {
 				height: 220px;
