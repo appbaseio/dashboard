@@ -463,11 +463,18 @@ const endScreenStyles = css`
 				display: flex;
 				flex-direction: column;
 				justify-content: space-between;
-				text-align: center;
 
 				> div {
 					flex-grow: 1;
 				}
+			}
+
+			a {
+				background: rgba(26, 116, 255, 0.8);
+				padding: 10px;
+				border-radius: 3px;
+				color: #fff;
+				text-align: center;
 			}
 
 			${mediaKey.medium} {
@@ -488,7 +495,6 @@ const endScreenStyles = css`
 			background-color: #1a74ff;
 			color: #fff !important;
 			border-radius: 1px;
-			text-align: center;
 			h3 {
 				color: #fff !important;
 			}
@@ -508,6 +514,15 @@ const endScreenStyles = css`
 
 				a {
 					color: #fff !important;
+					text-decoration: none;
+				}
+
+				.cta {
+					padding: 10px;
+					text-align: center;
+					background: rgba(255, 255, 255, 0.5);
+					border-radius: 3px;
+					text-decoration: none;
 				}
 			}
 
@@ -532,20 +547,27 @@ const endScreenStyles = css`
 			min-height: 220px;
 			margin-bottom: 40px;
 			margin-right: 30px;
-			h2 {
-				font-size: 18px;
-				line-height: 28px;
-				font-weight: 700;
-				margin-top: 10px;
-			}
-			p {
-				font-size: 16px;
-				line-height: 26px;
-				max-width: 280px;
-			}
+			text-align: center;
 			img {
 				height: 220px;
 				object-fit: cover;
+			}
+
+			.card-content {
+				padding-bottom: 20px;
+
+				h2 {
+					font-size: 18px;
+					line-height: 28px;
+					font-weight: 700;
+					margin-top: 10px;
+				}
+				p {
+					font-size: 16px;
+					line-height: 26px;
+					max-width: 280px;
+				}
+
 			}
 
 			${mediaKey.small} {

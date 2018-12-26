@@ -118,7 +118,12 @@ class EndScreen extends React.PureComponent {
 											access.
 										</p>
 									</div>
-									<Link to="/">Go to Dashboard</Link>
+									<Link
+										to={currentApp ? `/app/${currentApp}/overview` : '/'}
+										className="cta"
+									>
+										Go to Dashboard
+									</Link>
 								</div>
 							</div>
 						</div>
@@ -146,15 +151,17 @@ class EndScreen extends React.PureComponent {
 											srcSet={`${item.image1x} 245w, ${item.image2x} 490w`}
 											alt="React"
 										/>
-										<h2>{item.name}</h2>
-										<p>{item.description}</p>
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											href={item.url}
-										>
-											Start with {item.name}
-										</a>
+										<div className="card-content">
+											<h2>{item.name}</h2>
+											<p>{item.description}</p>
+											<a
+												target="_blank"
+												rel="noopener noreferrer"
+												href={item.url}
+											>
+												Start with {item.name}
+											</a>
+										</div>
 									</div>
 								))}
 							</div>
