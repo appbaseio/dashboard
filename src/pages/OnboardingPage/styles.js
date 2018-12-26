@@ -520,7 +520,7 @@ const endScreenStyles = css`
 				.cta {
 					padding: 10px;
 					text-align: center;
-					background: rgba(255, 255, 255, 0.5);
+					background: rgba(26, 56, 143, 0.68);
 					border-radius: 3px;
 					text-decoration: none;
 				}
