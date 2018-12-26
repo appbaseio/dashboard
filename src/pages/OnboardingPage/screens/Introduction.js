@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { notification, List } from 'antd';
+import { connect } from 'react-redux';
 import Footer from '../components/Footer';
 
 import appbaseHelpers from '../utils/appbaseHelpers';
 import { validateAppName, validationsList } from '../../../utils/helper';
+import { setCurrentApp } from '../../../batteries/modules/actions';
 
-export default class Introduction extends Component {
+class Introduction extends Component {
 	constructor(props) {
 		super(props);
 
@@ -94,6 +96,8 @@ export default class Introduction extends Component {
 								},
 							);
 						});
+
+						this.props.updateCurrentApp(app.appName, app.id);
 					}
 				})
 				.catch((e) => {
@@ -170,3 +174,12 @@ export default class Introduction extends Component {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+});
+
+export default connect(
+	null,
+	mapDispatchToProps,
+)(Introduction);
