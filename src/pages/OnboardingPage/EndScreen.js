@@ -7,6 +7,7 @@ import get from 'lodash/get';
 
 import FullHeader from '../../components/FullHeader';
 import { endScreenStyles } from './styles';
+import { getParam } from '../../utils';
 
 const integrations = [
 	{
@@ -169,8 +170,13 @@ EndScreen.propTypes = {
 	currentApp: string.isRequired,
 };
 
-const mapStateToProps = state => ({
-	currentApp: get(state, '$getCurrentApp.name'),
-});
+const mapStateToProps = (state) => {
+	// for development and testing
+	const urlApp = Object.keys(state.apps).find(item => state.apps[item] === getParam('app')) || '';
+
+	return {
+		currentApp: get(state, '$getCurrentApp.name') || urlApp,
+	};
+};
 
 export default connect(mapStateToProps)(EndScreen);
