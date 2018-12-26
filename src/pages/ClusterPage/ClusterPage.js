@@ -10,7 +10,7 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 
-import { getClusters, createSubscription } from './utils';
+import { getClusters, createSubscription, deleteCluster } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
@@ -37,6 +37,22 @@ export default class ClusterPage extends Component {
 	componentDidMount() {
 		this.initClusters();
 	}
+
+	deleteCluster = (id) => {
+		this.setState({
+			isLoading: true,
+		});
+		deleteCluster(id)
+			.then(() => {
+				this.initClusters();
+			})
+			.catch((e) => {
+				this.setState({
+					isLoading: false,
+				});
+				console.log(e);
+			});
+	};
 
 	toggleOverlay = () => {
 		this.setState(state => ({
@@ -108,6 +124,18 @@ export default class ClusterPage extends Component {
 				<span className="tag">
 					{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
 				</span>
+				{cluster.status === 'active'
+				|| cluster.status === 'in progress'
+				|| cluster.status === 'deployments in progress' ? (
+					<Button
+						type="danger"
+						icon="delete"
+						className="showOnHover"
+						onClick={() => this.deleteCluster(cluster.id)}
+					>
+						Delete
+					</Button>
+				) : null}
 			</h3>
 
 			<div className="info-row">
