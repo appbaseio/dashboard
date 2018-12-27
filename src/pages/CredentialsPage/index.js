@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import get from 'lodash/get';
-import {
- Card, Table, Popconfirm, Tooltip, Button,
-} from 'antd';
+import { Card, Table, Button } from 'antd';
 import { connect } from 'react-redux';
 import {
  string, func, bool, array,
@@ -27,6 +25,7 @@ import joyrideSteps from './joyrideSteps';
 import Walkthrough from '../../batteries/components/shared/Walkthrough';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
+import DeleteAppModal from '../../components/AppCard/DeleteAppModal';
 
 const columns = [
 	{
@@ -45,7 +44,8 @@ const columns = [
 const bannerMessagesCred = {
 	free: {
 		title: 'API Credentials',
-		description: 'Upgrade now to set granular ACLs, restrict by Referers and IP Sources, and more.',
+		description:
+			'Upgrade now to set granular ACLs, restrict by Referers and IP Sources, and more.',
 		buttonText: 'Upgrade Now',
 		href: 'billing',
 	},
@@ -69,6 +69,7 @@ class Credentials extends Component {
 		this.state = {
 			showCredForm: false,
 			currentPermissionInfo: undefined,
+			deleteModal: false,
 		};
 	}
 
@@ -150,13 +151,10 @@ class Credentials extends Component {
 		});
 	};
 
-	deleteApp = () => {
-		const { handleDeleteApp, appId } = this.props;
-		handleDeleteApp(appId).then(({ payload }) => {
-			if (payload) {
-				// Redirect to home
-				window.location = window.origin;
-			}
+	handleDeleteModal = () => {
+		const { deleteModal: currentValue } = this.state;
+		this.setState({
+			deleteModal: !currentValue,
 		});
 	};
 
@@ -182,10 +180,12 @@ class Credentials extends Component {
 	};
 
 	render() {
-		const { showCredForm, currentPermissionInfo, mappings } = this.state;
 		const {
- isLoading, permissions, isOwner, isDeleting, plan,
-} = this.props;
+			showCredForm, currentPermissionInfo, mappings, deleteModal,
+		} = this.state; // prettier-ignore
+		const {
+			isLoading, permissions, isOwner, isDeleting, plan, appName,
+		} = this.props; // prettier-ignore
 		if (isLoading && !(permissions && permissions.length)) {
 			return <Loader />;
 		}
@@ -246,29 +246,27 @@ class Credentials extends Component {
 						</Button>
 					)}
 					{isOwner && (
-						<Tooltip
-							placement="rightTop"
-							title="Deleting an app is a permanent action, and will delete all the associated data, credentials and team sharing settings."
-						>
-							<Popconfirm
-								title="Are you sure delete this app?"
-								onConfirm={this.deleteApp}
-								okText="Yes"
-								cancelText="No"
-								placement="topLeft"
+						<React.Fragment>
+							<Button
+								onClick={this.handleDeleteModal}
+								style={{
+									margin: '10px 10px',
+									float: 'right',
+								}}
+								type="danger"
+								size="large"
 							>
-								<Button
-									style={{
-										margin: '10px 10px',
-										float: 'right',
-									}}
-									type="danger"
-									size="large"
-								>
-									Delete App
-								</Button>
-							</Popconfirm>
-						</Tooltip>
+								Delete App
+							</Button>
+							<DeleteAppModal
+								appName={appName}
+								deleteModal={deleteModal}
+								onDelete={() => {
+									window.location = window.origin;
+								}}
+								handleDeleteModal={this.handleDeleteModal}
+							/>
+						</React.Fragment>
 					)}
 				</Container>
 			</React.Fragment>
