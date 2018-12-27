@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon } from 'antd';
+import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import { getAddon, hasAddon } from '../utils';
@@ -23,6 +24,13 @@ export default class ClusterScreen extends Component {
 			dejavu: props.dejavu,
 			elasticsearchHQ: props.elasticsearchHQ,
 		};
+
+		this.paymentButton = React.createRef();
+		this.paymentTriggered = false;
+	}
+
+	componentDidMount() {
+		this.triggerPayment();
 	}
 
 	setConfig = (type, value) => {
@@ -162,6 +170,15 @@ export default class ClusterScreen extends Component {
 		return null;
 	};
 
+	triggerPayment = () => {
+		if (!this.paymentTriggered && window.location.search.startsWith('?subscribe=true')) {
+			if (this.paymentButton.current) {
+				this.paymentButton.current.buttonNode.click();
+				this.paymentTriggered = true;
+			}
+		}
+	};
+
 	render() {
 		const {
 			cluster,
@@ -173,7 +190,13 @@ export default class ClusterScreen extends Component {
 			dejavu,
 			elasticsearchHQ,
 		} = this.state;
-		const { clusterId, deployment: originalDeployment } = this.props;
+		const {
+			clusterId,
+			deployment: originalDeployment,
+			planRate,
+			handleToken,
+			toggleOverlay,
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -347,11 +370,11 @@ export default class ClusterScreen extends Component {
 						{window.location.search.startsWith('?subscribe=true') ? (
 							<Stripe
 								name="Appbase.io Clusters"
-								amount={this.props.planRate * 100}
-								token={token => this.props.handleToken(clusterId, token)}
+								amount={planRate * 100}
+								token={token => handleToken(clusterId, token)}
 								disabled={false}
 								stripeKey={STRIPE_KEY}
-								closed={this.props.toggleOverlay}
+								closed={toggleOverlay}
 							>
 								<Button
 									size="large"
@@ -359,7 +382,7 @@ export default class ClusterScreen extends Component {
 									css={{
 										marginRight: 12,
 									}}
-									onClick={this.props.toggleOverlay}
+									onClick={toggleOverlay}
 								>
 									Pay now
 								</Button>
