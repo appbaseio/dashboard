@@ -1,0 +1,381 @@
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Icon } from 'antd';
+
+import CredentialsBox from '../components/CredentialsBox';
+import { getAddon, hasAddon } from '../utils';
+import {
+ card, settingsItem, clusterEndpoint, clusterButtons,
+} from '../styles';
+import { STRIPE_KEY } from '../ClusterPage';
+
+export default class ClusterScreen extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			cluster: props.cluster,
+			arc: props.arc,
+			deployment: props.deployment,
+			kibana: props.kibana,
+			logstash: props.logstash,
+			mirage: props.mirage,
+			dejavu: props.dejavu,
+			elasticsearchHQ: props.elasticsearchHQ,
+		};
+	}
+
+	setConfig = (type, value) => {
+		this.setState({
+			[type]: value,
+		});
+	};
+
+	toggleConfig = (type) => {
+		this.setState(state => ({
+			...state,
+			[type]: !state[type],
+		}));
+	};
+
+	includedInOriginal = (key) => {
+		const { deployment: original } = this.props;
+		return original[key] ? !!Object.keys(original[key]).length : hasAddon(key, original);
+	};
+
+	saveClusterSettings = () => {
+		const body = {
+			remove_deployments: [],
+		};
+
+		const {
+			cluster,
+			arc,
+			kibana,
+			logstash,
+			mirage,
+			dejavu,
+			elasticsearchHQ, // prettier-ignore
+		} = this.state;
+
+		const { clusterId, onDeploy } = this.props;
+
+		if (kibana && !this.includedInOriginal('kibana')) {
+			body.kibana = {
+				create_node: false,
+				version: cluster.es_version,
+			};
+		} else if (!kibana && this.includedInOriginal('kibana')) {
+			body.remove_deployments = [...body.remove_deployments, 'kibana'];
+		}
+
+		if (logstash && !this.includedInOriginal('logstash')) {
+			body.logstash = {
+				create_node: false,
+				version: cluster.es_version,
+			};
+		} else if (!logstash && this.includedInOriginal('logstash')) {
+			body.remove_deployments = [...body.remove_deployments, 'logstash'];
+		}
+
+		if (dejavu && !this.includedInOriginal('dejavu')) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'dejavu',
+					image: 'appbaseio/dejavu:3.0.0-alpha',
+					exposed_port: 1358,
+				},
+			];
+		} else if (!dejavu && this.includedInOriginal('dejavu')) {
+			body.remove_deployments = [...body.remove_deployments, 'dejavu'];
+		}
+
+		if (arc && !this.includedInOriginal('arc')) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'arc',
+					image: 'siddharthlatest/arc:0.0.6',
+					exposed_port: 8000,
+				},
+			];
+		} else if (!arc && this.includedInOriginal('arc')) {
+			body.remove_deployments = [...body.remove_deployments, 'arc'];
+		}
+
+		if (mirage && !this.includedInOriginal('mirage')) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'mirage',
+					image: 'appbaseio/mirage:0.10.1',
+					exposed_port: 3030,
+				},
+			];
+		} else if (!mirage && this.includedInOriginal('mirage')) {
+			body.remove_deployments = [...body.remove_deployments, 'mirage'];
+		}
+
+		if (elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
+			body.addons = body.addons || [];
+			body.addons = [
+				...body.addons,
+				{
+					name: 'elasticsearch-hq',
+					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
+					exposed_port: 5000,
+				},
+			];
+		} else if (!elasticsearchHQ && this.includedInOriginal('elasticsearch-hq')) {
+			body.remove_deployments = [...body.remove_deployments, 'elasticsearch-hq'];
+		}
+
+		onDeploy(body, clusterId);
+	};
+
+	renderClusterEndpoint = (source) => {
+		if (Object.keys(source).length) {
+			const username = source.username || source.dashboard_username;
+			const password = source.password || source.dashboard_password;
+			const [protocol, url] = (source.url || source.dashboard_url).split('://');
+			return (
+				<div key={source.name} className={clusterEndpoint}>
+					<h4>
+						<a
+							href={`${protocol}://${username}:${password}@${url}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Icon type="link" theme="outlined" />
+							{source.name}
+						</a>
+					</h4>
+					<CredentialsBox name={source.name} text={`${username}:${password}`} />
+				</div>
+			);
+		}
+
+		return null;
+	};
+
+	render() {
+		const {
+			cluster,
+			arc,
+			deployment,
+			kibana,
+			logstash,
+			mirage,
+			dejavu,
+			elasticsearchHQ,
+		} = this.state;
+		const { clusterId, deployment: originalDeployment } = this.props;
+
+		return (
+			<Fragment>
+				<li className={card}>
+					<div className="col light">
+						<h3>Elasticsearch</h3>
+						<p>Live cluster endpoint</p>
+
+						{arc ? (
+							<Link
+								to={{
+									pathname: `${clusterId}/explore`,
+									state: {
+										arc: getAddon('arc', originalDeployment),
+									},
+								}}
+							>
+								<Button type="primary" size="large">
+									Explore Cluster
+								</Button>
+							</Link>
+						) : null}
+					</div>
+
+					<div className="col">
+						{Object.keys(deployment)
+							.filter(item => item !== 'addons')
+							.map(key => this.renderClusterEndpoint(deployment[key]))}
+					</div>
+				</li>
+
+				<li className={card}>
+					<div className="col light">
+						<h3>Dashboard</h3>
+						<p>Manage your cluster</p>
+					</div>
+
+					<div className="col">{this.renderClusterEndpoint(cluster)}</div>
+				</li>
+
+				<li className={card}>
+					<div className="col light">
+						<h3>Add-ons</h3>
+						<p>Elasticsearch add-ons endpoint</p>
+					</div>
+
+					<div className="col">
+						{(deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
+					</div>
+				</li>
+
+				<li className={card}>
+					<div className="col light">
+						<h3>Edit Cluster Settings</h3>
+						<p>Customise as per your needs</p>
+					</div>
+					<div className="col grow">
+						<div className={settingsItem}>
+							<h4>Kibana</h4>
+							<div>
+								<label htmlFor="yes">
+									<input
+										type="radio"
+										name="kibana"
+										defaultChecked={kibana}
+										id="yes"
+										onChange={() => this.setConfig('kibana', true)}
+									/>
+									Yes
+								</label>
+
+								<label htmlFor="no">
+									<input
+										type="radio"
+										name="kibana"
+										defaultChecked={!kibana}
+										id="no"
+										onChange={() => this.setConfig('kibana', false)}
+									/>
+									No
+								</label>
+							</div>
+						</div>
+
+						<div className={settingsItem}>
+							<h4>Logstash</h4>
+							<div>
+								<label htmlFor="yes2">
+									<input
+										type="radio"
+										name="logstash"
+										defaultChecked={logstash}
+										id="yes2"
+										onChange={() => this.setConfig('logstash', true)}
+									/>
+									Yes
+								</label>
+
+								<label htmlFor="no2">
+									<input
+										type="radio"
+										name="logstash"
+										defaultChecked={!logstash}
+										id="no2"
+										onChange={() => this.setConfig('logstash', false)}
+									/>
+									No
+								</label>
+							</div>
+						</div>
+
+						<div className={settingsItem}>
+							<h4>Add-ons</h4>
+							<div className="settings-label">
+								<label htmlFor="arc">
+									<input
+										type="checkbox"
+										defaultChecked={arc}
+										id="arc"
+										onChange={() => this.toggleConfig('arc')}
+									/>
+									Arc Middleware
+								</label>
+
+								<label htmlFor="dejavu">
+									<input
+										type="checkbox"
+										defaultChecked={dejavu}
+										id="dejavu"
+										onChange={() => this.toggleConfig('dejavu')}
+									/>
+									Dejavu
+								</label>
+
+								<label htmlFor="elasticsearchHQ">
+									<input
+										type="checkbox"
+										defaultChecked={elasticsearchHQ}
+										id="elasticsearchHQ"
+										onChange={() => this.toggleConfig('elasticsearchHQ')}
+									/>
+									Elasticsearch-HQ
+								</label>
+
+								<label htmlFor="mirage">
+									<input
+										type="checkbox"
+										defaultChecked={mirage}
+										id="mirage"
+										onChange={() => this.toggleConfig('mirage')}
+									/>
+									Mirage
+								</label>
+							</div>
+						</div>
+					</div>
+				</li>
+
+				<div className={clusterButtons}>
+					<Button
+						onClick={() => this.props.onDelete(clusterId)}
+						type="danger"
+						size="large"
+						icon="delete"
+						className="delete"
+					>
+						Delete Cluster
+					</Button>
+
+					<div>
+						{window.location.search.startsWith('?subscribe=true') ? (
+							<Stripe
+								name="Appbase.io Clusters"
+								amount={this.props.planRate * 100}
+								token={token => this.props.handleToken(clusterId, token)}
+								disabled={false}
+								stripeKey={STRIPE_KEY}
+								closed={this.props.toggleOverlay}
+							>
+								<Button
+									size="large"
+									ref={this.paymentButton}
+									css={{
+										marginRight: 12,
+									}}
+									onClick={this.props.toggleOverlay}
+								>
+									Pay now
+								</Button>
+							</Stripe>
+						) : null}
+						<Button
+							size="large"
+							icon="save"
+							type="primary"
+							onClick={this.saveClusterSettings}
+						>
+							Save Cluster Settings
+						</Button>
+					</div>
+				</div>
+			</Fragment>
+		);
+	}
+}

@@ -119,3 +119,6 @@ export function createSubscription(id, token) {
 			.catch(reject);
 	});
 }
+
+export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
+export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);
