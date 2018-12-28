@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, Button, Icon } from 'antd';
+import {
+ Modal, Button, Icon, Tag,
+} from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
@@ -42,6 +44,7 @@ export default class Clusters extends Component {
 			showError: false,
 			loadingError: false,
 			showOverlay: false,
+			isPaid: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -78,6 +81,7 @@ export default class Clusters extends Component {
 						elasticsearchHQ: hasAddon('elasticsearch-hq', deployment),
 						planRate: cluster.plan_rate || 0,
 						isLoading: false,
+						isPaid: cluster.trial || !!cluster.subscription_id,
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -313,7 +317,7 @@ export default class Clusters extends Component {
 
 		if (this.state.isLoading) return <Loader />;
 
-		const { showOverlay } = this.state;
+		const { showOverlay, isPaid } = this.state;
 
 		return (
 			<Fragment>
@@ -351,7 +355,11 @@ export default class Clusters extends Component {
 
 										<div>
 											<h4>Pricing Plan</h4>
-											<div>{this.state.cluster.pricing_plan}</div>
+											<div>
+												{this.state.cluster.pricing_plan}
+												&nbsp;&nbsp;
+												{isPaid ? <Tag color="green">Paid</Tag> : null}
+											</div>
 										</div>
 
 										<div>
@@ -429,6 +437,7 @@ export default class Clusters extends Component {
 															planRate={this.state.planRate || 0}
 															handleToken={this.handleToken}
 															toggleOverlay={this.toggleOverlay}
+															isPaid={isPaid}
 														/>
 													)}
 												/>

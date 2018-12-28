@@ -196,6 +196,7 @@ export default class ClusterScreen extends Component {
 			planRate,
 			handleToken,
 			toggleOverlay,
+			isPaid,
 		} = this.props;
 
 		return (
@@ -367,7 +368,7 @@ export default class ClusterScreen extends Component {
 					</Button>
 
 					<div>
-						{window.location.search.startsWith('?subscribe=true') ? (
+						{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
 							<Stripe
 								name="Appbase.io Clusters"
 								amount={planRate * 100}
