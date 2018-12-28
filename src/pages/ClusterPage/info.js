@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Modal, Button, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
@@ -21,6 +21,7 @@ import {
 } from './utils';
 import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
+import ScaleClusterScreen from './screens/ScaleClusterScreen';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -401,28 +402,46 @@ export default class Clusters extends Component {
 											justifyContent: 'space-between',
 										}}
 									>
-										<Sidebar />
+										<Sidebar id={this.props.match.params.id} />
 										<RightContainer>
-											<Fragment>
-												<ClusterScreen
-													clusterId={this.props.match.params.id}
-													cluster={this.state.cluster}
-													deployment={this.state.deployment}
-													arc={this.state.arc}
-													kibana={this.state.kibana}
-													logstash={this.state.logstash}
-													mirage={this.state.mirage}
-													dejavu={this.state.dejavu}
-													elasticsearchHQ={this.state.elasticsearchHQ}
-													// cluster deployment
-													onDeploy={this.deployCluster}
-													onDelete={this.deleteCluster}
-													// payments handling
-													planRate={this.state.planRate || 0}
-													handleToken={this.handleToken}
-													toggleOverlay={this.toggleOverlay}
+											<Switch>
+												<Route
+													exact
+													path="/clusters/:id"
+													component={() => (
+														<ClusterScreen
+															clusterId={this.props.match.params.id}
+															cluster={this.state.cluster}
+															deployment={this.state.deployment}
+															arc={this.state.arc}
+															kibana={this.state.kibana}
+															logstash={this.state.logstash}
+															mirage={this.state.mirage}
+															dejavu={this.state.dejavu}
+															elasticsearchHQ={
+																this.state.elasticsearchHQ
+															}
+															// cluster deployment
+															onDeploy={this.deployCluster}
+															onDelete={this.deleteCluster}
+															// payments handling
+															planRate={this.state.planRate || 0}
+															handleToken={this.handleToken}
+															toggleOverlay={this.toggleOverlay}
+														/>
+													)}
 												/>
-											</Fragment>
+												<Route
+													exact
+													path="/clusters/:id/scale"
+													component={() => (
+														<ScaleClusterScreen
+															clusterId={this.props.match.params.id}
+															nodes={this.state.cluster.total_nodes}
+														/>
+													)}
+												/>
+											</Switch>
 										</RightContainer>
 									</div>
 								)}

@@ -120,5 +120,29 @@ export function createSubscription(id, token) {
 	});
 }
 
+export function scaleCluster(id, nodes) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_scale/${id}/elasticsearch/nodecount`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				node_count: nodes,
+			}),
+		})
+			.then(res => res.json())
+			.then((res) => {
+				if (res.status.code >= 400) {
+					reject(res.status.message);
+				} else {
+					resolve(res.status.message);
+				}
+			})
+			.catch(reject);
+	});
+}
+
 export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
 export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);

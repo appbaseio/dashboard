@@ -9,7 +9,7 @@ export default class IntegerStep extends React.Component {
 		super(props);
 
 		this.state = {
-			inputValue: props.value || 1,
+			inputValue: props.defaultValue || 1,
 		};
 	}
 
@@ -25,11 +25,11 @@ export default class IntegerStep extends React.Component {
 	render() {
 		const { inputValue } = this.state;
 		return (
-			<Row>
+			<Row css={{ width: '100%' }}>
 				<Col span={12}>
 					<Slider
 						min={1}
-						max={20}
+						max={5}
 						onChange={this.onChange}
 						value={typeof inputValue === 'number' ? inputValue : 0}
 					/>
@@ -37,7 +37,7 @@ export default class IntegerStep extends React.Component {
 				<Col span={4}>
 					<InputNumber
 						min={1}
-						max={20}
+						max={5}
 						style={{ marginLeft: 16 }}
 						value={inputValue}
 						onChange={this.onChange}
@@ -49,6 +49,6 @@ export default class IntegerStep extends React.Component {
 }
 
 IntegerStep.propTypes = {
-	value: PropTypes.number.isRequired,
+	defaultValue: PropTypes.number.isRequired,
 	onChange: PropTypes.func, // eslint-disable-line
 };
