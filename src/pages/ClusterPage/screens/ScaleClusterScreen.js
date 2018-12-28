@@ -45,7 +45,6 @@ export default class ScaleClusterScreen extends Component {
 				});
 			})
 			.catch((e) => {
-				// show falsy message
 				notification.error({
 					message: 'Cluster Scaling Failed',
 					description: e,

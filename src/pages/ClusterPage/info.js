@@ -22,6 +22,7 @@ import {
 import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
+import ShareClusterScreen from './screens/ShareClusterScreen';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -438,6 +439,15 @@ export default class Clusters extends Component {
 														<ScaleClusterScreen
 															clusterId={this.props.match.params.id}
 															nodes={this.state.cluster.total_nodes}
+														/>
+													)}
+												/>
+												<Route
+													exact
+													path="/clusters/:id/share"
+													component={() => (
+														<ShareClusterScreen
+															clusterId={this.props.match.params.id}
 														/>
 													)}
 												/>
