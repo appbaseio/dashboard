@@ -17,9 +17,9 @@ import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
 
 // test key
-export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
-// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
@@ -109,9 +109,7 @@ export default class ClusterPage extends Component {
 
 				<div>
 					<h4>Pricing Plan</h4>
-					<div>
-						{cluster.pricing_plan}
-					</div>
+					<div>{cluster.pricing_plan}</div>
 				</div>
 
 				<div>

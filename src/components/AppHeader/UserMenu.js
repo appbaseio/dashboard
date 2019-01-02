@@ -56,7 +56,9 @@ const UserMenu = ({ user }) => {
 	return (
 		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
 			<span style={{ cursor: 'pointer' }}>
-				<Avatar src={user.picture} />
+				<Avatar src={user.picture} css={{ backgroundColor: '#1890ff' }}>
+					{user.name && user.name.charAt(0).toLocaleUpperCase()}
+				</Avatar>
 				&nbsp;&nbsp;
 				{user ? user.name : 'Loading...'}
 				&nbsp;&nbsp;
