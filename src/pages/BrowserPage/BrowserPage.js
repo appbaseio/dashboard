@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import { SCALR_API } from '../../constants/config';
 
 import {
 	setCurrentApp,
@@ -40,9 +41,13 @@ class BrowserPage extends Component {
 
 	render() {
 		const { appName, credentials } = this.props;
-
+		const splitHost = SCALR_API.split('https://');
+		let clusterHost = 'scalr.api.appbase.io';
+		if (splitHost.length === 2) {
+			[, clusterHost] = splitHost;
+		}
 		const dejavu = {
-			url: `https://${credentials}@scalr.api.appbase.io`,
+			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
 		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${
