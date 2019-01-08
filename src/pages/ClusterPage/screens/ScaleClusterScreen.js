@@ -40,13 +40,13 @@ export default class ScaleClusterScreen extends Component {
 		scaleCluster(clusterId, nodes)
 			.then((res) => {
 				notification.success({
-					message: 'Cluster Scaling Successful',
+					message: 'Cluster scaling has started',
 					description: res,
 				});
 			})
 			.catch((e) => {
 				notification.error({
-					message: 'Cluster Scaling Failed',
+					message: 'Cluster scaling couldn\'t be applied',
 					description: e,
 				});
 				this.setState({
