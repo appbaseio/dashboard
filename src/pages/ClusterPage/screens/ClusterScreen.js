@@ -4,6 +4,7 @@ import { Button, Icon } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
+import Overlay from '../components/Overlay';
 import { getAddon, hasAddon } from '../utils';
 import {
  card, settingsItem, clusterEndpoint, clusterButtons,
@@ -23,6 +24,7 @@ export default class ClusterScreen extends Component {
 			mirage: props.mirage,
 			dejavu: props.dejavu,
 			elasticsearchHQ: props.elasticsearchHQ,
+			showOverlay: false,
 		};
 
 		this.paymentButton = React.createRef();
@@ -43,6 +45,13 @@ export default class ClusterScreen extends Component {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
+		}));
+	};
+
+	toggleOverlay = () => {
+		this.setState(state => ({
+			...state,
+			showOverlay: !state.showOverlay,
 		}));
 	};
 
@@ -189,19 +198,20 @@ export default class ClusterScreen extends Component {
 			mirage,
 			dejavu,
 			elasticsearchHQ,
+			showOverlay,
 		} = this.state;
 		const {
 			clusterId,
 			deployment: originalDeployment,
 			planRate,
 			handleToken,
-			toggleOverlay,
 			isPaid,
 		} = this.props;
 
 		return (
 			<Fragment>
 				<li className={card}>
+					{showOverlay && <Overlay />}
 					<div className="col light">
 						<h3>Elasticsearch</h3>
 						<p>Live cluster endpoint</p>
@@ -375,7 +385,7 @@ export default class ClusterScreen extends Component {
 								token={token => handleToken(clusterId, token)}
 								disabled={false}
 								stripeKey={STRIPE_KEY}
-								closed={toggleOverlay}
+								closed={this.toggleOverlay}
 							>
 								<Button
 									size="large"
@@ -383,7 +393,7 @@ export default class ClusterScreen extends Component {
 									css={{
 										marginRight: 12,
 									}}
-									onClick={toggleOverlay}
+									onClick={this.toggleOverlay}
 								>
 									Pay now
 								</Button>

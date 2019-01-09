@@ -436,7 +436,6 @@ export default class Clusters extends Component {
 															// payments handling
 															planRate={this.state.planRate || 0}
 															handleToken={this.handleToken}
-															toggleOverlay={this.toggleOverlay}
 															isPaid={isPaid}
 														/>
 													)}
