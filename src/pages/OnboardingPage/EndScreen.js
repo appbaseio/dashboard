@@ -47,7 +47,7 @@ const integrations = [
 	},
 ];
 
-const getFilteredList = query => {
+const getFilteredList = (query) => {
 	const matchQuery = query.toLowerCase();
 	return integrations.filter(item => item.name.toLowerCase().indexOf(matchQuery) > -1);
 };
@@ -57,7 +57,7 @@ class EndScreen extends React.PureComponent {
 		searchQuery: '',
 	};
 
-	handleSearchChange = e => {
+	handleSearchChange = (e) => {
 		const {
 			target: { value },
 		} = e;
@@ -145,22 +145,26 @@ class EndScreen extends React.PureComponent {
 
 							<div className="card-row">
 								{integrationsList.map(item => (
-									<div className="card" key={item.name}>
-										<img
-											src={item.image1x}
-											srcSet={`${item.image1x} 245w, ${item.image2x} 490w`}
-											alt="React"
-										/>
-										<div className="card-content">
-											<h2>{item.name}</h2>
-											<p>{item.description}</p>
-											<a
-												target="_blank"
-												rel="noopener noreferrer"
-												href={item.url}
-											>
-												Start with {item.name}
-											</a>
+									<div className="card-wrapper">
+										<div className="card" key={item.name}>
+											<img
+												src={item.image1x}
+												srcSet={`${item.image1x} 245w, ${
+													item.image2x
+												} 490w`}
+												alt="React"
+											/>
+											<div className="card-content">
+												<h2>{item.name}</h2>
+												<p>{item.description}</p>
+												<a
+													target="_blank"
+													rel="noopener noreferrer"
+													href={item.url}
+												>
+													Start with {item.name}
+												</a>
+											</div>
 										</div>
 									</div>
 								))}
@@ -177,7 +181,7 @@ EndScreen.propTypes = {
 	currentApp: string.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	// for development and testing
 	const urlApp = Object.keys(state.apps).find(item => state.apps[item] === getParam('app')) || '';
 
