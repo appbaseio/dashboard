@@ -10,16 +10,17 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 
-import { getClusters, createSubscription } from './utils';
+import { getClusters, createSubscription, deleteCluster } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
+import Overlay from './components/Overlay';
 
 // test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
@@ -29,12 +30,36 @@ export default class ClusterPage extends Component {
 			isLoading: true,
 			clustersAvailable: true,
 			clusters: [],
+			showOverlay: false,
 		};
 	}
 
 	componentDidMount() {
 		this.initClusters();
 	}
+
+	deleteCluster = (id) => {
+		this.setState({
+			isLoading: true,
+		});
+		deleteCluster(id)
+			.then(() => {
+				this.initClusters();
+			})
+			.catch((e) => {
+				this.setState({
+					isLoading: false,
+				});
+				console.log(e);
+			});
+	};
+
+	toggleOverlay = () => {
+		this.setState(state => ({
+			...state,
+			showOverlay: !state.showOverlay,
+		}));
+	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
 		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.plan === plan);
@@ -99,6 +124,18 @@ export default class ClusterPage extends Component {
 				<span className="tag">
 					{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
 				</span>
+				{cluster.status === 'active'
+				|| cluster.status === 'in progress'
+				|| cluster.status === 'deployments in progress' ? (
+					<Button
+						type="danger"
+						icon="delete"
+						className="showOnHover"
+						onClick={() => this.deleteCluster(cluster.id)}
+					>
+						Delete
+					</Button>
+				) : null}
 			</h3>
 
 			<div className="info-row">
@@ -160,8 +197,9 @@ export default class ClusterPage extends Component {
 									token={token => this.handleToken(cluster.id, token)}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
+									closed={this.toggleOverlay}
 								>
-									<Button>Pay now to access</Button>
+									<Button onClick={this.toggleOverlay}>Pay now to access</Button>
 								</Stripe>
 							</div>
 						)}
@@ -192,7 +230,12 @@ export default class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const { isLoading, clustersAvailable, clusters } = this.state;
+		const {
+			isLoading,
+			clustersAvailable,
+			clusters,
+			showOverlay, // prettier-ignore
+		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
@@ -207,31 +250,35 @@ export default class ClusterPage extends Component {
 
 		if (!isLoading && !clustersAvailable) {
 			return (
-				<div style={vcenter}>
-					<i className="fas fa-gift" style={{ fontSize: 36 }} />
-					<h2 style={{ marginTop: 24, fontSize: 22 }}>
-						You
-						{"'"}
-						ve unlocked 14 days free trial
-					</h2>
-					<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
-						Get started with clusters today
-					</p>
-					<div style={{ textAlign: 'center' }}>
-						<Link to="/clusters/new">
-							<Button type="primary">
-								<i className="fas fa-plus" />
-								&nbsp; Create a New Cluster
-							</Button>
-						</Link>
+				<Fragment>
+					<FullHeader isCluster />
+					<div style={vcenter}>
+						<i className="fas fa-gift" style={{ fontSize: 36 }} />
+						<h2 style={{ marginTop: 24, fontSize: 22 }}>
+							You
+							{"'"}
+							ve unlocked 14 days free trial
+						</h2>
+						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
+							Get started with clusters today
+						</p>
+						<div style={{ textAlign: 'center' }}>
+							<Link to="/clusters/new">
+								<Button type="primary">
+									<i className="fas fa-plus" />
+									&nbsp; Create a New Cluster
+								</Button>
+							</Link>
+						</div>
 					</div>
-				</div>
+				</Fragment>
 			);
 		}
 
 		return (
 			<Fragment>
 				<FullHeader isCluster />
+				{showOverlay && <Overlay />}
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>

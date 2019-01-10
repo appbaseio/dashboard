@@ -22,7 +22,6 @@ export function getClusters() {
 export function getClusterData(id) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		const hasPaymentError = false;
 		fetch(`${ACC_API}/v1/_status/${id}`, {
 			method: 'GET',
 			credentials: 'include',
@@ -38,7 +37,8 @@ export function getClusterData(id) {
 			})
 			.then((data) => {
 				if (hasError) {
-					reject(data.status.message);
+					const { status, ...others } = data;
+					reject(JSON.stringify({ message: status.message, ...others }));
 				}
 				resolve(data);
 			})
@@ -113,10 +113,96 @@ export function createSubscription(id, token) {
 			},
 			body: JSON.stringify({
 				token,
-				plan: 'sandbox',
 			}),
 		})
 			.then(resolve)
 			.catch(reject);
 	});
 }
+
+export function scaleCluster(id, nodes) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_scale/${id}/elasticsearch/nodecount`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				node_count: nodes,
+			}),
+		})
+			.then(res => res.json())
+			.then((res) => {
+				if (res.status.code >= 400) {
+					reject(res.status.message);
+				} else {
+					resolve(res.status.message);
+				}
+			})
+			.catch(reject);
+	});
+}
+
+export function getSharedUsers(id) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_share/${id}`, {
+			method: 'GET',
+			credentials: 'include',
+		})
+			.then(res => res.json())
+			.then((res) => {
+				if (res.status.code >= 400) {
+					reject(res.status.message);
+				} else {
+					resolve(res.users);
+				}
+			})
+			.catch(reject);
+	});
+}
+
+export function addSharedUser(id, email) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_share/${id}`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				email,
+			}),
+		})
+			.then(res => res.json())
+			.then((res) => {
+				if (res.status.code >= 400) {
+					reject(res.status.message);
+				} else {
+					resolve(res.status.message);
+				}
+			})
+			.catch(reject);
+	});
+}
+
+export function deleteSharedUser(id, email) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_share/${id}/${email}`, {
+			method: 'DELETE',
+			credentials: 'include',
+		})
+			.then(res => res.json())
+			.then((res) => {
+				if (res.status.code >= 400) {
+					reject(res.status.message);
+				} else {
+					resolve(res.status.message);
+				}
+			})
+			.catch(reject);
+	});
+}
+
+export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
+export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);

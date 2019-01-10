@@ -3,6 +3,7 @@ import { Modal, Button, Icon } from 'antd';
 
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
+import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 
 import { clusterContainer, card, settingsItem } from './styles';
@@ -150,6 +151,7 @@ export default class NewCluster extends Component {
 		const provider = 'gke';
 
 		this.state = {
+			isLoading: false,
 			clusterName: '',
 			clusterVersion: esVersions[0],
 			pricing_plan: machineMarks[provider][0].plan,
@@ -321,12 +323,17 @@ export default class NewCluster extends Component {
 			];
 		}
 
+		this.setState({
+			isLoading: true,
+		});
+
 		deployCluster(body)
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
 			.catch((e) => {
 				this.setState({
+					isLoading: false,
 					deploymentError: e,
 					showError: true,
 				});
@@ -456,7 +463,10 @@ export default class NewCluster extends Component {
 	};
 
 	render() {
-		const { provider } = this.state;
+		const { provider, isLoading } = this.state;
+
+		if (isLoading) return <Loader />;
+
 		return (
 			<Fragment>
 				<FullHeader isCluster />

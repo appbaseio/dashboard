@@ -286,8 +286,27 @@ const clustersList = css`
 		}
 		&.compact {
 			padding: 20px;
+
+			h3 {
+				height: 32px;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+
 			.info-row {
 				margin-top: 0;
+			}
+
+			.showOnHover {
+				display: none;
+			}
+
+			&:hover,
+			&:focus {
+				.showOnHover {
+					display: inline;
+				}
 			}
 		}
 	}
