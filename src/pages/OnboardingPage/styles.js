@@ -424,11 +424,8 @@ const endScreenStyles = css`
 		h2,
 		h3 {
 			width: 100%;
-			font-size: 20px;
-			font-weight: 700;
-		}
-		h3 {
 			font-size: 18px;
+			font-weight: 700;
 		}
 		h1 {
 			font-size: 36px;
@@ -470,7 +467,7 @@ const endScreenStyles = css`
 			}
 
 			a {
-				background: rgba(26, 116, 255, 0.8);
+				background: #1a74ff;
 				padding: 10px;
 				border-radius: 3px;
 				color: #fff;
@@ -538,15 +535,16 @@ const endScreenStyles = css`
 	.card-row {
 		display: flex;
 		flex-direction: row;
-		padding: 20px 0 40px;
 		flex-wrap: wrap;
+		justify-content: space-between;
+		.card-wrapper {
+			padding: 15px 15px;
+		}
 		.card {
 			background-color: #fff;
 			padding: 10px;
 			flex-direction: column;
 			min-height: 220px;
-			margin-bottom: 40px;
-			margin-right: 30px;
 			text-align: center;
 			img {
 				height: 220px;
@@ -567,7 +565,6 @@ const endScreenStyles = css`
 					line-height: 26px;
 					max-width: 280px;
 				}
-
 			}
 
 			${mediaKey.small} {

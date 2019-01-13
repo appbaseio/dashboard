@@ -77,7 +77,8 @@ export default class PricingSlider extends Component {
 						marks={marks}
 						onChange={this.onChange}
 						onAfterChange={this.onAfterChange}
-						value={value}
+						defaultValue={value}
+						step={null}
 					/>
 				</div>
 				<div className="col grey">
