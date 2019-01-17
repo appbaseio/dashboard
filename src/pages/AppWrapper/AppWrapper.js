@@ -41,6 +41,7 @@ const routes = {
 			{ label: 'Search Latency', link: 'search-latency' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
 			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Request Distribution', link: 'request-distribution' },
 		],
 	},
 	Security: {

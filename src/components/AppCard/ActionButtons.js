@@ -183,7 +183,6 @@ class ActionButtons extends React.Component {
 				</Row>
 				<DeleteAppModal
 					appName={appName}
-					appId={appId}
 					deleteModal={deleteModal}
 					handleDeleteModal={this.handleDeleteModal}
 				/>
