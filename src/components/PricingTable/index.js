@@ -276,9 +276,9 @@ class PricingTable extends Component {
 			showConfirmBox: false,
 		};
 		// test key
-		// this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+		this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 		// live key
-		this.stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+		// this.stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 	}
 
 	componentDidUpdate(prevProps) {
