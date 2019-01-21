@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
+import { Radio } from 'antd';
 
 import SearchApp from './SearchApp';
 import Footer from '../components/Footer';
@@ -9,6 +9,17 @@ export default class SearchCode extends Component {
 		error: '',
 		selectedOption: this.props.ui ? { label: this.props.ui, value: this.props.ui } : '',
 	};
+
+	options = [
+		{
+			label: 'Raw JSON',
+			value: 'raw_json',
+		},
+		{
+			label: 'React',
+			value: 'react',
+		},
+	];
 
 	setError = (e) => {
 		if (this.interval) clearInterval(this.interval);
@@ -24,12 +35,10 @@ export default class SearchCode extends Component {
 		);
 	};
 
-	handleChange = (selectedOption) => {
-		this.setState({
-			selectedOption,
-			error: '',
-		});
-		const value = selectedOption.value;
+	handleChange = (e) => {
+		const {
+			target: { value },
+		} = e;
 		this.props.setUIField(value);
 	};
 
@@ -50,21 +59,20 @@ export default class SearchCode extends Component {
 			className={`search-field-container ${horizontal ? 'full-row' : ''}`}
 		>
 			<div>
-				<h3>Choose the library</h3>
-				<p>You can check the Results in below search app.</p>
+				<h3>Choose the template</h3>
+				<p>You can check the differences in results in below search app.</p>
 			</div>
-			<div className="input-wrapper">
-				<Select
-					name="form-field-name"
-					value={this.state.selectedOption}
+			<div className="input-wrapper" style={{ textAlign: 'center' }}>
+				<Radio.Group
+					size="large"
+					value={this.props.ui}
 					onChange={this.handleChange}
-					placeholder="Select fields"
-					isClearable={false}
-					options={[
-						{ value: 'react', label: 'reactivesearch' },
-						{ value: 'appbase_js', label: 'appbase-js' },
-					]}
-				/>
+					buttonStyle="solid"
+				>
+					{this.options.map(option => (
+						<Radio.Button value={option.value}>{option.label}</Radio.Button>
+					))}
+				</Radio.Group>
 			</div>
 			{this.state.error && (
 				<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>
@@ -83,18 +91,12 @@ export default class SearchCode extends Component {
 						<header>
 							<h2>Build your UI</h2>
 							<p>
-								We provide different libraries to consume the results{' '}
-								<strong>(hits)</strong> returned from appbase API which helps in
-								rendering the UI
-							</p>
-							<p>
-								We recommend using <code>ReactiveSearch</code> library which
-								provides a range of UI components that you can use to build your
-								application.
+								Everytime you request Appbase{"'"}s Search API, it answers with a
+								JSON object that contains the best matching results in an object :
+								<strong>hits.</strong>
 							</p>
 						</header>
-						<h4>We will start by letting you choose the library</h4>
-						{this.props.ui ? null : this.renderSearchInput()}
+						<h3>We will start by letting you choose the template</h3>
 					</div>
 				</div>
 

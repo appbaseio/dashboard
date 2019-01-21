@@ -175,9 +175,9 @@ const renderJSONList = () => (
 
 const renderCode = (lib) => {
 	switch (lib) {
-		case 'reactivesearch':
+		case 'react':
 			return renderResultList();
-		case 'appbase_js':
+		case 'raw_json':
 			return renderJSONList();
 		default:
 			return renderResultList();

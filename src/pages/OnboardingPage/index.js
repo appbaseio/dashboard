@@ -28,7 +28,7 @@ export default class Onboarding extends Component {
 		searchFields: [],
 		facetFields: [],
 		url: '',
-		ui: 'reactivesearch',
+		ui: 'react',
 	};
 
 	nextScreen = () => {
