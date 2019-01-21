@@ -106,17 +106,10 @@ export default class Search extends Component {
 
 				{this.props.facetFields.length ? this.renderSearchApp() : null}
 
-				{/* <Footer
-					nextScreen={this.props.nextScreen}
-					previousScreen={this.props.previousScreen}
-					disabled={!this.props.facetFields.length}
-				/> */}
 				<Footer
 					nextScreen={this.props.nextScreen}
 					previousScreen={this.props.previousScreen}
 					disabled={!this.props.facetFields.length}
-					label="Finish"
-					app={this.props.app}
 				/>
 			</div>
 		);

@@ -5,6 +5,7 @@ import ImportData from './screens/ImportData';
 import AppbaseFeatures from './screens/AppbaseFeatures';
 import Search from './screens/Search';
 import Facets from './screens/Facets';
+import SearchCode from './screens/SearchCode';
 
 import { onboardingStyles } from './styles';
 
@@ -13,7 +14,8 @@ const screens = {
 	1: ImportData,
 	2: Search,
 	3: Facets,
-	4: AppbaseFeatures,
+	4: SearchCode,
+	5: AppbaseFeatures,
 };
 
 export default class Onboarding extends Component {
@@ -26,11 +28,12 @@ export default class Onboarding extends Component {
 		searchFields: [],
 		facetFields: [],
 		url: '',
+		ui: 'reactivesearch',
 	};
 
 	nextScreen = () => {
 		this.setState((state) => {
-			const currentScreen =	state.currentScreen + 1 < state.totalScreen
+			const currentScreen =				state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
 					: state.currentScreen;
 
@@ -44,8 +47,7 @@ export default class Onboarding extends Component {
 
 	previousScreen = () => {
 		this.setState((state) => {
-			const currentScreen = state.currentScreen - 1 >= 0
-				? state.currentScreen - 1 : state.currentScreen;
+			const currentScreen = state.currentScreen - 1 >= 0 ? state.currentScreen - 1 : state.currentScreen; // prettier-ignore
 
 			return {
 				...state,
@@ -96,16 +98,22 @@ export default class Onboarding extends Component {
 		});
 	};
 
+	setUIField = (ui) => {
+		this.setState({
+			ui,
+		});
+	};
+
 	skipTutorial = () => {
 		const { history } = this.props;
 		localStorage.setItem('hasVisitedTutorial', true);
 		history.push('/');
-	}
+	};
 
 	renderCurrentScreen = () => {
 		const {
-			currentScreen, hasJSON, url, searchFields, facetFields, newApp,
-		} = this.state;
+ currentScreen, hasJSON, url, searchFields, facetFields, newApp, ui,
+} = this.state;
 		const RenderScreen = screens[currentScreen];
 		let props = {};
 
@@ -130,6 +138,14 @@ export default class Onboarding extends Component {
 				facetFields,
 				searchFields,
 				app: newApp,
+			};
+		} else if (currentScreen === 4) {
+			props = {
+				facetFields,
+				searchFields,
+				app: newApp,
+				ui,
+				setUIField: this.setUIField,
 			};
 		} else {
 			props = {
@@ -165,8 +181,7 @@ export default class Onboarding extends Component {
 						<div
 							className="color"
 							style={{
-								width: `${((currentScreen + 1) * 100)
-									/ totalScreen}%`,
+								width: `${((currentScreen + 1) * 100) / totalScreen}%`,
 							}}
 						/>
 					</div>
@@ -200,14 +215,14 @@ export default class Onboarding extends Component {
 								Set aggregation fields
 							</a>
 						</li>
-						{/* <li>
+						<li>
 							<a
 								className={currentScreen === 4 ? 'active' : null}
 								onClick={() => this.setScreen(4)}
 							>
-								Stream realtime updates
+								Build your own UI
 							</a>
-						</li> */}
+						</li>
 					</ul>
 				</div>
 				<div className="right">
