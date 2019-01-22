@@ -120,7 +120,7 @@ class Credentials extends Component {
 								<Button css={{ border: 0 }} icon="copy" data-clipboard-text={key} />
 							</CopyToClipboard>
 							<Popconfirm
-								title="Are you sure reset this key?"
+								title="Are you sure you want to reset this key?"
 								onConfirm={this.handleKeyReset}
 								okText="Yes"
 								cancelText="No"
