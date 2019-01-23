@@ -115,7 +115,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.13',
+					image: 'siddharthlatest/arc:0.0.14',
 					exposed_port: 8000,
 				},
 			];
