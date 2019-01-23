@@ -15,7 +15,6 @@ const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZT
 
 const esVersions = [
 	'6.5.4',
-	'7.0.0-alpha2',
 	'6.4.3',
 	'6.3.2',
 	'6.2.4',
