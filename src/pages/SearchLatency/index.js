@@ -2,6 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import SearchPerformance from '../../batteries/components/analytics/components/SearchLatency';
@@ -41,7 +42,19 @@ const SearchLatencyWrapper = ({ plan, isGrowth }) => (
 				</Container>
 			</React.Fragment>
 		) : (
-			<Banner {...bannerMessagesAnalytics[plan]} />
+			<React.Fragment>
+				<Banner {...bannerMessagesAnalytics[plan]} />
+				<Overlay
+					style={{
+						maxWidth: '100%',
+					}}
+					lockSectionStyle={{
+						marginTop: '15%',
+					}}
+					src="/static/images/analytics/SearchLatency.png"
+					alt="request logs"
+				/>
+			</React.Fragment>
 		)}
 	</React.Fragment>
 );

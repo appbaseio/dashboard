@@ -5,6 +5,7 @@ import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { mediaKey } from '../../utils/media';
 import SearchVolumeChart from '../../batteries/components/shared/Chart/SearchVolume';
+import RPMChart from '../../batteries/components/analytics/components/RequestDistribution';
 import Flex from '../../batteries/components/shared/Flex';
 import DemoCards from '../../components/DemoCard';
 import Container from '../../components/Container';
@@ -108,6 +109,9 @@ class PaidUserOverview extends React.Component {
 				</Flex>
 				<div css="margin-top: 20px">
 					<RequestLogs pageSize={5} changeUrlOnTabChange={false} appName={appName} />
+				</div>
+				<div css="margin-top: 20px">
+					<RPMChart />
 				</div>
 				<DemoCards cardConfig={exampleConfig} />
 			</Container>
