@@ -52,7 +52,7 @@ const SearchLatencyWrapper = ({ plan, isGrowth }) => (
 						marginTop: '15%',
 					}}
 					src="/static/images/analytics/SearchLatency.png"
-					alt="request logs"
+					alt="search latency"
 				/>
 			</React.Fragment>
 		)}

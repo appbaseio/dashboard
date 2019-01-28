@@ -53,7 +53,7 @@ const RequestDistributionWrapper = ({ plan, isGrowth }) => (
 						marginTop: '15%',
 					}}
 					src="/static/images/analytics/RequestDistribution.png"
-					alt="request logs"
+					alt="request distribution"
 				/>
 			</React.Fragment>
 		)}
