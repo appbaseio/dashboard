@@ -161,7 +161,7 @@ export default class NewCluster extends Component {
 			logstash: false,
 			dejavu: true,
 			elasticsearchHQ: true,
-			arc: false,
+			arc: true,
 			mirage: false,
 			error: '',
 			deploymentError: '',
@@ -317,7 +317,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.6',
+					image: 'siddharthlatest/arc:0.0.16',
 					exposed_port: 8000,
 				},
 			];

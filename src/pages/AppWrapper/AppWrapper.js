@@ -34,13 +34,14 @@ const routes = {
 		icon: 'line-chart',
 		menu: [
 			{ label: 'Overview', link: 'analytics' },
+			{ label: 'Request Logs', link: 'request-logs' },
 			{ label: 'Popular Searches', link: 'popular-searches' },
 			{ label: 'No Result Searches', link: 'no-results-searches' },
 			{ label: 'Popular Filters', link: 'popular-filters' },
 			{ label: 'Popular Results', link: 'popular-results' },
-			{ label: 'Search Latency', link: 'search-latency' },
 			{ label: 'Geo Distribution', link: 'geo-distribution' },
-			{ label: 'Request Logs', link: 'request-logs' },
+			{ label: 'Requests Per Minute', link: 'requests-per-minute' },
+			{ label: 'Search Latency', link: 'search-latency' },
 		],
 	},
 	Security: {

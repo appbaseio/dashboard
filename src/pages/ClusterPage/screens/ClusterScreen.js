@@ -115,7 +115,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.6',
+					image: 'siddharthlatest/arc:0.0.17',
 					exposed_port: 8000,
 				},
 			];
@@ -129,7 +129,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'mirage',
-					image: 'appbaseio/mirage:0.10.1',
+					image: 'appbaseio/mirage:0.8.0',
 					exposed_port: 3030,
 				},
 			];

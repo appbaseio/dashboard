@@ -15,6 +15,10 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../../pages/GeoDistributionPage'),
 	loading: Loader,
 });
+const RequestDistributionPage = Loadable({
+	loader: () => import('../../pages/RequestDistributionPage'),
+	loading: Loader,
+});
 const SearchLatency = Loadable({
 	loader: () => import('../../pages/SearchLatency'),
 	loading: Loader,
@@ -166,6 +170,13 @@ class AppLayout extends React.PureComponent {
 							path="/app/:appName/request-logs/:tab?"
 							component={props => (
 								<AppPageContainer {...props} component={RequestLogs} />
+							)}
+						/>
+						<Route
+							exact
+							path="/app/:appName/requests-per-minute"
+							component={props => (
+								<AppPageContainer {...props} component={RequestDistributionPage} />
 							)}
 						/>
 						<Route

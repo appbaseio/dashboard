@@ -71,7 +71,7 @@ class TransferOwnership extends Component {
 									placeholder="Type valid email"
 								/>
 								<Popconfirm
-									title="Are you sure to transfer this app?"
+									title="Are you sure you want to transfer this app?"
 									onConfirm={this.handleSubmit}
 									okText="Yes"
 									cancelText="No"

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Overlay from '../../components/Overlay';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
-import SearchPerformance from '../../batteries/components/analytics/components/SearchLatency';
+import RequestDistribution from '../../batteries/components/analytics/components/RequestDistribution';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const bannerMessagesAnalytics = {
@@ -17,33 +17,34 @@ const bannerMessagesAnalytics = {
 		href: 'billing',
 	},
 	bootstrap: {
-		title: 'Get search latency analytics with Growth plan',
+		title: 'Get request distribution analytics with Growth plan',
 		description:
-			'By upgrading to the Growth plan, you can drill down into the performance of your search.',
+			'By upgrading to the Growth plan, you can visualize the status of your requests.',
 		buttonText: 'Upgrade To Growth',
 		href: 'billing',
 	},
 	growth: {
-		title: 'Search Latency',
+		title: 'Request Distribution',
 		description:
-			'Understand the performance of your search. Learn how to make the most of search latency insights.',
+			'Understand the status of your requests, Learn how to make the most of request distribution insights.',
 		buttonText: 'Read Docs',
 		href: 'https://docs.appbase.io',
 	},
 };
 
-const SearchLatencyWrapper = ({ plan, isGrowth }) => (
+const RequestDistributionWrapper = ({ plan, isGrowth }) => (
 	<React.Fragment>
 		{isGrowth ? (
 			<React.Fragment>
 				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
 				<Container>
-					<SearchPerformance />
+					<RequestDistribution />
 				</Container>
 			</React.Fragment>
 		) : (
 			<React.Fragment>
 				<Banner {...bannerMessagesAnalytics[plan]} />
+
 				<Overlay
 					style={{
 						maxWidth: '100%',
@@ -51,15 +52,15 @@ const SearchLatencyWrapper = ({ plan, isGrowth }) => (
 					lockSectionStyle={{
 						marginTop: '15%',
 					}}
-					src="/static/images/analytics/SearchLatency.png"
-					alt="search latency"
+					src="/static/images/analytics/RequestDistribution.png"
+					alt="request distribution"
 				/>
 			</React.Fragment>
 		)}
 	</React.Fragment>
 );
 
-SearchLatencyWrapper.propTypes = {
+RequestDistributionWrapper.propTypes = {
 	plan: PropTypes.string.isRequired,
 	isGrowth: PropTypes.bool.isRequired,
 };
@@ -71,4 +72,4 @@ const mapStateToProps = (state) => {
 		isGrowth: get(appPlan, 'isGrowth'),
 	};
 };
-export default connect(mapStateToProps)(SearchLatencyWrapper);
+export default connect(mapStateToProps)(RequestDistributionWrapper);
