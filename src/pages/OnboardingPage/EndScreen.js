@@ -45,6 +45,13 @@ const integrations = [
 		description: 'Javascript client library for working with elasticseach / appbase apps',
 		url: 'https://docs.appbase.io/javascript/quickstart.html',
 	},
+	{
+		name: 'Clusters',
+		image1x: '/static/images/onboarding/finish-screen/Clusters@1x.png',
+		image2x: '/static/images/onboarding/finish-screen/Clusters@2x.png',
+		description: 'ElasticSearch clusters powered by appbase.io',
+		url: 'https://dashboard.appbase.io/clusters',
+	},
 ];
 
 const getFilteredList = (query) => {
@@ -129,7 +136,7 @@ class EndScreen extends React.PureComponent {
 						</div>
 
 						<div className="integration-container">
-							<div className="title">Check our integrations</div>
+							<div className="title">Products and Integrations</div>
 
 							<div className="search-input-container">
 								<input
@@ -145,8 +152,8 @@ class EndScreen extends React.PureComponent {
 
 							<div className="card-row">
 								{integrationsList.map(item => (
-									<div className="card-wrapper">
-										<div className="card" key={item.name}>
+									<div className="card-wrapper" key={item.name}>
+										<div className="card">
 											<img
 												src={item.image1x}
 												srcSet={`${item.image1x} 245w, ${
