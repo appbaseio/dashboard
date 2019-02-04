@@ -462,6 +462,13 @@ export default class NewCluster extends Component {
 		);
 	};
 
+	handleError = () => {
+		Modal.error({
+			title: 'Error',
+			content: this.state.deploymentError,
+		});
+	};
+
 	render() {
 		const { provider, isLoading } = this.state;
 
@@ -472,13 +479,7 @@ export default class NewCluster extends Component {
 				<FullHeader isCluster />
 				<Container>
 					<section className={clusterContainer}>
-						<Modal
-							title="Error"
-							visible={this.state.showError}
-							onOk={this.hideErrorModal}
-						>
-							<p>{this.state.deploymentError}</p>
-						</Modal>
+						{this.state.showError ? this.handleError() : null}
 						<article>
 							<h2>Create a new cluster</h2>
 
