@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Card, List, Switch, message,
+ Card, List, Switch, message, Modal,
 } from 'antd';
 
 import { ACC_API } from '../../constants/config';
@@ -42,7 +42,7 @@ class Emails extends React.Component {
 			const parsedResponse = await response.json();
 
 			if (response.status >= 400) {
-				message.error(parsedResponse.message);
+				Modal.error({ title: 'Error', content: parsedResponse.message });
 			}
 
 			if (parsedResponse.body.email_preferences) {
@@ -57,7 +57,7 @@ class Emails extends React.Component {
 				});
 			}
 		} catch (e) {
-			message.error('Something went Wrong.');
+			Modal.error({ title: 'Error', content: 'Something went Wrong. Please try again.' });
 		}
 	};
 
@@ -78,10 +78,11 @@ class Emails extends React.Component {
 			const parsedResponse = await response.json();
 
 			if (response.status >= 400) {
-				message.error(parsedResponse.message);
+				Modal.error({ title: 'Error', content: parsedResponse.message });
 			}
+			message.success('Preferences Updated');
 		} catch (e) {
-			message.error('Something went Wrong.');
+			Modal.error({ title: 'Error', content: 'Something went Wrong. Please try again.' });
 		}
 	};
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Card, Alert, Button, Popconfirm, notification,
+ Card, Alert, Button, Popconfirm, notification, Modal,
 } from 'antd';
 
 import { ACC_API } from '../../constants/config';
@@ -33,8 +33,9 @@ const deleteUser = async () => {
 		removeAllCookies();
 		window.location.href = logoutURL;
 	} catch (err) {
-		notification.error({
-			message: 'Something went wrong. Please report to us if this bug persists',
+		Modal.error({
+			title: 'Error',
+			content: 'Something went wrong. Please report to us if this bug persists',
 		});
 	}
 };

@@ -33,7 +33,10 @@ class DeleteAppModal extends React.Component {
 				}
 			})
 			.catch(() => {
-				message.error('Something went wrong. Try again.');
+				Modal.error({
+					title: 'Delete App',
+					content: 'Something went wrong. Please try again.',
+				});
 				this.setState({
 					loading: false,
 				});

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
- Card, Button, notification, Popconfirm, Spin, Row, Alert,
+ Card, Button, notification, Popconfirm, Spin, Row, Alert, Modal,
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -75,8 +75,9 @@ class Credentials extends Component {
 			this.toggleReseting();
 
 			if (response.status >= 400) {
-				notification.error({
-					message: data.message,
+				Modal.error({
+					title: ' Error',
+					content: data.message,
 				});
 			}
 
@@ -87,8 +88,9 @@ class Credentials extends Component {
 			this.getKey();
 		} catch (err) {
 			this.toggleReseting();
-			notification.error({
-				message: 'Something went Wrong.Please report if the bug persists.',
+			Modal.error({
+				title: 'Error',
+				content: 'Something went Wrong.Please report if the bug persists.',
 			});
 		}
 	};

@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { Modal } from 'antd';
 import get from 'lodash/get';
 
 export const keySummary = {
@@ -10,9 +10,9 @@ export const keySummary = {
 export const displayErrors = (nextErrors = [], prevErrors = []) => {
 	nextErrors.map((error, index) => {
 		if (error && error !== prevErrors[index]) {
-			notification.error({
-				message: 'Error',
-				description: error.message,
+			Modal.error({
+				title: 'Error',
+				content: error.message,
 			});
 		}
 		return null;

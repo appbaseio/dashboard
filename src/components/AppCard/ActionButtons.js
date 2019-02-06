@@ -105,9 +105,9 @@ class ActionButtons extends React.Component {
 		} else if (write && read) {
 			this.copyAdminKey();
 		} else {
-			notification.error({
-				message: 'No Credentials copied',
-				description: '',
+			Modal.error({
+				content: 'No Credentials copied',
+				title: 'Error.',
 			});
 		}
 	};

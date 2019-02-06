@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { notification, List } from 'antd';
+import { Modal, List } from 'antd';
 import { connect } from 'react-redux';
 import Footer from '../components/Footer';
 
@@ -50,9 +50,9 @@ class Introduction extends Component {
 			this.input.focus();
 		} else if (!isValidAppName) {
 			this.setError('Invalid App name. Please follow the validations rules.');
-			notification.error({
-				message: 'Invalid App name',
-				description: (
+			Modal.error({
+				title: 'Invalid App name',
+				content: (
 					<List
 						bordered={false}
 						size="small"
@@ -60,7 +60,6 @@ class Introduction extends Component {
 						renderItem={item => <List.Item>{item}</List.Item>}
 					/>
 				),
-				duration: 10,
 			});
 			this.input.focus();
 		} else {

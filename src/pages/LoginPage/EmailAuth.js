@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Input, message } from 'antd';
+import {
+ Button, Input, message, Modal,
+} from 'antd';
 
 import { emailBtn, inputStyles } from './styles';
 import { ACC_API } from '../../constants/config';
@@ -42,7 +44,7 @@ class EmailAuth extends React.Component {
 			});
 			const data = await response.json();
 			if (response.status >= 400) {
-				message.error(data.message);
+				Modal.error({ title: 'Error', content: data.message });
 				this.toggleLoading();
 			} else {
 				this.toggleLoading();
@@ -52,7 +54,7 @@ class EmailAuth extends React.Component {
 				});
 			}
 		} catch (e) {
-			message.error('Something went Wrong.');
+			Modal.error({ title: 'Error', content: 'Something went Wrong.' });
 		}
 	};
 
@@ -73,7 +75,7 @@ class EmailAuth extends React.Component {
 			});
 			const data = await response.json();
 			if (response.status >= 400) {
-				message.error(data.message);
+				Modal.error({ title: 'Error', content: data.message });
 				this.toggleLoading();
 			} else {
 				message.success('OTP Successfully Verified!');
@@ -81,7 +83,7 @@ class EmailAuth extends React.Component {
 				window.location.reload();
 			}
 		} catch (e) {
-			message.error('Something went Wrong.');
+			Modal.error({ title: 'Error', content: 'Something went Wrong.' });
 		}
 	};
 

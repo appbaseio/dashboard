@@ -95,9 +95,9 @@ export default class Introduction extends Component {
 				console.log('@error-at-importing-data', e);
 				console.log('@error-at-importing-data-response-type', typeof e);
 				console.log('error', e);
-				notification.error({
-					message: 'Something went wrong',
-					description: 'Please try again & If the problem persists please report to us.',
+				Modal.error({
+					title: 'Something went wrong',
+					content: 'Please try again & If the problem persists please report to us.',
 				});
 			});
 	};

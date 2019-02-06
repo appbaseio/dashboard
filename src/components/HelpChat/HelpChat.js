@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
- Button, Dropdown, Menu, Modal, Input, message, notification,
+ Button, Dropdown, Menu, Modal, Input, message,
 } from 'antd';
 import { css } from 'emotion';
 
@@ -105,7 +105,7 @@ class HelpButton extends React.Component {
 				);
 
 				if (response.status >= 400) {
-					notification.error({ message: errorMessage, duration: 10 });
+					Modal.error({ content: errorMessage, title: 'Error' });
 					this.toggleLoading();
 				} else {
 					this.toggleLoading();
@@ -122,10 +122,10 @@ class HelpButton extends React.Component {
 				}
 			} catch (e) {
 				this.toggleLoading();
-				notification.error({ message: errorMessage, duration: 10 });
+				Modal.error({ content: errorMessage, title: 'Error' });
 			}
 		} else {
-			message.error('Please write the issue');
+			Modal.error({ content: 'Please write the issue', title: 'Error' });
 		}
 	};
 
