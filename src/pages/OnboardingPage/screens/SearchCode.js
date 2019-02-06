@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Radio } from 'antd';
 
-import SearchApp from './SearchApp';
 import Footer from '../components/Footer';
+
+const sandboxLinks = {
+	react: 'https://codesandbox.io/embed/6jlkqnzlvr',
+	raw_json: 'https://codesandbox.io/embed/zrpr98095x',
+};
 
 export default class SearchCode extends Component {
 	state = {
@@ -42,13 +46,21 @@ export default class SearchCode extends Component {
 		this.props.setUIField(value);
 	};
 
-	renderSearchApp = () => (
+	renderCodeSandboxUI = () => (
 		<div>
 			{this.renderSearchInput(true)}
-			<SearchApp
-				fields={this.props.searchFields}
-				facets={this.props.facetFields}
-				ui={this.props.ui}
+			<iframe
+				src={sandboxLinks[this.props.ui]}
+				key={this.props.ui}
+				title={this.props.ui}
+				style={{
+					width: '100%',
+					height: '500px',
+					border: 0,
+					borderRadius: '4px',
+					overflow: 'hidden',
+				}}
+				sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
 			/>
 		</div>
 	);
@@ -100,7 +112,7 @@ export default class SearchCode extends Component {
 					</div>
 				</div>
 
-				{this.renderSearchApp()}
+				{this.renderCodeSandboxUI()}
 
 				<Footer
 					nextScreen={this.props.nextScreen}
