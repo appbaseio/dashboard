@@ -103,12 +103,10 @@ export default class SearchCode extends Component {
 						<header>
 							<h2>Build your UI</h2>
 							<p>
-								Everytime you request Appbase{"'"}s Search API, it answers with a
-								JSON object that contains the best matching results in an object :
-								<strong>hits.</strong>
+								The UI we were seeing thus far was created using React. appbase.io offers readily available components / SDKs for React, Vue and Vanilla Javascript. There's a REST API too!
 							</p>
 						</header>
-						<h3>We will start by letting you choose the template</h3>
+						<h3>You can choose a UI template to see the resulting code for the relevant UI:</h3>
 					</div>
 				</div>
 
