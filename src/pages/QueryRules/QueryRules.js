@@ -8,9 +8,23 @@ import {
 	setCurrentApp,
 	getPermission as getPermissionFromAppbase,
 } from '../../batteries/modules/actions';
-import { getAppPermissionsByName } from '../../batteries/modules/selectors';
+import { getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
+import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
+
+const freePlanMessage = {
+	title: 'Unlock the Promoted Results',
+	description: 'Get a paid plan to enable Promoted Results.',
+	buttonText: 'Upgrade Now',
+	href: 'billing',
+};
+
+const paidPlanMessage = {
+	title: 'Promoted Results',
+	description: 'Promote and hide your results for search queries.',
+	showButton: false,
+};
 
 class QueryRules extends Component {
 	componentDidMount() {
@@ -40,7 +54,7 @@ class QueryRules extends Component {
 	}
 
 	render() {
-		const { appName, credentials } = this.props;
+		const { appName, credentials, plan } = this.props;
 		const splitHost = SCALR_API.split('https://');
 		let clusterHost = 'scalr.api.appbase.io';
 		if (splitHost.length === 2) {
@@ -58,6 +72,11 @@ class QueryRules extends Component {
 
 		return (
 			<section>
+				{plan === 'free' ? (
+					<Banner {...freePlanMessage} />
+				) : (
+					<Banner {...paidPlanMessage} />
+				)}
 				{credentials ? (
 					<iframe
 						height={`${window.innerHeight - 65}px`}
@@ -83,8 +102,10 @@ QueryRules.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+	const appPlan = getAppPlanByName(state);
 	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
+		plan: get(appPlan, 'plan', 'free'),
 		credentials: username ? `${username}:${password}` : '',
 	};
 };
