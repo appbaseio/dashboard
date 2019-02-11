@@ -59,6 +59,7 @@ export default class SearchCode extends Component {
 					border: 0,
 					borderRadius: '4px',
 					overflow: 'hidden',
+					marginBottom: 30,
 				}}
 				sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
 			/>
