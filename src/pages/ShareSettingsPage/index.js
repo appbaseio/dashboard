@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Table, Card, Button, Popconfirm,
+ Table, Card, Button, Popconfirm, Tooltip,
 } from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
@@ -10,6 +10,7 @@ import Loader from '../../batteries/components/shared/Loader';
 import Flex from '../../batteries/components/shared/Flex';
 import { media } from '../../utils/media';
 import Container from '../../components/Container';
+import Overlay from '../../components/Overlay';
 import {
 	getSharedApp,
 	createAppShare,
@@ -184,7 +185,21 @@ class ShareSettingsView extends React.Component {
 			return <Loader />;
 		}
 		if (!isPaidUser) {
-			return <UpgradePlanBanner {...bannerMessagesTeam.free} />;
+			return (
+				<React.Fragment>
+					<UpgradePlanBanner {...bannerMessagesTeam.free} />
+					<Overlay
+						style={{
+							maxWidth: '90%',
+						}}
+						lockSectionStyle={{
+							marginTop: '20%',
+						}}
+						src="/static/images/credentials/credentials.png"
+						alt="Credentials"
+					/>
+				</React.Fragment>
+			);
 		}
 		return (
 			<React.Fragment>
@@ -210,11 +225,19 @@ class ShareSettingsView extends React.Component {
 					<Card
 						css=".ant-card-head-title { margin-top: 10px }"
 						title="Share Credentials"
-						extra={(
-<Button onClick={this.handleShare} size="large" type="primary">
-								Share
-</Button>
-)}
+						extra={
+							isOwner ? (
+								<Button onClick={this.handleShare} size="large" type="primary">
+									Share
+								</Button>
+							) : (
+								<Tooltip placement="topLeft" title="App can only be shared by Owner.">
+									<Button disabled size="large" type="primary">
+										Share
+									</Button>
+								</Tooltip>
+							)
+						}
 					>
 						<Table
 							scroll={{ x: 700 }}
