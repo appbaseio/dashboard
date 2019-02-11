@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Button, Menu } from 'antd';
+import { Drawer, Button, Menu, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { array, bool } from 'prop-types';
@@ -96,7 +96,7 @@ class MenuSlider extends React.Component {
 						</Menu.Item>
 
 						<Menu.Item key="4">
-							<Link to="/marketplace">MarketPlace</Link>
+							<Link to="/marketplace">MarketPlace <Tag>New</Tag></Link>
 						</Menu.Item>
 
 						{window.innerWidth < 576 ? (

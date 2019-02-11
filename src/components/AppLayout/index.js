@@ -6,7 +6,6 @@ import AppHeader from '../AppHeader';
 import Loader from '../Loader';
 import AppPageContainer from '../AppPageContainer';
 import ErrorPage from '../../pages/ErrorPage';
-import MarketPlace from '../../pages/MarketPlace';
 
 const AnalyticsPage = Loadable({
 	loader: () => import('../../pages/AnalyticsPage'),
@@ -243,19 +242,6 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={SandboxPage}
-									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={false}
-								/>
-							)}
-						/>
-						<Route
-							exact
-							path="/app/:appName/marketplace"
-							render={props => (
-								<AppPageContainer
-									{...props}
-									showNavbar={false}
-									component={MarketPlace}
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>

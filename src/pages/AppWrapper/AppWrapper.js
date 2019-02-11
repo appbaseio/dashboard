@@ -55,10 +55,6 @@ const routes = {
 		icon: 'credit-card',
 		link: 'billing',
 	},
-	Marketplace: {
-		icon: 'shopping-cart',
-		link: 'marketplace',
-	},
 };
 
 const getActiveMenu = (props, prevActiveSubMenu = []) => {
