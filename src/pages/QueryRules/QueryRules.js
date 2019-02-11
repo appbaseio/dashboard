@@ -11,20 +11,6 @@ import {
 import { getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
-import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
-
-const freePlanMessage = {
-	title: 'Unlock the Promoted Results',
-	description: 'Get a paid plan to enable Promoted Results.',
-	buttonText: 'Upgrade Now',
-	href: 'billing',
-};
-
-const paidPlanMessage = {
-	title: 'Promoted Results',
-	description: 'Promote and hide your results for search queries.',
-	showButton: false,
-};
 
 class QueryRules extends Component {
 	componentDidMount() {
@@ -72,11 +58,6 @@ class QueryRules extends Component {
 
 		return (
 			<section>
-				{plan === 'free' ? (
-					<Banner {...freePlanMessage} />
-				) : (
-					<Banner {...paidPlanMessage} />
-				)}
 				{credentials ? (
 					<iframe
 						height={`${window.innerHeight - 65}px`}
