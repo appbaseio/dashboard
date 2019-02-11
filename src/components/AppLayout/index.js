@@ -44,6 +44,11 @@ const ImporterPage = Loadable({
 	loading: Loader,
 });
 
+const QueryRulesPage = Loadable({
+	loader: () => import('../../pages/QueryRules'),
+	loading: Loader,
+});
+
 const MappingsPage = Loadable({
 	loader: () => import('../../pages/MappingsPage'),
 	loading: Loader,
@@ -193,6 +198,19 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={ImporterPage}
+									shouldFetchAppInfo={false}
+									shouldFetchAppPlan={false}
+								/>
+							)}
+						/>
+
+						<Route
+							exact
+							path="/app/:appName/query-rules"
+							render={props => (
+								<AppPageContainer
+									{...props}
+									component={QueryRulesPage}
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>
