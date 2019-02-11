@@ -5,6 +5,7 @@ import {
 	SelectedFilters,
 	MultiList,
 	ResultList,
+	ReactiveList,
 	DynamicRangeSlider,
 } from '@appbaseio/reactivesearch';
 
@@ -88,6 +89,8 @@ const renderFilters = (fields) => {
 						/>
 					);
 				}
+				default:
+					return null;
 			}
 		});
 	}
@@ -118,6 +121,67 @@ const getWeights = (fields) => {
 	};
 
 	return fields.map(item => weights[item]);
+};
+
+const renderResultList = () => (
+	<ResultList
+		componentId="results"
+		dataField="name"
+		react={{
+			and: ['search', 'genres', 'original_language', 'release_year'],
+		}}
+		size={4}
+		onData={onData}
+		className="right-col"
+		innerClass={{
+			listItem: 'list-item',
+			resultStats: 'result-stats',
+		}}
+		pagination
+		stream
+	/>
+);
+
+const renderJSONList = () => (
+	<ReactiveList
+		componentId="results"
+		dataField="name"
+		react={{
+			and: ['search', 'genres', 'original_language', 'release_year'],
+		}}
+		size={4}
+		onData={res => (
+			<pre
+				key={res._id}
+				style={{
+					background: 'rgba(239,239,239,.4)',
+					padding: '15px 20px',
+					color: '#424242',
+					borderRadius: '5px',
+				}}
+			>
+				{JSON.stringify(res, null, 2)}
+			</pre>
+		)}
+		className="right-col"
+		innerClass={{
+			listItem: 'list-item',
+			resultStats: 'result-stats',
+		}}
+		pagination
+		stream
+	/>
+);
+
+const renderCode = (lib) => {
+	switch (lib) {
+		case 'react':
+			return renderResultList();
+		case 'raw_json':
+			return renderJSONList();
+		default:
+			return renderResultList();
+	}
 };
 
 export default class SearchApp extends Component {
@@ -173,22 +237,7 @@ export default class SearchApp extends Component {
 
 				<div className={this.props.facets && this.props.facets.length ? 'multi-col' : ''}>
 					<div className="left-col">{renderFilters(this.props.facets)}</div>
-					<ResultList
-						componentId="results"
-						dataField="name"
-						react={{
-							and: ['search', 'genres', 'original_language', 'release_year'],
-						}}
-						size={4}
-						onData={onData}
-						className="right-col"
-						innerClass={{
-							listItem: 'list-item',
-							resultStats: 'result-stats',
-						}}
-						pagination
-						stream
-					/>
+					{renderCode(this.props.ui)}
 				</div>
 			</ReactiveBase>
 		);
