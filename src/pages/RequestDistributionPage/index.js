@@ -19,7 +19,7 @@ const bannerMessagesAnalytics = {
 	bootstrap: {
 		title: 'Get request distribution analytics with Growth plan',
 		description:
-			'By upgrading to the Growth plan, you can visualize the status of your requests.',
+			'By upgrading to the Growth plan, you can visualize the request distribution and RPM stats.',
 		buttonText: 'Upgrade To Growth',
 		href: 'billing',
 	},

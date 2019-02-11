@@ -56,7 +56,7 @@ const columns = [
 		key: `email${updateIndex()}`,
 	},
 	{
-		title: 'Access',
+		title: 'Description',
 		render: ({ settingInfo }) => settingInfo.description || 'No description',
 		key: `description${updateIndex()}`,
 	},

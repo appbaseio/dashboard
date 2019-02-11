@@ -159,7 +159,6 @@ export default class NewCluster extends Component {
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
-			logstash: false,
 			dejavu: true,
 			elasticsearchHQ: true,
 			arc: true,
@@ -264,13 +263,6 @@ export default class NewCluster extends Component {
 
 		if (this.state.kibana) {
 			body.kibana = {
-				create_node: false,
-				version: this.state.clusterVersion,
-			};
-		}
-
-		if (this.state.logstash) {
-			body.logstash = {
 				create_node: false,
 				version: this.state.clusterVersion,
 			};
@@ -643,36 +635,6 @@ export default class NewCluster extends Component {
 											</label>
 										</div>
 									</div>
-
-									<div className={settingsItem}>
-										<h4>Logstash</h4>
-										<div>
-											<label htmlFor="yes2">
-												<input
-													type="radio"
-													name="logstash"
-													defaultChecked={this.state.logstash}
-													id="yes2"
-													onChange={() => this.setConfig('logstash', true)
-													}
-												/>
-												Yes
-											</label>
-
-											<label htmlFor="no2">
-												<input
-													type="radio"
-													name="logstash"
-													defaultChecked={!this.state.logstash}
-													id="no2"
-													onChange={() => this.setConfig('logstash', false)
-													}
-												/>
-												No
-											</label>
-										</div>
-									</div>
-
 									<div className={settingsItem}>
 										<h4>Add-ons</h4>
 										<div>
