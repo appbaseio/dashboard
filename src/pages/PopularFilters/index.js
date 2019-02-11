@@ -60,7 +60,7 @@ const mapStateToProps = (state) => {
 	return {
 		appName: get(state, '$getCurrentApp.name'),
 		plan: get(appPlan, 'plan', 'free'),
-		isGrowth: get(appPlan, 'isGrowth'),
+		isGrowth: get(appPlan, 'isGrowth', false),
 	};
 };
 export default connect(mapStateToProps)(PopularFiltersWrapper);

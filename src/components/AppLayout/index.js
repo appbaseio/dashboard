@@ -174,7 +174,7 @@ class AppLayout extends React.PureComponent {
 						/>
 						<Route
 							exact
-							path="/app/:appName/request-distribution"
+							path="/app/:appName/requests-per-minute"
 							component={props => (
 								<AppPageContainer {...props} component={RequestDistributionPage} />
 							)}

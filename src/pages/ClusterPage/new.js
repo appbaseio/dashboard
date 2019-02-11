@@ -14,6 +14,7 @@ import { regions, regionsByPlan } from './utils/regions';
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
+	'6.6.0',
 	'6.5.4',
 	'6.4.3',
 	'6.3.2',
@@ -158,10 +159,9 @@ export default class NewCluster extends Component {
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
-			logstash: false,
 			dejavu: true,
 			elasticsearchHQ: true,
-			arc: false,
+			arc: true,
 			mirage: false,
 			error: '',
 			deploymentError: '',
@@ -268,13 +268,6 @@ export default class NewCluster extends Component {
 			};
 		}
 
-		if (this.state.logstash) {
-			body.logstash = {
-				create_node: false,
-				version: this.state.clusterVersion,
-			};
-		}
-
 		if (this.state.dejavu) {
 			body.addons = body.addons || [];
 			body.addons = [
@@ -317,7 +310,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.6',
+					image: 'siddharthlatest/arc:0.0.21',
 					exposed_port: 8000,
 				},
 			];
@@ -462,6 +455,13 @@ export default class NewCluster extends Component {
 		);
 	};
 
+	handleError = () => {
+		Modal.error({
+			title: 'Error',
+			content: this.state.deploymentError,
+		});
+	};
+
 	render() {
 		const { provider, isLoading } = this.state;
 
@@ -472,13 +472,7 @@ export default class NewCluster extends Component {
 				<FullHeader isCluster />
 				<Container>
 					<section className={clusterContainer}>
-						<Modal
-							title="Error"
-							visible={this.state.showError}
-							onOk={this.hideErrorModal}
-						>
-							<p>{this.state.deploymentError}</p>
-						</Modal>
+						{this.state.showError ? this.handleError() : null}
 						<article>
 							<h2>Create a new cluster</h2>
 
@@ -641,36 +635,6 @@ export default class NewCluster extends Component {
 											</label>
 										</div>
 									</div>
-
-									<div className={settingsItem}>
-										<h4>Logstash</h4>
-										<div>
-											<label htmlFor="yes2">
-												<input
-													type="radio"
-													name="logstash"
-													defaultChecked={this.state.logstash}
-													id="yes2"
-													onChange={() => this.setConfig('logstash', true)
-													}
-												/>
-												Yes
-											</label>
-
-											<label htmlFor="no2">
-												<input
-													type="radio"
-													name="logstash"
-													defaultChecked={!this.state.logstash}
-													id="no2"
-													onChange={() => this.setConfig('logstash', false)
-													}
-												/>
-												No
-											</label>
-										</div>
-									</div>
-
 									<div className={settingsItem}>
 										<h4>Add-ons</h4>
 										<div>
