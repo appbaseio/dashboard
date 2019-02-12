@@ -210,8 +210,8 @@ export default class NewCluster extends Component {
 		const { clusterName, provider } = this.state;
 		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
 		if (provider === 'gke') {
-			// gke cluster names can't start with a number
-			pattern = /^[a-zA-Z]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
+			// gke cluster names can't start with a number, no capital letters allowed
+			pattern = /^[a-z]+([-]+[a-z0-9]*)*[a-z0-9]+$/;
 		}
 		return pattern.test(clusterName);
 	};
@@ -225,9 +225,12 @@ export default class NewCluster extends Component {
 
 	createCluster = () => {
 		if (!this.validateClusterName()) {
+			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
+			if(this.state.provider === 'gke'){
+				errorMessage = `${errorMessage} Capital letters not allowed.`
+			}
 			this.setState({
-				error:
-					'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.',
+				error: errorMessage,
 			});
 			document.getElementById('cluster-name').focus();
 			return;
