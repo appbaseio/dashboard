@@ -81,6 +81,12 @@ const FullHeader = ({
 						</Link>
 					</Menu.Item>
 				) : null}
+
+				<Menu.Item key="4">
+					<Link to="/marketplace">
+						MarketPlace <Tag>New</Tag>
+					</Link>
+				</Menu.Item>
 			</Menu>
 		</div>
 		<Row justify="space-between" align="middle">
