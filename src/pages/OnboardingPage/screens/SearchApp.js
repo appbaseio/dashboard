@@ -11,7 +11,7 @@ import {
 
 import appbaseHelpers from '../utils/appbaseHelpers';
 
-const onData = res => ({
+const renderData = res => ({
 	image: `${res.poster_path}`,
 	title: res.original_title,
 	description: (
@@ -131,7 +131,7 @@ const renderResultList = () => (
 			and: ['search', 'genres', 'original_language', 'release_year'],
 		}}
 		size={4}
-		onData={onData}
+		renderData={renderData}
 		className="right-col"
 		innerClass={{
 			listItem: 'list-item',
@@ -150,7 +150,7 @@ const renderJSONList = () => (
 			and: ['search', 'genres', 'original_language', 'release_year'],
 		}}
 		size={4}
-		onData={res => (
+		renderData={res => (
 			<pre
 				key={res._id}
 				style={{

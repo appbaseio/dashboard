@@ -21,7 +21,7 @@ const screens = {
 export default class Onboarding extends Component {
 	state = {
 		currentScreen: 0,
-		totalScreen: 4,
+		totalScreen: 5,
 		// eslint-disable-next-line
 		thresholdScreen: 0, // to maintain the max threshold reached by currentScreen
 		hasJSON: false,
