@@ -28,6 +28,7 @@ const routes = {
 			{ label: 'Manage Mappings', link: 'mappings', tag: 'Beta' },
 			{ label: 'Browse Data', link: 'browse' },
 			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
+			{ label: 'Query Rules', link: 'query-rules', tag: 'Beta' },
 		],
 	},
 	Analytics: {

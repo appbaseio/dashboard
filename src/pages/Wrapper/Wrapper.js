@@ -19,6 +19,11 @@ const ClusterPage = Loadable({
 	loading: Loader,
 });
 
+const MarketPlacePage = Loadable({
+	loader: () => import('../MarketPlace'),
+	loading: Loader,
+});
+
 const NewClusterPage = Loadable({
 	loader: () => import('../ClusterPage/new'),
 	loading: Loader,
@@ -76,6 +81,7 @@ const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
 			<Route exact path="/" component={HomePage} />
 			<Route exact path="/tutorial" component={OnboardingPage} />
 			<Route exact path="/tutorial/finish" component={EndPage} />
+			<Route exact path="/marketplace" component={MarketPlacePage} />
 			<Route exact path="/clusters" component={ClusterPage} />
 			<Route path="/clusters/new" component={NewClusterPage} />
 			<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
