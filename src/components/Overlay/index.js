@@ -38,30 +38,34 @@ const icon = css`
 	`)};
 `;
 const Overlay = ({
- src, alt, lockSectionStyle, ...props
+ src, alt, lockSectionStyle, imageStyle, iconStyle, ...props
 }) => (
 	<div css={imgContainer} {...props}>
 		<div css={overlay}>
 			<div css={upgradePlan} style={lockSectionStyle}>
 				<div>
-					<Icon type="lock" css={icon} />
+					<Icon type="lock" css={icon} style={iconStyle} />
 				</div>
 				<Button type="primary" css="margin-top: 10px" href="billing" target="_blank">
 					Upgrade Now
 				</Button>
 			</div>
 		</div>
-		<img alt={alt} css={imgCls} src={src} />
+		<img alt={alt} css={imgCls} style={imageStyle} src={src} />
 	</div>
 );
 Overlay.defaultProps = {
 	alt: '',
 	lockSectionStyle: {},
+	imageStyle: {},
+	iconStyle: {},
 };
 Overlay.propTypes = {
 	src: PropTypes.string.isRequired,
 	alt: PropTypes.string,
 	lockSectionStyle: PropTypes.object,
+	iconStyle: PropTypes.object,
+	imageStyle: PropTypes.object,
 };
 
 export default Overlay;
