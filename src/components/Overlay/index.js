@@ -12,7 +12,7 @@ const overlay = css`
 	bottom: 0;
 	margin: 20px;
 	background-color: rgba(255, 255, 255, 0.3);
-	z-index: 9999;
+	z-index: 99;
 	color: black;
 `;
 const upgradePlan = css`
