@@ -67,7 +67,7 @@ const AppSwitcher = ({
 
 const mapDispatchToProps = dispatch => ({
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
-	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
+	fetchAppInfo: appName => dispatch(getAppInfo(appName)),
 });
 
 export default connect(
