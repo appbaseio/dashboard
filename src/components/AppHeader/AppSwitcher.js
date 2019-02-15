@@ -5,16 +5,24 @@ import {
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 
-import { setCurrentApp } from '../../batteries/modules/actions';
+import { setCurrentApp, getAppInfo } from '../../batteries/modules/actions';
 
 const ownerButton = css`
+	margin-right: 8px;
 	i {
 		margin-right: 2px !important;
 	}
 `;
 
 const AppSwitcher = ({
- apps, currentApp, history, updateCurrentApp, match, appOwner, user,
+	apps,
+	currentApp,
+	history,
+	updateCurrentApp,
+	match,
+	appOwner,
+	user,
+	fetchAppInfo,
 }) => {
 	const {
 		params: { route },
@@ -25,6 +33,7 @@ const AppSwitcher = ({
 			onClick={(e) => {
 				const appName = e.key;
 				updateCurrentApp(appName, apps[appName]);
+				fetchAppInfo(appName);
 				history.push(`/app/${appName}/${route || ''}`);
 			}}
 		>
@@ -58,6 +67,7 @@ const AppSwitcher = ({
 
 const mapDispatchToProps = dispatch => ({
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 });
 
 export default connect(
