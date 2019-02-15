@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
+import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { mediaKey } from '../../utils/media';
 import SearchVolumeChart from '../../batteries/components/shared/Chart/SearchVolume';
+import Overlay from '../../components/Overlay';
 import Flex from '../../batteries/components/shared/Flex';
 import DemoCards from '../../components/DemoCard';
 import Container from '../../components/Container';
-import { getAppAnalyticsByName } from '../../batteries/modules/selectors';
-import Loader from '../../batteries/components/shared/Loader/Spinner';
+import { getAppAnalyticsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 import { exampleConfig } from '../../constants/config';
-import { getAppMetrics, getAppAnalytics } from '../../batteries/modules/actions';
+import { getAppAnalytics } from '../../batteries/modules/actions';
 import { getFilteredResults } from '../../batteries/utils/heplers';
 import UsageDetails from '../../components/UsageDetails';
 import Searches from '../../batteries/components/analytics/components/Searches';
@@ -62,9 +63,10 @@ const noResultsCls = css`
 `;
 class PaidUserOverview extends React.Component {
 	componentDidMount() {
-		const { fetchAppMetrics, fetchAppAnalytics } = this.props;
-		fetchAppMetrics();
-		fetchAppAnalytics();
+		const { fetchAppAnalytics, plan } = this.props;
+		if (plan !== 'free') {
+			fetchAppAnalytics();
+		}
 	}
 
 	redirectTo = (url) => {
@@ -73,8 +75,13 @@ class PaidUserOverview extends React.Component {
 
 	render() {
 		const {
- isFetching, popularSearches, noResults, appName, searchVolume,
-} = this.props;
+			popularSearches,
+			noResults,
+			appName,
+			searchVolume,
+			isPaid,
+			isFetching,
+		} = this.props;
 		if (isFetching) {
 			return <Loader />;
 		}
@@ -85,27 +92,54 @@ class PaidUserOverview extends React.Component {
 						<UsageDetails />
 					</div>
 					<div css={chart}>
-						<SearchVolumeChart margin={10} height={210} data={searchVolume} />
+						{isPaid ? (
+							<SearchVolumeChart margin={10} height={210} data={searchVolume} />
+						) : (
+							<Overlay
+								style={{
+									maxWidth: '100%',
+									height: '100%',
+									backgroundColor: '#fff',
+								}}
+								lockSectionStyle={{
+									marginTop: 100,
+								}}
+								imageStyle={{
+									position: 'absolute',
+									top: 0,
+									bottom: 0,
+									left: 0,
+									margin: 'auto',
+								}}
+								iconStyle={{
+									fontSize: 30,
+								}}
+								src="/static/images/analytics/SearchVolume.png"
+								alt="analytics"
+							/>
+						)}
 					</div>
 				</Flex>
-				<Flex css={results}>
-					<div css={searchCls}>
-						<Searches
-							css="height: 100%"
-							href="popular-searches"
-							dataSource={getFilteredResults(popularSearches)}
-							title="Popular Searches"
-						/>
-					</div>
-					<div css={noResultsCls}>
-						<Searches
-							css="height: 100%"
-							href="no-results-searches"
-							dataSource={getFilteredResults(noResults)}
-							title="No Result Searches"
-						/>
-					</div>
-				</Flex>
+				{isPaid && (
+					<Flex css={results}>
+						<div css={searchCls}>
+							<Searches
+								css="height: 100%"
+								href="popular-searches"
+								dataSource={getFilteredResults(popularSearches)}
+								title="Popular Searches"
+							/>
+						</div>
+						<div css={noResultsCls}>
+							<Searches
+								css="height: 100%"
+								href="no-results-searches"
+								dataSource={getFilteredResults(noResults)}
+								title="No Result Searches"
+							/>
+						</div>
+					</Flex>
+				)}
 				<div css="margin-top: 20px">
 					<RequestLogs pageSize={5} changeUrlOnTabChange={false} appName={appName} />
 				</div>
@@ -120,26 +154,29 @@ PaidUserOverview.defaultProps = {
 	noResults: [],
 };
 PaidUserOverview.propTypes = {
-	fetchAppMetrics: PropTypes.func.isRequired,
 	fetchAppAnalytics: PropTypes.func.isRequired,
-	isFetching: PropTypes.bool.isRequired,
+	plan: PropTypes.string.isRequired,
 	appName: PropTypes.string.isRequired,
 	searchVolume: PropTypes.array,
 	popularSearches: PropTypes.array,
+	isPaid: PropTypes.bool.isRequired,
+	isFetching: PropTypes.bool.isRequired,
 	noResults: PropTypes.array,
 };
 const mapStateToProps = (state) => {
 	const analytics = getAppAnalyticsByName(state);
+	const appPlan = getAppPlanByName(state);
 	return {
-		isFetching: get(state, '$getAppMetrics.isFetching'),
+		isFetching: get(state, '$getAppAnalytics.isFetching'),
 		appName: get(state, '$getCurrentApp.name'),
 		popularSearches: get(analytics, 'popularSearches'),
 		noResults: get(analytics, 'noResultSearches'),
 		searchVolume: get(analytics, 'searchVolume'),
+		plan: get(appPlan, 'plan'),
+		isPaid: get(appPlan, 'isPaid'),
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	fetchAppMetrics: (appId, appName) => dispatch(getAppMetrics(appId, appName)),
 	fetchAppAnalytics: (appName, plan) => dispatch(getAppAnalytics(appName, plan)),
 });
 export default connect(

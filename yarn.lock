@@ -22,21 +22,21 @@
     react-emotion "^9.0.0"
     react-feather "^1.1.0"
 
-"@appbaseio/reactivecore@^7.4.1":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-7.4.1.tgz#a9b6f799b42bca0cbcf138ba497b28ad21a3d71a"
-  integrity sha512-zqbUw2pTkwp9/vclkU8FaaRLWH6qWezZ9jrJTIxqDJ7OBzEUhSVGkJVNvkIoRChaa9+kkTrn9ksnquaYaPz1xg==
+"@appbaseio/reactivecore@^7.5.0":
+  version "7.5.0"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivecore/-/reactivecore-7.5.0.tgz#9f71deb993437735dfe694abe5e264a026f6a4f2"
+  integrity sha512-ku4gnZ9p3+Yv8AdciufoERwsNVpJQLWg/ofGY+tlzmBOMPvjfUkjwlJY/DL6yrbQfV9/N/CwT13sLl8JX4zwSg==
   dependencies:
     prop-types "^15.6.0"
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@^3.0.0-beta.1":
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-beta.1.tgz#585709a8ce174a43a7206d1677574247401725ad"
-  integrity sha512-ECj0OQkjUF4z/dhZZK/esu5qtfwTcm3d+pLWIWJ0irB7bW8DVaZ5jJpck46l3JhS8fuaZl8Fv091M8JdnWEvVg==
+"@appbaseio/reactivesearch@^3.0.0-beta.2":
+  version "3.0.0-beta.2"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-beta.2.tgz#3d0dc3efd598e5f1f95d298e2b6358ffca8c8b7d"
+  integrity sha512-KKt7RiBUhGTw8VqjIDB93HfFV01xMYqNy7T+xx3spICI2gEpFcVA+gVF5eitehLB0G3Nm/8xOwKDDTXx9H3ffQ==
   dependencies:
-    "@appbaseio/reactivecore" "^7.4.1"
+    "@appbaseio/reactivecore" "^7.5.0"
     appbase-js "^4.0.2-beta.04"
     cross-env "^5.2.0"
     downshift "^1.31.2"
