@@ -11,6 +11,7 @@ const MarketPlace = ({ showNavbar = true }) => (
 				width: '100%',
 				height: '100vh',
 			}}
+			frameBorder="0"
 		/>
 	</React.Fragment>
 );
