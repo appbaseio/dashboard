@@ -4,10 +4,11 @@ import {
 } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { columnSeparator, actionIcon, deleteButton } from './styles';
 import DeleteAppModal from './DeleteAppModal';
-import { SCALR_URL, IMPORTER_LINK } from '../../constants/config';
+import { SCALR_URL } from '../../constants/config';
 import {
 	getCredentialsFromPermissions,
 	getReadCredentialsFromPermissions,
@@ -26,7 +27,7 @@ class ActionButtons extends React.Component {
 	};
 
 	handleClone = () => {
-		const { appName, permissions } = this.props;
+		const { appName, permissions, history } = this.props;
 		if (permissions) {
 			const { username, password } = permissions.results[0];
 			const parameters = {
@@ -36,7 +37,7 @@ class ActionButtons extends React.Component {
 					hosturl: `https://${username}:${password}@${SCALR_URL}`,
 				},
 			};
-			window.open(`${IMPORTER_LINK}${JSON.stringify(parameters)}`, '_blank');
+			history.push(`/app/${appName}/import/?app=${JSON.stringify(parameters)}`);
 		}
 	};
 
@@ -198,4 +199,4 @@ ActionButtons.propTypes = {
 	permissions: PropTypes.object, // eslint-disable-line
 };
 
-export default ActionButtons;
+export default withRouter(ActionButtons);
