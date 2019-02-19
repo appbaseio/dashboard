@@ -3,6 +3,8 @@ import {
  Button, Card, Table, Modal, Input, notification, Menu, Icon, Dropdown,
 } from 'antd';
 import { css } from 'emotion';
+import get from 'lodash/get';
+import { connect } from 'react-redux';
 
 import { getSharedUsers, addSharedUser, deleteSharedUser } from '../utils';
 
@@ -14,7 +16,7 @@ const dropdownButtonStyles = css`
 	width: 100%;
 `;
 
-export default class ShareClusterScreen extends Component {
+class ShareClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
@@ -30,16 +32,13 @@ export default class ShareClusterScreen extends Component {
 	}
 
 	componentDidMount() {
-		const { clusterId } = this.props;
+		const { clusterId, userMail } = this.props;
 		getSharedUsers(clusterId)
 			.then((res) => {
-				const users = res.users.map(({ email, role }) => ({
-					email,
-					role,
-				}));
+				const usersList = res.filter(user => user.email !== userMail);
 
 				this.setState({
-					users,
+					users: usersList,
 					isLoading: false,
 				});
 			})
@@ -236,3 +235,12 @@ export default class ShareClusterScreen extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	userMail: get(state, 'user.data.email'),
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ShareClusterScreen);
