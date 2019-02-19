@@ -57,7 +57,7 @@ class ImporterPage extends React.Component {
 		let importerLink = getLink(appName, credentials);
 		if (location && location.search) {
 			const { app } = getUrlParams(location.search);
-			importerLink = `${IMPORTER_LINK}${app}`;
+			importerLink = `${IMPORTER_LINK}${app}&header=false`;
 		}
 		return (
 			<Fragment>
