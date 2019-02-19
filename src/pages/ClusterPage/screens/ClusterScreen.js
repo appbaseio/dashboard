@@ -20,7 +20,6 @@ export default class ClusterScreen extends Component {
 			arc: props.arc,
 			deployment: props.deployment,
 			kibana: props.kibana,
-			logstash: props.logstash,
 			mirage: props.mirage,
 			dejavu: props.dejavu,
 			elasticsearchHQ: props.elasticsearchHQ,
@@ -69,7 +68,6 @@ export default class ClusterScreen extends Component {
 			cluster,
 			arc,
 			kibana,
-			logstash,
 			mirage,
 			dejavu,
 			elasticsearchHQ, // prettier-ignore
@@ -84,15 +82,6 @@ export default class ClusterScreen extends Component {
 			};
 		} else if (!kibana && this.includedInOriginal('kibana')) {
 			body.remove_deployments = [...body.remove_deployments, 'kibana'];
-		}
-
-		if (logstash && !this.includedInOriginal('logstash')) {
-			body.logstash = {
-				create_node: false,
-				version: cluster.es_version,
-			};
-		} else if (!logstash && this.includedInOriginal('logstash')) {
-			body.remove_deployments = [...body.remove_deployments, 'logstash'];
 		}
 
 		if (dejavu && !this.includedInOriginal('dejavu')) {
@@ -194,7 +183,6 @@ export default class ClusterScreen extends Component {
 			arc,
 			deployment,
 			kibana,
-			logstash,
 			mirage,
 			dejavu,
 			elasticsearchHQ,
@@ -286,33 +274,6 @@ export default class ClusterScreen extends Component {
 										defaultChecked={!kibana}
 										id="no"
 										onChange={() => this.setConfig('kibana', false)}
-									/>
-									No
-								</label>
-							</div>
-						</div>
-
-						<div className={settingsItem}>
-							<h4>Logstash</h4>
-							<div>
-								<label htmlFor="yes2">
-									<input
-										type="radio"
-										name="logstash"
-										defaultChecked={logstash}
-										id="yes2"
-										onChange={() => this.setConfig('logstash', true)}
-									/>
-									Yes
-								</label>
-
-								<label htmlFor="no2">
-									<input
-										type="radio"
-										name="logstash"
-										defaultChecked={!logstash}
-										id="no2"
-										onChange={() => this.setConfig('logstash', false)}
 									/>
 									No
 								</label>

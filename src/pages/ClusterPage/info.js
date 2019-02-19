@@ -35,7 +35,6 @@ export default class Clusters extends Component {
 			cluster: null,
 			deployment: null,
 			kibana: false,
-			logstash: false,
 			elasticsearchHQ: false,
 			arc: false,
 			mirage: false,
@@ -72,9 +71,6 @@ export default class Clusters extends Component {
 						cluster,
 						deployment,
 						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
-						logstash: deployment.logstash
-							? !!Object.keys(deployment.logstash).length
-							: false,
 						mirage: hasAddon('mirage', deployment),
 						dejavu: hasAddon('dejavu', deployment),
 						arc: arcData && arcData.url.startsWith('https://'),
@@ -424,7 +420,6 @@ export default class Clusters extends Component {
 															deployment={this.state.deployment}
 															arc={this.state.arc}
 															kibana={this.state.kibana}
-															logstash={this.state.logstash}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}
 															elasticsearchHQ={
