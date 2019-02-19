@@ -13,6 +13,14 @@ export async function getUser() {
 		...data.body.details,
 	};
 
+	const _hsq = window._hsq || [];
+	_hsq.push([
+		'identify',
+		{
+			email: user.email,
+		},
+	]);
+
 	const { apps } = data.body;
 	return { user, apps };
 }
