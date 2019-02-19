@@ -35,7 +35,7 @@
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@^3.0.0-beta.2":
+"@appbaseio/reactivesearch@^3.0.0-beta.3":
   version "3.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-beta.3.tgz#95eed3e77e1bcdd5e0568262158d8434d4be4a27"
   integrity sha512-zNme6xsgFcBN2mdtZ/seYrhv3qlzYFXqQOic7wiStZVpgNT9oiUhHPs5ZrGLef3p9F0oQDOxU0rzA0mrvkDlSg==
