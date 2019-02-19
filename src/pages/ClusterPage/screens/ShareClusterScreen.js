@@ -23,7 +23,7 @@ export default class ShareClusterScreen extends Component {
 		const { clusterId } = this.props;
 		getSharedUsers(clusterId)
 			.then((res) => {
-				const users = res.map(email => ({
+				const users = res.users.map(email => ({
 					email,
 				}));
 
