@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Layout, Menu, Icon, Button, Row, Tag,
+ Layout, Menu, Icon, Button, Row, Tag, Tooltip,
 } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import {
@@ -94,7 +94,11 @@ class AppHeader extends React.Component {
 							history={history}
 							match={match}
 						/>
-						{esVersion && <Tag>v{esVersion}</Tag>}
+						{esVersion && (
+							<Tooltip title={`This app uses Elasticsearch v${esVersion}`}>
+								<Tag>v{esVersion}</Tag>
+							</Tooltip>
+						)}
 					</Menu.Item>
 				</Menu>
 				{isUsingTrial && (
