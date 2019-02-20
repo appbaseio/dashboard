@@ -36,6 +36,7 @@ class AppPageContainer extends Component {
 			shouldFetchAppPlan,
 			isAppPlanFetched,
 			isAppInfoPresent,
+			isUserPlanFetched,
 		} = this.props;
 		if (shouldFetchAppInfo && !isAppInfoPresent) {
 			fetchAppInfo(appId);
@@ -43,7 +44,7 @@ class AppPageContainer extends Component {
 		if (shouldFetchAppPlan && !isAppPlanFetched) {
 			fetchAppPlan(appName);
 		}
-		if (shouldFetchUserPlan) {
+		if (shouldFetchUserPlan && !isUserPlanFetched) {
 			fetchUserPlan();
 		}
 	}
@@ -87,6 +88,7 @@ AppPageContainer.propTypes = {
 	updateCurrentApp: PropTypes.func.isRequired,
 	isAppPlanFetched: PropTypes.bool.isRequired,
 	isAppInfoPresent: PropTypes.bool.isRequired,
+	isUserPlanFetched: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -99,6 +101,7 @@ const mapStateToProps = (state, ownProps) => {
 			|| get(state, '$getAppPlan.isFetching')
 			|| get(state, '$getUserPlan.isFetching'),
 		isAppPlanFetched: !!getAppPlanByName(state),
+		isUserPlanFetched: !!get(state, '$getUserPlan.results'),
 		isAppInfoPresent: !!getAppInfoByName(state),
 		errors: [
 			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),
