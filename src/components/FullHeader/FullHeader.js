@@ -19,6 +19,8 @@ const { Header } = Layout;
 
 const getSelectedKeys = (pathname) => {
 	switch (pathname) {
+		case '/marketplace':
+			return '4';
 		case '/clusters':
 			return '2';
 		case '/':
