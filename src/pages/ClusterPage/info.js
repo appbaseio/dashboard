@@ -1,39 +1,40 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, Button, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import {
+ Modal, Button, Icon, Tag,
+} from 'antd';
+import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
 import FullHeader from '../../components/FullHeader';
-import CredentialsBox from './components/CredentialsBox';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
-import {
-	clusterContainer,
-	clustersList,
-	card,
-	settingsItem,
-	clusterEndpoint,
-	clusterButtons,
-} from './styles';
+import Overlay from './components/Overlay';
+import Sidebar, { RightContainer } from './components/Sidebar';
+import { clusterContainer, clustersList, card } from './styles';
 import {
 	getClusterData,
 	deployCluster,
 	deleteCluster,
 	createSubscription,
+	hasAddon,
+	getAddon,
 } from './utils';
 import { STRIPE_KEY } from './ClusterPage';
+import ClusterScreen from './screens/ClusterScreen';
+import ScaleClusterScreen from './screens/ScaleClusterScreen';
+import ShareClusterScreen from './screens/ShareClusterScreen';
 
 export default class Clusters extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			isLoading: true,
 			cluster: null,
 			deployment: null,
 			kibana: false,
-			logstash: false,
 			elasticsearchHQ: false,
 			arc: false,
 			mirage: false,
@@ -41,8 +42,11 @@ export default class Clusters extends Component {
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
+			showOverlay: false,
+			isPaid: false,
 		};
 		this.paymentButton = React.createRef();
+		this.paymentTriggered = false;
 	}
 
 	componentDidMount() {
@@ -57,30 +61,23 @@ export default class Clusters extends Component {
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
-	setConfig = (type, value) => {
-		this.setState({
-			[type]: value,
-		});
-	};
-
 	init = () => {
 		getClusterData(this.props.match.params.id)
 			.then((res) => {
-				this.originalCluster = res;
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
-					const arcData = this.getAddon('arc', deployment);
+					const arcData = getAddon('arc', deployment);
 					this.setState({
 						cluster,
 						deployment,
 						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
-						logstash: deployment.logstash
-							? !!Object.keys(deployment.logstash).length
-							: false,
-						mirage: this.hasAddon('mirage', deployment),
-						dejavu: this.hasAddon('dejavu', deployment),
+						mirage: hasAddon('mirage', deployment),
+						dejavu: hasAddon('dejavu', deployment),
 						arc: arcData && arcData.url.startsWith('https://'),
-						elasticsearchHQ: this.hasAddon('elasticsearch-hq', deployment),
+						elasticsearchHQ: hasAddon('elasticsearch-hq', deployment),
+						planRate: cluster.plan_rate || 0,
+						isLoading: false,
+						isPaid: cluster.trial || !!cluster.subscription_id,
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -89,138 +86,69 @@ export default class Clusters extends Component {
 				} else {
 					this.setState({
 						loadingError: true,
+						isLoading: false,
 					});
 				}
 				this.triggerPayment();
 			})
 			.catch((e) => {
-				this.setState({
-					error: e,
-				}, this.triggerPayment);
+				const error = JSON.parse(e);
+				this.setState(
+					state => ({
+						...state,
+						error: error.message,
+						planRate: (error.details ? error.details.plan_rate : state.planRate) || 0,
+						isLoading: false,
+					}),
+					this.triggerPayment,
+				);
 			});
 	};
 
 	triggerPayment = () => {
-		if (this.props.location.search.startsWith('?subscribe=true')) {
+		if (!this.paymentTriggered && this.props.location.search.startsWith('?subscribe=true')) {
 			if (this.paymentButton.current) {
 				this.paymentButton.current.buttonNode.click();
+				this.paymentTriggered = true;
 			}
 		}
-	}
+	};
 
-	toggleConfig = (type) => {
+	toggleOverlay = () => {
 		this.setState(state => ({
 			...state,
-			[type]: !state[type],
+			showOverlay: !state.showOverlay,
 		}));
 	};
 
-	hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
-
-	getAddon = (item, source) => (source.addons || []).find(key => key.name === item);
-
-	includedInOriginal = (key) => {
-		const original = this.originalCluster.deployment;
-		return original[key] ? !!Object.keys(original[key]).length : this.hasAddon(key, original);
-	};
-
-	deleteCluster = () => {
-		deleteCluster(this.props.match.params.id)
+	deleteCluster = (id = this.props.match.params.id) => {
+		this.setState({
+			isLoading: true,
+		});
+		deleteCluster(id)
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
 			.catch((e) => {
 				this.setState({
+					isLoading: false,
 					deploymentError: e,
 					showError: true,
 				});
 			});
 	};
 
-	saveClusterSettings = () => {
-		const body = {
-			remove_deployments: [],
-		};
-
-		if (this.state.kibana && !this.includedInOriginal('kibana')) {
-			body.kibana = {
-				create_node: false,
-				version: this.state.cluster.es_version,
-			};
-		} else if (!this.state.kibana && this.includedInOriginal('kibana')) {
-			body.remove_deployments = [...body.remove_deployments, 'kibana'];
-		}
-
-		if (this.state.logstash && !this.includedInOriginal('logstash')) {
-			body.logstash = {
-				create_node: false,
-				version: this.state.cluster.es_version,
-			};
-		} else if (!this.state.logstash && this.includedInOriginal('logstash')) {
-			body.remove_deployments = [...body.remove_deployments, 'logstash'];
-		}
-
-		if (this.state.dejavu && !this.includedInOriginal('dejavu')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.0.0-alpha',
-					exposed_port: 1358,
-				},
-			];
-		} else if (!this.state.dejavu && this.includedInOriginal('dejavu')) {
-			body.remove_deployments = [...body.remove_deployments, 'dejavu'];
-		}
-
-		if (this.state.arc && !this.includedInOriginal('arc')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.6',
-					exposed_port: 8000,
-				},
-			];
-		} else if (!this.state.arc && this.includedInOriginal('arc')) {
-			body.remove_deployments = [...body.remove_deployments, 'arc'];
-		}
-
-		if (this.state.mirage && !this.includedInOriginal('mirage')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'mirage',
-					image: 'appbaseio/mirage:0.10.1',
-					exposed_port: 3030,
-				},
-			];
-		} else if (!this.state.mirage && this.includedInOriginal('mirage')) {
-			body.remove_deployments = [...body.remove_deployments, 'mirage'];
-		}
-
-		if (this.state.elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
-					exposed_port: 5000,
-				},
-			];
-		} else if (!this.state.elasticsearchHQ && this.includedInOriginal('elasticsearch-hq')) {
-			body.remove_deployments = [...body.remove_deployments, 'elasticsearch-hq'];
-		}
-		deployCluster(body, this.props.match.params.id)
+	deployCluster = (body, id) => {
+		this.setState({
+			isLoading: true,
+		});
+		deployCluster(body, id)
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
 			.catch((e) => {
 				this.setState({
+					isLoading: false,
 					deploymentError: e,
 					showError: true,
 				});
@@ -244,31 +172,6 @@ export default class Clusters extends Component {
 				<span>{name}</span>
 			</div>
 		);
-	};
-
-	renderClusterEndpoint = (source) => {
-		if (Object.keys(source).length) {
-			const username = source.username || source.dashboard_username;
-			const password = source.password || source.dashboard_password;
-			const [protocol, url] = (source.url || source.dashboard_url).split('://');
-			return (
-				<div key={source.name} className={clusterEndpoint}>
-					<h4>
-						<a
-							href={`${protocol}://${username}:${password}@${url}`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<Icon type="link" theme="outlined" />
-							{source.name}
-						</a>
-					</h4>
-					<CredentialsBox name={source.name} text={`${username}:${password}`} />
-				</div>
-			);
-		}
-
-		return null;
 	};
 
 	handleToken = async (clusterId, token) => {
@@ -315,10 +218,11 @@ export default class Clusters extends Component {
 								{paymentRequired ? (
 									<Stripe
 										name="Appbase.io Clusters"
-										amount={(this.state.cluster.plan_rate || 0) * 100}
+										amount={(this.state.planRate || 0) * 100}
 										token={token => this.handleToken(clusterId, token)}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
+										closed={this.toggleOverlay}
 									>
 										<Button
 											size="large"
@@ -326,6 +230,7 @@ export default class Clusters extends Component {
 											css={{
 												marginRight: 12,
 											}}
+											onClick={this.toggleOverlay}
 										>
 											Pay now to access
 										</Button>
@@ -406,9 +311,14 @@ export default class Clusters extends Component {
 			return <Loader />;
 		}
 
+		if (this.state.isLoading) return <Loader />;
+
+		const { showOverlay, isPaid } = this.state;
+
 		return (
 			<Fragment>
 				<FullHeader isCluster cluster={this.props.match.params.id} />
+				{showOverlay && <Overlay />}
 				<Container>
 					<section className={clusterContainer}>
 						<Modal
@@ -441,7 +351,11 @@ export default class Clusters extends Component {
 
 										<div>
 											<h4>Pricing Plan</h4>
-											<div>{this.state.cluster.pricing_plan}</div>
+											<div>
+												{this.state.cluster.pricing_plan}
+												&nbsp;&nbsp;
+												{isPaid ? <Tag color="green">Paid</Tag> : null}
+											</div>
 										</div>
 
 										<div>
@@ -478,243 +392,110 @@ export default class Clusters extends Component {
 									</div>
 								</li>
 
-								{this.state.cluster.status === 'deployments in progress' ? null : (
-									<li className={card}>
-										<div className="col light">
-											<h3>Elasticsearch</h3>
-											<p>Live cluster endpoint</p>
-
-											{this.state.arc ? (
-												<Link
-													to={{
-														pathname: `${
-															this.props.match.params.id
-														}/explore`,
-														state: {
-															arc: this.getAddon(
-																'arc',
-																this.originalCluster.deployment,
-															),
-														},
-													}}
-												>
-													<Button type="primary" size="large">
-														Explore Cluster
-													</Button>
-												</Link>
-											) : null}
-										</div>
-
-										<div className="col">
-											{Object.keys(this.state.deployment)
-												.filter(item => item !== 'addons')
-												.map(key => this.renderClusterEndpoint(
-														this.state.deployment[key],
-													))}
-										</div>
-									</li>
-								)}
-
-								{this.state.cluster.status === 'deployments in progress' ? null : (
-									<li className={card}>
-										<div className="col light">
-											<h3>Dashboard</h3>
-											<p>Manage your cluster</p>
-										</div>
-
-										<div className="col">
-											{this.renderClusterEndpoint(this.state.cluster)}
-										</div>
-									</li>
-								)}
-
-								{this.state.cluster.status === 'deployments in progress' ? null : (
-									<li className={card}>
-										<div className="col light">
-											<h3>Add-ons</h3>
-											<p>Elasticsearch add-ons endpoint</p>
-										</div>
-
-										<div className="col">
-											{(this.state.deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
-										</div>
-									</li>
-								)}
-
-								{this.state.cluster.status === 'deployments in progress' ? null : (
-									<li className={card}>
-										<div className="col light">
-											<h3>Edit Cluster Settings</h3>
-											<p>Customise as per your needs</p>
-										</div>
-										<div className="col grow">
-											<div className={settingsItem}>
-												<h4>Kibana</h4>
-												<div>
-													<label htmlFor="yes">
-														<input
-															type="radio"
-															name="kibana"
-															defaultChecked={this.state.kibana}
-															id="yes"
-															onChange={() => this.setConfig('kibana', true)
-															}
-														/>
-														Yes
-													</label>
-
-													<label htmlFor="no">
-														<input
-															type="radio"
-															name="kibana"
-															defaultChecked={!this.state.kibana}
-															id="no"
-															onChange={() => this.setConfig('kibana', false)
-															}
-														/>
-														No
-													</label>
-												</div>
-											</div>
-
-											<div className={settingsItem}>
-												<h4>Logstash</h4>
-												<div>
-													<label htmlFor="yes2">
-														<input
-															type="radio"
-															name="logstash"
-															defaultChecked={this.state.logstash}
-															id="yes2"
-															onChange={() => this.setConfig('logstash', true)
-															}
-														/>
-														Yes
-													</label>
-
-													<label htmlFor="no2">
-														<input
-															type="radio"
-															name="logstash"
-															defaultChecked={!this.state.logstash}
-															id="no2"
-															onChange={() => this.setConfig('logstash', false)
-															}
-														/>
-														No
-													</label>
-												</div>
-											</div>
-
-											<div className={settingsItem}>
-												<h4>Add-ons</h4>
-												<div className="settings-label">
-													<label htmlFor="arc">
-														<input
-															type="checkbox"
-															defaultChecked={this.state.arc}
-															id="arc"
-															onChange={() => this.toggleConfig('arc')
-															}
-														/>
-														Arc Middleware
-													</label>
-
-													<label htmlFor="dejavu">
-														<input
-															type="checkbox"
-															defaultChecked={this.state.dejavu}
-															id="dejavu"
-															onChange={() => this.toggleConfig('dejavu')
-															}
-														/>
-														Dejavu
-													</label>
-
-													<label htmlFor="elasticsearchHQ">
-														<input
-															type="checkbox"
-															defaultChecked={
-																this.state.elasticsearchHQ
-															}
-															id="elasticsearchHQ"
-															onChange={() => this.toggleConfig('elasticsearchHQ')
-															}
-														/>
-														Elasticsearch-HQ
-													</label>
-
-													<label htmlFor="mirage">
-														<input
-															type="checkbox"
-															defaultChecked={this.state.mirage}
-															id="mirage"
-															onChange={() => this.toggleConfig('mirage')
-															}
-														/>
-														Mirage
-													</label>
-												</div>
-											</div>
-										</div>
-									</li>
-								)}
-							</ul>
-
-							{this.state.cluster.status === 'deployments in progress' ? (
-								<div>
-									<p style={{ textAlign: 'center' }}>
-										Deployment is in progress. Please wait.
-									</p>
-									{this.renderClusterAbsentActionButtons()}
-								</div>
-							) : (
-								<div className={clusterButtons}>
-									<Button
-										onClick={this.deleteCluster}
-										type="danger"
-										size="large"
-										icon="delete"
-										className="delete"
-									>
-										Delete Cluster
-									</Button>
-
+								{this.state.cluster.status === 'deployments in progress' ? (
 									<div>
-										{
-											this.props.location.search.startsWith('?subscribe=true')
-												? (
-													<Stripe
-														name="Appbase.io Clusters"
-															amount={(this.state.cluster.plan_rate || 0) * 100}
-														token={token => this.handleToken(this.props.match.params.id, token)}
-														disabled={false}
-														stripeKey={STRIPE_KEY}
-													>
-														<Button
-															size="large"
-															ref={this.paymentButton}
-															css={{
-																marginRight: 12,
+										<p style={{ textAlign: 'center' }}>
+											Deployment is in progress. Please wait.
+										</p>
+										{this.renderClusterAbsentActionButtons()}
+									</div>
+								) : (
+									<React.Fragment>
+										<li className={card}>
+											{showOverlay && <Overlay />}
+											<div className="col vcenter" style={{ width: '100%' }}>
+												<h4 style={{ marginBottom: 0, color: 'rgba(0,0,0,0.65)' }}>Use appbase.io’s GUI to explore your cluster, manage indices, build search visually, and get search analytics.</h4>
+											</div>
+											<div className="col vcenter">
+													{this.state.arc ? (
+														<Link
+															to={{
+																pathname: `${
+																	this.props.match.params.id
+																	}/explore`,
+																state: {
+																	arc: getAddon(
+																		'arc',
+																		this.state.deployment,
+																	),
+																},
 															}}
 														>
-															Pay now
-														</Button>
-													</Stripe>
-												)
-												: null
-										}
-										<Button
-											size="large"
-											icon="save"
-											type="primary"
-											onClick={this.saveClusterSettings}
+															<Button type="primary" size="large">
+																Explore Cluster
+															</Button>
+														</Link>
+													) : null}
+											</div>
+										</li>
+										<div
+											css={{
+												display: 'flex',
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+											}}
 										>
-											Save Cluster Settings
-										</Button>
-									</div>
-								</div>
-							)}
+											<Sidebar id={this.props.match.params.id} />
+											<RightContainer>
+												<Switch>
+													<Route
+														exact
+														path="/clusters/:id"
+														component={() => (
+															<ClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+																cluster={this.state.cluster}
+																deployment={this.state.deployment}
+																arc={this.state.arc}
+																kibana={this.state.kibana}
+																mirage={this.state.mirage}
+																dejavu={this.state.dejavu}
+																elasticsearchHQ={
+																	this.state.elasticsearchHQ
+																}
+																// cluster deployment
+																onDeploy={this.deployCluster}
+																onDelete={this.deleteCluster}
+																// payments handling
+																planRate={this.state.planRate || 0}
+																handleToken={this.handleToken}
+																isPaid={isPaid}
+															/>
+														)}
+													/>
+													<Route
+														exact
+														path="/clusters/:id/scale"
+														component={() => (
+															<ScaleClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+																nodes={
+																	this.state.cluster.total_nodes
+																}
+															/>
+														)}
+													/>
+													<Route
+														exact
+														path="/clusters/:id/share"
+														component={() => (
+															<ShareClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+															/>
+														)}
+													/>
+												</Switch>
+											</RightContainer>
+										</div>
+									</React.Fragment>
+								)}
+							</ul>
 						</article>
 					</section>
 				</Container>

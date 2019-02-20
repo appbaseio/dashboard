@@ -15,6 +15,10 @@ const GeoDistributionPage = Loadable({
 	loader: () => import('../../pages/GeoDistributionPage'),
 	loading: Loader,
 });
+const RequestDistributionPage = Loadable({
+	loader: () => import('../../pages/RequestDistributionPage'),
+	loading: Loader,
+});
 const SearchLatency = Loadable({
 	loader: () => import('../../pages/SearchLatency'),
 	loading: Loader,
@@ -37,6 +41,11 @@ const OverviewPage = Loadable({
 
 const ImporterPage = Loadable({
 	loader: () => import('../../pages/ImporterPage'),
+	loading: Loader,
+});
+
+const QueryRulesPage = Loadable({
+	loader: () => import('../../pages/QueryRules'),
 	loading: Loader,
 });
 
@@ -170,6 +179,13 @@ class AppLayout extends React.PureComponent {
 						/>
 						<Route
 							exact
+							path="/app/:appName/requests-per-minute"
+							component={props => (
+								<AppPageContainer {...props} component={RequestDistributionPage} />
+							)}
+						/>
+						<Route
+							exact
 							path="/app/:appName/no-results-searches"
 							component={props => (
 								<AppPageContainer {...props} component={NoResultSearches} />
@@ -182,6 +198,19 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={ImporterPage}
+									shouldFetchAppInfo={false}
+									shouldFetchAppPlan={false}
+								/>
+							)}
+						/>
+
+						<Route
+							exact
+							path="/app/:appName/query-rules"
+							render={props => (
+								<AppPageContainer
+									{...props}
+									component={QueryRulesPage}
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>

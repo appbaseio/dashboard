@@ -15,7 +15,6 @@ import Flex from '../../batteries/components/shared/Flex';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { displayErrors } from '../../utils/helper';
 import { getPermission } from '../../batteries/modules/actions/permission';
-import { Button as UpgradeButton } from '../../batteries/components/Mappings/styles';
 import Grid from './Grid';
 import { getAppMappings } from '../../batteries/modules/actions';
 import { createCredentials as Messages, hoverMessage } from '../../utils/messages';
