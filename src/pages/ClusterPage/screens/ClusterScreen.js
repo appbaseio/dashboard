@@ -203,21 +203,6 @@ export default class ClusterScreen extends Component {
 					<div className="col light">
 						<h3>Elasticsearch</h3>
 						<p>Live cluster endpoint</p>
-
-						{arc ? (
-							<Link
-								to={{
-									pathname: `${clusterId}/explore`,
-									state: {
-										arc: getAddon('arc', originalDeployment),
-									},
-								}}
-							>
-								<Button type="primary" size="large">
-									Explore Cluster
-								</Button>
-							</Link>
-						) : null}
 					</div>
 
 					<div className="col">

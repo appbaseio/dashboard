@@ -12,7 +12,7 @@ import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import Overlay from './components/Overlay';
 import Sidebar, { RightContainer } from './components/Sidebar';
-import { clusterContainer, clustersList } from './styles';
+import { clusterContainer, clustersList, card } from './styles';
 import {
 	getClusterData,
 	deployCluster,
@@ -400,63 +400,100 @@ export default class Clusters extends Component {
 										{this.renderClusterAbsentActionButtons()}
 									</div>
 								) : (
-									<div
-										css={{
-											display: 'flex',
-											flexDirection: 'row',
-											justifyContent: 'space-between',
-										}}
-									>
-										<Sidebar id={this.props.match.params.id} />
-										<RightContainer>
-											<Switch>
-												<Route
-													exact
-													path="/clusters/:id"
-													component={() => (
-														<ClusterScreen
-															clusterId={this.props.match.params.id}
-															cluster={this.state.cluster}
-															deployment={this.state.deployment}
-															arc={this.state.arc}
-															kibana={this.state.kibana}
-															mirage={this.state.mirage}
-															dejavu={this.state.dejavu}
-															elasticsearchHQ={
-																this.state.elasticsearchHQ
-															}
-															// cluster deployment
-															onDeploy={this.deployCluster}
-															onDelete={this.deleteCluster}
-															// payments handling
-															planRate={this.state.planRate || 0}
-															handleToken={this.handleToken}
-															isPaid={isPaid}
-														/>
-													)}
-												/>
-												<Route
-													exact
-													path="/clusters/:id/scale"
-													component={() => (
-														<ScaleClusterScreen
-															clusterId={this.props.match.params.id}
-															nodes={this.state.cluster.total_nodes}
-														/>
-													)}
-												/>
-												<Route
-													exact
-													path="/clusters/:id/share"
-													component={() => (
-														<ShareClusterScreen
-															clusterId={this.props.match.params.id}
-														/>
-													)}
-												/>
-											</Switch>
-										</RightContainer>
-									</div>
+									<React.Fragment>
+										<li className={card}>
+											{showOverlay && <Overlay />}
+											<div className="col vcenter" style={{ width: '100%' }}>
+												<h4 style={{ marginBottom: 0, color: 'rgba(0,0,0,0.65)' }}>Use appbase.io’s GUI to explore your cluster, manage indices, build search visually, and get search analytics.</h4>
+											</div>
+											<div className="col vcenter">
+													{this.state.arc ? (
+														<Link
+															to={{
+																pathname: `${
+																	this.props.match.params.id
+																	}/explore`,
+																state: {
+																	arc: getAddon(
+																		'arc',
+																		this.state.deployment,
+																	),
+																},
+															}}
+														>
+															<Button type="primary" size="large">
+																Explore Cluster
+															</Button>
+														</Link>
+													) : null}
+											</div>
+										</li>
+										<div
+											css={{
+												display: 'flex',
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+											}}
+										>
+											<Sidebar id={this.props.match.params.id} />
+											<RightContainer>
+												<Switch>
+													<Route
+														exact
+														path="/clusters/:id"
+														component={() => (
+															<ClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+																cluster={this.state.cluster}
+																deployment={this.state.deployment}
+																arc={this.state.arc}
+																kibana={this.state.kibana}
+																mirage={this.state.mirage}
+																dejavu={this.state.dejavu}
+																elasticsearchHQ={
+																	this.state.elasticsearchHQ
+																}
+																// cluster deployment
+																onDeploy={this.deployCluster}
+																onDelete={this.deleteCluster}
+																// payments handling
+																planRate={this.state.planRate || 0}
+																handleToken={this.handleToken}
+																isPaid={isPaid}
+															/>
+														)}
+													/>
+													<Route
+														exact
+														path="/clusters/:id/scale"
+														component={() => (
+															<ScaleClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+																nodes={
+																	this.state.cluster.total_nodes
+																}
+															/>
+														)}
+													/>
+													<Route
+														exact
+														path="/clusters/:id/share"
+														component={() => (
+															<ShareClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
+															/>
+														)}
+													/>
+												</Switch>
+											</RightContainer>
+										</div>
+									</React.Fragment>
 								)}
 							</ul>
 						</article>
