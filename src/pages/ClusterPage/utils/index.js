@@ -162,7 +162,7 @@ export function getSharedUsers(id) {
 	});
 }
 
-export function addSharedUser(id, email) {
+export function addSharedUser(id, email, role) {
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/v1/_share/${id}`, {
 			method: 'POST',
@@ -172,6 +172,7 @@ export function addSharedUser(id, email) {
 			},
 			body: JSON.stringify({
 				email,
+				role,
 			}),
 		})
 			.then(res => res.json())
