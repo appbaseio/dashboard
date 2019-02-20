@@ -12,6 +12,8 @@ import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Header from '../../components/Header';
 import { IMPORTER_LINK } from '../../constants/config';
 
+const URLSearchParams = require('url-search-params');
+
 function getLink(appname, credentials) {
 	const parameters = {
 		platform: 'appbase',
