@@ -277,7 +277,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.0.0-alpha',
+					image: 'appbaseio/dejavu:3.2.1',
 					exposed_port: 1358,
 				},
 			];
