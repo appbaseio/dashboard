@@ -102,6 +102,7 @@ class AppLayout extends React.PureComponent {
 					paddingTop: 60,
 					minHeight: '100vh',
 					marginLeft: collapsed ? '80px' : '260px',
+					position: 'relative',
 				}}
 			>
 				<AppHeader big={collapsed} />
