@@ -404,28 +404,37 @@ export default class Clusters extends Component {
 										<li className={card}>
 											{showOverlay && <Overlay />}
 											<div className="col vcenter" style={{ width: '100%' }}>
-												<h4 style={{ marginBottom: 0, color: 'rgba(0,0,0,0.65)' }}>Use appbase.io’s GUI to explore your cluster, manage indices, build search visually, and get search analytics.</h4>
+												<h4
+													style={{
+														marginBottom: 0,
+														color: 'rgba(0,0,0,0.65)',
+													}}
+												>
+													Use appbase.io’s GUI to explore your cluster,
+													manage indices, build search visually, and get
+													search analytics.
+												</h4>
 											</div>
 											<div className="col vcenter">
-													{this.state.arc ? (
-														<Link
-															to={{
-																pathname: `${
-																	this.props.match.params.id
-																	}/explore`,
-																state: {
-																	arc: getAddon(
-																		'arc',
-																		this.state.deployment,
-																	),
-																},
-															}}
-														>
-															<Button type="primary" size="large">
-																Explore Cluster
-															</Button>
-														</Link>
-													) : null}
+												{this.state.arc ? (
+													<Link
+														to={{
+															pathname: `/clusters/${
+																this.props.match.params.id
+															}/explore`,
+															state: {
+																arc: getAddon(
+																	'arc',
+																	this.state.deployment,
+																),
+															},
+														}}
+													>
+														<Button type="primary" size="large">
+															Explore Cluster
+														</Button>
+													</Link>
+												) : null}
 											</div>
 										</li>
 										<div
