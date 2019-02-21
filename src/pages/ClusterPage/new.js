@@ -289,7 +289,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'mirage',
-					image: 'appbaseio/mirage:0.8.0',
+					image: 'appbaseio/mirage:0.11.0',
 					exposed_port: 3030,
 				},
 			];
