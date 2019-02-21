@@ -51,76 +51,92 @@ const link = css`
 	`)};
 `;
 
-const FullHeader = ({
- user, cluster, isUsingTrial, daysLeft, currentApp, isCluster,
-}) => (
-	<Header className={headerStyles}>
-		<div className="row">
-			<Link to="/">
-				<Logo />
-			</Link>
-			<Menu
-				mode="horizontal"
-				className="options"
-				defaultSelectedKeys={cluster ? ['3'] : [getSelectedKeys(window.location.pathname)]}
-			>
-				<Menu.Item key="1">
-					<Link to="/">Apps</Link>
-				</Menu.Item>
+class FullHeader extends React.Component {
+	componentDidMount() {
+		const { userPlan, getPlan } = this.props;
+		if (userPlan && !userPlan.results) {
+			console.log('Working');
+			getPlan();
+		}
+	}
 
-				<Menu.Item key="2">
-					<Link to="/clusters">
-						Clusters <Tag>Preview</Tag>
+	render() {
+		const {
+			user, cluster, isUsingTrial, daysLeft, currentApp, isCluster,
+		} = this.props; // prettier-ignore
+
+		return (
+			<Header className={headerStyles}>
+				<div className="row">
+					<Link to="/">
+						<Logo />
 					</Link>
-				</Menu.Item>
+					<Menu
+						mode="horizontal"
+						className="options"
+						defaultSelectedKeys={
+							cluster ? ['3'] : [getSelectedKeys(window.location.pathname)]
+						}
+					>
+						<Menu.Item key="1">
+							<Link to="/">Apps</Link>
+						</Menu.Item>
 
-				{cluster ? (
-					<Menu.Item key="3">
-						<Link to={`/clusters/${cluster}`}>
-							<Icon type="cluster" /> {cluster}
+						<Menu.Item key="2">
+							<Link to="/clusters">
+								Clusters <Tag>Preview</Tag>
+							</Link>
+						</Menu.Item>
+
+						{cluster ? (
+							<Menu.Item key="3">
+								<Link to={`/clusters/${cluster}`}>
+									<Icon type="cluster" /> {cluster}
+								</Link>
+							</Menu.Item>
+						) : null}
+
+						<Menu.Item key="4">
+							<Link to="/marketplace">
+								MarketPlace <Tag>New</Tag>
+							</Link>
+						</Menu.Item>
+					</Menu>
+				</div>
+				<Row justify="space-between" align="middle">
+					{isUsingTrial && !isCluster && (
+						<Link to={`/app/${currentApp}/billing`}>
+							<Button css={trialBtn} type="danger">
+								<span css={trialText}>
+									{daysLeft > 0
+										? `Trial expires in ${daysLeft} ${
+												daysLeft > 1 ? 'days' : 'day'
+										  }. Upgrade now`
+										: 'Trial expired. Upgrade now'}
+								</span>
+							</Button>
 						</Link>
-					</Menu.Item>
-				) : null}
-
-				<Menu.Item key="4">
-					<Link to="/marketplace">
-						MarketPlace <Tag>New</Tag>
-					</Link>
-				</Menu.Item>
-			</Menu>
-		</div>
-		<Row justify="space-between" align="middle">
-			{isUsingTrial && !isCluster && (
-				<Link to={`/app/${currentApp}/billing`}>
-					<Button css={trialBtn} type="danger">
-						<span css={trialText}>
-							{daysLeft > 0
-								? `Trial expires in ${daysLeft} ${
-										daysLeft > 1 ? 'days' : 'day'
-								  }. Upgrade now`
-								: 'Trial expired. Upgrade now'}
-						</span>
-					</Button>
-				</Link>
-			)}
-			<a
-				href="https://docs.appbase.io/javascript/quickstart.html"
-				className={link}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<Icon type="rocket" /> Docs
-			</a>
-			<UserMenu user={user} />
-		</Row>
-		<MenuSlider
-			isHomepage
-			defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
-			isUsingTrial={isUsingTrial}
-			daysLeft={daysLeft}
-		/>
-	</Header>
-);
+					)}
+					<a
+						href="https://docs.appbase.io/javascript/quickstart.html"
+						className={link}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Icon type="rocket" /> Docs
+					</a>
+					<UserMenu user={user} />
+				</Row>
+				<MenuSlider
+					isHomepage
+					defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
+					isUsingTrial={isUsingTrial}
+					daysLeft={daysLeft}
+				/>
+			</Header>
+		);
+	}
+}
 
 FullHeader.defaultProps = {
 	cluster: '',
@@ -142,6 +158,7 @@ const mapStateToProps = (state) => {
 	}
 	return {
 		user: state.user.data,
+		userPlan: get(state, '$getUserPlan'),
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,
 		daysLeft: get(state, '$getUserPlan.daysLeft', 0),
 		currentApp,
@@ -149,7 +166,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-	getPlan: () => dispatch(() => getUserPlan()),
+	getPlan: () => dispatch(getUserPlan()),
 });
 
 export default connect(

@@ -317,7 +317,7 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader isCluster cluster={this.props.match.params.id} />
+				<FullHeader cluster={this.props.match.params.id} />
 				{showOverlay && <Overlay />}
 				<Container>
 					<section className={clusterContainer}>
