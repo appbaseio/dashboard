@@ -141,7 +141,12 @@ class PaidUserOverview extends React.Component {
 					</Flex>
 				)}
 				<div css="margin-top: 20px">
-					<RequestLogs pageSize={5} changeUrlOnTabChange={false} appName={appName} />
+					<RequestLogs
+						size={100}
+						pageSize={5}
+						changeUrlOnTabChange={false}
+						appName={appName}
+					/>
 				</div>
 				<DemoCards cardConfig={exampleConfig} />
 			</Container>

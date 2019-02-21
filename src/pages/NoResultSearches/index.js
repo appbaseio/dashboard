@@ -26,7 +26,7 @@ const bannerMessagesAnalytics = {
 		title: 'No Result Searches',
 		description: 'Understand which user searches are yielding no results.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io',
+		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
 	},
 };
 

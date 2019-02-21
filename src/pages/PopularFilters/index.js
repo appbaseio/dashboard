@@ -27,7 +27,7 @@ const bannerMessagesAnalytics = {
 		title: 'Popular Filters',
 		description: 'Understand how to make the most of the popular filters analytics.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io',
+		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
 	},
 };
 
