@@ -266,17 +266,19 @@ export default class Clusters extends Component {
 				Go Back
 			</Button>
 
-			<Button
-				size="large"
-				onClick={this.deleteCluster}
-				type="danger"
-				css={{
-					marginLeft: 12,
-				}}
-				icon="delete"
-			>
-				Delete Cluster
-			</Button>
+			{this.state.cluster.user_role === 'admin' ? (
+				<Button
+					size="large"
+					onClick={this.deleteCluster}
+					type="danger"
+					css={{
+						marginLeft: 12,
+					}}
+					icon="delete"
+				>
+					Delete Cluster
+				</Button>
+			) : null}
 		</div>
 	);
 
@@ -314,6 +316,8 @@ export default class Clusters extends Component {
 		if (this.state.isLoading) return <Loader />;
 
 		const { showOverlay, isPaid } = this.state;
+
+		const isViewer = this.state.cluster.user_role === 'viewer';
 
 		return (
 			<Fragment>
@@ -404,28 +408,37 @@ export default class Clusters extends Component {
 										<li className={card}>
 											{showOverlay && <Overlay />}
 											<div className="col vcenter" style={{ width: '100%' }}>
-												<h4 style={{ marginBottom: 0, color: 'rgba(0,0,0,0.65)' }}>Use appbase.io’s GUI to explore your cluster, manage indices, build search visually, and get search analytics.</h4>
+												<h4
+													style={{
+														marginBottom: 0,
+														color: 'rgba(0,0,0,0.65)',
+													}}
+												>
+													Use appbase.io’s GUI to explore your cluster,
+													manage indices, build search visually, and get
+													search analytics.
+												</h4>
 											</div>
 											<div className="col vcenter">
-													{this.state.arc ? (
-														<Link
-															to={{
-																pathname: `${
-																	this.props.match.params.id
-																	}/explore`,
-																state: {
-																	arc: getAddon(
-																		'arc',
-																		this.state.deployment,
-																	),
-																},
-															}}
-														>
-															<Button type="primary" size="large">
-																Explore Cluster
-															</Button>
-														</Link>
-													) : null}
+												{this.state.arc ? (
+													<Link
+														to={{
+															pathname: `${
+																this.props.match.params.id
+															}/explore`,
+															state: {
+																arc: getAddon(
+																	'arc',
+																	this.state.deployment,
+																),
+															},
+														}}
+													>
+														<Button type="primary" size="large">
+															Explore Cluster
+														</Button>
+													</Link>
+												) : null}
 											</div>
 										</li>
 										<div
@@ -435,7 +448,7 @@ export default class Clusters extends Component {
 												justifyContent: 'space-between',
 											}}
 										>
-											<Sidebar id={this.props.match.params.id} />
+											<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
 											<RightContainer>
 												<Switch>
 													<Route
@@ -465,31 +478,38 @@ export default class Clusters extends Component {
 															/>
 														)}
 													/>
-													<Route
-														exact
-														path="/clusters/:id/scale"
-														component={() => (
-															<ScaleClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
-																nodes={
-																	this.state.cluster.total_nodes
-																}
+													{isViewer || (
+														<React.Fragment>
+															<Route
+																exact
+																path="/clusters/:id/scale"
+																component={() => (
+																	<ScaleClusterScreen
+																		clusterId={
+																			this.props.match.params
+																				.id
+																		}
+																		nodes={
+																			this.state.cluster
+																				.total_nodes
+																		}
+																	/>
+																)}
 															/>
-														)}
-													/>
-													<Route
-														exact
-														path="/clusters/:id/share"
-														component={() => (
-															<ShareClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
+															<Route
+																exact
+																path="/clusters/:id/share"
+																component={() => (
+																	<ShareClusterScreen
+																		clusterId={
+																			this.props.match.params
+																				.id
+																		}
+																	/>
+																)}
 															/>
-														)}
-													/>
+														</React.Fragment>
+													)}
 												</Switch>
 											</RightContainer>
 										</div>
