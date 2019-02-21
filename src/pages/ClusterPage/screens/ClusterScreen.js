@@ -90,7 +90,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.0.0-alpha',
+					image: 'appbaseio/dejavu:3.2.1',
 					exposed_port: 1358,
 				},
 			];
@@ -104,7 +104,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.25',
+					image: 'siddharthlatest/arc:0.0.29',
 					exposed_port: 8000,
 				},
 			];
@@ -118,7 +118,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'mirage',
-					image: 'appbaseio/mirage:0.8.0',
+					image: 'appbaseio/mirage:0.11.0',
 					exposed_port: 3030,
 				},
 			];
@@ -132,7 +132,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
+					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
 					exposed_port: 5000,
 				},
 			];
