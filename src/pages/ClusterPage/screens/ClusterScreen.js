@@ -314,7 +314,7 @@ export default class ClusterScreen extends Component {
 
 				<div className={clusterButtons}>
 					<Button
-						onClick={() => this.props.onDelete(clusterId)}
+						onClick={this.props.onDelete}
 						type="danger"
 						size="large"
 						icon="delete"

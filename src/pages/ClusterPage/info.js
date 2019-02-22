@@ -25,6 +25,7 @@ import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
+import DeleteClusterModal from './components/DeleteClusterModal';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -44,6 +45,7 @@ export default class Clusters extends Component {
 			loadingError: false,
 			showOverlay: false,
 			isPaid: false,
+			deleteModal: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -103,6 +105,12 @@ export default class Clusters extends Component {
 					this.triggerPayment,
 				);
 			});
+	};
+
+	handleDeleteModal = () => {
+		this.setState(prevState => ({
+			deleteModal: !prevState.deleteModal,
+		}));
 	};
 
 	triggerPayment = () => {
@@ -404,28 +412,37 @@ export default class Clusters extends Component {
 										<li className={card}>
 											{showOverlay && <Overlay />}
 											<div className="col vcenter" style={{ width: '100%' }}>
-												<h4 style={{ marginBottom: 0, color: 'rgba(0,0,0,0.65)' }}>Use appbase.io’s GUI to explore your cluster, manage indices, build search visually, and get search analytics.</h4>
+												<h4
+													style={{
+														marginBottom: 0,
+														color: 'rgba(0,0,0,0.65)',
+													}}
+												>
+													Use appbase.io’s GUI to explore your cluster,
+													manage indices, build search visually, and get
+													search analytics.
+												</h4>
 											</div>
 											<div className="col vcenter">
-													{this.state.arc ? (
-														<Link
-															to={{
-																pathname: `${
-																	this.props.match.params.id
-																	}/explore`,
-																state: {
-																	arc: getAddon(
-																		'arc',
-																		this.state.deployment,
-																	),
-																},
-															}}
-														>
-															<Button type="primary" size="large">
-																Explore Cluster
-															</Button>
-														</Link>
-													) : null}
+												{this.state.arc ? (
+													<Link
+														to={{
+															pathname: `${
+																this.props.match.params.id
+															}/explore`,
+															state: {
+																arc: getAddon(
+																	'arc',
+																	this.state.deployment,
+																),
+															},
+														}}
+													>
+														<Button type="primary" size="large">
+															Explore Cluster
+														</Button>
+													</Link>
+												) : null}
 											</div>
 										</li>
 										<div
@@ -457,7 +474,7 @@ export default class Clusters extends Component {
 																}
 																// cluster deployment
 																onDeploy={this.deployCluster}
-																onDelete={this.deleteCluster}
+																onDelete={this.handleDeleteModal}
 																// payments handling
 																planRate={this.state.planRate || 0}
 																handleToken={this.handleToken}
@@ -499,6 +516,13 @@ export default class Clusters extends Component {
 						</article>
 					</section>
 				</Container>
+				<DeleteClusterModal
+					clusterId={this.state.cluster.id}
+					clusterName={this.state.cluster.name}
+					onDelete={this.deleteCluster}
+					handleModal={this.handleDeleteModal}
+					isVisible={this.state.deleteModal}
+				/>
 			</Fragment>
 		);
 	}
