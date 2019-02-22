@@ -40,7 +40,7 @@ const LoginContainer = ({ children }) => (
 						<li>
 							<Icon type="check" className="icon" />
 							Get best-in-class security with read/write permissions, granular ACLs
-							and more.
+							and more
 						</li>
 					</ul>
 				</div>
