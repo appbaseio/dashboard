@@ -1,16 +1,5 @@
 import { css } from 'react-emotion';
-
-const checkbox = css`
-	margin-left: 8px;
-	text-align: left;
-	margin-bottom: 12px;
-	display: flex;
-
-	.ant-checkbox {
-		margin-top: 5px;
-		height: 16px;
-	}
-`;
+import { mediaKey } from '../../utils/media';
 
 const main = css`
 	min-height: 100vh;
@@ -57,6 +46,23 @@ const main = css`
 			}
 		}
 	}
+	${mediaKey.large} {
+		padding: 20px;
+	}
+	${mediaKey.medium} {
+		flex-direction: column-reverse;
+		justify-content: center;
+		> div {
+			justify-content: center;
+			align-items: center;
+			padding: 20px 0px;
+		}
+		.content {
+			.title {
+				max-width: 100%;
+			}
+		}
+	}
 `;
 
-export { checkbox, main }; // eslint-disable-line
+export { main }; // eslint-disable-line
