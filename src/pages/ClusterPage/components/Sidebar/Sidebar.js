@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ id }) {
+export default function Sidebar({ id, isViewer }) {
 	const baseRoute = `/clusters/${id}`;
 	let defaultSelectedKeys;
 
@@ -25,16 +25,20 @@ export default function Sidebar({ id }) {
 					<Icon type="cluster" /> Cluster
 				</Link>
 			</Menu.Item>
-			<Menu.Item key="2">
-				<Link to={`${baseRoute}/scale`}>
-					<Icon type="database" /> Scale Cluster
-				</Link>
-			</Menu.Item>
-			<Menu.Item key="3">
-				<Link to={`${baseRoute}/share`}>
-					<Icon type="share-alt" /> Share Settings
-				</Link>
-			</Menu.Item>
+			{isViewer || (
+				<Menu.Item key="2">
+					<Link to={`${baseRoute}/scale`}>
+						<Icon type="database" /> Scale Cluster
+					</Link>
+				</Menu.Item>
+			)}
+			{isViewer || (
+				<Menu.Item key="3">
+					<Link to={`${baseRoute}/share`}>
+						<Icon type="share-alt" /> Share Settings
+					</Link>
+				</Menu.Item>
+			)}
 		</Menu>
 	);
 }

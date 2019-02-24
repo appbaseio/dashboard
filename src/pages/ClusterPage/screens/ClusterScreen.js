@@ -195,7 +195,7 @@ export default class ClusterScreen extends Component {
 			handleToken,
 			isPaid,
 		} = this.props;
-
+		const isViewer = cluster.user_role === 'viewer';
 		return (
 			<Fragment>
 				<li className={card}>
@@ -234,8 +234,8 @@ export default class ClusterScreen extends Component {
 
 				<li className={card}>
 					<div className="col light">
-						<h3>Edit Cluster Settings</h3>
-						<p>Customise as per your needs</p>
+						<h3>{isViewer ? 'View' : 'Edit'} Cluster Settings</h3>
+						{isViewer || <p>Customise as per your needs</p>}
 					</div>
 					<div className="col grow">
 						<div className={settingsItem}>
@@ -247,6 +247,7 @@ export default class ClusterScreen extends Component {
 										name="kibana"
 										defaultChecked={kibana}
 										id="yes"
+										disabled={isViewer}
 										onChange={() => this.setConfig('kibana', true)}
 									/>
 									Yes
@@ -258,6 +259,7 @@ export default class ClusterScreen extends Component {
 										name="kibana"
 										defaultChecked={!kibana}
 										id="no"
+										disabled={isViewer}
 										onChange={() => this.setConfig('kibana', false)}
 									/>
 									No
@@ -273,6 +275,7 @@ export default class ClusterScreen extends Component {
 										type="checkbox"
 										defaultChecked={arc}
 										id="arc"
+										disabled={isViewer}
 										onChange={() => this.toggleConfig('arc')}
 									/>
 									Arc Middleware
@@ -283,6 +286,7 @@ export default class ClusterScreen extends Component {
 										type="checkbox"
 										defaultChecked={dejavu}
 										id="dejavu"
+										disabled={isViewer}
 										onChange={() => this.toggleConfig('dejavu')}
 									/>
 									Dejavu
@@ -293,6 +297,7 @@ export default class ClusterScreen extends Component {
 										type="checkbox"
 										defaultChecked={elasticsearchHQ}
 										id="elasticsearchHQ"
+										disabled={isViewer}
 										onChange={() => this.toggleConfig('elasticsearchHQ')}
 									/>
 									Elasticsearch-HQ
@@ -303,6 +308,7 @@ export default class ClusterScreen extends Component {
 										type="checkbox"
 										defaultChecked={mirage}
 										id="mirage"
+										disabled={isViewer}
 										onChange={() => this.toggleConfig('mirage')}
 									/>
 									Mirage
@@ -311,50 +317,51 @@ export default class ClusterScreen extends Component {
 						</div>
 					</div>
 				</li>
-
-				<div className={clusterButtons}>
-					<Button
-						onClick={() => this.props.onDelete(clusterId)}
-						type="danger"
-						size="large"
-						icon="delete"
-						className="delete"
-					>
-						Delete Cluster
-					</Button>
-
-					<div>
-						{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
-							<Stripe
-								name="Appbase.io Clusters"
-								amount={planRate * 100}
-								token={token => handleToken(clusterId, token)}
-								disabled={false}
-								stripeKey={STRIPE_KEY}
-								closed={this.toggleOverlay}
-							>
-								<Button
-									size="large"
-									ref={this.paymentButton}
-									css={{
-										marginRight: 12,
-									}}
-									onClick={this.toggleOverlay}
-								>
-									Pay now
-								</Button>
-							</Stripe>
-						) : null}
+				{isViewer || (
+					<div className={clusterButtons}>
 						<Button
+							onClick={() => this.props.onDelete(clusterId)}
+							type="danger"
 							size="large"
-							icon="save"
-							type="primary"
-							onClick={this.saveClusterSettings}
+							icon="delete"
+							className="delete"
 						>
-							Save Cluster Settings
+							Delete Cluster
 						</Button>
+
+						<div>
+							{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={planRate * 100}
+									token={token => handleToken(clusterId, token)}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+									closed={this.toggleOverlay}
+								>
+									<Button
+										size="large"
+										ref={this.paymentButton}
+										css={{
+											marginRight: 12,
+										}}
+										onClick={this.toggleOverlay}
+									>
+										Pay now
+									</Button>
+								</Stripe>
+							) : null}
+							<Button
+								size="large"
+								icon="save"
+								type="primary"
+								onClick={this.saveClusterSettings}
+							>
+								Save Cluster Settings
+							</Button>
+						</div>
 					</div>
-				</div>
+				)}
 			</Fragment>
 		);
 	}
