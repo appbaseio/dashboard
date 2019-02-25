@@ -248,6 +248,9 @@ const clustersList = css`
 			${media.medium(css`
 				display: block;
 			`)};
+			& > div:first-child {
+				flex: 1.5;
+			}
 			& > div {
 				flex: 1;
 				flex-direction: column;

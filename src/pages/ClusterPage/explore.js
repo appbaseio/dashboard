@@ -7,6 +7,7 @@ import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import { getClusterData } from './utils';
 import { clusterContainer } from './styles';
+import Frame from '../../components/Frame';
 
 export default class ExploreCluster extends Component {
 	constructor(props) {
@@ -17,6 +18,7 @@ export default class ExploreCluster extends Component {
 			arc,
 			isLoading: !arc,
 			error: null,
+			isFrameLoading: false,
 		};
 	}
 
@@ -80,6 +82,12 @@ export default class ExploreCluster extends Component {
 		</Fragment>
 	);
 
+	frameLoaded = () => {
+		this.setState({
+			isFrameLoading: false,
+		});
+	};
+
 	render() {
 		if (!this.state.arc) {
 			if (this.state.isLoading) {
@@ -95,16 +103,19 @@ export default class ExploreCluster extends Component {
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
 		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${
 			this.state.arc.username
-		}&password=${this.state.arc.password}&header=false`;
+		}&password=${this.state.arc.password}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>
 				<FullHeader cluster={this.props.match.params.id} />
-				<iframe
+				{this.state.isFrameLoading && <Loader />}
+				<Frame
 					src={url}
+					id="cluster"
 					frameBorder="0"
 					width="100%"
 					height={`${window.innerHeight - 60}px`}
+					onLoad={this.frameLoaded}
 				/>
 			</Fragment>
 		);

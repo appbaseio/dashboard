@@ -11,6 +11,7 @@ import { displayErrors } from '../../utils/helper';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Header from '../../components/Header';
 import { IMPORTER_LINK } from '../../constants/config';
+import Frame from '../../components/Frame';
 
 const URLSearchParams = require('url-search-params');
 
@@ -39,6 +40,10 @@ function getUrlParams(url) {
 	);
 }
 class ImporterPage extends React.Component {
+	state = {
+		isFrameLoading: true,
+	};
+
 	componentDidMount() {
 		const { fetchPermissions, appName } = this.props;
 		fetchPermissions(appName);
@@ -52,7 +57,14 @@ class ImporterPage extends React.Component {
 		displayErrors(errors, prevProps.errors);
 	}
 
+	frameLoaded = () => {
+		this.setState({
+			isFrameLoading: false,
+		});
+	};
+
 	render() {
+		const { isFrameLoading } = this.state;
 		const {
 			appName, credentials, isLoading, location,
 		} = this.props; // prettier-ignore
@@ -126,12 +138,14 @@ class ImporterPage extends React.Component {
 					<Loader />
 				) : (
 					<section>
-						<iframe
+						{isFrameLoading && <Loader />}
+						<Frame
 							title="Importer"
 							src={importerLink}
 							frameBorder="0"
 							width="100%"
 							height={`${window.innerHeight - 243 || 600}px`}
+							onLoad={this.frameLoaded}
 						/>
 					</section>
 				)}

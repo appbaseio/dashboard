@@ -60,6 +60,7 @@
 		"hex-rgb": "^3.0.0",
 		"lodash": "^4.17.10",
 		"moment": "^2.22.2",
+		"partial-json-parser": "^1.1.1",
 		"prop-types": "^15.6.2",
 		"rc-progress": "^2.2.5",
 		"react": "^16.4.2",
