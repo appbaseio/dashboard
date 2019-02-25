@@ -11,6 +11,7 @@ import { displayErrors } from '../../utils/helper';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Header from '../../components/Header';
 import { IMPORTER_LINK } from '../../constants/config';
+import Frame from '../../components/Frame';
 
 function getLink(appname, credentials) {
 	const parameters = {
@@ -23,6 +24,10 @@ function getLink(appname, credentials) {
 	return `${IMPORTER_LINK}${JSON.stringify(parameters)}&header=false`;
 }
 class ImporterPage extends React.Component {
+	state = {
+		isFrameLoading: true,
+	};
+
 	componentDidMount() {
 		const { fetchPermissions, appName } = this.props;
 		fetchPermissions(appName);
@@ -36,8 +41,15 @@ class ImporterPage extends React.Component {
 		displayErrors(errors, prevProps.errors);
 	}
 
+	frameLoaded = () => {
+		this.setState({
+			isFrameLoading: false,
+		});
+	};
+
 	render() {
 		const { appName, credentials, isLoading } = this.props;
+		const { isFrameLoading } = this.state;
 		return (
 			<Fragment>
 				<Header compact>
@@ -103,12 +115,14 @@ class ImporterPage extends React.Component {
 					<Loader />
 				) : (
 					<section>
-						<iframe
-							title="Importer"
+						{isFrameLoading && <Loader />}
+						<Frame
+							id="Importer"
 							src={getLink(appName, credentials)}
 							frameBorder="0"
 							width="100%"
 							height={`${window.innerHeight - 243 || 600}px`}
+							onLoad={this.frameLoaded}
 						/>
 					</section>
 				)}

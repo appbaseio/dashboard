@@ -11,8 +11,13 @@ import {
 import { getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
+import Frame from '../../components/Frame';
 
 class QueryRules extends Component {
+	state = {
+		isFrameLoading: true,
+	};
+
 	componentDidMount() {
 		const { credentials } = this.props;
 		if (!credentials) {
@@ -26,6 +31,12 @@ class QueryRules extends Component {
 			this.init();
 		}
 	}
+
+	frameLoaded = () => {
+		this.setState({
+			isFrameLoading: false,
+		});
+	};
 
 	init() {
 		// prettier-ignore
@@ -41,6 +52,7 @@ class QueryRules extends Component {
 
 	render() {
 		const { appName, credentials, plan } = this.props;
+		const { isFrameLoading } = this.state;
 		const splitHost = SCALR_API.split('https://');
 		let clusterHost = 'scalr.api.appbase.io';
 		if (splitHost.length === 2) {
@@ -58,12 +70,14 @@ class QueryRules extends Component {
 
 		return (
 			<section>
+				{isFrameLoading && <Loader />}
 				{credentials ? (
-					<iframe
+					<Frame
 						height={`${window.innerHeight - 65}px`}
 						width="100%"
-						title="dejavu"
+						id="dejavu"
 						src={iframeURL}
+						onLoad={this.frameLoaded}
 						frameBorder="0"
 					/>
 				) : (
