@@ -102,15 +102,17 @@ class AppHeader extends React.Component {
 					</Menu.Item>
 				</Menu>
 				{isUsingTrial && (
-					<Button css={trialBtn} type="danger" href="billing">
-						<span css={trialText}>
-							{daysLeft > 0
-								? `Trial expires in ${daysLeft} ${
-										daysLeft > 1 ? 'days' : 'day'
-								  }. Upgrade now`
-								: 'Trial expired. Upgrade now'}
-						</span>
-					</Button>
+					<Tooltip title="You are currently on a trial which unlocks all the Growth monthly features. You can upgrade to a paid plan anytime till the trial expires. Post trial expiration, you will be subscribed to the free plan.">
+						<Button css={trialBtn} type="danger" href="billing">
+							<span css={trialText}>
+								{daysLeft > 0
+									? `Trial expires in ${daysLeft} ${
+											daysLeft > 1 ? 'days' : 'day'
+									  }. Upgrade now`
+									: 'Trial expired. Upgrade now'}
+							</span>
+						</Button>
+					</Tooltip>
 				)}
 				<Row justify="space-between" align="middle">
 					<a

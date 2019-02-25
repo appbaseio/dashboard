@@ -59,7 +59,11 @@ export default class ExploreCluster extends Component {
 
 	renderErrorScreen = message => (
 		<Fragment>
-			<FullHeader isCluster cluster={this.props.match.params.id} />
+			<FullHeader
+				isCluster
+				cluster={this.props.match.params.id}
+				trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
+			/>
 			<Container>
 				<section
 					className={clusterContainer}
@@ -107,7 +111,10 @@ export default class ExploreCluster extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader cluster={this.props.match.params.id} />
+				<FullHeader
+					cluster={this.props.match.params.id}
+					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
+				/>
 				{this.state.isFrameLoading && <Loader />}
 				<Frame
 					src={url}
