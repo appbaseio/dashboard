@@ -191,7 +191,10 @@ export default class Clusters extends Component {
 		const clusterId = this.props.match.params.id;
 		return (
 			<Fragment>
-				<FullHeader cluster={clusterId} />
+				<FullHeader
+					cluster={clusterId}
+					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
+				/>
 				<Container>
 					<section
 						className={clusterContainer}
@@ -324,7 +327,11 @@ export default class Clusters extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader isCluster cluster={this.props.match.params.id} />
+				<FullHeader
+					isCluster
+					cluster={this.props.match.params.id}
+					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
+				/>
 				{showOverlay && <Overlay />}
 				<Container>
 					<section className={clusterContainer}>

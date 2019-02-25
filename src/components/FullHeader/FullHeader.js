@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Layout, Menu, Tag, Icon, Button, Row,
+ Layout, Menu, Tag, Icon, Button, Row, Tooltip,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool } from 'prop-types';
@@ -54,7 +54,13 @@ const link = css`
 `;
 
 const FullHeader = ({
- user, cluster, isUsingTrial, daysLeft, currentApp, isCluster,
+	user,
+	cluster,
+	isUsingTrial,
+	daysLeft,
+	currentApp,
+	isCluster,
+	trialMessage,
 }) => (
 	<Header className={headerStyles}>
 		<div className="row">
@@ -94,15 +100,17 @@ const FullHeader = ({
 		<Row justify="space-between" align="middle">
 			{isUsingTrial && !isCluster && (
 				<Link to={`/app/${currentApp}/billing`}>
-					<Button css={trialBtn} type="danger">
-						<span css={trialText}>
-							{daysLeft > 0
-								? `Trial expires in ${daysLeft} ${
-										daysLeft > 1 ? 'days' : 'day'
-								  }. Upgrade now`
-								: 'Trial expired. Upgrade now'}
-						</span>
-					</Button>
+					<Tooltip title={trialMessage}>
+						<Button css={trialBtn} type="danger">
+							<span css={trialText}>
+								{daysLeft > 0
+									? `Trial expires in ${daysLeft} ${
+											daysLeft > 1 ? 'days' : 'day'
+									  }. Upgrade now`
+									: 'Trial expired. Upgrade now'}
+							</span>
+						</Button>
+					</Tooltip>
 				</Link>
 			)}
 			<a
@@ -127,6 +135,8 @@ const FullHeader = ({
 FullHeader.defaultProps = {
 	cluster: '',
 	isCluster: false,
+	trialMessage:
+		'You are currently on a trial which unlocks all the Growth monthly features. You can upgrade to a paid plan anytime till the trial expires. Post trial expiration, you will be subscribed to the free plan.', // Apps Message
 };
 
 FullHeader.propTypes = {
@@ -134,6 +144,7 @@ FullHeader.propTypes = {
 	cluster: string,
 	currentApp: string.isRequired,
 	isCluster: bool,
+	trialMessage: string,
 };
 
 const mapStateToProps = (state) => {
