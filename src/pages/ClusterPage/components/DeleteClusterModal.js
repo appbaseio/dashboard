@@ -48,7 +48,7 @@ class DeleteClusterModal extends React.Component {
 			>
 				<p>
 					Type the cluster name <span style={{ fontWeight: '600' }}>{clusterName}</span>{' '}
-					below to delete the cluster. This action cannot be undone.
+					below to delete this cluster. This action cannot be undone.
 				</p>
 				<Input
 					placeholder="Confirm appname"
