@@ -54,7 +54,7 @@ class SignupPage extends React.Component {
 					<Card
 						className={card}
 						style={{
-							marginTop: 0,
+							marginTop: 80,
 						}}
 						bordered={false}
 					>
