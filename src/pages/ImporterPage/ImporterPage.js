@@ -13,6 +13,8 @@ import Header from '../../components/Header';
 import { IMPORTER_LINK } from '../../constants/config';
 import Frame from '../../components/Frame';
 
+const URLSearchParams = require('url-search-params');
+
 function getLink(appname, credentials) {
 	const parameters = {
 		platform: 'appbase',
@@ -22,6 +24,20 @@ function getLink(appname, credentials) {
 		parameters.credentials = `${credentials.username}:${credentials.password}`;
 	}
 	return `${IMPORTER_LINK}${JSON.stringify(parameters)}&header=false`;
+}
+
+function getUrlParams(url) {
+	if (!url) {
+		return {};
+	}
+	const searchParams = new URLSearchParams(url);
+	return Array.from(searchParams.entries()).reduce(
+		(allParams, [key, value]) => ({
+			...allParams,
+			[key]: value,
+		}),
+		{},
+	);
 }
 class ImporterPage extends React.Component {
 	state = {
@@ -48,8 +64,15 @@ class ImporterPage extends React.Component {
 	};
 
 	render() {
-		const { appName, credentials, isLoading } = this.props;
 		const { isFrameLoading } = this.state;
+		const {
+			appName, credentials, isLoading, location,
+		} = this.props; // prettier-ignore
+		let importerLink = getLink(appName, credentials);
+		if (location && location.search) {
+			const { app } = getUrlParams(location.search);
+			importerLink = `${IMPORTER_LINK}${app}&header=false`;
+		}
 		return (
 			<Fragment>
 				<Header compact>
@@ -117,8 +140,8 @@ class ImporterPage extends React.Component {
 					<section>
 						{isFrameLoading && <Loader />}
 						<Frame
-							id="Importer"
-							src={getLink(appName, credentials)}
+							title="Importer"
+							src={importerLink}
 							frameBorder="0"
 							width="100%"
 							height={`${window.innerHeight - 243 || 600}px`}

@@ -28,7 +28,7 @@ const bannerMessagesAnalytics = {
 		description:
 			'Understand the performance of your search. Learn how to make the most of search latency insights.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io',
+		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
 	},
 };
 

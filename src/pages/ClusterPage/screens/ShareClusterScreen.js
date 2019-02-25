@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import {
- Button, Card, Table, Modal, Input, notification,
+ Button, Card, Table, Modal, Input, notification, Menu, Icon, Dropdown,
 } from 'antd';
+import { css } from 'emotion';
+import get from 'lodash/get';
+import { connect } from 'react-redux';
 
 import { getSharedUsers, addSharedUser, deleteSharedUser } from '../utils';
 
-export default class ShareClusterScreen extends Component {
+const dropdownButtonStyles = css`
+	margin-top: 8px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+`;
+
+class ShareClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
@@ -16,19 +27,18 @@ export default class ShareClusterScreen extends Component {
 			users: [],
 			email: '',
 			emailToDelete: '',
+			role: 'viewer',
 		};
 	}
 
 	componentDidMount() {
-		const { clusterId } = this.props;
+		const { clusterId, userMail } = this.props;
 		getSharedUsers(clusterId)
 			.then((res) => {
-				const users = res.map(email => ({
-					email,
-				}));
+				const usersList = res.filter(user => user.email !== userMail);
 
 				this.setState({
-					users,
+					users: usersList,
 					isLoading: false,
 				});
 			})
@@ -78,17 +88,18 @@ export default class ShareClusterScreen extends Component {
 
 	handleOk = () => {
 		const { clusterId } = this.props;
-		const { email, users } = this.state;
+		const { email, users, role } = this.state;
 
 		this.setState({
 			addingUser: true,
 		});
 
-		addSharedUser(clusterId, email)
+		addSharedUser(clusterId, email, role)
 			.then((res) => {
-				users.push({ email });
+				users.push({ email, role });
 				this.setState({
 					email: '',
+					role: 'viewer',
 					users,
 					addingUser: false,
 					showModal: false,
@@ -103,6 +114,7 @@ export default class ShareClusterScreen extends Component {
 					email: '',
 					addingUser: false,
 					showModal: false,
+					role: 'viewer',
 				});
 				notification.error({
 					message: 'Some error occured',
@@ -115,6 +127,13 @@ export default class ShareClusterScreen extends Component {
 		this.setState({
 			showModal: false,
 			email: '',
+			role: 'viewer',
+		});
+	};
+
+	handleRole = (e) => {
+		this.setState({
+			role: e.key,
 		});
 	};
 
@@ -129,6 +148,8 @@ export default class ShareClusterScreen extends Component {
 			showModal,
 			isLoading,
 			users,
+			role,
+			email,
 			emailToDelete,
 			addingUser, // prettier-ignore
 		} = this.state;
@@ -138,6 +159,11 @@ export default class ShareClusterScreen extends Component {
 				title: 'Email',
 				dataIndex: 'email',
 				key: 'email',
+			},
+			{
+				title: 'Role',
+				dataIndex: 'role',
+				key: 'role',
 			},
 			{
 				title: 'Action',
@@ -154,6 +180,13 @@ export default class ShareClusterScreen extends Component {
 				),
 			},
 		];
+
+		const menu = (
+			<Menu onClick={this.handleRole}>
+				<Menu.Item key="admin">Admin</Menu.Item>
+				<Menu.Item key="viewer">Viewer</Menu.Item>
+			</Menu>
+		);
 
 		return (
 			<div>
@@ -188,11 +221,26 @@ export default class ShareClusterScreen extends Component {
 					<Input
 						type="email"
 						size="large"
+						value={email}
 						placeholder="Enter member's email here"
 						onChange={this.handleInputChange}
 					/>
+					<Dropdown overlay={menu}>
+						<Button size="large" className={dropdownButtonStyles}>
+							{role} <Icon type="down" />
+						</Button>
+					</Dropdown>
 				</Modal>
 			</div>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	userMail: get(state, 'user.data.email'),
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ShareClusterScreen);

@@ -14,7 +14,7 @@ import { regions, regionsByPlan } from './utils/regions';
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'6.6.0',
+	'6.6.1',
 	'6.5.4',
 	'6.4.3',
 	'6.3.2',
@@ -225,9 +225,10 @@ export default class NewCluster extends Component {
 
 	createCluster = () => {
 		if (!this.validateClusterName()) {
+			// prettier-ignore
 			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
-			if(this.state.provider === 'gke'){
-				errorMessage = `${errorMessage} Capital letters not allowed.`
+			if (this.state.provider === 'gke') {
+				errorMessage = `${errorMessage} Capital letters not allowed.`;
 			}
 			this.setState({
 				error: errorMessage,
@@ -277,7 +278,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.0.0-alpha',
+					image: 'appbaseio/dejavu:3.2.1',
 					exposed_port: 1358,
 				},
 			];
@@ -289,7 +290,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'mirage',
-					image: 'appbaseio/mirage:0.8.0',
+					image: 'appbaseio/mirage:0.11.0',
 					exposed_port: 3030,
 				},
 			];
@@ -301,7 +302,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.4.1',
+					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
 					exposed_port: 5000,
 				},
 			];
@@ -313,7 +314,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.25',
+					image: 'siddharthlatest/arc:0.0.29',
 					exposed_port: 8000,
 				},
 			];
@@ -459,9 +460,15 @@ export default class NewCluster extends Component {
 	};
 
 	handleError = () => {
+		const that = this;
 		Modal.error({
 			title: 'Error',
 			content: this.state.deploymentError,
+			onOk() {
+				that.setState({
+					showError: false,
+				});
+			},
 		});
 	};
 
