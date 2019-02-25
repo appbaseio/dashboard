@@ -225,9 +225,9 @@ export default class NewCluster extends Component {
 
 	createCluster = () => {
 		if (!this.validateClusterName()) {
-			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
-			if(this.state.provider === 'gke'){
-				errorMessage = `${errorMessage} Capital letters not allowed.`
+			let errorMessage =				'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
+			if (this.state.provider === 'gke') {
+				errorMessage = `${errorMessage} Capital letters not allowed.`;
 			}
 			this.setState({
 				error: errorMessage,
@@ -459,9 +459,15 @@ export default class NewCluster extends Component {
 	};
 
 	handleError = () => {
+		const that = this;
 		Modal.error({
 			title: 'Error',
 			content: this.state.deploymentError,
+			onOk() {
+				that.setState({
+					showError: false,
+				});
+			},
 		});
 	};
 
