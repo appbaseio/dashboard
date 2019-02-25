@@ -436,7 +436,7 @@ export default class Clusters extends Component {
 										<div className="col vcenter">
 											<Link
 												to={{
-													pathname: `${
+													pathname: `/clusters/${
 														this.props.match.params.id
 													}/explore`,
 													state: {
