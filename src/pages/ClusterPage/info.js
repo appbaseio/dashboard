@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag,
+ Modal, Button, Icon, Tag, Alert,
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
@@ -73,14 +73,17 @@ export default class Clusters extends Component {
 						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
 						mirage: hasAddon('mirage', deployment),
 						dejavu: hasAddon('dejavu', deployment),
-						arc: arcData && arcData.url.startsWith('https://'),
+						arc: arcData.status === 'ready',
 						elasticsearchHQ: hasAddon('elasticsearch-hq', deployment),
 						planRate: cluster.plan_rate || 0,
 						isLoading: false,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 					});
 
-					if (cluster.status === 'deployments in progress') {
+					if (
+						arcData.status !== 'ready'
+						|| cluster.status === 'deployments in progress'
+					) {
 						setTimeout(this.init, 30000);
 					}
 				} else {
@@ -403,118 +406,117 @@ export default class Clusters extends Component {
 										</p>
 										{this.renderClusterAbsentActionButtons()}
 									</div>
-								) : (
-									<React.Fragment>
-										<li className={card}>
-											{showOverlay && <Overlay />}
-											<div className="col vcenter" style={{ width: '100%' }}>
-												<h4
-													style={{
-														marginBottom: 0,
-														color: 'rgba(0,0,0,0.65)',
-													}}
-												>
-													Use appbase.io’s GUI to explore your cluster,
-													manage indices, build search visually, and get
-													search analytics.
-												</h4>
-											</div>
-											<div className="col vcenter">
-												{this.state.arc ? (
-													<Link
-														to={{
-															pathname: `${
-																this.props.match.params.id
-															}/explore`,
-															state: {
-																arc: getAddon(
-																	'arc',
-																	this.state.deployment,
-																),
-															},
-														}}
-													>
-														<Button type="primary" size="large">
-															Explore Cluster
-														</Button>
-													</Link>
-												) : null}
-											</div>
-										</li>
-										<div
-											css={{
-												display: 'flex',
-												flexDirection: 'row',
-												justifyContent: 'space-between',
-											}}
-										>
-											<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
-											<RightContainer>
-												<Switch>
+								) : null}
+
+								{!this.state.arc && hasAddon('arc', this.state.deployment) ? (
+									<Alert
+										message="Deployment of appbase.io's GUI for cluster browsing is in progress. Please wait while we spin it up for you."
+										type="info"
+										showIcon
+										css={{
+											marginBottom: 20,
+										}}
+									/>
+								) : null}
+
+								{this.state.arc ? (
+									<li className={card}>
+										<div className="col vcenter" style={{ width: '100%' }}>
+											<h4
+												style={{
+													marginBottom: 0,
+													color: 'rgba(0,0,0,0.65)',
+												}}
+											>
+												Use appbase.io’s GUI to explore your cluster, manage
+												indices, build search visually, and get search
+												analytics.
+											</h4>
+										</div>
+										<div className="col vcenter">
+											<Link
+												to={{
+													pathname: `${
+														this.props.match.params.id
+													}/explore`,
+													state: {
+														arc: getAddon('arc', this.state.deployment),
+													},
+												}}
+											>
+												<Button type="primary" size="large">
+													Explore Cluster
+												</Button>
+											</Link>
+										</div>
+									</li>
+								) : null}
+
+								<div
+									css={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+									}}
+								>
+									<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
+									<RightContainer>
+										<Switch>
+											<Route
+												exact
+												path="/clusters/:id"
+												component={() => (
+													<ClusterScreen
+														clusterId={this.props.match.params.id}
+														cluster={this.state.cluster}
+														deployment={this.state.deployment}
+														arc={this.state.arc}
+														kibana={this.state.kibana}
+														mirage={this.state.mirage}
+														dejavu={this.state.dejavu}
+														elasticsearchHQ={this.state.elasticsearchHQ}
+														// cluster deployment
+														onDeploy={this.deployCluster}
+														onDelete={this.deleteCluster}
+														// payments handling
+														planRate={this.state.planRate || 0}
+														handleToken={this.handleToken}
+														isPaid={isPaid}
+													/>
+												)}
+											/>
+											{isViewer || (
+												<React.Fragment>
 													<Route
 														exact
-														path="/clusters/:id"
+														path="/clusters/:id/scale"
 														component={() => (
-															<ClusterScreen
+															<ScaleClusterScreen
 																clusterId={
 																	this.props.match.params.id
 																}
-																cluster={this.state.cluster}
-																deployment={this.state.deployment}
-																arc={this.state.arc}
-																kibana={this.state.kibana}
-																mirage={this.state.mirage}
-																dejavu={this.state.dejavu}
-																elasticsearchHQ={
-																	this.state.elasticsearchHQ
+																nodes={
+																	this.state.cluster.total_nodes
 																}
-																// cluster deployment
-																onDeploy={this.deployCluster}
-																onDelete={this.deleteCluster}
-																// payments handling
-																planRate={this.state.planRate || 0}
-																handleToken={this.handleToken}
-																isPaid={isPaid}
 															/>
 														)}
 													/>
-													{isViewer || (
-														<React.Fragment>
-															<Route
-																exact
-																path="/clusters/:id/scale"
-																component={() => (
-																	<ScaleClusterScreen
-																		clusterId={
-																			this.props.match.params
-																				.id
-																		}
-																		nodes={
-																			this.state.cluster
-																				.total_nodes
-																		}
-																	/>
-																)}
+													<Route
+														exact
+														path="/clusters/:id/share"
+														component={() => (
+															<ShareClusterScreen
+																clusterId={
+																	this.props.match.params.id
+																}
 															/>
-															<Route
-																exact
-																path="/clusters/:id/share"
-																component={() => (
-																	<ShareClusterScreen
-																		clusterId={
-																			this.props.match.params
-																				.id
-																		}
-																	/>
-																)}
-															/>
-														</React.Fragment>
-													)}
-												</Switch>
-											</RightContainer>
-										</div>
-									</React.Fragment>
-								)}
+														)}
+													/>
+												</React.Fragment>
+											)}
+										</Switch>
+									</RightContainer>
+								</div>
 							</ul>
 						</article>
 					</section>

@@ -225,7 +225,8 @@ export default class NewCluster extends Component {
 
 	createCluster = () => {
 		if (!this.validateClusterName()) {
-			let errorMessage =				'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
+			// prettier-ignore
+			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
 			if (this.state.provider === 'gke') {
 				errorMessage = `${errorMessage} Capital letters not allowed.`;
 			}
