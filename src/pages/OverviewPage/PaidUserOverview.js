@@ -63,8 +63,8 @@ const noResultsCls = css`
 `;
 class PaidUserOverview extends React.Component {
 	componentDidMount() {
-		const { fetchAppAnalytics, plan } = this.props;
-		if (plan !== 'free') {
+		const { fetchAppAnalytics, isPaid } = this.props;
+		if (isPaid) {
 			fetchAppAnalytics();
 		}
 	}
@@ -160,11 +160,10 @@ PaidUserOverview.defaultProps = {
 };
 PaidUserOverview.propTypes = {
 	fetchAppAnalytics: PropTypes.func.isRequired,
-	plan: PropTypes.string.isRequired,
+	isPaid: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
 	searchVolume: PropTypes.array,
 	popularSearches: PropTypes.array,
-	isPaid: PropTypes.bool.isRequired,
 	isFetching: PropTypes.bool.isRequired,
 	noResults: PropTypes.array,
 };
