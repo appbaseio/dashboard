@@ -47,8 +47,8 @@ class DeleteClusterModal extends React.Component {
 				okButtonProps={{ type: 'danger', disabled }}
 			>
 				<p>
-					Type the app name <span style={{ fontWeight: '600' }}>{clusterName}</span> below
-					to delete the app. This action cannot be undone.
+					Type the cluster name <span style={{ fontWeight: '600' }}>{clusterName}</span>{' '}
+					below to delete the cluster. This action cannot be undone.
 				</p>
 				<Input
 					placeholder="Confirm appname"
