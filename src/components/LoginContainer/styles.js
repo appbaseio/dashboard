@@ -6,12 +6,11 @@ const main = css`
 	text-rendering: optimizeLegibility;
 	-moz-osx-font-smoothing: grayscale;
 	-moz-font-feature-settings: 'liga' on;
-	min-height: 100vh;
 	margin: 0 auto;
 	max-width: 992px;
 	> div {
 		width: 100%;
-		padding: 50px 0px;
+		padding: 40px 0px 15px;
 	}
 	.content {
 		margin-right: 100px;
@@ -25,26 +24,21 @@ const main = css`
 		.title {
 			line-height: 1.9em;
 			font-weight: 600;
-			font-size: 30px;
+			font-size: 28px;
 			margin-top: 28px;
 			margin-bottom: 14px;
-			max-width: 360px;
+			max-width: 380px;
 			word-spacing: 0.03rem;
-		}
-		p {
-			margin: 0 0 14px;
-			line-height: 1.6em;
-			margin: 10px 0 20px;
-			font-size: 18px;
 		}
 		.signup_description {
 			h4 {
 				margin-top: 14px;
 				margin-bottom: 14px;
-				line-height: 1.5;
-				font-size: 16px;
+				line-height: 1.6;
+				font-size: 18px;
 				font-weight: 600;
 				color: dodgerblue;
+				max-width: 360px;
 				text-transform: uppercase;
 			}
 			.signup_benefits {
@@ -79,7 +73,11 @@ const main = css`
 		}
 	}
 	${mediaKey.large} {
-		padding: 20px;
+		padding: 0;
+
+		.content {
+			display: none;
+		}
 	}
 	${mediaKey.medium} {
 		flex-direction: column-reverse;
@@ -97,4 +95,27 @@ const main = css`
 	}
 `;
 
-export { main }; // eslint-disable-line
+const footer = css`
+	width: 100%;
+	max-width: 800px;
+	margin: 0px auto 30px;
+	text-align: center;
+
+	h2 {
+		font-size: 17px;
+		word-spacing: 0.04rem;
+		font-weight: 600;
+		color: #999;
+		text-transform: uppercase;
+	}
+
+	img {
+		max-width: 110px;
+	}
+
+	${mediaKey.large} {
+		display: none;
+	}
+`;
+
+export { main, footer };

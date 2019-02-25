@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Flex from '../../batteries/components/shared/Flex';
 import Logo from '../Logo';
 import AppbaseUsers from '../AppbaseUsers';
-import { main } from './styles';
+import { main, footer } from './styles';
 
 const LoginContainer = ({ children }) => (
 	<React.Fragment>
@@ -13,16 +13,12 @@ const LoginContainer = ({ children }) => (
 				<Logo width={200} />
 				<h2 className="title">
 					<mark>
-						Try <span className="highlight">appbase.io</span>
-						{"'"}s &nbsp;search service for <span className="highlight">free</span>!
+						Try <span className="highlight">appbase.io</span> for{' '}
+						<span className="highlight">free</span>!
 					</mark>
 				</h2>
-				<p>
-					Let appbase help you with building the best search experience while you focus on
-					serving your users
-				</p>
 				<div className="signup_description">
-					<h4>Start for free and scale as you grow!</h4>
+					<h4>Build the best search experience &amp; scale as you grow!</h4>
 					<ul className="signup_benefits">
 						<li>
 							<Icon type="check" className="icon" />
@@ -58,10 +54,12 @@ const LoginContainer = ({ children }) => (
 						</li>
 					</ul>
 				</div>
-				<AppbaseUsers title="Trusted by these companies" />
 			</Flex>
 			<Flex flexDirection="column">{children}</Flex>
 		</Flex>
+		<div css={footer}>
+			<AppbaseUsers title="Trusted by these companies" />
+		</div>
 	</React.Fragment>
 );
 
