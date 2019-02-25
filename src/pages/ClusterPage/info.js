@@ -25,6 +25,7 @@ import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
+import DeleteClusterModal from './components/DeleteClusterModal';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -44,6 +45,7 @@ export default class Clusters extends Component {
 			loadingError: false,
 			showOverlay: false,
 			isPaid: false,
+			deleteModal: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -106,6 +108,12 @@ export default class Clusters extends Component {
 					this.triggerPayment,
 				);
 			});
+	};
+
+	handleDeleteModal = () => {
+		this.setState(prevState => ({
+			deleteModal: !prevState.deleteModal,
+		}));
 	};
 
 	triggerPayment = () => {
@@ -521,6 +529,13 @@ export default class Clusters extends Component {
 						</article>
 					</section>
 				</Container>
+				<DeleteClusterModal
+					clusterId={this.state.cluster.id}
+					clusterName={this.state.cluster.name}
+					onDelete={this.deleteCluster}
+					handleModal={this.handleDeleteModal}
+					isVisible={this.state.deleteModal}
+				/>
 			</Fragment>
 		);
 	}

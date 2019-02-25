@@ -16,6 +16,7 @@ import { mediaKey } from '../../utils/media';
 import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
+import DeleteClusterModal from './components/DeleteClusterModal';
 
 // test key
 // export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
@@ -31,6 +32,9 @@ export default class ClusterPage extends Component {
 			clustersAvailable: true,
 			clusters: [],
 			showOverlay: false,
+			deleteClusterId: '',
+			deleteClusterName: '',
+			deleteModal: false,
 		};
 	}
 
@@ -49,9 +53,17 @@ export default class ClusterPage extends Component {
 			.catch((e) => {
 				this.setState({
 					isLoading: false,
+					deleteClusterId: '',
+					deleteClusterName: '',
 				});
 				console.log(e);
 			});
+	};
+
+	handleDeleteModal = () => {
+		this.setState(prevState => ({
+			deleteModal: !prevState.deleteModal,
+		}));
 	};
 
 	toggleOverlay = () => {
@@ -73,6 +85,8 @@ export default class ClusterPage extends Component {
 					clustersAvailable: !!clusters.length,
 					clusters,
 					isLoading: false,
+					deleteClusterId: '',
+					deleteClusterName: '',
 				});
 
 				clusters.every((cluster) => {
@@ -117,6 +131,14 @@ export default class ClusterPage extends Component {
 		);
 	};
 
+	setDeleteCluster = ({ name, id }) => {
+		this.setState({
+			deleteModal: true,
+			deleteClusterId: id,
+			deleteClusterName: name,
+		});
+	};
+
 	renderClusterCard = cluster => (
 		<li key={cluster.name} className="cluster-card compact">
 			<h3>
@@ -131,7 +153,7 @@ export default class ClusterPage extends Component {
 						type="danger"
 						icon="delete"
 						className="showOnHover"
-						onClick={() => this.deleteCluster(cluster.id)}
+						onClick={() => this.setDeleteCluster(cluster)}
 					>
 						Delete
 					</Button>
@@ -344,6 +366,14 @@ export default class ClusterPage extends Component {
 						</article>
 					</section>
 				</Container>
+
+				<DeleteClusterModal
+					clusterId={this.state.deleteClusterId}
+					clusterName={this.state.deleteClusterName}
+					onDelete={this.deleteCluster}
+					handleModal={this.handleDeleteModal}
+					isVisible={this.state.deleteModal}
+				/>
 			</Fragment>
 		);
 	}
