@@ -35,13 +35,13 @@
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@^3.0.0-beta.3":
-  version "3.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-beta.3.tgz#95eed3e77e1bcdd5e0568262158d8434d4be4a27"
-  integrity sha512-zNme6xsgFcBN2mdtZ/seYrhv3qlzYFXqQOic7wiStZVpgNT9oiUhHPs5ZrGLef3p9F0oQDOxU0rzA0mrvkDlSg==
+"@appbaseio/reactivesearch@^3.0.0-beta.4":
+  version "3.0.0-beta.4"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-beta.4.tgz#efecacf26ced4d67a5bc64e773f0d70d79f84546"
+  integrity sha512-x3znnos3LCcQ6SUZBquEa0WIut8DbsHEyGrYJUD0BTeZHhEyCL1UZZM6KdFytRkQ/tqf38DOLHj6W+VnoGLMoA==
   dependencies:
     "@appbaseio/reactivecore" "^7.5.0"
-    appbase-js "^4.0.2-beta.04"
+    appbase-js "^4.0.2-beta.05"
     cross-env "^5.2.0"
     downshift "^1.31.2"
     emotion "^9.0.0"
@@ -1629,10 +1629,10 @@ appbase-js@^4.0.1-beta:
     url-parser-lite "^0.1.0"
     ws "^2.2.0"
 
-appbase-js@^4.0.2-beta.04:
-  version "4.0.2-beta.4"
-  resolved "https://registry.yarnpkg.com/appbase-js/-/appbase-js-4.0.2-beta.4.tgz#59bcba7265d3f7937f8d3b1cfecb1973f5d059c8"
-  integrity sha512-yfljZF2WA4qjAEd1tqOXL49bQSGcnC8DWuDJJU3/DBgS7WB+vFeYPlk7Q+JANFx9+XCT3RXja68gu1Ic0jJWlg==
+appbase-js@^4.0.2-beta.05:
+  version "4.0.2-beta.5"
+  resolved "https://registry.npmjs.org/appbase-js/-/appbase-js-4.0.2-beta.5.tgz#456eecb825f124b996bfd617aab47c1f2a95d087"
+  integrity sha512-SEvYFK4oCQ4WcQUiTj2e2E/hbFiZNihmd2562aXyXQp7i5vg2O2G/cxOmesUFfKBq0C1aOOxSfBz5m0yuklUqg==
   dependencies:
     cross-fetch "^2.2.2"
     json-stable-stringify "^1.0.1"
