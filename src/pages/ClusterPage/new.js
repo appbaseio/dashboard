@@ -314,7 +314,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.0.29',
+					image: 'siddharthlatest/arc:0.1.0',
 					exposed_port: 8000,
 				},
 			];
