@@ -12,6 +12,7 @@ function getMessage(source) {
 }
 
 export default function DeploymentStatus({ data, onProgress }) {
+	if (!Object.keys(data).length) return null;
 	let { addons, ...deployments } = data; // eslint-disable-line
 	addons.forEach((index) => {
 		deployments = {

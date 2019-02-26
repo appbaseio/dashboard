@@ -69,7 +69,7 @@ export default class Clusters extends Component {
 			.then((res) => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
-					const arcData = getAddon('arc', deployment);
+					const arcData = getAddon('arc', deployment) || {};
 					this.setState({
 						cluster,
 						deployment,
