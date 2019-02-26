@@ -343,6 +343,7 @@ const credsBox = css`
 	border-radius: 3px;
 	border: 1px solid #d9d8e4;
 	color: #555;
+	height: 34px;
 	${media.small(css`
 		flex-direction: column;
 		justify-content: space-around;
