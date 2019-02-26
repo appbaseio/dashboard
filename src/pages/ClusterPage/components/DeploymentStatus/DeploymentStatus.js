@@ -14,12 +14,14 @@ function getMessage(source) {
 export default function DeploymentStatus({ data, onProgress }) {
 	if (!Object.keys(data).length) return null;
 	let { addons, ...deployments } = data; // eslint-disable-line
-	addons.forEach((index) => {
-		deployments = {
-			...deployments,
-			[index.name]: index,
-		};
-	});
+	if (addons && addons.length) {
+		addons.forEach((index) => {
+			deployments = {
+				...deployments,
+				[index.name]: index,
+			};
+		});
+	}
 	const deploymentsInProgress = Object.keys(deployments).filter(
 		source => deployments[source].status === 'in progress',
 	);
