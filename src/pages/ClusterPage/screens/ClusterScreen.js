@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Icon } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import { getAddon, hasAddon } from '../utils';
+import { hasAddon } from '../utils';
 import {
  card, settingsItem, clusterEndpoint, clusterButtons,
 } from '../styles';
