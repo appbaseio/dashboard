@@ -26,6 +26,7 @@ import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
 import DeleteClusterModal from './components/DeleteClusterModal';
+import DeploymentStatus from './components/DeploymentStatus';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -155,7 +156,7 @@ export default class Clusters extends Component {
 		});
 		deployCluster(body, id)
 			.then(() => {
-				this.props.history.push('/clusters');
+				this.init();
 			})
 			.catch((e) => {
 				this.setState({
@@ -422,6 +423,11 @@ export default class Clusters extends Component {
 										{this.renderClusterAbsentActionButtons()}
 									</div>
 								) : null}
+
+								<DeploymentStatus
+									data={this.state.deployment}
+									onProgress={() => setTimeout(this.init, 15000)}
+								/>
 
 								{!this.state.arc && hasAddon('arc', this.state.deployment) ? (
 									<Alert
