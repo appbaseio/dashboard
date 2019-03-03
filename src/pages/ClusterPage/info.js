@@ -429,17 +429,6 @@ export default class Clusters extends Component {
 									onProgress={() => setTimeout(this.init, 15000)}
 								/>
 
-								{!this.state.arc && hasAddon('arc', this.state.deployment) ? (
-									<Alert
-										message="Deployment of appbase.io's GUI for cluster browsing is in progress. Please wait while we spin it up for you."
-										type="info"
-										showIcon
-										css={{
-											marginBottom: 20,
-										}}
-									/>
-								) : null}
-
 								{this.state.arc ? (
 									<li className={card}>
 										<div className="col vcenter" style={{ width: '100%' }}>
