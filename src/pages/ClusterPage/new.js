@@ -648,11 +648,11 @@ export default class NewCluster extends Component {
 									<div className={settingsItem}>
 										<h4>Add-ons</h4>
 										<div>
-											<label htmlFor="elasticsearch">
+											<label htmlFor="arc-middleware">
 												<input
 													type="checkbox"
 													defaultChecked={this.state.arc}
-													id="elasticsearch"
+													id="arc-middleware"
 													onChange={() => this.toggleConfig('arc')}
 												/>
 												Arc Middleware
