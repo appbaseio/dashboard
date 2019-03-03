@@ -462,71 +462,73 @@ export default class Clusters extends Component {
 									</li>
 								) : null}
 
-								<div
-									css={{
-										display: 'flex',
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-									}}
-								>
-									<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
-									<RightContainer>
-										<Switch>
-											<Route
-												exact
-												path="/clusters/:id"
-												component={() => (
-													<ClusterScreen
-														clusterId={this.props.match.params.id}
-														cluster={this.state.cluster}
-														deployment={this.state.deployment}
-														arc={this.state.arc}
-														kibana={this.state.kibana}
-														mirage={this.state.mirage}
-														dejavu={this.state.dejavu}
-														elasticsearchHQ={this.state.elasticsearchHQ}
-														// cluster deployment
-														onDeploy={this.deployCluster}
-														onDelete={this.deleteCluster}
-														// payments handling
-														planRate={this.state.planRate || 0}
-														handleToken={this.handleToken}
-														isPaid={isPaid}
-													/>
+								{this.state.cluster.status === 'active' ? (
+									<div
+										css={{
+											display: 'flex',
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+										}}
+									>
+										<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
+										<RightContainer>
+											<Switch>
+												<Route
+													exact
+													path="/clusters/:id"
+													component={() => (
+														<ClusterScreen
+															clusterId={this.props.match.params.id}
+															cluster={this.state.cluster}
+															deployment={this.state.deployment}
+															arc={this.state.arc}
+															kibana={this.state.kibana}
+															mirage={this.state.mirage}
+															dejavu={this.state.dejavu}
+															elasticsearchHQ={this.state.elasticsearchHQ}
+															// cluster deployment
+															onDeploy={this.deployCluster}
+															onDelete={this.deleteCluster}
+															// payments handling
+															planRate={this.state.planRate || 0}
+															handleToken={this.handleToken}
+															isPaid={isPaid}
+														/>
+													)}
+												/>
+												{isViewer || (
+													<React.Fragment>
+														<Route
+															exact
+															path="/clusters/:id/scale"
+															component={() => (
+																<ScaleClusterScreen
+																	clusterId={
+																		this.props.match.params.id
+																	}
+																	nodes={
+																		this.state.cluster.total_nodes
+																	}
+																/>
+															)}
+														/>
+														<Route
+															exact
+															path="/clusters/:id/share"
+															component={() => (
+																<ShareClusterScreen
+																	clusterId={
+																		this.props.match.params.id
+																	}
+																/>
+															)}
+														/>
+													</React.Fragment>
 												)}
-											/>
-											{isViewer || (
-												<React.Fragment>
-													<Route
-														exact
-														path="/clusters/:id/scale"
-														component={() => (
-															<ScaleClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
-																nodes={
-																	this.state.cluster.total_nodes
-																}
-															/>
-														)}
-													/>
-													<Route
-														exact
-														path="/clusters/:id/share"
-														component={() => (
-															<ShareClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
-															/>
-														)}
-													/>
-												</React.Fragment>
-											)}
-										</Switch>
-									</RightContainer>
-								</div>
+											</Switch>
+										</RightContainer>
+									</div>
+								) : null}
 							</ul>
 						</article>
 					</section>
