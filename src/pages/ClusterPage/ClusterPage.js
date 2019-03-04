@@ -42,6 +42,10 @@ export default class ClusterPage extends Component {
 		this.initClusters();
 	}
 
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+	}
+
 	deleteCluster = (id) => {
 		this.setState({
 			isLoading: true,
@@ -91,7 +95,7 @@ export default class ClusterPage extends Component {
 
 				clusters.every((cluster) => {
 					if (cluster.status.endsWith('in progress')) {
-						setTimeout(this.initClusters, 30000);
+						this.timer = setTimeout(this.initClusters, 30000);
 						return false;
 					}
 					return true;
@@ -113,7 +117,7 @@ export default class ClusterPage extends Component {
 			});
 			this.initClusters();
 		} catch (e) {
-			console.log('error bro', e);
+			console.log('error', e);
 		}
 	};
 

@@ -56,6 +56,11 @@ export default class Clusters extends Component {
 		this.init();
 	}
 
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+		clearTimeout(this.statusTimer);
+	}
+
 	getFromPricing = (plan, key) => {
 		const selectedPlan = (
 			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
@@ -83,11 +88,8 @@ export default class Clusters extends Component {
 						isPaid: cluster.trial || !!cluster.subscription_id,
 					});
 
-					if (
-						arcData.status !== 'ready'
-						|| cluster.status === 'deployments in progress'
-					) {
-						setTimeout(this.init, 30000);
+					if (cluster.status === 'deployments in progress') {
+						this.timer = setTimeout(this.init, 30000);
 					}
 				} else {
 					this.setState({
@@ -426,7 +428,7 @@ export default class Clusters extends Component {
 
 								<DeploymentStatus
 									data={this.state.deployment}
-									onProgress={() => setTimeout(this.init, 15000)}
+									onProgress={() => { this.statusTimer = setTimeout(this.init, 30000); }}
 								/>
 
 								{this.state.arc ? (
