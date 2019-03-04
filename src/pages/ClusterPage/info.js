@@ -502,6 +502,7 @@ export default class Clusters extends Component {
 														// payments handling
 														planRate={this.state.planRate || 0}
 														handleToken={this.handleToken}
+														handleDeleteModal={this.handleDeleteModal}
 														isPaid={isPaid}
 													/>
 												)}
