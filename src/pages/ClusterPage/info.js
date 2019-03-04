@@ -56,6 +56,11 @@ export default class Clusters extends Component {
 		this.init();
 	}
 
+	componentWillUnmount() {
+		clearTimeout(this.timer);
+		clearTimeout(this.statusTimer);
+	}
+
 	getFromPricing = (plan, key) => {
 		const selectedPlan = (
 			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
@@ -83,11 +88,8 @@ export default class Clusters extends Component {
 						isPaid: cluster.trial || !!cluster.subscription_id,
 					});
 
-					if (
-						arcData.status !== 'ready'
-						|| cluster.status === 'deployments in progress'
-					) {
-						setTimeout(this.init, 30000);
+					if (cluster.status === 'deployments in progress') {
+						this.timer = setTimeout(this.init, 30000);
 					}
 				} else {
 					this.setState({
@@ -426,19 +428,8 @@ export default class Clusters extends Component {
 
 								<DeploymentStatus
 									data={this.state.deployment}
-									onProgress={() => setTimeout(this.init, 15000)}
+									onProgress={() => { this.statusTimer = setTimeout(this.init, 30000); }}
 								/>
-
-								{!this.state.arc && hasAddon('arc', this.state.deployment) ? (
-									<Alert
-										message="Deployment of appbase.io's GUI for cluster browsing is in progress. Please wait while we spin it up for you."
-										type="info"
-										showIcon
-										css={{
-											marginBottom: 20,
-										}}
-									/>
-								) : null}
 
 								{this.state.arc ? (
 									<li className={card}>
@@ -473,72 +464,74 @@ export default class Clusters extends Component {
 									</li>
 								) : null}
 
-								<div
-									css={{
-										display: 'flex',
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-									}}
-								>
-									<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
-									<RightContainer>
-										<Switch>
-											<Route
-												exact
-												path="/clusters/:id"
-												component={() => (
-													<ClusterScreen
-														clusterId={this.props.match.params.id}
-														cluster={this.state.cluster}
-														deployment={this.state.deployment}
-														arc={this.state.arc}
-														kibana={this.state.kibana}
-														mirage={this.state.mirage}
-														dejavu={this.state.dejavu}
-														elasticsearchHQ={this.state.elasticsearchHQ}
-														// cluster deployment
-														onDeploy={this.deployCluster}
-														onDelete={this.deleteCluster}
-														// payments handling
-														planRate={this.state.planRate || 0}
-														handleToken={this.handleToken}
-														handleDeleteModal={this.handleDeleteModal}
-														isPaid={isPaid}
-													/>
+								{this.state.cluster.status === 'active' ? (
+									<div
+										css={{
+											display: 'flex',
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+										}}
+									>
+										<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
+										<RightContainer>
+											<Switch>
+												<Route
+													exact
+													path="/clusters/:id"
+													component={() => (
+														<ClusterScreen
+															clusterId={this.props.match.params.id}
+															cluster={this.state.cluster}
+															deployment={this.state.deployment}
+															arc={this.state.arc}
+															kibana={this.state.kibana}
+															mirage={this.state.mirage}
+															dejavu={this.state.dejavu}
+															handleDeleteModal={this.handleDeleteModal}
+															elasticsearchHQ={this.state.elasticsearchHQ}
+															// cluster deployment
+															onDeploy={this.deployCluster}
+															onDelete={this.deleteCluster}
+															// payments handling
+															planRate={this.state.planRate || 0}
+															handleToken={this.handleToken}
+															isPaid={isPaid}
+														/>
+													)}
+												/>
+												{isViewer || (
+													<React.Fragment>
+														<Route
+															exact
+															path="/clusters/:id/scale"
+															component={() => (
+																<ScaleClusterScreen
+																	clusterId={
+																		this.props.match.params.id
+																	}
+																	nodes={
+																		this.state.cluster.total_nodes
+																	}
+																/>
+															)}
+														/>
+														<Route
+															exact
+															path="/clusters/:id/share"
+															component={() => (
+																<ShareClusterScreen
+																	clusterId={
+																		this.props.match.params.id
+																	}
+																/>
+															)}
+														/>
+													</React.Fragment>
 												)}
-											/>
-											{isViewer || (
-												<React.Fragment>
-													<Route
-														exact
-														path="/clusters/:id/scale"
-														component={() => (
-															<ScaleClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
-																nodes={
-																	this.state.cluster.total_nodes
-																}
-															/>
-														)}
-													/>
-													<Route
-														exact
-														path="/clusters/:id/share"
-														component={() => (
-															<ShareClusterScreen
-																clusterId={
-																	this.props.match.params.id
-																}
-															/>
-														)}
-													/>
-												</React.Fragment>
-											)}
-										</Switch>
-									</RightContainer>
-								</div>
+											</Switch>
+										</RightContainer>
+									</div>
+								) : null}
 							</ul>
 						</article>
 					</section>
