@@ -159,10 +159,9 @@ export default class NewCluster extends Component {
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
-			dejavu: true,
+			streams: true,
 			elasticsearchHQ: true,
 			arc: true,
-			mirage: false,
 			error: '',
 			deploymentError: '',
 			showError: false,
@@ -272,26 +271,14 @@ export default class NewCluster extends Component {
 			};
 		}
 
-		if (this.state.dejavu) {
+		if (this.state.streams) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
 				{
-					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.2.1',
-					exposed_port: 1358,
-				},
-			];
-		}
-
-		if (this.state.mirage) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'mirage',
-					image: 'appbaseio/mirage:0.11.0',
-					exposed_port: 3030,
+					name: 'streams',
+					image: 'appbaseio/streams:6',
+					exposed_port: 80,
 				},
 			];
 		}
@@ -314,7 +301,7 @@ export default class NewCluster extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.1.2',
+					image: 'siddharthlatest/arc:0.1.4',
 					exposed_port: 8000,
 				},
 			];
@@ -658,14 +645,14 @@ export default class NewCluster extends Component {
 												Arc Middleware
 											</label>
 
-											<label htmlFor="dejavu">
+											<label htmlFor="streams">
 												<input
 													type="checkbox"
-													defaultChecked={this.state.dejavu}
-													id="dejavu"
-													onChange={() => this.toggleConfig('dejavu')}
+													defaultChecked={this.state.streams}
+													id="streams"
+													onChange={() => this.toggleConfig('streams')}
 												/>
-												Dejavu
+												Streams
 											</label>
 
 											<label htmlFor="elasticsearch">
@@ -677,16 +664,6 @@ export default class NewCluster extends Component {
 													}
 												/>
 												Elasticsearch-HQ
-											</label>
-
-											<label htmlFor="mirage">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.mirage}
-													id="mirage"
-													onChange={() => this.toggleConfig('mirage')}
-												/>
-												Mirage
 											</label>
 										</div>
 									</div>

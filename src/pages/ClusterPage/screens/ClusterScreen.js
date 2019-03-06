@@ -19,8 +19,7 @@ export default class ClusterScreen extends Component {
 			arc: props.arc,
 			deployment: props.deployment,
 			kibana: props.kibana,
-			mirage: props.mirage,
-			dejavu: props.dejavu,
+			streams: props.streams,
 			elasticsearchHQ: props.elasticsearchHQ,
 			showOverlay: false,
 		};
@@ -67,8 +66,7 @@ export default class ClusterScreen extends Component {
 			cluster,
 			arc,
 			kibana,
-			mirage,
-			dejavu,
+			streams,
 			elasticsearchHQ, // prettier-ignore
 		} = this.state;
 
@@ -83,18 +81,18 @@ export default class ClusterScreen extends Component {
 			body.remove_deployments = [...body.remove_deployments, 'kibana'];
 		}
 
-		if (dejavu && !this.includedInOriginal('dejavu')) {
+		if (streams && !this.includedInOriginal('streams')) {
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
 				{
-					name: 'dejavu',
-					image: 'appbaseio/dejavu:3.2.1',
-					exposed_port: 1358,
+					name: 'streams',
+					image: 'appbaseio/streams:6',
+					exposed_port: 80,
 				},
 			];
-		} else if (!dejavu && this.includedInOriginal('dejavu')) {
-			body.remove_deployments = [...body.remove_deployments, 'dejavu'];
+		} else if (!streams && this.includedInOriginal('streams')) {
+			body.remove_deployments = [...body.remove_deployments, 'streams'];
 		}
 
 		if (arc && !this.includedInOriginal('arc')) {
@@ -103,26 +101,12 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.1.2',
+					image: 'siddharthlatest/arc:0.1.4',
 					exposed_port: 8000,
 				},
 			];
 		} else if (!arc && this.includedInOriginal('arc')) {
 			body.remove_deployments = [...body.remove_deployments, 'arc'];
-		}
-
-		if (mirage && !this.includedInOriginal('mirage')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'mirage',
-					image: 'appbaseio/mirage:0.11.0',
-					exposed_port: 3030,
-				},
-			];
-		} else if (!mirage && this.includedInOriginal('mirage')) {
-			body.remove_deployments = [...body.remove_deployments, 'mirage'];
 		}
 
 		if (elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
@@ -182,8 +166,7 @@ export default class ClusterScreen extends Component {
 			arc,
 			deployment,
 			kibana,
-			mirage,
-			dejavu,
+			streams,
 			elasticsearchHQ,
 			showOverlay,
 		} = this.state;
@@ -280,15 +263,15 @@ export default class ClusterScreen extends Component {
 									Arc Middleware
 								</label>
 
-								<label htmlFor="dejavu">
+								<label htmlFor="streams">
 									<input
 										type="checkbox"
-										defaultChecked={dejavu}
-										id="dejavu"
+										defaultChecked={streams}
+										id="streams"
 										disabled={isViewer}
-										onChange={() => this.toggleConfig('dejavu')}
+										onChange={() => this.toggleConfig('streams')}
 									/>
-									Dejavu
+									Streams
 								</label>
 
 								<label htmlFor="elasticsearchHQ">
