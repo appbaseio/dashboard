@@ -284,17 +284,6 @@ export default class ClusterScreen extends Component {
 									/>
 									Elasticsearch-HQ
 								</label>
-
-								<label htmlFor="mirage">
-									<input
-										type="checkbox"
-										defaultChecked={mirage}
-										id="mirage"
-										disabled={isViewer}
-										onChange={() => this.toggleConfig('mirage')}
-									/>
-									Mirage
-								</label>
 							</div>
 						</div>
 					</div>
