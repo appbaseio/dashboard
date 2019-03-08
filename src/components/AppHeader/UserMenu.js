@@ -24,7 +24,10 @@ const userMenu = css`
 const userEmailDetail = css`
 	display: flex;
 	flex-direction: column;
-	cursor: none;
+	pointer-events: none;
+	&:hover {
+		background: white;
+	}
 	h5,
 	h4 {
 		margin: 0;
