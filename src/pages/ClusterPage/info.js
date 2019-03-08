@@ -487,6 +487,7 @@ export default class Clusters extends Component {
 															kibana={this.state.kibana}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}
+															handleDeleteModal={this.handleDeleteModal}
 															elasticsearchHQ={this.state.elasticsearchHQ}
 															// cluster deployment
 															onDeploy={this.deployCluster}

@@ -176,6 +176,7 @@ export default class ClusterScreen extends Component {
 			planRate,
 			handleToken,
 			isPaid,
+			handleDeleteModal
 		} = this.props;
 		const isViewer = cluster.user_role === 'viewer';
 		return (
@@ -291,7 +292,7 @@ export default class ClusterScreen extends Component {
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button
-							onClick={() => this.props.onDelete(clusterId)}
+							onClick={handleDeleteModal}
 							type="danger"
 							size="large"
 							icon="delete"
