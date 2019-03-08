@@ -219,7 +219,7 @@ class AppLayout extends React.PureComponent {
 						/>
 						<Route
 							exact
-							path="/app/:appName/mappings"
+							path="/app/:appName/settings"
 							render={props => (
 								<AppPageContainer
 									{...props}
