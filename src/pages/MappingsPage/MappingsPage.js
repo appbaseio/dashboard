@@ -17,7 +17,7 @@ const MappingsPage = ({
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col lg={18}>
-					<h2>Manage Mappings</h2>
+					<h2>Manage Settings</h2>
 
 					<Row>
 						<Col lg={18}>

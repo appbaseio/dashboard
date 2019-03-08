@@ -25,7 +25,7 @@ const routes = {
 		icon: 'dashboard',
 		menu: [
 			{ label: 'Import Data', link: 'import' },
-			{ label: 'Manage Mappings', link: 'mappings', tag: 'Beta' },
+			{ label: 'App Settings', link: 'settings', tag: 'Beta' },
 			{ label: 'Browse Data', link: 'browse' },
 			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
 			{ label: 'Query Rules', link: 'query-rules', tag: 'Beta' },
