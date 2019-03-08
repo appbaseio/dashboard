@@ -566,6 +566,7 @@ export default class NewCluster extends Component {
 											width: '100%',
 											maxWidth: 400,
 											marginBottom: 10,
+											border: isInvalid && this.state.clusterName !== '' ? '1px solid red' : '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
