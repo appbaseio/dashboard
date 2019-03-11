@@ -335,7 +335,7 @@ export default class NewCluster extends Component {
 					<div key={plugin} className={`${settingsItem} grow`}>
 						<h4>{plugins[plugin]}</h4>
 						<div>
-							<label htmlFor="yes">
+							<label htmlFor={`${plugin}-yes`}>
 								<input
 									type="radio"
 									name={plugin}
@@ -346,7 +346,7 @@ export default class NewCluster extends Component {
 								Yes
 							</label>
 
-							<label htmlFor="no">
+							<label htmlFor={`${plugin}-no`}>
 								<input
 									type="radio"
 									name={plugin}
