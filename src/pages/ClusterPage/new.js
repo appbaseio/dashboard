@@ -462,6 +462,7 @@ export default class NewCluster extends Component {
 	render() {
 		const { provider, isLoading } = this.state;
 
+		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
 
 		return (
@@ -565,13 +566,15 @@ export default class NewCluster extends Component {
 											width: '100%',
 											maxWidth: 400,
 											marginBottom: 10,
+											outline: 'none',
+											border: isInvalid && this.state.clusterName !== '' ? '1px solid red' : '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
-									<p>
+									<p style={{ color: isInvalid && this.state.clusterName !== '' ? 'red' : 'inherit' }}>
 										{provider === 'azure'
 											? namingConvention.azure
 											: namingConvention.gke}
