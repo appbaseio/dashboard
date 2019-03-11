@@ -150,9 +150,10 @@ export default class ClusterPage extends Component {
 				<span className="tag">
 					{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
 				</span>
-				{cluster.status === 'active'
-				|| cluster.status === 'in progress'
-				|| cluster.status === 'deployments in progress' ? (
+				{cluster.role === 'admin'
+				&& (cluster.status === 'active'
+					|| cluster.status === 'in progress'
+					|| cluster.status === 'deployments in progress') ? (
 					<Button
 						type="danger"
 						icon="delete"
