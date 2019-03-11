@@ -51,7 +51,7 @@ class DeleteClusterModal extends React.Component {
 					below to delete this cluster. This action cannot be undone.
 				</p>
 				<Input
-					placeholder="Confirm appname"
+					placeholder="Confirm cluster name"
 					onChange={this.handleInputChange}
 					value={deleteClusterName}
 					name="deleteClusterName"
