@@ -1,5 +1,7 @@
 import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon } from 'antd';
+import {
+ Modal, Button, Icon, Select,
+} from 'antd';
 
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -7,9 +9,11 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 
 import { clusterContainer, card, settingsItem } from './styles';
-import { deployCluster } from './utils';
+import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
+
+const { Option } = Select;
 
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -163,11 +167,34 @@ export default class NewCluster extends Component {
 			elasticsearchHQ: true,
 			arc: true,
 			error: '',
+			clusters: [],
 			deploymentError: '',
+			restore_from: null,
 			showError: false,
+			isClusterLoading: true,
 			provider,
 			...pluginState,
 		};
+	}
+
+	componentDidMount() {
+		getClusters()
+			.then((clusters) => {
+				const activeClusters = clusters.filter(
+					item => item.status === 'active' && item.role === 'admin',
+				);
+				this.setState({
+					clustersAvailable: !!clusters.length,
+					clusters: activeClusters,
+					isClusterLoading: false,
+				});
+			})
+			.catch((e) => {
+				console.error(e);
+				this.setState({
+					isClusterLoading: false,
+				});
+			});
 	}
 
 	componentDidUpdate(_, prevState) {
@@ -253,6 +280,7 @@ export default class NewCluster extends Component {
 				version: this.state.clusterVersion,
 				volume_size: selectedMachine.storage / selectedMachine.nodes,
 				plugins: Object.keys(plugins).filter(item => this.state[item]),
+				restore_from: this.state.restore_from,
 			},
 			cluster: {
 				name: this.state.clusterName,
@@ -459,6 +487,12 @@ export default class NewCluster extends Component {
 		});
 	};
 
+	handleCluster = (value) => {
+		this.setState({
+			restore_from: value,
+		});
+	};
+
 	render() {
 		const { provider, isLoading } = this.state;
 
@@ -567,14 +601,24 @@ export default class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: isInvalid && this.state.clusterName !== '' ? '1px solid red' : '1px solid #e8e8e8',
+											border:
+												isInvalid && this.state.clusterName !== ''
+													? '1px solid red'
+													: '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
-									<p style={{ color: isInvalid && this.state.clusterName !== '' ? 'red' : 'inherit' }}>
+									<p
+										style={{
+											color:
+												isInvalid && this.state.clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
 										{provider === 'azure'
 											? namingConvention.azure
 											: namingConvention.gke}
@@ -674,6 +718,27 @@ export default class NewCluster extends Component {
 							</div>
 
 							{this.renderPlugins()}
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Restore a cluster data</h3>
+									<p>Select the cluster which you want to restore.</p>
+								</div>
+								<div className="col grow vcenter">
+									<Select
+										css={{
+											width: '100%',
+											maxWidth: 400,
+										}}
+										placeholder="Select a cluster"
+										onChange={this.handleCluster}
+									>
+										{this.state.clusters.map(item => (
+											<Option key={item.id}>{item.name}</Option>
+										))}
+									</Select>
+								</div>
+							</div>
 
 							<div style={{ textAlign: 'right', marginBottom: 40 }}>
 								{this.state.error ? (
