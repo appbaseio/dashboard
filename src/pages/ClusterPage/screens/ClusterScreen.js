@@ -261,7 +261,7 @@ export default class ClusterScreen extends Component {
 										disabled={isViewer}
 										onChange={() => this.toggleConfig('arc')}
 									/>
-									Arc Middleware
+									Appbase.io GUI
 								</label>
 
 								<label htmlFor="streams">
@@ -272,7 +272,7 @@ export default class ClusterScreen extends Component {
 										disabled={isViewer}
 										onChange={() => this.toggleConfig('streams')}
 									/>
-									Streams
+									Realtime Streaming
 								</label>
 
 								<label htmlFor="elasticsearchHQ">
