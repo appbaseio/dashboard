@@ -43,8 +43,9 @@ export function restore(cluster, restoreFrom, snapshot_id) {
 		fetch(`${ACC_API}/v1/restore/${cluster}/repository/${restoreFrom}`, {
 			method: 'POST',
 			credentials: 'include',
-			body:JSON.stringify({
+			body: JSON.stringify({
 				snapshot_id,
+				indices: '-.*',
 			}),
 			headers: {
 				'Content-Type': 'application/json',

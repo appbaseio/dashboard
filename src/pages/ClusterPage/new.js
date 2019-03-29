@@ -722,7 +722,7 @@ export default class NewCluster extends Component {
 							<div className={card}>
 								<div className="col light">
 									<h3>Restore a cluster data</h3>
-									<p>Select the cluster which you want to restore.</p>
+									<p>Select the cluster from which you want to restore the latest snapshot from.</p>
 								</div>
 								<div className="col grow vcenter">
 									<Select
