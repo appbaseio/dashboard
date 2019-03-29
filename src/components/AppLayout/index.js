@@ -200,7 +200,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={ImporterPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={false}
+									shouldFetchAppPlan={true}
 								/>
 							)}
 						/>
@@ -213,7 +213,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={QueryRulesPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={false}
+									shouldFetchAppPlan={true}
 								/>
 							)}
 						/>
@@ -224,7 +224,7 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={MappingsPage}
-									shouldFetchAppInfo={false}
+									shouldFetchAppInfo={true}
 								/>
 							)}
 						/>
@@ -250,7 +250,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={BrowserPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={false}
+									shouldFetchAppPlan={true}
 								/>
 							)}
 						/>
