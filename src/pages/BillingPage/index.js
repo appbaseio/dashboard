@@ -12,13 +12,13 @@ import { getAppPlanByName } from '../../batteries/modules/selectors';
 const Billing = ({ plan, isOnTrial, planValidity }) => (
 	<React.Fragment>
 		<BannerHeader
-			title="Billing"
+			title="Appbase.io Billing"
 			component={(
-<Row>
+				<Row>
 					<Col>
 						<p>Transparent pricing that scales with you.</p>
 						<p>
-							Your plan is <strong>{capitalizePlan(plan)}</strong>{' '}
+							You are currently on the <strong>{capitalizePlan(plan)}</strong> plan.{' '}
 							{planValidity ? (
 								<span>
 									Valid till{' '}
@@ -26,10 +26,10 @@ const Billing = ({ plan, isOnTrial, planValidity }) => (
 								</span>
 							) : null}
 						</p>
-						{isOnTrial ? <p>You are on trial.</p> : null}
+						{isOnTrial ? <p>You are currently in trial mode.</p> : null}
 					</Col>
-</Row>
-)}
+				</Row>
+			)}
 		/>
 		<Container>
 			<Card bodyStyle={{ padding: 0 }}>
@@ -47,6 +47,7 @@ Billing.propTypes = {
 
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
+	console.log('app plan: ', appPlan);
 	return {
 		plan: get(appPlan, 'tier'),
 		planValidity: get(appPlan, 'tier_validity'),

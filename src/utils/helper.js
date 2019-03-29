@@ -33,7 +33,7 @@ export const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + 
 export const capitalizePlan = (string = '') => {
 	const splitString = string.split('-');
 	if (splitString[1]) {
-		return `${capitalizeFirstLetter(splitString[0])}/${capitalizeFirstLetter(splitString[1])}`;
+		return `${capitalizeFirstLetter(splitString[0])}`;
 	}
 	return capitalizeFirstLetter(string);
 };
