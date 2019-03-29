@@ -210,7 +210,7 @@ export default class NewCluster extends Component {
 		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
 		if (provider === 'gke') {
 			// gke cluster names can't start with a number, no capital letters allowed
-			pattern = /^[a-z]+([-]+[a-z0-9]*)*[a-z0-9]+$/;
+			pattern = /^[a-z]+([-a-z0-9]*)*[a-z0-9]+$/;
 		}
 		return pattern.test(clusterName);
 	};
@@ -567,14 +567,24 @@ export default class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: isInvalid && this.state.clusterName !== '' ? '1px solid red' : '1px solid #e8e8e8',
+											border:
+												isInvalid && this.state.clusterName !== ''
+													? '1px solid red'
+													: '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
 										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
-									<p style={{ color: isInvalid && this.state.clusterName !== '' ? 'red' : 'inherit' }}>
+									<p
+										style={{
+											color:
+												isInvalid && this.state.clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
 										{provider === 'azure'
 											? namingConvention.azure
 											: namingConvention.gke}
