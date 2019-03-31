@@ -1,14 +1,20 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Icon } from 'antd';
+import {
+ Button, Icon, Select, message,
+} from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import { hasAddon } from '../utils';
+import {
+ hasAddon, getClusters, getSnapshots, restore,
+} from '../utils';
 import {
  card, settingsItem, clusterEndpoint, clusterButtons,
 } from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
+
+const { Option } = Select;
 
 export default class ClusterScreen extends Component {
 	constructor(props) {
@@ -22,6 +28,13 @@ export default class ClusterScreen extends Component {
 			streams: props.streams,
 			elasticsearchHQ: props.elasticsearchHQ,
 			showOverlay: false,
+			clusters: [],
+			isClusterLoading: true,
+			snapshots: [],
+			isSnapshotsLoading: false,
+			restore_from: null,
+			snapshot_id: null,
+			isRestoring: false,
 		};
 
 		this.paymentButton = React.createRef();
@@ -30,12 +43,91 @@ export default class ClusterScreen extends Component {
 
 	componentDidMount() {
 		this.triggerPayment();
+		this.initClusters();
 	}
+
+	initClusters = () => {
+		getClusters()
+			.then((clusters) => {
+				const activeClusters = clusters.filter(
+					item => item.status === 'active' && item.role === 'admin',
+				);
+				this.setState({
+					clustersAvailable: !!clusters.length,
+					clusters: activeClusters,
+					isClusterLoading: false,
+				});
+			})
+			.catch((e) => {
+				console.error(e);
+				this.setState({
+					isClusterLoading: false,
+				});
+			});
+	};
 
 	setConfig = (type, value) => {
 		this.setState({
 			[type]: value,
 		});
+	};
+
+	handleCluster = (value) => {
+		this.setState({
+			restore_from: value,
+			snapshots: [],
+		});
+		this.fetchClusterSnapshots(value);
+	};
+
+	handleSnapshot = (value) => {
+		this.setState({
+			snapshot_id: value,
+		});
+	};
+
+	fetchClusterSnapshots = (restoreId) => {
+		const { clusterId } = this.props;
+		this.setState({
+			isSnapshotsLoading: true,
+		});
+		getSnapshots(clusterId, restoreId)
+			.then((snapshots) => {
+				this.setState({
+					snapshotsAvailable: !!snapshots.length,
+					snapshots,
+					isSnapshotsLoading: false,
+				});
+			})
+			.catch((e) => {
+				console.error(e);
+				this.setState({
+					isSnapshotsLoading: false,
+				});
+			});
+	};
+
+	restoreCluster = () => {
+		const { restore_from, snapshot_id } = this.state;
+		const { clusterId } = this.props;
+
+		this.setState({
+			isRestoring: true,
+		});
+
+		restore(clusterId, restore_from, snapshot_id)
+			.then((response) => {
+				message.success(response.status.message);
+				this.setState({
+					isRestoring: false,
+				});
+			})
+			.catch((e) => {
+				console.error(e);
+				this.setState({
+					isRestoring: false,
+				});
+			});
 	};
 
 	toggleConfig = (type) => {
@@ -176,7 +268,7 @@ export default class ClusterScreen extends Component {
 			planRate,
 			handleToken,
 			isPaid,
-			handleDeleteModal
+			handleDeleteModal,
 		} = this.props;
 		const isViewer = cluster.user_role === 'viewer';
 		return (
@@ -287,6 +379,58 @@ export default class ClusterScreen extends Component {
 								</label>
 							</div>
 						</div>
+					</div>
+				</li>
+				<li className={card}>
+					<div className="col light">
+						<h3>Restore From Snapshot</h3>
+						<p>Select cluster & snapshots</p>
+					</div>
+
+					<div className="col">
+						<Select
+							css={{
+								width: '100%',
+								maxWidth: 400,
+							}}
+							placeholder="Select a cluster"
+							onChange={this.handleCluster}
+						>
+							{this.state.clusters.map(item => (
+								<Option key={item.id}>{item.name}</Option>
+							))}
+						</Select>
+						{this.state.isSnapshotsLoading && <p>Snapshots Loading</p>}
+						{this.state.snapshots.length > 0 && (
+							<Select
+								css={{
+									width: '100%',
+									maxWidth: 400,
+									margin: '20px 0',
+								}}
+								placeholder="Select a snapshot"
+								onChange={this.handleSnapshot}
+							>
+								{this.state.snapshots
+									.sort(item => +item.id)
+									.reverse()
+									.map(item => (
+										<Option key={item.id}>
+											{new Date(+item.id * 1000).toString()}
+										</Option>
+									))}
+							</Select>
+						)}
+
+						{this.state.restore_from && this.state.snapshot_id && (
+							<Button
+								type="primary"
+								loading={this.state.isRestoring}
+								onClick={this.restoreCluster}
+							>
+								Restore
+							</Button>
+						)}
 					</div>
 				</li>
 				{isViewer || (

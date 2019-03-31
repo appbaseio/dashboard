@@ -19,6 +19,48 @@ export function getClusters() {
 	});
 }
 
+export function getSnapshots(cluster, restoreFrom) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/snapshots/${cluster}/repository/${restoreFrom}`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(res => res.json())
+			.then((data) => {
+				resolve(data.snapshots);
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+
+export function restore(cluster, restoreFrom, snapshot_id) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/restore/${cluster}/repository/${restoreFrom}`, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify({
+				snapshot_id,
+				indices: '-.*',
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(res => res.json())
+			.then((data) => {
+				resolve(data);
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+
 export function getClusterData(id) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
