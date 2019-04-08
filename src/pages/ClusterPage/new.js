@@ -64,9 +64,9 @@ export const machineMarks = {
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
-			cost: 119,
+			cost: 199,
 			machine: 'Standard_B2s',
-			pph: 0.17,
+			pph: 0.28,
 		},
 		60: {
 			label: 'Production-I',
@@ -77,7 +77,7 @@ export const machineMarks = {
 			cpu: 2,
 			cost: 399,
 			machine: 'Standard_B2s',
-			pph: 0.28,
+			pph: 0.55,
 		},
 		80: {
 			label: 'Production-II',
@@ -88,7 +88,7 @@ export const machineMarks = {
 			cpu: 4,
 			cost: 799,
 			machine: 'Standard_B2ms',
-			pph: 0.55,
+			pph: 1.11,
 		},
 		100: {
 			label: 'Production-III',
@@ -99,7 +99,7 @@ export const machineMarks = {
 			cpu: 8,
 			cost: 1599,
 			machine: 'Standard_B4ms',
-			pph: 1.11,
+			pph: 2.22,
 		},
 	},
 	gke: {
@@ -132,9 +132,9 @@ export const machineMarks = {
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
-			cost: 119,
+			cost: 199,
 			machine: 'Standard_B2s',
-			pph: 0.17,
+			pph: 0.28,
 		},
 		60: {
 			label: 'Production-I',
@@ -145,7 +145,7 @@ export const machineMarks = {
 			cpu: 2,
 			cost: 399,
 			machine: 'custom-2-4096',
-			pph: 0.28,
+			pph: 0.55,
 		},
 		80: {
 			label: 'Production-II',
@@ -156,7 +156,7 @@ export const machineMarks = {
 			cpu: 4,
 			cost: 799,
 			machine: 'n1-standard-2',
-			pph: 0.55,
+			pph: 1.11,
 		},
 		100: {
 			label: 'Production-III',
@@ -167,7 +167,7 @@ export const machineMarks = {
 			cpu: 8,
 			cost: 1599,
 			machine: 'n1-standard-4',
-			pph: 1.11,
+			pph: 2.22,
 		},
 	},
 };
