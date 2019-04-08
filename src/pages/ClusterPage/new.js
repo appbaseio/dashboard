@@ -238,7 +238,7 @@ export default class NewCluster extends Component {
 		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
 		if (provider === 'gke') {
 			// gke cluster names can't start with a number, no capital letters allowed
-			pattern = /^[a-z]+([-]+[a-z0-9]*)*[a-z0-9]+$/;
+			pattern = /^[a-z]+([-a-z0-9]*)*[a-z0-9]+$/;
 		}
 		return pattern.test(clusterName);
 	};
