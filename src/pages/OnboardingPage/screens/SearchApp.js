@@ -8,31 +8,9 @@ import {
 	ReactiveList,
 	DynamicRangeSlider,
 } from '@appbaseio/reactivesearch';
-
 import appbaseHelpers from '../utils/appbaseHelpers';
 
-const renderData = res => ({
-	image: `${res.poster_path}`,
-	title: res.original_title,
-	description: (
-		<div>
-			<p
-				style={{ fontSize: '16px', lineHeight: '24px' }}
-				dangerouslySetInnerHTML={{ __html: res.tagline }}
-			/>
-			<p
-				style={{
-					color: '#888',
-					margin: '8px 0',
-					fontSize: '13px',
-					lineHeight: '18px',
-				}}
-				dangerouslySetInnerHTML={{ __html: res.overview }}
-			/>
-			<div>{res.genres ? <span className="tag">{res.genres}</span> : null}</div>
-		</div>
-	),
-});
+const { ResultListWrapper } = ReactiveList;
 
 const renderFilters = (fields) => {
 	if (fields && fields.length) {
@@ -124,14 +102,13 @@ const getWeights = (fields) => {
 };
 
 const renderResultList = () => (
-	<ResultList
+	<ReactiveList
 		componentId="results"
 		dataField="name"
 		react={{
 			and: ['search', 'genres', 'original_language', 'release_year'],
 		}}
 		size={4}
-		renderData={renderData}
 		className="right-col"
 		innerClass={{
 			listItem: 'list-item',
@@ -139,7 +116,46 @@ const renderResultList = () => (
 		}}
 		pagination
 		stream
-	/>
+	>
+		{({ data }) => (
+			<ResultListWrapper>
+				{data.map(item => (
+					<ResultList key={item._id}>
+						<ResultList.Image src={item.poster_path} />
+						<ResultList.Content>
+							<ResultList.Title
+								dangerouslySetInnerHTML={{
+									__html: item.original_title,
+								}}
+							/>
+							<ResultList.Description>
+								<div>
+									<p
+										style={{ fontSize: '16px', lineHeight: '24px' }}
+										dangerouslySetInnerHTML={{ __html: item.tagline }}
+									/>
+									<p
+										style={{
+											color: '#888',
+											margin: '8px 0',
+											fontSize: '13px',
+											lineHeight: '18px',
+										}}
+										dangerouslySetInnerHTML={{ __html: item.overview }}
+									/>
+									<div>
+										{item.genres ? (
+											<span className="tag">{item.genres}</span>
+										) : null}
+									</div>
+								</div>
+							</ResultList.Description>
+						</ResultList.Content>
+					</ResultList>
+				))}
+			</ResultListWrapper>
+		)}
+	</ReactiveList>
 );
 
 const renderJSONList = () => (
@@ -150,7 +166,7 @@ const renderJSONList = () => (
 			and: ['search', 'genres', 'original_language', 'release_year'],
 		}}
 		size={4}
-		renderData={res => (
+		renderItem={res => (
 			<pre
 				key={res._id}
 				style={{
