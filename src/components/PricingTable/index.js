@@ -288,7 +288,7 @@ class PricingTable extends Component {
 			this.setState({
 				selectedPlan: plan,
 			});
-		}, 500);
+		}, 1000);
 	}
 
 	componentDidUpdate(prevProps) {
