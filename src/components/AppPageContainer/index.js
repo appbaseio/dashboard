@@ -39,7 +39,7 @@ class AppPageContainer extends Component {
 			isUserPlanFetched,
 		} = this.props;
 		if (shouldFetchAppInfo && !isAppInfoPresent) {
-			fetchAppInfo(appId);
+			fetchAppInfo(appName);
 		}
 		if (shouldFetchAppPlan && !isAppPlanFetched) {
 			fetchAppPlan(appName);
