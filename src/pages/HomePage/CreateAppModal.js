@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
- Row, Col, Icon, Modal, Input, Radio, List, Popover, notification,
-} from 'antd';
+import { Row, Col, Icon, Modal, Input, Radio, List, Popover, notification } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -66,7 +64,7 @@ class CreateAppModal extends Component {
 		}
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const {
 			target: { name, value },
 		} = e;
@@ -85,7 +83,7 @@ class CreateAppModal extends Component {
 		handleModal();
 	};
 
-	handleMenuClick = (e) => {
+	handleMenuClick = e => {
 		const category = e.key;
 		this.setState({
 			category,
@@ -98,7 +96,7 @@ class CreateAppModal extends Component {
 		}));
 	};
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = prevProps => {
 		const {
 			isPaid,
 			createdApp,
@@ -110,7 +108,9 @@ class CreateAppModal extends Component {
 		} = this.props;
 		const { hasJSON, plan, appName } = this.state;
 		const redirect = () => {
-			if (hasJSON) {
+			if (plan !== 'free') {
+				history.push(`app/${appName}/billing?plan=${plan}`);
+			} else if (hasJSON) {
 				history.push(`app/${appName}/import`);
 			} else {
 				history.push(`app/${appName}`);
@@ -338,10 +338,8 @@ CreateAppModal.propTypes = {
 	isPaid: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const {
- apps, appsMetrics, createdApp, $createAppSubscription,
-} = state;
+const mapStateToProps = state => {
+	const { apps, appsMetrics, createdApp, $createAppSubscription } = state;
 	return {
 		apps,
 		appsMetrics,
@@ -357,7 +355,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	handleCreateApp: options => dispatch(createApp(options)),
 	resetApp: () => dispatch(resetCreatedApp()),
-	createSubscription: (plan, appName) => dispatch(createAppSubscription(undefined, plan, appName)),
+	createSubscription: (plan, appName) =>
+		dispatch(createAppSubscription(undefined, plan, appName)),
 });
 
 export default connect(
