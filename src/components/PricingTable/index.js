@@ -774,7 +774,6 @@ class PricingTable extends Component {
 									token={token => this.handleToken(token, 'bootstrap-monthly')}
 									stripeKey={this.stripeKey}
 									disabled={isBootstrapPlan}
-									desktopShowModal={selectedPlan === 'bootstrap'}
 								>
 									<AppButton
 										uppercase
@@ -797,7 +796,6 @@ class PricingTable extends Component {
 									amount={this.plans.growth.basePrice * 100}
 									token={token => this.handleToken(token, 'growth-monthly')}
 									stripeKey={this.stripeKey}
-									desktopShowModal={selectedPlan === 'growth'}
 								>
 									<AppButton
 										uppercase
