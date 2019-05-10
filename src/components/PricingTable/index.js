@@ -296,7 +296,7 @@ class PricingTable extends Component {
 
 	componentDidUpdate(prevProps) {
 		const { errors } = this.props;
-		displayErrors(errors, prevProps.errors);
+		displayErrors(errors, prevProps.errors, true);
 	}
 
 	get getText() {
@@ -931,7 +931,10 @@ const mapStateToProps = (state) => {
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
-		errors: [get(state, '$deleteAppSubscription.error')],
+		errors: [
+			get(state, '$deleteAppSubscription.error'),
+			get(state, '$createAppSubscription.error'),
+		],
 	};
 };
 
