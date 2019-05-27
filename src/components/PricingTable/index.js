@@ -3,9 +3,7 @@ import styled, { css } from 'react-emotion';
 import { Check } from 'react-feather';
 import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-import {
-	Tooltip, Modal, Button,
-} from 'antd';
+import { Tooltip, Modal, Button } from 'antd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import AppButton from './AppButton';
@@ -16,7 +14,11 @@ import theme from './theme';
 import { media, hexToRgb } from '../../utils/media';
 import { getParam } from '../../utils';
 import { planBasePrice, displayErrors } from '../../utils/helper';
-import { createAppSubscription, deleteAppSubscription, getAppPlan } from '../../batteries/modules/actions';
+import {
+	createAppSubscription,
+	deleteAppSubscription,
+	getAppPlan,
+} from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const CheckList = ({ list }) => list.map(item => (
@@ -272,6 +274,7 @@ class PricingTable extends Component {
 				record: 0,
 				apiCall: 0,
 			},
+			selectedPlan: undefined,
 			active: undefined,
 			plans: this.plans,
 			showConfirmBox: false,
@@ -283,7 +286,7 @@ class PricingTable extends Component {
 	}
 
 	componentDidMount() {
-		const plan = getParam('plan', window.location.search) || null;
+		const plan = getParam('plan', window.location.search) || undefined;
 		setTimeout(() => {
 			this.setState({
 				selectedPlan: plan,
@@ -324,19 +327,19 @@ class PricingTable extends Component {
 				this.cancelConfirmBox();
 			}
 		});
-	}
+	};
 
 	showConfirmBox = () => {
 		this.setState({
 			showConfirmBox: true,
 		});
-	}
+	};
 
 	cancelConfirmBox = () => {
 		this.setState({
 			showConfirmBox: false,
 		});
-	}
+	};
 
 	calcPrice(planName) {
 		const { plans } = this.state;
@@ -357,20 +360,11 @@ class PricingTable extends Component {
 
 	render() {
 		const {
-			plans,
-			bootstrap,
-			growth,
-			active,
-			showConfirmBox,
-			selectedPlan,
-		} = this.state;
+ plans, bootstrap, growth, active, showConfirmBox, selectedPlan,
+} = this.state;
 		const {
-			isFreePlan,
-			isBootstrapPlan,
-			isGrowthPlan,
-			isSubmitting,
-			isLoading,
-		} = this.props;
+ isFreePlan, isBootstrapPlan, isGrowthPlan, isSubmitting, isLoading,
+} = this.props;
 		if (isLoading) {
 			return <Loader show message="Updating Plan... Please wait!" />;
 		}
@@ -774,7 +768,9 @@ class PricingTable extends Component {
 									token={token => this.handleToken(token, 'bootstrap-monthly')}
 									stripeKey={this.stripeKey}
 									disabled={isBootstrapPlan}
-									desktopShowModal={selectedPlan === 'bootstrap'}
+									desktopShowModal={
+										selectedPlan ? selectedPlan === 'bootstrap' : undefined
+									}
 								>
 									<AppButton
 										uppercase
@@ -797,7 +793,9 @@ class PricingTable extends Component {
 									amount={this.plans.growth.basePrice * 100}
 									token={token => this.handleToken(token, 'growth-monthly')}
 									stripeKey={this.stripeKey}
-									desktopShowModal={selectedPlan === 'growth'}
+									desktopShowModal={
+										selectedPlan ? selectedPlan === 'growth' : undefined
+									}
 								>
 									<AppButton
 										uppercase
@@ -933,9 +931,7 @@ const mapStateToProps = (state) => {
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
-		errors: [
-			get(state, '$deleteAppSubscription.error'),
-		],
+		errors: [get(state, '$deleteAppSubscription.error')],
 	};
 };
 
