@@ -26,22 +26,22 @@
     react-feather "^1.1.0"
     react-icons "^3.2.2"
 
-"@appbaseio/reactivecore@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-8.1.0.tgz#f95b08099c93ab3401fa591edaad4be7427866ff"
-  integrity sha512-FtmXTtHDRbyyAAeIhofGE6zB7jMhHnQudZDIgcBohfyHwdurRjPVZ1t9h9VDDOkms2r0beC3yZ/SPliA000EFA==
+"@appbaseio/reactivecore@^8.2.7":
+  version "8.2.7"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-8.2.7.tgz#06bb5e6041debd89d1a4ece42e1e24e3093a0fc1"
+  integrity sha512-ywp+tPvimLJCDmJA1AxPflZxuxhRdMb4Bbw8LuDqsok0L7ltPUS0aIPISxKD35BahM2vw1R9ctMN3CncusteqQ==
   dependencies:
     prop-types "^15.6.0"
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@3.0.0-rc.0":
-  version "3.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-rc.0.tgz#f193c2dc8587e2b709c152ecec98463c3a0750e0"
-  integrity sha512-R6RY11/W0ZPsyN55z7mo7egpQRxHqZ5UQmo6qGEUAq1YkUAq1XhOE7qfGtiiBYf/HAHaxAA9eJ9AI1FPgcmSJA==
+"@appbaseio/reactivesearch@^3.0.0-rc.12":
+  version "3.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-rc.12.tgz#c5775da29d20ae8cc3c6d1634a96efba8dbe0c60"
+  integrity sha512-ZUG4PdYWeJxMbMsOfKfiT2pmZNaO3lyDBxIeNNDQNZdgrU7HlxmCSWRtUWnz+cMnI5pHEXki1bxL/ZXMnU3VXw==
   dependencies:
-    "@appbaseio/reactivecore" "^8.1.0"
-    appbase-js "^4.0.2-beta.05"
+    "@appbaseio/reactivecore" "^8.2.7"
+    appbase-js "^4.0.2-beta.06"
     cross-env "^5.2.0"
     downshift "^1.31.2"
     emotion "^9.0.0"
@@ -1629,10 +1629,10 @@ appbase-js@^4.0.1-beta:
     url-parser-lite "^0.1.0"
     ws "^2.2.0"
 
-appbase-js@^4.0.2-beta.05:
-  version "4.0.2-beta.5"
-  resolved "https://registry.npmjs.org/appbase-js/-/appbase-js-4.0.2-beta.5.tgz#456eecb825f124b996bfd617aab47c1f2a95d087"
-  integrity sha512-SEvYFK4oCQ4WcQUiTj2e2E/hbFiZNihmd2562aXyXQp7i5vg2O2G/cxOmesUFfKBq0C1aOOxSfBz5m0yuklUqg==
+appbase-js@^4.0.2-beta.06:
+  version "4.0.2-beta.6"
+  resolved "https://registry.yarnpkg.com/appbase-js/-/appbase-js-4.0.2-beta.6.tgz#fe2a9e4c9963edc6f8c0b9b5508a915a5b6d45d1"
+  integrity sha512-tnnXy4uX5A9QmW6Ve0EpqaPVnXBfKe/n1qX+6noGti9NF+9i80+EB0dh/N4Da+0oLSTmLbXaG7CmKaTejtgkRg==
   dependencies:
     cross-fetch "^2.2.2"
     json-stable-stringify "^1.0.1"

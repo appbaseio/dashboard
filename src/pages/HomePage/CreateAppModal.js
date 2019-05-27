@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Icon, Modal, Input, Radio, List, Popover, notification } from 'antd';
+import {
+ Row, Col, Icon, Modal, Input, Radio, List, Popover, notification,
+} from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -64,7 +66,7 @@ class CreateAppModal extends Component {
 		}
 	};
 
-	handleChange = e => {
+	handleChange = (e) => {
 		const {
 			target: { name, value },
 		} = e;
@@ -83,7 +85,7 @@ class CreateAppModal extends Component {
 		handleModal();
 	};
 
-	handleMenuClick = e => {
+	handleMenuClick = (e) => {
 		const category = e.key;
 		this.setState({
 			category,
@@ -96,7 +98,7 @@ class CreateAppModal extends Component {
 		}));
 	};
 
-	componentDidUpdate = prevProps => {
+	componentDidUpdate = (prevProps) => {
 		const {
 			isPaid,
 			createdApp,
@@ -315,6 +317,9 @@ class CreateAppModal extends Component {
 							<Radio className={radiobtn} value="6">
 								6
 							</Radio>
+							<Radio className={radiobtn} value="7">
+								7
+							</Radio>
 						</RadioGroup>
 					</Col>
 				</Row>
@@ -338,8 +343,10 @@ CreateAppModal.propTypes = {
 	isPaid: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => {
-	const { apps, appsMetrics, createdApp, $createAppSubscription } = state;
+const mapStateToProps = (state) => {
+	const {
+ apps, appsMetrics, createdApp, $createAppSubscription,
+} = state;
 	return {
 		apps,
 		appsMetrics,
@@ -355,8 +362,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
 	handleCreateApp: options => dispatch(createApp(options)),
 	resetApp: () => dispatch(resetCreatedApp()),
-	createSubscription: (plan, appName) =>
-		dispatch(createAppSubscription(undefined, plan, appName)),
+	createSubscription: (plan, appName) => dispatch(createAppSubscription(undefined, plan, appName)),
 });
 
 export default connect(
