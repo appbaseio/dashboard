@@ -16,7 +16,13 @@ const handleLogout = () => {
 };
 
 const userMenu = css`
-	${media.small(css`
+	${media.medium(css`
+		display: none;
+	`)};
+`;
+
+const userName = css`
+	${media.large(css`
 		display: none;
 	`)};
 `;
@@ -63,7 +69,7 @@ const UserMenu = ({ user }) => {
 					{user.name && user.name.charAt(0).toLocaleUpperCase()}
 				</Avatar>
 				&nbsp;&nbsp;
-				{user ? user.name : 'Loading...'}
+				<span className="userName">{user ? user.name : 'Loading...'}</span>
 				&nbsp;&nbsp;
 				<Icon type="down" />
 			</span>

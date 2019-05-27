@@ -16,7 +16,7 @@ const header = css`
 	justify-content: space-between;
 
 	.options {
-		${media.small(css`
+		${media.medium(css`
 			display: none;
 		`)};
 	}
@@ -36,6 +36,10 @@ const header = css`
 		letter-spacing: 0.03rem;
 		text-transform: uppercase;
 		font-size: 13px;
+	}
+
+	.ant-row {
+		max-height: 64px;
 	}
 `;
 
