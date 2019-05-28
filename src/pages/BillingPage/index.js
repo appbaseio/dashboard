@@ -47,7 +47,6 @@ Billing.propTypes = {
 
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
-	console.log('app plan: ', appPlan);
 	return {
 		plan: get(appPlan, 'tier'),
 		planValidity: get(appPlan, 'tier_validity'),

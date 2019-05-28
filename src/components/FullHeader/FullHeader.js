@@ -36,8 +36,14 @@ const trialText = css`
 `;
 
 const trialBtn = css`
+	${media.medium(css`
+		display: none;
+	`)};
+`;
+
+const trialLink = css`
 	margin-right: 30px;
-	${media.small(css`
+	${media.xlarge(css`
 		display: none;
 	`)};
 `;
@@ -48,7 +54,7 @@ const link = css`
 	i {
 		margin-right: 4px;
 	}
-	${media.small(css`
+	${media.medium(css`
 		display: none;
 	`)};
 `;
@@ -99,7 +105,7 @@ const FullHeader = ({
 		</div>
 		<Row justify="space-between" align="middle">
 			{isUsingTrial && !isCluster && (
-				<Link to={`/app/${currentApp}/billing`}>
+				<Link className={trialLink} to={`/app/${currentApp}/billing`}>
 					<Tooltip title={trialMessage}>
 						<Button css={trialBtn} type="danger">
 							<span css={trialText}>
@@ -145,6 +151,8 @@ FullHeader.propTypes = {
 	currentApp: string.isRequired,
 	isCluster: bool,
 	trialMessage: string,
+	isUsingTrial: bool.isRequired,
+	daysLeft: Number.isRequired,
 };
 
 const mapStateToProps = (state) => {
