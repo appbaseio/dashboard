@@ -11,7 +11,6 @@ export default class Search extends Component {
 	};
 
 	handleChange = (selectedOption) => {
-		console.log('you selected', selectedOption);
 		this.setState({ selectedOption });
 	};
 
