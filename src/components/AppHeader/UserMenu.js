@@ -69,7 +69,7 @@ const UserMenu = ({ user }) => {
 					{user.name && user.name.charAt(0).toLocaleUpperCase()}
 				</Avatar>
 				&nbsp;&nbsp;
-				<span className="userName">{user ? user.name : 'Loading...'}</span>
+				<span className={userName}>{user ? user.name : 'Loading...'}</span>
 				&nbsp;&nbsp;
 				<Icon type="down" />
 			</span>
