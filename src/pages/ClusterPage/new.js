@@ -36,6 +36,12 @@ const esVersions = [
 	'5.2.1',
 ];
 
+const arcVersions = {
+	7: '7.0.0-appbase',
+	6: '0.1.5',
+	5: 'v5-0.0.1',
+};
+
 export const machineMarks = {
 	azure: {
 		0: {
@@ -360,12 +366,13 @@ export default class NewCluster extends Component {
 		}
 
 		if (this.state.arc) {
+			const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.1.5',
+					image: `siddharthlatest/arc:${arcTag}`,
 					exposed_port: 8000,
 				},
 			];
