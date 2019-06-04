@@ -35,6 +35,15 @@
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
+"@appbaseio/reactivecore@^8.2.6":
+  version "8.2.6"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivecore/-/reactivecore-8.2.6.tgz#bc0b8876180ad4cefc4eea5495fab77d9dc0034b"
+  integrity sha512-tUBU2OEF/D0qdr9r4gykgMOB9tOwYzBoPjxWUcC95ruaMBderUav0cf7eB4GTvCzHCI/v+4tUreuUZoCc3/idQ==
+  dependencies:
+    prop-types "^15.6.0"
+    redux "^4.0.0"
+    redux-thunk "^2.3.0"
+
 "@appbaseio/reactivesearch@3.0.0-rc.0":
   version "3.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-rc.0.tgz#f193c2dc8587e2b709c152ecec98463c3a0750e0"
