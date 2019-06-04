@@ -18,7 +18,10 @@ const { Option } = Select;
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'6.7.0',
+	'7.1.0',
+	'7.0.1',
+	'6.8.0',
+	'6.7.2',
 	'6.6.2',
 	'6.5.4',
 	'6.4.3',
@@ -32,6 +35,12 @@ const esVersions = [
 	'5.3.3',
 	'5.2.1',
 ];
+
+const arcVersions = {
+	7: '7.0.0-appbase',
+	6: '0.1.5',
+	5: 'v5-0.0.1',
+};
 
 export const machineMarks = {
 	azure: {
@@ -357,12 +366,13 @@ export default class NewCluster extends Component {
 		}
 
 		if (this.state.arc) {
+			const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
 			body.addons = body.addons || [];
 			body.addons = [
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.1.5',
+					image: `siddharthlatest/arc:${arcTag}`,
 					exposed_port: 8000,
 				},
 			];

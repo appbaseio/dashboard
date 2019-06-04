@@ -1,5 +1,7 @@
 import React from 'react';
-import { Drawer, Button, Menu, Tag } from 'antd';
+import {
+ Drawer, Button, Menu, Tag,
+} from 'antd';
 import { Link } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { array, bool } from 'prop-types';
@@ -29,7 +31,7 @@ const menuItems = css`
 
 const menuSlider = css`
 	display: none;
-	${media.small(css`
+	${media.medium(css`
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -96,7 +98,9 @@ class MenuSlider extends React.Component {
 						</Menu.Item>
 
 						<Menu.Item key="4">
-							<Link to="/marketplace">MarketPlace <Tag>New</Tag></Link>
+							<Link to="/marketplace">
+								MarketPlace <Tag>New</Tag>
+							</Link>
 						</Menu.Item>
 
 						{window.innerWidth < 576 ? (
