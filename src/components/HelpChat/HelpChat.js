@@ -158,7 +158,7 @@ class HelpButton extends React.Component {
 		} = this.state; // prettier-ignore
 		const menu = (
 			<Menu onClick={this.handleClick}>
-				<Menu.Item key="chat" style={{ padding: '10px 15px' }}>
+				<Menu.Item key="chat" style={{ padding: '10px 15px' }} className="open_intercom">
 					<h3 className={heading}>
 						Ask us anything!{' '}
 						<span role="img" aria-label="Wave">
