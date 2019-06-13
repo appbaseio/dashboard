@@ -10,20 +10,20 @@ import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 import { displayErrors } from '../../utils/helper';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import Header from '../../components/Header';
-import { IMPORTER_LINK } from '../../constants/config';
+import { IMPORTER_LINK, SCALR_URL } from '../../constants/config';
 import Frame from '../../components/Frame';
 
 const URLSearchParams = require('url-search-params');
 
 function getLink(appname, credentials) {
 	const parameters = {
-		platform: 'appbase',
+		type: 'elasticsearch',
 	};
 	if (appname && credentials) {
-		parameters.appname = appname;
-		parameters.credentials = `${credentials.username}:${credentials.password}`;
+		parameters.indexName = appname;
+		parameters.clusterURL = `${credentials.username}:${credentials.password}@${SCALR_URL}`;
 	}
-	return `${IMPORTER_LINK}${JSON.stringify(parameters)}&header=false`;
+	return `${IMPORTER_LINK}?source=${JSON.stringify(parameters)}&embed=true`;
 }
 
 function getUrlParams(url) {
@@ -70,8 +70,8 @@ class ImporterPage extends React.Component {
 		} = this.props; // prettier-ignore
 		let importerLink = getLink(appName, credentials);
 		if (location && location.search) {
-			const { app } = getUrlParams(location.search);
-			importerLink = `${IMPORTER_LINK}${app}&header=false`;
+			const { source } = getUrlParams(location.search);
+			importerLink = `${IMPORTER_LINK}?source=${source}&embed=true`;
 		}
 		return (
 			<Fragment>
