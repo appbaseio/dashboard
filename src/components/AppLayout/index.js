@@ -93,6 +93,11 @@ const RequestLogs = Loadable({
 	loading: Loader,
 });
 
+const RoleBaseAccess = Loadable({
+	loader: () => import('../../pages/RoleBaseAccess'),
+	loading: Loader,
+});
+
 class AppLayout extends React.PureComponent {
 	render() {
 		const { collapsed } = this.props;
@@ -200,7 +205,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={ImporterPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -213,7 +218,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={QueryRulesPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -224,7 +229,7 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={MappingsPage}
-									shouldFetchAppInfo={true}
+									shouldFetchAppInfo
 								/>
 							)}
 						/>
@@ -250,7 +255,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={BrowserPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -264,6 +269,13 @@ class AppLayout extends React.PureComponent {
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/app/:appName/role-base-access"
+							component={props => (
+								<AppPageContainer {...props} component={RoleBaseAccess} />
 							)}
 						/>
 					</Switch>
