@@ -25,6 +25,7 @@ export async function getUser() {
 		app_id: 'f9514ssx',
 		custom_launcher_selector: '#intercom',
 		email: user.email,
+		name: user.name,
 	});
 
 	const { apps } = data.body;
