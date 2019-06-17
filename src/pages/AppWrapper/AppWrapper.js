@@ -29,6 +29,7 @@ const routes = {
 			{ label: 'Browse Data', link: 'browse' },
 			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
 			{ label: 'Query Rules', link: 'query-rules', tag: 'Beta' },
+			{ label: 'Search Templates', link: 'search-template', tag: 'Beta' },
 		],
 	},
 	Analytics: {
