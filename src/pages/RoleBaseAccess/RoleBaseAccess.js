@@ -174,13 +174,7 @@ class RoleBaseAccess extends React.Component {
 		const { publicKey, roleKey } = this.state;
 		const { setKeyes, appName } = this.props;
 
-		if (publicKey && roleKey) {
-			setKeyes(appName, publicKey, roleKey);
-		} else {
-			notification.error({
-				message: 'Please enter Public Key and Role',
-			});
-		}
+		setKeyes(appName, publicKey, roleKey);
 	};
 
 	render() {
@@ -335,8 +329,8 @@ class RoleBaseAccess extends React.Component {
 						style={{
 							maxWidth: '70%',
 						}}
-						src="/static/images/analytics/Analytics.png"
-						alt="analytics"
+						src="/static/images/rbac.png"
+						alt="Role Based Access Control"
 					/>
 				)}
 			</React.Fragment>
