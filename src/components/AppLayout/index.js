@@ -273,7 +273,7 @@ class AppLayout extends React.PureComponent {
 						/>
 						<Route
 							exact
-							path="/app/:appName/role-base-access"
+							path="/app/:appName/role-based-access"
 							component={props => (
 								<AppPageContainer {...props} component={RoleBaseAccess} />
 							)}

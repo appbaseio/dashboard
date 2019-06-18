@@ -1,7 +1,7 @@
 import React from 'react';
 import get from 'lodash/get';
 import {
- Card, Input, Form, Button, Icon, Table, message, Skeleton, notification,
+ Card, Input, Form, Button, Icon, Table, Skeleton, notification,
 } from 'antd';
 import { connect } from 'react-redux';
 
@@ -28,23 +28,20 @@ const labelMargin = {
 };
 const bannerMessagesCred = {
 	free: {
-		title: 'Role Base Access',
-		description:
-			'Upgrade now to set granular ACLs, restrict by Referers and IP Sources, and more.',
+		title: 'Role Based Access',
+		description: 'Upgrade now to setup Role Based Access Control to secure your app.',
 		buttonText: 'Upgrade Now',
 		href: 'billing',
 	},
 	bootstrap: {
-		title: 'Role Base Access',
-		description: 'See how to effectively use security credentials to secure your app.',
-		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/api-credentials.html',
+		title: 'Role Based Access',
+		description: 'Setup Role Based Access Control to secure your app.',
+		showButton: false,
 	},
 	growth: {
-		title: 'Role Base Access',
-		description: 'See how to effectively use security credentials to secure your app.',
-		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/api-credentials.html',
+		title: 'Role Based Access',
+		description: 'Setup Role Based Access Control to secure your app.',
+		showButton: false,
 	},
 };
 
@@ -55,6 +52,7 @@ class RoleBaseAccess extends React.Component {
 			publicKey: '',
 			roleKey: '',
 			loadingKey: {},
+			visibleKey: {},
 		};
 	}
 
@@ -145,6 +143,15 @@ class RoleBaseAccess extends React.Component {
 		}));
 	};
 
+	showKey = (id) => {
+		this.setState(prevState => ({
+			visibleKey: {
+				...prevState.visibleKey,
+				[id]: prevState.visibleKey[id] ? !prevState.visibleKey[id] : true,
+			},
+		}));
+	};
+
 	saveRole = async (value) => {
 		try {
 			this.setLoading(value.username);
@@ -187,7 +194,9 @@ class RoleBaseAccess extends React.Component {
 			roleKey: currentRoleKey,
 			updatingKeyes,
 		} = this.props;
-		const { roleKey, publicKey, loadingKey } = this.state;
+		const {
+ roleKey, publicKey, loadingKey, visibleKey,
+} = this.state;
 		return (
 			<React.Fragment>
 				<Banner {...bannerMessagesCred[plan]} />
@@ -235,7 +244,7 @@ class RoleBaseAccess extends React.Component {
 								</Form>
 							)}
 						</Card>
-						<Card title="Map Roles to API Credentials." style={{ marginTop: 20 }}>
+						<Card title="Map Roles to API Credentials" style={{ marginTop: 20 }}>
 							<p>
 								You can map your existing API Credentials to any role name. This
 								role name should be present in your Roles Key field of the JWT
@@ -246,16 +255,40 @@ class RoleBaseAccess extends React.Component {
 							) : (
 								<Table dataSource={permissions}>
 									<Column
-										title="Credentials"
-										key="credentials"
-										render={value => `${value.username}:${value.password}`}
-									/>
-									<Column
 										title="Description"
 										key="description"
 										render={value => (value && value.description) || 'No Description'
 										}
 									/>
+									<Column
+										title="Credentials"
+										key="credentials"
+										render={value => (
+											<div>
+												{visibleKey[`${value.username}`]
+													? `${value.username}:${value.password}`
+													: '#####################################'}
+												<Button
+													style={{
+														marginLeft: 8,
+														border: 0,
+														background: 'transparent',
+													}}
+													type="normal"
+													onClick={() => this.showKey(value.username)}
+												>
+													<Icon
+														type={
+															visibleKey[`${value.username}`]
+																? 'eye-invisible'
+																: 'eye'
+														}
+													/>
+												</Button>
+											</div>
+										)}
+									/>
+
 									<Column
 										title="Role"
 										key="role"
@@ -264,7 +297,7 @@ class RoleBaseAccess extends React.Component {
 												defaultValue={value && value.role}
 												name={value.username}
 												onChange={this.handleRole}
-												placeholder="Define Role"
+												placeholder="Role Key"
 											/>
 										)}
 									/>
@@ -274,17 +307,23 @@ class RoleBaseAccess extends React.Component {
 										key="action"
 										render={value => (
 											<Button
-												shape="circle"
 												disabled={
 													!this.state[`${value.username}`]
 													|| (this.state[`${value.username}`] || '')
 														=== value.role
 												}
-												loading={loadingKey && loadingKey[value.username]}
 												onClick={() => this.saveRole(value)}
-												icon="save"
 												type="primary"
-											/>
+											>
+												<Icon
+													type={
+														loadingKey && loadingKey[value.username]
+															? 'loading'
+															: 'save'
+													}
+												/>
+												Save
+											</Button>
 										)}
 									/>
 								</Table>

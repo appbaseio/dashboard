@@ -49,7 +49,7 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
-			{ label: 'Role base Access', link: 'role-base-access' },
+			{ label: 'Role based Access', link: 'role-based-access' },
 			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
