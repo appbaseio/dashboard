@@ -3,7 +3,7 @@ export const SCALR_API = 'https://scalr.api.appbase.io';
 // export const ACC_API = 'https://accapi-staging.reactiveapps.io';
 // export const SCALR_API = 'https://api-staging.reactiveapps.io';
 export const SCALR_URL = 'scalr.api.appbase.io';
-export const IMPORTER_LINK = 'https://importer.appbase.io/?app=';
+export const IMPORTER_LINK = 'https://importer.appbase.io/';
 
 export const exampleConfig = [
 	{
