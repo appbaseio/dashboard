@@ -95,7 +95,7 @@ class RoleBaseAccess extends React.Component {
 		if (
 			updatedKey
 			&& !isPublicKeyLoading
-			&& (updatedKey.public_key !== publicKey || updatedKey.role_key !== roleKey)
+			&& (atob(updatedKey.public_key) !== publicKey || updatedKey.role_key !== roleKey)
 		) {
 			notification.success({
 				message: updatedKey.message,
@@ -214,7 +214,7 @@ class RoleBaseAccess extends React.Component {
 											onChange={this.handleChange}
 										/>
 									</Form.Item>
-									<Form.Item label="Define Role" style={labelMargin}>
+									<Form.Item label="Role Key" style={labelMargin}>
 										<Input
 											placeholder="Enter Role"
 											value={roleKey}
@@ -298,7 +298,7 @@ class RoleBaseAccess extends React.Component {
 												defaultValue={value && value.role}
 												name={value.username}
 												onChange={this.handleRole}
-												placeholder="Role Key"
+												placeholder="Define Role"
 											/>
 										)}
 									/>
@@ -356,7 +356,7 @@ const mapStateToProps = (state) => {
 		permissions: get(appPermissions, 'results', []),
 		isPermissionsLoading: get(state, '$getAppPermissions.isFetching'),
 		isPublicKeyLoading: get(state, '$getAppPublicKey.isFetching'),
-		publicKey: get(state, '$getAppPublicKey.results.public_key', ''),
+		publicKey: atob(get(state, '$getAppPublicKey.results.public_key', '')),
 		publicKeyError: get(state, '$getAppPublicKey.error.message', ''),
 		updateKeyError: get(state, '$updateAppPublicKey.error.message', ''),
 		updatedKey: get(state, '$updateAppPublicKey.results', ''),
@@ -367,7 +367,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	fetchPermissions: appName => dispatch(getPermission(appName)),
 	fetchPublicKey: appName => dispatch(getPublicKey(appName)),
-	setKeyes: (appName, publicKey, roleKey) => dispatch(updatePublicKey(appName, publicKey, roleKey)),
+	setKeyes: (appName, publicKey, roleKey) => dispatch(updatePublicKey(appName, btoa(publicKey), roleKey)),
 });
 
 export default connect(
