@@ -36,12 +36,14 @@ const bannerMessagesCred = {
 	bootstrap: {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
-		showButton: false,
+		buttonText: 'Read Docs',
+		href: 'https://docs.appbase.io/concepts/role-based-access.html',
 	},
 	growth: {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
-		showButton: false,
+		buttonText: 'Read Docs',
+		href: 'https://docs.appbase.io/concepts/role-based-access.html',
 	},
 };
 
@@ -197,10 +199,7 @@ class RoleBaseAccess extends React.Component {
 				{isPaidUser ? (
 					<Container>
 						<Card title="JWT Public Key">
-							<p>
-								The public key is used for verifying the JWT tokens for this app.
-								Read more.
-							</p>
+							<p>The public key is used for verifying the JWT tokens for this app.</p>
 							{isPublicKeyLoading ? (
 								<Skeleton />
 							) : (
@@ -243,14 +242,7 @@ class RoleBaseAccess extends React.Component {
 							<p>
 								You can map your existing API Credentials to any role name. This
 								role name should be present in your Roles Key field of the JWT
-								token.{' '}
-								<a
-									href="https://docs.appbase.io"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Read more
-								</a>
+								token.
 							</p>
 							{isPermissionsLoading ? (
 								<Skeleton />
