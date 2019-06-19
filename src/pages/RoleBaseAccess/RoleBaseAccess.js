@@ -232,7 +232,7 @@ class RoleBaseAccess extends React.Component {
 											onClick={this.handleSave}
 										>
 											<Icon type={updatingKeyes ? 'loading' : 'save'} />
-											Submit
+											Save
 										</Button>
 									</Form.Item>
 								</Form>
@@ -242,7 +242,14 @@ class RoleBaseAccess extends React.Component {
 							<p>
 								You can map your existing API Credentials to any role name. This
 								role name should be present in your Roles Key field of the JWT
-								token. Read more.
+								token.{' '}
+								<a
+									href="https://docs.appbase.io"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Read more
+								</a>
 							</p>
 							{isPermissionsLoading ? (
 								<Skeleton />
@@ -297,7 +304,7 @@ class RoleBaseAccess extends React.Component {
 									/>
 
 									<Column
-										title="Action"
+										title=""
 										key="action"
 										render={value => (
 											<Button
