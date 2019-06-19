@@ -191,8 +191,8 @@ class RoleBaseAccess extends React.Component {
 			updatingKeyes,
 		} = this.props;
 		const {
- roleKey, publicKey, loadingKey, visibleKey,
-} = this.state;
+			roleKey, publicKey, loadingKey, visibleKey,
+		} = this.state; // prettier-ignore
 		return (
 			<React.Fragment>
 				<Banner {...bannerMessagesCred[plan]} />
@@ -207,8 +207,7 @@ class RoleBaseAccess extends React.Component {
 									<Form.Item label="Public Key" style={labelMargin}>
 										<Input.TextArea
 											name="publicKey"
-											rows={3}
-											autosize
+											autosize={{ minRows: 3 }}
 											value={publicKey}
 											placeholder="Enter Public Key"
 											onChange={this.handleChange}
