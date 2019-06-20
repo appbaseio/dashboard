@@ -77,7 +77,7 @@ class SearchTemplates extends React.Component {
 				showGoBack: true,
 				goBackText: 'Go back to templates',
 				onClickGoBack: () => this.toggleCreateMode(),
-				href: 'https://docs.appbase.io/',
+				href: 'https://docs.appbase.io/concepts/search-template.html',
 			},
 			edit: {
 				title: 'Edit Template',
@@ -85,7 +85,7 @@ class SearchTemplates extends React.Component {
 				showGoBack: true,
 				goBackText: 'Go back to templates',
 				onClickGoBack: () => this.toggleEditMode(),
-				href: 'https://docs.appbase.io/',
+				href: 'https://docs.appbase.io/concepts/search-template.html',
 			},
 		};
 	}
