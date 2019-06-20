@@ -67,8 +67,8 @@ class GetAPIEndpoint extends React.Component {
 	}
 
 	get url() {
-		const { appName, templateId } = this.props;
-		return `${SCALR_API}/${appName}/_search/${templateId}`;
+		const { appName } = this.props;
+		return `${SCALR_API}/${appName}/_search/template`;
 	}
 
 	get request() {
@@ -128,7 +128,7 @@ ${getString(query)}
 							<Loader />
 						) : (
 							<React.Fragment>
-								<Card css={main} title="Source">
+								<Card css={main} title="Source Query">
 									<pre>{sourceStr}</pre>
 								</Card>
 								<Grid

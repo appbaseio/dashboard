@@ -11,7 +11,7 @@ import Ace from '../../batteries/components/SearchSandbox/containers/AceEditor';
 import TemplateResponse from './TemplateResponse';
 import { getAppTemplate } from '../../batteries/modules/actions';
 import Flex from '../../batteries/components/shared/Flex';
-import { getValue } from './utils';
+import { getValue, getString, extractParams } from './utils';
 
 const main = css`
 	.error {
@@ -61,14 +61,21 @@ class CreateTemplate extends React.Component {
 		if (editMode) {
 			props.fetchTemplate(props.templateId).then((action) => {
 				if (get(action, 'payload')) {
-					const value = get(action, 'payload');
-
-					delete value.found;
-					delete value._id;
+					const source = get(action, 'payload.script.source');
+					const sourceStr = getString(source);
 					props.control.patchValue({
 						name: props.templateId,
 						query: JSON.stringify(
-							{ source: getValue(get(value, 'script.source')) },
+							{
+								source: getValue(source),
+								params: extractParams(sourceStr).reduce(
+									(params = {}, i) => ({
+										[i]: '',
+										...params,
+									}),
+									{},
+								),
+							},
 							0,
 							2,
 						),
