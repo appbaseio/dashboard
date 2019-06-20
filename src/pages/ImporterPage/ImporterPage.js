@@ -21,7 +21,7 @@ function getLink(appname, credentials) {
 	};
 	if (appname && credentials) {
 		parameters.indexName = appname;
-		parameters.clusterURL = `${credentials.username}:${credentials.password}@${SCALR_URL}`;
+		parameters.clusterURL = `https://${credentials.username}:${credentials.password}@${SCALR_URL}`;
 	}
 	return `${IMPORTER_LINK}?source=${JSON.stringify(parameters)}&embed=true`;
 }
