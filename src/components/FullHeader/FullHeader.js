@@ -105,7 +105,14 @@ const FullHeader = ({
 		</div>
 		<Row justify="space-between" align="middle">
 			{isUsingTrial && !isCluster && (
-				<Link className={trialLink} to={`/app/${currentApp}/billing`}>
+				<Link
+					className={trialLink}
+					to={
+						cluster
+							? `/clusters?id=${cluster}&subscription=true`
+							: `/app/${currentApp}/billing`
+					}
+				>
 					<Tooltip title={trialMessage}>
 						<Button css={trialBtn} type="danger">
 							<span css={trialText}>
