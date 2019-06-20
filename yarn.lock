@@ -788,13 +788,6 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0-rc.0":
-  version "7.4.5"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
-  integrity sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0-beta.44.tgz#f8832f4fdcee5d59bf515e595fc5106c529b394f"
@@ -7343,13 +7336,6 @@ json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
-jsoneditor-react@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/jsoneditor-react/-/jsoneditor-react-1.0.1.tgz#f54aebb43155f4b575360bb8ed1855658fa7fae8"
-  integrity sha512-dfFavJi8MuAKi6vUVCRCoxghunS04mDwUzumqN25gl+yD/Db0gsHF+Nj4//QEVF/iSOe0b+sdmzin+5N5kldug==
-  dependencies:
-    prop-types "^15.6.0"
-
 jsonfile@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-3.0.1.tgz#a5ecc6f65f53f662c4415c7675a0331d0992ec66"
@@ -10228,13 +10214,6 @@ react-joyride@2.0.0-15:
     scrollparent "^2.0.1"
     tree-changes "^0.3.2"
 
-react-json-editor-ajrm@^2.5.9:
-  version "2.5.9"
-  resolved "https://registry.npmjs.org/react-json-editor-ajrm/-/react-json-editor-ajrm-2.5.9.tgz#f9cec4aba44b82a75ff632571b84fae0d2bd4c76"
-  integrity sha512-76FQtcIU3O88I5i/QUx+Lw7zB8OpyKap7eyHZOIhbsMdbMiT+sRdbIhxXchKoTOMnYmmw0vG8D9YCzX80iew9w==
-  dependencies:
-    "@babel/runtime" "^7.0.0-rc.0"
-
 react-lazy-load@^3.0.13:
   version "3.0.13"
   resolved "https://registry.yarnpkg.com/react-lazy-load/-/react-lazy-load-3.0.13.tgz#3b0a92d336d43d3f0d73cbe6f35b17050b08b824"
@@ -10272,10 +10251,10 @@ react-proptype-conditional-require@^1.0.4:
   resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
   integrity sha1-acLVdB5t9eCPIw82u8KUTuEiJVU=
 
-react-reactive-form@^1.0.28:
-  version "1.0.28"
-  resolved "https://registry.yarnpkg.com/react-reactive-form/-/react-reactive-form-1.0.28.tgz#bdf0a2257528d1a918d68586ae7e67d21f28aa8d"
-  integrity sha512-Esbh+Ngt+OmCSw7QtG9s2f/oh5OvWMxEgcU5xM1w+N5/K0y4zK3P4RG7iNow+n7Rqu0N4Pav+DL+I60TO19r5A==
+react-reactive-form@^1.0.30:
+  version "1.0.30"
+  resolved "https://registry.npmjs.org/react-reactive-form/-/react-reactive-form-1.0.30.tgz#c1c3b0ac29857f703e7ac81ac67c7a6f27c713ba"
+  integrity sha512-uV+wKQ6KzXkUjjdpFAyI2w6DQkygTPnQCjjSscruEyBPpXYk78jZ88LhXncJgosN3ihP26LoiFtV0kKwBVv6pQ==
 
 react-redux@^5.0.7:
   version "5.1.1"
@@ -10648,11 +10627,6 @@ regenerator-runtime@^0.12.0:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
   integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
-
-regenerator-runtime@^0.13.2:
-  version "0.13.2"
-  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
-  integrity sha512-S/TQAZJO+D3m9xeN1WTI8dLKBBiRgXBlTJvbWjCThHWZj9EvHK70Ff50/tYj2J/fvBY6JtFVwRuazHN2E7M9BA==
 
 regenerator-transform@^0.10.0:
   version "0.10.1"

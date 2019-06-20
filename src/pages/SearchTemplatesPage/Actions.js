@@ -9,7 +9,7 @@ const btnCss = css`
 
 const Actions = ({ handleEdit, handleRender, handleDelete }) => (
 	<div>
-		<Button onClick={handleRender}>Render</Button>
+		<Button onClick={handleRender}>Get API Endpoint</Button>
 		<Button css={btnCss} onClick={handleEdit}>
 			Edit
 		</Button>

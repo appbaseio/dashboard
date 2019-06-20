@@ -24,7 +24,7 @@ class TemplateResponse extends React.Component {
 		return (
 			<div>
 				{validateResult ? (
-					<Card css={main} title="Response">
+					<Card css={main} title="Rendered Query">
 						<pre>{JSON.stringify(validateResult, 0, 2)}</pre>
 					</Card>
 				) : null}

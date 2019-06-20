@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
- Table, Card, notification, Modal,
-} from 'antd';
+import { Table, Card, notification } from 'antd';
 import get from 'lodash/get';
 import { FormBuilder, Validators } from 'react-reactive-form';
 import { css } from 'emotion';
@@ -20,7 +18,8 @@ import {
 import { getAppTemplatesByName } from '../../batteries/modules/selectors';
 import Actions from './Actions';
 import CreateTemplate from './CreateTemplate';
-import ValidateTemplate from './ValidateTemplate';
+import GetAPIEndpoint from './GetAPIEndpoint';
+import { jsonValidator } from './utils';
 
 const columns = [
 	{
@@ -45,21 +44,9 @@ const columns = [
 const main = css`
 	.actionBtn {
 		position: absolute;
-		right: 24px;
+		right: 50px;
 	}
 `;
-
-// Custom JSON validator
-export const jsonValidator = (control) => {
-	try {
-		JSON.parse(control.value);
-		return null;
-	} catch (e) {
-		return {
-			invalidJSON: true,
-		};
-	}
-};
 
 class SearchTemplatesPage extends React.Component {
 	constructor(props) {
@@ -67,12 +54,12 @@ class SearchTemplatesPage extends React.Component {
 		this.state = {
 			createMode: false,
 			editMode: false,
-			renderMode: false,
+			copyEndpoint: false,
 			currentTemplate: null,
 		};
 		this.getTemplates();
 		this.form = FormBuilder.group({
-			name: ['', Validators.required],
+			name: ['', [Validators.required, Validators.pattern(/^(\d|\w)+$/)]],
 			query: [null, [Validators.required, jsonValidator]],
 		});
 		this.templateRef = React.createRef();
@@ -139,18 +126,25 @@ class SearchTemplatesPage extends React.Component {
 		}));
 	};
 
-	toggleRenderMode = (status) => {
+	togglecopyEndpoint = (status) => {
 		this.setState(prevState => ({
-			currentTemplate: prevState.renderMode ? null : prevState.currentTemplate,
-			renderMode: status === undefined ? !prevState.renderMode : status,
+			currentTemplate: prevState.copyEndpoint ? null : prevState.currentTemplate,
+			copyEndpoint: status === undefined ? !prevState.copyEndpoint : status,
 		}));
 	};
 
 	handleSaveTemplate = () => {
-		if (this.form.valid) {
+		try {
 			const { saveTemplate } = this.props;
 			const { name, query } = this.form.getRawValue();
-			saveTemplate(name, JSON.parse(query)).then((action) => {
+			const requestBody = JSON.parse(query);
+			if (!this.form.valid) {
+				throw new Error('Please fill the form details first.');
+			}
+			if (!requestBody.source) {
+				throw new Error('Invalid query, `source` key is missing.');
+			}
+			saveTemplate(name, requestBody).then((action) => {
 				if (get(action, 'payload.acknowledged')) {
 					notification.success({
 						message: 'Template saved successfully.',
@@ -160,9 +154,9 @@ class SearchTemplatesPage extends React.Component {
 					this.toggleCreateMode(false);
 				}
 			});
-		} else {
+		} catch (e) {
 			notification.error({
-				message: 'Please fill the form details first.',
+				message: e.message,
 			});
 		}
 	};
@@ -171,15 +165,25 @@ class SearchTemplatesPage extends React.Component {
 		const { validateTemplate } = this.props;
 		const { query } = this.form.value;
 		const queryControl = this.form.get('query');
-		if (queryControl.valid) {
-			validateTemplate(JSON.parse(query), templateId).then((action) => {
+		const requestBody = JSON.parse(query);
+		try {
+			if (!requestBody.source) {
+				throw new Error('Invalid query, `source` key is missing.');
+			}
+			if (!requestBody.params) {
+				throw new Error('Invalid query, `params` key is missing.');
+			}
+			if (!queryControl.valid) {
+				throw new Error('Please enter valid JSON query.');
+			}
+			validateTemplate(requestBody, templateId).then((action) => {
 				if (get(action, 'payload')) {
 					window.scrollTo(0, document.body.scrollHeight);
 				}
 			});
-		} else {
+		} catch (e) {
 			notification.error({
-				message: 'Please enter valid JSON query.',
+				message: e.message,
 			});
 		}
 	};
@@ -210,17 +214,15 @@ class SearchTemplatesPage extends React.Component {
 			{
 				currentTemplate: id,
 			},
-			this.toggleRenderMode,
+			this.togglecopyEndpoint,
 		);
 	};
 
 	render() {
 		const {
- createMode, editMode, currentTemplate, renderMode,
+ createMode, editMode, currentTemplate, copyEndpoint,
 } = this.state;
-		const {
- isLoading, templates, isDeleting, isValidating,
-} = this.props;
+		const { isLoading, templates, isDeleting } = this.props;
 		const isDefault = !(createMode || editMode);
 		if (isLoading && !(templates && templates.length)) {
 			return <Loader />;
@@ -260,23 +262,12 @@ class SearchTemplatesPage extends React.Component {
 							templateId={currentTemplate}
 						/>
 					)}
-					{renderMode && (
-						<Modal
-							title="Render Template"
-							visible={renderMode}
-							okButtonProps={{
-								loading: isValidating,
-							}}
-							okText="Render"
-							onOk={() => this.handleValidateTemplate(currentTemplate)}
-							onCancel={() => this.toggleRenderMode()}
-							width="100%"
-							style={{
-								maxWidth: 850,
-							}}
-						>
-							<ValidateTemplate control={this.form} templateId={currentTemplate} />
-						</Modal>
+					{copyEndpoint && (
+						<GetAPIEndpoint
+							templateId={currentTemplate}
+							visible={copyEndpoint}
+							handleCancel={this.togglecopyEndpoint}
+						/>
 					)}
 				</Container>
 			</React.Fragment>
@@ -291,7 +282,6 @@ SearchTemplatesPage.defaultProps = {
 SearchTemplatesPage.propTypes = {
 	isLoading: PropTypes.bool.isRequired,
 	isDeleting: PropTypes.bool.isRequired,
-	isValidating: PropTypes.bool.isRequired,
 	appName: PropTypes.string.isRequired,
 	fetchTemplates: PropTypes.func.isRequired,
 	saveTemplate: PropTypes.func.isRequired,
@@ -306,7 +296,6 @@ const mapStateToProps = state => ({
 	appName: get(state, '$getCurrentApp.name'),
 	isLoading: get(state, '$getAppTemplates.isFetching', false),
 	isDeleting: get(state, '$deleteAppTemplate.isFetching', false),
-	isValidating: get(state, '$validateAppTemplate.isFetching', false),
 	errors: [
 		get(state, '$getAppTemplates.error'),
 		get(state, '$saveAppTemplate.error'),

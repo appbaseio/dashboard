@@ -1,5 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
+import { css } from 'emotion';
 import { Card, Input, Button } from 'antd';
 import { FieldGroup, FieldControl } from 'react-reactive-form';
 import { connect } from 'react-redux';
@@ -9,6 +10,48 @@ import Grid from '../../components/CreateCredentials/Grid';
 import Ace from '../../batteries/components/SearchSandbox/containers/AceEditor';
 import TemplateResponse from './TemplateResponse';
 import { getAppTemplate } from '../../batteries/modules/actions';
+import Flex from '../../batteries/components/shared/Flex';
+import { getValue } from './utils';
+
+const main = css`
+	.error {
+		color: tomato;
+		margin-left: 15px;
+	}
+`;
+
+const queryMessage = () => (
+	<div style={{ width: 500 }}>
+		Query is a templatized ElasticSearch query that should be passed in the following format.
+		<br />
+		<br />
+		<pre>
+			{JSON.stringify(
+				{
+					source: {
+						query: {
+							term: {
+								message: '{{query_string}}',
+							},
+						},
+					},
+					params: {
+						query_string: 'search for these words',
+					},
+				},
+				0,
+				2,
+			)}
+		</pre>
+		<a
+			target="_blank"
+			rel="noopener noreferrer"
+			href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html"
+		>
+			Read more about the format.
+		</a>
+	</div>
+);
 
 class CreateTemplate extends React.Component {
 	constructor(props) {
@@ -24,7 +67,11 @@ class CreateTemplate extends React.Component {
 					delete value._id;
 					props.control.patchValue({
 						name: props.templateId,
-						query: JSON.stringify(value, 0, 2),
+						query: JSON.stringify(
+							{ source: getValue(get(value, 'script.source')) },
+							0,
+							2,
+						),
 					});
 					nameControl.disable();
 				}
@@ -57,7 +104,12 @@ class CreateTemplate extends React.Component {
 				strict={false}
 				render={({ invalid, pristine, get: getControl }) => (
 					<React.Fragment>
-						<Card>
+						<Card
+							className={main}
+							bodyStyle={{
+								padding: '24px 50px',
+							}}
+						>
 							<div className="actionBtn">
 								<Button
 									style={{
@@ -67,7 +119,7 @@ class CreateTemplate extends React.Component {
 									onClick={handleValidateTemplate}
 									loading={isValidating}
 								>
-									Validate
+									Validate and Render
 								</Button>
 								<Button
 									onClick={handleSaveTemplate}
@@ -80,23 +132,62 @@ class CreateTemplate extends React.Component {
 							</div>
 
 							<Grid
+								toolTipMessage="This is the identifier of your template which can be used when making a search query."
+								toolTipProps={{
+									overlayClassName: css`
+										.ant-tooltip-inner {
+											background-color: #000;
+										}
+									`,
+								}}
 								gridRatio={0.15}
-								label="Template name"
+								label="Template Name"
 								component={(
 <FieldControl
 										name="name"
-										render={({ handler }) => (
-											<Input
-												style={{
-													width: 250,
-												}}
-												{...handler()}
-											/>
-										)}
+										render={({
+											handler,
+											touched,
+											hasError,
+											invalid: invalidName,
+										}) => {
+											const isError = touched && invalidName;
+											return (
+												<Flex alignItems="center">
+													<Input
+														style={{
+															width: 250,
+															...(isError && {
+																borderColor: 'tomato',
+															}),
+														}}
+														{...handler()}
+													/>
+													{isError && (
+														<span className="error">
+															{(hasError('required')
+																&& 'Please enter template name.')
+																|| (hasError('pattern')
+																	&& 'Template name can not have spaces or special characters.')}
+														</span>
+													)}
+												</Flex>
+											);
+										}}
 />
 )}
 							/>
 							<Grid
+								toolTipMessage={queryMessage}
+								toolTipProps={{
+									overlayClassName: css`
+										width: 500px;
+										max-width: 500px;
+										.ant-tooltip-inner {
+											background-color: #000;
+										}
+									`,
+								}}
 								gridRatio={0.15}
 								label="Query"
 								component={(
@@ -106,6 +197,14 @@ class CreateTemplate extends React.Component {
 											const inputHandler = handler();
 											return (
 												<Ace
+													defaultValue={JSON.stringify(
+														{
+															source: {},
+															params: {},
+														},
+														0,
+														2,
+													)}
 													mode="json"
 													value={inputHandler.value}
 													onChange={inputHandler.onChange}
