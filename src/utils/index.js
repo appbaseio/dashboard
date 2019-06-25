@@ -21,6 +21,13 @@ export async function getUser() {
 		},
 	]);
 
+	window.Intercom('boot', {
+		app_id: 'f9514ssx',
+		custom_launcher_selector: '#intercom',
+		email: user.email,
+		name: user.name,
+	});
+
 	const { apps } = data.body;
 	return { user, apps };
 }

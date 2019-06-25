@@ -4,7 +4,7 @@ import { Radio } from 'antd';
 import Footer from '../components/Footer';
 
 const sandboxLinks = {
-	react: 'https://codesandbox.io/embed/6jlkqnzlvr',
+	react: 'https://codesandbox.io/embed/reactivesearch-interactive-tutorial-9pd97',
 	raw_json: 'https://codesandbox.io/embed/zrpr98095x',
 };
 
