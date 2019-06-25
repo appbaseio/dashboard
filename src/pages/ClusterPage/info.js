@@ -445,6 +445,7 @@ export default class Clusters extends Component {
 														closed={this.toggleOverlay}
 													>
 														<Button
+															type="primary"
 															style={{ marginTop: 5 }}
 															onClick={this.toggleOverlay}
 														>
