@@ -379,30 +379,16 @@ export default class Clusters extends Component {
 											<div>
 												{this.state.cluster.pricing_plan}
 												&nbsp;&nbsp;
-												{!this.state.cluster.trial && isPaid ? <Tag color="green">Paid</Tag> : null}
+												{!this.state.cluster.trial && isPaid ? (
+													<Tag color="green">Paid</Tag>
+												) : null}
 												{this.state.cluster.trial
 												|| this.state.cluster.subscription_id ? (
-													<Stripe
-														name="Appbase.io Clusters"
-														amount={
-															(this.state.cluster.plan_rate || 0)
-															* 100
-														}
-														token={token => this.handleToken(
-																this.state.cluster.id,
-																token,
-															)
-														}
-														disabled={false}
-														stripeKey={STRIPE_KEY}
-														closed={this.toggleOverlay}
-													>
-														<Tooltip title="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires.">
-															<Tag color="blue" style={{ marginTop: 5 }} onClick={this.toggleOverlay}>
-																Trial
-															</Tag>
-														</Tooltip>
-													</Stripe>
+													<Tooltip title="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires.">
+														<Tag color="blue" style={{ marginTop: 5 }}>
+															Trial
+														</Tag>
+													</Tooltip>
 												) : null}
 											</div>
 										</div>
@@ -438,6 +424,36 @@ export default class Clusters extends Component {
 											<h4>Nodes</h4>
 											<div>{this.state.cluster.total_nodes}</div>
 										</div>
+
+										{this.state.cluster.trial
+										|| this.state.cluster.subscription_id ? (
+											<div>
+												<div>
+													<Stripe
+														name="Appbase.io Clusters"
+														amount={
+															(this.state.cluster.plan_rate || 0)
+															* 100
+														}
+														token={token => this.handleToken(
+																this.state.cluster.id,
+																token,
+															)
+														}
+														disabled={false}
+														stripeKey={STRIPE_KEY}
+														closed={this.toggleOverlay}
+													>
+														<Button
+															style={{ marginTop: 5 }}
+															onClick={this.toggleOverlay}
+														>
+															Upgrade Now
+														</Button>
+													</Stripe>
+												</div>
+											</div>
+										) : null}
 									</div>
 								</li>
 
