@@ -13,6 +13,7 @@ import Loader from '../../components/Loader';
 import { getClusters, createSubscription, deleteCluster } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
+import { getParam } from '../../utils';
 import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
@@ -45,6 +46,15 @@ export default class ClusterPage extends Component {
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 	}
+
+	paramsValue = () => {
+		const id = getParam('id', window.location.search) || undefined;
+		const subscription = getParam('subscription', window.location.search) || undefined;
+		return {
+			id,
+			subscription,
+		};
+	};
 
 	deleteCluster = (id) => {
 		this.setState({
@@ -143,100 +153,129 @@ export default class ClusterPage extends Component {
 		});
 	};
 
-	renderClusterCard = cluster => (
-		<li key={cluster.name} className="cluster-card compact">
-			<h3>
-				{cluster.name}
-				<span className="tag">
-					{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
-				</span>
-				{cluster.role === 'admin'
-				&& (cluster.status === 'active'
-					|| cluster.status === 'in progress'
-					|| cluster.status === 'deployments in progress') ? (
-					<Button
-						type="danger"
-						icon="delete"
-						className="showOnHover"
-						onClick={() => this.setDeleteCluster(cluster)}
-					>
-						Delete
-					</Button>
-				) : null}
-			</h3>
+	renderClusterCard = (cluster) => {
+		const { id, subscription } = this.paramsValue();
+		return (
+			<li key={cluster.name} className="cluster-card compact">
+				<h3>
+					{cluster.name}
+					<span className="tag">
+						{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
+					</span>
+					{cluster.role === 'admin'
+					&& (cluster.status === 'active'
+						|| cluster.status === 'in progress'
+						|| cluster.status === 'deployments in progress') ? (
+						<Button
+							type="danger"
+							icon="delete"
+							className="showOnHover"
+							onClick={() => this.setDeleteCluster(cluster)}
+						>
+							Delete
+						</Button>
+					) : null}
+				</h3>
 
-			<div className="info-row">
-				<div>
-					<h4>Region</h4>
-					{this.renderClusterRegion(cluster.region, cluster.provider)}
-				</div>
-
-				<div>
-					<h4>Pricing Plan</h4>
-					<div>{cluster.pricing_plan}</div>
-				</div>
-
-				<div>
-					<h4>ES Version</h4>
-					<div>{cluster.es_version}</div>
-				</div>
-
-				<div>
-					<h4>Memory</h4>
+				<div className="info-row">
 					<div>
-						{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)} GB
+						<h4>Region</h4>
+						{this.renderClusterRegion(cluster.region, cluster.provider)}
 					</div>
-				</div>
 
-				<div>
-					<h4>Disk Size</h4>
 					<div>
-						{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)} GB
+						<h4>Pricing Plan</h4>
+						<div>{cluster.pricing_plan}</div>
 					</div>
-				</div>
 
-				<div>
-					<h4>Nodes</h4>
-					<div>{cluster.total_nodes}</div>
-				</div>
-
-				{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
 					<div>
-						{cluster.trial || cluster.subscription_id ? (
-							<Link to={`/clusters/${cluster.id}`}>
-								<Button type="primary">View Details</Button>
-							</Link>
-						) : (
-							<div>
-								<p
-									css={{
-										fontSize: 12,
-										lineHeight: '18px',
-										color: '#999',
-										margin: '-20px 0 12px 0',
-									}}
-								>
-									Your regular payment is due for this cluster.
-								</p>
+						<h4>ES Version</h4>
+						<div>{cluster.es_version}</div>
+					</div>
+
+					<div>
+						<h4>Memory</h4>
+						<div>
+							{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)}{' '}
+							GB
+						</div>
+					</div>
+
+					<div>
+						<h4>Disk Size</h4>
+						<div>
+							{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)}{' '}
+							GB
+						</div>
+					</div>
+
+					<div>
+						<h4>Nodes</h4>
+						<div>{cluster.total_nodes}</div>
+					</div>
+
+					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
+						<div>
+							{cluster.trial || cluster.subscription_id ? (
+								<Link to={`/clusters/${cluster.id}`}>
+									<Button type="primary">View Details</Button>
+								</Link>
+							) : null}
+							{cluster.trial || cluster.subscription_id ? (
 								<Stripe
 									name="Appbase.io Clusters"
 									amount={(cluster.plan_rate || 0) * 100}
 									token={token => this.handleToken(cluster.id, token)}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
+									desktopShowModal={
+										subscription && cluster.id === id ? true : undefined
+									}
 								>
-									<Button onClick={this.toggleOverlay}>Pay now to access</Button>
+									<Button
+										style={{ display: 'none' }}
+										onClick={this.toggleOverlay}
+									>
+										Pay now to access
+									</Button>
 								</Stripe>
-							</div>
-						)}
-					</div>
-				) : (
-					<div />
-				)}
-			</div>
-		</li>
-	);
+							) : (
+								<div>
+									<p
+										css={{
+											fontSize: 12,
+											lineHeight: '18px',
+											color: '#999',
+											margin: '-20px 0 12px 0',
+										}}
+									>
+										Your regular payment is due for this cluster.
+									</p>
+									<Stripe
+										name="Appbase.io Clusters"
+										amount={(cluster.plan_rate || 0) * 100}
+										token={token => this.handleToken(cluster.id, token)}
+										disabled={false}
+										stripeKey={STRIPE_KEY}
+										closed={this.toggleOverlay}
+										desktopShowModal={
+											subscription && cluster.id === id ? true : undefined
+										}
+									>
+										<Button onClick={this.toggleOverlay}>
+											Pay now to access
+										</Button>
+									</Stripe>
+								</div>
+							)}
+						</div>
+					) : (
+						<div />
+					)}
+				</div>
+			</li>
+		);
+	};
 
 	renderClusterHeading = (text, length) => (length ? (
 			<Divider>
