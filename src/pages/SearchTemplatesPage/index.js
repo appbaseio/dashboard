@@ -27,12 +27,12 @@ const TemplatesView = ({ isPaidUser }) => (
 					style={{
 						maxWidth: '70%',
 					}}
-					lockSectionClassName={css`
-						display: none;
-						.button {
-							display: none;
-						}
-					`}
+					// lockSectionClassName={css`
+					// 	display: none;
+					// 	.button {
+					// 		display: none;
+					// 	}
+					// `}
 					src="/static/images/templates_banner.png"
 					alt="analytics"
 				/>
