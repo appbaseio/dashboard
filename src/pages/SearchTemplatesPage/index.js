@@ -27,6 +27,9 @@ const TemplatesView = ({ isPaidUser }) => (
 					style={{
 						maxWidth: '70%',
 					}}
+					lockSectionStyle={{
+						marginTop: '20%',
+					}}
 					// lockSectionClassName={css`
 					// 	display: none;
 					// 	.button {
