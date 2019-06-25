@@ -9,7 +9,7 @@ const btnCss = css`
 
 const Actions = ({ handleEdit, handleRender, handleDelete }) => (
 	<div>
-		<Button onClick={handleRender}>Copy asf cURL</Button>
+		<Button onClick={handleRender}>Copy as cURL</Button>
 		<Button css={btnCss} onClick={handleEdit}>
 			Edit
 		</Button>
