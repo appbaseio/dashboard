@@ -104,7 +104,7 @@ ${getString(query)}
 					<Modal
 						title="API Endpoint"
 						visible={visible}
-						okText="COPY AS CURL"
+						okText="Copy as cURL"
 						okButtonProps={{
 							disabled: invalid,
 						}}
@@ -115,7 +115,7 @@ ${getString(query)}
 							</Button>,
 							<CopyToClipboard key="ok" text={this.request} onCopy={this.handleCopyCred}>
 								<Button type="primary" disabled={invalid}>
-									COPY AS CURL
+									Copy as cURL
 								</Button>
 							</CopyToClipboard>,
 						]}
