@@ -9,9 +9,9 @@ import { getAppPlanByName } from '../../batteries/modules/selectors';
 import SearchTemplates from './SearchTemplates';
 
 const bannerMessagesAnalytics = {
-	title: 'Unlock the ROI impact of your search',
+	title: 'Secure your app with search templates',
 	description:
-		'Get a paid plan to see actionable analytics on search volume, popular searches, no results, track clicks and conversions.',
+		'Get a paid plan to create stored search templates. Prevent script injections and secure your search usage.',
 	buttonText: 'Upgrade Now',
 	href: 'billing',
 };
