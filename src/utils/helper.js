@@ -12,10 +12,10 @@ export const keySummary = {
 	write: 'Write credentials',
 };
 
-export const displayErrors = (nextErrors = [], prevErrors = []) => {
+export const displayErrors = (nextErrors = [], prevErrors = [], showError = false) => {
 	nextErrors.map((error, index) => {
 		if (error && error !== prevErrors[index]) {
-			if (process.env.NODE_ENV === 'production') {
+			if (!showError && process.env.NODE_ENV === 'production') {
 				captureMessage(error.message);
 			} else {
 				notification.error({

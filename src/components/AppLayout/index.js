@@ -24,6 +24,11 @@ const SearchLatency = Loadable({
 	loading: Loader,
 });
 
+const SearchTemplatesPage = Loadable({
+	loader: () => import('../../pages/SearchTemplatesPage'),
+	loading: Loader,
+});
+
 const BillingPage = Loadable({
 	loader: () => import('../../pages/BillingPage'),
 	loading: Loader,
@@ -217,6 +222,19 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={QueryRulesPage}
+									shouldFetchAppInfo={false}
+									shouldFetchAppPlan
+								/>
+							)}
+						/>
+
+						<Route
+							exact
+							path="/app/:appName/search-template"
+							render={props => (
+								<AppPageContainer
+									{...props}
+									component={SearchTemplatesPage}
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan
 								/>

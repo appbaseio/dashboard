@@ -29,6 +29,7 @@ const routes = {
 			{ label: 'Browse Data', link: 'browse' },
 			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
 			{ label: 'Query Rules', link: 'query-rules', tag: 'Beta' },
+			{ label: 'Search Templates', link: 'search-template', tag: 'Beta' },
 		],
 	},
 	Analytics: {
@@ -49,7 +50,7 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
-			{ label: 'Role based Access', link: 'role-based-access' },
+			{ label: 'Role based Access', link: 'role-based-access', tag: 'Beta' },
 			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
