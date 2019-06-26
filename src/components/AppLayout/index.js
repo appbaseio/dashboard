@@ -98,6 +98,11 @@ const RequestLogs = Loadable({
 	loading: Loader,
 });
 
+const RoleBaseAccess = Loadable({
+	loader: () => import('../../pages/RoleBaseAccess'),
+	loading: Loader,
+});
+
 class AppLayout extends React.PureComponent {
 	render() {
 		const { collapsed } = this.props;
@@ -282,6 +287,13 @@ class AppLayout extends React.PureComponent {
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/app/:appName/role-based-access"
+							component={props => (
+								<AppPageContainer {...props} component={RoleBaseAccess} />
 							)}
 						/>
 					</Switch>

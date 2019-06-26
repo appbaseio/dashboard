@@ -50,6 +50,7 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
+			{ label: 'Role Based Access', link: 'role-based-access', tag: 'Beta' },
 			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
