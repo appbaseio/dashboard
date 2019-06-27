@@ -4,5 +4,7 @@ fs.writeFileSync(
 	'./.env',
 	`SENTRY_AUTH_TOKEN=${
 		process.env.SENTRY_TOKEN
-	}\nSENTRY_URL=https://sentry.io/\nSENTRY_ORG=appbase-1\nSENTRY_PROJECT=frontend\n`,
+	}\nSENTRY_URL=https://sentry.io/\nSENTRY_ORG=appbase-1\nSENTRY_PROJECT=frontend\nCONTEXT=${
+		process.env.CONTEXT
+	}\n`,
 );
