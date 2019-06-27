@@ -671,8 +671,8 @@ export default class NewCluster extends Component {
 										>
 											<img
 												width="150"
-												src="/static/images/clusters/google.png"
-												alt="Google"
+												src="/static/images/clusters/elastic.svg"
+												alt="Elastic"
 											/>
 										</Button>
 										<p>The Open Source Elasticsearch Distribution.</p>
@@ -699,8 +699,8 @@ export default class NewCluster extends Component {
 										>
 											<img
 												width="150"
-												src="/static/images/clusters/azure.png"
-												alt="Azure"
+												src="/static/images/clusters/odfe.svg"
+												alt="ODFE"
 											/>
 										</Button>
 										<p>
