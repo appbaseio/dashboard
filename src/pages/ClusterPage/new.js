@@ -34,6 +34,7 @@ const esVersions = [
 	'5.4.3',
 	'5.3.3',
 	'5.2.1',
+	'0.9.0',
 ];
 
 const arcVersions = {
@@ -323,6 +324,7 @@ export default class NewCluster extends Component {
 				volume_size: selectedMachine.storage / selectedMachine.nodes,
 				plugins: Object.keys(plugins).filter(item => this.state[item]),
 				restore_from: this.state.restore_from,
+				odfe: parseInt(this.state.clusterVersion, 10) < 5,
 			},
 			cluster: {
 				name: this.state.clusterName,
@@ -338,6 +340,7 @@ export default class NewCluster extends Component {
 			body.kibana = {
 				create_node: false,
 				version: this.state.clusterVersion,
+				odfe: parseInt(this.state.clusterVersion, 10) < 5,
 			};
 		}
 
