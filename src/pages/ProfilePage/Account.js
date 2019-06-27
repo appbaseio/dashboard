@@ -116,11 +116,13 @@ class ProfilePage extends React.Component {
 	handleSubmit = () => {
 		const { setUser } = this.props;
 		const { submitCountryCode } = this.state;
-		setUser({
+		const data = {
 			...this.profileForm.value,
 			'deployment-timeframe': this.profileForm.value.deploymentTimeframe,
 			phone: `${submitCountryCode}-${this.profileForm.value.phone}`,
-		});
+		}
+		delete data.deploymentTimeframe
+		setUser(data);
 	};
 
 	render() {
