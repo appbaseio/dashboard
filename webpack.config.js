@@ -2,6 +2,8 @@ const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
 const webpack = require('webpack');
 
+require('dotenv').config();
+
 const isProduction = String(process.env.NODE_ENV) === 'production';
 
 module.exports = {
