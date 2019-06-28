@@ -21,6 +21,13 @@ export async function getUser() {
 		},
 	]);
 
+	window.Intercom('boot', {
+		app_id: 'f9514ssx',
+		custom_launcher_selector: '#intercom',
+		email: user.email,
+		name: user.name,
+	});
+
 	const { apps } = data.body;
 	return { user, apps };
 }
@@ -109,3 +116,33 @@ export async function deleteApp(appName) {
 
 	return data.message;
 }
+
+export const setRole = (appId, username, role) =>
+	new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/app/${appId}/permission/${username}/role/${role}`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({}),
+		})
+			.then(res => res.json())
+			.then(data => resolve({ ...data.body, message: data.message }))
+			.catch(error => reject(error));
+	});
+
+export const deleteRole = (appId, username) =>
+	new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/app/${appId}/permission/${username}/role`, {
+			method: 'DELETE',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({}),
+		})
+			.then(res => res.json())
+			.then(data => resolve({ ...data.body, message: data.message }))
+			.catch(error => reject(error));
+	});

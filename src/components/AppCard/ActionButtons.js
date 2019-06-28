@@ -31,13 +31,11 @@ class ActionButtons extends React.Component {
 		if (permissions) {
 			const { username, password } = permissions.results[0];
 			const parameters = {
-				platform: 'appbase',
-				importFrom: {
-					appname: appName,
-					hosturl: `https://${username}:${password}@${SCALR_URL}`,
-				},
+				type: 'elasticsearch',
+				indexName: appName,
+				clusterURL: `https://${username}:${password}@${SCALR_URL}`,
 			};
-			history.push(`/app/${appName}/import/?app=${JSON.stringify(parameters)}`);
+			history.push(`/app/${appName}/import/?source=${JSON.stringify(parameters)}`);
 		}
 	};
 

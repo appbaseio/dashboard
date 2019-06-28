@@ -133,9 +133,7 @@ class HelpButton extends React.Component {
 		const { key } = e;
 		switch (key) {
 			case 'chat': {
-				this.setState({
-					modal: true,
-				});
+				window.Intercom('show');
 				break;
 			}
 			case 'support':
@@ -160,7 +158,7 @@ class HelpButton extends React.Component {
 		} = this.state; // prettier-ignore
 		const menu = (
 			<Menu onClick={this.handleClick}>
-				<Menu.Item key="chat" style={{ padding: '10px 15px' }}>
+				<Menu.Item key="chat" style={{ padding: '10px 15px' }} className="open_intercom">
 					<h3 className={heading}>
 						Ask us anything!{' '}
 						<span role="img" aria-label="Wave">
@@ -191,31 +189,6 @@ class HelpButton extends React.Component {
 						icon="question"
 					/>
 				</Dropdown>
-				<Modal
-					visible={modal}
-					destroyOnClose
-					title="Ask us anything!"
-					onOk={this.handleSubmitIssue}
-					okButtonProps={{ loading: isLoading }}
-					okText="Submit"
-					onCancel={this.handleCancel}
-				>
-					<Input
-						placeholder="What is the issue you're seeing?"
-						name="issue"
-						style={{ marginBottom: '10px' }}
-						required
-						onChange={this.handleChange}
-						value={issue}
-					/>
-					<TextArea
-						placeholder="Describe details about the issue you are seeing..."
-						name="details"
-						onChange={this.handleChange}
-						value={details}
-						autosize={{ minRows: 4 }}
-					/>
-				</Modal>
 			</React.Fragment>
 		);
 	}
