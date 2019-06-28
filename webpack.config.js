@@ -20,7 +20,7 @@ module.exports = {
 					configFile: './.env',
 				}),
 				new webpack.DefinePlugin({
-					'process.env.CONTEXT': process.env.CONTEXT,
+					'process.env.CONTEXT': JSON.stringify(process.env.CONTEXT),
 				}),
 		] // prettier-ignore
 		: [],
