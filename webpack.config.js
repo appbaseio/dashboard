@@ -19,9 +19,7 @@ module.exports = {
 					ignore: ['node_modules', 'webpack.config.js'],
 					configFile: './.env',
 				}),
-				new webpack.DefinePlugin({
-					'process.env.CONTEXT': JSON.stringify(process.env.CONTEXT),
-				}),
+				new webpack.EnvironmentPlugin(['CONTEXT']),
 		] // prettier-ignore
 		: [],
 	devtool: 'source-map',
