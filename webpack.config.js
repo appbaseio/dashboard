@@ -1,6 +1,7 @@
 const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
 const webpack = require('webpack');
+require('dotenv').config();
 
 const isProduction = String(process.env.NODE_ENV) === 'production';
 
@@ -21,7 +22,7 @@ module.exports = {
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 		] // prettier-ignore
-		: [],
+		: [new webpack.EnvironmentPlugin(['CONTEXT'])],
 	devtool: 'source-map',
 	module: {
 		rules: [
