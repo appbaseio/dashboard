@@ -1,5 +1,6 @@
 const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const isProduction = String(process.env.NODE_ENV) === 'production';
 
@@ -17,6 +18,10 @@ module.exports = {
 					include: './dist',
 					ignore: ['node_modules', 'webpack.config.js'],
 					configFile: './.env',
+				}),
+				new Dotenv({
+					path: './.env', // load this now instead of the ones in '.env'
+					systemvars: true,
 				}),
 		] // prettier-ignore
 		: [],
