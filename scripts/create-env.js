@@ -2,9 +2,9 @@ const fs = require('fs');
 
 fs.writeFileSync(
 	'./.env',
-	`SENTRY_AUTH_TOKEN=${
-		process.env.SENTRY_TOKEN
-	}\nSENTRY_URL=https://sentry.io/\nSENTRY_ORG=appbase-1\nSENTRY_PROJECT=frontend\nCONTEXT=${
-		process.env.CONTEXT
-	}\n`,
+	`SENTRY_AUTH_TOKEN=${process.env.SENTRY_TOKEN}
+SENTRY_URL=https://sentry.io/
+SENTRY_ORG=appbase-1
+SENTRY_PROJECT=frontend
+CONTEXT=${process.env.CONTEXT}`,
 );
