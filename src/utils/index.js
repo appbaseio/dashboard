@@ -26,6 +26,11 @@ export async function getUser() {
 		custom_launcher_selector: '#intercom',
 		email: user.email,
 		name: user.name,
+		use_case: user.usecase,
+		timeframe: user['deployment-timeframe'],
+		phone: user.phone,
+		total_apps: user.apps && Object.keys(user.apps).length,
+		context: 'appbase.io',
 	});
 
 	const { apps } = data.body;
