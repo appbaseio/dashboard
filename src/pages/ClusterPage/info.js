@@ -382,8 +382,7 @@ export default class Clusters extends Component {
 												{!this.state.cluster.trial && isPaid ? (
 													<Tag color="green">Paid</Tag>
 												) : null}
-												{this.state.cluster.trial
-												|| this.state.cluster.subscription_id ? (
+												{this.state.cluster.trial ? (
 													<Tooltip title="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires.">
 														<Tag color="blue" style={{ marginTop: 5 }}>
 															Trial
