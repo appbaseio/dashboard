@@ -32,8 +32,8 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 					{daysLeft > 0
 						? `Trial expires in ${daysLeft} ${
 								daysLeft > 1 ? 'days' : 'day'
-						  }. Upgrade now`
-						: 'Trial expired. Upgrade now'}
+						  }. Upgrade Now`
+						: 'Trial has expired. Upgrade Now'}
 				</span>
 			</Button>
 		</Tooltip>
@@ -47,9 +47,9 @@ const TrialButton = (props) => {
 
 	if (isCluster) {
 		return (
-			<Tooltip title="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires.">
+			<Tooltip title="You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.">
 				<Tag color="red" css={trialBtn}>
-					You are on trial.
+					You are on a trial.
 				</Tag>
 			</Tooltip>
 		);
@@ -78,8 +78,8 @@ const TrialButton = (props) => {
 		<Tooltip title={trialMessage}>
 			<Tag color="red">
 				{daysLeft > 0
-					? `Trial expires in ${daysLeft} ${daysLeft > 1 ? 'days' : 'day'}. Upgrade now`
-					: 'Trial expired. Upgrade now'}
+					? `Trial expires in ${daysLeft} ${daysLeft > 1 ? 'days' : 'day'}. Upgrade Now`
+					: 'Trial has expired. Upgrade Now'}
 			</Tag>
 		</Tooltip>
 	);
