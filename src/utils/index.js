@@ -20,6 +20,16 @@ export async function getUser() {
 			email: user.email,
 		},
 	]);
+	let metrics = '';
+	try {
+		const metricsResponse = await fetch(`${ACC_API}/user/metrics`, { credentials: 'include' });
+		if (metricsResponse.status >= 400) {
+			throw new Error();
+		}
+		metrics = await metricsResponse.json();
+	} catch (e) {
+		console.error('Unable to fetch Metrics');
+	}
 
 	window.Intercom('boot', {
 		app_id: 'f9514ssx',
@@ -31,6 +41,18 @@ export async function getUser() {
 		phone: user.phone,
 		total_apps: user.apps && Object.keys(user.apps).length,
 		context: 'appbase.io',
+		api_calls:
+			(metrics && metrics.body && metrics.body.month && metrics.body.month.apiCalls) || 0,
+		storage:
+			(metrics
+				&& metrics.body
+				&& metrics.body.overall
+				&& metrics.body.overall.storage / 1048576)
+			|| 0,
+		company: {
+			name: user.company,
+			id: user.company,
+		},
 	});
 
 	const { apps } = data.body;
