@@ -84,6 +84,18 @@ export async function getAppsOverview() {
 		credentials: 'include',
 	});
 	const data = await response.json();
+	if (data.body) {
+		const paidApps = Object.keys(data.body).map(app => data.body[app].tier !== 'plan');
+		let plan = 'free';
+		if (paidApps.length > 0) {
+			plan = 'paid';
+		}
+
+		window.Intercom('update', {
+			app_id: 'f9514ssx',
+			plan,
+		});
+	}
 	if (response.status >= 400) {
 		throw new Error(data);
 	}
