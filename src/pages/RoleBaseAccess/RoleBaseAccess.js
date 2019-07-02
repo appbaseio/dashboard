@@ -213,10 +213,10 @@ class RoleBaseAccess extends React.Component {
 											onChange={this.handleChange}
 										/>
 									</Form.Item>
-									<Form.Item label="Role Key" style={labelMargin}>
+									<Form.Item label="Default Role Key" style={labelMargin}>
 										<Input
-											placeholder="Enter Role"
-											value={roleKey}
+											placeholder="Enter the key name in your JWT token that will contain the role value"
+											value={roleKey || 'role'}
 											onChange={this.handleChange}
 											name="roleKey"
 										/>
