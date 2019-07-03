@@ -3,7 +3,9 @@ import {
  Layout, Menu, Tag, Icon, Button, Row, Tooltip,
 } from 'antd';
 import { Link } from 'react-router-dom';
-import { object, string, bool } from 'prop-types';
+import {
+ object, string, bool, number,
+} from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -146,6 +148,7 @@ const FullHeader = ({
 );
 
 FullHeader.defaultProps = {
+	daysLeft: 0,
 	cluster: '',
 	isCluster: false,
 	trialMessage:
@@ -159,7 +162,7 @@ FullHeader.propTypes = {
 	isCluster: bool,
 	trialMessage: string,
 	isUsingTrial: bool.isRequired,
-	daysLeft: Number.isRequired,
+	daysLeft: number,
 };
 
 const mapStateToProps = (state) => {
