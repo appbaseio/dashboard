@@ -16,6 +16,7 @@ import MenuSlider from './MenuSlider';
 import headerStyles from './styles';
 import { media } from '../../utils/media';
 import { getUserPlan } from '../../batteries/modules/actions/account';
+import TrialButton from './TrialButton';
 
 const { Header } = Layout;
 
@@ -106,27 +107,16 @@ const FullHeader = ({
 			</Menu>
 		</div>
 		<Row justify="space-between" align="middle">
-			{isUsingTrial && !isCluster && (
-				<Link
-					className={trialLink}
-					to={
-						cluster
-							? `/clusters?id=${cluster}&subscription=true`
-							: `/app/${currentApp}/billing`
-					}
-				>
-					<Tooltip title={trialMessage}>
-						<Button css={trialBtn} type="danger">
-							<span css={trialText}>
-								{daysLeft > 0
-									? `Trial expires in ${daysLeft} ${
-											daysLeft > 1 ? 'days' : 'day'
-									  }. Upgrade now`
-									: 'Trial expired. Upgrade now'}
-							</span>
-						</Button>
-					</Tooltip>
-				</Link>
+			{isUsingTrial && (
+				<TrialButton
+					showButton={isCluster}
+					currentApp={currentApp}
+					cluster={cluster}
+					daysLeft={daysLeft}
+					isCluster={isCluster}
+					user={user}
+					trialMessage={trialMessage}
+				/>
 			)}
 			<a
 				href="https://docs.appbase.io/javascript/quickstart.html"

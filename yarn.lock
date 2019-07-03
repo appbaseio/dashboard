@@ -26,21 +26,21 @@
     react-feather "^1.1.0"
     react-icons "^3.2.2"
 
-"@appbaseio/reactivecore@^8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-8.2.7.tgz#06bb5e6041debd89d1a4ece42e1e24e3093a0fc1"
-  integrity sha512-ywp+tPvimLJCDmJA1AxPflZxuxhRdMb4Bbw8LuDqsok0L7ltPUS0aIPISxKD35BahM2vw1R9ctMN3CncusteqQ==
+"@appbaseio/reactivecore@8.2.9":
+  version "8.2.9"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivecore/-/reactivecore-8.2.9.tgz#53edddf6cfe3f654a2c6160be6a6db150e80fab4"
+  integrity sha512-6tKjoKj6Xj3PcG8vrEqoA5tU0v0h9XyhN41VqaxgSERkmvSU+EIxkOYIcXhH5E6ersA3DeWvYKZtsU7E7xVgcQ==
   dependencies:
     prop-types "^15.6.0"
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@^3.0.0-rc.12":
-  version "3.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-rc.12.tgz#c5775da29d20ae8cc3c6d1634a96efba8dbe0c60"
-  integrity sha512-ZUG4PdYWeJxMbMsOfKfiT2pmZNaO3lyDBxIeNNDQNZdgrU7HlxmCSWRtUWnz+cMnI5pHEXki1bxL/ZXMnU3VXw==
+"@appbaseio/reactivesearch@^3.0.0-rc.18":
+  version "3.0.0-rc.18"
+  resolved "https://registry.npmjs.org/@appbaseio/reactivesearch/-/reactivesearch-3.0.0-rc.18.tgz#09ffcb4fb9ddf5cf214fba75263b7a2f43a59a91"
+  integrity sha512-zo8A5lkyp/clh6fUBapnYyXWfLfpUu6Q9NShdNBIsixYx5nIlZEvc7It3evTddGq3c+DowkHP8S+sh2MF7mxpQ==
   dependencies:
-    "@appbaseio/reactivecore" "^8.2.7"
+    "@appbaseio/reactivecore" "8.2.9"
     appbase-js "^4.0.2-beta.06"
     cross-env "^5.2.0"
     downshift "^1.31.2"
@@ -52,9 +52,9 @@
     react-day-picker "^7.0.5"
     react-emotion "^9.0.0"
     react-highlight-words "^0.14.0"
-    react-redux "^5.0.7"
+    react-redux "^7.0.3"
     rheostat "^2.1.1"
-    url-search-params "^0.10.0"
+    url-search-params-polyfill "^7.0.0"
     xdate "^0.8.2"
 
 "@babel/cli@^7.0.0-rc.1":
@@ -787,6 +787,13 @@
   integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
   dependencies:
     regenerator-runtime "^0.12.0"
+
+"@babel/runtime@^7.4.5":
+  version "7.4.5"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.4.5.tgz#582bb531f5f9dc67d2fcb682979894f75e253f12"
+  integrity sha512-TuI4qpWZP6lGOGIuGWtp9sPluqYICmbk8T/1vpSysqJxRPkudh/ofFWyqdcMsDf2s7KvDL4/YHgKyvcS3g9CJQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
 
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
@@ -9371,7 +9378,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10202,6 +10209,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.2.tgz#09891d324cad1cb0c1f2d91f70a71a4bee34df0f"
   integrity sha512-D+NxhSR2HUCjYky1q1DwpNUD44cDpUXzSmmFyC3ug1bClcU/iDNy0YNn1iwme28fn+NFhpA13IndOd42CrFb+Q==
 
+react-is@^16.8.6:
+  version "16.8.6"
+  resolved "https://registry.npmjs.org/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
+  integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
+
 react-joyride@2.0.0-15:
   version "2.0.0-15"
   resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.0.0-15.tgz#58f9274b8de739b78648ae260826319ea066ae44"
@@ -10273,6 +10285,18 @@ react-redux@^5.0.7:
     prop-types "^15.6.1"
     react-is "^16.6.0"
     react-lifecycles-compat "^3.0.0"
+
+react-redux@^7.0.3:
+  version "7.1.0"
+  resolved "https://registry.npmjs.org/react-redux/-/react-redux-7.1.0.tgz#72af7cf490a74acdc516ea9c1dd80e25af9ea0b2"
+  integrity sha512-hyu/PoFK3vZgdLTg9ozbt7WF3GgX5+Yn3pZm5/96/o4UueXA+zj08aiSC9Mfj2WtD1bvpIb3C5yvskzZySzzaw==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    hoist-non-react-statics "^3.3.0"
+    invariant "^2.2.4"
+    loose-envify "^1.4.0"
+    prop-types "^15.7.2"
+    react-is "^16.8.6"
 
 react-resize-detector@~2.3.0:
   version "2.3.0"
@@ -10632,6 +10656,11 @@ regenerator-runtime@^0.12.0:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
   integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
+
+regenerator-runtime@^0.13.2:
+  version "0.13.2"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
+  integrity sha512-S/TQAZJO+D3m9xeN1WTI8dLKBBiRgXBlTJvbWjCThHWZj9EvHK70Ff50/tYj2J/fvBY6JtFVwRuazHN2E7M9BA==
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
@@ -12311,10 +12340,10 @@ url-parser-lite@^0.1.0:
   resolved "https://registry.yarnpkg.com/url-parser-lite/-/url-parser-lite-0.1.0.tgz#4679720fd7448d42357d1c8c0a6ece95174e864e"
   integrity sha512-k8eUA7I5qfH6c1ZI9CvdHEk+YH1KroX2ry+FF9k6yJBl7AmDWen2WI+xNzbCBAek6JEvgPBoHub4v8aZIM7Jqw==
 
-url-search-params@^0.10.0:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/url-search-params/-/url-search-params-0.10.2.tgz#e9da69646e48c6140c6732e1f07fb669525f5a4e"
-  integrity sha512-d6GYsr992Bo9rzTZFc9BUw3UFAAg3prE9JGVBgW2TLTbI3rSvg4VDa0BFXHMzKkWbAuhrmaFWpucpRJl+3W7Jg==
+url-search-params-polyfill@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmjs.org/url-search-params-polyfill/-/url-search-params-polyfill-7.0.0.tgz#98b56ed29e67710588fdc3c361083b0f78303d95"
+  integrity sha512-0SEH3s+wCNbxEE/rWUalN004ICNi23Q74Ksc0gS2kG8EXnbayxGOrV97JdwnIVPKZ75Xk0hvKXvtIC4xReLMgg==
 
 url-search-params@^1.1.0:
   version "1.1.0"
