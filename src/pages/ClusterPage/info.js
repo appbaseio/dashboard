@@ -424,8 +424,7 @@ export default class Clusters extends Component {
 											<div>{this.state.cluster.total_nodes}</div>
 										</div>
 
-										{this.state.cluster.trial
-										|| this.state.cluster.subscription_id ? (
+										{this.state.cluster.trial ? (
 											<div>
 												<div>
 													<Stripe
