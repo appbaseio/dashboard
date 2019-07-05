@@ -312,8 +312,8 @@ class PricingTable extends Component {
 
 	handleToken = (token, plan) => {
 		const { createSubscription, fetchAppPlan } = this.props;
-		createSubscription(token, plan).then(({ payload }) => {
-			if (payload) {
+		createSubscription(token, plan).then((action) => {
+			if (get(action, 'payload')) {
 				window.Intercom('update', {
 					plan: plan === 'free' ? 'free' : 'paid',
 				});
@@ -324,8 +324,8 @@ class PricingTable extends Component {
 
 	deleteSubscription = () => {
 		const { deleteSubscription, fetchAppPlan } = this.props;
-		deleteSubscription().then(({ payload }) => {
-			if (payload) {
+		deleteSubscription().then((action) => {
+			if (get(action, 'payload')) {
 				fetchAppPlan();
 				this.cancelConfirmBox();
 			}

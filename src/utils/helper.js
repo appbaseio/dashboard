@@ -100,7 +100,7 @@ export const planBasePrice = {
 	growth: 89,
 };
 
-const calcPercentage = (appStats, plan, field) => {
+const calcPercentage = (appStats, plan = 'free', field) => {
 	let count;
 	if (field === 'action') {
 		count = get(appStats, 'calls', 0);
