@@ -20,10 +20,10 @@ function getLink(appname, credentials) {
 		type: 'elasticsearch',
 	};
 	if (appname && credentials) {
-		parameters.indexName = appname;
-		parameters.clusterURL = `https://${credentials.username}:${credentials.password}@${SCALR_URL}`;
+		parameters.app = appname;
+		parameters.type = 'App';
 	}
-	return `${IMPORTER_LINK}?source=${JSON.stringify(parameters)}&embed=true`;
+	return `${IMPORTER_LINK}?destination=${JSON.stringify(parameters)}&embed=true`;
 }
 
 function getUrlParams(url) {
