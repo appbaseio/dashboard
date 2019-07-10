@@ -494,6 +494,7 @@ export default class Clusters extends Component {
 													}/explore`,
 													state: {
 														arc: getAddon('arc', this.state.deployment),
+														cluster: this.state.cluster.name,
 													},
 												}}
 											>
