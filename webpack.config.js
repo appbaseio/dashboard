@@ -1,5 +1,6 @@
 const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 require('dotenv').config();
 
@@ -9,9 +10,8 @@ module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/dist/',
-		filename: 'bundle.js',
-		chunkFilename: '[name].[contenthash].bundle.js',
+		publicPath: '/',
+		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 	},
 	plugins: isProduction
 		? [
@@ -21,8 +21,18 @@ module.exports = {
 					configFile: './.env',
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
+				new HtmlWebpackPlugin({
+					template: './index.html',
+					alwaysWriteToDisk: true,
+				}),
 		] // prettier-ignore
-		: [new webpack.EnvironmentPlugin(['CONTEXT'])],
+		: [
+				new webpack.EnvironmentPlugin(['CONTEXT']),
+				new HtmlWebpackPlugin({
+					template: './index.html',
+					alwaysWriteToDisk: true,
+				}),
+		], // prettier-ignore
 	devtool: 'source-map',
 	module: {
 		rules: [
