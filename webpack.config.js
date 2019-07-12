@@ -5,13 +5,13 @@ const webpack = require('webpack');
 require('dotenv').config();
 
 const isProduction = String(process.env.NODE_ENV) === 'production';
-
+console.log('Prod', isProduction, process.env.NODE_ENV);
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/dist/',
-		filename: 'bundle.js',
+		publicPath: '/',
+		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
@@ -24,7 +24,6 @@ module.exports = {
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: './index.html',
-					filename: 'dist/index.html',
 				}),
 		] // prettier-ignore
 		: [
