@@ -10,8 +10,9 @@ module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/',
-		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
+		publicPath: '/dist/',
+		filename: 'bundle.js',
+		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
 		? [
@@ -23,14 +24,13 @@ module.exports = {
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: './index.html',
-					alwaysWriteToDisk: true,
+					filename: 'dist/index.html',
 				}),
 		] // prettier-ignore
 		: [
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: './index.html',
-					alwaysWriteToDisk: true,
 				}),
 		], // prettier-ignore
 	devtool: 'source-map',
