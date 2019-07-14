@@ -5,7 +5,7 @@ const webpack = require('webpack');
 require('dotenv').config();
 
 const isProduction = String(process.env.NODE_ENV) === 'production';
-console.log('Prod', isProduction, process.env.NODE_ENV);
+
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
