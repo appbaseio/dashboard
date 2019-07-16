@@ -110,7 +110,7 @@ class CreateAppModal extends Component {
 		} = this.props;
 		const { hasJSON, plan, appName } = this.state;
 		const redirect = () => {
-			if (plan !== 'free') {
+			if (plan !== 'free' && appName) {
 				history.push(`app/${appName}/billing?plan=${plan}`);
 			} else if (hasJSON) {
 				history.push(`app/${appName}/import`);
