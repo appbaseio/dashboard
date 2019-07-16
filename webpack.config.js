@@ -20,18 +20,19 @@ module.exports = {
 					include: './dist',
 					ignore: ['node_modules', 'webpack.config.js'],
 					configFile: './.env',
+					debug: true,
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: './index.html',
 				}),
-		] // prettier-ignore
+		  ]
 		: [
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: './index.html',
 				}),
-		], // prettier-ignore
+		  ],
 	devtool: 'source-map',
 	module: {
 		rules: [
