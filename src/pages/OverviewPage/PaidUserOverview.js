@@ -127,6 +127,11 @@ class PaidUserOverview extends React.Component {
 							<Searches
 								css="height: 100%"
 								href="popular-searches"
+								tableProps={{
+									scroll: {
+										x: 1300,
+									},
+								}}
 								dataSource={getFilteredResults(popularSearches)}
 								title="Popular Searches"
 							/>
@@ -135,6 +140,11 @@ class PaidUserOverview extends React.Component {
 							<Searches
 								css="height: 100%"
 								href="no-results-searches"
+								tableProps={{
+									scroll: {
+										x: 1300,
+									},
+								}}
 								dataSource={getFilteredResults(noResults)}
 								title="No Result Searches"
 							/>
