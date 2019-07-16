@@ -23,7 +23,7 @@ const shouldShowUpgrade = (plan, appCount) => {
 	if (plan === 'free') {
 		return { show: true };
 	}
-	if (plan === 'growth') {
+	if (plan === 'growth' || plan === 'bootstrap') {
 		return { show: false };
 	}
 	// if plan is bootsrap
