@@ -1,9 +1,9 @@
 const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 require('dotenv').config();
 
@@ -13,8 +13,8 @@ module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/',
-		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
+		publicPath: '/dist/',
+		filename: 'bundle.js',
 		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
