@@ -117,7 +117,7 @@ class Introduction extends Component {
 							);
 						});
 
-						appendApp({
+						this.props.appendCurrentApp({
 							[app.appName]: app.id,
 						});
 						this.props.updateCurrentApp(app.appName, app.id);
@@ -200,6 +200,7 @@ class Introduction extends Component {
 
 const mapDispatchToProps = dispatch => ({
 	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	appendCurrentApp: payload => dispatch(appendApp(payload)),
 });
 
 export default connect(
