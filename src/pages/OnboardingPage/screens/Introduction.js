@@ -6,6 +6,11 @@ import Footer from '../components/Footer';
 import appbaseHelpers from '../utils/appbaseHelpers';
 import { validateAppName, validationsList } from '../../../utils/helper';
 import { setCurrentApp } from '../../../batteries/modules/actions';
+import Adjectives from '../utils/adjectives';
+import Nouns from '../utils/nouns';
+import { appendApp } from '../../../actions';
+
+const indexGenerator = length => Math.floor(Math.random() * length);
 
 class Introduction extends Component {
 	constructor(props) {
@@ -18,6 +23,21 @@ class Introduction extends Component {
 			error: '',
 			appId,
 		};
+	}
+
+	componentDidMount() {
+		const nounsLength = Nouns.length;
+		const adjectivesLength = Adjectives.length;
+		const noun = Nouns[indexGenerator(nounsLength)];
+		const adjective = Adjectives[indexGenerator(adjectivesLength)];
+		const code = Math.random()
+			.toString(36)
+			.substring(7);
+
+		const generatedAppname = `${adjective}-${noun}-${code}`;
+		if (this.input) {
+			this.input.value = generatedAppname;
+		}
 	}
 
 	setError = (e) => {
@@ -97,6 +117,9 @@ class Introduction extends Component {
 							);
 						});
 
+						appendApp({
+							[app.appName]: app.id,
+						});
 						this.props.updateCurrentApp(app.appName, app.id);
 					}
 				})
