@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-const sentryEnv = `[defaults]
+const sentryEnv = `
+[defaults]
 url=https://sentry.io/
 org=appbase-1
 project=frontend
