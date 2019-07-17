@@ -22,16 +22,16 @@ module.exports = {
 				new CleanWebpackPlugin(),
 				new SentryPlugin({
 					include: './dist',
-				 	ignore: ['node_modules', 'webpack.config.js'],
-				 	configFile: './.sentryclirc',
-				 	debug: true,
+					ignore: ['node_modules', 'webpack.config.js'],
+					configFile: './.sentryclirc',
+					debug: true,
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
 					aaaalename: 'index.html',
 				}),
-				new CopyWebpackPlugin([{ from: 'static', to: 'static' }]),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
 		  ]
 		: [
 				new CleanWebpackPlugin(),
