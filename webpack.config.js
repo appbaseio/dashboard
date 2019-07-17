@@ -16,15 +16,15 @@ module.exports = {
 	},
 	plugins: isProduction
 		? [
-				new SentryPlugin({
-					include: './dist',
-					ignore: ['node_modules', 'webpack.config.js'],
-					debug: true,
-				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
 					filename: 'index.html',
+				}),
+				new SentryPlugin({
+					include: './dist',
+					ignore: ['node_modules', 'webpack.config.js'],
+					debug: true,
 				}),
 		  ]
 		: [
