@@ -19,7 +19,6 @@ module.exports = {
 				new SentryPlugin({
 					include: './dist',
 					ignore: ['node_modules', 'webpack.config.js'],
-					configFile: './.env',
 					debug: true,
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
