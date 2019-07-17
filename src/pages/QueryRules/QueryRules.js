@@ -62,7 +62,7 @@ class QueryRules extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-		const iframeURL = `https://vigorous-hopper-2013ba.netlify.com/promoted-results-queries?appname=${
+		const iframeURL = `https://appbase-query-rules.netlify.com/promoted-results-queries?appname=${
 			dejavu.appname
 		}&url=${
 			dejavu.url
