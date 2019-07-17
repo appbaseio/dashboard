@@ -2,6 +2,9 @@ const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 require('dotenv').config();
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -16,24 +19,28 @@ module.exports = {
 	},
 	plugins: isProduction
 		? [
-				new SentryPlugin({
-					include: './dist',
-					ignore: ['node_modules', 'webpack.config.js'],
-					configFile: './.sentryclirc',
-					debug: true,
-				}),
+				new CleanWebpackPlugin(),
+				// new SentryPlugin({
+				// 	include: './dist',
+				// 	ignore: ['node_modules', 'webpack.config.js'],
+				// 	configFile: './.sentryclirc',
+				// 	debug: true,
+				// }),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
-					filename: 'index.html',
+					aaaalename: 'index.html',
 				}),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }]),
 		  ]
 		: [
+				new CleanWebpackPlugin(),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
 					filename: 'index.html',
 				}),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }]),
 		  ],
 	devtool: 'source-map',
 	module: {
