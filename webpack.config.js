@@ -20,12 +20,12 @@ module.exports = {
 	plugins: isProduction
 		? [
 				new CleanWebpackPlugin(),
-				// new SentryPlugin({
-				// 	include: './dist',
-				// 	ignore: ['node_modules', 'webpack.config.js'],
-				// 	configFile: './.sentryclirc',
-				// 	debug: true,
-				// }),
+				new SentryPlugin({
+					include: './dist',
+				 	ignore: ['node_modules', 'webpack.config.js'],
+				 	configFile: './.sentryclirc',
+				 	debug: true,
+				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
@@ -40,7 +40,7 @@ module.exports = {
 					template: path.join(__dirname, 'index.html'),
 					filename: 'index.html',
 				}),
-				new CopyWebpackPlugin([{ from: 'static', to: 'static' }]),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
 		  ],
 	devtool: 'source-map',
 	module: {
