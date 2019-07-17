@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 require('dotenv').config();
 
-const isProduction = String(process.env.NODE_ENV) === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
@@ -24,13 +24,15 @@ module.exports = {
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
-					template: './index.html',
+					template: path.join(__dirname, 'index.html'),
+					filename: 'index.html',
 				}),
 		  ]
 		: [
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
-					template: './index.html',
+					template: path.join(__dirname, 'index.html'),
+					filename: 'index.html',
 				}),
 		  ],
 	devtool: 'source-map',
