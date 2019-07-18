@@ -1,28 +1,47 @@
 const path = require('path');
 const SentryPlugin = require('@sentry/webpack-plugin');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 require('dotenv').config();
 
-const isProduction = String(process.env.NODE_ENV) === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/dist/',
-		filename: 'bundle.js',
+		publicPath: '/',
+		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
 		? [
+				new CleanWebpackPlugin(),
 				new SentryPlugin({
 					include: './dist',
 					ignore: ['node_modules', 'webpack.config.js'],
-					configFile: './.env',
+					configFile: './.sentryclirc',
+					debug: true,
 				}),
 				new webpack.EnvironmentPlugin(['CONTEXT']),
-		] // prettier-ignore
-		: [new webpack.EnvironmentPlugin(['CONTEXT'])],
+				new HtmlWebpackPlugin({
+					template: path.join(__dirname, 'index.html'),
+					filename: 'index.html',
+				}),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
+		  ]
+		: [
+				new CleanWebpackPlugin(),
+				new webpack.EnvironmentPlugin(['CONTEXT']),
+				new HtmlWebpackPlugin({
+					template: path.join(__dirname, 'index.html'),
+					filename: 'index.html',
+				}),
+				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
+		  ],
 	devtool: 'source-map',
 	module: {
 		rules: [
