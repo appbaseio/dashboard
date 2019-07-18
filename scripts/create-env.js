@@ -1,18 +1,15 @@
 const fs = require('fs');
 
-const sentryEnv = `
-[defaults]
-url=https://sentry.io/
-org=appbase-1
-project=frontend
-[auth]
-token=${process.env.SENTRY_TOKEN}
-`;
+const envFile = `SENTRY_AUTH_TOKEN=${process.env.SENTRY_TOKEN}
+SENTRY_URL=https://sentry.io/
+SENTRY_ORG=appbase-1
+SENTRY_PROJECT=frontend
+CONTEXT=${process.env.CONTEXT}`;
 
-const envFile = `
-CONTEXT=${process.env.CONTEXT}
-NODE_ENV=production
-`;
+// eslint-disable-next-line no-console
+console.log('envFile: ', envFile);
 
-fs.writeFileSync('./.sentryclirc', sentryEnv);
+// eslint-disable-next-line no-console
+console.log('all envs: ', process.env);
+
 fs.writeFileSync('./.env', envFile);
