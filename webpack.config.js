@@ -13,8 +13,8 @@ module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/dist/',
-		filename: 'bundle.js',
+		publicPath: '/',
+		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 		chunkFilename: '[name].[contenthash].bundle.js',
 	},
 	plugins: isProduction
