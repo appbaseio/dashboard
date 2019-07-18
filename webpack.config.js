@@ -29,7 +29,7 @@ module.exports = {
 				new webpack.EnvironmentPlugin(['CONTEXT']),
 				new HtmlWebpackPlugin({
 					template: path.join(__dirname, 'index.html'),
-					aaaalename: 'index.html',
+					filename: 'index.html',
 				}),
 				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
 		  ]
