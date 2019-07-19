@@ -9,6 +9,27 @@ require('dotenv').config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const plugins = [
+	new CleanWebpackPlugin(),
+	new webpack.EnvironmentPlugin(['CONTEXT']),
+	new HtmlWebpackPlugin({
+		template: path.join(__dirname, 'index.html'),
+		filename: 'index.html',
+	}),
+	new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
+];
+
+if (isProduction && !!process.env.SENTRY_TOKEN) {
+	plugins.push(
+		new SentryPlugin({
+			include: './dist',
+			ignore: ['node_modules', 'webpack.config.js'],
+			configFile: './.sentryclirc',
+			debug: true,
+		}),
+	);
+}
+
 module.exports = {
 	entry: path.join(__dirname, 'src/index.js'),
 	output: {
@@ -17,31 +38,7 @@ module.exports = {
 		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 		chunkFilename: '[name].[contenthash].bundle.js',
 	},
-	plugins: isProduction
-		? [
-				new CleanWebpackPlugin(),
-				new SentryPlugin({
-					include: './dist',
-					ignore: ['node_modules', 'webpack.config.js'],
-					configFile: './.sentryclirc',
-					debug: true,
-				}),
-				new webpack.EnvironmentPlugin(['CONTEXT']),
-				new HtmlWebpackPlugin({
-					template: path.join(__dirname, 'index.html'),
-					filename: 'index.html',
-				}),
-				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
-		  ]
-		: [
-				new CleanWebpackPlugin(),
-				new webpack.EnvironmentPlugin(['CONTEXT']),
-				new HtmlWebpackPlugin({
-					template: path.join(__dirname, 'index.html'),
-					filename: 'index.html',
-				}),
-				new CopyWebpackPlugin([{ from: 'static', to: 'static' }, '_redirects']),
-		  ],
+	plugins,
 	devtool: 'source-map',
 	module: {
 		rules: [

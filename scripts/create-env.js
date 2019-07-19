@@ -11,6 +11,7 @@ token=${process.env.SENTRY_TOKEN}
 
 const envFile = `
 CONTEXT=${process.env.CONTEXT}
+SENTRY_TOKEN=${process.env.SENTRY_TOKEN || ''}
 NODE_ENV=production
 `;
 
