@@ -59,7 +59,7 @@ export const machineMarks = {
 		20: {
 			label: 'Hobby',
 			plan: 'hobby',
-			storage: 30,
+			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
@@ -70,7 +70,7 @@ export const machineMarks = {
 		40: {
 			label: 'Starter',
 			plan: 'starter',
-			storage: 40,
+			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
@@ -81,7 +81,7 @@ export const machineMarks = {
 		60: {
 			label: 'Production-I',
 			plan: 'production-1',
-			storage: 80,
+			storage: 240,
 			memory: 8,
 			nodes: 3,
 			cpu: 2,
@@ -92,7 +92,7 @@ export const machineMarks = {
 		80: {
 			label: 'Production-II',
 			plan: 'production-2',
-			storage: 160,
+			storage: 480,
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
@@ -103,7 +103,7 @@ export const machineMarks = {
 		100: {
 			label: 'Production-III',
 			plan: 'production-3',
-			storage: 333,
+			storage: 999,
 			memory: 32,
 			nodes: 3,
 			cpu: 8,
@@ -127,7 +127,7 @@ export const machineMarks = {
 		20: {
 			label: 'Hobby',
 			plan: 'hobby',
-			storage: 30,
+			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
@@ -138,18 +138,18 @@ export const machineMarks = {
 		40: {
 			label: 'Starter',
 			plan: 'starter',
-			storage: 40,
+			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
 			cost: 199,
-			machine: 'Standard_B2s',
+			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
 		60: {
 			label: 'Production-I',
 			plan: 'production-1',
-			storage: 80,
+			storage: 240,
 			memory: 8,
 			nodes: 3,
 			cpu: 2,
@@ -160,7 +160,7 @@ export const machineMarks = {
 		80: {
 			label: 'Production-II',
 			plan: 'production-2',
-			storage: 160,
+			storage: 480,
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
@@ -171,7 +171,7 @@ export const machineMarks = {
 		100: {
 			label: 'Production-III',
 			plan: 'production-3',
-			storage: 333,
+			storage: 999,
 			memory: 32,
 			nodes: 3,
 			cpu: 8,
