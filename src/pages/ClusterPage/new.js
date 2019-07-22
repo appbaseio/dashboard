@@ -47,7 +47,7 @@ export const machineMarks = {
 	azure: {
 		0: {
 			label: 'Sandbox',
-			plan: 'sandbox',
+			plan: '2019-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -58,7 +58,7 @@ export const machineMarks = {
 		},
 		20: {
 			label: 'Hobby',
-			plan: 'hobby',
+			plan: '2019-hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -69,7 +69,7 @@ export const machineMarks = {
 		},
 		40: {
 			label: 'Starter',
-			plan: 'starter',
+			plan: '2019-starter',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -80,7 +80,7 @@ export const machineMarks = {
 		},
 		60: {
 			label: 'Production-I',
-			plan: 'production-1',
+			plan: '2019-production-1',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -91,7 +91,7 @@ export const machineMarks = {
 		},
 		80: {
 			label: 'Production-II',
-			plan: 'production-2',
+			plan: '2019-production-2',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -102,7 +102,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
-			plan: 'production-3',
+			plan: '2019-production-3',
 			storage: 999,
 			memory: 32,
 			nodes: 3,
@@ -115,7 +115,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
-			plan: 'sandbox',
+			plan: '2019-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -126,7 +126,7 @@ export const machineMarks = {
 		},
 		20: {
 			label: 'Hobby',
-			plan: 'hobby',
+			plan: '2019-hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -137,7 +137,7 @@ export const machineMarks = {
 		},
 		40: {
 			label: 'Starter',
-			plan: 'starter',
+			plan: '2019-starter',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -148,7 +148,7 @@ export const machineMarks = {
 		},
 		60: {
 			label: 'Production-I',
-			plan: 'production-1',
+			plan: '2019-production-1',
 			storage: 240,
 			memory: 8,
 			nodes: 3,
@@ -159,7 +159,7 @@ export const machineMarks = {
 		},
 		80: {
 			label: 'Production-II',
-			plan: 'production-2',
+			plan: '2019-production-2',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -170,7 +170,7 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
-			plan: 'production-3',
+			plan: '2019-production-3',
 			storage: 999,
 			memory: 32,
 			nodes: 3,
