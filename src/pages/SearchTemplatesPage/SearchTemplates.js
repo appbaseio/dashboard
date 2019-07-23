@@ -59,7 +59,7 @@ class SearchTemplates extends React.Component {
 		};
 		this.getTemplates();
 		this.form = FormBuilder.group({
-			name: ['', [Validators.required, Validators.pattern(/^(\d|\w)+$/)]],
+			name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)]],
 			query: [null, [Validators.required, jsonValidator]],
 		});
 		this.templateRef = React.createRef();
