@@ -11,13 +11,22 @@ const containerStyles = css`
 	min-width: 420px;
 `;
 
-const UserDetails = () => (
-	<div className={containerStyles}>
-		<Account
-			title="How do you plan to use Appbase.io?"
-			handleCallback={() => window.location.reload()}
-		/>
-	</div>
-);
+class UserDetails extends React.Component {
+	componentDidMount() {
+		const { history } = this.props;
+		history.push('/new/profile');
+	}
+
+	render() {
+		return (
+			<div className={containerStyles}>
+				<Account
+					title="How do you plan to use Appbase.io?"
+					handleCallback={() => window.location.reload()}
+				/>
+			</div>
+		);
+	}
+}
 
 export default UserDetails;
