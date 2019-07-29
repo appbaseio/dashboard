@@ -25,7 +25,10 @@ class LoginPage extends React.Component {
 	};
 
 	render() {
-		const { user } = this.props;
+		const {
+			user,
+			location: { search },
+		} = this.props;
 		const { isEmailLogin } = this.state;
 		if (user.data) {
 			return <Redirect to="/" />;
@@ -73,7 +76,7 @@ class LoginPage extends React.Component {
 					/>
 				</Card>
 
-				<Link to="/signup">
+				<Link to={`/signup${search}`}>
 					<Button
 						size="large"
 						ghost
