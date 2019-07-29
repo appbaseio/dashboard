@@ -60,8 +60,9 @@ const { Option } = Select;
 class ProfilePage extends React.Component {
 	constructor(props) {
 		super(props);
+		const defaultUseCase = props.isShopify ? useCaseOptions[2] : undefined;
 		this.profileForm = FormBuilder.group({
-			usecase: [undefined, Validators.required],
+			usecase: [defaultUseCase, Validators.required],
 			deploymentTimeframe: [undefined, Validators.required],
 			phone: [undefined, [Validators.maxLength(10)]],
 			name: ['', Validators.required],
@@ -76,10 +77,13 @@ class ProfilePage extends React.Component {
 
 	componentDidMount() {
 		const {
-			usecase, deploymentTimeframe, phone, company, username, picture,
+			usecase, deploymentTimeframe, phone, company, username, picture, isShopify,
 		} = this.props; // prettier-ignore
+
+		const defaultUseCase = isShopify ? useCaseOptions[2] : usecase;
+
 		this.profileForm.patchValue({
-			usecase,
+			usecase: usecase || defaultUseCase,
 			deploymentTimeframe,
 			phone,
 			company,

@@ -11,18 +11,49 @@ const containerStyles = css`
 	min-width: 420px;
 `;
 
+function getUrlParams(url) {
+	if (!url) {
+		return {};
+	}
+	const searchParams = new URLSearchParams(url);
+	return Array.from(searchParams.entries()).reduce(
+		(allParams, [key, value]) => ({
+			...allParams,
+			[key]: value,
+		}),
+		{},
+	);
+}
+
 class UserDetails extends React.Component {
 	componentDidMount() {
-		const { history } = this.props;
-		history.push('/new/profile');
+		const {
+			history,
+			location: { search },
+		} = this.props;
+		history.push(`/new/profile${search}`);
 	}
 
 	render() {
+		const params = getUrlParams(window.location.search);
+		let isShopify = false;
+		if (params.context === 'shopify') {
+			isShopify = true;
+		}
+		const { history } = this.props;
 		return (
 			<div className={containerStyles}>
 				<Account
+					isShopify={isShopify}
 					title="How do you plan to use Appbase.io?"
-					handleCallback={() => window.location.reload()}
+					handleCallback={() => {
+						if (isShopify) {
+							window.close();
+						} else {
+							history.replace('/');
+							window.location.reload();
+						}
+					}}
 				/>
 			</div>
 		);
