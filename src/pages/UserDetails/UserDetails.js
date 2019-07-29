@@ -3,6 +3,8 @@ import { css } from 'react-emotion';
 
 import Account from '../ProfilePage/Account';
 
+const URLSearchParams = require('url-search-params');
+
 const containerStyles = css`
 	height: 100vh;
 	justify-content: center;
