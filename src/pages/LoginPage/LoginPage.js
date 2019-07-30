@@ -10,8 +10,9 @@ import { ACC_API } from '../../constants/config';
 import {
  container, card, githubBtn, googleBtn, gitlabBtn,
 } from './styles';
+import { getUrlParams } from '../../utils/helper';
 
-const getLoginURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
+const getLoginURL = (provider, returnURL) => `${ACC_API}/login/${provider}?next=${returnURL}`;
 
 class LoginPage extends React.Component {
 	state = {
@@ -29,6 +30,13 @@ class LoginPage extends React.Component {
 			user,
 			location: { search },
 		} = this.props;
+
+		const params = getUrlParams(window.location.search);
+		let returnURL = window.location.origin;
+		if (params.context === 'shopify' && params.returnURL) {
+			({ returnURL } = params);
+		}
+
 		const { isEmailLogin } = this.state;
 		if (user.data) {
 			return <Redirect to="/" />;
@@ -41,7 +49,7 @@ class LoginPage extends React.Component {
 					{isEmailLogin || (
 						<React.Fragment>
 							<Button
-								href={getLoginURL('github')}
+								href={getLoginURL('github', returnURL)}
 								icon="github"
 								className={githubBtn}
 								size="large"
@@ -50,7 +58,7 @@ class LoginPage extends React.Component {
 								Sign in via GitHub
 							</Button>
 							<Button
-								href={getLoginURL('google')}
+								href={getLoginURL('google', returnURL)}
 								icon="google"
 								className={googleBtn}
 								size="large"
@@ -59,7 +67,7 @@ class LoginPage extends React.Component {
 								Sign in via Google
 							</Button>
 							<Button
-								href={getLoginURL('gitlab')}
+								href={getLoginURL('gitlab', returnURL)}
 								icon="gitlab"
 								className={gitlabBtn}
 								size="small"

@@ -2,8 +2,7 @@ import React from 'react';
 import { css } from 'react-emotion';
 
 import Account from '../ProfilePage/Account';
-
-const URLSearchParams = require('url-search-params');
+import { getUrlParams } from '../../utils/helper';
 
 const containerStyles = css`
 	height: 100vh;
@@ -12,20 +11,6 @@ const containerStyles = css`
 	display: flex;
 	min-width: 420px;
 `;
-
-function getUrlParams(url) {
-	if (!url) {
-		return {};
-	}
-	const searchParams = new URLSearchParams(url);
-	return Array.from(searchParams.entries()).reduce(
-		(allParams, [key, value]) => ({
-			...allParams,
-			[key]: value,
-		}),
-		{},
-	);
-}
 
 class UserDetails extends React.Component {
 	componentDidMount() {
@@ -39,7 +24,7 @@ class UserDetails extends React.Component {
 	render() {
 		const params = getUrlParams(window.location.search);
 		let isShopify = false;
-		if (params.context === 'shopify') {
+		if (params.context === 'shopify' || params.returnURL) {
 			isShopify = true;
 		}
 		const { history } = this.props;
@@ -50,7 +35,7 @@ class UserDetails extends React.Component {
 					title="How do you plan to use Appbase.io?"
 					handleCallback={() => {
 						if (isShopify) {
-							window.close();
+							window.location.href = params.returnURL;
 						} else {
 							history.replace('/');
 							window.location.reload();
