@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import get from 'lodash/get';
 import { init, captureMessage } from '@sentry/browser';
 
+const URLSearchParams = require('url-search-params');
+
 init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
 });
@@ -149,3 +151,17 @@ export const validationsList = [
 	'Cannot start with -, _, +',
 	'Cannot be . or ..',
 ];
+
+export function getUrlParams(url) {
+	if (!url) {
+		return {};
+	}
+	const searchParams = new URLSearchParams(url);
+	return Array.from(searchParams.entries()).reduce(
+		(allParams, [key, value]) => ({
+			...allParams,
+			[key]: value,
+		}),
+		{},
+	);
+}
