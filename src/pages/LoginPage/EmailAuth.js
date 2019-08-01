@@ -3,6 +3,7 @@ import { Button, Input, message } from 'antd';
 
 import { emailBtn, inputStyles } from './styles';
 import { ACC_API } from '../../constants/config';
+import { getUrlParams } from '../../utils/helper';
 
 class EmailAuth extends React.Component {
 	state = {
@@ -58,6 +59,8 @@ class EmailAuth extends React.Component {
 
 	verifyOtp = async () => {
 		const { emailInput, otp } = this.state;
+		const { isSignup } = this.props;
+		const params = getUrlParams(window.location.search);
 		this.toggleLoading();
 		try {
 			const response = await fetch(`${ACC_API}/user/verify`, {
@@ -78,7 +81,11 @@ class EmailAuth extends React.Component {
 			} else {
 				message.success('OTP Successfully Verified!');
 				this.toggleLoading();
-				window.location.reload();
+				if (params.returnURL && !isSignup) {
+					window.location.href = params.returnURL;
+				} else {
+					window.location.reload();
+				}
 			}
 		} catch (e) {
 			message.error('Something went Wrong.');
