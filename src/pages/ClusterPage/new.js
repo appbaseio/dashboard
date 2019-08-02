@@ -38,7 +38,7 @@ const esVersions = [
 ];
 
 const arcVersions = {
-	7: '7.0.3-appbase',
+	7: '7.0.7-appbase',
 	6: '0.1.5',
 	5: 'v5-0.0.1',
 };
@@ -206,7 +206,7 @@ export default class NewCluster extends Component {
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
-			streams: true,
+			streams: false,
 			elasticsearchHQ: true,
 			arc: true,
 			error: '',
