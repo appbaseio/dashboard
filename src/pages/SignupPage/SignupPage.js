@@ -47,7 +47,7 @@ class SignupPage extends React.Component {
 		} = this.props;
 		const { hasSubscribed, hasAgreedTOS, isEmailSignup } = this.state;
 		if (data) {
-			return <Redirect to="/" />;
+			return <Redirect to={`/${search}`} />;
 		}
 		return (
 			<LoginContainer>
@@ -133,6 +133,7 @@ class SignupPage extends React.Component {
 							isEmailAuth={isEmailSignup}
 							toggleEmailAuth={this.toggleEmailSignup}
 							authText="Sign up via Email"
+							isSignup
 						/>
 					</Card>
 
