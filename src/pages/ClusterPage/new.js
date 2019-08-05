@@ -184,8 +184,8 @@ export const machineMarks = {
 };
 
 const namingConvention = {
-	azure: 'You may use alpha-numerics with "-" in between',
-	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
+	azure: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	gke: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
 export default class NewCluster extends Component {
