@@ -79,11 +79,19 @@ export const planLimits = {
 		action: 1000000,
 		records: 50000,
 	},
+	'bootstrap-annual': {
+		action: 1000000,
+		records: 50000,
+	},
 	growth: {
 		action: 10000000,
 		records: 1000000,
 	},
 	'growth-monthly': {
+		action: 10000000,
+		records: 1000000,
+	},
+	'growth-annual': {
 		action: 10000000,
 		records: 1000000,
 	},
@@ -109,7 +117,9 @@ const calcPercentage = (appStats, plan = 'free', field) => {
 	} else {
 		count = get(appStats, 'records', 0);
 	}
-	let percentage = (100 * count) / planLimits[plan][field];
+
+	const limit = planLimits[plan] || planLimits.free;
+	let percentage = (100 * count) / limit[field];
 	percentage = percentage < 100 ? percentage : 100;
 	return {
 		percentage,
