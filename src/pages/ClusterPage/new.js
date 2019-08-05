@@ -278,7 +278,7 @@ export default class NewCluster extends Component {
 
 	validateClusterName = () => {
 		const { clusterName } = this.state;
-		const pattern = /^[a-z]+([-a-zA-Z0-9]*)*[a-z0-9]+$/;
+		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
 		return pattern.test(clusterName);
 	};
 
