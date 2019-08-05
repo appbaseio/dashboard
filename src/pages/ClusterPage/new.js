@@ -277,12 +277,8 @@ export default class NewCluster extends Component {
 	};
 
 	validateClusterName = () => {
-		const { clusterName, provider } = this.state;
-		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
-		if (provider === 'gke') {
-			// gke cluster names can't start with a number, no capital letters allowed
-			pattern = /^[a-z]+([-a-z0-9]*)*[a-z0-9]+$/;
-		}
+		const { clusterName } = this.state;
+		const pattern = /^[a-z]+([-a-zA-Z0-9]*)*[a-z0-9]+$/;
 		return pattern.test(clusterName);
 	};
 
@@ -296,10 +292,7 @@ export default class NewCluster extends Component {
 	createCluster = () => {
 		if (!this.validateClusterName()) {
 			// prettier-ignore
-			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
-			if (this.state.provider === 'gke') {
-				errorMessage = `${errorMessage} Capital letters not allowed.`;
-			}
+			const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 			this.setState({
 				error: errorMessage,
 			});
@@ -627,8 +620,8 @@ export default class NewCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Pick a cluster name</h3>
-									<p>Name this bad boy</p>
+									<h3>Choose a cluster name</h3>
+									<p>Name your cluster. A name is permanent.</p>
 								</div>
 								<div
 									className="col grow vcenter"
