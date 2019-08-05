@@ -91,7 +91,7 @@ class QueryExplorer extends Component {
 					<Frame
 						height={`${window.innerHeight - 65}px`}
 						width="100%"
-						id="dejavu"
+						id="mirage"
 						src={iframeURL}
 						frameBorder="0"
 						onLoad={this.frameLoaded}
