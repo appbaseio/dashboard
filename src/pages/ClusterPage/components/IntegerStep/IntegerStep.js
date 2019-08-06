@@ -24,20 +24,22 @@ export default class IntegerStep extends React.Component {
 
 	render() {
 		const { inputValue } = this.state;
+		const { defaultValue } = this.props;
 		return (
 			<Row css={{ width: '100%' }}>
 				<Col span={12}>
 					<Slider
-						min={1}
-						max={5}
+						min={defaultValue > 0 ? defaultValue - 1 : 0}
+						max={defaultValue === 5 ? 5 : defaultValue + 1}
 						onChange={this.onChange}
+						step={1}
 						value={typeof inputValue === 'number' ? inputValue : 0}
 					/>
 				</Col>
 				<Col span={4}>
 					<InputNumber
-						min={1}
-						max={5}
+						min={defaultValue > 0 ? defaultValue - 1 : 0}
+						max={defaultValue === 5 ? 5 : defaultValue + 1}
 						style={{ marginLeft: 16 }}
 						value={inputValue}
 						onChange={this.onChange}
