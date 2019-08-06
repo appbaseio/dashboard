@@ -3,6 +3,7 @@ import {
  Modal, Button, Icon, Select,
 } from 'antd';
 
+import { css } from 'emotion';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -34,8 +35,9 @@ const esVersions = [
 	'5.4.3',
 	'5.3.3',
 	'5.2.1',
-	'0.9.0',
 ];
+
+const odfeVersions = ['0.9.0'];
 
 const arcVersions = {
 	7: '7.0.1-appbase',
@@ -187,6 +189,21 @@ const namingConvention = {
 	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
 };
 
+const esContainer = css`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	max-width: 200px;
+	margin-right: 20px;
+	p {
+		padding: 5px;
+		margin: 0;
+		font-size: 15px;
+		font-weight: 500;
+	}
+`;
+
 export default class NewCluster extends Component {
 	constructor(props) {
 		super(props);
@@ -215,6 +232,7 @@ export default class NewCluster extends Component {
 			restore_from: null,
 			showError: false,
 			isClusterLoading: true,
+			esFlavor: 'es',
 			provider,
 			...pluginState,
 		};
@@ -544,7 +562,8 @@ export default class NewCluster extends Component {
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
-
+		const versions = this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
+		const defaultVersion = this.state.clusterVersion;
 		return (
 			<Fragment>
 				<FullHeader isCluster />
@@ -598,6 +617,9 @@ export default class NewCluster extends Component {
 
 									<Button
 										size="large"
+										type={
+											this.state.provider === 'azure' ? 'primary' : 'default'
+										}
 										css={{
 											height: 160,
 											backgroundColor:
@@ -613,6 +635,79 @@ export default class NewCluster extends Component {
 											alt="Azure"
 										/>
 									</Button>
+								</div>
+							</div>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose ES Flavor</h3>
+								</div>
+
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										alignItems: 'baseline',
+									}}
+								>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.esFlavor === 'es' ? 'primary' : 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													this.state.esFlavor === 'es'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('esFlavor', 'es');
+												this.setConfig('clusterVersion', esVersions[0]);
+											}}
+										>
+											<img
+												width="150"
+												src="/static/images/clusters/elastic.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>The Open Source Elasticsearch Distribution.</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.esFlavor === 'odfe'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												backgroundColor:
+													this.state.esFlavor === 'odfe'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('esFlavor', 'odfe');
+												this.setConfig('clusterVersion', odfeVersions[0]);
+											}}
+										>
+											<img
+												width="150"
+												src="/static/images/clusters/odfe.svg"
+												alt="ODFE"
+											/>
+										</Button>
+										<p>
+											Open Distro by Amazon, includes additional security
+											enhancements.
+										</p>
+									</div>
 								</div>
 							</div>
 
@@ -685,13 +780,11 @@ export default class NewCluster extends Component {
 											onChange={e => this.setConfig('clusterVersion', e.target.value)
 											}
 										>
-											{esVersions.map(version => (
+											{versions.map(version => (
 												<option
 													key={version}
 													value={version}
-													defaultChecked={
-														this.state.clusterVersion === version
-													}
+													defaultChecked={defaultVersion === version}
 												>
 													{version}
 												</option>
