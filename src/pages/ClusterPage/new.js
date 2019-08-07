@@ -37,12 +37,20 @@ const esVersions = [
 	'5.2.1',
 ];
 
-const odfeVersions = ['0.9.0'];
+const odfeVersions = ['0.9.0', '1.1.0'];
+
+const V7_ARC = '7.0.8-appbase';
+const V6_ARC = '0.1.5';
+const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
-	7: '7.0.1-appbase',
-	6: '0.1.5',
-	5: 'v5-0.0.1',
+	7: V7_ARC,
+	6: V6_ARC,
+	5: V5_ARC,
+	/* odfe versions start */
+	0: V6_ARC,
+	1: V7_ARC,
+	/* odfe versions end */
 };
 
 export const machineMarks = {
