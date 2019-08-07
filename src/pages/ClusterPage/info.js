@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag, Alert,
+ Modal, Button, Icon, Tag, Alert, Tooltip,
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
@@ -379,7 +379,16 @@ export default class Clusters extends Component {
 											<div>
 												{this.state.cluster.pricing_plan}
 												&nbsp;&nbsp;
-												{isPaid ? <Tag color="green">Paid</Tag> : null}
+												{!this.state.cluster.trial && isPaid ? (
+													<Tag color="green">Paid</Tag>
+												) : null}
+												{this.state.cluster.trial ? (
+													<Tooltip title="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires.">
+														<Tag color="blue" style={{ marginTop: 5 }}>
+															Trial
+														</Tag>
+													</Tooltip>
+												) : null}
 											</div>
 										</div>
 
@@ -414,6 +423,36 @@ export default class Clusters extends Component {
 											<h4>Nodes</h4>
 											<div>{this.state.cluster.total_nodes}</div>
 										</div>
+
+										{this.state.cluster.trial ? (
+											<div>
+												<div>
+													<Stripe
+														name="Appbase.io Clusters"
+														amount={
+															(this.state.cluster.plan_rate || 0)
+															* 100
+														}
+														token={token => this.handleToken(
+																this.state.cluster.id,
+																token,
+															)
+														}
+														disabled={false}
+														stripeKey={STRIPE_KEY}
+														closed={this.toggleOverlay}
+													>
+														<Button
+															type="primary"
+															style={{ marginTop: 5 }}
+															onClick={this.toggleOverlay}
+														>
+															Upgrade Now
+														</Button>
+													</Stripe>
+												</div>
+											</div>
+										) : null}
 									</div>
 								</li>
 
@@ -428,7 +467,9 @@ export default class Clusters extends Component {
 
 								<DeploymentStatus
 									data={this.state.deployment}
-									onProgress={() => { this.statusTimer = setTimeout(this.init, 30000); }}
+									onProgress={() => {
+										this.statusTimer = setTimeout(this.init, 30000);
+									}}
 								/>
 
 								{this.state.arc ? (
@@ -453,6 +494,7 @@ export default class Clusters extends Component {
 													}/explore`,
 													state: {
 														arc: getAddon('arc', this.state.deployment),
+														cluster: this.state.cluster.name,
 													},
 												}}
 											>
@@ -472,7 +514,10 @@ export default class Clusters extends Component {
 											justifyContent: 'space-between',
 										}}
 									>
-										<Sidebar id={this.props.match.params.id} isViewer={isViewer} />
+										<Sidebar
+											id={this.props.match.params.id}
+											isViewer={isViewer}
+										/>
 										<RightContainer>
 											<Switch>
 												<Route
@@ -487,8 +532,12 @@ export default class Clusters extends Component {
 															kibana={this.state.kibana}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}
-															handleDeleteModal={this.handleDeleteModal}
-															elasticsearchHQ={this.state.elasticsearchHQ}
+															handleDeleteModal={
+																this.handleDeleteModal
+															}
+															elasticsearchHQ={
+																this.state.elasticsearchHQ
+															}
 															// cluster deployment
 															onDeploy={this.deployCluster}
 															onDelete={this.deleteCluster}
@@ -510,7 +559,8 @@ export default class Clusters extends Component {
 																		this.props.match.params.id
 																	}
 																	nodes={
-																		this.state.cluster.total_nodes
+																		this.state.cluster
+																			.total_nodes
 																	}
 																/>
 															)}

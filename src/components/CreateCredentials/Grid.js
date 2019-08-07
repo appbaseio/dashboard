@@ -5,7 +5,7 @@ import styles from './styles';
 import Flex from '../../batteries/components/shared/Flex';
 
 const Grid = ({
- label, component, toolTipMessage, gridRatio, ...rest
+ label, component, toolTipMessage, gridRatio, toolTipProps, ...rest
 }) => (
 	<Flex css="margin-top: 30px" {...rest}>
 		<Flex
@@ -20,8 +20,8 @@ const Grid = ({
 						<Tooltip
 							css="margin-left: 5px;color:#898989"
 							overlay={toolTipMessage}
-							mouseLeaveDelay={0}
 							placement="rightTop"
+							{...toolTipProps}
 						>
 							<Icon type="info-circle" theme="outlined" />
 						</Tooltip>
@@ -44,6 +44,7 @@ Grid.defaultProps = {
 	label: '',
 	component: null,
 	toolTipMessage: undefined,
+	toolTipProps: undefined,
 	gridRatio: 0.25,
 };
 Grid.propTypes = {
@@ -51,6 +52,7 @@ Grid.propTypes = {
 	component: PropTypes.node,
 	toolTipMessage: PropTypes.any,
 	gridRatio: PropTypes.number,
+	toolTipProps: PropTypes.object,
 };
 
 export default Grid;

@@ -78,11 +78,8 @@ class Credentials extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { appName, errors } = this.props;
-		if (prevProps.appName !== appName) {
-			this.initialize();
-		}
-		displayErrors(errors, prevProps.errors);
+		const { errors } = this.props;
+		displayErrors(errors, prevProps.errors, true);
 	}
 
 	refetchPermissions = () => {

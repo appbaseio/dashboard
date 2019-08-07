@@ -19,9 +19,11 @@ const { Option } = Select;
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
+	'7.3.0',
+	'7.2.1',
 	'7.1.1',
 	'7.0.1',
-	'6.8.0',
+	'6.8.2',
 	'6.7.2',
 	'6.6.2',
 	'6.5.4',
@@ -57,7 +59,7 @@ export const machineMarks = {
 	azure: {
 		0: {
 			label: 'Sandbox',
-			plan: 'sandbox',
+			plan: '2019-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -68,8 +70,8 @@ export const machineMarks = {
 		},
 		20: {
 			label: 'Hobby',
-			plan: 'hobby',
-			storage: 30,
+			plan: '2019-hobby',
+			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
@@ -79,8 +81,8 @@ export const machineMarks = {
 		},
 		40: {
 			label: 'Starter',
-			plan: 'starter',
-			storage: 40,
+			plan: '2019-starter',
+			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
@@ -90,8 +92,8 @@ export const machineMarks = {
 		},
 		60: {
 			label: 'Production-I',
-			plan: 'production-1',
-			storage: 80,
+			plan: '2019-production-1',
+			storage: 240,
 			memory: 8,
 			nodes: 3,
 			cpu: 2,
@@ -101,8 +103,8 @@ export const machineMarks = {
 		},
 		80: {
 			label: 'Production-II',
-			plan: 'production-2',
-			storage: 160,
+			plan: '2019-production-2',
+			storage: 480,
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
@@ -112,8 +114,8 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
-			plan: 'production-3',
-			storage: 333,
+			plan: '2019-production-3',
+			storage: 999,
 			memory: 32,
 			nodes: 3,
 			cpu: 8,
@@ -125,7 +127,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
-			plan: 'sandbox',
+			plan: '2019-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -136,8 +138,8 @@ export const machineMarks = {
 		},
 		20: {
 			label: 'Hobby',
-			plan: 'hobby',
-			storage: 30,
+			plan: '2019-hobby',
+			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
@@ -147,19 +149,19 @@ export const machineMarks = {
 		},
 		40: {
 			label: 'Starter',
-			plan: 'starter',
-			storage: 40,
+			plan: '2019-starter',
+			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
 			cost: 199,
-			machine: 'Standard_B2s',
+			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
 		60: {
 			label: 'Production-I',
-			plan: 'production-1',
-			storage: 80,
+			plan: '2019-production-1',
+			storage: 240,
 			memory: 8,
 			nodes: 3,
 			cpu: 2,
@@ -169,8 +171,8 @@ export const machineMarks = {
 		},
 		80: {
 			label: 'Production-II',
-			plan: 'production-2',
-			storage: 160,
+			plan: '2019-production-2',
+			storage: 480,
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
@@ -180,8 +182,8 @@ export const machineMarks = {
 		},
 		100: {
 			label: 'Production-III',
-			plan: 'production-3',
-			storage: 333,
+			plan: '2019-production-3',
+			storage: 999,
 			memory: 32,
 			nodes: 3,
 			cpu: 8,
@@ -193,8 +195,8 @@ export const machineMarks = {
 };
 
 const namingConvention = {
-	azure: 'You may use alpha-numerics with "-" in between',
-	gke: 'Name must start with an alphabet and you may use alpha-numerics with "-" in between',
+	azure: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	gke: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
 const esContainer = css`
@@ -231,7 +233,7 @@ export default class NewCluster extends Component {
 			vm_size: machineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
-			streams: true,
+			streams: false,
 			elasticsearchHQ: true,
 			arc: true,
 			error: '',
@@ -302,12 +304,8 @@ export default class NewCluster extends Component {
 	};
 
 	validateClusterName = () => {
-		const { clusterName, provider } = this.state;
-		let pattern = /^[a-zA-Z0-9]+([-]+[a-zA-Z0-9]*)*[a-zA-Z0-9]+$/;
-		if (provider === 'gke') {
-			// gke cluster names can't start with a number, no capital letters allowed
-			pattern = /^[a-z]+([-a-z0-9]*)*[a-z0-9]+$/;
-		}
+		const { clusterName } = this.state;
+		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
 		return pattern.test(clusterName);
 	};
 
@@ -321,10 +319,7 @@ export default class NewCluster extends Component {
 	createCluster = () => {
 		if (!this.validateClusterName()) {
 			// prettier-ignore
-			let errorMessage = 'Please use a valid cluster name. It can only contain alpha-numerics and "-" in between.';
-			if (this.state.provider === 'gke') {
-				errorMessage = `${errorMessage} Capital letters not allowed.`;
-			}
+			const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 			this.setState({
 				error: errorMessage,
 			});
@@ -731,8 +726,8 @@ export default class NewCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Pick a cluster name</h3>
-									<p>Name this bad boy</p>
+									<h3>Choose a cluster name</h3>
+									<p>Name your cluster. A name is permanent.</p>
 								</div>
 								<div
 									className="col grow vcenter"

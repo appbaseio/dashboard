@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
- Button, Icon, Select, message,
+ Button, Icon, Select, message, notification,
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
@@ -117,7 +117,14 @@ export default class ClusterScreen extends Component {
 
 		restore(clusterId, restore_from, snapshot_id)
 			.then((response) => {
-				message.success(response.status.message);
+				if (response.status.code >= 400) {
+					notification.error({
+						message: 'Restoration Failed!',
+						description: response.status.message,
+					});
+				} else {
+					message.success(response.status.message);
+				}
 				this.setState({
 					isRestoring: false,
 				});
@@ -193,7 +200,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:0.1.5',
+					image: 'siddharthlatest/arc:7.0.7-appbase', // TODO: Dynamically load image as per ES version
 					exposed_port: 8000,
 				},
 			];
@@ -424,6 +431,7 @@ export default class ClusterScreen extends Component {
 
 						{this.state.restore_from && this.state.snapshot_id && (
 							<Button
+								style={{ marginLeft: 8 }}
 								type="primary"
 								loading={this.state.isRestoring}
 								onClick={this.restoreCluster}

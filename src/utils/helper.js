@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import get from 'lodash/get';
 import { init, captureMessage } from '@sentry/browser';
 
+const URLSearchParams = require('url-search-params');
+
 init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
 });
@@ -12,10 +14,10 @@ export const keySummary = {
 	write: 'Write credentials',
 };
 
-export const displayErrors = (nextErrors = [], prevErrors = []) => {
+export const displayErrors = (nextErrors = [], prevErrors = [], showError = false) => {
 	nextErrors.map((error, index) => {
 		if (error && error !== prevErrors[index]) {
-			if (process.env.NODE_ENV === 'production') {
+			if (!showError && process.env.NODE_ENV === 'production') {
 				captureMessage(error.message);
 			} else {
 				notification.error({
@@ -77,11 +79,19 @@ export const planLimits = {
 		action: 1000000,
 		records: 50000,
 	},
+	'bootstrap-annual': {
+		action: 1000000,
+		records: 50000,
+	},
 	growth: {
 		action: 10000000,
 		records: 1000000,
 	},
 	'growth-monthly': {
+		action: 10000000,
+		records: 1000000,
+	},
+	'growth-annual': {
 		action: 10000000,
 		records: 1000000,
 	},
@@ -100,14 +110,16 @@ export const planBasePrice = {
 	growth: 89,
 };
 
-const calcPercentage = (appStats, plan, field) => {
+const calcPercentage = (appStats, plan = 'free', field) => {
 	let count;
 	if (field === 'action') {
 		count = get(appStats, 'calls', 0);
 	} else {
 		count = get(appStats, 'records', 0);
 	}
-	let percentage = (100 * count) / planLimits[plan][field];
+
+	const limit = planLimits[plan] || planLimits.free;
+	let percentage = (100 * count) / limit[field];
 	percentage = percentage < 100 ? percentage : 100;
 	return {
 		percentage,
@@ -149,3 +161,17 @@ export const validationsList = [
 	'Cannot start with -, _, +',
 	'Cannot be . or ..',
 ];
+
+export function getUrlParams(url) {
+	if (!url) {
+		return {};
+	}
+	const searchParams = new URLSearchParams(url);
+	return Array.from(searchParams.entries()).reduce(
+		(allParams, [key, value]) => ({
+			...allParams,
+			[key]: value,
+		}),
+		{},
+	);
+}

@@ -14,7 +14,7 @@ import {
 } from '../LoginPage/styles';
 import { checkbox } from './styles';
 
-const getSignupURL = provider => `${ACC_API}/login/${provider}?next=${window.location.origin}`;
+const getSignupURL = (provider, search) => `${ACC_API}/login/${provider}?next=${window.location.origin}${search}`;
 
 class SignupPage extends React.Component {
 	state = {
@@ -43,10 +43,11 @@ class SignupPage extends React.Component {
 	render() {
 		const {
 			user: { data },
+			location: { search },
 		} = this.props;
 		const { hasSubscribed, hasAgreedTOS, isEmailSignup } = this.state;
 		if (data) {
-			return <Redirect to="/" />;
+			return <Redirect to={`/${search}`} />;
 		}
 		return (
 			<LoginContainer>
@@ -97,7 +98,7 @@ class SignupPage extends React.Component {
 						{isEmailSignup || (
 							<React.Fragment>
 								<Button
-									href={getSignupURL('github')}
+									href={getSignupURL('github', search)}
 									icon="github"
 									className={githubBtn}
 									disabled={!hasAgreedTOS}
@@ -107,7 +108,7 @@ class SignupPage extends React.Component {
 								</Button>
 
 								<Button
-									href={getSignupURL('google')}
+									href={getSignupURL('google', search)}
 									icon="google"
 									disabled={!hasAgreedTOS}
 									className={googleBtn}
@@ -117,7 +118,7 @@ class SignupPage extends React.Component {
 								</Button>
 
 								<Button
-									href={getSignupURL('gitlab')}
+									href={getSignupURL('gitlab', search)}
 									icon="gitlab"
 									disabled={!hasAgreedTOS}
 									className={gitlabBtn}
@@ -132,6 +133,7 @@ class SignupPage extends React.Component {
 							isEmailAuth={isEmailSignup}
 							toggleEmailAuth={this.toggleEmailSignup}
 							authText="Sign up via Email"
+							isSignup
 						/>
 					</Card>
 

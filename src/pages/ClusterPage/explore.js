@@ -13,12 +13,14 @@ export default class ExploreCluster extends Component {
 	constructor(props) {
 		super(props);
 		const arc = props.location.state ? props.location.state.arc : null;
+		const cluster = props.location.state ? props.location.state.cluster : null;
 
 		this.state = {
 			arc,
 			isLoading: !arc,
 			error: null,
 			isFrameLoading: false,
+			cluster,
 		};
 	}
 
@@ -36,6 +38,7 @@ export default class ExploreCluster extends Component {
 					this.setState({
 						arc: this.getAddon('arc', deployment) || null,
 						isLoading: false,
+						cluster: cluster.name,
 					});
 
 					if (cluster.status === 'in progress') {
@@ -107,7 +110,9 @@ export default class ExploreCluster extends Component {
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
 		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${
 			this.state.arc.username
-		}&password=${this.state.arc.password}&header=false&showHelpChat=false`;
+		}&password=${this.state.arc.password}&cluster=${
+			this.state.cluster
+		}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>

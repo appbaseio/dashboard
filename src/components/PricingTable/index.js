@@ -296,7 +296,7 @@ class PricingTable extends Component {
 
 	componentDidUpdate(prevProps) {
 		const { errors } = this.props;
-		displayErrors(errors, prevProps.errors);
+		displayErrors(errors, prevProps.errors, true);
 	}
 
 	get getText() {
@@ -312,8 +312,11 @@ class PricingTable extends Component {
 
 	handleToken = (token, plan) => {
 		const { createSubscription, fetchAppPlan } = this.props;
-		createSubscription(token, plan).then(({ payload }) => {
-			if (payload) {
+		createSubscription(token, plan).then((action) => {
+			if (get(action, 'payload')) {
+				window.Intercom('update', {
+					plan: plan === 'free' ? 'free' : 'paid',
+				});
 				fetchAppPlan();
 			}
 		});
@@ -321,8 +324,8 @@ class PricingTable extends Component {
 
 	deleteSubscription = () => {
 		const { deleteSubscription, fetchAppPlan } = this.props;
-		deleteSubscription().then(({ payload }) => {
-			if (payload) {
+		deleteSubscription().then((action) => {
+			if (get(action, 'payload')) {
 				fetchAppPlan();
 				this.cancelConfirmBox();
 			}
@@ -931,7 +934,10 @@ const mapStateToProps = (state) => {
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
-		errors: [get(state, '$deleteAppSubscription.error')],
+		errors: [
+			get(state, '$deleteAppSubscription.error'),
+			get(state, '$createAppSubscription.error'),
+		],
 	};
 };
 

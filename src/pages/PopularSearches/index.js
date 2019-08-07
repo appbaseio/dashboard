@@ -38,7 +38,7 @@ const PopularSearchesWrapper = ({ appName, plan, isPaidUser }) => (
 			<React.Fragment>
 				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
 				<Container>
-					<PopularSearches appName={appName} plan={plan} />
+					<PopularSearches displayReplaySearch appName={appName} plan={plan} />
 				</Container>
 			</React.Fragment>
 		) : (

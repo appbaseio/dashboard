@@ -36,7 +36,7 @@ const NoResultSearchWrapper = ({ appName, plan, isPaidUser }) => (
 			<React.Fragment>
 				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
 				<Container>
-					<NoResultSearch appName={appName} plan={plan} />
+					<NoResultSearch displayReplaySearch appName={appName} plan={plan} />
 				</Container>
 			</React.Fragment>
 		) : (

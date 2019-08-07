@@ -24,6 +24,11 @@ const SearchLatency = Loadable({
 	loading: Loader,
 });
 
+const SearchTemplatesPage = Loadable({
+	loader: () => import('../../pages/SearchTemplatesPage'),
+	loading: Loader,
+});
+
 const BillingPage = Loadable({
 	loader: () => import('../../pages/BillingPage'),
 	loading: Loader,
@@ -90,6 +95,11 @@ const ShareSettings = Loadable({
 
 const RequestLogs = Loadable({
 	loader: () => import('../../pages/RequestLogs'),
+	loading: Loader,
+});
+
+const RoleBaseAccess = Loadable({
+	loader: () => import('../../pages/RoleBaseAccess'),
 	loading: Loader,
 });
 
@@ -200,7 +210,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={ImporterPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -213,7 +223,20 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={QueryRulesPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
+								/>
+							)}
+						/>
+
+						<Route
+							exact
+							path="/app/:appName/search-template"
+							render={props => (
+								<AppPageContainer
+									{...props}
+									component={SearchTemplatesPage}
+									shouldFetchAppInfo={false}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -224,7 +247,7 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={MappingsPage}
-									shouldFetchAppInfo={true}
+									shouldFetchAppInfo
 								/>
 							)}
 						/>
@@ -250,7 +273,7 @@ class AppLayout extends React.PureComponent {
 									{...props}
 									component={BrowserPage}
 									shouldFetchAppInfo={false}
-									shouldFetchAppPlan={true}
+									shouldFetchAppPlan
 								/>
 							)}
 						/>
@@ -264,6 +287,13 @@ class AppLayout extends React.PureComponent {
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan={false}
 								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/app/:appName/role-based-access"
+							component={props => (
+								<AppPageContainer {...props} component={RoleBaseAccess} />
 							)}
 						/>
 					</Switch>

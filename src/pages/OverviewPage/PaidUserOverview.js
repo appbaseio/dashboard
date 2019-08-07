@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
+import { Row, Col } from 'antd';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import { mediaKey } from '../../utils/media';
 import SearchVolumeChart from '../../batteries/components/shared/Chart/SearchVolume';
@@ -121,24 +122,34 @@ class PaidUserOverview extends React.Component {
 					</div>
 				</Flex>
 				{isPaid && (
-					<Flex css={results}>
-						<div css={searchCls}>
+					<Row gutter={20} style={{ marginTop: 20 }}>
+						<Col md={24} lg={12}>
 							<Searches
 								css="height: 100%"
 								href="popular-searches"
+								tableProps={{
+									scroll: {
+										x: 1300,
+									},
+								}}
 								dataSource={getFilteredResults(popularSearches)}
 								title="Popular Searches"
 							/>
-						</div>
-						<div css={noResultsCls}>
+						</Col>
+						<Col md={24} lg={12}>
 							<Searches
 								css="height: 100%"
 								href="no-results-searches"
+								tableProps={{
+									scroll: {
+										x: 1300,
+									},
+								}}
 								dataSource={getFilteredResults(noResults)}
 								title="No Result Searches"
 							/>
-						</div>
-					</Flex>
+						</Col>
+					</Row>
 				)}
 				<div css="margin-top: 20px">
 					<RequestLogs
