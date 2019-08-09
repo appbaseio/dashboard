@@ -16,9 +16,9 @@ export const regions = {
 		southeastasia: { name: 'South East Asia', flag: 'singapore.png' },
 	},
 	gke: {
-		'us-east1-b': { name: 'US East 1B', flag: 'united-states.png' },
-		'europe-west1-b': { name: 'Europe West 1B', flag: 'europe.png' },
-		'us-central1-b': { name: 'US Central 1B', flag: 'united-states.png' },
+		'us-east1': { name: 'US East 1', flag: 'united-states.png' },
+		'europe-west1': { name: 'Europe West 1', flag: 'europe.png' },
+		'us-central1': { name: 'US Central 1', flag: 'united-states.png' },
 		'australia-southeast1-b': { name: 'Australia South-east 1B', flag: 'australia.png' },
 		'us-east4-b': { name: 'US East 4B', flag: 'united-states.png' },
 		'southamerica-east1-c': { name: 'South America East 1C', flag: 'united-states.png' },

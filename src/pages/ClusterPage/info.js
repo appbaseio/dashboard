@@ -47,6 +47,7 @@ export default class Clusters extends Component {
 			showOverlay: false,
 			isPaid: false,
 			deleteModal: false,
+			streams: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -75,6 +76,7 @@ export default class Clusters extends Component {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
+					const streamsData = getAddon('streams', deployment) || {};
 					this.setState({
 						cluster,
 						deployment,
@@ -86,6 +88,7 @@ export default class Clusters extends Component {
 						planRate: cluster.plan_rate || 0,
 						isLoading: false,
 						isPaid: cluster.trial || !!cluster.subscription_id,
+						streams: streamsData.status === 'ready',
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -529,6 +532,7 @@ export default class Clusters extends Component {
 															cluster={this.state.cluster}
 															deployment={this.state.deployment}
 															arc={this.state.arc}
+															streams={this.state.streams}
 															kibana={this.state.kibana}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}

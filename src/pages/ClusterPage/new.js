@@ -195,8 +195,10 @@ export const machineMarks = {
 };
 
 const namingConvention = {
-	azure: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-	gke: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	azure:
+		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	gke:
+		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
 const esContainer = css`
@@ -643,7 +645,62 @@ export default class NewCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Choose ES Flavor</h3>
+									<h3>Pick a region</h3>
+									<p>All around the globe</p>
+								</div>
+								<div className="col grow region-container">
+									{this.renderRegions()}
+								</div>
+							</div>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose a cluster name</h3>
+									<p>Name your cluster. A name is permanent.</p>
+								</div>
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
+									<input
+										id="cluster-name"
+										type="name"
+										css={{
+											width: '100%',
+											maxWidth: 400,
+											marginBottom: 10,
+											outline: 'none',
+											border:
+												isInvalid && this.state.clusterName !== ''
+													? '1px solid red'
+													: '1px solid #e8e8e8',
+										}}
+										placeholder="Enter your cluster name"
+										value={this.state.clusterName}
+										onChange={e => this.setConfig('clusterName', e.target.value)
+										}
+									/>
+									<p
+										style={{
+											color:
+												isInvalid && this.state.clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
+										{provider === 'azure'
+											? namingConvention.azure
+											: namingConvention.gke}
+									</p>
+								</div>
+							</div>
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose Elasticsearch Flavor</h3>
 								</div>
 
 								<div
@@ -711,62 +768,6 @@ export default class NewCluster extends Component {
 											enhancements.
 										</p>
 									</div>
-								</div>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
-									<h3>Pick a region</h3>
-									<p>All around the globe</p>
-								</div>
-								<div className="col grow region-container">
-									{this.renderRegions()}
-								</div>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
-									<h3>Choose a cluster name</h3>
-									<p>Name your cluster. A name is permanent.</p>
-								</div>
-								<div
-									className="col grow vcenter"
-									css={{
-										flexDirection: 'column',
-										alignItems: 'flex-start !important',
-										justifyContent: 'center',
-									}}
-								>
-									<input
-										id="cluster-name"
-										type="name"
-										css={{
-											width: '100%',
-											maxWidth: 400,
-											marginBottom: 10,
-											outline: 'none',
-											border:
-												isInvalid && this.state.clusterName !== ''
-													? '1px solid red'
-													: '1px solid #e8e8e8',
-										}}
-										placeholder="Enter your cluster name"
-										value={this.state.clusterName}
-										onChange={e => this.setConfig('clusterName', e.target.value)
-										}
-									/>
-									<p
-										style={{
-											color:
-												isInvalid && this.state.clusterName !== ''
-													? 'red'
-													: 'inherit',
-										}}
-									>
-										{provider === 'azure'
-											? namingConvention.azure
-											: namingConvention.gke}
-									</p>
 								</div>
 							</div>
 
