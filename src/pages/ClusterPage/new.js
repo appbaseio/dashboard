@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Select,
+ Modal, Button, Icon, Select, Tabs,
 } from 'antd';
 
 import { css } from 'emotion';
@@ -15,6 +15,8 @@ import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
 
 const { Option } = Select;
+
+const { TabPane } = Tabs;
 
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -461,85 +463,62 @@ export default class NewCluster extends Component {
 	);
 
 	renderRegions = () => {
-		const regionsList1 = {};
-		const regionsList2 = {};
 		const { provider, pricing_plan: pricingPlan } = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
-		Object.keys(regions[provider]).forEach((region, i) => {
-			if (i % 2 === 0) {
-				regionsList1[region] = regions[provider][region];
-			} else {
-				regionsList2[region] = regions[provider][region];
-			}
-		});
+		const asiaRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'asia',
+		);
+		const euRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'eu',
+		);
+		const usRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'us',
+		);
+		const otherRegions = Object.keys(regions[provider]).filter(
+			item => !regions[provider][item].continent,
+		);
 
+		const regionsToRender = data => data.map((region) => {
+				const regionValue = regions[provider][region];
+				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
+				return (
+					// eslint-disable-next-line
+					<li
+						key={region}
+						onClick={() => this.setConfig('region', region)}
+						className={
+							// eslint-disable-next-line
+							isDisabled ? 'disabled' : this.state.region === region ? 'active' : ''
+						}
+					>
+						{regionValue.flag && (
+							<img
+								src={`/static/images/flags/${regionValue.flag}`}
+								alt={regionValue.name}
+							/>
+						)}
+						<span>{regionValue.name}</span>
+					</li>
+				);
+			});
+
+		const style = { width: '100%' };
 		return (
-			<React.Fragment>
-				<ul className="region-list">
-					{Object.keys(regionsList1).map((region) => {
-						const regionValue = regionsList1[region];
-						const isDisabled = allowedRegions
-							? !allowedRegions.includes(region)
-							: false;
-						return (
-							// eslint-disable-next-line
-							<li
-								key={region}
-								onClick={() => this.setConfig('region', region)}
-								className={
-									// eslint-disable-next-line
-									isDisabled
-										? 'disabled'
-										: this.state.region === region
-										? 'active'
-										: ''
-								}
-							>
-								{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
-								)}
-								<span>{regionValue.name}</span>
-							</li>
-						);
-					})}
-				</ul>
-				<ul className="region-list">
-					{Object.keys(regionsList2).map((region) => {
-						const regionValue = regionsList2[region];
-						const isDisabled = allowedRegions
-							? !allowedRegions.includes(region)
-							: false;
-						return (
-							// eslint-disable-next-line
-							<li
-								disabled
-								key={region}
-								onClick={() => this.setConfig('region', region)}
-								className={
-									// eslint-disable-next-line
-									isDisabled
-										? 'disabled'
-										: this.state.region === region
-										? 'active'
-										: ''
-								}
-							>
-								{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
-								)}
-								<span>{regionValue.name}</span>
-							</li>
-						);
-					})}
-				</ul>
-			</React.Fragment>
+			<Tabs size="large" style={style}>
+				<TabPane tab="America" key="america">
+					<ul className="region-list">{regionsToRender(usRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Asia" key="asia">
+					<ul className="region-list">{regionsToRender(asiaRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Europe" key="europe">
+					<ul className="region-list">{regionsToRender(euRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Other Regions" key="other">
+					<ul className="region-list">{regionsToRender(otherRegions)}</ul>
+				</TabPane>
+			</Tabs>
 		);
 	};
 
