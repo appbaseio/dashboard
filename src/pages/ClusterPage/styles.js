@@ -36,24 +36,22 @@ const clusterContainer = css`
 		`)};
 	}
 	.region-list {
-		margin: 0;
-		padding: 0;
-		width: 270px;
-		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(270px, 300px));
+		grid-gap: 10px;
+		padding-left: 0;
 		${media.small(css`
 			width: 100%;
 		`)};
 		li {
 			cursor: pointer;
-			width: 240px;
-			height: 46px;
 			display: flex;
 			flex-direction: row;
+			height: 45px;
 			align-items: center;
 			padding: 8px;
 			border: 1px solid #9196a1;
 			border-radius: 3px;
-			margin-bottom: 12px;
 			background-color: #fff;
 			transition: all 0.3s ease;
 			${media.small(css`
