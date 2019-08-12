@@ -504,6 +504,12 @@ export default class NewCluster extends Component {
 			});
 
 		const style = { width: '100%' };
+		if (provider === 'azure') {
+			return (
+				<ul style={style} className="region-list">{regionsToRender(Object.keys(regions[provider]))}</ul>
+			);
+		}
+
 		return (
 			<Tabs size="large" style={style}>
 				<TabPane tab="America" key="america">

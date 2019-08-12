@@ -181,7 +181,7 @@ export default class Clusters extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
-		const selectedRegion = Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+		const selectedRegion =Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
