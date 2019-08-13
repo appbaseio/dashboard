@@ -605,7 +605,7 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 
-									<Button
+									{/*<Button
 										size="large"
 										type={
 											this.state.provider === 'azure' ? 'primary' : 'default'
@@ -624,7 +624,7 @@ export default class NewCluster extends Component {
 											src="/static/images/clusters/azure.png"
 											alt="Azure"
 										/>
-									</Button>
+									</Button>*/}
 								</div>
 							</div>
 
