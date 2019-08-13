@@ -716,7 +716,7 @@ export default class NewCluster extends Component {
 										>
 											<img
 												width="150"
-												src="/static/images/clusters/elastic.svg"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
 												alt="Elastic"
 											/>
 										</Button>
