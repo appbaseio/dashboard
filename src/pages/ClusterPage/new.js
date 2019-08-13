@@ -39,8 +39,8 @@ const esVersions = [
 ];
 
 const arcVersions = {
-	7: '7.0.7-appbase',
-	6: '0.1.5',
+	7: '7.0.8-appbase',
+	6: '0.1.6',
 	5: 'v5-0.0.1',
 };
 
