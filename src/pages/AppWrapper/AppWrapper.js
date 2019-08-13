@@ -27,6 +27,7 @@ const routes = {
 			{ label: 'Import Data', link: 'import' },
 			{ label: 'App Settings', link: 'settings', tag: 'Beta' },
 			{ label: 'Browse Data', link: 'browse' },
+			{ label: 'Query Explorer', link: 'query' },
 			{ label: 'Search Preview', link: 'search-preview', tag: 'Beta' },
 			{ label: 'Query Rules', link: 'query-rules', tag: 'Beta' },
 			{ label: 'Search Templates', link: 'search-template', tag: 'Beta' },

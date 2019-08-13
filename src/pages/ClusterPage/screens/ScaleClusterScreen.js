@@ -20,6 +20,7 @@ export default class ScaleClusterScreen extends Component {
 
 		this.state = {
 			nodes: props.nodes,
+			defaultValue: props.nodes,
 			isDirty: false,
 		};
 	}
@@ -46,7 +47,7 @@ export default class ScaleClusterScreen extends Component {
 			})
 			.catch((e) => {
 				notification.error({
-					message: 'Cluster scaling couldn\'t be applied',
+					message: "Cluster scaling couldn't be applied",
 					description: e,
 				});
 				this.setState({
@@ -56,7 +57,7 @@ export default class ScaleClusterScreen extends Component {
 	};
 
 	render() {
-		const { isDirty, nodes } = this.state;
+		const { isDirty, nodes, defaultValue } = this.state;
 		return (
 			<div>
 				<div className={card}>
@@ -66,7 +67,11 @@ export default class ScaleClusterScreen extends Component {
 					</div>
 
 					<div className={column}>
-						<IntegerStep defaultValue={nodes} onChange={this.handleChange} />
+						<IntegerStep
+							defaultValue={defaultValue}
+							value={nodes}
+							onChange={this.handleChange}
+						/>
 					</div>
 				</div>
 
