@@ -103,6 +103,11 @@ const RoleBaseAccess = Loadable({
 	loading: Loader,
 });
 
+const QueryExplorerPage = Loadable({
+	loader: () => import('../../pages/QueryExplorer'),
+	loading: Loader,
+});
+
 class AppLayout extends React.PureComponent {
 	render() {
 		const { collapsed } = this.props;
@@ -272,6 +277,18 @@ class AppLayout extends React.PureComponent {
 								<AppPageContainer
 									{...props}
 									component={BrowserPage}
+									shouldFetchAppInfo={false}
+									shouldFetchAppPlan
+								/>
+							)}
+						/>
+						<Route
+							exact
+							path="/app/:appName/query"
+							render={props => (
+								<AppPageContainer
+									{...props}
+									component={QueryExplorerPage}
 									shouldFetchAppInfo={false}
 									shouldFetchAppPlan
 								/>
