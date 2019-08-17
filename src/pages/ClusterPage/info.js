@@ -47,6 +47,7 @@ export default class Clusters extends Component {
 			showOverlay: false,
 			isPaid: false,
 			deleteModal: false,
+			streams: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -75,6 +76,7 @@ export default class Clusters extends Component {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
+					const streamsData = getAddon('streams', deployment) || {};
 					this.setState({
 						cluster,
 						deployment,
@@ -86,6 +88,7 @@ export default class Clusters extends Component {
 						planRate: cluster.plan_rate || 0,
 						isLoading: false,
 						isPaid: cluster.trial || !!cluster.subscription_id,
+						streams: streamsData.status === 'ready',
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -178,8 +181,12 @@ export default class Clusters extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
+		const selectedRegion =Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
-		const { name, flag } = regions[provider][region];
+		const { name, flag } = regions[provider][selectedRegion]
+			? regions[provider][selectedRegion]
+			: { name: 'region', flag: `${selectedRegion}.png` };
+
 		return (
 			<div className="region-info">
 				<img src={`/static/images/flags/${flag}`} alt="US" />
@@ -529,6 +536,7 @@ export default class Clusters extends Component {
 															cluster={this.state.cluster}
 															deployment={this.state.deployment}
 															arc={this.state.arc}
+															streams={this.state.streams}
 															kibana={this.state.kibana}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}

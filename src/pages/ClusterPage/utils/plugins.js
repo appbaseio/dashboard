@@ -9,5 +9,5 @@ export default {
 	'ingest-user-agent': 'Ingest User Agent Processor',
 	'mapper-size': 'Mapper Size',
 	'mapper-murmur3': 'Mapper Murmur3',
-	'x-pack': 'X-Pack',
+	// 'x-pack': 'X-Pack',
 };

@@ -1,8 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Select,
+ Modal, Button, Icon, Select, Tabs,
 } from 'antd';
 
+import { css } from 'emotion';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -14,6 +15,8 @@ import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
 
 const { Option } = Select;
+
+const { TabPane } = Tabs;
 
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
@@ -38,10 +41,20 @@ const esVersions = [
 	'5.2.1',
 ];
 
+const odfeVersions = ['0.9.0', '1.1.0'];
+
+const V7_ARC = '7.0.8-appbase';
+const V6_ARC = 'siddharthlatest/arc:0.1.6';
+const V5_ARC = 'v5-0.0.1';
+
 const arcVersions = {
-	7: '7.0.8-appbase',
-	6: '0.1.6',
-	5: 'v5-0.0.1',
+	7: V7_ARC,
+	6: V6_ARC,
+	5: V5_ARC,
+	/* odfe versions start */
+	0: V6_ARC,
+	1: V7_ARC,
+	/* odfe versions end */
 };
 
 export const machineMarks = {
@@ -184,9 +197,26 @@ export const machineMarks = {
 };
 
 const namingConvention = {
-	azure: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-	gke: 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	azure:
+		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	gke:
+		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
+
+const esContainer = css`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	max-width: 200px;
+	margin-right: 20px;
+	p {
+		padding: 5px;
+		margin: 0;
+		font-size: 15px;
+		font-weight: 500;
+	}
+`;
 
 export default class NewCluster extends Component {
 	constructor(props) {
@@ -216,6 +246,7 @@ export default class NewCluster extends Component {
 			restore_from: null,
 			showError: false,
 			isClusterLoading: true,
+			esFlavor: 'es',
 			provider,
 			...pluginState,
 		};
@@ -318,6 +349,7 @@ export default class NewCluster extends Component {
 				volume_size: selectedMachine.storage / selectedMachine.nodes,
 				plugins: Object.keys(plugins).filter(item => this.state[item]),
 				restore_from: this.state.restore_from,
+				odfe: parseInt(this.state.clusterVersion, 10) < 5,
 			},
 			cluster: {
 				name: this.state.clusterName,
@@ -333,6 +365,7 @@ export default class NewCluster extends Component {
 			body.kibana = {
 				create_node: false,
 				version: this.state.clusterVersion,
+				odfe: parseInt(this.state.clusterVersion, 10) < 5,
 			};
 		}
 
@@ -430,85 +463,68 @@ export default class NewCluster extends Component {
 	);
 
 	renderRegions = () => {
-		const regionsList1 = {};
-		const regionsList2 = {};
 		const { provider, pricing_plan: pricingPlan } = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
-		Object.keys(regions[provider]).forEach((region, i) => {
-			if (i % 2 === 0) {
-				regionsList1[region] = regions[provider][region];
-			} else {
-				regionsList2[region] = regions[provider][region];
-			}
-		});
+		const asiaRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'asia',
+		);
+		const euRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'eu',
+		);
+		const usRegions = Object.keys(regions[provider]).filter(
+			item => regions[provider][item].continent === 'us',
+		);
+		const otherRegions = Object.keys(regions[provider]).filter(
+			item => !regions[provider][item].continent,
+		);
+
+		const regionsToRender = data => data.map((region) => {
+				const regionValue = regions[provider][region];
+				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
+				return (
+					// eslint-disable-next-line
+					<li
+						key={region}
+						onClick={() => this.setConfig('region', region)}
+						className={
+							// eslint-disable-next-line
+							isDisabled ? 'disabled' : this.state.region === region ? 'active' : ''
+						}
+					>
+						{regionValue.flag && (
+							<img
+								src={`/static/images/flags/${regionValue.flag}`}
+								alt={regionValue.name}
+							/>
+						)}
+						<span>{regionValue.name}</span>
+					</li>
+				);
+			});
+
+		const style = { width: '100%' };
+		if (provider === 'azure') {
+			return (
+				<ul style={style} className="region-list">{regionsToRender(Object.keys(regions[provider]))}</ul>
+			);
+		}
 
 		return (
-			<React.Fragment>
-				<ul className="region-list">
-					{Object.keys(regionsList1).map((region) => {
-						const regionValue = regionsList1[region];
-						const isDisabled = allowedRegions
-							? !allowedRegions.includes(region)
-							: false;
-						return (
-							// eslint-disable-next-line
-							<li
-								key={region}
-								onClick={() => this.setConfig('region', region)}
-								className={
-									// eslint-disable-next-line
-									isDisabled
-										? 'disabled'
-										: this.state.region === region
-										? 'active'
-										: ''
-								}
-							>
-								{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
-								)}
-								<span>{regionValue.name}</span>
-							</li>
-						);
-					})}
-				</ul>
-				<ul className="region-list">
-					{Object.keys(regionsList2).map((region) => {
-						const regionValue = regionsList2[region];
-						const isDisabled = allowedRegions
-							? !allowedRegions.includes(region)
-							: false;
-						return (
-							// eslint-disable-next-line
-							<li
-								disabled
-								key={region}
-								onClick={() => this.setConfig('region', region)}
-								className={
-									// eslint-disable-next-line
-									isDisabled
-										? 'disabled'
-										: this.state.region === region
-										? 'active'
-										: ''
-								}
-							>
-								{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
-								)}
-								<span>{regionValue.name}</span>
-							</li>
-						);
-					})}
-				</ul>
-			</React.Fragment>
+			<Tabs size="large" style={style}>
+				<TabPane tab="America" key="america">
+					<ul className="region-list">{regionsToRender(usRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Asia" key="asia">
+					<ul className="region-list">{regionsToRender(asiaRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Europe" key="europe">
+					<ul className="region-list">{regionsToRender(euRegions)}</ul>
+				</TabPane>
+				<TabPane tab="Other Regions" key="other">
+					<ul className="region-list">{regionsToRender(otherRegions)}</ul>
+				</TabPane>
+			</Tabs>
 		);
 	};
 
@@ -536,7 +552,8 @@ export default class NewCluster extends Component {
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
-
+		const versions = this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
+		const defaultVersion = this.state.clusterVersion;
 		return (
 			<Fragment>
 				<FullHeader isCluster />
@@ -588,8 +605,11 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 
-									<Button
+									{/*<Button
 										size="large"
+										type={
+											this.state.provider === 'azure' ? 'primary' : 'default'
+										}
 										css={{
 											height: 160,
 											backgroundColor:
@@ -604,7 +624,7 @@ export default class NewCluster extends Component {
 											src="/static/images/clusters/azure.png"
 											alt="Azure"
 										/>
-									</Button>
+									</Button>*/}
 								</div>
 							</div>
 
@@ -663,6 +683,78 @@ export default class NewCluster extends Component {
 									</p>
 								</div>
 							</div>
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose Elasticsearch Flavor</h3>
+								</div>
+
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										alignItems: 'baseline',
+									}}
+								>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.esFlavor === 'es' ? 'primary' : 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													this.state.esFlavor === 'es'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('esFlavor', 'es');
+												this.setConfig('clusterVersion', esVersions[0]);
+											}}
+										>
+											<img
+												width="150"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>The Open Source Elasticsearch Distribution.</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.esFlavor === 'odfe'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												backgroundColor:
+													this.state.esFlavor === 'odfe'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('esFlavor', 'odfe');
+												this.setConfig('clusterVersion', odfeVersions[0]);
+											}}
+										>
+											<img
+												width="150"
+												src="/static/images/clusters/odfe.svg"
+												alt="ODFE"
+											/>
+										</Button>
+										<p>
+											Open Distro by Amazon, includes additional security
+											enhancements.
+										</p>
+									</div>
+								</div>
+							</div>
 
 							<div className={card}>
 								<div className="col light">
@@ -677,13 +769,11 @@ export default class NewCluster extends Component {
 											onChange={e => this.setConfig('clusterVersion', e.target.value)
 											}
 										>
-											{esVersions.map(version => (
+											{versions.map(version => (
 												<option
 													key={version}
 													value={version}
-													defaultChecked={
-														this.state.clusterVersion === version
-													}
+													defaultChecked={defaultVersion === version}
 												>
 													{version}
 												</option>
