@@ -605,7 +605,7 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 
-									<Button
+									{/*<Button
 										size="large"
 										type={
 											this.state.provider === 'azure' ? 'primary' : 'default'
