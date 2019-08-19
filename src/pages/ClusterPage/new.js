@@ -44,7 +44,7 @@ const esVersions = [
 const odfeVersions = ['1.1.0', '0.9.0'];
 
 const V7_ARC = '7.0.8-appbase';
-const V6_ARC = 'siddharthlatest/arc:0.1.6';
+const V6_ARC = '0.1.6';
 const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
