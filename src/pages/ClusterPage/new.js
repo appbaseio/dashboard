@@ -41,7 +41,7 @@ const esVersions = [
 	'5.2.1',
 ];
 
-const odfeVersions = ['0.9.0', '1.1.0'];
+const odfeVersions = ['1.1.0', '0.9.0'];
 
 const V7_ARC = '7.0.8-appbase';
 const V6_ARC = 'siddharthlatest/arc:0.1.6';
@@ -576,7 +576,7 @@ export default class NewCluster extends Component {
 								/>
 							</div>
 
-							<div className={card}>
+							{/*<div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
 								</div>
@@ -605,7 +605,7 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 
-									{/*<Button
+									<Button
 										size="large"
 										type={
 											this.state.provider === 'azure' ? 'primary' : 'default'
@@ -624,9 +624,9 @@ export default class NewCluster extends Component {
 											src="/static/images/clusters/azure.png"
 											alt="Azure"
 										/>
-									</Button>*/}
+									</Button>
 								</div>
-							</div>
+							</div>*/}
 
 							<div className={card}>
 								<div className="col light">
