@@ -29,16 +29,16 @@ export default class IntegerStep extends React.Component {
 			<Row css={{ width: '100%' }}>
 				<Col span={12}>
 					<Slider
-						min={defaultValue > 0 ? defaultValue - 1 : 0}
+						min={defaultValue > 1 ? defaultValue - 1 : 1}
 						max={defaultValue === 5 ? 5 : defaultValue + 1}
 						onChange={this.onChange}
 						step={1}
-						value={typeof inputValue === 'number' ? inputValue : 0}
+						value={typeof inputValue === 'number' ? inputValue : 1}
 					/>
 				</Col>
 				<Col span={4}>
 					<InputNumber
-						min={defaultValue > 0 ? defaultValue - 1 : 0}
+						min={defaultValue > 1 ? defaultValue - 1 : 1}
 						max={defaultValue === 5 ? 5 : defaultValue + 1}
 						style={{ marginLeft: 16 }}
 						value={inputValue}
