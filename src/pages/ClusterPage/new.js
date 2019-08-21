@@ -168,7 +168,7 @@ export const machineMarks = {
 			nodes: 3,
 			cpu: 2,
 			cost: 399,
-			machine: 'custom-2-4096',
+			machine: 'n1-standard-2',
 			pph: 0.55,
 		},
 		80: {
@@ -179,7 +179,7 @@ export const machineMarks = {
 			nodes: 3,
 			cpu: 4,
 			cost: 799,
-			machine: 'n1-standard-2',
+			machine: 'n1-standard-4',
 			pph: 1.11,
 		},
 		100: {
@@ -190,7 +190,7 @@ export const machineMarks = {
 			nodes: 3,
 			cpu: 8,
 			cost: 1599,
-			machine: 'n1-standard-4',
+			machine: 'n1-standard-8',
 			pph: 2.22,
 		},
 	},
