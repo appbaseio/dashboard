@@ -21,13 +21,13 @@ const bannerMessagesAnalytics = {
 		description:
 			"View the last 1,000 request logs to glean insights into your app's behaviors.",
 		buttonText: 'Read More',
-		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
+		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 	growth: {
 		title: 'Request Logs',
 		description: "View the last 1,000 request logs to glean insights into your app's behavior.",
 		buttonText: 'Read More',
-		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
+		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 

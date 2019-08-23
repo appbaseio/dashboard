@@ -36,14 +36,14 @@ const integrations = [
 		image1x: '/static/images/onboarding/finish-screen/REST@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/REST@2x.png',
 		description: 'API for working with elasticsearch / appbase apps',
-		url: 'https://docs.appbase.io/rest-quickstart.html',
+		url: 'https://docs.appbase.io/api/rest/quickstart/',
 	},
 	{
 		name: 'Javascript Library',
 		image1x: '/static/images/onboarding/finish-screen/JS@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/JS@2x.png',
 		description: 'Javascript client library for working with elasticseach / appbase apps',
-		url: 'https://docs.appbase.io/javascript/quickstart.html',
+		url: 'https://docs.appbase.io/api/javascript/quickstart/',
 	},
 	{
 		name: 'Clusters',

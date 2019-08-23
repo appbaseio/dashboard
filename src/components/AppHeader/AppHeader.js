@@ -116,7 +116,7 @@ class AppHeader extends React.Component {
 				)}
 				<Row justify="space-between" align="middle">
 					<a
-						href="https://docs.appbase.io/javascript/quickstart.html"
+						href="https://docs.appbase.io/"
 						className={link}
 						target="_blank"
 						rel="noopener noreferrer"
