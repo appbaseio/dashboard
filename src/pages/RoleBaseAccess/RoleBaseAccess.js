@@ -175,8 +175,12 @@ class RoleBaseAccess extends React.Component {
 	handleSave = () => {
 		const { publicKey, roleKey } = this.state;
 		const { setKeyes, appName } = this.props;
+		let newRoleKey = roleKey;
 
-		setKeyes(appName, publicKey, roleKey);
+		if (!newRoleKey) {
+			newRoleKey = 'role';
+		}
+		setKeyes(appName, publicKey, newRoleKey);
 	};
 
 	render() {
