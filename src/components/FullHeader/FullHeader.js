@@ -119,7 +119,7 @@ const FullHeader = ({
 				/>
 			)}
 			<a
-				href="https://docs.appbase.io/javascript/quickstart.html"
+				href="https://docs.appbase.io/"
 				className={link}
 				target="_blank"
 				rel="noopener noreferrer"

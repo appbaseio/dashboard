@@ -25,7 +25,7 @@ const FreeUserOverview = () => (
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col md={18}>
-					<h2>Welcome to your app{'\''}s dashboard view</h2>
+					<h2>Welcome to your app{"'"}s dashboard view</h2>
 					<Row>
 						<Col span={18}>
 							<p>
@@ -41,11 +41,15 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://opensource.appbase.io/reactive-manual/getting-started/reactivesearch.html"
+							href="https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
-							<img alt="Web Apps" css={image} src="../../../static/images/WebApp@2x.png" />
+							<img
+								alt="Web Apps"
+								css={image}
+								src="../../../static/images/WebApp@2x.png"
+							/>
 							Web App
 						</Button>
 					</div>
@@ -54,7 +58,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://opensource.appbase.io/reactive-manual/native/getting-started/reactivesearch.html"
+							href="https://docs.appbase.io/docs/reactivesearch/native/overview/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
@@ -71,7 +75,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://opensource.appbase.io/reactive-manual/getting-started/reactivemaps.html"
+							href="https://docs.appbase.io/docs/reactivesearch/v3/overview/reactivemaps/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>

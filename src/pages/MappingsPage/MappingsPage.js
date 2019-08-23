@@ -24,7 +24,7 @@ const MappingsPage = ({
 							<p>
 								View mappings, edit use-case and data types, add or delete fields -{' '}
 								<a
-									href="https://docs.appbase.io/concepts/mappings.html"
+									href="https://docs.appbase.io/docs/search/Mappings"
 									target="_blank"
 									rel="noopener noreferrer"
 								>

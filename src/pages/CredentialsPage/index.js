@@ -53,13 +53,13 @@ const bannerMessagesCred = {
 		title: 'API Credentials',
 		description: 'See how to effectively use security credentials to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/api-credentials.html',
+		href: 'https://docs.appbase.io/docs/security/Credentials/',
 	},
 	growth: {
 		title: 'API Credentials',
 		description: 'See how to effectively use security credentials to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/api-credentials.html',
+		href: 'https://docs.appbase.io/docs/security/Credentials/',
 	},
 };
 

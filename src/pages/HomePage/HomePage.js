@@ -161,7 +161,7 @@ class HomePage extends Component {
 								<Icon type="book" /> Interactive Tutorial
 							</Link>
 							<a
-								href="https://docs.appbase.io/javascript/quickstart.html"
+								href="https://docs.appbase.io/api/javascript/quickstart/"
 								className={link}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -169,7 +169,7 @@ class HomePage extends Component {
 								<Icon type="rocket" /> JS Quickstart
 							</a>
 							<a
-								href="https://docs.appbase.io/rest-quickstart.html"
+								href="https://docs.appbase.io/api/rest/quickstart/"
 								className={link}
 								target="_blank"
 								rel="noopener noreferrer"
