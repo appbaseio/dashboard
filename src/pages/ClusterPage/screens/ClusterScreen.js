@@ -1,17 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import {
- Button, Icon, Select, message, notification,
-} from 'antd';
+import { Button, Icon, Select, message, notification } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import {
- hasAddon, getClusters, getSnapshots, restore,
-} from '../utils';
-import {
- card, settingsItem, clusterEndpoint, clusterButtons,
-} from '../styles';
+import { hasAddon, getClusters, getSnapshots, restore } from '../utils';
+import { card, settingsItem, clusterEndpoint, clusterButtons } from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
 
 const { Option } = Select;
@@ -48,7 +42,7 @@ export default class ClusterScreen extends Component {
 
 	initClusters = () => {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -58,7 +52,7 @@ export default class ClusterScreen extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -72,7 +66,7 @@ export default class ClusterScreen extends Component {
 		});
 	};
 
-	handleCluster = (value) => {
+	handleCluster = value => {
 		this.setState({
 			restore_from: value,
 			snapshots: [],
@@ -80,26 +74,26 @@ export default class ClusterScreen extends Component {
 		this.fetchClusterSnapshots(value);
 	};
 
-	handleSnapshot = (value) => {
+	handleSnapshot = value => {
 		this.setState({
 			snapshot_id: value,
 		});
 	};
 
-	fetchClusterSnapshots = (restoreId) => {
+	fetchClusterSnapshots = restoreId => {
 		const { clusterId } = this.props;
 		this.setState({
 			isSnapshotsLoading: true,
 		});
 		getSnapshots(clusterId, restoreId)
-			.then((snapshots) => {
+			.then(snapshots => {
 				this.setState({
 					snapshotsAvailable: !!snapshots.length,
 					snapshots,
 					isSnapshotsLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isSnapshotsLoading: false,
@@ -116,7 +110,7 @@ export default class ClusterScreen extends Component {
 		});
 
 		restore(clusterId, restore_from, snapshot_id)
-			.then((response) => {
+			.then(response => {
 				if (response.status.code >= 400) {
 					notification.error({
 						message: 'Restoration Failed!',
@@ -129,7 +123,7 @@ export default class ClusterScreen extends Component {
 					isRestoring: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isRestoring: false,
@@ -137,7 +131,7 @@ export default class ClusterScreen extends Component {
 			});
 	};
 
-	toggleConfig = (type) => {
+	toggleConfig = type => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -151,7 +145,7 @@ export default class ClusterScreen extends Component {
 		}));
 	};
 
-	includedInOriginal = (key) => {
+	includedInOriginal = key => {
 		const { deployment: original } = this.props;
 		return original[key] ? !!Object.keys(original[key]).length : hasAddon(key, original);
 	};
@@ -166,7 +160,7 @@ export default class ClusterScreen extends Component {
 			arc,
 			kibana,
 			streams,
-			elasticsearchHQ, // prettier-ignore
+			elasticsearchHQ // prettier-ignore
 		} = this.state;
 
 		const { clusterId, onDeploy } = this.props;
@@ -200,7 +194,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:7.0.8-appbase', // TODO: Dynamically load image as per ES version
+					image: 'siddharthlatest/arc:7.1.0-appbase', // TODO: Dynamically load image as per ES version
 					exposed_port: 8000,
 				},
 			];
@@ -225,7 +219,7 @@ export default class ClusterScreen extends Component {
 		onDeploy(body, clusterId);
 	};
 
-	renderClusterEndpoint = (source) => {
+	renderClusterEndpoint = source => {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
