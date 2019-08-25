@@ -1,7 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import {
- Modal, Button, Icon, Select, Tabs,
-} from 'antd';
+import { Modal, Button, Icon, Select, Tabs } from 'antd';
 
 import { css } from 'emotion';
 import FullHeader from '../../components/FullHeader';
@@ -18,7 +16,8 @@ const { Option } = Select;
 
 const { TabPane } = Tabs;
 
-const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
+const SSH_KEY =
+	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
 	'7.3.0',
@@ -35,10 +34,6 @@ const esVersions = [
 	'6.1.4',
 	'6.0.1',
 	'5.6.16',
-	'5.5.3',
-	'5.4.3',
-	'5.3.3',
-	'5.2.1',
 ];
 
 const odfeVersions = ['1.1.0', '0.9.0'];
@@ -223,7 +218,7 @@ export default class NewCluster extends Component {
 		super(props);
 
 		const pluginState = {};
-		Object.keys(plugins).forEach((item) => {
+		Object.keys(plugins).forEach(item => {
 			pluginState[item] = item !== 'x-pack';
 		});
 
@@ -254,7 +249,7 @@ export default class NewCluster extends Component {
 
 	componentDidMount() {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -264,7 +259,7 @@ export default class NewCluster extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -293,14 +288,14 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	setPricing = (plan) => {
+	setPricing = plan => {
 		this.setState({
 			vm_size: plan.machine,
 			pricing_plan: plan.plan,
 		});
 	};
 
-	toggleConfig = (type) => {
+	toggleConfig = type => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -414,7 +409,7 @@ export default class NewCluster extends Component {
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					isLoading: false,
 					deploymentError: e,
@@ -479,7 +474,8 @@ export default class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data => data.map((region) => {
+		const regionsToRender = data =>
+			data.map(region => {
 				const regionValue = regions[provider][region];
 				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
 				return (
@@ -506,7 +502,9 @@ export default class NewCluster extends Component {
 		const style = { width: '100%' };
 		if (provider === 'azure') {
 			return (
-				<ul style={style} className="region-list">{regionsToRender(Object.keys(regions[provider]))}</ul>
+				<ul style={style} className="region-list">
+					{regionsToRender(Object.keys(regions[provider]))}
+				</ul>
 			);
 		}
 
@@ -541,7 +539,7 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	handleCluster = (value) => {
+	handleCluster = value => {
 		this.setState({
 			restore_from: value,
 		});
@@ -666,7 +664,8 @@ export default class NewCluster extends Component {
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
-										onChange={e => this.setConfig('clusterName', e.target.value)
+										onChange={e =>
+											this.setConfig('clusterName', e.target.value)
 										}
 									/>
 									<p
@@ -766,7 +765,8 @@ export default class NewCluster extends Component {
 										<h4>Select a version</h4>
 										<select
 											className="form-control"
-											onChange={e => this.setConfig('clusterVersion', e.target.value)
+											onChange={e =>
+												this.setConfig('clusterVersion', e.target.value)
 											}
 										>
 											{versions.map(version => (
@@ -835,7 +835,8 @@ export default class NewCluster extends Component {
 													type="checkbox"
 													defaultChecked={this.state.elasticsearchHQ}
 													id="elasticsearch"
-													onChange={() => this.toggleConfig('elasticsearchHQ')
+													onChange={() =>
+														this.toggleConfig('elasticsearchHQ')
 													}
 												/>
 												Elasticsearch-HQ
