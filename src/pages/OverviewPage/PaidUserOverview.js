@@ -96,29 +96,29 @@ class PaidUserOverview extends React.Component {
 						{isPaid ? (
 							<SearchVolumeChart margin={10} height={210} data={searchVolume} />
 						) : (
-							<Overlay
-								style={{
-									maxWidth: '100%',
-									height: '100%',
-									backgroundColor: '#fff',
-								}}
-								lockSectionStyle={{
-									marginTop: 100,
-								}}
-								imageStyle={{
-									position: 'absolute',
-									top: 0,
-									bottom: 0,
-									left: 0,
-									margin: 'auto',
-								}}
-								iconStyle={{
-									fontSize: 30,
-								}}
-								src="/static/images/analytics/SearchVolume.png"
-								alt="analytics"
-							/>
-						)}
+								<Overlay
+									style={{
+										maxWidth: '100%',
+										height: '100%',
+										backgroundColor: '#fff',
+									}}
+									lockSectionStyle={{
+										marginTop: 100,
+									}}
+									imageStyle={{
+										position: 'absolute',
+										top: 0,
+										bottom: 0,
+										left: 0,
+										margin: 'auto',
+									}}
+									iconStyle={{
+										fontSize: 30,
+									}}
+									src="/static/images/analytics/SearchVolume.png"
+									alt="analytics"
+								/>
+							)}
 					</div>
 				</Flex>
 				{isPaid && (
@@ -129,7 +129,7 @@ class PaidUserOverview extends React.Component {
 								href="popular-searches"
 								tableProps={{
 									scroll: {
-										x: 1300,
+										x: 400,
 									},
 								}}
 								dataSource={getFilteredResults(popularSearches)}
@@ -142,7 +142,7 @@ class PaidUserOverview extends React.Component {
 								href="no-results-searches"
 								tableProps={{
 									scroll: {
-										x: 1300,
+										x: 400,
 									},
 								}}
 								dataSource={getFilteredResults(noResults)}
