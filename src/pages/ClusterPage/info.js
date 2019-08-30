@@ -290,7 +290,7 @@ export default class Clusters extends Component {
 				Go Back
 			</Button>
 
-			{this.state.cluster.user_role === 'admin' ? (
+			{this.state.cluster && this.state.cluster.user_role === 'admin' ? (
 				<Button
 					size="large"
 					onClick={this.deleteCluster}
