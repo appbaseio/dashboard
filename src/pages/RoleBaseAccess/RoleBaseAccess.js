@@ -37,13 +37,13 @@ const bannerMessagesCred = {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/role-based-access.html',
+		href: 'https://docs.appbase.io/docs/security/Role/',
 	},
 	growth: {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/role-based-access.html',
+		href: 'https://docs.appbase.io/docs/security/Role/',
 	},
 };
 
@@ -175,8 +175,12 @@ class RoleBaseAccess extends React.Component {
 	handleSave = () => {
 		const { publicKey, roleKey } = this.state;
 		const { setKeyes, appName } = this.props;
+		let newRoleKey = roleKey;
 
-		setKeyes(appName, publicKey, roleKey);
+		if (!newRoleKey) {
+			newRoleKey = 'role';
+		}
+		setKeyes(appName, publicKey, newRoleKey);
 	};
 
 	render() {

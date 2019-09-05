@@ -106,7 +106,7 @@ class MenuSlider extends React.Component {
 						{window.innerWidth < 576 ? (
 							<Menu.Item key="5">
 								<a
-									href="https://docs.appbase.io/javascript/quickstart.html"
+									href="https://docs.appbase.io/"
 									className={link}
 									target="_blank"
 									rel="noopener noreferrer"
