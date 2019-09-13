@@ -138,6 +138,7 @@ const card = css`
 		}
 		&.light {
 			background-color: #eaf5ff;
+			max-width: 270px;
 		}
 		&.grey {
 			background-color: #f9f9f9;

@@ -1,12 +1,19 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Icon, Select, message, notification } from 'antd';
+import {
+ Button, Icon, Select, message, notification,
+} from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import { hasAddon, getClusters, getSnapshots, restore } from '../utils';
-import { card, settingsItem, clusterEndpoint, clusterButtons } from '../styles';
+import {
+ hasAddon, getClusters, getSnapshots, restore,
+} from '../utils';
+import {
+ card, settingsItem, clusterEndpoint, clusterButtons,
+} from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
+import ArcDetailModal from '../components/ArcDetailModal';
 
 const { Option } = Select;
 
@@ -42,7 +49,7 @@ export default class ClusterScreen extends Component {
 
 	initClusters = () => {
 		getClusters()
-			.then(clusters => {
+			.then((clusters) => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -52,7 +59,7 @@ export default class ClusterScreen extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -66,7 +73,7 @@ export default class ClusterScreen extends Component {
 		});
 	};
 
-	handleCluster = value => {
+	handleCluster = (value) => {
 		this.setState({
 			restore_from: value,
 			snapshots: [],
@@ -74,26 +81,26 @@ export default class ClusterScreen extends Component {
 		this.fetchClusterSnapshots(value);
 	};
 
-	handleSnapshot = value => {
+	handleSnapshot = (value) => {
 		this.setState({
 			snapshot_id: value,
 		});
 	};
 
-	fetchClusterSnapshots = restoreId => {
+	fetchClusterSnapshots = (restoreId) => {
 		const { clusterId } = this.props;
 		this.setState({
 			isSnapshotsLoading: true,
 		});
 		getSnapshots(clusterId, restoreId)
-			.then(snapshots => {
+			.then((snapshots) => {
 				this.setState({
 					snapshotsAvailable: !!snapshots.length,
 					snapshots,
 					isSnapshotsLoading: false,
 				});
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 				this.setState({
 					isSnapshotsLoading: false,
@@ -110,7 +117,7 @@ export default class ClusterScreen extends Component {
 		});
 
 		restore(clusterId, restore_from, snapshot_id)
-			.then(response => {
+			.then((response) => {
 				if (response.status.code >= 400) {
 					notification.error({
 						message: 'Restoration Failed!',
@@ -123,7 +130,7 @@ export default class ClusterScreen extends Component {
 					isRestoring: false,
 				});
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 				this.setState({
 					isRestoring: false,
@@ -131,7 +138,7 @@ export default class ClusterScreen extends Component {
 			});
 	};
 
-	toggleConfig = type => {
+	toggleConfig = (type) => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -145,7 +152,7 @@ export default class ClusterScreen extends Component {
 		}));
 	};
 
-	includedInOriginal = key => {
+	includedInOriginal = (key) => {
 		const { deployment: original } = this.props;
 		return original[key] ? !!Object.keys(original[key]).length : hasAddon(key, original);
 	};
@@ -160,7 +167,7 @@ export default class ClusterScreen extends Component {
 			arc,
 			kibana,
 			streams,
-			elasticsearchHQ // prettier-ignore
+			elasticsearchHQ, // prettier-ignore
 		} = this.state;
 
 		const { clusterId, onDeploy } = this.props;
@@ -219,7 +226,7 @@ export default class ClusterScreen extends Component {
 		onDeploy(body, clusterId);
 	};
 
-	renderClusterEndpoint = source => {
+	renderClusterEndpoint = (source) => {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
@@ -270,8 +277,54 @@ export default class ClusterScreen extends Component {
 			handleToken,
 			isPaid,
 			handleDeleteModal,
+			isExternalCluster,
 		} = this.props;
 		const isViewer = cluster.user_role === 'viewer';
+
+		if (isExternalCluster) {
+			const arcDeployment = deployment && deployment.addons.find(addon => addon.name === 'arc');
+			return (
+				<Fragment>
+					<li className={card}>
+						<div className="col light">
+							<h3>Add-ons</h3>
+							<p>Elasticsearch add-ons endpoint</p>
+						</div>
+
+						<div className="col">
+							{(deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
+						</div>
+					</li>
+					<div className={clusterButtons}>
+						<div>
+							{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={planRate * 100}
+									token={token => handleToken(clusterId, token)}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+									closed={this.toggleOverlay}
+								>
+									<Button
+										size="large"
+										ref={this.paymentButton}
+										css={{
+											marginRight: 12,
+										}}
+										onClick={this.toggleOverlay}
+									>
+										Pay now
+									</Button>
+								</Stripe>
+							) : null}
+							<ArcDetailModal  {...arcDeployment}/>
+						</div>
+					</div>
+				</Fragment>
+			);
+		}
+
 		return (
 			<Fragment>
 				<li className={card}>

@@ -1,5 +1,7 @@
 import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Select, Tabs } from 'antd';
+import {
+ Modal, Button, Icon, Select, Tabs,
+} from 'antd';
 
 import { css } from 'emotion';
 import FullHeader from '../../components/FullHeader';
@@ -11,13 +13,13 @@ import { clusterContainer, card, settingsItem } from './styles';
 import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
+import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 
 const { Option } = Select;
 
 const { TabPane } = Tabs;
 
-const SSH_KEY =
-	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
+const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
 	'7.3.0',
@@ -218,7 +220,7 @@ export default class NewCluster extends Component {
 		super(props);
 
 		const pluginState = {};
-		Object.keys(plugins).forEach(item => {
+		Object.keys(plugins).forEach((item) => {
 			pluginState[item] = item !== 'x-pack';
 		});
 
@@ -249,7 +251,7 @@ export default class NewCluster extends Component {
 
 	componentDidMount() {
 		getClusters()
-			.then(clusters => {
+			.then((clusters) => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -259,7 +261,7 @@ export default class NewCluster extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -288,14 +290,14 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	setPricing = plan => {
+	setPricing = (plan) => {
 		this.setState({
 			vm_size: plan.machine,
 			pricing_plan: plan.plan,
 		});
 	};
 
-	toggleConfig = type => {
+	toggleConfig = (type) => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -337,6 +339,8 @@ export default class NewCluster extends Component {
 			item => item.plan === this.state.pricing_plan,
 		);
 
+		const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
+
 		const body = {
 			elasticsearch: {
 				nodes: selectedMachine.nodes,
@@ -354,6 +358,18 @@ export default class NewCluster extends Component {
 				ssh_public_key: SSH_KEY,
 				provider: this.state.provider,
 			},
+			addons: [
+				{
+					name: 'elasticsearch-hq',
+					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
+					exposed_port: 5000,
+				},
+				{
+					name: 'arc',
+					image: `siddharthlatest/arc:${arcTag}`,
+					exposed_port: 8000,
+				},
+			],
 		};
 
 		if (this.state.kibana) {
@@ -364,42 +380,17 @@ export default class NewCluster extends Component {
 			};
 		}
 
-		if (this.state.streams) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'streams',
-					image: 'appbaseio/streams:6',
-					exposed_port: 80,
-				},
-			];
-		}
-
-		if (this.state.elasticsearchHQ) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
-					exposed_port: 5000,
-				},
-			];
-		}
-
-		if (this.state.arc) {
-			const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'arc',
-					image: `siddharthlatest/arc:${arcTag}`,
-					exposed_port: 8000,
-				},
-			];
-		}
+		// if (this.state.streams) {
+		// 	body.addons = body.addons || [];
+		// 	body.addons = [
+		// 		...body.addons,
+		// 		{
+		// 			name: 'streams',
+		// 			image: 'appbaseio/streams:6',
+		// 			exposed_port: 80,
+		// 		},
+		// 	];
+		// }
 
 		this.setState({
 			isLoading: true,
@@ -409,7 +400,7 @@ export default class NewCluster extends Component {
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
-			.catch(e => {
+			.catch((e) => {
 				this.setState({
 					isLoading: false,
 					deploymentError: e,
@@ -474,8 +465,7 @@ export default class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
+		const regionsToRender = data => data.map((region) => {
 				const regionValue = regions[provider][region];
 				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
 				return (
@@ -539,7 +529,7 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	handleCluster = value => {
+	handleCluster = (value) => {
 		this.setState({
 			restore_from: value,
 		});
@@ -552,15 +542,24 @@ export default class NewCluster extends Component {
 		if (isLoading) return <Loader />;
 		const versions = this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
 		const defaultVersion = this.state.clusterVersion;
+
+		const bannerMessage = {
+			title: 'Create a New Cluster',
+			description: 'Setup a new Cluster in few simple steps.',
+			buttonText: 'Already have a Cluster',
+			icon: 'question-circle',
+		};
 		return (
 			<Fragment>
 				<FullHeader isCluster />
+				<Banner
+					{...bannerMessage}
+					onClick={() => this.props.history.push('/clusters/new/my-cluster')}
+				/>
 				<Container>
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
 						<article>
-							<h2>Create a new cluster</h2>
-
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
@@ -574,7 +573,7 @@ export default class NewCluster extends Component {
 								/>
 							</div>
 
-							{/*<div className={card}>
+							{/* <div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
 								</div>
@@ -624,7 +623,7 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 								</div>
-							</div>*/}
+							</div> */}
 
 							<div className={card}>
 								<div className="col light">
@@ -664,8 +663,7 @@ export default class NewCluster extends Component {
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
-										onChange={e =>
-											this.setConfig('clusterName', e.target.value)
+										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
 									<p
@@ -765,8 +763,7 @@ export default class NewCluster extends Component {
 										<h4>Select a version</h4>
 										<select
 											className="form-control"
-											onChange={e =>
-												this.setConfig('clusterVersion', e.target.value)
+											onChange={e => this.setConfig('clusterVersion', e.target.value)
 											}
 										>
 											{versions.map(version => (
@@ -804,42 +801,6 @@ export default class NewCluster extends Component {
 													onChange={() => this.setConfig('kibana', false)}
 												/>
 												No
-											</label>
-										</div>
-									</div>
-									<div className={settingsItem}>
-										<h4>Add-ons</h4>
-										<div>
-											<label htmlFor="arc-middleware">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.arc}
-													id="arc-middleware"
-													onChange={() => this.toggleConfig('arc')}
-												/>
-												Appbase.io GUI
-											</label>
-
-											<label htmlFor="streams">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.streams}
-													id="streams"
-													onChange={() => this.toggleConfig('streams')}
-												/>
-												Realtime Streaming
-											</label>
-
-											<label htmlFor="elasticsearch">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.elasticsearchHQ}
-													id="elasticsearch"
-													onChange={() =>
-														this.toggleConfig('elasticsearchHQ')
-													}
-												/>
-												Elasticsearch-HQ
 											</label>
 										</div>
 									</div>

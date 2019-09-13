@@ -157,7 +157,7 @@ export default class ClusterPage extends Component {
 	renderClusterCard = (cluster) => {
 		const { id, subscription } = this.paramsValue();
 		return (
-			<li key={cluster.name} className="cluster-card compact">
+			<li key={cluster.id} className="cluster-card compact">
 				<h3>
 					{cluster.name}
 					<span className="tag">
