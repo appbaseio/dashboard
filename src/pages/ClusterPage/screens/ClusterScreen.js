@@ -318,7 +318,7 @@ export default class ClusterScreen extends Component {
 									</Button>
 								</Stripe>
 							) : null}
-							<ArcDetailModal  {...arcDeployment}/>
+							<ArcDetailModal cluster={cluster}  arc={arcDeployment} />
 						</div>
 					</div>
 				</Fragment>

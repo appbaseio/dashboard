@@ -88,7 +88,9 @@ export default class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.plan === plan || item.plan.endsWith(plan));
+		const selectedPlan = Object.values(machineMarks[provider]).find(
+			item => item.plan === plan || item.plan.endsWith(plan),
+		);
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
@@ -133,7 +135,7 @@ export default class ClusterPage extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
-		const selectedRegion = Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+		const selectedRegion =			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
@@ -156,6 +158,7 @@ export default class ClusterPage extends Component {
 
 	renderClusterCard = (cluster) => {
 		const { id, subscription } = this.paramsValue();
+		const isExternalCluster = cluster.recipe === 'arc';
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
@@ -194,21 +197,33 @@ export default class ClusterPage extends Component {
 						<div>{cluster.es_version}</div>
 					</div>
 
-					<div>
-						<h4>Memory</h4>
+					{isExternalCluster ? null : (
 						<div>
-							{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)}{' '}
-							GB
+							<h4>Memory</h4>
+							<div>
+								{this.getFromPricing(
+									cluster.pricing_plan,
+									'memory',
+									cluster.provider,
+								)}{' '}
+								GB
+							</div>
 						</div>
-					</div>
+					)}
 
-					<div>
-						<h4>Disk Size</h4>
+					{isExternalCluster ? null : (
 						<div>
-							{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)}{' '}
-							GB
+							<h4>Disk Size</h4>
+							<div>
+								{this.getFromPricing(
+									cluster.pricing_plan,
+									'storage',
+									cluster.provider,
+								)}{' '}
+								GB
+							</div>
 						</div>
-					</div>
+					)}
 
 					<div>
 						<h4>Nodes</h4>
@@ -307,6 +322,9 @@ export default class ClusterPage extends Component {
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
 		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
+
+		const arcClusters = activeClusters.filter(cluster => cluster.recipe === 'arc');
+
 		const clustersInProgress = clusters.filter(
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
 		);
@@ -385,10 +403,25 @@ export default class ClusterPage extends Component {
 						<article>
 							<h2>My Clusters</h2>
 
-							{this.renderClusterHeading('Active Clusters', activeClusters.length)}
+							{this.renderClusterHeading(
+								'Active Appbase Clusters',
+								activeClusters.length - arcClusters.length,
+							)}
 							{activeClusters.length ? (
 								<ul className={clustersList}>
-									{activeClusters.map(cluster => this.renderClusterCard(cluster))}
+									{activeClusters
+										.filter(cluster => cluster.recipe !== 'arc')
+										.map(cluster => this.renderClusterCard(cluster))}
+								</ul>
+							) : null}
+
+							{this.renderClusterHeading(
+								'Active different Clusters',
+								arcClusters.length,
+							)}
+							{arcClusters.length ? (
+								<ul className={clustersList}>
+									{arcClusters.map(cluster => this.renderClusterCard(cluster))}
 								</ul>
 							) : null}
 

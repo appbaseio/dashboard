@@ -296,5 +296,30 @@ export function verifyCluster(url) {
 	});
 }
 
+export function updateArcDetails(id, body) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v1/_deploy_recipe/arc/${id}`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => res.json())
+			.then((data) => {
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve();
+			})
+			.catch((e) => {
+				reject(e);
+			});
+	});
+}
+
 export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
 export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);

@@ -207,6 +207,7 @@ const esContainer = css`
 	flex-direction: column;
 	max-width: 200px;
 	margin-right: 20px;
+	min-width: 160px;
 	p {
 		padding: 5px;
 		margin: 0;
@@ -245,6 +246,7 @@ export default class NewCluster extends Component {
 			isClusterLoading: true,
 			esFlavor: 'es',
 			provider,
+			visualization: 'none',
 			...pluginState,
 		};
 	}
@@ -372,12 +374,16 @@ export default class NewCluster extends Component {
 			],
 		};
 
-		if (this.state.kibana) {
+		if (this.state.visualization === 'kibana') {
 			body.kibana = {
 				create_node: false,
 				version: this.state.clusterVersion,
 				odfe: parseInt(this.state.clusterVersion, 10) < 5,
 			};
+		}
+
+		if (this.state.visualization === 'grafana') {
+			body.grafana = true;
 		}
 
 		// if (this.state.streams) {
@@ -777,32 +783,104 @@ export default class NewCluster extends Component {
 											))}
 										</select>
 									</div>
+								</div>
+							</div>
 
-									<div className={settingsItem}>
-										<h4>Kibana</h4>
-										<div>
-											<label htmlFor="yes">
-												<input
-													type="radio"
-													name="kibana"
-													defaultChecked={this.state.kibana}
-													id="yes"
-													onChange={() => this.setConfig('kibana', true)}
-												/>
-												Yes
-											</label>
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose Visualization Tool</h3>
+								</div>
 
-											<label htmlFor="no">
-												<input
-													type="radio"
-													name="kibana"
-													defaultChecked={!this.state.kibana}
-													id="no"
-													onChange={() => this.setConfig('kibana', false)}
-												/>
-												No
-											</label>
-										</div>
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										alignItems: 'baseline',
+									}}
+								>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.visualization === 'none'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												width: '100%',
+												color: '#000',
+												backgroundColor:
+													this.state.visualization === 'none'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'none');
+											}}
+										>
+											None
+										</Button>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.visualization === 'kibana'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												width: '100%',
+												backgroundColor:
+													this.state.visualization === 'kibana'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'kibana');
+											}}
+										>
+											<img
+												width={150}
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+												alt="Kibana"
+											/>
+										</Button>
+										<p>
+											The default visualization dashboard for ElasticSearch.
+										</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.visualization === 'grafana'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												width: '100%',
+												backgroundColor:
+													this.state.visualization === 'grafana'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'grafana');
+											}}
+										>
+											<img
+												width={120}
+												src="https://seeklogo.com/images/G/grafana-logo-15BA0AFA8A-seeklogo.com.png"
+												alt="Grafana"
+											/>
+										</Button>
+										<p>
+											The leading open-source tool for metrics visualization.
+										</p>
 									</div>
 								</div>
 							</div>
