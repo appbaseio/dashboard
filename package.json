@@ -52,7 +52,7 @@
 	"dependencies": {
 		"@appbaseio/designkit": "^0.9.1",
 		"@appbaseio/reactivecore": "^8.2.6",
-		"@appbaseio/reactivesearch": "^3.0.0-rc.18",
+		"@appbaseio/reactivesearch": "^3.0.1",
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
 		"@sentry/browser": "^4.2.1",
 		"antd": "^3.9.2",
