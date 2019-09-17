@@ -342,7 +342,7 @@ export default class Clusters extends Component {
 		const { showOverlay, isPaid } = this.state;
 
 		const isViewer = this.state.cluster.user_role === 'viewer';
-		const isExternalCluster = this.state.cluster.pricing_plan.startsWith('hosted-arc');
+		const isExternalCluster = this.state.cluster.recipe === 'arc';
 
 		return (
 			<Fragment>

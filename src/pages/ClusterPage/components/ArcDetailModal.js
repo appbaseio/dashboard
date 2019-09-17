@@ -18,7 +18,7 @@ class ArcDetailModal extends React.Component {
 			loading: false,
 			username: props.arc.username,
 			password: props.arc.password,
-			clusterName: props.cluster.name,
+			esURL: (props.cluster && props.cluster.elasticsearch_url) || '',
 		};
 	}
 
@@ -35,7 +35,7 @@ class ArcDetailModal extends React.Component {
 	};
 
 	handleUpdate = () => {
-		const { username, password, clusterName } = this.state;
+		const { username, password, esURL } = this.state;
 		const {
 			cluster: { id },
 		} = this.props;
@@ -47,7 +47,7 @@ class ArcDetailModal extends React.Component {
 		updateArcDetails(id, {
 			username,
 			password,
-			cluster_name: clusterName,
+			elasticsearch_url: esURL,
 		})
 			.then(() => {
 				notification.success({
@@ -72,7 +72,7 @@ class ArcDetailModal extends React.Component {
 
 	render() {
 		const {
- open, username, password, clusterName, loading,
+ open, username, password, esURL, loading,
 } = this.state;
 		return (
 			<Fragment>
@@ -89,8 +89,8 @@ class ArcDetailModal extends React.Component {
 					onOk={this.handleUpdate}
 					onCancel={this.handleModal}
 				>
-					<h4 className={titleStyle}>Cluster Name:</h4>
-					<Input name="clusterName" value={clusterName} onChange={this.handleInput} />
+					<h4 className={titleStyle}>ElasticSearch URL:</h4>
+					<Input name="esURL" value={esURL} onChange={this.handleInput} />
 					<h4 className={titleStyle}>Arc Username:</h4>
 					<Input name="username" value={username} onChange={this.handleInput} />
 					<h4 className={titleStyle}>Arc Password:</h4>

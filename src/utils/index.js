@@ -20,16 +20,16 @@ export async function getUser() {
 			email: user.email,
 		},
 	]);
-	const metrics = '';
-	// try {
-	// 	const metricsResponse = await fetch(`${ACC_API}/user/metrics`, { credentials: 'include' });
-	// 	if (metricsResponse.status >= 400) {
-	// 		throw new Error();
-	// 	}
-	// 	metrics = await metricsResponse.json();
-	// } catch (e) {
-	// 	console.error('Unable to fetch Metrics');
-	// }
+	let metrics = '';
+	try {
+		const metricsResponse = await fetch(`${ACC_API}/user/metrics`, { credentials: 'include' });
+		if (metricsResponse.status >= 400) {
+			throw new Error();
+		}
+		metrics = await metricsResponse.json();
+	} catch (e) {
+		console.error('Unable to fetch Metrics');
+	}
 
 	window.Intercom('boot', {
 		app_id: 'f9514ssx',
