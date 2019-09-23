@@ -8,11 +8,17 @@ import {
 	getPermission as getPermissionFromAppbase,
 } from '../../batteries/modules/actions';
 import { getAppPermissionsByName } from '../../batteries/modules/selectors';
+// eslint-disable-next-line import/no-cycle
 import SearchSandbox from '../../batteries/components/SearchSandbox';
+// eslint-disable-next-line import/no-cycle
 import Editor from '../../batteries/components/SearchSandbox/containers/Editor';
 import Loader from '../../components/Loader';
 
+export const AnalyticsContext = React.createContext();
+
 class SandboxPage extends Component {
+	state = { enableAnalytics: true };
+
 	componentDidMount() {
 		const { credentials } = this.props;
 		if (!credentials) {
@@ -26,6 +32,10 @@ class SandboxPage extends Component {
 			this.init();
 		}
 	}
+
+	toggleAnalytics = () => this.setState(prevState => ({
+			enableAnalytics: !prevState.enableAnalytics,
+		}));
 
 	init() {
 		// prettier-ignore
@@ -41,15 +51,25 @@ class SandboxPage extends Component {
 
 	render() {
 		const { appId, appName, credentials } = this.props;
+		const { enableAnalytics } = this.state;
 
 		if (!credentials) {
 			return <Loader />;
 		}
 
 		return (
-			<SearchSandbox appId={appId} appName={appName} credentials={credentials} isDashboard>
-				<Editor />
-			</SearchSandbox>
+			<AnalyticsContext.Provider
+				value={{ enableAnalytics, toggleAnalytics: this.toggleAnalytics }}
+			>
+				<SearchSandbox
+					appId={appId}
+					appName={appName}
+					credentials={credentials}
+					isDashboard
+				>
+					<Editor />
+				</SearchSandbox>
+			</AnalyticsContext.Provider>
 		);
 	}
 }
