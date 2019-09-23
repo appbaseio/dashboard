@@ -14,7 +14,9 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
 					<HelpChat user={user.data} />
 				</React.Fragment>
 			) : AUTH_ROUTES.includes(window.location.pathname) ? null : (
-				<Redirect to="/login" />
+				<Redirect
+					to={`/login?returnURL="${window.location.origin}${window.location.pathname}"`}
+				/>
 			))
 		}
 	/>
