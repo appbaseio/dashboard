@@ -13,9 +13,10 @@ import {
  card, settingsItem, clusterEndpoint, clusterButtons,
 } from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
-import ArcDetailModal from '../components/ArcDetailModal';
+import ArcDetail from '../components/ArcDetail';
 
 const { Option } = Select;
+
 
 export default class ClusterScreen extends Component {
 	constructor(props) {
@@ -285,16 +286,7 @@ export default class ClusterScreen extends Component {
 			const arcDeployment = deployment && deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
-					<li className={card}>
-						<div className="col light">
-							<h3>Add-ons</h3>
-							<p>Elasticsearch add-ons endpoint</p>
-						</div>
-
-						<div className="col">
-							{(deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
-						</div>
-					</li>
+					<ArcDetail cluster={cluster} arc={arcDeployment} />
 					<div className={clusterButtons}>
 						<div>
 							{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
@@ -318,7 +310,6 @@ export default class ClusterScreen extends Component {
 									</Button>
 								</Stripe>
 							) : null}
-							<ArcDetailModal cluster={cluster}  arc={arcDeployment} />
 						</div>
 					</div>
 				</Fragment>

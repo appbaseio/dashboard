@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
- Row, Col, Icon, Button, Divider,
+ Row, Col, Icon, Button, Divider, Tag,
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
@@ -161,6 +161,7 @@ export default class ClusterPage extends Component {
 		const isExternalCluster = cluster.recipe === 'arc';
 		return (
 			<li key={cluster.id} className="cluster-card compact">
+				{isExternalCluster ? <Tag className="top-right" color="blue">Hosted Cluster</Tag> : null}
 				<h3>
 					{cluster.name}
 					<span className="tag">
@@ -323,8 +324,6 @@ export default class ClusterPage extends Component {
 		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
 		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
 
-		const arcClusters = activeClusters.filter(cluster => cluster.recipe === 'arc');
-
 		const clustersInProgress = clusters.filter(
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
 		);
@@ -405,23 +404,11 @@ export default class ClusterPage extends Component {
 
 							{this.renderClusterHeading(
 								'Active Appbase Clusters',
-								activeClusters.length - arcClusters.length,
+								activeClusters.length,
 							)}
 							{activeClusters.length ? (
 								<ul className={clustersList}>
-									{activeClusters
-										.filter(cluster => cluster.recipe !== 'arc')
-										.map(cluster => this.renderClusterCard(cluster))}
-								</ul>
-							) : null}
-
-							{this.renderClusterHeading(
-								'Active different Clusters',
-								arcClusters.length,
-							)}
-							{arcClusters.length ? (
-								<ul className={clustersList}>
-									{arcClusters.map(cluster => this.renderClusterCard(cluster))}
+									{activeClusters.map(cluster => this.renderClusterCard(cluster))}
 								</ul>
 							) : null}
 

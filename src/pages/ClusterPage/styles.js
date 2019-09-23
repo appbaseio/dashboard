@@ -127,6 +127,9 @@ const card = css`
 			display: flex;
 			align-items: center;
 		}
+		&.full {
+			width: 100%;
+		}
 		p {
 			font-size: 14px;
 		}
@@ -234,9 +237,15 @@ const clustersList = css`
 	.cluster-card {
 		padding: 30px 25px;
 		border-radius: 3px;
+		position: relative;
 		margin-bottom: 30px;
 		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 		background-color: #fff;
+		.top-right {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+		}
 		h3 {
 			margin-bottom: 15px;
 		}
