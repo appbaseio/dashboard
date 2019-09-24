@@ -33,8 +33,9 @@ class LoginPage extends React.Component {
 
 		const params = getUrlParams(window.location.search);
 		let returnURL = window.location.origin;
-		if (params.context === 'shopify' && params.returnURL) {
+		if (params.returnURL) {
 			({ returnURL } = params);
+			returnURL = returnURL.replace(/"/g, '');
 		}
 
 		const { isEmailLogin } = this.state;
