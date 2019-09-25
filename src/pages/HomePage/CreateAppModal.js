@@ -33,7 +33,7 @@ class CreateAppModal extends Component {
 			plan: 'free',
 			hasJSON: false,
 			category: 'generic',
-			elasticVersion: '5',
+			elasticVersion: '7',
 			validationPopOver: false,
 		};
 	}
