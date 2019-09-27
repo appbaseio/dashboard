@@ -172,24 +172,7 @@ export default class ClusterPage extends Component {
 		);
 		return (
 			<li key={cluster.id} className="cluster-card compact">
-				{isExternalCluster ? (
-					<Tooltip
-						title={(
-								<span>
-									Bring your own Cluster allows you to bring an externally hosted
-									ElasticSearch and take advantage of appbase.io features such as
-									security, analytics, better developer experience.
-									<a href="docs.appbase.io" target="_blank" rel="noopener norefferer">
-										Learn More
-									</a>
-								</span>
-							)}
-					>
-						<Tag className="top-right" color="blue">
-							Bring your own Cluster
-						</Tag>
-					</Tooltip>
-				) : null}
+
 				<h3>
 					{cluster.name}
 					<span className="tag">
@@ -208,6 +191,24 @@ export default class ClusterPage extends Component {
 							Delete
 						</Button>
 					) : null}
+					{isExternalCluster ? (
+					<Tooltip
+						title={(
+								<span>
+									Bring your own Cluster allows you to bring an externally hosted
+									ElasticSearch and take advantage of appbase.io features such as
+									security, analytics, better developer experience.{' '}
+									<a href="docs.appbase.io" target="_blank" rel="noopener norefferer">
+										Learn More
+									</a>
+								</span>
+							)}
+					>
+						<span className="tag top-right">
+							Bring your own Cluster
+						</span>
+					</Tooltip>
+				) : null}
 				</h3>
 
 				<div className="info-row">

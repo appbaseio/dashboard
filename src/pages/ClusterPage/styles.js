@@ -12,6 +12,9 @@ const clusterContainer = css`
 		margin: 0 12px;
 		border: 1px solid #ccc;
 	}
+	.tag.top-right {
+		margin-left: auto;
+	}
 	h2,
 	h3 {
 		font-size: 18px;
@@ -241,11 +244,6 @@ const clustersList = css`
 		margin-bottom: 30px;
 		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 		background-color: #fff;
-		.top-right {
-			position: absolute;
-			top: 10px;
-			right: 10px;
-		}
 		h3 {
 			margin-bottom: 15px;
 		}
@@ -363,6 +361,7 @@ const credsBox = css`
 		height: 100% !important;
 		border-radius: 0;
 		border: 0;
+		min-width: 280px;
 	}
 	${media.small(css`
 		flex-direction: column;

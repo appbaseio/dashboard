@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Slider, Tooltip } from 'antd';
+import { Slider, Tooltip, Icon } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 
 import { clusterInfo } from '../../styles';
@@ -100,6 +100,10 @@ export default class PricingSlider extends Component {
 										stepPrecision={0}
 									/>{' '}
 									{mark.nodes === 1 ? 'Node' : 'Nodes'}
+									<Icon
+										type="question-circle"
+										style={{ size: 14, marginLeft: 5 }}
+									/>
 								</div>
 							</Tooltip>
 							<div>Supported</div>

@@ -557,7 +557,7 @@ export default class NewCluster extends Component {
 							<h2>Create a New Cluster</h2>
 							<Row>
 								<Col span={18}>
-									<p>Create a new ElasticSearch Cluster with appbase.io.
+									<p>Create a new ElasticSearch Cluster with appbase.io.{' '}
 										<a href="https://docs.appbase.io" rel="noopener noreferrer" target="_blank">
 											Learn More
 										</a>

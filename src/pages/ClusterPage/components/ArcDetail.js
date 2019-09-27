@@ -165,7 +165,7 @@ class ArcDetail extends React.Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Appbase.io Server (Arc)</h3>
+						<h3>Appbase.io Server (Arc)</h3>{' '}
 						<a href="docs.appbase.io" rel="noopener noreferrer" target="_blank">
 							Learn More
 						</a>
