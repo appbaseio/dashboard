@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Slider } from 'antd';
+import { Slider, Tooltip } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 
 import { clusterInfo } from '../../styles';
@@ -92,14 +92,16 @@ export default class PricingSlider extends Component {
 							<div>Price per hour</div>
 						</div>
 						<div className="cluster-info__item">
-							<div>
-								<AnimatedNumber
-									value={mark.nodes}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								Nodes
-							</div>
+							<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
+								<div>
+									<AnimatedNumber
+										value={mark.nodes}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									{mark.nodes === 1 ? 'Node' : 'Nodes'}
+								</div>
+							</Tooltip>
 							<div>Supported</div>
 						</div>
 					</div>

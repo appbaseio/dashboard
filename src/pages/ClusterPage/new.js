@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Select, Tabs,
+ Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col
 } from 'antd';
 
 import { css } from 'emotion';
@@ -13,7 +13,7 @@ import { clusterContainer, card, settingsItem } from './styles';
 import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
-import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
 const { Option } = Select;
 
@@ -548,20 +548,46 @@ export default class NewCluster extends Component {
 		if (isLoading) return <Loader />;
 		const versions = this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
 		const defaultVersion = this.state.clusterVersion;
-
-		const bannerMessage = {
-			title: 'Create a New Cluster',
-			description: 'Setup a new Cluster in few simple steps.',
-			buttonText: 'Already have a Cluster',
-			icon: 'question-circle',
-		};
 		return (
 			<Fragment>
 				<FullHeader isCluster />
-				<Banner
-					{...bannerMessage}
-					onClick={() => this.props.history.push('/clusters/new/my-cluster')}
-				/>
+				<Header compact>
+					<Row type="flex" justify="space-between" gutter={16}>
+						<Col md={18}>
+							<h2>Create a New Cluster</h2>
+							<Row>
+								<Col span={18}>
+									<p>Create a new ElasticSearch Cluster with appbase.io.
+										<a href="https://docs.appbase.io" rel="noopener noreferrer" target="_blank">
+											Learn More
+										</a>
+									</p>
+								</Col>
+							</Row>
+						</Col>
+						<Col
+							md={6}
+							css={{
+								display: 'flex',
+								flexDirection: 'column-reverse',
+								paddingBottom: 20,
+							}}
+						>
+							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
+								<Button
+									size="large"
+									type="primary"
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() => this.props.history.push('/clusters/new/my-cluster')}
+									icon="question-circle"
+								>
+									Already have a Cluster
+								</Button>
+							</Tooltip>
+						</Col>
+					</Row>
+				</Header>
 				<Container>
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
@@ -874,7 +900,7 @@ export default class NewCluster extends Component {
 										>
 											<img
 												width={120}
-												src="https://seeklogo.com/images/G/grafana-logo-15BA0AFA8A-seeklogo.com.png"
+												src="/static/images/clusters/grafana.png"
 												alt="Grafana"
 											/>
 										</Button>

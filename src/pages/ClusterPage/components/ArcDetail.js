@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import {
- Button, notification, Tag, Icon,
+ Button, notification, Tag, Tooltip,
 } from 'antd';
 import { get } from 'lodash';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { updateArcDetails, verifyCluster } from '../utils';
 import { card, clusterEndpoint } from '../styles';
-import CredentialsBox from './CredentialsBox';
-
-const inputRef = React.createRef();
+import EditableCredentials from './EditableCredentials';
 
 class ArcDetail extends React.Component {
 	constructor(props) {
@@ -17,6 +16,8 @@ class ArcDetail extends React.Component {
 			username: props.arc.username,
 			password: props.arc.password,
 			esURL: (props.cluster && props.cluster.elasticsearch_url) || '',
+			showCred: false,
+			updatedArcCred: `${props.arc.username}:${props.arc.password}`,
 		};
 	}
 
@@ -81,12 +82,8 @@ class ArcDetail extends React.Component {
 	};
 
 	handleUpdate = () => {
-		const { esURL } = this.state;
-		const { arc } = this.props;
-
-		const [username, password] = (inputRef
-			&& inputRef.current
-			&& inputRef.current.textContent.split(':')) || [arc.username, arc.password];
+		const { esURL, updatedArcCred } = this.state;
+		const [username, password] = updatedArcCred.split(':');
 		const {
 			cluster: { id },
 		} = this.props;
@@ -126,6 +123,18 @@ class ArcDetail extends React.Component {
 		const { esURL, verifiedCluster } = this.state;
 	};
 
+	toggleCred = () => {
+		this.setState(state => ({
+			showCred: !state.showCred,
+		}));
+	};
+
+	updateArcCred = (value) => {
+		this.setState({
+			updatedArcCred: value,
+		});
+	};
+
 	render() {
 		const {
 			username,
@@ -137,6 +146,7 @@ class ArcDetail extends React.Component {
 			verifiedCluster,
 			urlErrorMessage,
 			clusterVersion,
+			showCred,
 		} = this.state;
 		const { arc, cluster } = this.props;
 		let isButtonDisable = false;
@@ -155,33 +165,61 @@ class ArcDetail extends React.Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Arc</h3>
+						<h3>Appbase.io Server (Arc)</h3>
+						<a href="docs.appbase.io" rel="noopener noreferrer" target="_blank">
+							Learn More
+						</a>
 					</div>
 
 					<div className="col">
 						<div className={clusterEndpoint}>
 							<h4>
-								<a
-									href={`${protocol}://${username}:${password}@${url}`}
-									target="_blank"
-									rel="noopener noreferrer"
+								Arc
+								<CopyToClipboard
+									text={`${protocol}://${username}:${password}@${url}`}
+									onCopy={() => notification.success({
+											message: 'arc URL Copied Successfully',
+										})
+									}
 								>
-									<Icon type="link" theme="outlined" />
-									Arc URL
-								</a>
+									<a
+										data-clipboard-text={`${protocol}://${username}:${password}@${url}`}
+									>
+										Copy URL
+									</a>
+								</CopyToClipboard>
 							</h4>
-							<CredentialsBox
-								isEditable
-								inputRef={inputRef}
-								name="arc"
-								text={`${username}:${password}`}
-							/>
+							<div>
+								<EditableCredentials
+									visible={showCred}
+									name="arc"
+									onChange={this.updateArcCred}
+									text={`${username}:${password}`}
+								/>
+								<Tooltip
+									title={(
+<span>
+											Your credentials determine how an external app should
+											access the ElasticSearch APIs. <strong>Note:</strong>{' '}
+											Editing credentials will impact live apps.
+</span>
+)}
+								>
+									<Button
+										style={{ marginTop: 10, display: 'block' }}
+										onClick={this.toggleCred}
+									>
+										{showCred ? 'Hide Credentials' : 'Edit Credentials'}
+									</Button>
+								</Tooltip>
+							</div>
 						</div>
 					</div>
 				</li>
 				<li className={card}>
 					<div className="col light">
-						<h3>ElasticSearch URL</h3>
+						<h3>BYOC URL</h3>
+						<p>Bring your own Cluster URL</p>
 					</div>
 
 					<div className="col full">

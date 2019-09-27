@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import {
- Button, Icon, Select, message, notification,
+ Button, Select, message, notification,
 } from 'antd';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
@@ -16,7 +17,6 @@ import { STRIPE_KEY } from '../ClusterPage';
 import ArcDetail from '../components/ArcDetail';
 
 const { Option } = Select;
-
 
 export default class ClusterScreen extends Component {
 	constructor(props) {
@@ -235,14 +235,18 @@ export default class ClusterScreen extends Component {
 			return (
 				<div key={source.name} className={clusterEndpoint}>
 					<h4>
-						<a
-							href={`${protocol}://${username}:${password}@${url}`}
-							target="_blank"
-							rel="noopener noreferrer"
+						{source.name}
+						<CopyToClipboard
+							text={`${protocol}://${username}:${password}@${url}`}
+							onCopy={() => notification.success({
+									message: ` ${source.name} URL Copied Successfully`,
+								})
+							}
 						>
-							<Icon type="link" theme="outlined" />
-							{source.name}
-						</a>
+							<a data-clipboard-text={`${protocol}://${username}:${password}@${url}`}>
+								Copy URL
+							</a>
+						</CopyToClipboard>
 					</h4>
 					<CredentialsBox name={source.name} text={`${username}:${password}`} />
 				</div>

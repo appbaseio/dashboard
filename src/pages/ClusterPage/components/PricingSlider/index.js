@@ -126,7 +126,7 @@ export default class PricingSlider extends Component {
 									duration={100}
 									stepPrecision={0}
 								/>{' '}
-								Nodes
+								{mark.nodes === 1 ? 'Node' : 'Nodes'}
 							</div>
 							<div>{mark.nodes >= 3 ? 'HA' : ''}</div>
 						</div>

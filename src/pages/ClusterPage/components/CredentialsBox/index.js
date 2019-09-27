@@ -9,7 +9,7 @@ export default class CredentialsBox extends Component {
 		super(props);
 
 		this.state = {
-			hidden: true,
+			hidden: props.hidden || true,
 		};
 	}
 

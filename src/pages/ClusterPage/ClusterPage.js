@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
- Row, Col, Icon, Button, Divider, Tag,
+ Row, Col, Icon, Button, Divider, Tag, Tooltip,
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
@@ -18,7 +18,7 @@ import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
 import DeleteClusterModal from './components/DeleteClusterModal';
-
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
 // test key
 // export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
@@ -159,9 +159,37 @@ export default class ClusterPage extends Component {
 	renderClusterCard = (cluster) => {
 		const { id, subscription } = this.paramsValue();
 		const isExternalCluster = cluster.recipe === 'arc';
+		let allMarks = machineMarks.azure;
+
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
+		}
+
+		const planDetails = Object.values(allMarks).find(
+			mark => mark.plan === cluster.pricing_plan
+				|| mark.plan.endsWith(cluster.pricing_plan)
+				|| mark.plan.startsWith(cluster.pricing_plan),
+		);
 		return (
 			<li key={cluster.id} className="cluster-card compact">
-				{isExternalCluster ? <Tag className="top-right" color="blue">Hosted Cluster</Tag> : null}
+				{isExternalCluster ? (
+					<Tooltip
+						title={(
+								<span>
+									Bring your own Cluster allows you to bring an externally hosted
+									ElasticSearch and take advantage of appbase.io features such as
+									security, analytics, better developer experience.
+									<a href="docs.appbase.io" target="_blank" rel="noopener norefferer">
+										Learn More
+									</a>
+								</span>
+							)}
+					>
+						<Tag className="top-right" color="blue">
+							Bring your own Cluster
+						</Tag>
+					</Tooltip>
+				) : null}
 				<h3>
 					{cluster.name}
 					<span className="tag">
@@ -190,7 +218,7 @@ export default class ClusterPage extends Component {
 
 					<div>
 						<h4>Pricing Plan</h4>
-						<div>{cluster.pricing_plan}</div>
+						<div>{planDetails.label || cluster.pricing_plan}</div>
 					</div>
 
 					<div>
@@ -198,33 +226,21 @@ export default class ClusterPage extends Component {
 						<div>{cluster.es_version}</div>
 					</div>
 
-					{isExternalCluster ? null : (
+					<div>
+						<h4>Memory</h4>
 						<div>
-							<h4>Memory</h4>
-							<div>
-								{this.getFromPricing(
-									cluster.pricing_plan,
-									'memory',
-									cluster.provider,
-								)}{' '}
-								GB
-							</div>
+							{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)}{' '}
+							GB
 						</div>
-					)}
+					</div>
 
-					{isExternalCluster ? null : (
+					<div>
+						<h4>Disk Size</h4>
 						<div>
-							<h4>Disk Size</h4>
-							<div>
-								{this.getFromPricing(
-									cluster.pricing_plan,
-									'storage',
-									cluster.provider,
-								)}{' '}
-								GB
-							</div>
+							{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)}{' '}
+							GB
 						</div>
-					)}
+					</div>
 
 					<div>
 						<h4>Nodes</h4>

@@ -1,19 +1,18 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Tabs, Tag,
+ Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col,
 } from 'antd';
 
-import { css } from 'emotion';
 import { get } from 'lodash';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 
-import { clusterContainer, card, settingsItem } from './styles';
+import { clusterContainer, card } from './styles';
 import { deployMyCluster, getClusters, verifyCluster } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
-import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
 const { TabPane } = Tabs;
 
@@ -322,10 +321,42 @@ export default class NewMyCluster extends Component {
 		return (
 			<Fragment>
 				<FullHeader isCluster />
-				<Banner
-					{...bannerMessage}
-					onClick={() => this.props.history.push('/clusters/new/hosted')}
-				/>
+				<Header compact>
+					<Row type="flex" justify="space-between" gutter={16}>
+						<Col md={18}>
+							<h2>Deploy appbase.io for your ElasticSearch Cluster</h2>
+							<Row>
+								<Col span={18}>
+									<p>
+										Get a better security, analytics and development experience
+										with your own ElasticSearch cluster.
+									</p>
+								</Col>
+							</Row>
+						</Col>
+						<Col
+							md={6}
+							css={{
+								display: 'flex',
+								flexDirection: 'column-reverse',
+								paddingBottom: 20,
+							}}
+						>
+							<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+								<Button
+									size="large"
+									type="primary"
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() => this.props.history.push('/clusters/new')}
+									icon="question-circle"
+								>
+									Don't have a Cluster
+								</Button>
+							</Tooltip>
+						</Col>
+					</Row>
+				</Header>
 				<Container>
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}

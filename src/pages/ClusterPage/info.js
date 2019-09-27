@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag, Alert, Tooltip,
+ Modal, Button, Icon, Tag, Tooltip,
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
+import { machineMarks as arcMachineMarks} from './NewMyCluster';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -344,6 +345,18 @@ export default class Clusters extends Component {
 		const isViewer = this.state.cluster.user_role === 'viewer';
 		const isExternalCluster = this.state.cluster.recipe === 'arc';
 
+		let allMarks = machineMarks.azure;
+
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
+		}
+
+		const planDetails = Object.values(allMarks).find(
+			mark => mark.plan === this.state.cluster.pricing_plan
+				|| mark.plan.endsWith(this.state.cluster.pricing_plan)
+				|| mark.plan.startsWith(this.state.cluster.pricing_plan),
+		);
+
 		return (
 			<Fragment>
 				<FullHeader
@@ -385,7 +398,7 @@ export default class Clusters extends Component {
 										<div>
 											<h4>Pricing Plan</h4>
 											<div>
-												{this.state.cluster.pricing_plan}
+												{planDetails.label || this.state.cluster.pricing_plan}
 												&nbsp;&nbsp;
 												{!this.state.cluster.trial && isPaid ? (
 													<Tag color="green">Paid</Tag>

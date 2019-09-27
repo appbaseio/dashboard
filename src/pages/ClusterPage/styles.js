@@ -326,17 +326,24 @@ const clustersList = css`
 const clusterEndpoint = css`
 	display: flex;
 	flex-direction: row;
-	margin: 12px 0 25px;
+	margin: 0px 0 35px;
 	${media.small(css`
 		flex-direction: column;
-	`)} h4 {
-		color: #326bdc;
+	`)}
+
+	h4 {
+		text-transform: capitalize;
 		font-size: 16px;
 		font-weight: 600;
 		width: 180px;
 		margin: 0;
 		display: flex;
-		align-items: center;
+		flex-direction: column;
+		align-items: start;
+		& a {
+			margin-top: 5px;
+			font-size: 13px;
+		}
 		${media.small(css`
 			margin-bottom: 10px;
 		`)} i {
@@ -352,6 +359,11 @@ const credsBox = css`
 	border: 1px solid #d9d8e4;
 	color: #555;
 	height: 34px;
+	.input {
+		height: 100% !important;
+		border-radius: 0;
+		border: 0;
+	}
 	${media.small(css`
 		flex-direction: column;
 		justify-content: space-around;
