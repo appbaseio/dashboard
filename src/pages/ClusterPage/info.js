@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag, Alert, Tooltip,
+ Modal, Button, Icon, Tag, Tooltip,
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
+import { machineMarks as arcMachineMarks} from './NewMyCluster';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -65,7 +66,7 @@ export default class Clusters extends Component {
 	getFromPricing = (plan, key) => {
 		const selectedPlan = (
 			Object.values(machineMarks[this.state.cluster.provider || 'azure']) || []
-		).find(item => item.plan === plan);
+		).find(item => item.plan === plan || item.plan.endsWith(plan));
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
@@ -181,7 +182,7 @@ export default class Clusters extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
-		const selectedRegion =Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+		const selectedRegion =			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
@@ -342,6 +343,19 @@ export default class Clusters extends Component {
 		const { showOverlay, isPaid } = this.state;
 
 		const isViewer = this.state.cluster.user_role === 'viewer';
+		const isExternalCluster = this.state.cluster.recipe === 'arc';
+
+		let allMarks = machineMarks.azure;
+
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
+		}
+
+		const planDetails = Object.values(allMarks).find(
+			mark => mark.plan === this.state.cluster.pricing_plan
+				|| mark.plan.endsWith(this.state.cluster.pricing_plan)
+				|| mark.plan.startsWith(this.state.cluster.pricing_plan),
+		);
 
 		return (
 			<Fragment>
@@ -384,7 +398,7 @@ export default class Clusters extends Component {
 										<div>
 											<h4>Pricing Plan</h4>
 											<div>
-												{this.state.cluster.pricing_plan}
+												{planDetails.label || this.state.cluster.pricing_plan}
 												&nbsp;&nbsp;
 												{!this.state.cluster.trial && isPaid ? (
 													<Tag color="green">Paid</Tag>
@@ -404,27 +418,31 @@ export default class Clusters extends Component {
 											<div>{this.state.cluster.es_version}</div>
 										</div>
 
-										<div>
-											<h4>Memory</h4>
+										{isExternalCluster ? null : (
 											<div>
-												{this.getFromPricing(
-													this.state.cluster.pricing_plan,
-													'memory',
-												)}{' '}
-												GB
+												<h4>Memory</h4>
+												<div>
+													{this.getFromPricing(
+														this.state.cluster.pricing_plan,
+														'memory',
+													)}{' '}
+													GB
+												</div>
 											</div>
-										</div>
+										)}
 
-										<div>
-											<h4>Disk Size</h4>
+										{isExternalCluster ? null : (
 											<div>
-												{this.getFromPricing(
-													this.state.cluster.pricing_plan,
-													'storage',
-												)}{' '}
-												GB
+												<h4>Disk Size</h4>
+												<div>
+													{this.getFromPricing(
+														this.state.cluster.pricing_plan,
+														'storage',
+													)}{' '}
+													GB
+												</div>
 											</div>
-										</div>
+										)}
 
 										<div>
 											<h4>Nodes</h4>
@@ -496,9 +514,7 @@ export default class Clusters extends Component {
 										<div className="col vcenter">
 											<Link
 												to={{
-													pathname: `/clusters/${
-														this.props.match.params.id
-													}/explore`,
+													pathname: `/clusters/${this.props.match.params.id}/explore`,
 													state: {
 														arc: getAddon('arc', this.state.deployment),
 														cluster: this.state.cluster.name,
@@ -524,6 +540,7 @@ export default class Clusters extends Component {
 										<Sidebar
 											id={this.props.match.params.id}
 											isViewer={isViewer}
+											isExternalCluster={isExternalCluster}
 										/>
 										<RightContainer>
 											<Switch>
@@ -534,6 +551,7 @@ export default class Clusters extends Component {
 														<ClusterScreen
 															clusterId={this.props.match.params.id}
 															cluster={this.state.cluster}
+															isExternalCluster={isExternalCluster}
 															deployment={this.state.deployment}
 															arc={this.state.arc}
 															streams={this.state.streams}
@@ -558,21 +576,24 @@ export default class Clusters extends Component {
 												/>
 												{isViewer || (
 													<React.Fragment>
-														<Route
-															exact
-															path="/clusters/:id/scale"
-															component={() => (
-																<ScaleClusterScreen
-																	clusterId={
-																		this.props.match.params.id
-																	}
-																	nodes={
-																		this.state.cluster
-																			.total_nodes
-																	}
-																/>
-															)}
-														/>
+														{isExternalCluster ? null : (
+															<Route
+																exact
+																path="/clusters/:id/scale"
+																component={() => (
+																	<ScaleClusterScreen
+																		clusterId={
+																			this.props.match.params
+																				.id
+																		}
+																		nodes={
+																			this.state.cluster
+																				.total_nodes
+																		}
+																	/>
+																)}
+															/>
+														)}
 														<Route
 															exact
 															path="/clusters/:id/share"

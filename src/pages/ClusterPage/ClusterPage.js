@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
- Row, Col, Icon, Button, Divider,
+ Row, Col, Icon, Button, Divider, Tag, Tooltip,
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
@@ -18,7 +18,7 @@ import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
 import DeleteClusterModal from './components/DeleteClusterModal';
-
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
 // test key
 // export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
@@ -88,7 +88,9 @@ export default class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(item => item.plan === plan || item.plan.endsWith(plan));
+		const selectedPlan = Object.values(machineMarks[provider]).find(
+			item => item.plan === plan || item.plan.endsWith(plan),
+		);
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
@@ -133,7 +135,7 @@ export default class ClusterPage extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
-		const selectedRegion = Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+		const selectedRegion =			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
@@ -156,8 +158,21 @@ export default class ClusterPage extends Component {
 
 	renderClusterCard = (cluster) => {
 		const { id, subscription } = this.paramsValue();
+		const isExternalCluster = cluster.recipe === 'arc';
+		let allMarks = machineMarks.azure;
+
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
+		}
+
+		const planDetails = Object.values(allMarks).find(
+			mark => mark.plan === cluster.pricing_plan
+				|| mark.plan.endsWith(cluster.pricing_plan)
+				|| mark.plan.startsWith(cluster.pricing_plan),
+		);
 		return (
-			<li key={cluster.name} className="cluster-card compact">
+			<li key={cluster.id} className="cluster-card compact">
+
 				<h3>
 					{cluster.name}
 					<span className="tag">
@@ -176,6 +191,24 @@ export default class ClusterPage extends Component {
 							Delete
 						</Button>
 					) : null}
+					{isExternalCluster ? (
+					<Tooltip
+						title={(
+								<span>
+									Bring your own Cluster allows you to bring an externally hosted
+									ElasticSearch and take advantage of appbase.io features such as
+									security, analytics, better developer experience.{' '}
+									<a href="docs.appbase.io" target="_blank" rel="noopener norefferer">
+										Learn More
+									</a>
+								</span>
+							)}
+					>
+						<span className="tag top-right">
+							Bring your own Cluster
+						</span>
+					</Tooltip>
+				) : null}
 				</h3>
 
 				<div className="info-row">
@@ -186,7 +219,7 @@ export default class ClusterPage extends Component {
 
 					<div>
 						<h4>Pricing Plan</h4>
-						<div>{cluster.pricing_plan}</div>
+						<div>{planDetails.label || cluster.pricing_plan}</div>
 					</div>
 
 					<div>
@@ -307,6 +340,7 @@ export default class ClusterPage extends Component {
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
 		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
+
 		const clustersInProgress = clusters.filter(
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
 		);
@@ -385,7 +419,10 @@ export default class ClusterPage extends Component {
 						<article>
 							<h2>My Clusters</h2>
 
-							{this.renderClusterHeading('Active Clusters', activeClusters.length)}
+							{this.renderClusterHeading(
+								'Active Appbase Clusters',
+								activeClusters.length,
+							)}
 							{activeClusters.length ? (
 								<ul className={clustersList}>
 									{activeClusters.map(cluster => this.renderClusterCard(cluster))}

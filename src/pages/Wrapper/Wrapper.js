@@ -64,6 +64,11 @@ const UserDetails = Loadable({
 	loading: Loader,
 });
 
+const NewMyCluster = Loadable({
+	loader: () => import('../ClusterPage/NewMyCluster'),
+	loading: Loader,
+});
+
 function hasFilledDetails(user) {
 	if (user && user.data) {
 		const {
@@ -83,6 +88,8 @@ const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
 			<Route exact path="/tutorial/finish" component={EndPage} />
 			<Route exact path="/marketplace" component={MarketPlacePage} />
 			<Route exact path="/clusters" component={ClusterPage} />
+			<Route path="/clusters/new/hosted" component={NewClusterPage} />
+			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />
 			<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
 			<Route path="/clusters/:id" component={ClusterInfoPage} />
