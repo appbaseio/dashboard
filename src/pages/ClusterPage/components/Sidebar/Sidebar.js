@@ -11,8 +11,10 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 		defaultSelectedKeys = ['1'];
 	} else if (window.location.pathname.endsWith('/scale')) {
 		defaultSelectedKeys = ['2'];
-	} else {
+	} else if (window.location.pathname.endsWith('/share')) {
 		defaultSelectedKeys = ['3'];
+	} else {
+		defaultSelectedKeys = ['4'];
 	}
 	return (
 		<Menu
@@ -39,6 +41,11 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 					</Link>
 				</Menu.Item>
 			)}
+			<Menu.Item key="4">
+				<Link to={`${baseRoute}/invoice`}>
+					<Icon type="bar-chart" /> Invoice
+				</Link>
+			</Menu.Item>
 		</Menu>
 	);
 }

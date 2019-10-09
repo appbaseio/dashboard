@@ -20,9 +20,9 @@ import Overlay from './components/Overlay';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 // test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export default class ClusterPage extends Component {
 	constructor(props) {
