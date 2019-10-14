@@ -81,7 +81,6 @@ class Unsubscribe extends Component {
 							: 'Unsubscribe'}
 					</Button>,
 				]}
-				okText="Continue to Unsubscribe"
 				width={645}
 				bodyStyle={{ height: typeFormStep === TYPE_FORM_LOADED && '600px' }}
 			>
