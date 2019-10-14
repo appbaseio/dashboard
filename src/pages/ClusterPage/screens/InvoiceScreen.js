@@ -75,22 +75,7 @@ export default class InvoiceScreen extends Component {
 	};
 
 	render() {
-		const { isTrial } = this.props;
 		const { isLoading, filteredInvoice } = this.state;
-
-		if (isTrial) {
-			return (
-				<div>
-					<Card title="Invoice">
-						<Alert
-							description="The usage view is only accessible for paid subscriptions."
-							type="info"
-							showIcon
-						/>
-					</Card>
-				</div>
-			);
-		}
 
 		const columns = [
 			{
