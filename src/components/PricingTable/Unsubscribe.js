@@ -97,14 +97,19 @@ class Unsubscribe extends Component {
 						/>
 					)}
 					{typeFormStep === TYPE_FORM_UNLOADED && (
-						<p style={{ fontSize: '14px' }}>
+						<p>
 							{/* eslint-disable-next-line react/no-unescaped-entities */}
 							We're sorry to see you go. Are you sure you want to unsubscribe from the
 							current plan?
+							<br />
+							<p style={{ fontSize: '14px' }}>
+								{/* eslint-disable-next-line react/no-unescaped-entities */}
+								You'll be asked for a one question feedback survey.
+							</p>
 						</p>
 					)}
 					{typeFormStep === TYPE_FORM_SUBMITTED && (
-						<p style={{ fontSize: '14px' }}>
+						<p>
 							{/* eslint-disable-next-line react/no-unescaped-entities */}
 							Thanks for giving us feedback. We'll keep in mind to make appbase.io
 							better.
