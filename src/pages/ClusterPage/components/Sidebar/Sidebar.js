@@ -43,7 +43,7 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 			)}
 			<Menu.Item key="4">
 				<Link to={`${baseRoute}/invoice`}>
-					<Icon type="bar-chart" /> Invoice
+					<Icon type="bar-chart" /> View Usage
 				</Link>
 			</Menu.Item>
 		</Menu>
