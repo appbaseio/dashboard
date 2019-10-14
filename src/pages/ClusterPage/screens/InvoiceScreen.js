@@ -33,12 +33,14 @@ export default class InvoiceScreen extends Component {
 	componentDidMount() {
 		getClusterInvoice(this.props.clusterId)
 			.then(data => this.setState(() => {
-					const invoice = data.invoice_breakdown.map(item => ({
-						...item,
-						from: item.from * 1000,
-						to: item.to * 1000,
-						consumption: (item.to - item.from) / 3600,
-					}));
+					// prettier-ignore
+					const invoice = data && data.invoice_breakdown
+							? data.invoice_breakdown.map(item => ({
+									...item,
+									from: item.from * 1000,
+									to: item.to * 1000,
+									consumption: (item.to - item.from) / 3600,
+							}))	: [];
 					return {
 						isLoading: false,
 						invoice,
