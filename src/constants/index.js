@@ -24,4 +24,12 @@ const CREATE_APP = {
 	RESET: 'CREATE_APP_RESET',
 };
 
-export { USER, APPS, CREATE_APP };
+const TYPE_FORM = {
+	UNLOADED: 0,
+	LOADED: 1,
+	SUBMITTED: 2,
+};
+
+export {
+ USER, APPS, CREATE_APP, TYPE_FORM,
+};

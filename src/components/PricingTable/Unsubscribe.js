@@ -7,16 +7,13 @@ import get from 'lodash/get';
 import * as typeformEmbed from '@typeform/embed';
 import { deleteAppSubscription, getAppPlan } from '../../batteries/modules/actions';
 import { displayErrors } from '../../utils/helper';
-
-const TYPE_FORM_UNLOADED = 0;
-const TYPE_FORM_LOADED = 1;
-const TYPE_FORM_SUBMITTED = 2;
+import { TYPE_FORM } from '../../constants';
 
 class Unsubscribe extends Component {
 	constructor(props) {
 		super(props);
 		this.myRef = React.createRef();
-		this.state = { typeFormStep: TYPE_FORM_UNLOADED };
+		this.state = { typeFormStep: TYPE_FORM.UNLOADED };
 	}
 
 	componentDidUpdate(prevProps) {
@@ -25,7 +22,7 @@ class Unsubscribe extends Component {
 	}
 
 	embedTypescriptWidget = () => {
-		this.setState({ typeFormStep: TYPE_FORM_LOADED });
+		this.setState({ typeFormStep: TYPE_FORM.LOADED });
 		if (this.myRef.current) {
 			typeformEmbed.makeWidget(
 				this.myRef.current,
@@ -35,7 +32,7 @@ class Unsubscribe extends Component {
 					hideHeaders: true,
 					opacity: 0,
 					onSubmit: () => {
-						this.setState({ typeFormStep: TYPE_FORM_SUBMITTED });
+						this.setState({ typeFormStep: TYPE_FORM.SUBMITTED });
 					},
 				},
 			);
@@ -62,55 +59,51 @@ class Unsubscribe extends Component {
 				onCancel={onCancel}
 				footer={[
 					<Button key="back" onClick={onCancel}>
-						{/* eslint-disable-next-line react/no-unescaped-entities */}
-						I've changed my mind
+						I{"'"}ve changed my mind
 					</Button>,
 					<Button
 						loading={loading}
 						key="submit"
 						type="primary"
 						onClick={
-							typeFormStep === TYPE_FORM_UNLOADED
+							typeFormStep === TYPE_FORM.UNLOADED
 								? this.embedTypescriptWidget
 								: this.deleteSubscription
 						}
-						disabled={typeFormStep === TYPE_FORM_LOADED}
+						disabled={typeFormStep === TYPE_FORM.LOADED}
 					>
-						{typeFormStep === TYPE_FORM_UNLOADED
+						{typeFormStep === TYPE_FORM.UNLOADED
 							? 'Continue to Unsubscribe'
 							: 'Unsubscribe'}
 					</Button>,
 				]}
 				width={645}
-				bodyStyle={{ height: typeFormStep === TYPE_FORM_LOADED && '600px' }}
+				bodyStyle={{ height: typeFormStep === TYPE_FORM.LOADED && '600px' }}
 			>
 				<>
-					{typeFormStep !== TYPE_FORM_SUBMITTED && (
+					{typeFormStep !== TYPE_FORM.SUBMITTED && (
 						<div
 							ref={this.myRef}
 							style={
-								typeFormStep === TYPE_FORM_LOADED
+								typeFormStep === TYPE_FORM.LOADED
 									? { width: '100%', height: '100%' }
 									: null
 							}
 						/>
 					)}
-					{typeFormStep === TYPE_FORM_UNLOADED && (
+					{typeFormStep === TYPE_FORM.UNLOADED && (
 						<p>
-							{/* eslint-disable-next-line react/no-unescaped-entities */}
-							We're sorry to see you go. Are you sure you want to unsubscribe from the
-							current plan?
+							We{"'"}re sorry to see you go. Are you sure you want to unsubscribe from
+							the current plan?
 							<br />
 							<p style={{ fontSize: '14px' }}>
-								{/* eslint-disable-next-line react/no-unescaped-entities */}
-								You'll be asked for a one question feedback survey.
+								You{"'"}ll be asked for a one question feedback survey.
 							</p>
 						</p>
 					)}
-					{typeFormStep === TYPE_FORM_SUBMITTED && (
+					{typeFormStep === TYPE_FORM.SUBMITTED && (
 						<p>
-							{/* eslint-disable-next-line react/no-unescaped-entities */}
-							Thanks for giving us feedback. We'll keep in mind to make appbase.io
+							Thanks for giving us feedback. We{"'"}ll keep in mind to make appbase.io
 							better.
 						</p>
 					)}
