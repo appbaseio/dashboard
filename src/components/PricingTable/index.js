@@ -3,7 +3,7 @@ import styled, { css } from 'react-emotion';
 import { Check } from 'react-feather';
 import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-import { Tooltip, Modal, Button } from 'antd';
+import { Tooltip } from 'antd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import AppButton from './AppButton';
@@ -20,6 +20,7 @@ import {
 	getAppPlan,
 } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
+import Unsubscribe from './Unsubscribe';
 
 const CheckList = ({ list }) => list.map(item => (
 		<li key={item}>
@@ -322,16 +323,6 @@ class PricingTable extends Component {
 		});
 	};
 
-	deleteSubscription = () => {
-		const { deleteSubscription, fetchAppPlan } = this.props;
-		deleteSubscription().then((action) => {
-			if (get(action, 'payload')) {
-				fetchAppPlan();
-				this.cancelConfirmBox();
-			}
-		});
-	};
-
 	showConfirmBox = () => {
 		this.setState({
 			showConfirmBox: true,
@@ -366,33 +357,14 @@ class PricingTable extends Component {
  plans, bootstrap, growth, active, showConfirmBox, selectedPlan,
 } = this.state;
 		const {
- isFreePlan, isBootstrapPlan, isGrowthPlan, isSubmitting, isLoading,
+ isFreePlan, isBootstrapPlan, isGrowthPlan, isLoading,
 } = this.props;
 		if (isLoading) {
 			return <Loader show message="Updating Plan... Please wait!" />;
 		}
 		return (
 			<React.Fragment>
-				<Modal
-					title="Delete Subscription"
-					visible={showConfirmBox}
-					onCancel={this.cancelConfirmBox}
-					footer={[
-						<Button key="back" onClick={this.cancelConfirmBox}>
-							Cancel
-						</Button>,
-						<Button
-							loading={isSubmitting}
-							key="submit"
-							type="primary"
-							onClick={this.deleteSubscription}
-						>
-							Unsubscribe
-						</Button>,
-					]}
-				>
-					<p>Are you sure to unsubscribe current subscription?</p>
-				</Modal>
+				{showConfirmBox && <Unsubscribe onCancel={this.cancelConfirmBox} />}
 				<Table className={hideOnLarge}>
 					<thead>
 						<tr colSpan="1">
@@ -917,10 +889,8 @@ class PricingTable extends Component {
 
 PricingTable.propTypes = {
 	createSubscription: PropTypes.func.isRequired,
-	deleteSubscription: PropTypes.func.isRequired,
 	fetchAppPlan: PropTypes.func.isRequired,
 	isLoading: PropTypes.bool.isRequired,
-	isSubmitting: PropTypes.bool.isRequired,
 	isFreePlan: PropTypes.bool.isRequired,
 	isBootstrapPlan: PropTypes.bool.isRequired,
 	isGrowthPlan: PropTypes.bool.isRequired,
@@ -929,15 +899,11 @@ PricingTable.propTypes = {
 const mapStateToProps = (state) => {
 	const appPlan = getAppPlanByName(state);
 	return {
-		isSubmitting: get(state, '$deleteAppSubscription.isFetching'),
 		isLoading: get(state, '$createAppSubscription.isFetching'),
 		isFreePlan: !get(appPlan, 'isPaid'),
 		isBootstrapPlan: get(appPlan, 'isBootstrap'),
 		isGrowthPlan: get(appPlan, 'isGrowth'),
-		errors: [
-			get(state, '$deleteAppSubscription.error'),
-			get(state, '$createAppSubscription.error'),
-		],
+		errors: [get(state, '$createAppSubscription.error')],
 	};
 };
 
