@@ -609,7 +609,7 @@ export default class Clusters extends Component {
 														/>
 														<Route
 															exact
-															path="/clusters/:id/invoice"
+															path="/clusters/:id/usage"
 															component={() => (
 																<InvoiceScreen
 																	clusterId={

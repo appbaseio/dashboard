@@ -172,7 +172,6 @@ export default class ClusterPage extends Component {
 		);
 		return (
 			<li key={cluster.id} className="cluster-card compact">
-
 				<h3>
 					{cluster.name}
 					<span className="tag">
@@ -192,23 +191,25 @@ export default class ClusterPage extends Component {
 						</Button>
 					) : null}
 					{isExternalCluster ? (
-					<Tooltip
-						title={(
-								<span>
+						<Tooltip
+							title={(
+<span>
 									Bring your own Cluster allows you to bring an externally hosted
 									ElasticSearch and take advantage of appbase.io features such as
 									security, analytics, better developer experience.{' '}
-									<a href="docs.appbase.io" target="_blank" rel="noopener norefferer">
+									<a
+										href="docs.appbase.io"
+										target="_blank"
+										rel="noopener norefferer"
+									>
 										Learn More
 									</a>
-								</span>
-							)}
-					>
-						<span className="tag top-right">
-							Bring your own Cluster
-						</span>
-					</Tooltip>
-				) : null}
+</span>
+)}
+						>
+							<span className="tag top-right">Bring your own Cluster</span>
+						</Tooltip>
+					) : null}
 				</h3>
 
 				<div className="info-row">
@@ -227,21 +228,33 @@ export default class ClusterPage extends Component {
 						<div>{cluster.es_version}</div>
 					</div>
 
-					<div>
-						<h4>Memory</h4>
+					{isExternalCluster ? null : (
 						<div>
-							{this.getFromPricing(cluster.pricing_plan, 'memory', cluster.provider)}{' '}
-							GB
+							<h4>Memory</h4>
+							<div>
+								{this.getFromPricing(
+									cluster.pricing_plan,
+									'memory',
+									cluster.provider,
+								)}{' '}
+								GB
+							</div>
 						</div>
-					</div>
+					)}
 
-					<div>
-						<h4>Disk Size</h4>
+					{isExternalCluster ? null : (
 						<div>
-							{this.getFromPricing(cluster.pricing_plan, 'storage', cluster.provider)}{' '}
-							GB
+							<h4>Disk Size</h4>
+							<div>
+								{this.getFromPricing(
+									cluster.pricing_plan,
+									'storage',
+									cluster.provider,
+								)}{' '}
+								GB
+							</div>
 						</div>
-					</div>
+					)}
 
 					<div>
 						<h4>Nodes</h4>
@@ -249,7 +262,7 @@ export default class ClusterPage extends Component {
 					</div>
 
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
-						<div>
+						<div style={ isExternalCluster ? {textAlign: 'center'} : {} }>
 							{cluster.trial || cluster.subscription_id ? (
 								<Link to={`/clusters/${cluster.id}`}>
 									<Button type="primary">View Details</Button>

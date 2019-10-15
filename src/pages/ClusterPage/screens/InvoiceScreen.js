@@ -58,20 +58,26 @@ export default class InvoiceScreen extends Component {
 			});
 	}
 
-	handleFilter = (_, dateString) => {
-		const startDate = new Date(dateString[0]).getTime();
-		const endDate = new Date(dateString[1]).getTime();
-		const { invoice } = this.state;
-		const filteredData = invoice.filter((item) => {
-			// prettier-ignore
-			const isInRange = (moment(item.from).isSame(startDate, 'date')
-					|| moment(item.from).isAfter(moment(startDate)))
-				&& (moment(item.to).isSame(endDate, 'date') || moment(item.to).isBefore(endDate));
-			return isInRange;
-		});
-		this.setState({
-			filteredInvoice: filteredData,
-		});
+	handleFilter = (dateArray, dateString) => {
+		if (dateArray.length) {
+			const startDate = new Date(dateString[0]).getTime();
+			const endDate = new Date(dateString[1]).getTime();
+			const { invoice } = this.state;
+			const filteredData = invoice.filter((item) => {
+				// prettier-ignore
+				const isInRange = (moment(item.from).isSame(startDate, 'date')
+						|| moment(item.from).isAfter(moment(startDate)))
+					&& (moment(item.to).isSame(endDate, 'date') || moment(item.to).isBefore(endDate));
+				return isInRange;
+			});
+			this.setState({
+				filteredInvoice: filteredData,
+			});
+		} else {
+			this.setState(state => ({
+				filteredInvoice: state.invoice,
+			}));
+		}
 	};
 
 	render() {
@@ -79,16 +85,16 @@ export default class InvoiceScreen extends Component {
 
 		const columns = [
 			{
-				title: 'Invoice From',
+				title: 'Usage From',
 				dataIndex: 'from',
 				key: 'from',
-				render: date => new Date(date).toLocaleDateString(),
+				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
 			},
 			{
-				title: 'Invoice till',
+				title: 'Usage Till',
 				dataIndex: 'to',
 				key: 'to',
-				render: date => new Date(date).toLocaleDateString(),
+				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
 			},
 			{
 				title: 'Consumption (in hours)',
@@ -100,6 +106,7 @@ export default class InvoiceScreen extends Component {
 				title: 'Cost (in dollars)',
 				dataIndex: 'cost',
 				key: 'cost',
+				render: cost => cost.toFixed(2),
 			},
 		];
 
@@ -108,7 +115,7 @@ export default class InvoiceScreen extends Component {
 				<Card
 					title={(
 <div className={flex}>
-							<span>Invoice</span>
+							<span>Usage</span>
 
 							<RangePicker disabledDate={disabledDate} onChange={this.handleFilter} />
 </div>
