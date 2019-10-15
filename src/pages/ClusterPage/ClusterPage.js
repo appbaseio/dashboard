@@ -262,7 +262,7 @@ export default class ClusterPage extends Component {
 					</div>
 
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
-						<div style={ isExternalCluster ? {textAlign: 'center'} : {} }>
+						<div style={isExternalCluster ? { textAlign: 'center' } : {}}>
 							{cluster.trial || cluster.subscription_id ? (
 								<Link to={`/clusters/${cluster.id}`}>
 									<Button type="primary">View Details</Button>
