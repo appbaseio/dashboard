@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { css } from 'react-emotion';
-import { Button, notification } from 'antd';
+import { Button, notification, Alert } from 'antd';
+import { connect } from 'react-redux';
+import Stripe from 'react-stripe-checkout';
+import { get } from 'lodash';
 
 import IntegerStep from '../components/IntegerStep';
 import { card } from '../styles';
+import { STRIPE_KEY } from '../ClusterPage';
 import { scaleCluster } from '../utils';
 
 const column = css`
@@ -14,7 +18,7 @@ const column = css`
 	padding: 0 20px;
 `;
 
-export default class ScaleClusterScreen extends Component {
+class ScaleClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
@@ -58,6 +62,10 @@ export default class ScaleClusterScreen extends Component {
 
 	render() {
 		const { isDirty, nodes, defaultValue } = this.state;
+		const {
+ isUsingTrial, cluster, toggleOverlay, handleToken,
+} = this.props;
+
 		return (
 			<div>
 				<div className={card}>
@@ -67,26 +75,57 @@ export default class ScaleClusterScreen extends Component {
 					</div>
 
 					<div className={column}>
-						<IntegerStep
-							defaultValue={defaultValue}
-							value={nodes}
-							onChange={this.handleChange}
-						/>
+						{isUsingTrial ? (
+							<React.Fragment>
+								<p style={{ margin: '0', width: '100%' }}>
+									Upgrade now to power up your Cluster.
+								</p>
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={(cluster.plan_rate || 0) * 100}
+									token={token => handleToken(cluster.id, token)}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+									closed={toggleOverlay}
+								>
+									<Button type="primary" onClick={toggleOverlay}>
+										Upgrade Now
+									</Button>
+								</Stripe>
+							</React.Fragment>
+						) : (
+							<IntegerStep
+								defaultValue={defaultValue}
+								value={nodes}
+								onChange={this.handleChange}
+							/>
+						)}
 					</div>
 				</div>
 
 				<div css={{ display: 'flex', flexDirection: 'row-reverse' }}>
-					<Button
-						size="large"
-						icon="save"
-						type="primary"
-						disabled={!isDirty}
-						onClick={this.scaleCluster}
-					>
-						Apply Changes
-					</Button>
+					{isUsingTrial ? null : (
+						<Button
+							size="large"
+							icon="save"
+							type="primary"
+							disabled={!isDirty}
+							onClick={this.scaleCluster}
+						>
+							Apply Changes
+						</Button>
+					)}
 				</div>
 			</div>
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ScaleClusterScreen);
