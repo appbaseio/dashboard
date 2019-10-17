@@ -78,7 +78,7 @@ class ScaleClusterScreen extends Component {
 						{isUsingTrial ? (
 							<React.Fragment>
 								<p style={{ margin: '0', width: '100%' }}>
-									Upgrade now to power up your Cluster.
+									Scaling the cluster size requires an upgrade to a paid plan.
 								</p>
 								<Stripe
 									name="Appbase.io Clusters"
