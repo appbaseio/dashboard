@@ -39,7 +39,7 @@ export default class InvoiceScreen extends Component {
 									...item,
 									from: item.from * 1000,
 									to: item.to * 1000,
-									consumption: (item.to - item.from) / 3600,
+									consumption: item.hours,
 							}))	: [];
 					return {
 						isLoading: false,
@@ -85,13 +85,13 @@ export default class InvoiceScreen extends Component {
 
 		const columns = [
 			{
-				title: 'Usage From',
+				title: 'From',
 				dataIndex: 'from',
 				key: 'from',
 				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
 			},
 			{
-				title: 'Usage Till',
+				title: 'Till',
 				dataIndex: 'to',
 				key: 'to',
 				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
@@ -100,7 +100,6 @@ export default class InvoiceScreen extends Component {
 				title: 'Consumption (in hours)',
 				dataIndex: 'consumption',
 				key: 'consumption',
-				render: consumption => consumption.toFixed(2),
 			},
 			{
 				title: 'Cost (in dollars)',
