@@ -12,6 +12,9 @@ const clusterContainer = css`
 		margin: 0 12px;
 		border: 1px solid #ccc;
 	}
+	.tag.top-right {
+		margin-left: auto;
+	}
 	h2,
 	h3 {
 		font-size: 18px;
@@ -127,6 +130,9 @@ const card = css`
 			display: flex;
 			align-items: center;
 		}
+		&.full {
+			width: 100%;
+		}
 		p {
 			font-size: 14px;
 		}
@@ -138,6 +144,7 @@ const card = css`
 		}
 		&.light {
 			background-color: #eaf5ff;
+			max-width: 270px;
 		}
 		&.grey {
 			background-color: #f9f9f9;
@@ -233,6 +240,7 @@ const clustersList = css`
 	.cluster-card {
 		padding: 30px 25px;
 		border-radius: 3px;
+		position: relative;
 		margin-bottom: 30px;
 		box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.05);
 		background-color: #fff;
@@ -316,17 +324,24 @@ const clustersList = css`
 const clusterEndpoint = css`
 	display: flex;
 	flex-direction: row;
-	margin: 12px 0 25px;
+	margin: 0px 0 35px;
 	${media.small(css`
 		flex-direction: column;
-	`)} h4 {
-		color: #326bdc;
+	`)}
+
+	h4 {
+		text-transform: capitalize;
 		font-size: 16px;
 		font-weight: 600;
 		width: 180px;
 		margin: 0;
 		display: flex;
-		align-items: center;
+		flex-direction: column;
+		align-items: start;
+		& a {
+			margin-top: 5px;
+			font-size: 13px;
+		}
 		${media.small(css`
 			margin-bottom: 10px;
 		`)} i {
@@ -342,6 +357,12 @@ const credsBox = css`
 	border: 1px solid #d9d8e4;
 	color: #555;
 	height: 34px;
+	.input {
+		height: 100% !important;
+		border-radius: 0;
+		border: 0;
+		min-width: 280px;
+	}
 	${media.small(css`
 		flex-direction: column;
 		justify-content: space-around;

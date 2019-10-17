@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ id, isViewer }) {
+export default function Sidebar({ id, isViewer, isExternalCluster }) {
 	const baseRoute = `/clusters/${id}`;
 	let defaultSelectedKeys;
 
@@ -25,7 +25,7 @@ export default function Sidebar({ id, isViewer }) {
 					<Icon type="cluster" /> Cluster
 				</Link>
 			</Menu.Item>
-			{isViewer || (
+			{isViewer || isExternalCluster || (
 				<Menu.Item key="2">
 					<Link to={`${baseRoute}/scale`}>
 						<Icon type="database" /> Scale Cluster

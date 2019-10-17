@@ -9,7 +9,7 @@ export default class CredentialsBox extends Component {
 		super(props);
 
 		this.state = {
-			hidden: true,
+			hidden: props.hidden || true,
 		};
 	}
 
@@ -26,22 +26,36 @@ export default class CredentialsBox extends Component {
 
 	render() {
 		const { hidden } = this.state;
-		const { text, name } = this.props;
+		const {
+ text, name, isEditable, inputRef,
+} = this.props;
 
 		return (
 			<div className={credsBox}>
-				<span className="cred-text">
-					{hidden ? '#######################################' : text}
-				</span>
+				{isEditable ? (
+					<span
+						className="cred-text"
+						ref={inputRef}
+						contentEditable
+						dangerouslySetInnerHTML={{ __html: text }}
+					/>
+				) : (
+					<span className="cred-text" contentEditable={!!(isEditable && !hidden)}>
+						{hidden ? '#######################################' : text}
+					</span>
+				)}
+
 				<span className="cred-button">
-					<a onClick={this.toggleHidden}>
-						{hidden ? (
-							<Icon type="eye" theme="outlined" />
-						) : (
-							<Icon type="close-circle" theme="outlined" />
-						)}
-						<span className="cred-button-text">{hidden ? 'Show' : 'Hide'}</span>
-					</a>
+					{isEditable ? null : (
+						<a onClick={this.toggleHidden}>
+							{hidden ? (
+								<Icon type="eye" theme="outlined" />
+							) : (
+								<Icon type="close-circle" theme="outlined" />
+							)}
+							<span className="cred-button-text">{hidden ? 'Show' : 'Hide'}</span>
+						</a>
+					)}
 					<CopyToClipboard text={text} onCopy={() => this.copySuccess(name)}>
 						<a data-clipboard-text={text}>
 							<Icon type="copy" theme="outlined" />

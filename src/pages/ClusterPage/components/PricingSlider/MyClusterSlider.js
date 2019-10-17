@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { Slider } from 'antd';
+import { Slider, Tooltip, Icon } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 
 import { clusterInfo } from '../../styles';
 
-class PricingSlider extends Component {
+export default class PricingSlider extends Component {
 	constructor(props) {
 		super(props);
 
@@ -70,6 +70,7 @@ class PricingSlider extends Component {
 		const { marks, active, value } = this.state;
 		const mark = marks[active] || {};
 		const { sliderProps } = this.props;
+
 		return (
 			<Fragment>
 				<div className="col grow expanded">
@@ -87,49 +88,27 @@ class PricingSlider extends Component {
 					<div className={clusterInfo}>
 						<div className="cluster-info__item">
 							<div>
-								<AnimatedNumber
-									value={mark.memory}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								GB
-							</div>
-							<div>Memory</div>
-						</div>
-						<div className="cluster-info__item">
-							<div>
-								<AnimatedNumber value={mark.cpu} duration={100} stepPrecision={0} />{' '}
-							</div>
-							<div>CPUs</div>
-						</div>
-						<div className="cluster-info__item">
-							<div>
-								<AnimatedNumber
-									value={mark.storage}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								GB
-							</div>
-							<div>Storage (SSD)</div>
-						</div>
-						<div className="cluster-info__item">
-							<div>
 								$
 								<AnimatedNumber value={mark.pph} duration={100} stepPrecision={0} />
 							</div>
 							<div>Price per hour</div>
 						</div>
 						<div className="cluster-info__item">
-							<div>
-								<AnimatedNumber
-									value={mark.nodes}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								{mark.nodes === 1 ? 'Node' : 'Nodes'}
-							</div>
-							<div>{mark.nodes >= 3 ? 'HA' : ''}</div>
+							<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
+								<div>
+									<AnimatedNumber
+										value={mark.nodes}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									{mark.nodes === 1 ? 'Node' : 'Nodes'}
+									<Icon
+										type="question-circle"
+										style={{ size: 14, marginLeft: 5 }}
+									/>
+								</div>
+							</Tooltip>
+							<div>Supported</div>
 						</div>
 					</div>
 					<div className={clusterInfo}>
@@ -151,5 +130,3 @@ class PricingSlider extends Component {
 		);
 	}
 }
-
-export default PricingSlider;

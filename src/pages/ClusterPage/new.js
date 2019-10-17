@@ -1,7 +1,11 @@
 import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Select, Tabs } from 'antd';
-
+import {
+ Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col,
+} from 'antd';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import { css } from 'emotion';
+
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -11,13 +15,13 @@ import { clusterContainer, card, settingsItem } from './styles';
 import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
 const { Option } = Select;
 
 const { TabPane } = Tabs;
 
-const SSH_KEY =
-	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
+const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
 	'7.4.0',
@@ -37,7 +41,7 @@ const esVersions = [
 	'5.6.16',
 ];
 
-const odfeVersions = ['1.1.0', '0.9.0'];
+const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
 const V7_ARC = '7.4.1-appbase';
 const V6_ARC = '0.1.6';
@@ -206,6 +210,7 @@ const esContainer = css`
 	flex-direction: column;
 	max-width: 200px;
 	margin-right: 20px;
+	min-width: 160px;
 	p {
 		padding: 5px;
 		margin: 0;
@@ -214,12 +219,12 @@ const esContainer = css`
 	}
 `;
 
-export default class NewCluster extends Component {
+class NewCluster extends Component {
 	constructor(props) {
 		super(props);
 
 		const pluginState = {};
-		Object.keys(plugins).forEach(item => {
+		Object.keys(plugins).forEach((item) => {
 			pluginState[item] = item !== 'x-pack';
 		});
 
@@ -244,13 +249,14 @@ export default class NewCluster extends Component {
 			isClusterLoading: true,
 			esFlavor: 'es',
 			provider,
+			visualization: 'none',
 			...pluginState,
 		};
 	}
 
 	componentDidMount() {
 		getClusters()
-			.then(clusters => {
+			.then((clusters) => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -260,7 +266,7 @@ export default class NewCluster extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -289,14 +295,14 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	setPricing = plan => {
+	setPricing = (plan) => {
 		this.setState({
 			vm_size: plan.machine,
 			pricing_plan: plan.plan,
 		});
 	};
 
-	toggleConfig = type => {
+	toggleConfig = (type) => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -338,6 +344,8 @@ export default class NewCluster extends Component {
 			item => item.plan === this.state.pricing_plan,
 		);
 
+		const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
+
 		const body = {
 			elasticsearch: {
 				nodes: selectedMachine.nodes,
@@ -355,9 +363,21 @@ export default class NewCluster extends Component {
 				ssh_public_key: SSH_KEY,
 				provider: this.state.provider,
 			},
+			addons: [
+				{
+					name: 'elasticsearch-hq',
+					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
+					exposed_port: 5000,
+				},
+				{
+					name: 'arc',
+					image: `siddharthlatest/arc:${arcTag}`,
+					exposed_port: 8000,
+				},
+			],
 		};
 
-		if (this.state.kibana) {
+		if (this.state.visualization === 'kibana') {
 			body.kibana = {
 				create_node: false,
 				version: this.state.clusterVersion,
@@ -365,42 +385,21 @@ export default class NewCluster extends Component {
 			};
 		}
 
-		if (this.state.streams) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'streams',
-					image: 'appbaseio/streams:6',
-					exposed_port: 80,
-				},
-			];
+		if (this.state.visualization === 'grafana') {
+			body.grafana = true;
 		}
 
-		if (this.state.elasticsearchHQ) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
-					exposed_port: 5000,
-				},
-			];
-		}
-
-		if (this.state.arc) {
-			const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'arc',
-					image: `siddharthlatest/arc:${arcTag}`,
-					exposed_port: 8000,
-				},
-			];
-		}
+		// if (this.state.streams) {
+		// 	body.addons = body.addons || [];
+		// 	body.addons = [
+		// 		...body.addons,
+		// 		{
+		// 			name: 'streams',
+		// 			image: 'appbaseio/streams:6',
+		// 			exposed_port: 80,
+		// 		},
+		// 	];
+		// }
 
 		this.setState({
 			isLoading: true,
@@ -410,7 +409,7 @@ export default class NewCluster extends Component {
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
-			.catch(e => {
+			.catch((e) => {
 				this.setState({
 					isLoading: false,
 					deploymentError: e,
@@ -475,8 +474,7 @@ export default class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
+		const regionsToRender = data => data.map((region) => {
 				const regionValue = regions[provider][region];
 				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
 				return (
@@ -540,7 +538,7 @@ export default class NewCluster extends Component {
 		});
 	};
 
-	handleCluster = value => {
+	handleCluster = (value) => {
 		this.setState({
 			restore_from: value,
 		});
@@ -548,6 +546,7 @@ export default class NewCluster extends Component {
 
 	render() {
 		const { provider, isLoading } = this.state;
+		const { isUsingTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
@@ -556,26 +555,75 @@ export default class NewCluster extends Component {
 		return (
 			<Fragment>
 				<FullHeader isCluster />
+				<Header compact>
+					<Row type="flex" justify="space-between" gutter={16}>
+						<Col md={18}>
+							<h2>Create a New Cluster</h2>
+							<Row>
+								<Col span={18}>
+									<p>
+										Create a new ElasticSearch Cluster with appbase.io.{' '}
+										<a
+											href="https://docs.appbase.io"
+											rel="noopener noreferrer"
+											target="_blank"
+										>
+											Learn More
+										</a>
+									</p>
+								</Col>
+							</Row>
+						</Col>
+						<Col
+							md={6}
+							css={{
+								display: 'flex',
+								flexDirection: 'column-reverse',
+								paddingBottom: 20,
+							}}
+						>
+							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
+								<Button
+									size="large"
+									type="primary"
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() => this.props.history.push('/clusters/new/my-cluster')
+									}
+									icon="question-circle"
+								>
+									Already have a Cluster
+								</Button>
+							</Tooltip>
+						</Col>
+					</Row>
+				</Header>
 				<Container>
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
 						<article>
-							<h2>Create a new cluster</h2>
-
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
+									{isUsingTrial ? (
+										<p>
+											<b>Note: </b>You can only create{' '}
+											{machineMarks[provider][0].label} Cluster while on
+											trial.
+										</p>
+									) : null}
 								</div>
 
 								<PricingSlider
 									key={this.state.provider}
 									marks={machineMarks[this.state.provider]}
 									onChange={this.setPricing}
+									sliderProps={{ disabled: isUsingTrial }}
 								/>
 							</div>
 
-							{/*<div className={card}>
+							{/* <div className={card}>
 								<div className="col light">
 									<h3>Pick the provider</h3>
 								</div>
@@ -625,7 +673,7 @@ export default class NewCluster extends Component {
 										/>
 									</Button>
 								</div>
-							</div>*/}
+							</div> */}
 
 							<div className={card}>
 								<div className="col light">
@@ -665,8 +713,7 @@ export default class NewCluster extends Component {
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
-										onChange={e =>
-											this.setConfig('clusterName', e.target.value)
+										onChange={e => this.setConfig('clusterName', e.target.value)
 										}
 									/>
 									<p
@@ -766,8 +813,7 @@ export default class NewCluster extends Component {
 										<h4>Select a version</h4>
 										<select
 											className="form-control"
-											onChange={e =>
-												this.setConfig('clusterVersion', e.target.value)
+											onChange={e => this.setConfig('clusterVersion', e.target.value)
 											}
 										>
 											{versions.map(version => (
@@ -781,68 +827,104 @@ export default class NewCluster extends Component {
 											))}
 										</select>
 									</div>
+								</div>
+							</div>
 
-									<div className={settingsItem}>
-										<h4>Kibana</h4>
-										<div>
-											<label htmlFor="yes">
-												<input
-													type="radio"
-													name="kibana"
-													defaultChecked={this.state.kibana}
-													id="yes"
-													onChange={() => this.setConfig('kibana', true)}
-												/>
-												Yes
-											</label>
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose Visualization Tool</h3>
+								</div>
 
-											<label htmlFor="no">
-												<input
-													type="radio"
-													name="kibana"
-													defaultChecked={!this.state.kibana}
-													id="no"
-													onChange={() => this.setConfig('kibana', false)}
-												/>
-												No
-											</label>
-										</div>
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										alignItems: 'baseline',
+									}}
+								>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.visualization === 'none'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												width: '100%',
+												color: '#000',
+												backgroundColor:
+													this.state.visualization === 'none'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'none');
+											}}
+										>
+											None
+										</Button>
 									</div>
-									<div className={settingsItem}>
-										<h4>Add-ons</h4>
-										<div>
-											<label htmlFor="arc-middleware">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.arc}
-													id="arc-middleware"
-													onChange={() => this.toggleConfig('arc')}
-												/>
-												Appbase.io GUI
-											</label>
-
-											<label htmlFor="streams">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.streams}
-													id="streams"
-													onChange={() => this.toggleConfig('streams')}
-												/>
-												Realtime Streaming
-											</label>
-
-											<label htmlFor="elasticsearch">
-												<input
-													type="checkbox"
-													defaultChecked={this.state.elasticsearchHQ}
-													id="elasticsearch"
-													onChange={() =>
-														this.toggleConfig('elasticsearchHQ')
-													}
-												/>
-												Elasticsearch-HQ
-											</label>
-										</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.visualization === 'kibana'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												width: '100%',
+												backgroundColor:
+													this.state.visualization === 'kibana'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'kibana');
+											}}
+										>
+											<img
+												width={150}
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+												alt="Kibana"
+											/>
+										</Button>
+										<p>
+											The default visualization dashboard for ElasticSearch.
+										</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.visualization === 'grafana'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												width: '100%',
+												backgroundColor:
+													this.state.visualization === 'grafana'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig('visualization', 'grafana');
+											}}
+										>
+											<img
+												width={120}
+												src="/static/images/clusters/grafana.png"
+												alt="Grafana"
+											/>
+										</Button>
+										<p>
+											The leading open-source tool for metrics visualization.
+										</p>
 									</div>
 								</div>
 							</div>
@@ -891,3 +973,12 @@ export default class NewCluster extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(NewCluster);
