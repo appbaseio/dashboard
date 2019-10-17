@@ -1,9 +1,11 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col
+ Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col,
 } from 'antd';
-
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import { css } from 'emotion';
+
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -216,7 +218,7 @@ const esContainer = css`
 	}
 `;
 
-export default class NewCluster extends Component {
+class NewCluster extends Component {
 	constructor(props) {
 		super(props);
 
@@ -543,6 +545,7 @@ export default class NewCluster extends Component {
 
 	render() {
 		const { provider, isLoading } = this.state;
+		const { isUsingTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
@@ -557,8 +560,13 @@ export default class NewCluster extends Component {
 							<h2>Create a New Cluster</h2>
 							<Row>
 								<Col span={18}>
-									<p>Create a new ElasticSearch Cluster with appbase.io.{' '}
-										<a href="https://docs.appbase.io" rel="noopener noreferrer" target="_blank">
+									<p>
+										Create a new ElasticSearch Cluster with appbase.io.{' '}
+										<a
+											href="https://docs.appbase.io"
+											rel="noopener noreferrer"
+											target="_blank"
+										>
 											Learn More
 										</a>
 									</p>
@@ -579,7 +587,8 @@ export default class NewCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() => this.props.history.push('/clusters/new/my-cluster')}
+									onClick={() => this.props.history.push('/clusters/new/my-cluster')
+									}
 									icon="question-circle"
 								>
 									Already have a Cluster
@@ -596,12 +605,20 @@ export default class NewCluster extends Component {
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
+									{isUsingTrial ? (
+										<p>
+											<b>Note: </b>You can only create{' '}
+											{machineMarks[provider][0].label} Cluster while on
+											trial.
+										</p>
+									) : null}
 								</div>
 
 								<PricingSlider
 									key={this.state.provider}
 									marks={machineMarks[this.state.provider]}
 									onChange={this.setPricing}
+									sliderProps={{ disabled: isUsingTrial }}
 								/>
 							</div>
 
@@ -955,3 +972,12 @@ export default class NewCluster extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(NewCluster);

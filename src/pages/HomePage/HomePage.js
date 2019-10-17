@@ -68,7 +68,7 @@ class HomePage extends Component {
 			fetchPermissions();
 		}
 		// Fetches the users current plan
-		fetchUserPlan();
+		// fetchUserPlan();
 	}
 
 	handleSortOption = (e) => {

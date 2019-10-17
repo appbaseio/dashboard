@@ -4,7 +4,7 @@ import AnimatedNumber from 'react-animated-number';
 
 import { clusterInfo } from '../../styles';
 
-export default class PricingSlider extends Component {
+class PricingSlider extends Component {
 	constructor(props) {
 		super(props);
 
@@ -69,7 +69,7 @@ export default class PricingSlider extends Component {
 	render() {
 		const { marks, active, value } = this.state;
 		const mark = marks[active] || {};
-
+		const { sliderProps } = this.props;
 		return (
 			<Fragment>
 				<div className="col grow expanded">
@@ -80,6 +80,7 @@ export default class PricingSlider extends Component {
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}
+						{...sliderProps}
 					/>
 				</div>
 				<div className="col grey">
@@ -150,3 +151,5 @@ export default class PricingSlider extends Component {
 		);
 	}
 }
+
+export default PricingSlider;

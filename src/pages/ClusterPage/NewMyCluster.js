@@ -4,6 +4,7 @@ import {
 } from 'antd';
 
 import { get } from 'lodash';
+import { connect } from 'react-redux';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -47,7 +48,7 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
-export default class NewMyCluster extends Component {
+class NewMyCluster extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -308,16 +309,11 @@ export default class NewMyCluster extends Component {
 			clusterVersion,
 			verifyingURL,
 		} = this.state;
+		const { isUsingTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
 
-		const bannerMessage = {
-			title: 'Use appbase.io with your Cluster',
-			description: 'Bring arc instance to your cluster.',
-			buttonText: "Don't have a Cluster",
-			icon: 'question-circle',
-		};
 		return (
 			<Fragment>
 				<FullHeader isCluster />
@@ -365,9 +361,19 @@ export default class NewMyCluster extends Component {
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
+									{isUsingTrial ? (
+										<p>
+											<b>Note: </b>You can only create {machineMarks[0].label}{' '}
+											Cluster while on trial.
+										</p>
+									) : null}
 								</div>
 
-								<PricingSlider marks={machineMarks} onChange={this.setPricing} />
+								<PricingSlider
+									sliderProps={{ disabled: isUsingTrial }}
+									marks={machineMarks}
+									onChange={this.setPricing}
+								/>
 							</div>
 
 							<div className={card}>
@@ -498,3 +504,12 @@ export default class NewMyCluster extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(NewMyCluster);
