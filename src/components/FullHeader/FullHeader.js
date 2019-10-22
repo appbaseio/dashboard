@@ -89,7 +89,7 @@ const FullHeader = ({
 
 				<Menu.Item key="2">
 					<Link to="/clusters">
-						Clusters <Tag>Preview</Tag>
+						Clusters <Tag>Beta</Tag>
 					</Link>
 				</Menu.Item>
 
