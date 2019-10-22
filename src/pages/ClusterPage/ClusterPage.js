@@ -5,6 +5,8 @@ import {
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
+import { get } from 'lodash';
+import { connect } from 'react-redux';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
@@ -24,7 +26,7 @@ import { machineMarks as arcMachineMarks } from './NewMyCluster';
 // live key
 export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
-export default class ClusterPage extends Component {
+class ClusterPage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -250,7 +252,7 @@ export default class ClusterPage extends Component {
 
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
 						<div>
-							{cluster.trial || cluster.subscription_id ? (
+							{this.props.isUsingClusterTrial || cluster.subscription_id ? (
 								<Link to={`/clusters/${cluster.id}`}>
 									<Button type="primary">View Details</Button>
 								</Link>
@@ -460,3 +462,12 @@ export default class ClusterPage extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ClusterPage);
