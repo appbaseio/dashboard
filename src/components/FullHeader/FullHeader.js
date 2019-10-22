@@ -66,7 +66,9 @@ const FullHeader = ({
 	user,
 	cluster,
 	isUsingTrial,
+	isUsingClusterTrial,
 	daysLeft,
+	clusterDaysLeft,
 	currentApp,
 	isCluster,
 	trialMessage,
@@ -87,7 +89,7 @@ const FullHeader = ({
 
 				<Menu.Item key="2">
 					<Link to="/clusters">
-						Clusters <Tag>Preview</Tag>
+						Clusters <Tag>Beta</Tag>
 					</Link>
 				</Menu.Item>
 
@@ -107,12 +109,13 @@ const FullHeader = ({
 			</Menu>
 		</div>
 		<Row justify="space-between" align="middle">
-			{isUsingTrial && (
+			{(isCluster ? isUsingClusterTrial : isUsingTrial) && (
 				<TrialButton
 					showButton={isCluster}
 					currentApp={currentApp}
 					cluster={cluster}
 					daysLeft={daysLeft}
+					clusterDaysLeft={clusterDaysLeft}
 					isCluster={isCluster}
 					user={user}
 					trialMessage={trialMessage}
@@ -139,6 +142,7 @@ const FullHeader = ({
 
 FullHeader.defaultProps = {
 	daysLeft: 0,
+	clusterDaysLeft: 0,
 	cluster: '',
 	isCluster: false,
 	trialMessage:
@@ -152,7 +156,9 @@ FullHeader.propTypes = {
 	isCluster: bool,
 	trialMessage: string,
 	isUsingTrial: bool.isRequired,
+	isUsingClusterTrial: bool.isRequired,
 	daysLeft: number,
+	clusterDaysLeft: number,
 };
 
 const mapStateToProps = (state) => {
@@ -164,7 +170,9 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user.data,
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,
+		isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 		daysLeft: get(state, '$getUserPlan.daysLeft', 0),
+		clusterDaysLeft: get(state, '$getUserPlan.clusterDaysLeft', 0),
 		currentApp,
 	};
 };
