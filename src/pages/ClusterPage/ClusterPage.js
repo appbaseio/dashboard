@@ -173,8 +173,6 @@ class ClusterPage extends Component {
 				|| mark.plan.endsWith(cluster.pricing_plan)
 				|| mark.plan.startsWith(cluster.pricing_plan),
 		);
-		console.log('trial: ', isUsingClusterTrial);
-		console.log('clusters: ', cluster);
 
 		return (
 			<li key={cluster.id} className="cluster-card compact">
