@@ -13,10 +13,11 @@ import { getAppPlanByName } from '../../batteries/modules/selectors';
 import { updateAppPaymentMethod } from '../../batteries/modules/actions';
 import Loader from '../../batteries/components/shared/Loader';
 
-const Link = styled('a')`
+const TextLink = styled('span')`
 	color: rgb(111, 99, 245);
 	font-weight: 600;
 	text-decoration: underline;
+	cursor: pointer;
 `;
 
 class Billing extends Component {
@@ -66,8 +67,7 @@ class Billing extends Component {
 									panelLabel="Update Payment"
 									token={updatePayment}
 								>
-									{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-									<Link>Update Payment Method</Link>
+									<TextLink>Update Payment Method</TextLink>
 								</Stripe>
 							</Col>
 						</Row>
