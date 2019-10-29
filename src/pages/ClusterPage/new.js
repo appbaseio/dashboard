@@ -1,9 +1,11 @@
 import React, { Fragment, Component } from 'react';
 import {
- Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col
+ Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col,
 } from 'antd';
-
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import { css } from 'emotion';
+
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -22,6 +24,7 @@ const { TabPane } = Tabs;
 const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
+	'7.4.0',
 	'7.3.2',
 	'7.2.1',
 	'7.1.1',
@@ -40,7 +43,7 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.2.2-appbase';
+const V7_ARC = '7.4.1-appbase';
 const V6_ARC = '0.1.6';
 const V5_ARC = 'v5-0.0.1';
 
@@ -216,7 +219,7 @@ const esContainer = css`
 	}
 `;
 
-export default class NewCluster extends Component {
+class NewCluster extends Component {
 	constructor(props) {
 		super(props);
 
@@ -543,6 +546,7 @@ export default class NewCluster extends Component {
 
 	render() {
 		const { provider, isLoading } = this.state;
+		const { isUsingClusterTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
@@ -557,8 +561,13 @@ export default class NewCluster extends Component {
 							<h2>Create a New Cluster</h2>
 							<Row>
 								<Col span={18}>
-									<p>Create a new ElasticSearch Cluster with appbase.io.{' '}
-										<a href="https://docs.appbase.io" rel="noopener noreferrer" target="_blank">
+									<p>
+										Create a new ElasticSearch Cluster with appbase.io.{' '}
+										<a
+											href="https://docs.appbase.io"
+											rel="noopener noreferrer"
+											target="_blank"
+										>
 											Learn More
 										</a>
 									</p>
@@ -579,7 +588,8 @@ export default class NewCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() => this.props.history.push('/clusters/new/my-cluster')}
+									onClick={() => this.props.history.push('/clusters/new/my-cluster')
+									}
 									icon="question-circle"
 								>
 									Already have a Cluster
@@ -596,12 +606,20 @@ export default class NewCluster extends Component {
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
+									{isUsingClusterTrial ? (
+										<p>
+											<b>Note: </b>You can only create{' '}
+											{machineMarks[provider][0].label} Cluster while on
+											trial.
+										</p>
+									) : null}
 								</div>
 
 								<PricingSlider
 									key={this.state.provider}
 									marks={machineMarks[this.state.provider]}
 									onChange={this.setPricing}
+									sliderProps={{ disabled: isUsingClusterTrial }}
 								/>
 							</div>
 
@@ -955,3 +973,12 @@ export default class NewCluster extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(NewCluster);

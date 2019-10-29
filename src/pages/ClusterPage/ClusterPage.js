@@ -5,6 +5,8 @@ import {
 } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
+import { get } from 'lodash';
+import { connect } from 'react-redux';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
@@ -24,7 +26,7 @@ import { machineMarks as arcMachineMarks } from './NewMyCluster';
 // live key
 export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
-export default class ClusterPage extends Component {
+class ClusterPage extends Component {
 	constructor(props) {
 		super(props);
 
@@ -158,6 +160,7 @@ export default class ClusterPage extends Component {
 
 	renderClusterCard = (cluster) => {
 		const { id, subscription } = this.paramsValue();
+		const { isUsingClusterTrial } = this.props;
 		const isExternalCluster = cluster.recipe === 'arc';
 		let allMarks = machineMarks.azure;
 
@@ -170,6 +173,7 @@ export default class ClusterPage extends Component {
 				|| mark.plan.endsWith(cluster.pricing_plan)
 				|| mark.plan.startsWith(cluster.pricing_plan),
 		);
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
@@ -262,30 +266,11 @@ export default class ClusterPage extends Component {
 					</div>
 
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
-						<div style={isExternalCluster ? { textAlign: 'center' } : {}}>
-							{cluster.trial || cluster.subscription_id ? (
+						<div>
+							{isUsingClusterTrial || cluster.subscription_id ? (
 								<Link to={`/clusters/${cluster.id}`}>
 									<Button type="primary">View Details</Button>
 								</Link>
-							) : null}
-							{cluster.trial || cluster.subscription_id ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={(cluster.plan_rate || 0) * 100}
-									token={token => this.handleToken(cluster.id, token)}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									desktopShowModal={
-										subscription && cluster.id === id ? true : undefined
-									}
-								>
-									<Button
-										style={{ display: 'none' }}
-										onClick={this.toggleOverlay}
-									>
-										Pay now to access
-									</Button>
-								</Stripe>
 							) : (
 								<div>
 									<p
@@ -293,7 +278,7 @@ export default class ClusterPage extends Component {
 											fontSize: 12,
 											lineHeight: '18px',
 											color: '#999',
-											margin: '-20px 0 12px 0',
+											margin: '-10px 0 12px 0',
 										}}
 									>
 										Your regular payment is due for this cluster.
@@ -473,3 +458,12 @@ export default class ClusterPage extends Component {
 		);
 	}
 }
+
+const mapStateToProps = state => ({
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+});
+
+export default connect(
+	mapStateToProps,
+	null,
+)(ClusterPage);
