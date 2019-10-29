@@ -20,6 +20,8 @@ const Link = styled('a')`
 `;
 
 class Billing extends Component {
+	stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+
 	componentDidUpdate(prevProps) {
 		const { errors } = this.props;
 		displayErrors(errors, prevProps.errors, true);
@@ -60,7 +62,7 @@ class Billing extends Component {
 								</p>
 								{isOnTrial ? <p>You are currently in trial mode.</p> : null}
 								<Stripe
-									stripeKey="pk_live_ihb1fzO4h1ykymhpZsA3GaQR"
+									stripeKey={this.stripeKey}
 									panelLabel="Update Payment"
 									token={updatePayment}
 								>
