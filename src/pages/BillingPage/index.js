@@ -22,10 +22,6 @@ const TextLink = styled('span')`
 `;
 
 class Billing extends Component {
-	static defaultProps = {
-		nodeCount: undefined,
-	};
-
 	componentDidUpdate(prevProps) {
 		const { errors } = this.props;
 		displayErrors(errors, prevProps.errors, true);
@@ -66,7 +62,7 @@ class Billing extends Component {
 								</p>
 								{isOnTrial ? <p>You are currently in trial mode.</p> : null}
 								<Stripe
-									stripeKey={STRIPE_KEY.TEST}
+									stripeKey={STRIPE_KEY.LIVE}
 									panelLabel="Update Payment"
 									token={updatePayment}
 								>

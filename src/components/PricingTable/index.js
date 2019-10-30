@@ -20,7 +20,6 @@ import {
 	getAppPlan,
 } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
-import Flex from '../../batteries/components/shared/Flex';
 import { STRIPE_KEY } from '../../constants';
 
 const CheckList = ({ list }) => list.map(item => (
