@@ -12,6 +12,7 @@ import { capitalizePlan, displayErrors } from '../../utils/helper';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 import { updateAppPaymentMethod } from '../../batteries/modules/actions';
 import Loader from '../../batteries/components/shared/Loader';
+import { STRIPE_KEY } from '../../constants';
 
 const TextLink = styled('span')`
 	color: rgb(111, 99, 245);
@@ -21,7 +22,9 @@ const TextLink = styled('span')`
 `;
 
 class Billing extends Component {
-	stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+	static defaultProps = {
+		nodeCount: undefined,
+	};
 
 	componentDidUpdate(prevProps) {
 		const { errors } = this.props;
@@ -63,7 +66,7 @@ class Billing extends Component {
 								</p>
 								{isOnTrial ? <p>You are currently in trial mode.</p> : null}
 								<Stripe
-									stripeKey={this.stripeKey}
+									stripeKey={STRIPE_KEY.TEST}
 									panelLabel="Update Payment"
 									token={updatePayment}
 								>

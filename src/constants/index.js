@@ -24,4 +24,11 @@ const CREATE_APP = {
 	RESET: 'CREATE_APP_RESET',
 };
 
-export { USER, APPS, CREATE_APP };
+const STRIPE_KEY = {
+	TEST: 'pk_test_DYtAxDRTg6cENksacX1zhE02',
+	LIVE: 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR',
+};
+
+export {
+ USER, APPS, CREATE_APP, STRIPE_KEY,
+};
