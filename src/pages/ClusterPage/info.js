@@ -7,7 +7,7 @@ import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
 import { machineMarks } from './new';
-import { machineMarks as arcMachineMarks} from './NewMyCluster';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -25,6 +25,7 @@ import {
 import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
+import InvoiceScreen from './screens/InvoiceScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
@@ -398,7 +399,8 @@ export default class Clusters extends Component {
 										<div>
 											<h4>Pricing Plan</h4>
 											<div>
-												{planDetails.label || this.state.cluster.pricing_plan}
+												{planDetails.label
+													|| this.state.cluster.pricing_plan}
 												&nbsp;&nbsp;
 												{!this.state.cluster.trial && isPaid ? (
 													<Tag color="green">Paid</Tag>
@@ -605,6 +607,18 @@ export default class Clusters extends Component {
 																	clusterId={
 																		this.props.match.params.id
 																	}
+																/>
+															)}
+														/>
+														<Route
+															exact
+															path="/clusters/:id/usage"
+															component={() => (
+																<InvoiceScreen
+																	clusterId={
+																		this.props.match.params.id
+																	}
+																	isTrial={this.state.cluster.trial}
 																/>
 															)}
 														/>
