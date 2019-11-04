@@ -30,6 +30,11 @@ const TYPE_FORM = {
 	SUBMITTED: 2,
 };
 
+const STRIPE_KEY = {
+	TEST: 'pk_test_DYtAxDRTg6cENksacX1zhE02',
+	LIVE: 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR',
+};
+
 export {
- USER, APPS, CREATE_APP, TYPE_FORM,
+ USER, APPS, CREATE_APP, STRIPE_KEY, TYPE_FORM,
 };

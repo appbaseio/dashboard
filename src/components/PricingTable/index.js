@@ -21,6 +21,7 @@ import {
 } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 import Unsubscribe from './Unsubscribe';
+import { STRIPE_KEY } from '../../constants';
 
 const CheckList = ({ list }) => list.map(item => (
 		<li key={item}>
@@ -283,7 +284,7 @@ class PricingTable extends Component {
 		// test key
 		// this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 		// live key
-		this.stripeKey = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+		this.stripeKey = STRIPE_KEY.LIVE;
 	}
 
 	componentDidMount() {
