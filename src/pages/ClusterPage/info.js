@@ -590,6 +590,9 @@ export default class Clusters extends Component {
 																			this.state.cluster
 																				.total_nodes
 																		}
+																		handleToken={this.handleToken}
+																		toggleOverlay={this.toggleOverlay}
+																		cluster={this.state.cluster}
 																	/>
 																)}
 															/>

@@ -69,6 +69,7 @@ export default class PricingSlider extends Component {
 	render() {
 		const { marks, active, value } = this.state;
 		const mark = marks[active] || {};
+		const { sliderProps } = this.props;
 
 		return (
 			<Fragment>
@@ -80,6 +81,7 @@ export default class PricingSlider extends Component {
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}
+						{...sliderProps}
 					/>
 				</div>
 				<div className="col grey">

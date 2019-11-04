@@ -202,7 +202,7 @@ export default class ClusterScreen extends Component {
 				...body.addons,
 				{
 					name: 'arc',
-					image: 'siddharthlatest/arc:7.2.2-appbase', // TODO: Dynamically load image as per ES version
+					image: 'siddharthlatest/arc:7.4.1-appbase', // TODO: Dynamically load image as per ES version
 					exposed_port: 8000,
 				},
 			];
