@@ -43,7 +43,7 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.4.1-appbase';
+const V7_ARC = '7.6.0-cluster';
 const V6_ARC = '0.1.6';
 const V5_ARC = 'v5-0.0.1';
 
