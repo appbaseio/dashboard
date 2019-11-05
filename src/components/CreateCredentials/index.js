@@ -105,8 +105,8 @@ class CreateCredentials extends React.Component {
 		if (!isPermissionPresent) {
 			const { fetchPermissions } = this.props;
 			fetchPermissions();
-			this.getMappings();
 		}
+		this.getMappings();
 
 	}
 
