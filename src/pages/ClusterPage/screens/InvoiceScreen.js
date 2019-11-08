@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
- notification, Card, Alert, DatePicker, Table, Typography,
+ notification, Card, DatePicker, Table, Typography,
 } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
@@ -40,7 +40,7 @@ export default class InvoiceScreen extends PureComponent {
 									from: item.from * 1000,
 									to: item.to * 1000,
 									consumption: item.hours,
-							}))	: [];
+							})).sort((a, b) => moment(a.from).diff(b.from))	: [];
 					return {
 						isLoading: false,
 						invoice,
@@ -90,13 +90,13 @@ export default class InvoiceScreen extends PureComponent {
 				title: 'From',
 				dataIndex: 'from',
 				key: 'from',
-				render: date => moment(date).format('DD-MM-YYYY, h:mm:ss a'),
+				render: date => moment(date).format('DD MMM YYYY, h:mm:ss A'),
 			},
 			{
 				title: 'Till',
 				dataIndex: 'to',
 				key: 'to',
-				render: date => moment(date).format('DD-MM-YYYY, h:mm:ss a'),
+				render: date => moment(date).format('DD MMM YYYY, h:mm:ss A'),
 			},
 			{
 				title: 'Consumption (in hours)',
@@ -114,7 +114,7 @@ export default class InvoiceScreen extends PureComponent {
 		const totalConsumption = filteredInvoice.reduce(
 			(agg, item) => ({
 				cost: agg.cost + item.cost,
-				hour: agg.hour + item.hour,
+				hour: agg.hour + item.consumption,
 			}),
 			{
 				cost: 0,
@@ -145,7 +145,7 @@ export default class InvoiceScreen extends PureComponent {
 									Total consumption: <b>{totalConsumption.hour} hours</b>
 								</Typography.Text>
 								<Typography.Text>
-									Total cost: <b>${totalConsumption.cost}</b>
+									Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
 								</Typography.Text>
 							</div>
 						)}

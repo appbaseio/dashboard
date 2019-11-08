@@ -576,6 +576,16 @@ export default class Clusters extends Component {
 														/>
 													)}
 												/>
+												<Route
+													exact
+													path="/clusters/:id/usage"
+													component={() => (
+														<InvoiceScreen
+															clusterId={this.props.match.params.id}
+															isTrial={this.state.cluster.trial}
+														/>
+													)}
+												/>
 												{isViewer || (
 													<React.Fragment>
 														{isExternalCluster ? null : (
@@ -592,8 +602,12 @@ export default class Clusters extends Component {
 																			this.state.cluster
 																				.total_nodes
 																		}
-																		handleToken={this.handleToken}
-																		toggleOverlay={this.toggleOverlay}
+																		handleToken={
+																			this.handleToken
+																		}
+																		toggleOverlay={
+																			this.toggleOverlay
+																		}
 																		cluster={this.state.cluster}
 																	/>
 																)}
@@ -607,18 +621,6 @@ export default class Clusters extends Component {
 																	clusterId={
 																		this.props.match.params.id
 																	}
-																/>
-															)}
-														/>
-														<Route
-															exact
-															path="/clusters/:id/usage"
-															component={() => (
-																<InvoiceScreen
-																	clusterId={
-																		this.props.match.params.id
-																	}
-																	isTrial={this.state.cluster.trial}
 																/>
 															)}
 														/>
