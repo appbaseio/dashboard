@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
- notification, Card, Alert, DatePicker, Table,
+ notification, Card, DatePicker, Table, Typography,
 } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
@@ -19,7 +19,7 @@ function disabledDate(current) {
 	return moment().isBefore(current);
 }
 
-export default class InvoiceScreen extends Component {
+export default class InvoiceScreen extends PureComponent {
 	constructor(props) {
 		super(props);
 
@@ -40,7 +40,7 @@ export default class InvoiceScreen extends Component {
 									from: item.from * 1000,
 									to: item.to * 1000,
 									consumption: item.hours,
-							}))	: [];
+							})).sort((a, b) => moment(a.from).diff(b.from))	: [];
 					return {
 						isLoading: false,
 						invoice,
@@ -63,13 +63,15 @@ export default class InvoiceScreen extends Component {
 			const startDate = new Date(dateString[0]).getTime();
 			const endDate = new Date(dateString[1]).getTime();
 			const { invoice } = this.state;
-			const filteredData = invoice.filter((item) => {
-				// prettier-ignore
-				const isInRange = (moment(item.from).isSame(startDate, 'date')
+			const filteredData = invoice
+				.filter((item) => {
+					// prettier-ignore
+					const isInRange = (moment(item.from).isSame(startDate, 'date')
 						|| moment(item.from).isAfter(moment(startDate)))
 					&& (moment(item.to).isSame(endDate, 'date') || moment(item.to).isBefore(endDate));
-				return isInRange;
-			});
+					return isInRange;
+				})
+				.sort((a, b) => moment(a.from).diff(b.from));
 			this.setState({
 				filteredInvoice: filteredData,
 			});
@@ -88,13 +90,13 @@ export default class InvoiceScreen extends Component {
 				title: 'From',
 				dataIndex: 'from',
 				key: 'from',
-				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
+				render: date => moment(date).format('DD MMM YYYY, h:mm:ss A'),
 			},
 			{
 				title: 'Till',
 				dataIndex: 'to',
 				key: 'to',
-				render: date => moment(date).format('MMMM Do YYYY, h:mm:ss a'),
+				render: date => moment(date).format('DD MMM YYYY, h:mm:ss A'),
 			},
 			{
 				title: 'Consumption (in hours)',
@@ -108,6 +110,17 @@ export default class InvoiceScreen extends Component {
 				render: cost => cost.toFixed(2),
 			},
 		];
+
+		const totalConsumption = filteredInvoice.reduce(
+			(agg, item) => ({
+				cost: agg.cost + item.cost,
+				hour: agg.hour + item.consumption,
+			}),
+			{
+				cost: 0,
+				hour: 0,
+			},
+		);
 
 		return (
 			<div>
@@ -126,6 +139,16 @@ export default class InvoiceScreen extends Component {
 						loading={isLoading}
 						dataSource={filteredInvoice}
 						columns={columns}
+						footer={() => (
+							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+								<Typography.Text>
+									Total consumption: <b>{totalConsumption.hour} hours</b>
+								</Typography.Text>
+								<Typography.Text>
+									Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
+								</Typography.Text>
+							</div>
+						)}
 					/>
 				</Card>
 			</div>
