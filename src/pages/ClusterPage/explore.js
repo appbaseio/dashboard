@@ -32,7 +32,7 @@ export default class ExploreCluster extends Component {
 
 	init = () => {
 		getClusterData(this.props.match.params.id)
-			.then((res) => {
+			.then(res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					this.setState({
@@ -50,7 +50,7 @@ export default class ExploreCluster extends Component {
 					});
 				}
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					isLoading: false,
 					error: e,
@@ -108,15 +108,12 @@ export default class ExploreCluster extends Component {
 		}
 
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
-		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${
-			this.state.arc.username
-		}&password=${this.state.arc.password}&cluster=${
-			this.state.cluster
-		}&header=false&showHelpChat=false`;
+		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>
 				<FullHeader
+					isCluster
 					cluster={this.props.match.params.id}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
