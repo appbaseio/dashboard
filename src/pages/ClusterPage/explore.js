@@ -108,7 +108,7 @@ export default class ExploreCluster extends Component {
 		}
 
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
-		const url = `https://arc-dashboard-dev.netlify.com/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
+		const url = `https://arc-dashboard.appbase.io/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>
