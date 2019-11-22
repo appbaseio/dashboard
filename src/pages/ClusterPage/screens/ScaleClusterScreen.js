@@ -63,7 +63,7 @@ class ScaleClusterScreen extends Component {
 	render() {
 		const { isDirty, nodes, defaultValue } = this.state;
 		const {
- isUsingTrial, cluster, toggleOverlay, handleToken,
+ isUsingClusterTrial, cluster, toggleOverlay, handleToken,
 } = this.props;
 
 		return (
@@ -75,7 +75,7 @@ class ScaleClusterScreen extends Component {
 					</div>
 
 					<div className={column}>
-						{isUsingTrial ? (
+						{isUsingClusterTrial ? (
 							<React.Fragment>
 								<p style={{ margin: '0', width: '100%' }}>
 									Scaling the cluster size requires an upgrade to a paid plan.
@@ -104,7 +104,7 @@ class ScaleClusterScreen extends Component {
 				</div>
 
 				<div css={{ display: 'flex', flexDirection: 'row-reverse' }}>
-					{isUsingTrial ? null : (
+					{isUsingClusterTrial ? null : (
 						<Button
 							size="large"
 							icon="save"
@@ -122,7 +122,7 @@ class ScaleClusterScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
 export default connect(

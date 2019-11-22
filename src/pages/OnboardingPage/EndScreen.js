@@ -15,21 +15,21 @@ const integrations = [
 		image1x: '/static/images/onboarding/finish-screen/React@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/React@2x.png',
 		description: 'React UI components for building data-driven search experiences',
-		url: 'https://opensource.appbase.io/reactivesearch',
+		url: 'https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/',
 	},
 	{
 		name: 'Vue',
 		image1x: '/static/images/onboarding/finish-screen/vue@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/vue@2x.png',
 		description: 'Vue UI components for building data-driven search experiences',
-		url: 'https://opensource.appbase.io/reactivesearch/vue',
+		url: 'https://docs.appbase.io/docs/reactivesearch/vue/overview/QuickStart/',
 	},
 	{
 		name: 'React Native',
 		image1x: '/static/images/onboarding/finish-screen/ReactNative@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/ReactNative@2x.png',
 		description: 'Build data-driven search experiences for iOS and Android',
-		url: 'https://opensource.appbase.io/reactivesearch/native',
+		url: 'https://docs.appbase.io/docs/reactivesearch/native/overview/QuickStart/',
 	},
 	{
 		name: 'REST APIs',
@@ -156,9 +156,7 @@ class EndScreen extends React.PureComponent {
 										<div className="card">
 											<img
 												src={item.image1x}
-												srcSet={`${item.image1x} 245w, ${
-													item.image2x
-												} 490w`}
+												srcSet={`${item.image1x} 245w, ${item.image2x} 490w`}
 												alt="React"
 											/>
 											<div className="card-content">

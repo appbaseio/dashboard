@@ -309,7 +309,7 @@ class NewMyCluster extends Component {
 			clusterVersion,
 			verifyingURL,
 		} = this.state;
-		const { isUsingTrial } = this.props;
+		const { isUsingClusterTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
@@ -361,7 +361,7 @@ class NewMyCluster extends Component {
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
-									{isUsingTrial ? (
+									{isUsingClusterTrial ? (
 										<p>
 											<b>Note: </b>You can only create {machineMarks[0].label}{' '}
 											Cluster while on trial.
@@ -370,7 +370,7 @@ class NewMyCluster extends Component {
 								</div>
 
 								<PricingSlider
-									sliderProps={{ disabled: isUsingTrial }}
+									sliderProps={{ disabled: isUsingClusterTrial }}
 									marks={machineMarks}
 									onChange={this.setPricing}
 								/>
@@ -506,7 +506,7 @@ class NewMyCluster extends Component {
 }
 
 const mapStateToProps = state => ({
-	isUsingTrial: get(state, '$getUserPlan.trial') || false,
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
 export default connect(

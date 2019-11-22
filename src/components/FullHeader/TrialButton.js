@@ -42,43 +42,40 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 
 const TrialButton = (props) => {
 	const {
-		cluster, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
+		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
 	} = props; // prettier-ignore
 
-	if (isCluster) {
-		return (
-			<Tooltip title="You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.">
-				<Tag color="red" css={trialBtn}>
-					You are on a trial.
-				</Tag>
-			</Tooltip>
-		);
-	}
+	// prettier-ignore
+	const clusterTrialMessage =	'You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.';
 
+	const tooltipTitle = isCluster ? clusterTrialMessage : trialMessage;
+
+	const daysLeftValue = isCluster ? clusterDaysLeft : daysLeft;
 	const appNames = apps ? Object.keys(apps) : [];
 	const redirectApp = currentApp && appNames.includes(currentApp) ? currentApp : '';
 
 	if (cluster) {
 		return buttonWithMessage({
-			daysLeft,
-			trialMessage,
+			daysLeft: daysLeftValue,
+			trialMessage: tooltipTitle,
 			redirectURL: `/clusters?id=${cluster}&subscription=true`,
 		});
 	}
 
 	if (redirectApp) {
 		return buttonWithMessage({
-			daysLeft,
-			trialMessage,
+			daysLeft: daysLeftValue,
+			trialMessage: tooltipTitle,
 			redirectURL: `/app/${redirectApp}/billing`,
 		});
 	}
-
 	return (
-		<Tooltip title={trialMessage}>
+		<Tooltip title={tooltipTitle}>
 			<Tag color="red">
-				{daysLeft > 0
-					? `Trial expires in ${daysLeft} ${daysLeft > 1 ? 'days' : 'day'}. Upgrade Now`
+				{daysLeftValue > 0
+					? `Trial expires in ${daysLeftValue} ${
+							daysLeftValue > 1 ? 'days' : 'day'
+					  }. Upgrade Now`
 					: 'Trial has expired. Upgrade Now'}
 			</Tag>
 		</Tooltip>
@@ -99,6 +96,7 @@ TrialButton.propTypes = {
 	isCluster: bool,
 	trialMessage: string,
 	daysLeft: Number.isRequired,
+	clusterDaysLeft: Number.isRequired,
 };
 
 export default TrialButton;
