@@ -1,9 +1,11 @@
 {
-	"editor.formatOnSave": true,
-	"prettier.eslintIntegration": true,
 	"files.trimTrailingWhitespace": true,
 	"files.insertFinalNewline": true,
 	"files.trimFinalNewlines": true,
 	// to resolve flow issues - Refer: https://github.com/flowtype/flow-for-vscode#setup
 	"javascript.validate.enable": false,
+	"eslint.autoFixOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.tslint": true
+	}
 }
