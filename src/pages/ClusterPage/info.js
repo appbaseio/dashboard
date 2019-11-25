@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag, Tooltip,
+ Modal, Button, Icon, Tag, Tooltip 
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
@@ -344,7 +344,7 @@ export default class Clusters extends Component {
 		const { showOverlay, isPaid } = this.state;
 
 		const isViewer = this.state.cluster.user_role === 'viewer';
-		const isExternalCluster = this.state.cluster.recipe === 'arc';
+		const isExternalCluster = this.state.cluster.recipe === 'byoc';
 
 		let allMarks = machineMarks.azure;
 
