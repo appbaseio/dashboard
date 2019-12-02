@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import DejavuDataBrowser from 'dejavu-data-browser';
 import { SCALR_API } from '../../constants/config';
 
 import {
@@ -62,22 +63,13 @@ class BrowserPage extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${
-			dejavu.url
-		}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
 
 		return (
 			<section>
-				{isFrameLoading && <Loader />}
 				{credentials ? (
-					<Frame
-						height={`${window.innerHeight - 65}px`}
-						width="100%"
-						id="dejavu"
-						src={iframeURL}
-						frameBorder="0"
-						onLoad={this.frameLoaded}
-					/>
+					<div style={{ padding: '10px' }}>
+						<DejavuDataBrowser app={appName} credentials={credentials} />
+					</div>
 				) : (
 					<Loader />
 				)}
@@ -94,7 +86,7 @@ BrowserPage.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
 		credentials: username ? `${username}:${password}` : '',
