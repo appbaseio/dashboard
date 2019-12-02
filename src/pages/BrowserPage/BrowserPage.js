@@ -3,7 +3,6 @@ import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import DejavuDataBrowser from 'dejavu-data-browser';
-import { SCALR_API } from '../../constants/config';
 
 import {
 	setCurrentApp,
@@ -12,13 +11,8 @@ import {
 import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
-import Frame from '../../components/Frame';
 
 class BrowserPage extends Component {
-	state = {
-		isFrameLoading: true,
-	};
-
 	componentDidMount() {
 		const { credentials } = this.props;
 		if (!credentials) {
@@ -32,12 +26,6 @@ class BrowserPage extends Component {
 			this.init();
 		}
 	}
-
-	frameLoaded = () => {
-		this.setState({
-			isFrameLoading: false,
-		});
-	};
 
 	init() {
 		// prettier-ignore
@@ -53,16 +41,6 @@ class BrowserPage extends Component {
 
 	render() {
 		const { appName, credentials } = this.props;
-		const { isFrameLoading } = this.state;
-		const splitHost = SCALR_API.split('https://');
-		let clusterHost = 'scalr.api.appbase.io';
-		if (splitHost.length === 2) {
-			[, clusterHost] = splitHost;
-		}
-		const dejavu = {
-			url: `https://${credentials}@${clusterHost}`,
-			appname: appName,
-		};
 
 		return (
 			<section>
@@ -86,7 +64,7 @@ BrowserPage.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
 		credentials: username ? `${username}:${password}` : '',
