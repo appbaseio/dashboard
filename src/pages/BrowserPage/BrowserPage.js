@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import DejavuDataBrowser from 'dejavu-data-browser';
+import Loadable from 'react-loadable';
+import { SCALR_API } from '../../constants/config';
 
 import {
 	setCurrentApp,
@@ -11,6 +12,11 @@ import {
 import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
+
+const DejavuComponent = Loadable({
+	loader: () => import('dejavu-data-browser'),
+	loading: Loader,
+});
 
 class BrowserPage extends Component {
 	componentDidMount() {
@@ -41,12 +47,25 @@ class BrowserPage extends Component {
 
 	render() {
 		const { appName, credentials } = this.props;
+		let clusterHost = 'scalr.api.appbase.io';
+		const splitHost = SCALR_API.split('https://');
+		if (splitHost.length === 2) {
+			[, clusterHost] = splitHost;
+		}
+		const dejavu = {
+			url: `https://${credentials}@${clusterHost}`,
+			appname: appName,
+		};
 
 		return (
 			<section>
 				{credentials ? (
 					<div style={{ padding: '10px' }}>
-						<DejavuDataBrowser app={appName} credentials={credentials} />
+						<DejavuComponent
+							app={dejavu.appname}
+							url={dejavu.url}
+							credentials={credentials}
+						/>
 					</div>
 				) : (
 					<Loader />

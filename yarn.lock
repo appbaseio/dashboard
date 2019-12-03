@@ -4803,10 +4803,10 @@ defined@^1.0.0:
   resolved "https://registry.npmjs.org/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
   integrity sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM=
 
-dejavu-data-browser@^0.1.1-alpha.0:
-  version "0.1.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/dejavu-data-browser/-/dejavu-data-browser-0.1.1-alpha.0.tgz#801013f1766c13708d8f113570e7b38a7c7bb971"
-  integrity sha512-iyoh/78iR3P0vT06kmVVZu+uyuIRDCK69khMF97gLOgGgHbt1r8QR4FR8P+zGB128itwX2pP7UW7BsNusyK8qg==
+dejavu-data-browser@^0.1.2-alpha.0:
+  version "0.1.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/dejavu-data-browser/-/dejavu-data-browser-0.1.2-alpha.0.tgz#1e7516e9cee78f962b228f87ab2379929ead4761"
+  integrity sha512-BJvjZA55x1k3QA+ltEk2P+xAaorpQpNX+tfmX3xardGQJtVG07edVMh0kbSRkV04ipIEfFXly4g8WqrnnxJfiA==
   dependencies:
     "@appbaseio/designkit" "^0.9.1"
     "@appbaseio/reactivesearch" "^3.0.2"
@@ -13040,7 +13040,6 @@ url@^0.11.0:
 
 "urlsafe-base64@git+https://github.com/farhan687/urlsafe-base64.git":
   version "0.0.0"
-  uid a2cafe3e36e37698d9b5aa3e8d03fc02096f734b
   resolved "git+https://github.com/farhan687/urlsafe-base64.git#a2cafe3e36e37698d9b5aa3e8d03fc02096f734b"
 
 "urlsafe-base64@https://github.com/farhan687/urlsafe-base64.git":
