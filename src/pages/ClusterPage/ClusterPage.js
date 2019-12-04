@@ -1,8 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import {
- Row, Col, Icon, Button, Divider, Tag, Tooltip,
-} from 'antd';
+import { Row, Col, Icon, Button, Divider, Tag, Tooltip } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import { get } from 'lodash';
@@ -58,7 +56,7 @@ class ClusterPage extends Component {
 		};
 	};
 
-	deleteCluster = (id) => {
+	deleteCluster = id => {
 		this.setState({
 			isLoading: true,
 		});
@@ -66,7 +64,7 @@ class ClusterPage extends Component {
 			.then(() => {
 				this.initClusters();
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					isLoading: false,
 					deleteClusterId: '',
@@ -98,7 +96,7 @@ class ClusterPage extends Component {
 
 	initClusters = () => {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				this.setState({
 					clustersAvailable: !!clusters.length,
 					clusters,
@@ -107,7 +105,7 @@ class ClusterPage extends Component {
 					deleteClusterName: '',
 				});
 
-				clusters.every((cluster) => {
+				clusters.every(cluster => {
 					if (cluster.status.endsWith('in progress')) {
 						this.timer = setTimeout(this.initClusters, 30000);
 						return false;
@@ -115,7 +113,7 @@ class ClusterPage extends Component {
 					return true;
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isLoading: false,
@@ -137,7 +135,8 @@ class ClusterPage extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
-		const selectedRegion =			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+		const selectedRegion =
+			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
@@ -158,10 +157,10 @@ class ClusterPage extends Component {
 		});
 	};
 
-	renderClusterCard = (cluster) => {
+	renderClusterCard = cluster => {
 		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
-		const isExternalCluster = cluster.recipe === 'arc';
+		const isExternalCluster = cluster.recipe === 'byoc';
 		let allMarks = machineMarks.azure;
 
 		if (isExternalCluster) {
@@ -169,9 +168,10 @@ class ClusterPage extends Component {
 		}
 
 		const planDetails = Object.values(allMarks).find(
-			mark => mark.plan === cluster.pricing_plan
-				|| mark.plan.endsWith(cluster.pricing_plan)
-				|| mark.plan.startsWith(cluster.pricing_plan),
+			mark =>
+				mark.plan === cluster.pricing_plan ||
+				mark.plan.endsWith(cluster.pricing_plan) ||
+				mark.plan.startsWith(cluster.pricing_plan),
 		);
 
 		return (
@@ -181,10 +181,10 @@ class ClusterPage extends Component {
 					<span className="tag">
 						{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
 					</span>
-					{cluster.role === 'admin'
-					&& (cluster.status === 'active'
-						|| cluster.status === 'in progress'
-						|| cluster.status === 'deployments in progress') ? (
+					{cluster.role === 'admin' &&
+					(cluster.status === 'active' ||
+						cluster.status === 'in progress' ||
+						cluster.status === 'deployments in progress') ? (
 						<Button
 							type="danger"
 							icon="delete"
@@ -196,8 +196,8 @@ class ClusterPage extends Component {
 					) : null}
 					{isExternalCluster ? (
 						<Tooltip
-							title={(
-<span>
+							title={
+								<span>
 									Bring your own Cluster allows you to bring an externally hosted
 									ElasticSearch and take advantage of appbase.io features such as
 									security, analytics, better developer experience.{' '}
@@ -208,8 +208,8 @@ class ClusterPage extends Component {
 									>
 										Learn More
 									</a>
-</span>
-)}
+								</span>
+							}
 						>
 							<span className="tag top-right">Bring your own Cluster</span>
 						</Tooltip>
@@ -309,13 +309,14 @@ class ClusterPage extends Component {
 		);
 	};
 
-	renderClusterHeading = (text, length) => (length ? (
+	renderClusterHeading = (text, length) =>
+		length ? (
 			<Divider>
 				<b css={{ color: '#999', fontSize: '14px' }}>
 					{text} - ({length})
 				</b>
 			</Divider>
-		) : null);
+		) : null;
 
 	render() {
 		const vcenter = {
@@ -332,7 +333,7 @@ class ClusterPage extends Component {
 			isLoading,
 			clustersAvailable,
 			clusters,
-			showOverlay, // prettier-ignore
+			showOverlay // prettier-ignore
 		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
@@ -433,14 +434,18 @@ class ClusterPage extends Component {
 							)}
 							{clustersInProgress.length ? (
 								<ul className={clustersList}>
-									{clustersInProgress.map(cluster => this.renderClusterCard(cluster))}
+									{clustersInProgress.map(cluster =>
+										this.renderClusterCard(cluster),
+									)}
 								</ul>
 							) : null}
 
 							{this.renderClusterHeading('Deleted Clusters', deletedClusters.length)}
 							{deletedClusters.length ? (
 								<ul className={clustersList}>
-									{deletedClusters.map(cluster => this.renderClusterCard(cluster))}
+									{deletedClusters.map(cluster =>
+										this.renderClusterCard(cluster),
+									)}
 								</ul>
 							) : null}
 						</article>
@@ -463,7 +468,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(ClusterPage);
+export default connect(mapStateToProps, null)(ClusterPage);
