@@ -107,7 +107,7 @@ export const machineMarks = {
 		80: {
 			label: 'Production-II',
 			plan: '2019-production-2',
-			storage: 999,
+			storage: 480,
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
