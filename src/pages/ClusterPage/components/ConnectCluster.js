@@ -1,35 +1,62 @@
 import React from 'react';
 import {
- Modal, Button, List, Avatar,
+ Modal, Button, Collapse, Icon, Typography,
 } from 'antd';
-import { Link } from 'react-router-dom';
+
 import { css } from 'emotion';
-
-const listItem = css`
-	.ant-list-item-meta-title,
-	.ant-list-item-meta-description {
-		transition: color 0.2s ease;
-	}
-
-	.ant-list-item-meta-title {
-		font-weight: 600;
-	}
-
-	&:hover {
-		.ant-list-item-meta-title {
-			color: #1890ff;
-		}
-
-		.ant-list-item-meta-description {
-			color: #595959;
-		}
-	}
-`;
 
 // const getURL = ({ username, password, url: fullURL }) => {
 // 	const [protocol, url] = fullURL.split('://');
 // 	return `${protocol}://${username}:${password}@${url}`;
 // };
+
+const { Text, Paragraph } = Typography;
+
+const headerStyle = css`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	i {
+		padding: 10px;
+		border-radius: 50%;
+		background: #fafafa;
+		color: #595959;
+		border: 1px solid #d9d9d9;
+	}
+
+	.content {
+		margin-right: 10px;
+	}
+`;
+
+const linkTitle = css`
+	cursor: pointer;
+
+	&:hover {
+		color: #1890ff;
+	}
+`;
+
+const PanelHeader = ({ icon, text, title }) => (
+	<div className={headerStyle}>
+		<div className="content">
+			<Text style={{ fontSize: 16, marginBottom: 10 }} strong>
+				{title}
+			</Text>
+			<br />
+			{text && <Text type="secondary">{text}</Text>}
+		</div>
+		<div className="icon">
+			<Icon type={icon} />
+		</div>
+	</div>
+);
+
+const RedirectTitle = ({ title, link }) => (
+	<Paragraph className={linkTitle} strong>
+		{title} <Icon type="link" />
+	</Paragraph>
+);
 
 class ConnectCluster extends React.Component {
 	state = { visible: false };
@@ -49,24 +76,6 @@ class ConnectCluster extends React.Component {
 	render() {
 		const { visible } = this.state;
 		const { cluster, deployments } = this.props;
-		const data = [
-			{
-				title: 'Dejavu',
-				src: 'https://importer.appbase.io/images/logo.svg',
-				link: `/clusters/${cluster.id}/explore?traverse=/cluster/browse`,
-				icon: 'table',
-				description:
-					'Dejavu is the missing web UI for Elasticsearch. Existing web UIs leave much to be desired or are built with server-side page rendering techniques that make it less responsive and bulkier to run (I am looking at you, Kibana).',
-			},
-			{
-				title: 'Importer',
-				src: 'https://importer.appbase.io/images/logo.svg',
-				link: `/clusters/${cluster.id}/explore?traverse=/cluster/import`,
-				icon: 'import',
-				description:
-					'You can import up to 10,000 records for free. Upgrade now to a paid plan to import files of up to 10 GB seamlessly and get priority support.',
-			},
-		];
 		return (
 			<div>
 				<Button
@@ -80,37 +89,81 @@ class ConnectCluster extends React.Component {
 				</Button>
 				<Modal
 					visible={visible}
-					centered
 					title="Connect your Cluster"
 					onOk={this.handleToggle}
 					onCancel={this.handleToggle}
 					footer={null}
 				>
-					<List
-						itemLayout="horizontal"
-						dataSource={data}
-						renderItem={item => (
-							<List.Item key={item.title} className={listItem}>
-								{item.link ? (
-									<Link to={item.link}>
-										<List.Item.Meta
-											avatar={(<Avatar style={{ backgroundColor: '#1890ff' }} icon={item.icon} />)}
-											title={item.title}
-											description={item.description}
-										/>
-									</Link>
-								) : (
-									<a href={item.href} rel="noopener noreferrer" target="_blank">
-										<List.Item.Meta
-											avatar={(<Avatar style={{ backgroundColor: '#1890ff' }} icon={item.icon} />)}
-											title={item.title}
-											description={item.description}
-										/>
-									</a>
-								)}
-							</List.Item>
-						)}
-					/>
+					<Collapse accordion bordered={false}>
+						<Collapse.Panel
+							header={(
+<PanelHeader
+									title="Connect via API"
+									icon="api"
+									text="Use REST API to connect to your cluster."
+/>
+)}
+							showArrow={false}
+							key={1}
+						>
+							<Paragraph strong copyable={{ text: 'Awesome' }}>
+								Appbase.io URL
+							</Paragraph>
+							<Paragraph>
+								It is the recommended way to use the cluster publicly. Any requests
+								made via this automatically creates logs, provides search analytics
+								and the credentials can be configured with additional security.
+							</Paragraph>
+							<Paragraph copyable={{ text: 'Awesome' }} strong>
+								ElasticSearch URL
+							</Paragraph>
+							<Paragraph>
+								You can also use the ElasticSearch URL directly, although we don
+								{"'"}t recommend this to be used in a public environment.
+							</Paragraph>
+						</Collapse.Panel>
+						<Collapse.Panel
+							header={(
+<PanelHeader
+									title="Connect via GUI Dashboard"
+									icon="dashboard"
+									text="Browse your indices, create a new index, view search analytics and set security permissions."
+/>
+)}
+							showArrow={false}
+							key={2}
+						>
+							<Button style={{ marginBottom: 15 }} type="primary">
+								Explore Dashboard
+							</Button>
+							<RedirectTitle title="User Management" link="" />
+							<Paragraph>User management Description.</Paragraph>
+							<RedirectTitle title="Security Credentials" link="" />
+							<Paragraph>Security Crdeentials Description</Paragraph>
+							<RedirectTitle title="Browse Data" link="" />
+							<Paragraph>Browse Data Description.</Paragraph>
+						</Collapse.Panel>
+
+						<Collapse.Panel
+							header={(
+<PanelHeader
+									title="Import Data"
+									icon="import"
+									text="Bring your data from JSON, CSV, SQL or ElasticSearch sources."
+/>
+)}
+							showArrow={false}
+							key={3}
+						>
+							<Button style={{ marginBottom: 15 }} type="primary">
+								Go to Importer
+							</Button>
+							<Paragraph>
+								You can also import via CLI, REST API and using Zapier. If you're
+								just starting out, you can also load a sample dataset.
+							</Paragraph>
+						</Collapse.Panel>
+					</Collapse>
 				</Modal>
 			</div>
 		);
