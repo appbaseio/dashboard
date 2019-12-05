@@ -232,20 +232,19 @@ export default class ClusterScreen extends Component {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
 			const [protocol, url] = (source.url || source.dashboard_url).split('://');
+			const copyURL = `${protocol}://${username}:${password}@${url}`.replace(/\/$/, '');
 			return (
 				<div key={source.name} className={clusterEndpoint}>
 					<h4>
 						{source.name}
 						<CopyToClipboard
-							text={`${protocol}://${username}:${password}@${url}`}
+							text={copyURL}
 							onCopy={() => notification.success({
 									message: ` ${source.name} URL Copied Successfully`,
 								})
 							}
 						>
-							<a data-clipboard-text={`${protocol}://${username}:${password}@${url}`}>
-								Copy URL
-							</a>
+							<a data-clipboard-text={copyURL}>Copy URL</a>
 						</CopyToClipboard>
 					</h4>
 					<CredentialsBox name={source.name} text={`${username}:${password}`} />
