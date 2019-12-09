@@ -56,15 +56,16 @@ class BrowserPage extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-
 		return (
-			<section>
+			<section style={{ backgroundColor: '#ffffff' }}>
 				{credentials ? (
 					<div style={{ padding: '10px' }}>
 						<DejavuComponent
 							app={dejavu.appname}
 							url={dejavu.url}
 							credentials={credentials}
+							URLParams={false}
+							showHeaders={false}
 						/>
 					</div>
 				) : (
@@ -83,7 +84,7 @@ BrowserPage.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
 	return {
 		credentials: username ? `${username}:${password}` : '',
