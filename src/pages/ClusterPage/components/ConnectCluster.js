@@ -2,13 +2,13 @@ import React from 'react';
 import {
  Modal, Button, Collapse, Icon, Typography,
 } from 'antd';
-
+import { withRouter, Link } from 'react-router-dom';
 import { css } from 'emotion';
 
-// const getURL = ({ username, password, url: fullURL }) => {
-// 	const [protocol, url] = fullURL.split('://');
-// 	return `${protocol}://${username}:${password}@${url}`;
-// };
+const getURL = ({ username, password, url: fullURL }) => {
+	const [protocol, url] = fullURL.split('://');
+	return `${protocol}://${username}:${password}@${url}`.replace(/\/$/, '');
+};
 
 const { Text, Paragraph } = Typography;
 
@@ -52,10 +52,12 @@ const PanelHeader = ({ icon, text, title }) => (
 	</div>
 );
 
-const RedirectTitle = ({ title, link }) => (
-	<Paragraph className={linkTitle} strong>
-		{title} <Icon type="link" />
-	</Paragraph>
+const RedirectTitle = ({ id, title, link }) => (
+	<Link to={`/clusters/${id}/explore?view=${link}`}>
+		<Paragraph className={linkTitle} strong>
+			{title} <Icon type="link" />
+		</Paragraph>
+	</Link>
 );
 
 class ConnectCluster extends React.Component {
@@ -75,7 +77,8 @@ class ConnectCluster extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { cluster, deployments } = this.props;
+		const { cluster, deployment } = this.props;
+		const arcInstance = deployment.addons.find(item => item.name === 'arc');
 		return (
 			<div>
 				<Button
@@ -106,7 +109,7 @@ class ConnectCluster extends React.Component {
 							showArrow={false}
 							key={1}
 						>
-							<Paragraph strong copyable={{ text: 'Awesome' }}>
+							<Paragraph strong copyable={{ text: getURL(arcInstance) }}>
 								Appbase.io URL
 							</Paragraph>
 							<Paragraph>
@@ -114,7 +117,7 @@ class ConnectCluster extends React.Component {
 								made via this automatically creates logs, provides search analytics
 								and the credentials can be configured with additional security.
 							</Paragraph>
-							<Paragraph copyable={{ text: 'Awesome' }} strong>
+							<Paragraph copyable={{ text: getURL(deployment.elasticsearch) }} strong>
 								ElasticSearch URL
 							</Paragraph>
 							<Paragraph>
@@ -133,15 +136,36 @@ class ConnectCluster extends React.Component {
 							showArrow={false}
 							key={2}
 						>
-							<Button style={{ marginBottom: 15 }} type="primary">
-								Explore Dashboard
-							</Button>
-							<RedirectTitle title="User Management" link="" />
-							<Paragraph>User management Description.</Paragraph>
-							<RedirectTitle title="Security Credentials" link="" />
-							<Paragraph>Security Crdeentials Description</Paragraph>
-							<RedirectTitle title="Browse Data" link="" />
-							<Paragraph>Browse Data Description.</Paragraph>
+							<Link to={`/clusters/${cluster.id}/explore`}>
+								<Button style={{ marginBottom: 15 }} type="primary">
+									Explore Dashboard
+								</Button>
+							</Link>
+							<RedirectTitle
+								title="User Management"
+								id={cluster.id}
+								link="/cluster/user-management"
+							/>
+							<Paragraph>User management allows you to provide additional login access to other users.</Paragraph>
+							<RedirectTitle
+								title="Security Credentials"
+								id={cluster.id}
+								link="/cluster/credentials"
+							/>
+							<Paragraph>
+								API credentials allow secure access to the appbase.io apps and
+								clusters. They offer a variety of rules to granularly control access
+								to the APIs.
+							</Paragraph>
+							<RedirectTitle
+								title="Browse Data"
+								id={cluster.id}
+								link="/cluster/browse"
+							/>
+							<Paragraph>
+								Data Browser is a WYSIWYG GUI for adding, modifying and viewing your
+								appbase.io app's data.
+							</Paragraph>
 						</Collapse.Panel>
 
 						<Collapse.Panel
@@ -155,9 +179,11 @@ class ConnectCluster extends React.Component {
 							showArrow={false}
 							key={3}
 						>
-							<Button style={{ marginBottom: 15 }} type="primary">
-								Go to Importer
-							</Button>
+							<Link to={`/clusters/${cluster.id}/explore?view=/cluster/import`}>
+								<Button style={{ marginBottom: 15 }} type="primary">
+									Go to Importer
+								</Button>
+							</Link>
 							<Paragraph>
 								You can also import via CLI, REST API and using Zapier. If you're
 								just starting out, you can also load a sample dataset.
@@ -170,4 +196,4 @@ class ConnectCluster extends React.Component {
 	}
 }
 
-export default ConnectCluster;
+export default withRouter(ConnectCluster);

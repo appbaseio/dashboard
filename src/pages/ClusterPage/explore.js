@@ -112,10 +112,10 @@ export default class ExploreCluster extends Component {
 
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
 		let mainURL = 'https://arc-dashboard.appbase.io';
-		if (urlParams && urlParams.traverse) {
-			const nestedRoute = urlParams.traverse.startsWith('/')
-				? urlParams.traverse.replace('/', '')
-				: urlParams.traverse;
+		if (urlParams && urlParams.view) {
+			const nestedRoute = urlParams.view.startsWith('/')
+				? urlParams.view.replace('/', '')
+				: urlParams.view;
 
 			mainURL = `${mainURL}/${nestedRoute}`;
 		}
