@@ -86,7 +86,7 @@ TrialButton.defaultProps = {
 	cluster: '',
 	isCluster: false,
 	trialMessage:
-		'You are currently on a trial which unlocks all the Growth monthly features. You can upgrade to a paid plan anytime till the trial expires. Post trial expiration, you will be subscribed to the free plan.', // Apps Message
+		'You are currently on a trial which unlocks all the Growth plan features. You can upgrade to a paid plan anytime till the trial expires. After that, you will be downgraded to the free plan.', // Apps Message
 };
 
 TrialButton.propTypes = {
