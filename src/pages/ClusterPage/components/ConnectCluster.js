@@ -1,6 +1,6 @@
 import React from 'react';
 import {
- Modal, Button, Collapse, Icon, Typography,
+ Modal, Button, Collapse, Icon, Typography, Divider,
 } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import { css } from 'emotion';
@@ -58,6 +58,14 @@ const RedirectTitle = ({ id, title, link }) => (
 			{title} <Icon type="link" />
 		</Paragraph>
 	</Link>
+);
+
+const DirectLink = ({ title, link }) => (
+	<a href={link} rel="noopener noreferrer" target="_blank">
+		<Paragraph className={linkTitle} strong>
+			{title} <Icon type="link" />
+		</Paragraph>
+	</a>
 );
 
 class ConnectCluster extends React.Component {
@@ -124,6 +132,21 @@ class ConnectCluster extends React.Component {
 								You can also use the ElasticSearch URL directly, although we don
 								{"'"}t recommend this to be used in a public environment.
 							</Paragraph>
+							<Divider />
+							<Paragraph strong>API Usage</Paragraph>
+							<pre>
+								{
+									'curl https://bJHBOF8TM:<password>@arc-cluster-hdb-app-rswgeh.searchbase.io'
+								}
+							</pre>
+							<DirectLink
+								href="https://docs.appbase.io/api/rest/quickstart/"
+								title="Appbase.io API Reference"
+							/>
+							<DirectLink
+								href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html"
+								title="Elasticsearch API Reference"
+							/>
 						</Collapse.Panel>
 						<Collapse.Panel
 							header={(
@@ -141,12 +164,16 @@ class ConnectCluster extends React.Component {
 									Explore Dashboard
 								</Button>
 							</Link>
+							<Paragraph>Or go to one of the following views directly:</Paragraph>
 							<RedirectTitle
 								title="User Management"
 								id={cluster.id}
 								link="/cluster/user-management"
 							/>
-							<Paragraph>User management allows you to provide additional login access to other users.</Paragraph>
+							<Paragraph>
+								User management allows you to provide additional login access to
+								other users.
+							</Paragraph>
 							<RedirectTitle
 								title="Security Credentials"
 								id={cluster.id}
@@ -185,8 +212,8 @@ class ConnectCluster extends React.Component {
 								</Button>
 							</Link>
 							<Paragraph>
-								You can also import via CLI, REST API and using Zapier. If you're
-								just starting out, you can also load a sample dataset.
+								You can also import via CLI, REST API and using Zapier. Read more {' '}
+								<a href="https://docs.appbase.io/docs/data/Import/" target="_blank" rel="noopener noreferrer">here</a>.
 							</Paragraph>
 						</Collapse.Panel>
 					</Collapse>
