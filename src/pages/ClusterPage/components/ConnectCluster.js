@@ -60,8 +60,8 @@ const RedirectTitle = ({ id, title, link }) => (
 	</Link>
 );
 
-const DirectLink = ({ title, link }) => (
-	<a href={link} rel="noopener noreferrer" target="_blank">
+const DirectLink = ({ title, href }) => (
+	<a href={href} rel="noopener noreferrer" target="_blank">
 		<Paragraph className={linkTitle} strong>
 			{title} <Icon type="link" />
 		</Paragraph>
@@ -134,17 +134,20 @@ class ConnectCluster extends React.Component {
 							</Paragraph>
 							<Divider />
 							<Paragraph strong>API Usage</Paragraph>
-							<pre>
-								{
-									'curl https://bJHBOF8TM:<password>@arc-cluster-hdb-app-rswgeh.searchbase.io'
-								}
-							</pre>
+							<Paragraph
+								style={{ display: 'flex', alignItems: 'baseline', margin: 0 }}
+								copyable={{ text: `curl ${getURL(deployment.elasticsearch)}` }}
+							>
+								<pre style={{ padding: '8px 10px', background: '#f5f5f5' }}>
+									{`curl ${getURL(deployment.elasticsearch)}`}
+								</pre>
+							</Paragraph>
 							<DirectLink
-								href="https://docs.appbase.io/api/rest/quickstart/"
+								href="https://arc-api.appbase.io"
 								title="Appbase.io API Reference"
 							/>
 							<DirectLink
-								href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html"
+								href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html"
 								title="Elasticsearch API Reference"
 							/>
 						</Collapse.Panel>
@@ -170,29 +173,16 @@ class ConnectCluster extends React.Component {
 								id={cluster.id}
 								link="/cluster/user-management"
 							/>
-							<Paragraph>
-								User management allows you to provide additional login access to
-								other users.
-							</Paragraph>
 							<RedirectTitle
 								title="Security Credentials"
 								id={cluster.id}
 								link="/cluster/credentials"
 							/>
-							<Paragraph>
-								API credentials allow secure access to the appbase.io apps and
-								clusters. They offer a variety of rules to granularly control access
-								to the APIs.
-							</Paragraph>
 							<RedirectTitle
 								title="Browse Data"
 								id={cluster.id}
 								link="/cluster/browse"
 							/>
-							<Paragraph>
-								Data Browser is a WYSIWYG GUI for adding, modifying and viewing your
-								appbase.io app's data.
-							</Paragraph>
 						</Collapse.Panel>
 
 						<Collapse.Panel
@@ -212,8 +202,15 @@ class ConnectCluster extends React.Component {
 								</Button>
 							</Link>
 							<Paragraph>
-								You can also import via CLI, REST API and using Zapier. Read more {' '}
-								<a href="https://docs.appbase.io/docs/data/Import/" target="_blank" rel="noopener noreferrer">here</a>.
+								You can also import via CLI, REST API and using Zapier. Read more{' '}
+								<a
+									href="https://docs.appbase.io/docs/data/Import/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									here
+								</a>
+								.
 							</Paragraph>
 						</Collapse.Panel>
 					</Collapse>
