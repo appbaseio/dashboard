@@ -118,7 +118,7 @@ class ConnectCluster extends React.Component {
 							key={1}
 						>
 							<Paragraph strong copyable={{ text: getURL(arcInstance) }}>
-								Appbase.io URL
+								Appbase.io URL (with credentials)
 							</Paragraph>
 							<Paragraph>
 								It is the recommended way to use the cluster publicly. Any requests
@@ -126,29 +126,29 @@ class ConnectCluster extends React.Component {
 								and the credentials can be configured with additional security.
 							</Paragraph>
 							<Paragraph copyable={{ text: getURL(deployment.elasticsearch) }} strong>
-								ElasticSearch URL
+								ElasticSearch URL (with credentials)
 							</Paragraph>
 							<Paragraph>
 								You can also use the ElasticSearch URL directly, although we don
 								{"'"}t recommend this to be used in a public environment.
 							</Paragraph>
 							<Divider />
-							<Paragraph strong>API Usage</Paragraph>
+							<Paragraph strong>API Usage Example</Paragraph>
 							<Paragraph
 								style={{ display: 'flex', alignItems: 'baseline', margin: 0 }}
 								copyable={{ text: `curl ${getURL(deployment.elasticsearch)}` }}
 							>
-								<pre style={{ padding: '8px 10px', background: '#f5f5f5' }}>
+								<pre style={{ padding: '8px 10px', background: '#f5f5f5', 'white-space': 'pre-wrap' }}>
 									{`curl ${getURL(deployment.elasticsearch)}`}
 								</pre>
 							</Paragraph>
 							<DirectLink
-								href="https://arc-api.appbase.io"
-								title="Appbase.io API Reference"
-							/>
-							<DirectLink
 								href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html"
 								title="Elasticsearch API Reference"
+							/>
+							<DirectLink
+								href="https://arc-api.appbase.io"
+								title="Appbase.io API Reference"
 							/>
 						</Collapse.Panel>
 						<Collapse.Panel
