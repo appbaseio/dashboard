@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import { getClusterData } from './utils';
 import { clusterContainer } from './styles';
 import Frame from '../../components/Frame';
+import { getUrlParams } from '../../utils/helper';
 
 export default class ExploreCluster extends Component {
 	constructor(props) {
@@ -32,7 +33,7 @@ export default class ExploreCluster extends Component {
 
 	init = () => {
 		getClusterData(this.props.match.params.id)
-			.then(res => {
+			.then((res) => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					this.setState({
@@ -50,7 +51,7 @@ export default class ExploreCluster extends Component {
 					});
 				}
 			})
-			.catch(e => {
+			.catch((e) => {
 				this.setState({
 					isLoading: false,
 					error: e,
@@ -106,9 +107,19 @@ export default class ExploreCluster extends Component {
 		if (this.state.error) {
 			return this.renderErrorScreen();
 		}
+		const { location } = this.props;
+		const urlParams = getUrlParams(location.search);
 
 		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
-		const url = `https://arc-dashboard.appbase.io/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
+		let mainURL = 'https://arc-dashboard.appbase.io';
+		if (urlParams && urlParams.view) {
+			const nestedRoute = urlParams.view.startsWith('/')
+				? urlParams.view.replace('/', '')
+				: urlParams.view;
+
+			mainURL = `${mainURL}/${nestedRoute}`;
+		}
+		const url = `${mainURL}/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>

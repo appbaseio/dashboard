@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import {
- Modal, Button, Icon, Tag, Tooltip 
+ Modal, Button, Icon, Tag, Tooltip,
 } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
@@ -29,6 +29,7 @@ import InvoiceScreen from './screens/InvoiceScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
+import ConnectCluster from './components/ConnectCluster';
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -500,8 +501,8 @@ export default class Clusters extends Component {
 								/>
 
 								{this.state.arc ? (
-									<li className={card}>
-										<div className="col vcenter" style={{ width: '100%' }}>
+									<li className={card} style={{ justifyContent: 'space-between' }}>
+										<div className="col vcenter">
 											<h4
 												style={{
 													marginBottom: 0,
@@ -514,6 +515,7 @@ export default class Clusters extends Component {
 											</h4>
 										</div>
 										<div className="col vcenter">
+											<ConnectCluster cluster={this.state.cluster} deployment={this.state.deployment} />
 											<Link
 												to={{
 													pathname: `/clusters/${this.props.match.params.id}/explore`,
