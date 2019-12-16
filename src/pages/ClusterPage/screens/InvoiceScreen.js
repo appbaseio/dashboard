@@ -39,7 +39,7 @@ export default class InvoiceScreen extends PureComponent {
 									from: item.from * 1000,
 									to: item.to * 1000,
 									consumption: item.hours,
-							})).sort((a, b) => moment(a.from).diff(b.from))	: [];
+							})).sort((a, b) => moment(b.from).diff(a.from))	: [];
 					return {
 						isLoading: false,
 						invoice,
@@ -84,6 +84,7 @@ export default class InvoiceScreen extends PureComponent {
 
 	render() {
 		const { isLoading, filteredInvoice } = this.state;
+		const { isTrial } = this.props;
 
 		const columns = [
 			{
@@ -128,7 +129,6 @@ export default class InvoiceScreen extends PureComponent {
 					title={
 						<div className={flex}>
 							<span>Usage</span>
-
 							<RangePicker disabledDate={disabledDate} onChange={this.handleFilter} />
 						</div>
 					}
@@ -144,9 +144,11 @@ export default class InvoiceScreen extends PureComponent {
 								<Typography.Text>
 									Total consumption: <b>{totalConsumption.hour} hours</b>
 								</Typography.Text>
-								<Typography.Text>
-									Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
-								</Typography.Text>
+								{isTrial ? null : (
+									<Typography.Text>
+										Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
+									</Typography.Text>
+								)}
 							</div>
 						)}
 					/>
