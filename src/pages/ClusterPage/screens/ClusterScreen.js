@@ -11,7 +11,7 @@ import {
  hasAddon, getClusters, getSnapshots, restore,
 } from '../utils';
 import {
- card, settingsItem, clusterEndpoint, clusterButtons,
+ card, settingsItem, clusterEndpoint, clusterButtons, esContainer,
 } from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
 import ArcDetail from '../components/ArcDetail';
@@ -22,6 +22,18 @@ export default class ClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
+		let visualization = 'none';
+
+		switch (true) {
+			case props.kibana:
+				visualization = 'kibana';
+				break;
+			case props.grafana:
+				visualization = 'grafana';
+				break;
+			default:
+				visualization = 'none';
+		}
 		this.state = {
 			cluster: props.cluster,
 			arc: props.arc,
@@ -37,6 +49,7 @@ export default class ClusterScreen extends Component {
 			restore_from: null,
 			snapshot_id: null,
 			isRestoring: false,
+			visualization,
 		};
 
 		this.paymentButton = React.createRef();
@@ -167,6 +180,7 @@ export default class ClusterScreen extends Component {
 			cluster,
 			arc,
 			kibana,
+			grafana,
 			streams,
 			elasticsearchHQ, // prettier-ignore
 		} = this.state;
@@ -180,6 +194,12 @@ export default class ClusterScreen extends Component {
 			};
 		} else if (!kibana && this.includedInOriginal('kibana')) {
 			body.remove_deployments = [...body.remove_deployments, 'kibana'];
+		}
+
+		if (grafana && !this.includedInOriginal('grafana')) {
+			body.grafana = true;
+		} else if (!grafana && this.includedInOriginal('grafana')) {
+			body.remove_deployments = [...body.remove_deployments, 'grafana'];
 		}
 
 		if (streams && !this.includedInOriginal('streams')) {
@@ -286,7 +306,7 @@ export default class ClusterScreen extends Component {
 		const isViewer = cluster.user_role === 'viewer';
 
 		if (isExternalCluster) {
-			const arcDeployment = deployment && deployment.addons.find(addon => addon.name === 'arc');
+			const arcDeployment =				deployment && deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
 					<ArcDetail cluster={cluster} arc={arcDeployment} />
@@ -352,6 +372,91 @@ export default class ClusterScreen extends Component {
 
 					<div className="col">
 						{(deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
+					</div>
+				</li>
+
+				<li className={card}>
+					<div className="col light">
+						<h3>Choose Visualization Tool</h3>
+					</div>
+
+					<div
+						className={settingsItem}
+						css={{
+							padding: 30,
+							alignItems: 'baseline',
+						}}
+					>
+						<div className={esContainer}>
+							<Button
+								type={this.state.visualization === 'none' ? 'primary' : 'default'}
+								size="large"
+								css={{
+									height: 160,
+									width: '100%',
+									color: '#000',
+									backgroundColor:
+										this.state.visualization === 'none' ? '#eaf5ff' : '#fff',
+								}}
+								onClick={() => {
+									this.setConfig('visualization', 'none');
+									this.setConfig('kibana', false);
+									this.setConfig('grafana', false);
+								}}
+							>
+								None
+							</Button>
+						</div>
+						<div className={esContainer}>
+							<Button
+								size="large"
+								type={this.state.visualization === 'kibana' ? 'primary' : 'default'}
+								css={{
+									height: 160,
+									width: '100%',
+									backgroundColor:
+										this.state.visualization === 'kibana' ? '#eaf5ff' : '#fff',
+								}}
+								onClick={() => {
+									this.setConfig('visualization', 'kibana');
+									this.setConfig('kibana', true);
+									this.setConfig('grafana', false);
+								}}
+							>
+								<img
+									width={150}
+									src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+									alt="Kibana"
+								/>
+							</Button>
+							<p>The default visualization dashboard for ElasticSearch.</p>
+						</div>
+						<div className={esContainer}>
+							<Button
+								size="large"
+								type={
+									this.state.visualization === 'grafana' ? 'primary' : 'default'
+								}
+								css={{
+									height: 160,
+									width: '100%',
+									backgroundColor:
+										this.state.visualization === 'grafana' ? '#eaf5ff' : '#fff',
+								}}
+								onClick={() => {
+									this.setConfig('visualization', 'grafana');
+									this.setConfig('kibana', false);
+									this.setConfig('grafana', true);
+								}}
+							>
+								<img
+									width={120}
+									src="/static/images/clusters/grafana.png"
+									alt="Grafana"
+								/>
+							</Button>
+							<p>The leading open-source tool for metrics visualization.</p>
+						</div>
 					</div>
 				</li>
 

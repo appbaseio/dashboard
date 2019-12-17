@@ -40,6 +40,7 @@ export default class Clusters extends Component {
 			cluster: null,
 			deployment: null,
 			kibana: false,
+			grafana: false,
 			elasticsearchHQ: false,
 			arc: false,
 			mirage: false,
@@ -84,6 +85,7 @@ export default class Clusters extends Component {
 						cluster,
 						deployment,
 						kibana: deployment.kibana ? !!Object.keys(deployment.kibana).length : false,
+						grafana: deployment.grafana ? !!Object.keys(deployment.grafana).length : false,
 						mirage: hasAddon('mirage', deployment),
 						dejavu: hasAddon('dejavu', deployment),
 						arc: arcData.status === 'ready',
@@ -501,7 +503,10 @@ export default class Clusters extends Component {
 								/>
 
 								{this.state.arc ? (
-									<li className={card} style={{ justifyContent: 'space-between' }}>
+									<li
+										className={card}
+										style={{ justifyContent: 'space-between' }}
+									>
 										<div className="col vcenter">
 											<h4
 												style={{
@@ -515,7 +520,10 @@ export default class Clusters extends Component {
 											</h4>
 										</div>
 										<div className="col vcenter">
-											<ConnectCluster cluster={this.state.cluster} deployment={this.state.deployment} />
+											<ConnectCluster
+												cluster={this.state.cluster}
+												deployment={this.state.deployment}
+											/>
 											<Link
 												to={{
 													pathname: `/clusters/${this.props.match.params.id}/explore`,
@@ -560,6 +568,7 @@ export default class Clusters extends Component {
 															arc={this.state.arc}
 															streams={this.state.streams}
 															kibana={this.state.kibana}
+															grafana={this.state.grafana}
 															mirage={this.state.mirage}
 															dejavu={this.state.dejavu}
 															handleDeleteModal={
