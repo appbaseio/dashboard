@@ -25,11 +25,6 @@ export const regions = {
 		'us-east1': { name: 'South Carolina', flag: 'united-states.png', continent: 'us' },
 		'us-central1': { name: 'Iowa', flag: 'united-states.png', continent: 'us' },
 		'us-east4': { name: 'N. Virginia', flag: 'united-states.png', continent: 'us' },
-		'southamerica-east1': {
-			name: 'Sao Paulo',
-			flag: 'brazil.png',
-			continent: 'us',
-		},
 		'northamerica-northeast1': {
 			name: 'Montreal',
 			flag: 'canada.png',
