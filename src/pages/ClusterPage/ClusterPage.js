@@ -227,7 +227,12 @@ class ClusterPage extends Component {
 </span>
 )}
 						>
-							<span className="tag top-right">Bring your own Cluster</span>
+							<span
+								className="tag top-right"
+								style={{ marginRight: 0 }}
+							>
+								Bring your own Cluster
+							</span>
 						</Tooltip>
 					) : null}
 				</h3>
@@ -284,7 +289,10 @@ class ClusterPage extends Component {
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
 						<div>
 							{isUsingClusterTrial || cluster.subscription_id ? (
-								<Link to={`/clusters/${cluster.id}`}>
+								<Link
+									to={`/clusters/${cluster.id}`}
+									style={{ display: 'flex', justifyContent: 'flex-end' }}
+								>
 									<Button type="primary">View Details</Button>
 								</Link>
 							) : (
