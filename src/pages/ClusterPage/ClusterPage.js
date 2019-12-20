@@ -190,6 +190,15 @@ class ClusterPage extends Component {
 				|| mark.plan.startsWith(cluster.pricing_plan),
 		);
 
+		const paymentStyles = isExternalCluster
+			? {
+					paddingLeft: '25%',
+					[mediaKey.small]: {
+						paddingLeft: 0,
+					},
+			  }
+			: {};
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
@@ -197,10 +206,10 @@ class ClusterPage extends Component {
 					<span className="tag">
 						{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
 					</span>
-					{cluster.role === 'admin'
-					&& (cluster.status === 'active'
-						|| cluster.status === 'in progress'
-						|| cluster.status === 'deployments in progress') ? (
+					{cluster.role === 'admin' &&
+					(cluster.status === 'active' ||
+						cluster.status === 'in progress' ||
+						cluster.status === 'deployments in progress') ? (
 						<Button
 							type="danger"
 							icon="delete"
@@ -212,8 +221,8 @@ class ClusterPage extends Component {
 					) : null}
 					{isExternalCluster ? (
 						<Tooltip
-							title={(
-<span>
+							title={
+								<span>
 									Bring your own Cluster allows you to bring an externally hosted
 									ElasticSearch and take advantage of appbase.io features such as
 									security, analytics, better developer experience.{' '}
@@ -224,10 +233,12 @@ class ClusterPage extends Component {
 									>
 										Learn More
 									</a>
-</span>
-)}
+								</span>
+							}
 						>
-							<span className="tag top-right">Bring your own Cluster</span>
+							<span className="tag top-right" style={{ marginRight: 0 }}>
+								Bring your own Cluster
+							</span>
 						</Tooltip>
 					) : null}
 				</h3>
@@ -284,11 +295,14 @@ class ClusterPage extends Component {
 					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
 						<div>
 							{isUsingClusterTrial || cluster.subscription_id ? (
-								<Link to={`/clusters/${cluster.id}`}>
+								<Link
+									to={`/clusters/${cluster.id}`}
+									style={{ display: 'flex', justifyContent: 'flex-end' }}
+								>
 									<Button type="primary">View Details</Button>
 								</Link>
 							) : (
-								<div>
+								<div css={paymentStyles}>
 									<p
 										css={{
 											fontSize: 12,
@@ -300,9 +314,7 @@ class ClusterPage extends Component {
 										Your regular payment is due for this cluster.
 									</p>
 
-									<Button
-										onClick={this.openStripeModal}
-									>
+									<Button onClick={this.openStripeModal}>
 										Subscribe to access
 									</Button>
 									<Modal
@@ -346,7 +358,11 @@ class ClusterPage extends Component {
 									>
 										You&apos;re subscribing to the{' '}
 										<strong>{cluster.pricing_plan}</strong> plan. It&apos;s
-										billed at <strong>${EFFECTIVE_PRICE_BY_PLANS[cluster.pricing_plan]} per node hour</strong>{' '}
+										billed at{' '}
+										<strong>
+											${EFFECTIVE_PRICE_BY_PLANS[cluster.pricing_plan]} per
+											node hour
+										</strong>{' '}
 										based on the actual usage at the end of the subscription
 										month.
 									</Modal>
