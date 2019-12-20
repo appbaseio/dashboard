@@ -125,7 +125,7 @@ class ConnectCluster extends React.Component {
 								made via this automatically creates logs, provides search analytics
 								and the credentials can be configured with additional security.
 							</Paragraph>
-							<Paragraph copyable={{ text: getURL(deployment.elasticsearch) }} strong>
+							<Paragraph copyable={{ text: cluster.elasticsearch_url || getURL(deployment.elasticsearch) }} strong>
 								ElasticSearch URL (with credentials)
 							</Paragraph>
 							<Paragraph>
@@ -136,10 +136,10 @@ class ConnectCluster extends React.Component {
 							<Paragraph strong>API Usage Example</Paragraph>
 							<Paragraph
 								style={{ display: 'flex', alignItems: 'baseline', margin: 0 }}
-								copyable={{ text: `curl ${getURL(deployment.elasticsearch)}` }}
+								copyable={{ text: `curl ${getURL(arcInstance)}` }}
 							>
 								<pre style={{ padding: '8px 10px', background: '#f5f5f5', 'white-space': 'pre-wrap' }}>
-									{`curl ${getURL(deployment.elasticsearch)}`}
+									{`curl ${getURL(arcInstance)}`}
 								</pre>
 							</Paragraph>
 							<DirectLink
