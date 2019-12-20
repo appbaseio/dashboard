@@ -44,8 +44,8 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.9.0-cluster';
-const V6_ARC = '0.1.6';
+const V7_ARC = '7.10.2-cluster';
+const V6_ARC = '7.10.2-cluster';
 const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
@@ -139,7 +139,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.08,
 		},
-		20: {
+		16: {
 			label: 'Hobby',
 			plan: '2019-hobby',
 			storage: 60,
@@ -150,7 +150,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.17,
 		},
-		40: {
+		33: {
 			label: 'Starter',
 			plan: '2019-starter',
 			storage: 120,
@@ -161,7 +161,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
-		60: {
+		49: {
 			label: 'Production-I',
 			plan: '2019-production-1',
 			storage: 240,
@@ -172,7 +172,7 @@ export const machineMarks = {
 			machine: 'n1-standard-2',
 			pph: 0.55,
 		},
-		80: {
+		66: {
 			label: 'Production-II',
 			plan: '2019-production-2',
 			storage: 480,
@@ -183,7 +183,7 @@ export const machineMarks = {
 			machine: 'n1-standard-4',
 			pph: 1.11,
 		},
-		100: {
+		83: {
 			label: 'Production-III',
 			plan: '2019-production-3',
 			storage: 999,
@@ -193,6 +193,17 @@ export const machineMarks = {
 			cost: 1599,
 			machine: 'n1-standard-8',
 			pph: 2.22,
+		},
+		100: {
+			label: 'Production-IV',
+			plan: '2019-production-4',
+			storage: 2997,
+			memory: 64,
+			nodes: 3,
+			cpu: 16,
+			cost: 3199,
+			machine: 'n1-standard-16',
+			pph: 4.44,
 		},
 	},
 };
