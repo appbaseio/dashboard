@@ -178,7 +178,7 @@ class ClusterPage extends Component {
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal } = this.state;
 		const isExternalCluster = cluster.recipe === 'byoc';
-		let allMarks = machineMarks.azure;
+		let allMarks = machineMarks.gke;
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
