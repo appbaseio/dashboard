@@ -347,7 +347,7 @@ export default class Clusters extends Component {
 		const isViewer = this.state.cluster.user_role === 'viewer';
 		const isExternalCluster = this.state.cluster.recipe === 'byoc';
 
-		let allMarks = machineMarks.azure;
+		let allMarks = machineMarks.gke;
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
