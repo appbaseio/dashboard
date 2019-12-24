@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
- notification, Card, DatePicker, Table, Typography,
-} from 'antd';
+import { notification, Card, DatePicker, Table, Typography } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
 
@@ -32,7 +30,8 @@ export default class InvoiceScreen extends PureComponent {
 
 	componentDidMount() {
 		getClusterInvoice(this.props.clusterId)
-			.then(data => this.setState(() => {
+			.then(data =>
+				this.setState(() => {
 					// prettier-ignore
 					const invoice = data && data.invoice_breakdown
 							? data.invoice_breakdown.map(item => ({
@@ -40,14 +39,15 @@ export default class InvoiceScreen extends PureComponent {
 									from: item.from * 1000,
 									to: item.to * 1000,
 									consumption: item.hours,
-							})).sort((a, b) => moment(a.from).diff(b.from))	: [];
+							})).sort((a, b) => moment(b.from).diff(a.from))	: [];
 					return {
 						isLoading: false,
 						invoice,
 						filteredInvoice: invoice,
 					};
-				}))
-			.catch((e) => {
+				}),
+			)
+			.catch(e => {
 				notification.error({
 					message: 'Error occured while fetching the data. Please try again.',
 				});
@@ -64,14 +64,14 @@ export default class InvoiceScreen extends PureComponent {
 			const endDate = new Date(dateString[1]).getTime();
 			const { invoice } = this.state;
 			const filteredData = invoice
-				.filter((item) => {
+				.filter(item => {
 					// prettier-ignore
 					const isInRange = (moment(item.from).isSame(startDate, 'date')
 						|| moment(item.from).isAfter(moment(startDate)))
 					&& (moment(item.to).isSame(endDate, 'date') || moment(item.to).isBefore(endDate));
 					return isInRange;
 				})
-				.sort((a, b) => moment(a.from).diff(b.from));
+				.sort((a, b) => moment(b.from).diff(a.from));
 			this.setState({
 				filteredInvoice: filteredData,
 			});
@@ -84,6 +84,7 @@ export default class InvoiceScreen extends PureComponent {
 
 	render() {
 		const { isLoading, filteredInvoice } = this.state;
+		const { isTrial } = this.props;
 
 		const columns = [
 			{
@@ -125,13 +126,12 @@ export default class InvoiceScreen extends PureComponent {
 		return (
 			<div>
 				<Card
-					title={(
-<div className={flex}>
+					title={
+						<div className={flex}>
 							<span>Usage</span>
-
 							<RangePicker disabledDate={disabledDate} onChange={this.handleFilter} />
-</div>
-)}
+						</div>
+					}
 				>
 					<Table
 						rowKey={data => data.from}
@@ -144,9 +144,11 @@ export default class InvoiceScreen extends PureComponent {
 								<Typography.Text>
 									Total consumption: <b>{totalConsumption.hour} hours</b>
 								</Typography.Text>
-								<Typography.Text>
-									Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
-								</Typography.Text>
+								{isTrial ? null : (
+									<Typography.Text>
+										Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
+									</Typography.Text>
+								)}
 							</div>
 						)}
 					/>

@@ -6,6 +6,7 @@
 	"javascript.validate.enable": false,
 	"eslint.autoFixOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll.tslint": true
+		"source.fixAll.tslint": true,
+		"source.fixAll.eslint": true
 	}
 }
