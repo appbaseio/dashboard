@@ -39,7 +39,9 @@ export default class EditableCredentials extends Component {
 
 	render() {
 		const { value } = this.state;
-		const { text, name, visible } = this.props;
+		const {
+			text, name, visible, updateVisibility,
+		} = this.props;
 
 		return (
 			<div className={credsBox}>
