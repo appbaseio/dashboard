@@ -198,12 +198,12 @@ class ArcDetail extends React.Component {
 								/>
 								<Tooltip
 									title={(
-<span>
+										<span>
 											Your credentials determine how an external app should
 											access the ElasticSearch APIs. <strong>Note:</strong>{' '}
 											Editing credentials will impact live apps.
-</span>
-)}
+										</span>
+									)}
 								>
 									<Button
 										style={{ marginTop: 10, display: 'block' }}
