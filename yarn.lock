@@ -43,10 +43,10 @@
     react-slick "^0.24.0"
     slick-carousel "^1.8.1"
 
-"@appbaseio/reactivecore@8.2.13":
-  version "8.2.13"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-8.2.13.tgz#ab091902ed333875d54557df2e3144ce56e2eca4"
-  integrity sha512-jgZEQ2W6HuHgUOYhHY1yuf8+3OrKQjIKUGKZyLFIWm2fOD/tDlWxw7AFIEVj8SH1lOskBYtCu/IttBsE3uG4kg==
+"@appbaseio/reactivecore@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-9.0.0.tgz#ddaa7db5e2041f4390f51ca3b3b32f285ce8a436"
+  integrity sha512-7yt09jWa6cFzdUojIq9bDb7H4RlFqEWMVwCpE9rucMLHWOTDUKuF5j+4NnbmvfMWGFR3wBaQoNR8nkjcitJ7pw==
   dependencies:
     cross-fetch "^3.0.4"
     prop-types "^15.6.0"
@@ -62,12 +62,12 @@
     redux "^4.0.0"
     redux-thunk "^2.3.0"
 
-"@appbaseio/reactivesearch@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.0.2.tgz#48eae01ac96ed8f35475be70fa5282722d66c8dc"
-  integrity sha512-RUlhToHiF5a3zPimbpEm702ra+GrwlnQ7INy83yHX2p6erCiJKg+9rtbvbpUYsaq6dyOu/9PfcwM462A/byCqA==
+"@appbaseio/reactivesearch@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch/-/reactivesearch-3.2.0.tgz#93137372b8a81aca72d0c8b5aca1713b2df5fe1f"
+  integrity sha512-LfpUNCQugZELqWQICExY6Q+AXp1qLiYFyTXt8aCk1uKp98KyHkjsT2DnXAo4txI4h3zimXCKp2pS0Zx2mzKQDA==
   dependencies:
-    "@appbaseio/reactivecore" "8.2.13"
+    "@appbaseio/reactivecore" "9.0.0"
     appbase-js "^4.0.2-beta.08"
     cross-env "^5.2.0"
     downshift "^1.31.2"
@@ -78,7 +78,6 @@
     prop-types "^15.6.0"
     react-day-picker "^7.0.5"
     react-emotion "^9.0.0"
-    react-highlight-words "^0.14.0"
     react-redux "^6.0.1"
     rheostat "^2.1.1"
     url-search-params-polyfill "^7.0.0"
@@ -6394,11 +6393,6 @@ hex-rgb@^3.0.0:
   resolved "https://registry.npmjs.org/hex-rgb/-/hex-rgb-3.0.0.tgz#bdff98ce1c18daec8ed87797fe13b02831a9515a"
   integrity sha512-iWOUTZu7KQGhErV8JfTQDH5F/M2D0HVd0sexS4Grg4e4RYAiN3c4jfpPqKgfedqeebKcNZBl2z3zlgCtFjpFJQ==
 
-highlight-words-core@^1.2.0:
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/highlight-words-core/-/highlight-words-core-1.2.2.tgz#1eff6d7d9f0a22f155042a00791237791b1eeaaa"
-  integrity sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==
-
 history@^4.7.2:
   version "4.9.0"
   resolved "https://registry.npmjs.org/history/-/history-4.9.0.tgz#84587c2068039ead8af769e9d6a6860a14fa1bca"
@@ -7852,11 +7846,6 @@ mem@^4.0.0:
     map-age-cleaner "^0.1.1"
     mimic-fn "^2.0.0"
     p-is-promise "^2.0.0"
-
-memoize-one@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-4.1.0.tgz#a2387c58c03fff27ca390c31b764a79addf3f906"
-  integrity sha512-2GApq0yI/b22J2j9rhbrAlsHb0Qcz+7yWxeLG8h+95sl1XPUgeLimQSOdur4Vw7cUhrBHwaUZxWFZueojqNRzA==
 
 memoize-one@^5.0.0:
   version "5.0.4"
@@ -10204,15 +10193,6 @@ react-fuzzy@^0.5.2:
     classnames "^2.2.5"
     fuse.js "^3.0.1"
     prop-types "^15.5.9"
-
-react-highlight-words@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/react-highlight-words/-/react-highlight-words-0.14.0.tgz#a1a40ff0a49ce78e7feb375a4e0a5fd1ca9c9609"
-  integrity sha512-DNp1zAIiNqs1nunFv5K67ca0KVSKihbmpZLNwqQj61yMK6zf8YHoGrpLlEt7WEqj1227FOm41FuXiv9KZgcwdA==
-  dependencies:
-    highlight-words-core "^1.2.0"
-    memoize-one "^4.0.0"
-    prop-types "^15.5.8"
 
 react-html-attributes@^1.4.2:
   version "1.4.6"
