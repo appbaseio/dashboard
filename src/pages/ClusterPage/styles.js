@@ -442,6 +442,24 @@ const invoiceTable = css`
 	}
 `;
 
+
+const esContainer = css`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	max-width: 200px;
+	margin-right: 20px;
+	min-width: 160px;
+	p {
+		padding: 5px;
+		margin: 0;
+		font-size: 15px;
+		font-weight: 500;
+	}
+`;
+
+
 export {
 	clusterContainer,
 	clusterInfo,
@@ -451,5 +469,6 @@ export {
 	clusterEndpoint,
 	credsBox,
 	invoiceTable,
+	esContainer,
 	clusterButtons,
 };

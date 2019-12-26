@@ -11,7 +11,9 @@ import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 
-import { clusterContainer, card, settingsItem } from './styles';
+import {
+ clusterContainer, card, settingsItem, esContainer 
+} from './styles';
 import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -214,22 +216,6 @@ const namingConvention = {
 	gke:
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
-
-const esContainer = css`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	max-width: 200px;
-	margin-right: 20px;
-	min-width: 160px;
-	p {
-		padding: 5px;
-		margin: 0;
-		font-size: 15px;
-		font-weight: 500;
-	}
-`;
 
 class NewCluster extends Component {
 	constructor(props) {
