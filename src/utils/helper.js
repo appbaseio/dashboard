@@ -14,7 +14,11 @@ export const keySummary = {
 	write: 'Write credentials',
 };
 
-export const displayErrors = (nextErrors = [], prevErrors = [], showError = false) => {
+export const displayErrors = (
+	nextErrors = [],
+	prevErrors = [],
+	showError = false,
+) => {
 	nextErrors.map((error, index) => {
 		if (error && error !== prevErrors[index]) {
 			if (!showError && process.env.NODE_ENV === 'production') {
@@ -30,7 +34,8 @@ export const displayErrors = (nextErrors = [], prevErrors = [], showError = fals
 	});
 };
 
-export const capitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalizeFirstLetter = string =>
+	string.charAt(0).toUpperCase() + string.slice(1);
 
 export const capitalizePlan = (string = '') => {
 	const splitString = string.split('-');
@@ -40,7 +45,7 @@ export const capitalizePlan = (string = '') => {
 	return capitalizeFirstLetter(string);
 };
 
-export const compressNumber = (amount) => {
+export const compressNumber = amount => {
 	let mAmount = amount;
 	let finalNum = null;
 	try {
@@ -144,12 +149,21 @@ export const getAppCount = (appStats, plan) => {
 	return obj;
 };
 
-export const validateAppName = (name) => {
+export const validateAppName = name => {
 	const symbolsToCheck = /[\s#&*'"\\|,<>\/?]/; //eslint-disable-line
 	const nameCharacters = name.split('');
-	const startsWith =		nameCharacters[0] === '+' || nameCharacters[0] === '-' || nameCharacters[0] === '_';
+	const startsWith =
+		nameCharacters[0] === '+' ||
+		nameCharacters[0] === '-' ||
+		nameCharacters[0] === '_';
 
-	if (name === '.' || name === '..' || name === '' || symbolsToCheck.test(name) || startsWith) {
+	if (
+		name === '.' ||
+		name === '..' ||
+		name === '' ||
+		symbolsToCheck.test(name) ||
+		startsWith
+	) {
 		return false;
 	}
 	return true;

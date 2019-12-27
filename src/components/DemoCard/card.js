@@ -5,9 +5,7 @@ import Flex from '../../batteries/components/shared/Flex';
 
 const { Meta } = Card;
 
-const DemoCard = ({
- title, description, image, href,
-}) => (
+const DemoCard = ({ title, description, image, href }) => (
 	// eslint-disable-next-line
 	<Card cover={<img {...image} />}>
 		<Meta
@@ -15,8 +13,14 @@ const DemoCard = ({
 			title={<span css="white-space: initial;">{title}</span>}
 			description={description}
 		/>
-		<Flex css="margin-top: 40px" alignItems="center" justifyContent="center">
-			<Button href={href} target="_blank">Read more</Button>
+		<Flex
+			css="margin-top: 40px"
+			alignItems="center"
+			justifyContent="center"
+		>
+			<Button href={href} target="_blank">
+				Read more
+			</Button>
 		</Flex>
 	</Card>
 );

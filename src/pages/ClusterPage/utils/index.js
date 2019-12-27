@@ -58,10 +58,10 @@ export function getClusters() {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data.clusters);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -77,10 +77,10 @@ export function getClusterInvoice(id) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -96,10 +96,10 @@ export function getSnapshots(cluster, restoreFrom) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data.snapshots);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -119,10 +119,10 @@ export function restore(cluster, restoreFrom, snapshot_id) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -138,20 +138,22 @@ export function getClusterData(id) {
 				'Content-Type': 'application/json',
 			},
 		})
-			.then((res) => {
+			.then(res => {
 				if (res.status > 300) {
 					hasError = true;
 				}
 				return res.json();
 			})
-			.then((data) => {
+			.then(data => {
 				if (hasError) {
 					const { status, ...others } = data;
-					reject(JSON.stringify({ message: status.message, ...others }));
+					reject(
+						JSON.stringify({ message: status.message, ...others }),
+					);
 				}
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -169,13 +171,13 @@ export function deployCluster(cluster, id) {
 			},
 			body,
 		})
-			.then((res) => {
+			.then(res => {
 				if (res.status > 300) {
 					hasError = true;
 				}
 				return res.json();
 			})
-			.then((data) => {
+			.then(data => {
 				if (hasError) {
 					reject(data.status.message);
 				}
@@ -187,7 +189,7 @@ export function deployCluster(cluster, id) {
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -200,13 +202,13 @@ export function deleteCluster(id) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -242,7 +244,7 @@ export function scaleCluster(id, nodes) {
 			}),
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -260,7 +262,7 @@ export function getSharedUsers(id) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -285,7 +287,7 @@ export function addSharedUser(id, email, role) {
 			}),
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -303,7 +305,7 @@ export function deleteSharedUser(id, email) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -327,13 +329,13 @@ export function deployMyCluster(body) {
 			}),
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -354,10 +356,10 @@ export function verifyCluster(url) {
 			headers,
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -376,17 +378,19 @@ export function updateArcDetails(id, body) {
 			}),
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
 }
 
-export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
-export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);
+export const hasAddon = (item, source) =>
+	!!(source.addons || []).find(key => key.name === item);
+export const getAddon = (item, source) =>
+	(source.addons || []).find(key => key.name === item);

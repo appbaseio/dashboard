@@ -48,7 +48,7 @@ TemplatesView.propTypes = {
 	plan: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'plan'),

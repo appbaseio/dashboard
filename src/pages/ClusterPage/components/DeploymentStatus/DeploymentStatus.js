@@ -15,7 +15,7 @@ export default function DeploymentStatus({ data, onProgress }) {
 	if (!Object.keys(data).length) return null;
 	let { addons, ...deployments } = data; // eslint-disable-line
 	if (addons && addons.length) {
-		addons.forEach((index) => {
+		addons.forEach(index => {
 			deployments = {
 				...deployments,
 				[index.name]: index,

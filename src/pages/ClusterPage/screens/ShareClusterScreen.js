@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import {
- Button, Card, Table, Modal, Input, notification, Menu, Icon, Dropdown,
+	Button,
+	Card,
+	Table,
+	Modal,
+	Input,
+	notification,
+	Menu,
+	Icon,
+	Dropdown,
 } from 'antd';
 import { css } from 'emotion';
 import get from 'lodash/get';
@@ -34,7 +42,7 @@ class ShareClusterScreen extends Component {
 	componentDidMount() {
 		const { clusterId, userMail } = this.props;
 		getSharedUsers(clusterId)
-			.then((res) => {
+			.then(res => {
 				const usersList = res.filter(user => user.email !== userMail);
 
 				this.setState({
@@ -55,7 +63,7 @@ class ShareClusterScreen extends Component {
 		});
 	};
 
-	deleteEmail = (email) => {
+	deleteEmail = email => {
 		const { clusterId } = this.props;
 		const { users } = this.state;
 
@@ -64,7 +72,7 @@ class ShareClusterScreen extends Component {
 		});
 
 		deleteSharedUser(clusterId, email)
-			.then((res) => {
+			.then(res => {
 				const newUsers = users.filter(item => item.email !== email);
 				this.setState({
 					users: newUsers,
@@ -74,7 +82,7 @@ class ShareClusterScreen extends Component {
 					description: res,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				notification.error({
 					message: 'Some error occured',
 					description: e,
@@ -82,7 +90,7 @@ class ShareClusterScreen extends Component {
 			});
 	};
 
-	handleInputChange = (e) => {
+	handleInputChange = e => {
 		this.setState({ email: e.target.value });
 	};
 
@@ -95,7 +103,7 @@ class ShareClusterScreen extends Component {
 		});
 
 		addSharedUser(clusterId, email, role)
-			.then((res) => {
+			.then(res => {
 				users.push({ email, role });
 				this.setState({
 					email: '',
@@ -109,7 +117,7 @@ class ShareClusterScreen extends Component {
 					description: res,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					email: '',
 					addingUser: false,
@@ -131,7 +139,7 @@ class ShareClusterScreen extends Component {
 		});
 	};
 
-	handleRole = (e) => {
+	handleRole = e => {
 		this.setState({
 			role: e.key,
 		});
@@ -139,7 +147,12 @@ class ShareClusterScreen extends Component {
 
 	render() {
 		const ShareBtn = (
-			<Button icon="plus" onClick={this.showModal} size="large" type="primary">
+			<Button
+				icon="plus"
+				onClick={this.showModal}
+				size="large"
+				type="primary"
+			>
 				Add member
 			</Button>
 		);
@@ -151,7 +164,7 @@ class ShareClusterScreen extends Component {
 			role,
 			email,
 			emailToDelete,
-			addingUser, // prettier-ignore
+			addingUser // prettier-ignore
 		} = this.state;
 
 		const columns = [
@@ -174,7 +187,9 @@ class ShareClusterScreen extends Component {
 						{emailToDelete === record.email ? (
 							'Deletion in Progress'
 						) : (
-							<a onClick={() => this.deleteEmail(record.email)}>Delete</a>
+							<a onClick={() => this.deleteEmail(record.email)}>
+								Delete
+							</a>
 						)}
 					</span>
 				),
@@ -192,7 +207,9 @@ class ShareClusterScreen extends Component {
 			<div>
 				<Card title="Share with team" extra={ShareBtn}>
 					{isLoading ? (
-						<div css={{ margin: 20, textAlign: 'center' }}>Loading users...</div>
+						<div css={{ margin: 20, textAlign: 'center' }}>
+							Loading users...
+						</div>
 					) : (
 						<Table
 							rowKey="email"
@@ -240,7 +257,4 @@ const mapStateToProps = state => ({
 	userMail: get(state, 'user.data.email'),
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(ShareClusterScreen);
+export default connect(mapStateToProps, null)(ShareClusterScreen);

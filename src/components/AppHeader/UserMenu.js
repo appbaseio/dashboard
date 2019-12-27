@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { object } from 'prop-types';
-import {
- Menu, Avatar, Dropdown, Icon, Row,
-} from 'antd';
+import { Menu, Avatar, Dropdown, Icon, Row } from 'antd';
 import { css } from 'react-emotion';
 import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
@@ -50,7 +48,11 @@ const UserMenu = ({ user }) => {
 			<Menu.Divider />
 			<Menu.Item>
 				<Link to="/profile">
-					<Icon style={{ marginRight: 8 }} type="setting" theme="outlined" />
+					<Icon
+						style={{ marginRight: 8 }}
+						type="setting"
+						theme="outlined"
+					/>
 					Account Settings
 				</Link>
 			</Menu.Item>
@@ -69,7 +71,9 @@ const UserMenu = ({ user }) => {
 					{user.name && user.name.charAt(0).toLocaleUpperCase()}
 				</Avatar>
 				&nbsp;&nbsp;
-				<span className={userName}>{user ? user.name : 'Loading...'}</span>
+				<span className={userName}>
+					{user ? user.name : 'Loading...'}
+				</span>
 				&nbsp;&nbsp;
 				<Icon type="down" />
 			</span>

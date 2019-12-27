@@ -1,6 +1,13 @@
 import React from 'react';
 import {
- Input, Select, Icon, notification, Button, Card, Avatar, Popover,
+	Input,
+	Select,
+	Icon,
+	notification,
+	Button,
+	Card,
+	Avatar,
+	Popover,
 } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -8,7 +15,10 @@ import { connect } from 'react-redux';
 import PhoneInput from 'react-intl-tel-input';
 import 'react-intl-tel-input/dist/main.css';
 import {
- FormBuilder, FieldGroup, FieldControl, Validators,
+	FormBuilder,
+	FieldGroup,
+	FieldControl,
+	Validators,
 } from 'react-reactive-form';
 import { updateUser } from '../../batteries/modules/actions';
 import Flex from '../../batteries/components/shared/Flex';
@@ -19,8 +29,9 @@ const fieldWrapper = css`
 	margin-bottom: 20px;
 	input {
 		position: inherit;
-		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-			'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+			'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue',
+			sans-serif;
 		font-variant: tabular-nums;
 		box-sizing: border-box;
 		margin: 0;
@@ -93,7 +104,7 @@ class ProfilePage extends React.Component {
 
 		this.updatePicture(picture);
 
-		this.profileForm.get('picture').valueChanges.subscribe((value) => {
+		this.profileForm.get('picture').valueChanges.subscribe(value => {
 			this.updatePicture(value);
 		});
 	}
@@ -113,7 +124,7 @@ class ProfilePage extends React.Component {
 		displayErrors(errors, prevProps.errors);
 	}
 
-	updatePicture = (currentPicture) => {
+	updatePicture = currentPicture => {
 		this.setState({ currentPicture });
 	};
 
@@ -124,8 +135,8 @@ class ProfilePage extends React.Component {
 			...this.profileForm.value,
 			'deployment-timeframe': this.profileForm.value.deploymentTimeframe,
 			phone: `${submitCountryCode}-${this.profileForm.value.phone}`,
-		}
-		delete data.deploymentTimeframe
+		};
+		delete data.deploymentTimeframe;
 		setUser(data);
 	};
 
@@ -180,23 +191,26 @@ class ProfilePage extends React.Component {
 									/>
 									<Popover
 										placement="bottom"
-										content={(
-<FieldControl
+										content={
+											<FieldControl
 												name="picture"
 												render={({ handler }) => (
 													<div css={fieldWrapper}>
-														<span>Profile Picture</span>
+														<span>
+															Profile Picture
+														</span>
 														<Input
 															style={{
-																marginTop: '7px',
+																marginTop:
+																	'7px',
 															}}
 															placeholder="Update by adding an image URL"
 															{...handler()}
 														/>
 													</div>
 												)}
-/>
-)}
+											/>
+										}
 									>
 										<Avatar
 											{...avatar}
@@ -207,7 +221,11 @@ class ProfilePage extends React.Component {
 												marginTop: '-0.4rem',
 											}}
 										>
-											{avatar.style ? name.charAt(0).toLocaleUpperCase() : ''}
+											{avatar.style
+												? name
+														.charAt(0)
+														.toLocaleUpperCase()
+												: ''}
 										</Avatar>
 									</Popover>
 								</div>
@@ -230,14 +248,25 @@ class ProfilePage extends React.Component {
 											preferredCountries={['us', 'in']}
 											// /
 											defaultCountry={submitCountryCode.toLowerCase()}
-											onSelectFlag={(value, { dialCode }) => {
+											onSelectFlag={(
+												value,
+												{ dialCode },
+											) => {
 												this.setState({
 													submitCountryCode: dialCode,
 												});
 											}}
-											onPhoneNumberChange={(status, value, { dialCode }) => {
-												if (/^(\d){0,10}$/.test(value)) {
-													inputHandler.onChange(value);
+											onPhoneNumberChange={(
+												status,
+												value,
+												{ dialCode },
+											) => {
+												if (
+													/^(\d){0,10}$/.test(value)
+												) {
+													inputHandler.onChange(
+														value,
+													);
 												}
 												this.setState({
 													submitCountryCode: dialCode,
@@ -276,14 +305,19 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span>* What project are you building search for?</span>
+										<span>
+											* What project are you building
+											search for?
+										</span>
 										<Select
 											style={{
 												marginTop: '7px',
 												display: 'block',
 											}}
 											{...inputHandler}
-											value={inputHandler.value || undefined}
+											value={
+												inputHandler.value || undefined
+											}
 											placeholder="Select"
 										>
 											{useCaseOptions.map(i => (
@@ -302,14 +336,19 @@ class ProfilePage extends React.Component {
 								const inputHandler = handler();
 								return (
 									<div css={fieldWrapper}>
-										<span>* How soon do you plan to go to production?</span>
+										<span>
+											* How soon do you plan to go to
+											production?
+										</span>
 										<Select
 											style={{
 												marginTop: '7px',
 												display: 'block',
 											}}
 											{...inputHandler}
-											value={inputHandler.value || undefined}
+											value={
+												inputHandler.value || undefined
+											}
 											placeholder="Select"
 										>
 											{deploymentOptions.map(i => (
@@ -345,7 +384,7 @@ class ProfilePage extends React.Component {
 		);
 	}
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const phoneInfo = get(state, 'user.data.phone');
 	return {
 		isSubmitting: get(state, '$updateUser.isFetching'),
@@ -358,14 +397,17 @@ const mapStateToProps = (state) => {
 		username: get(state, 'user.data.name'),
 		picture: get(state, 'user.data.picture'),
 		countryCode: get(phoneInfo, 'length')
-			? get(countryCodes.find(item => item.dial_code === phoneInfo.split('-')[0]), 'code', '')
+			? get(
+					countryCodes.find(
+						item => item.dial_code === phoneInfo.split('-')[0],
+					),
+					'code',
+					'',
+			  )
 			: '',
 	};
 };
 const mapDispatchToProps = dispatch => ({
 	setUser: info => dispatch(updateUser(info)),
 });
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(ProfilePage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

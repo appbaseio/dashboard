@@ -29,7 +29,10 @@ export default class PlusMinus extends Component {
 	handleRecordsMinus = () => {
 		const { handleMinus, selected, onChange } = this.props;
 		const { selectedValueIndex = selected } = this.state;
-		const index = selectedValueIndex <= 0 ? selectedValueIndex : selectedValueIndex - 1;
+		const index =
+			selectedValueIndex <= 0
+				? selectedValueIndex
+				: selectedValueIndex - 1;
 
 		this.setState({
 			selectedValueIndex: index,
@@ -46,7 +49,8 @@ export default class PlusMinus extends Component {
 		const { handlePlus, onChange } = this.props;
 		const { selectedValueIndex } = this.state;
 
-		const index =			selectedValueIndex >= this.state.values.length - 1
+		const index =
+			selectedValueIndex >= this.state.values.length - 1
 				? selectedValueIndex
 				: selectedValueIndex + 1;
 		if (handlePlus) {

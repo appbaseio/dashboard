@@ -59,7 +59,10 @@ class SearchTemplates extends React.Component {
 		};
 		this.getTemplates();
 		this.form = FormBuilder.group({
-			name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)]],
+			name: [
+				'',
+				[Validators.required, Validators.pattern(/^[a-zA-Z0-9-_]+$/)],
+			],
 			query: [null, [Validators.required, jsonValidator]],
 		});
 		this.templateRef = React.createRef();
@@ -111,7 +114,7 @@ class SearchTemplates extends React.Component {
 		fetchTemplates();
 	};
 
-	toggleCreateMode = (status) => {
+	toggleCreateMode = status => {
 		this.form.reset();
 		this.setState(prevState => ({
 			createMode: status === undefined ? !prevState.createMode : status,
@@ -119,17 +122,22 @@ class SearchTemplates extends React.Component {
 		}));
 	};
 
-	toggleEditMode = (status) => {
+	toggleEditMode = status => {
 		this.setState(prevState => ({
-			currentTemplate: prevState.editMode ? null : prevState.currentTemplate,
+			currentTemplate: prevState.editMode
+				? null
+				: prevState.currentTemplate,
 			editMode: status === undefined ? !prevState.editMode : status,
 		}));
 	};
 
-	togglecopyEndpoint = (status) => {
+	togglecopyEndpoint = status => {
 		this.setState(prevState => ({
-			currentTemplate: prevState.copyEndpoint ? null : prevState.currentTemplate,
-			copyEndpoint: status === undefined ? !prevState.copyEndpoint : status,
+			currentTemplate: prevState.copyEndpoint
+				? null
+				: prevState.currentTemplate,
+			copyEndpoint:
+				status === undefined ? !prevState.copyEndpoint : status,
 		}));
 	};
 
@@ -144,7 +152,7 @@ class SearchTemplates extends React.Component {
 			if (!requestBody.source) {
 				throw new Error('Invalid query, `source` key is missing.');
 			}
-			saveTemplate(name, requestBody).then((action) => {
+			saveTemplate(name, requestBody).then(action => {
 				if (get(action, 'payload.acknowledged')) {
 					notification.success({
 						message: 'Template saved successfully.',
@@ -161,7 +169,7 @@ class SearchTemplates extends React.Component {
 		}
 	};
 
-	handleValidateTemplate = (templateId) => {
+	handleValidateTemplate = templateId => {
 		const { validateTemplate } = this.props;
 		const { query } = this.form.value;
 		const queryControl = this.form.get('query');
@@ -176,7 +184,7 @@ class SearchTemplates extends React.Component {
 			if (!queryControl.valid) {
 				throw new Error('Please enter valid JSON query.');
 			}
-			validateTemplate(requestBody, templateId).then((action) => {
+			validateTemplate(requestBody, templateId).then(action => {
 				if (get(action, 'payload')) {
 					window.scrollTo(0, document.body.scrollHeight);
 				}
@@ -188,9 +196,9 @@ class SearchTemplates extends React.Component {
 		}
 	};
 
-	handleDelete = (id) => {
+	handleDelete = id => {
 		const { deleteTemplate } = this.props;
-		deleteTemplate(id).then((action) => {
+		deleteTemplate(id).then(action => {
 			if (get(action, 'payload.acknowledged')) {
 				notification.success({
 					message: 'Template deleted successfully.',
@@ -200,7 +208,7 @@ class SearchTemplates extends React.Component {
 		});
 	};
 
-	handleEdit = (id) => {
+	handleEdit = id => {
 		this.setState(
 			{
 				currentTemplate: id,
@@ -209,7 +217,7 @@ class SearchTemplates extends React.Component {
 		);
 	};
 
-	handleRender = (id) => {
+	handleRender = id => {
 		this.setState(
 			{
 				currentTemplate: id,
@@ -220,8 +228,11 @@ class SearchTemplates extends React.Component {
 
 	render() {
 		const {
- createMode, editMode, currentTemplate, copyEndpoint,
-} = this.state;
+			createMode,
+			editMode,
+			currentTemplate,
+			copyEndpoint,
+		} = this.state;
 		const { isLoading, templates, isDeleting } = this.props;
 		const isDefault = !(createMode || editMode);
 		if (isLoading && !(templates && templates.length)) {
@@ -256,7 +267,9 @@ class SearchTemplates extends React.Component {
 					)}
 					{(createMode || editMode) && (
 						<CreateTemplate
-							handleValidateTemplate={() => this.handleValidateTemplate()}
+							handleValidateTemplate={() =>
+								this.handleValidateTemplate()
+							}
 							handleSaveTemplate={this.handleSaveTemplate}
 							control={this.form}
 							templateId={currentTemplate}
@@ -308,10 +321,8 @@ const mapDispatchToProps = dispatch => ({
 	fetchTemplates: () => dispatch(getAppTemplates()),
 	saveTemplate: (name, payload) => dispatch(saveAppTemplate(name, payload)),
 	deleteTemplate: name => dispatch(deleteAppTemplate(name)),
-	validateTemplate: (payload, name) => dispatch(validateAppTemplate(payload, name)),
+	validateTemplate: (payload, name) =>
+		dispatch(validateAppTemplate(payload, name)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(SearchTemplates);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTemplates);

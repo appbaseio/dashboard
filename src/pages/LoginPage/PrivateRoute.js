@@ -8,7 +8,8 @@ const AUTH_ROUTES = ['/login', '/signup'];
 const PrivateRoute = ({ component: Component, user, ...rest }) => (
 	<Route
 		{...rest}
-		render={props => (user.data ? (
+		render={props =>
+			user.data ? (
 				<React.Fragment>
 					<Component {...props} />
 					<HelpChat user={user.data} />
@@ -17,7 +18,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
 				<Redirect
 					to={`/login?returnURL="${window.location.origin}${window.location.pathname}"`}
 				/>
-			))
+			)
 		}
 	/>
 );

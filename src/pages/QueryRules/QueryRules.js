@@ -8,7 +8,10 @@ import {
 	setCurrentApp,
 	getPermission as getPermissionFromAppbase,
 } from '../../batteries/modules/actions';
-import { getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
+import {
+	getAppPermissionsByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
 import Frame from '../../components/Frame';
@@ -62,11 +65,7 @@ class QueryRules extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-		const iframeURL = `https://appbase-query-rules.netlify.com/promoted-results-queries?appname=${
-			dejavu.appname
-		}&url=${
-			dejavu.url
-		}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
+		const iframeURL = `https://appbase-query-rules.netlify.com/promoted-results-queries?appname=${dejavu.appname}&url=${dejavu.url}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
 
 		return (
 			<section>
@@ -96,9 +95,13 @@ QueryRules.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
-	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
+	const { username, password } = get(
+		getAppPermissionsByName(state),
+		'credentials',
+		{},
+	);
 	return {
 		plan: get(appPlan, 'plan', 'free'),
 		credentials: username ? `${username}:${password}` : '',
@@ -106,11 +109,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	getPermission: appId => dispatch(getPermissionFromAppbase(appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(QueryRules);
+export default connect(mapStateToProps, mapDispatchToProps)(QueryRules);

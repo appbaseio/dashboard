@@ -28,7 +28,8 @@ const bannerMessagesAnalytics = {
 		description:
 			'Understand the performance of your search. Learn how to make the most of search latency insights.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/analytics/Overview/#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview/#getting-insights-from-analytics',
 	},
 };
 
@@ -36,7 +37,9 @@ const SearchLatencyWrapper = ({ plan, isGrowth }) => (
 	<React.Fragment>
 		{isGrowth ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
 					<SearchPerformance />
 				</Container>
@@ -64,7 +67,7 @@ SearchLatencyWrapper.propTypes = {
 	isGrowth: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'plan', 'free'),

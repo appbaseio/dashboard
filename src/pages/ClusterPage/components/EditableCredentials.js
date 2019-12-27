@@ -18,7 +18,7 @@ export default class EditableCredentials extends Component {
 		}));
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const { onChange } = this.props;
 		this.setState(
 			{
@@ -32,27 +32,34 @@ export default class EditableCredentials extends Component {
 		);
 	};
 
-	copySuccess = (source) => {
+	copySuccess = source => {
 		// eslint-disable-next-line
 		message.success(`${source} credentials have been copied successully!`);
 	};
 
 	render() {
 		const { value } = this.state;
-		const {
-			text, name, visible, updateVisibility,
-		} = this.props;
+		const { text, name, visible, updateVisibility } = this.props;
 
 		return (
 			<div className={credsBox}>
 				{visible ? (
-					<Input className="input" value={value} onChange={this.handleChange} />
+					<Input
+						className="input"
+						value={value}
+						onChange={this.handleChange}
+					/>
 				) : (
-					<span className="cred-text">#######################################</span>
+					<span className="cred-text">
+						#######################################
+					</span>
 				)}
 
 				<span className="cred-button">
-					<CopyToClipboard text={text} onCopy={() => this.copySuccess(name)}>
+					<CopyToClipboard
+						text={text}
+						onCopy={() => this.copySuccess(name)}
+					>
 						<a data-clipboard-text={text}>
 							<Icon type="copy" theme="outlined" />
 							<span className="cred-button-text">Copy</span>

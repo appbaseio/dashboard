@@ -81,7 +81,8 @@ function hasFilledDetails(user) {
 	return false;
 }
 
-const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
+const Wrapper = ({ user }) =>
+	hasFilledDetails(user) ? (
 		<Switch>
 			<Route exact path="/" component={HomePage} />
 			<Route exact path="/tutorial" component={OnboardingPage} />
@@ -91,7 +92,10 @@ const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
 			<Route path="/clusters/new/hosted" component={NewClusterPage} />
 			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />
-			<Route path="/clusters/:id/explore" component={ExploreClusterPage} />
+			<Route
+				path="/clusters/:id/explore"
+				component={ExploreClusterPage}
+			/>
 			<Route path="/clusters/:id" component={ClusterInfoPage} />
 			<Route path="/profile" component={ProfilePage} />
 			<Route path="/app/:appName?/:route?" component={AppWrapper} />
@@ -99,6 +103,6 @@ const Wrapper = ({ user }) => (hasFilledDetails(user) ? (
 		</Switch>
 	) : (
 		<Route component={UserDetails} />
-	));
+	);
 
 export default Wrapper;

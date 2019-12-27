@@ -4,7 +4,8 @@ import hexRgb from 'hex-rgb';
 // returns all applicable styles for a styled component via props
 export const getStylesFromProps = (allProps, filterProps = []) => {
 	const styles = filterProps.reduce(
-		(acc, item) => (allProps[item] ? { ...acc, [item]: allProps[item] } : acc),
+		(acc, item) =>
+			allProps[item] ? { ...acc, [item]: allProps[item] } : acc,
 		{},
 	);
 	return styles;

@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
-import {
- Row, Col, Button, Icon,
-} from 'antd';
+import { Row, Col, Button, Icon } from 'antd';
 import { string, bool, number } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -11,7 +9,11 @@ import Mappings from '../../batteries/components/Mappings';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
 
 const MappingsPage = ({
- appName, appId, isPaidUser, isUsingTrial, trialValidity,
+	appName,
+	appId,
+	isPaidUser,
+	isUsingTrial,
+	trialValidity,
 }) => (
 	<Fragment>
 		<Header compact>
@@ -22,7 +24,8 @@ const MappingsPage = ({
 					<Row>
 						<Col lg={18}>
 							<p>
-								View mappings, edit use-case and data types, add or delete fields -{' '}
+								View mappings, edit use-case and data types, add
+								or delete fields -{' '}
 								<a
 									href="https://docs.appbase.io/docs/search/Mappings"
 									target="_blank"
@@ -107,7 +110,7 @@ MappingsPage.propTypes = {
 	trialValidity: number.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Row, Col, Icon, notification,
-} from 'antd';
+import { Row, Col, Icon, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -35,7 +33,9 @@ class ActionButtons extends React.Component {
 				indexName: appName,
 				clusterURL: `https://${username}:${password}@${SCALR_URL}`,
 			};
-			history.push(`/app/${appName}/import/?source=${JSON.stringify(parameters)}`);
+			history.push(
+				`/app/${appName}/import/?source=${JSON.stringify(parameters)}`,
+			);
 		}
 	};
 
@@ -116,7 +116,7 @@ class ActionButtons extends React.Component {
 			appName,
 			appId,
 			shared,
-			permissions, // prettier-ignore
+			permissions // prettier-ignore
 		} = this.props;
 		const { deleteModal } = this.state;
 
@@ -133,7 +133,7 @@ class ActionButtons extends React.Component {
 			<div
 				className="card-actions"
 				key={appName}
-				onClick={(e) => {
+				onClick={e => {
 					e.preventDefault();
 					e.stopPropagation();
 				}}
@@ -149,7 +149,10 @@ class ActionButtons extends React.Component {
 					</Col>
 
 					{writeKey && !shared ? (
-						<CopyToClipboard text={writeKey} onCopy={this.copyWriteKey}>
+						<CopyToClipboard
+							text={writeKey}
+							onCopy={this.copyWriteKey}
+						>
 							<Col span={6} className={columnSeparator}>
 								<Icon className={actionIcon} type="copy" />
 								Write Key
@@ -158,8 +161,14 @@ class ActionButtons extends React.Component {
 					) : null}
 
 					{readKey && !shared ? (
-						<CopyToClipboard text={readKey} onCopy={this.copyReadKey}>
-							<Col span={shared ? 12 : 6} className={columnSeparator}>
+						<CopyToClipboard
+							text={readKey}
+							onCopy={this.copyReadKey}
+						>
+							<Col
+								span={shared ? 12 : 6}
+								className={columnSeparator}
+							>
 								<Icon className={actionIcon} type="copy" />
 								Read Key
 							</Col>
@@ -167,14 +176,24 @@ class ActionButtons extends React.Component {
 					) : null}
 
 					{shared ? (
-						<CopyToClipboard text={sharedKey} onCopy={this.copySharedKey}>
-							<Col span={shared ? 12 : 6} className={columnSeparator}>
+						<CopyToClipboard
+							text={sharedKey}
+							onCopy={this.copySharedKey}
+						>
+							<Col
+								span={shared ? 12 : 6}
+								className={columnSeparator}
+							>
 								<Icon className={actionIcon} type="copy" />
 								Shared Key
 							</Col>
 						</CopyToClipboard>
 					) : (
-						<Col span={6} onClick={this.handleDeleteModal} className={deleteButton}>
+						<Col
+							span={6}
+							onClick={this.handleDeleteModal}
+							className={deleteButton}
+						>
 							<Icon className={actionIcon} type="delete" />
 							Delete App
 						</Col>

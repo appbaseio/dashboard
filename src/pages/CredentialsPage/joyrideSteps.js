@@ -4,7 +4,8 @@ const joyrideSteps = [
 	{
 		content: (
 			<span>
-				Create a new API credential for your app. Advanced security features are available when you upgrade to a paid plan.
+				Create a new API credential for your app. Advanced security
+				features are available when you upgrade to a paid plan.
 			</span>
 		),
 		target: '.credentials-tutorial-1',
@@ -22,7 +23,8 @@ const joyrideSteps = [
 	{
 		content: (
 			<span>
-				<b>Read-only</b> credentials are meant to be used on your public facing app.
+				<b>Read-only</b> credentials are meant to be used on your public
+				facing app.
 			</span>
 		),
 		target: '.credentials-tutorial-3',
@@ -31,7 +33,8 @@ const joyrideSteps = [
 	{
 		content: (
 			<span>
-				<b>Write</b> credentials can modify data in your app, and should only be used from secure environments.
+				<b>Write</b> credentials can modify data in your app, and should
+				only be used from secure environments.
 			</span>
 		),
 		target: '.credentials-tutorial-4',

@@ -40,7 +40,7 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 	</Link>
 );
 
-const TrialButton = (props) => {
+const TrialButton = props => {
 	const {
 		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
 	} = props; // prettier-ignore
@@ -52,7 +52,8 @@ const TrialButton = (props) => {
 
 	const daysLeftValue = isCluster ? clusterDaysLeft : daysLeft;
 	const appNames = apps ? Object.keys(apps) : [];
-	const redirectApp = currentApp && appNames.includes(currentApp) ? currentApp : '';
+	const redirectApp =
+		currentApp && appNames.includes(currentApp) ? currentApp : '';
 
 	if (cluster) {
 		return buttonWithMessage({

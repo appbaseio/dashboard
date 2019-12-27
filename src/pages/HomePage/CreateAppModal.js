@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
- Row, Col, Icon, Modal, Input, Radio, List, Popover, notification,
+	Row,
+	Col,
+	Icon,
+	Modal,
+	Input,
+	Radio,
+	List,
+	Popover,
+	notification,
 } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
@@ -16,7 +24,11 @@ import {
 	planDetails,
 	planInfo,
 } from './styles';
-import { validateAppName, validationsList, capitalizeFirstLetter } from '../../utils/helper';
+import {
+	validateAppName,
+	validationsList,
+	capitalizeFirstLetter,
+} from '../../utils/helper';
 import { createAppSubscription } from '../../batteries/modules/actions';
 import Loader from '../../batteries/components/shared/Loader';
 
@@ -66,7 +78,7 @@ class CreateAppModal extends Component {
 		}
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const {
 			target: { name, value },
 		} = e;
@@ -85,7 +97,7 @@ class CreateAppModal extends Component {
 		handleModal();
 	};
 
-	handleMenuClick = (e) => {
+	handleMenuClick = e => {
 		const category = e.key;
 		this.setState({
 			category,
@@ -98,7 +110,7 @@ class CreateAppModal extends Component {
 		}));
 	};
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = prevProps => {
 		const {
 			isPaid,
 			createdApp,
@@ -118,7 +130,10 @@ class CreateAppModal extends Component {
 				history.push(`app/${appName}`);
 			}
 		};
-		if (createdApp.data && createdApp.data.id !== get(prevProps, 'createdApp.data.id')) {
+		if (
+			createdApp.data &&
+			createdApp.data.id !== get(prevProps, 'createdApp.data.id')
+		) {
 			if (!isUsingTrial && isPaid && plan !== 'free') {
 				// Only call for previously paid customers
 				createSubscription(plan, appName);
@@ -167,7 +182,11 @@ class CreateAppModal extends Component {
 				{calls}
 			</Col>
 			<Col className={planInfo}>
-				<a href="https://appbase.io/pricing/" target="_blank" rel="noopener noreferrer">
+				<a
+					href="https://appbase.io/pricing/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
 					<Icon type="info-circle" />
 				</a>
 			</Col>
@@ -208,7 +227,10 @@ class CreateAppModal extends Component {
 							}}
 							theme="filled"
 						/>
-						<span>Alternatively, you can also create a dedicated cluster.</span>
+						<span>
+							Alternatively, you can also create a dedicated
+							cluster.
+						</span>
 					</div>
 					<Link to="/clusters">Create a Cluster</Link>
 				</section>
@@ -229,12 +251,25 @@ class CreateAppModal extends Component {
 							trigger="click"
 							visible={validationPopOver}
 						>
-							<Icon type="info-circle" onClick={this.handleValidationPopOver} />
+							<Icon
+								type="info-circle"
+								onClick={this.handleValidationPopOver}
+							/>
 						</Popover>
 					</Row>
-					<p css={{ fontSize: 14, margin: '-4px 0 8px 0', lineHeight: '20px' }}>
-						App names are unique across appbase.io and should be lowercase. Click
-						<span style={{ color: '#1890ff' }} onClick={this.handleValidationPopOver}>
+					<p
+						css={{
+							fontSize: 14,
+							margin: '-4px 0 8px 0',
+							lineHeight: '20px',
+						}}
+					>
+						App names are unique across appbase.io and should be
+						lowercase. Click
+						<span
+							style={{ color: '#1890ff' }}
+							onClick={this.handleValidationPopOver}
+						>
 							{' '}
 							here
 						</span>{' '}
@@ -291,9 +326,14 @@ class CreateAppModal extends Component {
 
 				<div>
 					<h3 className={modalHeading}>
-						Do you have a JSON or CSV dataset to import into this app?
+						Do you have a JSON or CSV dataset to import into this
+						app?
 					</h3>
-					<RadioGroup value={hasJSON} name="hasJSON" onChange={this.handleChange}>
+					<RadioGroup
+						value={hasJSON}
+						name="hasJSON"
+						onChange={this.handleChange}
+					>
 						<Radio className={radiobtn} value>
 							Yes
 						</Radio>
@@ -305,7 +345,9 @@ class CreateAppModal extends Component {
 
 				<Row>
 					<Col span={14}>
-						<h3 className={modalHeading}>Pick Your Elasticsearch Version</h3>
+						<h3 className={modalHeading}>
+							Pick Your Elasticsearch Version
+						</h3>
 						<RadioGroup
 							value={elasticVersion}
 							name="elasticVersion"
@@ -343,10 +385,8 @@ CreateAppModal.propTypes = {
 	isPaid: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const {
- apps, appsMetrics, createdApp, $createAppSubscription,
-} = state;
+const mapStateToProps = state => {
+	const { apps, appsMetrics, createdApp, $createAppSubscription } = state;
 	return {
 		apps,
 		appsMetrics,
@@ -362,10 +402,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	handleCreateApp: options => dispatch(createApp(options)),
 	resetApp: () => dispatch(resetCreatedApp()),
-	createSubscription: (plan, appName) => dispatch(createAppSubscription(undefined, plan, appName)),
+	createSubscription: (plan, appName) =>
+		dispatch(createAppSubscription(undefined, plan, appName)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(CreateAppModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAppModal);

@@ -12,9 +12,9 @@ import appbaseHelpers from '../utils/appbaseHelpers';
 
 const { ResultListWrapper } = ReactiveList;
 
-const renderFilters = (fields) => {
+const renderFilters = fields => {
 	if (fields && fields.length) {
-		return fields.map((field) => {
+		return fields.map(field => {
 			switch (field) {
 				case 'genres': {
 					return (
@@ -26,7 +26,11 @@ const renderFilters = (fields) => {
 							size={15}
 							sortBy="count"
 							react={{
-								and: ['search', 'original_language', 'release_year'],
+								and: [
+									'search',
+									'original_language',
+									'release_year',
+								],
 							}}
 							showSearch={false}
 							filterLabel="Genres"
@@ -77,15 +81,15 @@ const renderFilters = (fields) => {
 
 const getFields = (fields, suffix) => {
 	let newFields = [];
-	fields.forEach((item) => {
-		suffix.forEach((str) => {
+	fields.forEach(item => {
+		suffix.forEach(str => {
 			newFields = [...newFields, `${item}${str}`];
 		});
 	});
 	return newFields;
 };
 
-const getWeights = (fields) => {
+const getWeights = fields => {
 	const weights = {
 		original_title: 10,
 		'original_title.raw': 10,
@@ -131,8 +135,13 @@ const renderResultList = () => (
 							<ResultList.Description>
 								<div>
 									<p
-										style={{ fontSize: '16px', lineHeight: '24px' }}
-										dangerouslySetInnerHTML={{ __html: item.tagline }}
+										style={{
+											fontSize: '16px',
+											lineHeight: '24px',
+										}}
+										dangerouslySetInnerHTML={{
+											__html: item.tagline,
+										}}
 									/>
 									<p
 										style={{
@@ -141,11 +150,15 @@ const renderResultList = () => (
 											fontSize: '13px',
 											lineHeight: '18px',
 										}}
-										dangerouslySetInnerHTML={{ __html: item.overview }}
+										dangerouslySetInnerHTML={{
+											__html: item.overview,
+										}}
 									/>
 									<div>
 										{item.genres ? (
-											<span className="tag">{item.genres}</span>
+											<span className="tag">
+												{item.genres}
+											</span>
 										) : null}
 									</div>
 								</div>
@@ -189,7 +202,7 @@ const renderJSONList = () => (
 	/>
 );
 
-const renderCode = (lib) => {
+const renderCode = lib => {
 	switch (lib) {
 		case 'react':
 			return renderResultList();
@@ -251,8 +264,16 @@ export default class SearchApp extends Component {
 
 				<SelectedFilters style={{ marginTop: 20 }} />
 
-				<div className={this.props.facets && this.props.facets.length ? 'multi-col' : ''}>
-					<div className="left-col">{renderFilters(this.props.facets)}</div>
+				<div
+					className={
+						this.props.facets && this.props.facets.length
+							? 'multi-col'
+							: ''
+					}
+				>
+					<div className="left-col">
+						{renderFilters(this.props.facets)}
+					</div>
 					{renderCode(this.props.ui)}
 				</div>
 			</ReactiveBase>

@@ -18,38 +18,43 @@ const LoginContainer = ({ children }) => (
 					</mark>
 				</h2>
 				<div className="signup_description">
-					<h4>Build the best search experience &amp; scale as you grow!</h4>
+					<h4>
+						Build the best search experience &amp; scale as you
+						grow!
+					</h4>
 					<ul className="signup_benefits">
 						<li>
 							<Icon type="check" className="icon" />
-							<span>Free 10,000 records and 100,000 API calls / mo</span>
-						</li>
-						<li>
-							<Icon type="check" className="icon" />
 							<span>
-								Import JSON / CSV data or use our CLI for importing from your
-								favorite data source
+								Free 10,000 records and 100,000 API calls / mo
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Browse data, edit mappings, build search visually, and create query
-								rules
+								Import JSON / CSV data or use our CLI for
+								importing from your favorite data source
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Get actionable analytics to improve content and increase your search
-								ROI
+								Browse data, edit mappings, build search
+								visually, and create query rules
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Get best-in-class security with read/write permissions, granular
-								ACLs and more
+								Get actionable analytics to improve content and
+								increase your search ROI
+							</span>
+						</li>
+						<li>
+							<Icon type="check" className="icon" />
+							<span>
+								Get best-in-class security with read/write
+								permissions, granular ACLs and more
 							</span>
 						</li>
 					</ul>

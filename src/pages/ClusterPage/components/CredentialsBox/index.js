@@ -19,16 +19,14 @@ export default class CredentialsBox extends Component {
 		}));
 	};
 
-	copySuccess = (source) => {
+	copySuccess = source => {
 		// eslint-disable-next-line
 		message.success(`${source} credentials have been copied successully!`);
 	};
 
 	render() {
 		const { hidden } = this.state;
-		const {
- text, name, isEditable, inputRef,
-} = this.props;
+		const { text, name, isEditable, inputRef } = this.props;
 
 		return (
 			<div className={credsBox}>
@@ -40,8 +38,13 @@ export default class CredentialsBox extends Component {
 						dangerouslySetInnerHTML={{ __html: text }}
 					/>
 				) : (
-					<span className="cred-text" contentEditable={!!(isEditable && !hidden)}>
-						{hidden ? '#######################################' : text}
+					<span
+						className="cred-text"
+						contentEditable={!!(isEditable && !hidden)}
+					>
+						{hidden
+							? '#######################################'
+							: text}
 					</span>
 				)}
 
@@ -53,10 +56,15 @@ export default class CredentialsBox extends Component {
 							) : (
 								<Icon type="close-circle" theme="outlined" />
 							)}
-							<span className="cred-button-text">{hidden ? 'Show' : 'Hide'}</span>
+							<span className="cred-button-text">
+								{hidden ? 'Show' : 'Hide'}
+							</span>
 						</a>
 					)}
-					<CopyToClipboard text={text} onCopy={() => this.copySuccess(name)}>
+					<CopyToClipboard
+						text={text}
+						onCopy={() => this.copySuccess(name)}
+					>
 						<a data-clipboard-text={text}>
 							<Icon type="copy" theme="outlined" />
 							<span className="cred-button-text">Copy</span>

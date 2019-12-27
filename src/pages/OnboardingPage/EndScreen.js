@@ -14,22 +14,27 @@ const integrations = [
 		name: 'React',
 		image1x: '/static/images/onboarding/finish-screen/React@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/React@2x.png',
-		description: 'React UI components for building data-driven search experiences',
-		url: 'https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/',
+		description:
+			'React UI components for building data-driven search experiences',
+		url:
+			'https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/',
 	},
 	{
 		name: 'Vue',
 		image1x: '/static/images/onboarding/finish-screen/vue@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/vue@2x.png',
-		description: 'Vue UI components for building data-driven search experiences',
-		url: 'https://docs.appbase.io/docs/reactivesearch/vue/overview/QuickStart/',
+		description:
+			'Vue UI components for building data-driven search experiences',
+		url:
+			'https://docs.appbase.io/docs/reactivesearch/vue/overview/QuickStart/',
 	},
 	{
 		name: 'React Native',
 		image1x: '/static/images/onboarding/finish-screen/ReactNative@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/ReactNative@2x.png',
 		description: 'Build data-driven search experiences for iOS and Android',
-		url: 'https://docs.appbase.io/docs/reactivesearch/native/overview/QuickStart/',
+		url:
+			'https://docs.appbase.io/docs/reactivesearch/native/overview/QuickStart/',
 	},
 	{
 		name: 'REST APIs',
@@ -42,7 +47,8 @@ const integrations = [
 		name: 'Javascript Library',
 		image1x: '/static/images/onboarding/finish-screen/JS@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/JS@2x.png',
-		description: 'Javascript client library for working with elasticseach / appbase apps',
+		description:
+			'Javascript client library for working with elasticseach / appbase apps',
 		url: 'https://docs.appbase.io/api/javascript/quickstart/',
 	},
 	{
@@ -54,9 +60,11 @@ const integrations = [
 	},
 ];
 
-const getFilteredList = (query) => {
+const getFilteredList = query => {
 	const matchQuery = query.toLowerCase();
-	return integrations.filter(item => item.name.toLowerCase().indexOf(matchQuery) > -1);
+	return integrations.filter(
+		item => item.name.toLowerCase().indexOf(matchQuery) > -1,
+	);
 };
 
 class EndScreen extends React.PureComponent {
@@ -64,7 +72,7 @@ class EndScreen extends React.PureComponent {
 		searchQuery: '',
 	};
 
-	handleSearchChange = (e) => {
+	handleSearchChange = e => {
 		const {
 			target: { value },
 		} = e;
@@ -75,7 +83,9 @@ class EndScreen extends React.PureComponent {
 
 	render() {
 		const { searchQuery } = this.state;
-		const integrationsList = searchQuery.trim() ? getFilteredList(searchQuery) : integrations;
+		const integrationsList = searchQuery.trim()
+			? getFilteredList(searchQuery)
+			: integrations;
 		const { currentApp } = this.props;
 		return (
 			<Layout>
@@ -95,12 +105,14 @@ class EndScreen extends React.PureComponent {
 										<h3>SEARCH PREVIEW</h3>
 										<h1>Keep tunning search settings</h1>
 										<p>
-											Continue tuning search, filter and layout options for
-											this app.
+											Continue tuning search, filter and
+											layout options for this app.
 										</p>
 									</div>
 									{currentApp && (
-										<Link to={`/app/${currentApp}/search-preview`}>
+										<Link
+											to={`/app/${currentApp}/search-preview`}
+										>
 											Go to Search Preview
 										</Link>
 									)}
@@ -114,19 +126,25 @@ class EndScreen extends React.PureComponent {
 										<h1>
 											<Link
 												to={
-													currentApp ? `/app/${currentApp}/overview` : '/'
+													currentApp
+														? `/app/${currentApp}/overview`
+														: '/'
 												}
 											>
 												Go to your App
 											</Link>
 										</h1>
 										<p>
-											Import data, get search analytics, manage security and
-											access.
+											Import data, get search analytics,
+											manage security and access.
 										</p>
 									</div>
 									<Link
-										to={currentApp ? `/app/${currentApp}/overview` : '/'}
+										to={
+											currentApp
+												? `/app/${currentApp}/overview`
+												: '/'
+										}
 										className="cta"
 									>
 										Go to Dashboard
@@ -136,7 +154,9 @@ class EndScreen extends React.PureComponent {
 						</div>
 
 						<div className="integration-container">
-							<div className="title">Products and Integrations</div>
+							<div className="title">
+								Products and Integrations
+							</div>
 
 							<div className="search-input-container">
 								<input
@@ -152,7 +172,10 @@ class EndScreen extends React.PureComponent {
 
 							<div className="card-row">
 								{integrationsList.map(item => (
-									<div className="card-wrapper" key={item.name}>
+									<div
+										className="card-wrapper"
+										key={item.name}
+									>
 										<div className="card">
 											<img
 												src={item.image1x}
@@ -186,9 +209,12 @@ EndScreen.propTypes = {
 	currentApp: string.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	// for development and testing
-	const urlApp = Object.keys(state.apps).find(item => state.apps[item] === getParam('app')) || '';
+	const urlApp =
+		Object.keys(state.apps).find(
+			item => state.apps[item] === getParam('app'),
+		) || '';
 
 	return {
 		currentApp: get(state, '$getCurrentApp.name') || urlApp,

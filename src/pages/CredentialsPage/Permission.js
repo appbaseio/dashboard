@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Button, Popconfirm, Tooltip, notification,
-} from 'antd';
+import { Button, Popconfirm, Tooltip, notification } from 'antd';
 import { css } from 'react-emotion';
 import { object, func } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -91,19 +89,44 @@ class Permission extends React.Component {
 		}
 		return (
 			<Flex css={main} alignItems="center">
-				<Flex justifyContent="space-between" alignItems="center" css={container}>
-					<span>{viewKey ? this.key : '########################################'}</span>
+				<Flex
+					justifyContent="space-between"
+					alignItems="center"
+					css={container}
+				>
+					<span>
+						{viewKey
+							? this.key
+							: '########################################'}
+					</span>
 					<Flex>
 						<Tooltip
 							placement="topLeft"
-							title={viewKey ? 'Hide credentials' : 'View credentials'}
+							title={
+								viewKey
+									? 'Hide credentials'
+									: 'View credentials'
+							}
 						>
-							<Button onClick={this.handleViewClick} type="normal">
-								{viewKey ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+							<Button
+								onClick={this.handleViewClick}
+								type="normal"
+							>
+								{viewKey ? (
+									<EyeOffIcon size={16} />
+								) : (
+									<EyeIcon size={16} />
+								)}
 							</Button>
 						</Tooltip>
-						<CopyToClipboard text={this.key} onCopy={this.handleCopyCred}>
-							<Tooltip placement="topLeft" title="Copy To Clipboard">
+						<CopyToClipboard
+							text={this.key}
+							onCopy={this.handleCopyCred}
+						>
+							<Tooltip
+								placement="topLeft"
+								title="Copy To Clipboard"
+							>
 								<Button type="normal" className={tutorialClass}>
 									<CopyIcon size={16} />
 								</Button>
