@@ -225,6 +225,31 @@ class ArcDetail extends React.Component {
 								</Tooltip>
 							</div>
 						</div>
+						<div className={clusterEndpoint}>
+							<Tooltip
+								title={
+									<span>
+										You can add access whitelist for this IP
+										address to your ElasticSearch cluster.{' '}
+										<a href="https://docs.appbase.io/docs/hosting/BYOC/">
+											Read More
+										</a>
+									</span>
+								}
+							>
+								<h4 style={{ cursor: 'pointer' }}>
+									Cluster IP
+								</h4>
+							</Tooltip>
+							<div>
+								<EditableCredentials
+									visible
+									name="ip"
+									disabled
+									text={`${cluster.cluster_ip}`}
+								/>
+							</div>
+						</div>
 					</div>
 				</li>
 				<li className={card}>

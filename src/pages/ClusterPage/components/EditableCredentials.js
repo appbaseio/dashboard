@@ -51,7 +51,7 @@ export default class EditableCredentials extends Component {
 					/>
 				) : (
 					<span className="cred-text">
-						#######################################
+						############################&nbsp;
 					</span>
 				)}
 
