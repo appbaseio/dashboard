@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Slider, InputNumber, Row, Col,
-} from 'antd';
+import { Slider, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 export default class IntegerStep extends React.Component {
@@ -13,7 +11,7 @@ export default class IntegerStep extends React.Component {
 		};
 	}
 
-	onChange = (value) => {
+	onChange = value => {
 		this.setState({
 			inputValue: value,
 		});

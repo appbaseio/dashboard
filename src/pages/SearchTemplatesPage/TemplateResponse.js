@@ -49,7 +49,4 @@ const mapDispatchToProps = dispatch => ({
 	clearValidate: () => dispatch(clearAppTemplate()),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(TemplateResponse);
+export default connect(mapStateToProps, mapDispatchToProps)(TemplateResponse);

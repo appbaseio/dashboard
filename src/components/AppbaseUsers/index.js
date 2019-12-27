@@ -37,9 +37,15 @@ const AppbaseUsers = ({ className, style, title }) => (
 		<div className={cx(styles, className)} style={style}>
 			<img src="/static/images/testimonials/aerial.png" alt="Aerial" />
 			<img src="/static/images/testimonials/helium.png" alt="Helium" />
-			<img src="/static/images/testimonials/inquisit.png" alt="Inquisit" />
+			<img
+				src="/static/images/testimonials/inquisit.png"
+				alt="Inquisit"
+			/>
 			<img src="/static/images/testimonials/lyearn.png" alt="Lyearn" />
-			<img src="/static/images/testimonials/shopelect.png" alt="Shopelect" />
+			<img
+				src="/static/images/testimonials/shopelect.png"
+				alt="Shopelect"
+			/>
 		</div>
 	</React.Fragment>
 );

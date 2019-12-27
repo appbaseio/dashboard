@@ -25,9 +25,11 @@ const bannerMessagesAnalytics = {
 	},
 	growth: {
 		title: 'Popular Results',
-		description: 'Understand how to make the most of the popular results analytics.',
+		description:
+			'Understand how to make the most of the popular results analytics.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 
@@ -35,15 +37,24 @@ const PopularResultsWrapper = ({ appName, plan, isGrowth }) => (
 	<React.Fragment>
 		{isGrowth ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
-					<PopularResults displayReplaySearch appName={appName} plan={plan} />
+					<PopularResults
+						displayReplaySearch
+						appName={appName}
+						plan={plan}
+					/>
 				</Container>
 			</React.Fragment>
 		) : (
 			<React.Fragment>
 				<Banner {...bannerMessagesAnalytics[plan]} />
-				<Overlay src="/static/images/analytics/PopularResults.png" alt="popular results" />
+				<Overlay
+					src="/static/images/analytics/PopularResults.png"
+					alt="popular results"
+				/>
 			</React.Fragment>
 		)}
 	</React.Fragment>
@@ -55,7 +66,7 @@ PopularResultsWrapper.propTypes = {
 	isGrowth: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),

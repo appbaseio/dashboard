@@ -40,7 +40,7 @@ class Introduction extends Component {
 		}
 	}
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -69,7 +69,9 @@ class Introduction extends Component {
 			this.setError('App name cannot be left empty.');
 			this.input.focus();
 		} else if (!isValidAppName) {
-			this.setError('Invalid App name. Please follow the validations rules.');
+			this.setError(
+				'Invalid App name. Please follow the validations rules.',
+			);
 			notification.error({
 				message: 'Invalid App name',
 				description: (
@@ -87,7 +89,7 @@ class Introduction extends Component {
 			appbaseHelpers
 				.createApp(value)
 				.then(res => res.json())
-				.then((res) => {
+				.then(res => {
 					if (res.body && res.body.id) {
 						app = {
 							appName: value,
@@ -102,20 +104,22 @@ class Introduction extends Component {
 						this.input.focus();
 					}
 				})
-				.then((res) => {
+				.then(res => {
 					if (app.appName) {
-						appbaseHelpers.getWritePermissions().then((permission) => {
-							app = Object.assign(app, permission);
-							appbaseHelpers.updateApp(app);
-							this.setState(
-								{
-									appId: app.id,
-								},
-								() => {
-									this.props.nextScreen();
-								},
-							);
-						});
+						appbaseHelpers
+							.getWritePermissions()
+							.then(permission => {
+								app = Object.assign(app, permission);
+								appbaseHelpers.updateApp(app);
+								this.setState(
+									{
+										appId: app.id,
+									},
+									() => {
+										this.props.nextScreen();
+									},
+								);
+							});
 
 						this.props.appendCurrentApp({
 							[app.appName]: app.id,
@@ -123,7 +127,7 @@ class Introduction extends Component {
 						this.props.updateCurrentApp(app.appName, app.id);
 					}
 				})
-				.catch((e) => {
+				.catch(e => {
 					this.setError(
 						'Some error occurred. Please try again with a different app name.',
 					);
@@ -135,26 +139,33 @@ class Introduction extends Component {
 		<div className="search-field-container small" style={{ marginLeft: 0 }}>
 			<div>
 				<h3>Pick a unique app name</h3>
-				<p>Get started by creating an app which will serve as your elasticsearch index.</p>
+				<p>
+					Get started by creating an app which will serve as your
+					elasticsearch index.
+				</p>
 			</div>
 			<div className="input-wrapper">
 				<input
 					autoFocus
 					className="input"
-					ref={(ref) => {
+					ref={ref => {
 						this.input = ref;
 					}}
 					type="text"
 				/>
 				<a
-					className={`button primary ${this.state.status ? 'disabled' : ''}`}
+					className={`button primary ${
+						this.state.status ? 'disabled' : ''
+					}`}
 					onClick={this.createApp}
 				>
 					Submit
 				</a>
 			</div>
 			{this.state.status && <p>{this.state.status}</p>}
-			{this.state.error && <p style={{ color: 'tomato' }}>{this.state.error}</p>}
+			{this.state.error && (
+				<p style={{ color: 'tomato' }}>{this.state.error}</p>
+			)}
 		</div>
 	);
 
@@ -163,14 +174,17 @@ class Introduction extends Component {
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/static/images/onboarding/Create.svg" alt="create app" />
+						<img
+							src="/static/images/onboarding/Create.svg"
+							alt="create app"
+						/>
 					</div>
 					<div className="content">
 						<header>
 							<h2>Creating your first app with appbase.io</h2>
 							<p>
-								An app in appbase.io is equivalent to an index in Elasticsearch (or
-								like a database in SQL).
+								An app in appbase.io is equivalent to an index
+								in Elasticsearch (or like a database in SQL).
 							</p>
 						</header>
 						{this.renderAppInput()}
@@ -186,8 +200,9 @@ class Introduction extends Component {
 								}}
 							/>
 							<p>
-								An app holds all the data as JSON documents that can be searched
-								with rich queries and aggregations.
+								An app holds all the data as JSON documents that
+								can be searched with rich queries and
+								aggregations.
 							</p>
 						</div>
 					</div>
@@ -199,11 +214,9 @@ class Introduction extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	appendCurrentApp: payload => dispatch(appendApp(payload)),
 });
 
-export default connect(
-	null,
-	mapDispatchToProps,
-)(Introduction);
+export default connect(null, mapDispatchToProps)(Introduction);

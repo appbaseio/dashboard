@@ -1,11 +1,7 @@
 import React from 'react';
-import {
- Layout, Menu, Tag, Icon, Button, Row, Tooltip,
-} from 'antd';
+import { Layout, Menu, Tag, Icon, Button, Row, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
-import {
- object, string, bool, number,
-} from 'prop-types';
+import { object, string, bool, number } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -20,7 +16,7 @@ import TrialButton from './TrialButton';
 
 const { Header } = Layout;
 
-const getSelectedKeys = (pathname) => {
+const getSelectedKeys = pathname => {
 	switch (pathname) {
 		case '/marketplace':
 			return '4';
@@ -81,7 +77,11 @@ const FullHeader = ({
 			<Menu
 				mode="horizontal"
 				className="options"
-				defaultSelectedKeys={cluster ? ['3'] : [getSelectedKeys(window.location.pathname)]}
+				defaultSelectedKeys={
+					cluster
+						? ['3']
+						: [getSelectedKeys(window.location.pathname)]
+				}
 			>
 				<Menu.Item key="1">
 					<Link to="/">Apps</Link>
@@ -161,7 +161,7 @@ FullHeader.propTypes = {
 	clusterDaysLeft: number,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	let currentApp = state.apps ? Object.keys(state.apps)[0] : '';
 	const storedApp = get(state, '$getCurrentApp.name');
 	if (storedApp) {
@@ -181,7 +181,4 @@ const mapDispatchToProps = dispatch => ({
 	getPlan: () => dispatch(() => getUserPlan()),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(FullHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(FullHeader);

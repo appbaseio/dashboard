@@ -1,7 +1,14 @@
 import React from 'react';
 import get from 'lodash/get';
 import {
- Card, Input, Form, Button, Icon, Table, Skeleton, notification,
+	Card,
+	Input,
+	Form,
+	Button,
+	Icon,
+	Table,
+	Skeleton,
+	notification,
 } from 'antd';
 import { connect } from 'react-redux';
 
@@ -9,9 +16,16 @@ import { css } from 'emotion';
 import Container from '../../components/Container';
 import Banner from '../../batteries/components/shared/UpgradePlan/Banner';
 import Overlay from '../../components/Overlay';
-import { getAppPermissionsByName, getAppPlanByName } from '../../batteries/modules/selectors';
+import {
+	getAppPermissionsByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 
-import { getPermission, getPublicKey, updatePublicKey } from '../../batteries/modules/actions';
+import {
+	getPermission,
+	getPublicKey,
+	updatePublicKey,
+} from '../../batteries/modules/actions';
 import { setRole } from '../../utils';
 
 const { Column } = Table;
@@ -29,7 +43,8 @@ const labelMargin = {
 const bannerMessagesCred = {
 	free: {
 		title: 'Role Based Access',
-		description: 'Upgrade now to setup Role Based Access Control to secure your app.',
+		description:
+			'Upgrade now to setup Role Based Access Control to secure your app.',
 		buttonText: 'Upgrade Now',
 		href: 'billing',
 	},
@@ -95,9 +110,10 @@ class RoleBaseAccess extends React.Component {
 		}
 
 		if (
-			updatedKey
-			&& !isPublicKeyLoading
-			&& (atob(updatedKey.public_key) !== publicKey || updatedKey.role_key !== roleKey)
+			updatedKey &&
+			!isPublicKeyLoading &&
+			(atob(updatedKey.public_key) !== publicKey ||
+				updatedKey.role_key !== roleKey)
 		) {
 			notification.success({
 				message: updatedKey.message,
@@ -124,37 +140,41 @@ class RoleBaseAccess extends React.Component {
 		});
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	handleRole = (e) => {
+	handleRole = e => {
 		this.setState({
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	setLoading = (id) => {
+	setLoading = id => {
 		this.setState(prevState => ({
 			loadingKey: {
 				...prevState.loadingKey,
-				[id]: prevState.loadingKey[id] ? !prevState.loadingKey[id] : true,
+				[id]: prevState.loadingKey[id]
+					? !prevState.loadingKey[id]
+					: true,
 			},
 		}));
 	};
 
-	showKey = (id) => {
+	showKey = id => {
 		this.setState(prevState => ({
 			visibleKey: {
 				...prevState.visibleKey,
-				[id]: prevState.visibleKey[id] ? !prevState.visibleKey[id] : true,
+				[id]: prevState.visibleKey[id]
+					? !prevState.visibleKey[id]
+					: true,
 			},
 		}));
 	};
 
-	saveRole = async (value) => {
+	saveRole = async value => {
 		try {
 			this.setLoading(value.username);
 			const { appName, fetchPermissions } = this.props;
@@ -203,12 +223,21 @@ class RoleBaseAccess extends React.Component {
 				{isPaidUser ? (
 					<Container>
 						<Card title="JWT Public Key">
-							<p>The public key is used for verifying the JWT tokens for this app.</p>
+							<p>
+								The public key is used for verifying the JWT
+								tokens for this app.
+							</p>
 							{isPublicKeyLoading ? (
 								<Skeleton />
 							) : (
-								<Form layout="vertical" className={formLabelStyle}>
-									<Form.Item label="Public Key" style={labelMargin}>
+								<Form
+									layout="vertical"
+									className={formLabelStyle}
+								>
+									<Form.Item
+										label="Public Key"
+										style={labelMargin}
+									>
 										<Input.TextArea
 											name="publicKey"
 											autosize={{ minRows: 3 }}
@@ -217,7 +246,10 @@ class RoleBaseAccess extends React.Component {
 											onChange={this.handleChange}
 										/>
 									</Form.Item>
-									<Form.Item label="Default Role Key" style={labelMargin}>
+									<Form.Item
+										label="Default Role Key"
+										style={labelMargin}
+									>
 										<Input
 											placeholder="Enter the key name in your JWT token that will contain the role value"
 											value={roleKey || 'role'}
@@ -228,24 +260,33 @@ class RoleBaseAccess extends React.Component {
 									<Form.Item style={labelMargin}>
 										<Button
 											disabled={
-												currentRoleKey === roleKey
-												&& currentPublicKey === publicKey
+												currentRoleKey === roleKey &&
+												currentPublicKey === publicKey
 											}
 											type="primary"
 											onClick={this.handleSave}
 										>
-											<Icon type={updatingKeyes ? 'loading' : 'save'} />
+											<Icon
+												type={
+													updatingKeyes
+														? 'loading'
+														: 'save'
+												}
+											/>
 											Save
 										</Button>
 									</Form.Item>
 								</Form>
 							)}
 						</Card>
-						<Card title="Map Roles to API Credentials" style={{ marginTop: 20 }}>
+						<Card
+							title="Map Roles to API Credentials"
+							style={{ marginTop: 20 }}
+						>
 							<p>
-								You can map your existing API Credentials to any role name. This
-								role name should be present in your Roles Key field of the JWT
-								token.
+								You can map your existing API Credentials to any
+								role name. This role name should be present in
+								your Roles Key field of the JWT token.
 							</p>
 							{isPermissionsLoading ? (
 								<Skeleton />
@@ -254,7 +295,9 @@ class RoleBaseAccess extends React.Component {
 									<Column
 										title="Description"
 										key="description"
-										render={value => (value && value.description) || 'No Description'
+										render={value =>
+											(value && value.description) ||
+											'No Description'
 										}
 									/>
 									<Column
@@ -269,14 +312,21 @@ class RoleBaseAccess extends React.Component {
 													style={{
 														marginLeft: 8,
 														border: 0,
-														background: 'transparent',
+														background:
+															'transparent',
 													}}
 													type="normal"
-													onClick={() => this.showKey(value.username)}
+													onClick={() =>
+														this.showKey(
+															value.username,
+														)
+													}
 												>
 													<Icon
 														type={
-															visibleKey[`${value.username}`]
+															visibleKey[
+																`${value.username}`
+															]
 																? 'eye-invisible'
 																: 'eye'
 														}
@@ -291,7 +341,9 @@ class RoleBaseAccess extends React.Component {
 										key="role"
 										render={value => (
 											<Input
-												defaultValue={value && value.role}
+												defaultValue={
+													value && value.role
+												}
 												name={value.username}
 												onChange={this.handleRole}
 												placeholder="Define Role"
@@ -305,16 +357,24 @@ class RoleBaseAccess extends React.Component {
 										render={value => (
 											<Button
 												disabled={
-													!this.state[`${value.username}`]
-													|| (this.state[`${value.username}`] || '')
-														=== value.role
+													!this.state[
+														`${value.username}`
+													] ||
+													(this.state[
+														`${value.username}`
+													] || '') === value.role
 												}
-												onClick={() => this.saveRole(value)}
+												onClick={() =>
+													this.saveRole(value)
+												}
 												type="primary"
 											>
 												<Icon
 													type={
-														loadingKey && loadingKey[value.username]
+														loadingKey &&
+														loadingKey[
+															value.username
+														]
 															? 'loading'
 															: 'save'
 													}
@@ -341,7 +401,7 @@ class RoleBaseAccess extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const planState = getAppPlanByName(state);
 	const appPermissions = getAppPermissionsByName(state);
 
@@ -363,10 +423,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	fetchPermissions: appName => dispatch(getPermission(appName)),
 	fetchPublicKey: appName => dispatch(getPublicKey(appName)),
-	setKeyes: (appName, publicKey, roleKey) => dispatch(updatePublicKey(appName, btoa(publicKey), roleKey)),
+	setKeyes: (appName, publicKey, roleKey) =>
+		dispatch(updatePublicKey(appName, btoa(publicKey), roleKey)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(RoleBaseAccess);
+export default connect(mapStateToProps, mapDispatchToProps)(RoleBaseAccess);

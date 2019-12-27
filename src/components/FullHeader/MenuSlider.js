@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Drawer, Button, Menu, Tag,
-} from 'antd';
+import { Drawer, Button, Menu, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { array, bool } from 'prop-types';
@@ -66,7 +64,11 @@ class MenuSlider extends React.Component {
 		} = this.props; // prettier-ignore
 		return (
 			<div className={menuSlider}>
-				<Button className={menuBtn} icon="menu-fold" onClick={this.handleDrawer} />
+				<Button
+					className={menuBtn}
+					icon="menu-fold"
+					onClick={this.handleDrawer}
+				/>
 				<Drawer
 					title="Menu"
 					placement="right"
@@ -118,7 +120,10 @@ class MenuSlider extends React.Component {
 
 						{isUsingTrial && (
 							<Menu.Item>
-								<Link to="/billing" css={{ color: 'tomato !important' }}>
+								<Link
+									to="/billing"
+									css={{ color: 'tomato !important' }}
+								>
 									{daysLeft > 0
 										? `Trial expires in ${daysLeft} ${
 												daysLeft > 1 ? 'days' : 'day'
@@ -128,7 +133,9 @@ class MenuSlider extends React.Component {
 							</Menu.Item>
 						)}
 
-						<Menu.Item onClick={this.handleLogout}>Logout</Menu.Item>
+						<Menu.Item onClick={this.handleLogout}>
+							Logout
+						</Menu.Item>
 					</Menu>
 				</Drawer>
 			</div>

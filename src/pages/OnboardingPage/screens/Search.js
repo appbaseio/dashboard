@@ -7,10 +7,14 @@ import Footer from '../components/Footer';
 export default class Search extends Component {
 	state = {
 		error: '',
-		selectedOption: this.props.searchFields.map(item => ({ label: item, value: item })) || [],
+		selectedOption:
+			this.props.searchFields.map(item => ({
+				label: item,
+				value: item,
+			})) || [],
 	};
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -24,7 +28,7 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = (selectedOption) => {
+	handleChange = selectedOption => {
 		console.log(selectedOption);
 		if (!selectedOption.length) {
 			this.setError('There should be at least one field set for search.');
@@ -53,8 +57,8 @@ export default class Search extends Component {
 			<div>
 				<h3>Set Searchable Fields</h3>
 				<p>
-					Select the fields you want to search on. They will be updated dynamically in the
-					UI.
+					Select the fields you want to search on. They will be
+					updated dynamically in the UI.
 				</p>
 			</div>
 			<div className="input-wrapper">
@@ -73,7 +77,9 @@ export default class Search extends Component {
 				/>
 			</div>
 			{this.state.error && (
-				<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>
+				<p style={{ marginTop: 15, color: 'tomato' }}>
+					{this.state.error}
+				</p>
 			)}
 		</div>
 	);
@@ -83,25 +89,34 @@ export default class Search extends Component {
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/static/images/onboarding/Searchable.svg" alt="search" />
+						<img
+							src="/static/images/onboarding/Searchable.svg"
+							alt="search"
+						/>
 					</div>
 					<div className="content">
 						<header>
 							<h2>Set searchable fields</h2>
 							<p>
-								All fields in appbase.io are indexed to allow for a blazing fast
-								querying performance.
+								All fields in appbase.io are indexed to allow
+								for a blazing fast querying performance.
 							</p>
 							<p>
 								However, all fields aren
 								{'’'}t created equal. When you set a field as{' '}
-								<strong>Searchable</strong>, it gets an additional n-gram based
-								analyzer applied which enables blazing fast auto-completion and
-								partial match features.
+								<strong>Searchable</strong>, it gets an
+								additional n-gram based analyzer applied which
+								enables blazing fast auto-completion and partial
+								match features.
 							</p>
 						</header>
-						<h3>We will start by letting you set certain fields as Searchable.</h3>
-						{this.props.searchFields.length ? null : this.renderSearchInput()}
+						<h3>
+							We will start by letting you set certain fields as
+							Searchable.
+						</h3>
+						{this.props.searchFields.length
+							? null
+							: this.renderSearchInput()}
 					</div>
 				</div>
 

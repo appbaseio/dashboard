@@ -1,11 +1,7 @@
 import React from 'react';
-import {
- Layout, Menu, Icon, Button, Row, Tag, Tooltip,
-} from 'antd';
+import { Layout, Menu, Icon, Button, Row, Tag, Tooltip } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
-import {
- string, object, bool, number,
-} from 'prop-types';
+import { string, object, bool, number } from 'prop-types';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -77,10 +73,16 @@ class AppHeader extends React.Component {
 		return (
 			<Header
 				className={headerStyles}
-				css={{ width: big ? 'calc(100% - 80px)' : 'calc(100% - 260px)' }}
+				css={{
+					width: big ? 'calc(100% - 80px)' : 'calc(100% - 260px)',
+				}}
 			>
 				<Menu mode="horizontal">
-					<Menu.Item key="back" className={noBorder} style={{ padding: 0 }}>
+					<Menu.Item
+						key="back"
+						className={noBorder}
+						style={{ padding: 0 }}
+					>
 						<Link to="/">
 							<Icon type="arrow-left" />
 						</Link>
@@ -95,7 +97,9 @@ class AppHeader extends React.Component {
 							match={match}
 						/>
 						{esVersion && (
-							<Tooltip title={`This app uses Elasticsearch v${esVersion}`}>
+							<Tooltip
+								title={`This app uses Elasticsearch v${esVersion}`}
+							>
 								<Tag>v{esVersion}</Tag>
 							</Tooltip>
 						)}
@@ -158,8 +162,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default withRouter(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps,
-	)(AppHeader),
+	connect(mapStateToProps, mapDispatchToProps)(AppHeader),
 );

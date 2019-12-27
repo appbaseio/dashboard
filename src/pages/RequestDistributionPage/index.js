@@ -28,7 +28,8 @@ const bannerMessagesAnalytics = {
 		description:
 			'Understand the status of your requests, Learn how to make the most of request distribution insights.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 
@@ -36,7 +37,9 @@ const RequestDistributionWrapper = ({ plan, isGrowth }) => (
 	<React.Fragment>
 		{isGrowth ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
 					<RequestDistribution />
 				</Container>
@@ -65,7 +68,7 @@ RequestDistributionWrapper.propTypes = {
 	isGrowth: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'plan', 'free'),

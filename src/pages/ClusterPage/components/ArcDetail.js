@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
-import {
- Button, notification, Tag, Tooltip,
-} from 'antd';
+import { Button, notification, Tag, Tooltip } from 'antd';
 import { get } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { updateArcDetails, verifyCluster } from '../utils';
@@ -28,7 +26,7 @@ class ArcDetail extends React.Component {
 				verifyingURL: true,
 			});
 			verifyCluster(esURL)
-				.then((data) => {
+				.then(data => {
 					const version = get(data, 'version.number', '');
 					if (version.split('.')[0] >= 5) {
 						this.setState({
@@ -63,7 +61,7 @@ class ArcDetail extends React.Component {
 		}
 	};
 
-	handleInput = (e) => {
+	handleInput = e => {
 		const {
 			target: { name, value },
 		} = e;
@@ -107,7 +105,7 @@ class ArcDetail extends React.Component {
 				});
 				window.location.reload();
 			})
-			.catch((e) => {
+			.catch(e => {
 				notification.error({
 					title: 'Error while updating Details',
 					description: e.message,
@@ -129,7 +127,7 @@ class ArcDetail extends React.Component {
 		}));
 	};
 
-	updateArcCred = (value) => {
+	updateArcCred = value => {
 		this.setState({
 			updatedArcCred: value,
 		});
@@ -166,7 +164,11 @@ class ArcDetail extends React.Component {
 				<li className={card}>
 					<div className="col light">
 						<h3>Appbase.io Server (Arc)</h3>{' '}
-						<a href="docs.appbase.io" rel="noopener noreferrer" target="_blank">
+						<a
+							href="docs.appbase.io"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
 							Learn More
 						</a>
 					</div>
@@ -177,8 +179,10 @@ class ArcDetail extends React.Component {
 								Arc
 								<CopyToClipboard
 									text={`${protocol}://${username}:${password}@${url}`}
-									onCopy={() => notification.success({
-											message: 'arc URL Copied Successfully',
+									onCopy={() =>
+										notification.success({
+											message:
+												'arc URL Copied Successfully',
 										})
 									}
 								>
@@ -197,19 +201,26 @@ class ArcDetail extends React.Component {
 									text={`${username}:${password}`}
 								/>
 								<Tooltip
-									title={(
+									title={
 										<span>
-											Your credentials determine how an external app should
-											access the ElasticSearch APIs. <strong>Note:</strong>{' '}
-											Editing credentials will impact live apps.
+											Your credentials determine how an
+											external app should access the
+											ElasticSearch APIs.{' '}
+											<strong>Note:</strong> Editing
+											credentials will impact live apps.
 										</span>
-									)}
+									}
 								>
 									<Button
-										style={{ marginTop: 10, display: 'block' }}
+										style={{
+											marginTop: 10,
+											display: 'block',
+										}}
 										onClick={this.toggleCred}
 									>
-										{showCred ? 'Hide Credentials' : 'Edit Credentials'}
+										{showCred
+											? 'Hide Credentials'
+											: 'Edit Credentials'}
 									</Button>
 								</Tooltip>
 							</div>
@@ -252,7 +263,8 @@ class ArcDetail extends React.Component {
 
 						{verifiedCluster ? (
 							<Tag style={{ margin: '10px' }} color="green">
-								Verified Connection. Version Detected: {clusterVersion}
+								Verified Connection. Version Detected:{' '}
+								{clusterVersion}
 							</Tag>
 						) : null}
 

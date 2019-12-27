@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Table, Card, Button, Popconfirm, Tooltip,
-} from 'antd';
+import { Table, Card, Button, Popconfirm, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 import get from 'lodash/get';
@@ -20,7 +18,10 @@ import {
 import UpgradePlanBanner from '../../batteries/components/shared/UpgradePlan/Banner';
 import CredentialsForm from '../../components/CreateCredentials';
 import TransferOwnership from './TransferOwnership';
-import { getAppPlanByName, getAppInfoByName } from '../../batteries/modules/selectors';
+import {
+	getAppPlanByName,
+	getAppInfoByName,
+} from '../../batteries/modules/selectors';
 import { displayErrors } from '../../utils/helper';
 
 const DeleteIcon = require('react-feather/dist/icons/trash-2').default;
@@ -28,18 +29,21 @@ const DeleteIcon = require('react-feather/dist/icons/trash-2').default;
 const bannerMessagesTeam = {
 	free: {
 		title: 'Sharing Settings',
-		description: 'Invite team members and collaborate together on your app.',
+		description:
+			'Invite team members and collaborate together on your app.',
 		buttonText: 'Upgrade Now',
 		href: 'billing',
 	},
 	bootstrap: {
 		title: 'Sharing Settings',
-		description: 'Invite team members and collaborate together on your app.',
+		description:
+			'Invite team members and collaborate together on your app.',
 		showButton: false,
 	},
 	growth: {
 		title: 'Sharing Settings',
-		description: 'Invite team members and collaborate together on your app.',
+		description:
+			'Invite team members and collaborate together on your app.',
 		showButton: false,
 	},
 };
@@ -58,7 +62,8 @@ const columns = [
 	},
 	{
 		title: 'Description',
-		render: ({ settingInfo }) => settingInfo.description || 'No description',
+		render: ({ settingInfo }) =>
+			settingInfo.description || 'No description',
 		key: `description${updateIndex()}`,
 	},
 	{
@@ -80,7 +85,8 @@ const columns = [
 			<Popconfirm
 				placement="leftTop"
 				title={`Are you sure to unshare this app with ${settingInfo.email}?`}
-				onConfirm={() => handleDelete(settingInfo.username, {
+				onConfirm={() =>
+					handleDelete(settingInfo.username, {
 						email: settingInfo.email,
 					})
 				}
@@ -133,19 +139,21 @@ class ShareSettingsView extends React.Component {
 		});
 	};
 
-	handleSubmit = (form) => {
+	handleSubmit = form => {
 		const { appId, shareApp, handleEditPermission } = this.props;
 		const { selectedSettings } = this.state;
 		const requestPayload = { ...form.value.operationType, ...form.value };
 		delete requestPayload.operationType;
 		if (selectedSettings && selectedSettings.username) {
-			handleEditPermission(appId, selectedSettings.username, requestPayload).then(
-				({ payload }) => {
-					if (payload) {
-						this.afterSuccess();
-					}
-				},
-			);
+			handleEditPermission(
+				appId,
+				selectedSettings.username,
+				requestPayload,
+			).then(({ payload }) => {
+				if (payload) {
+					this.afterSuccess();
+				}
+			});
 		} else {
 			shareApp(appId, requestPayload).then(({ payload }) => {
 				if (payload) {
@@ -155,7 +163,7 @@ class ShareSettingsView extends React.Component {
 		}
 	};
 
-	handleEdit = (setting) => {
+	handleEdit = setting => {
 		this.setState({
 			showForm: true,
 			selectedSettings: setting,
@@ -178,8 +186,13 @@ class ShareSettingsView extends React.Component {
 
 	render() {
 		const {
- isPaidUser, sharedUsers, isLoading, isOwner, isDeleting, plan,
-} = this.props;
+			isPaidUser,
+			sharedUsers,
+			isLoading,
+			isOwner,
+			isDeleting,
+			plan,
+		} = this.props;
 		const { showForm, selectedSettings } = this.state;
 		if (isLoading && !(sharedUsers && sharedUsers.length)) {
 			return <Loader />;
@@ -227,12 +240,23 @@ class ShareSettingsView extends React.Component {
 						title="Share Credentials"
 						extra={
 							isOwner ? (
-								<Button onClick={this.handleShare} size="large" type="primary">
+								<Button
+									onClick={this.handleShare}
+									size="large"
+									type="primary"
+								>
 									Share
 								</Button>
 							) : (
-								<Tooltip placement="topLeft" title="App can only be shared by Owner.">
-									<Button disabled size="large" type="primary">
+								<Tooltip
+									placement="topLeft"
+									title="App can only be shared by Owner."
+								>
+									<Button
+										disabled
+										size="large"
+										type="primary"
+									>
 										Share
 									</Button>
 								</Tooltip>
@@ -246,7 +270,8 @@ class ShareSettingsView extends React.Component {
 								handleEdit: this.handleEdit,
 								handleDelete: this.handleDelete,
 							}))}
-							rowKey={row => `${get(row, 'settingInfo.username')}:${get(
+							rowKey={row =>
+								`${get(row, 'settingInfo.username')}:${get(
 									row,
 									'settingInfo.password',
 								)}`
@@ -270,7 +295,11 @@ class ShareSettingsView extends React.Component {
 							handleCancel={this.handleCancel}
 							shouldHaveEmailField
 							show={showForm}
-							saveButtonText={!selectedSettings ? 'Share Credential' : undefined}
+							saveButtonText={
+								!selectedSettings
+									? 'Share Credential'
+									: undefined
+							}
 							onSubmit={this.handleSubmit}
 							initialValues={selectedSettings}
 							titleText={!selectedSettings ? 'Share' : undefined}
@@ -293,7 +322,7 @@ ShareSettingsView.propTypes = {
 	errors: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const userEmail = get(state, 'user.data.email');
 	const appOwner = get(getAppInfoByName(state), 'owner');
 	const planState = getAppPlanByName(state);
@@ -312,17 +341,17 @@ const mapStateToProps = (state) => {
 		sharedUsers: get(state, '$getSharedApp.results', []),
 		transferSuccess: get(state, '$transferAppOwnership.success'),
 		success:
-			get(state, '$createAppShare.success') || get(state, '$updateAppPermission.success'),
+			get(state, '$createAppShare.success') ||
+			get(state, '$updateAppPermission.success'),
 	};
 };
 const mapDispatchToProps = dispatch => ({
 	fetchAppShare: appId => dispatch(getSharedApp(appId)),
 	shareApp: (appId, payload) => dispatch(createAppShare(appId, payload)),
-	deleteShareApp: (username, payload) => dispatch(deleteAppShare(username, payload)),
-	handleEditPermission: (appId, username, payload) => dispatch(updatePermission(appId, username, payload)),
+	deleteShareApp: (username, payload) =>
+		dispatch(deleteAppShare(username, payload)),
+	handleEditPermission: (appId, username, payload) =>
+		dispatch(updatePermission(appId, username, payload)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(ShareSettingsView);
+export default connect(mapStateToProps, mapDispatchToProps)(ShareSettingsView);

@@ -28,8 +28,8 @@ class ErrorPage extends React.Component {
 		this.setState({
 			error: true,
 		});
-		Sentry.withScope((scope) => {
-			Object.keys(errorInfo).forEach((key) => {
+		Sentry.withScope(scope => {
+			Object.keys(errorInfo).forEach(key => {
 				scope.setExtra(key, errorInfo[key]);
 			});
 			Sentry.captureException(error);
@@ -49,7 +49,11 @@ class ErrorPage extends React.Component {
 					height: '80vh',
 				}}
 			>
-				<Icon type="frown" theme="outlined" style={{ fontSize: 55, marginBottom: 10 }} />
+				<Icon
+					type="frown"
+					theme="outlined"
+					style={{ fontSize: 55, marginBottom: 10 }}
+				/>
 				<h2>Something went wrong!</h2>
 				<p>Our team has been notified about this.</p>
 				<section
@@ -57,7 +61,11 @@ class ErrorPage extends React.Component {
 						display: 'flex',
 					}}
 				>
-					<Button href={user ? '/' : '/login'} size="large" type="primary">
+					<Button
+						href={user ? '/' : '/login'}
+						size="large"
+						type="primary"
+					>
 						<Icon type={user ? 'home' : 'left'} />
 						Back to {user ? 'Home' : 'Login'}
 					</Button>
@@ -83,7 +91,4 @@ const mapStateToProps = ({ user }) => ({
 	user,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(ErrorPage);
+export default connect(mapStateToProps, null)(ErrorPage);

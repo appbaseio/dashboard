@@ -6,7 +6,10 @@ import { Circle } from 'rc-progress';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Flex from '../../batteries/components/shared/Flex';
-import { getAppMetricsByName, getAppPlanByName } from '../../batteries/modules/selectors';
+import {
+	getAppMetricsByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 import { compressNumber, planLimits, getAppCount } from '../../utils/helper';
 
 const percentCls = css`
@@ -27,7 +30,10 @@ const shouldShowUpgrade = (plan, appCount) => {
 		return { show: false };
 	}
 	// if plan is bootsrap
-	if (get(appCount, 'records.percentage') > 70 || get(appCount, 'action.percentage') > 70) {
+	if (
+		get(appCount, 'records.percentage') > 70 ||
+		get(appCount, 'action.percentage') > 70
+	) {
 		return { show: true, danger: true };
 	}
 	return { show: true };
@@ -39,7 +45,10 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 		<Card title="Usage this month" css="height: 100%">
 			<Flex justifyContent="center" alignItems="center">
 				<div css="width: 100px;position: relative">
-					<div css={percentCls}>{`${get(appCount, 'action.percentage')}%`}</div>
+					<div css={percentCls}>{`${get(
+						appCount,
+						'action.percentage',
+					)}%`}</div>
 					<Circle
 						style={{
 							minWidth: '100px',
@@ -49,19 +58,32 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 						trailWidth="5"
 						strokeColor="#4F8FFD"
 					/>
-					<Flex flexDirection="column" justifyContent="center" alignItems="center">
+					<Flex
+						flexDirection="column"
+						justifyContent="center"
+						alignItems="center"
+					>
 						<div className="sub-title">API calls</div>
 						{plan ? (
 							<div>
-								<strong>{compressNumber(get(appCount, 'action.count'))}</strong>
+								<strong>
+									{compressNumber(
+										get(appCount, 'action.count'),
+									)}
+								</strong>
 								&nbsp;/&nbsp;
-								<span>{compressNumber(planLimits[plan].action)}</span>
+								<span>
+									{compressNumber(planLimits[plan].action)}
+								</span>
 							</div>
 						) : null}
 					</Flex>
 				</div>
 				<div css="width: 100px;position: relative;margin-left: 20px">
-					<div css={percentCls}>{`${get(appCount, 'records.percentage')}%`}</div>
+					<div css={percentCls}>{`${get(
+						appCount,
+						'records.percentage',
+					)}%`}</div>
 					<Circle
 						style={{
 							minWidth: '100px',
@@ -71,13 +93,23 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 						trailWidth="5"
 						strokeColor="#4F8FFD"
 					/>
-					<Flex flexDirection="column" justifyContent="center" alignItems="center">
+					<Flex
+						flexDirection="column"
+						justifyContent="center"
+						alignItems="center"
+					>
 						<div>Records</div>
 						{plan ? (
 							<div>
-								<strong>{compressNumber(get(appCount, 'records.count'))}</strong>
+								<strong>
+									{compressNumber(
+										get(appCount, 'records.count'),
+									)}
+								</strong>
 								&nbsp;/&nbsp;
-								<span>{compressNumber(planLimits[plan].records)}</span>
+								<span>
+									{compressNumber(planLimits[plan].records)}
+								</span>
 							</div>
 						) : null}
 					</Flex>

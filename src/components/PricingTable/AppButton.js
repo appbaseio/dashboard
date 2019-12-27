@@ -5,7 +5,8 @@ import { shade } from '@appbaseio/designkit/lib/shared/utils';
 import { node, string } from 'prop-types';
 
 // shade gives a darker bg ranging from 0 to 1
-const styles = (color, backgroundColor) => css(
+const styles = (color, backgroundColor) =>
+	css(
 		backgroundColor && {
 			backgroundColor,
 			'&:hover, &:focus': {
@@ -23,7 +24,11 @@ const styles = (color, backgroundColor) => css(
 
 // wrapper over designkit button with colors
 const AppButton = ({
- className, color, backgroundColor, children, ...props
+	className,
+	color,
+	backgroundColor,
+	children,
+	...props
 }) => (
 	<Button {...props} css={cx(styles(color, backgroundColor), className)}>
 		{children}

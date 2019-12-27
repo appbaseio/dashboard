@@ -56,13 +56,13 @@ class AppbaseUtils {
 				},
 			})
 				.then(res => res.json())
-				.then((data) => {
+				.then(data => {
 					const permissions = data.body.filter(
 						permission => permission.read && permission.write,
 					);
 					resolve(permissions[0]);
 				})
-				.catch((e) => {
+				.catch(e => {
 					reject(e);
 				});
 		});
@@ -116,17 +116,17 @@ class AppbaseUtils {
 						});
 					});
 				})
-				.catch((e) => {
+				.catch(e => {
 					reject(e);
 				});
 		});
 	};
 
-	updateUser = (user) => {
+	updateUser = user => {
 		this.user = user;
 	};
 
-	updateApp = (app) => {
+	updateApp = app => {
 		this.app = app;
 	};
 
@@ -135,15 +135,18 @@ class AppbaseUtils {
 		const credentials = `${this.app.username}:${this.app.password}`;
 		this.app.type = type;
 
-		return fetch(`${this.address}/${this.app.appName}/_mapping/${type}?update_all_types=true`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				Authorization: `Basic ${btoa(credentials)}`,
-				'content-type': 'application/json',
+		return fetch(
+			`${this.address}/${this.app.appName}/_mapping/${type}?update_all_types=true`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					Authorization: `Basic ${btoa(credentials)}`,
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify(mappingObj),
 			},
-			body: JSON.stringify(mappingObj),
-		});
+		);
 	};
 
 	indexData = () => {
@@ -151,7 +154,7 @@ class AppbaseUtils {
 		const indexObj = {
 			index: {},
 		};
-		moviesData.forEach((record) => {
+		moviesData.forEach(record => {
 			finalData.push(indexObj);
 			finalData.push(record);
 		});
@@ -170,13 +173,14 @@ class AppbaseUtils {
 				.then(() => {
 					resolve();
 				})
-				.catch((e) => {
+				.catch(e => {
 					reject(e);
 				});
 		});
 	};
 
-	indexNewData = () => new Promise((resolve, reject) => {
+	indexNewData = () =>
+		new Promise((resolve, reject) => {
 			this.appbaseRef
 				.index({
 					type: this.app.type,
@@ -185,7 +189,7 @@ class AppbaseUtils {
 				.then(() => {
 					resolve();
 				})
-				.catch((e) => {
+				.catch(e => {
 					reject(e);
 				});
 		});

@@ -32,8 +32,9 @@ export default class Onboarding extends Component {
 	};
 
 	nextScreen = () => {
-		this.setState((state) => {
-			const currentScreen =				state.currentScreen + 1 < state.totalScreen
+		this.setState(state => {
+			const currentScreen =
+				state.currentScreen + 1 < state.totalScreen
 					? state.currentScreen + 1
 					: state.currentScreen;
 
@@ -46,7 +47,7 @@ export default class Onboarding extends Component {
 	};
 
 	previousScreen = () => {
-		this.setState((state) => {
+		this.setState(state => {
 			const currentScreen = state.currentScreen - 1 >= 0 ? state.currentScreen - 1 : state.currentScreen; // prettier-ignore
 
 			return {
@@ -60,11 +61,13 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setScreen = (currentScreen) => {
+	setScreen = currentScreen => {
 		this.setState(state => ({
 			...state,
 			currentScreen:
-				currentScreen <= state.thresholdScreen ? currentScreen : state.currentScreen,
+				currentScreen <= state.thresholdScreen
+					? currentScreen
+					: state.currentScreen,
 		}));
 	};
 
@@ -74,31 +77,31 @@ export default class Onboarding extends Component {
 		});
 	};
 
-	setURL = (url) => {
+	setURL = url => {
 		this.setState({
 			url,
 		});
 	};
 
-	setSearchFields = (searchFields) => {
+	setSearchFields = searchFields => {
 		this.setState({
 			searchFields,
 		});
 	};
 
-	setFacetFields = (facetFields) => {
+	setFacetFields = facetFields => {
 		this.setState({
 			facetFields,
 		});
 	};
 
-	setAppName = (newApp) => {
+	setAppName = newApp => {
 		this.setState({
 			newApp,
 		});
 	};
 
-	setUIField = (ui) => {
+	setUIField = ui => {
 		this.setState({
 			ui,
 		});
@@ -112,8 +115,14 @@ export default class Onboarding extends Component {
 
 	renderCurrentScreen = () => {
 		const {
- currentScreen, hasJSON, url, searchFields, facetFields, newApp, ui,
-} = this.state;
+			currentScreen,
+			hasJSON,
+			url,
+			searchFields,
+			facetFields,
+			newApp,
+			ui,
+		} = this.state;
 		const RenderScreen = screens[currentScreen];
 		let props = {};
 
@@ -181,19 +190,26 @@ export default class Onboarding extends Component {
 						<div
 							className="color"
 							style={{
-								width: `${((currentScreen + 1) * 100) / totalScreen}%`,
+								width: `${((currentScreen + 1) * 100) /
+									totalScreen}%`,
 							}}
 						/>
 					</div>
 					<ul>
 						<li>
-							<a className={currentScreen === 0 ? 'active' : null}>
+							<a
+								className={
+									currentScreen === 0 ? 'active' : null
+								}
+							>
 								Create your first app
 							</a>
 						</li>
 						<li>
 							<a
-								className={currentScreen === 1 ? 'active' : null}
+								className={
+									currentScreen === 1 ? 'active' : null
+								}
 								onClick={() => this.setScreen(1)}
 							>
 								Import data into your app
@@ -201,7 +217,9 @@ export default class Onboarding extends Component {
 						</li>
 						<li>
 							<a
-								className={currentScreen === 2 ? 'active' : null}
+								className={
+									currentScreen === 2 ? 'active' : null
+								}
 								onClick={() => this.setScreen(2)}
 							>
 								Set searchable fields
@@ -209,7 +227,9 @@ export default class Onboarding extends Component {
 						</li>
 						<li>
 							<a
-								className={currentScreen === 3 ? 'active' : null}
+								className={
+									currentScreen === 3 ? 'active' : null
+								}
 								onClick={() => this.setScreen(3)}
 							>
 								Set aggregation fields
@@ -217,7 +237,9 @@ export default class Onboarding extends Component {
 						</li>
 						<li>
 							<a
-								className={currentScreen === 4 ? 'active' : null}
+								className={
+									currentScreen === 4 ? 'active' : null
+								}
 								onClick={() => this.setScreen(4)}
 							>
 								Build your own UI
@@ -226,10 +248,16 @@ export default class Onboarding extends Component {
 					</ul>
 				</div>
 				<div className="right">
-					<button type="button" className="skip-link" onClick={this.skipTutorial}>
+					<button
+						type="button"
+						className="skip-link"
+						onClick={this.skipTutorial}
+					>
 						&#10005; &nbsp; Skip Tutorial
 					</button>
-					<div className="container">{this.renderCurrentScreen()}</div>
+					<div className="container">
+						{this.renderCurrentScreen()}
+					</div>
 				</div>
 			</div>
 		);

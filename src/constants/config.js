@@ -17,7 +17,8 @@ export const exampleConfig = [
 	},
 	{
 		title: 'Manage Mappings',
-		description: 'View and edit field mappings (aka data types), set synonyms.',
+		description:
+			'View and edit field mappings (aka data types), set synonyms.',
 		image: {
 			alt: 'Manage Mappings',
 			src: '/static/images/explainer/manage_mappings.png',
@@ -44,7 +45,8 @@ export const exampleConfig = [
 	},
 	{
 		title: 'Understand your Search ROI',
-		description: 'Use analytics to see how search is impacting your business.',
+		description:
+			'Use analytics to see how search is impacting your business.',
 		image: {
 			alt: 'Analytics',
 			src: '/static/images/explainer/search_ROI.png',
@@ -53,7 +55,8 @@ export const exampleConfig = [
 	},
 	{
 		title: 'Setup Analytics',
-		description: 'Learn how to start tracking your search and click analytics.',
+		description:
+			'Learn how to start tracking your search and click analytics.',
 		image: {
 			alt: 'Setup Analytics',
 			src: '/static/images/explainer/setup_analytics.png',
@@ -71,7 +74,8 @@ export const exampleConfig = [
 	},
 	{
 		title: 'Secure your Search App',
-		description: 'Use advanced security controls to secure your search app.',
+		description:
+			'Use advanced security controls to secure your search app.',
 		image: {
 			alt: 'Analytics via APIs',
 			src: '/static/images/explainer/security.png',

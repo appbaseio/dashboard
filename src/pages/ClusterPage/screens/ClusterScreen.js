@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import {
- Button, Select, message, notification,
-} from 'antd';
+import { Button, Select, message, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
+import { hasAddon, getClusters, getSnapshots, restore } from '../utils';
 import {
- hasAddon, getClusters, getSnapshots, restore,
-} from '../utils';
-import {
- card, settingsItem, clusterEndpoint, clusterButtons, esContainer,
+	card,
+	settingsItem,
+	clusterEndpoint,
+	clusterButtons,
+	esContainer,
 } from '../styles';
 import { STRIPE_KEY } from '../ClusterPage';
 import ArcDetail from '../components/ArcDetail';
@@ -63,7 +63,7 @@ export default class ClusterScreen extends Component {
 
 	initClusters = () => {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -73,7 +73,7 @@ export default class ClusterScreen extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -87,7 +87,7 @@ export default class ClusterScreen extends Component {
 		});
 	};
 
-	handleCluster = (value) => {
+	handleCluster = value => {
 		this.setState({
 			restore_from: value,
 			snapshots: [],
@@ -95,26 +95,26 @@ export default class ClusterScreen extends Component {
 		this.fetchClusterSnapshots(value);
 	};
 
-	handleSnapshot = (value) => {
+	handleSnapshot = value => {
 		this.setState({
 			snapshot_id: value,
 		});
 	};
 
-	fetchClusterSnapshots = (restoreId) => {
+	fetchClusterSnapshots = restoreId => {
 		const { clusterId } = this.props;
 		this.setState({
 			isSnapshotsLoading: true,
 		});
 		getSnapshots(clusterId, restoreId)
-			.then((snapshots) => {
+			.then(snapshots => {
 				this.setState({
 					snapshotsAvailable: !!snapshots.length,
 					snapshots,
 					isSnapshotsLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isSnapshotsLoading: false,
@@ -131,7 +131,7 @@ export default class ClusterScreen extends Component {
 		});
 
 		restore(clusterId, restore_from, snapshot_id)
-			.then((response) => {
+			.then(response => {
 				if (response.status.code >= 400) {
 					notification.error({
 						message: 'Restoration Failed!',
@@ -144,7 +144,7 @@ export default class ClusterScreen extends Component {
 					isRestoring: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isRestoring: false,
@@ -152,7 +152,7 @@ export default class ClusterScreen extends Component {
 			});
 	};
 
-	toggleConfig = (type) => {
+	toggleConfig = type => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -166,9 +166,11 @@ export default class ClusterScreen extends Component {
 		}));
 	};
 
-	includedInOriginal = (key) => {
+	includedInOriginal = key => {
 		const { deployment: original } = this.props;
-		return original[key] ? !!Object.keys(original[key]).length : hasAddon(key, original);
+		return original[key]
+			? !!Object.keys(original[key]).length
+			: hasAddon(key, original);
 	};
 
 	saveClusterSettings = () => {
@@ -182,7 +184,7 @@ export default class ClusterScreen extends Component {
 			kibana,
 			grafana,
 			streams,
-			elasticsearchHQ, // prettier-ignore
+			elasticsearchHQ // prettier-ignore
 		} = this.state;
 
 		const { clusterId, onDeploy } = this.props;
@@ -240,26 +242,38 @@ export default class ClusterScreen extends Component {
 					exposed_port: 5000,
 				},
 			];
-		} else if (!elasticsearchHQ && this.includedInOriginal('elasticsearch-hq')) {
-			body.remove_deployments = [...body.remove_deployments, 'elasticsearch-hq'];
+		} else if (
+			!elasticsearchHQ &&
+			this.includedInOriginal('elasticsearch-hq')
+		) {
+			body.remove_deployments = [
+				...body.remove_deployments,
+				'elasticsearch-hq',
+			];
 		}
 
 		onDeploy(body, clusterId);
 	};
 
-	renderClusterEndpoint = (source) => {
+	renderClusterEndpoint = source => {
 		if (Object.keys(source).length) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
-			const [protocol, url] = (source.url || source.dashboard_url).split('://');
-			const copyURL = `${protocol}://${username}:${password}@${url}`.replace(/\/$/, '');
+			const [protocol, url] = (source.url || source.dashboard_url).split(
+				'://',
+			);
+			const copyURL = `${protocol}://${username}:${password}@${url}`.replace(
+				/\/$/,
+				'',
+			);
 			return (
 				<div key={source.name} className={clusterEndpoint}>
 					<h4>
 						{source.name}
 						<CopyToClipboard
 							text={copyURL}
-							onCopy={() => notification.success({
+							onCopy={() =>
+								notification.success({
 									message: ` ${source.name} URL Copied Successfully`,
 								})
 							}
@@ -267,7 +281,10 @@ export default class ClusterScreen extends Component {
 							<a data-clipboard-text={copyURL}>Copy URL</a>
 						</CopyToClipboard>
 					</h4>
-					<CredentialsBox name={source.name} text={`${username}:${password}`} />
+					<CredentialsBox
+						name={source.name}
+						text={`${username}:${password}`}
+					/>
 				</div>
 			);
 		}
@@ -276,7 +293,10 @@ export default class ClusterScreen extends Component {
 	};
 
 	triggerPayment = () => {
-		if (!this.paymentTriggered && window.location.search.startsWith('?subscribe=true')) {
+		if (
+			!this.paymentTriggered &&
+			window.location.search.startsWith('?subscribe=true')
+		) {
 			if (this.paymentButton.current) {
 				this.paymentButton.current.buttonNode.click();
 				this.paymentTriggered = true;
@@ -306,17 +326,24 @@ export default class ClusterScreen extends Component {
 		const isViewer = cluster.user_role === 'viewer';
 
 		if (isExternalCluster) {
-			const arcDeployment =				deployment && deployment.addons.find(addon => addon.name === 'arc');
+			const arcDeployment =
+				deployment &&
+				deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
 					<ArcDetail cluster={cluster} arc={arcDeployment} />
 					<div className={clusterButtons}>
 						<div>
-							{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
+							{!isPaid &&
+							window.location.search.startsWith(
+								'?subscribe=true',
+							) ? (
 								<Stripe
 									name="Appbase.io Clusters"
 									amount={planRate * 100}
-									token={token => handleToken(clusterId, token)}
+									token={token =>
+										handleToken(clusterId, token)
+									}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
 									closed={this.toggleOverlay}
@@ -351,7 +378,9 @@ export default class ClusterScreen extends Component {
 					<div className="col">
 						{Object.keys(deployment)
 							.filter(item => item !== 'addons')
-							.map(key => this.renderClusterEndpoint(deployment[key]))}
+							.map(key =>
+								this.renderClusterEndpoint(deployment[key]),
+							)}
 					</div>
 				</li>
 
@@ -361,7 +390,9 @@ export default class ClusterScreen extends Component {
 						<p>Manage your cluster</p>
 					</div>
 
-					<div className="col">{this.renderClusterEndpoint(cluster)}</div>
+					<div className="col">
+						{this.renderClusterEndpoint(cluster)}
+					</div>
 				</li>
 
 				<li className={card}>
@@ -371,7 +402,9 @@ export default class ClusterScreen extends Component {
 					</div>
 
 					<div className="col">
-						{(deployment.addons || []).map(key => this.renderClusterEndpoint(key))}
+						{(deployment.addons || []).map(key =>
+							this.renderClusterEndpoint(key),
+						)}
 					</div>
 				</li>
 
@@ -389,14 +422,20 @@ export default class ClusterScreen extends Component {
 					>
 						<div className={esContainer}>
 							<Button
-								type={this.state.visualization === 'none' ? 'primary' : 'default'}
+								type={
+									this.state.visualization === 'none'
+										? 'primary'
+										: 'default'
+								}
 								size="large"
 								css={{
 									height: 160,
 									width: '100%',
 									color: '#000',
 									backgroundColor:
-										this.state.visualization === 'none' ? '#eaf5ff' : '#fff',
+										this.state.visualization === 'none'
+											? '#eaf5ff'
+											: '#fff',
 								}}
 								onClick={() => {
 									this.setConfig('visualization', 'none');
@@ -410,12 +449,18 @@ export default class ClusterScreen extends Component {
 						<div className={esContainer}>
 							<Button
 								size="large"
-								type={this.state.visualization === 'kibana' ? 'primary' : 'default'}
+								type={
+									this.state.visualization === 'kibana'
+										? 'primary'
+										: 'default'
+								}
 								css={{
 									height: 160,
 									width: '100%',
 									backgroundColor:
-										this.state.visualization === 'kibana' ? '#eaf5ff' : '#fff',
+										this.state.visualization === 'kibana'
+											? '#eaf5ff'
+											: '#fff',
 								}}
 								onClick={() => {
 									this.setConfig('visualization', 'kibana');
@@ -429,19 +474,26 @@ export default class ClusterScreen extends Component {
 									alt="Kibana"
 								/>
 							</Button>
-							<p>The default visualization dashboard for ElasticSearch.</p>
+							<p>
+								The default visualization dashboard for
+								ElasticSearch.
+							</p>
 						</div>
 						<div className={esContainer}>
 							<Button
 								size="large"
 								type={
-									this.state.visualization === 'grafana' ? 'primary' : 'default'
+									this.state.visualization === 'grafana'
+										? 'primary'
+										: 'default'
 								}
 								css={{
 									height: 160,
 									width: '100%',
 									backgroundColor:
-										this.state.visualization === 'grafana' ? '#eaf5ff' : '#fff',
+										this.state.visualization === 'grafana'
+											? '#eaf5ff'
+											: '#fff',
 								}}
 								onClick={() => {
 									this.setConfig('visualization', 'grafana');
@@ -455,7 +507,10 @@ export default class ClusterScreen extends Component {
 									alt="Grafana"
 								/>
 							</Button>
-							<p>The leading open-source tool for metrics visualization.</p>
+							<p>
+								The leading open-source tool for metrics
+								visualization.
+							</p>
 						</div>
 					</div>
 				</li>
@@ -476,7 +531,9 @@ export default class ClusterScreen extends Component {
 										defaultChecked={kibana}
 										id="yes"
 										disabled={isViewer}
-										onChange={() => this.setConfig('kibana', true)}
+										onChange={() =>
+											this.setConfig('kibana', true)
+										}
 									/>
 									Yes
 								</label>
@@ -488,7 +545,9 @@ export default class ClusterScreen extends Component {
 										defaultChecked={!kibana}
 										id="no"
 										disabled={isViewer}
-										onChange={() => this.setConfig('kibana', false)}
+										onChange={() =>
+											this.setConfig('kibana', false)
+										}
 									/>
 									No
 								</label>
@@ -504,7 +563,9 @@ export default class ClusterScreen extends Component {
 										defaultChecked={arc}
 										id="arc"
 										disabled={isViewer}
-										onChange={() => this.toggleConfig('arc')}
+										onChange={() =>
+											this.toggleConfig('arc')
+										}
 									/>
 									Appbase.io GUI
 								</label>
@@ -515,7 +576,9 @@ export default class ClusterScreen extends Component {
 										defaultChecked={streams}
 										id="streams"
 										disabled={isViewer}
-										onChange={() => this.toggleConfig('streams')}
+										onChange={() =>
+											this.toggleConfig('streams')
+										}
 									/>
 									Realtime Streaming
 								</label>
@@ -526,7 +589,9 @@ export default class ClusterScreen extends Component {
 										defaultChecked={elasticsearchHQ}
 										id="elasticsearchHQ"
 										disabled={isViewer}
-										onChange={() => this.toggleConfig('elasticsearchHQ')}
+										onChange={() =>
+											this.toggleConfig('elasticsearchHQ')
+										}
 									/>
 									Elasticsearch-HQ
 								</label>
@@ -553,7 +618,9 @@ export default class ClusterScreen extends Component {
 								<Option key={item.id}>{item.name}</Option>
 							))}
 						</Select>
-						{this.state.isSnapshotsLoading && <p>Snapshots Loading</p>}
+						{this.state.isSnapshotsLoading && (
+							<p>Snapshots Loading</p>
+						)}
 						{this.state.snapshots.length > 0 && (
 							<Select
 								css={{
@@ -569,7 +636,9 @@ export default class ClusterScreen extends Component {
 									.reverse()
 									.map(item => (
 										<Option key={item.id}>
-											{new Date(+item.id * 1000).toString()}
+											{new Date(
+												+item.id * 1000,
+											).toString()}
 										</Option>
 									))}
 							</Select>
@@ -600,11 +669,16 @@ export default class ClusterScreen extends Component {
 						</Button>
 
 						<div>
-							{!isPaid && window.location.search.startsWith('?subscribe=true') ? (
+							{!isPaid &&
+							window.location.search.startsWith(
+								'?subscribe=true',
+							) ? (
 								<Stripe
 									name="Appbase.io Clusters"
 									amount={planRate * 100}
-									token={token => handleToken(clusterId, token)}
+									token={token =>
+										handleToken(clusterId, token)
+									}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
 									closed={this.toggleOverlay}

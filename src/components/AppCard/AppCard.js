@@ -6,9 +6,7 @@ import UsageRenderer from './UsageRenderer';
 import ActionButtons from './ActionButtons';
 import { cardActions, skeleton } from './styles';
 
-const AppCard = ({
- title, data, appName, appId, permissions, shared,
-}) => (
+const AppCard = ({ title, data, appName, appId, permissions, shared }) => (
 	<Card
 		title={title}
 		style={{
@@ -48,7 +46,12 @@ const AppCard = ({
 			<Icon type="ellipsis" theme="outlined" />
 		</div>
 
-		<ActionButtons appName={appName} appId={appId} permissions={permissions} shared={shared} />
+		<ActionButtons
+			appName={appName}
+			appId={appId}
+			permissions={permissions}
+			shared={shared}
+		/>
 	</Card>
 );
 

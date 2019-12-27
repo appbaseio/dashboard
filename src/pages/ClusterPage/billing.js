@@ -20,7 +20,10 @@ export default class Clusters extends Component {
 
 		return (
 			<div style={vcenter}>
-				<i className="fas fa-money-check-alt" style={{ fontSize: 38 }} />
+				<i
+					className="fas fa-money-check-alt"
+					style={{ fontSize: 38 }}
+				/>
 				<h2>Free to use</h2>
 				<p>Clusters are free to use while in preview</p>
 			</div>

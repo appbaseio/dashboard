@@ -29,8 +29,9 @@ const FreeUserOverview = () => (
 					<Row>
 						<Col span={18}>
 							<p>
-								You can refer to one of our quick start guides for building a web
-								app, a mobile app or a maps based app.
+								You can refer to one of our quick start guides
+								for building a web app, a mobile app or a maps
+								based app.
 							</p>
 						</Col>
 					</Row>

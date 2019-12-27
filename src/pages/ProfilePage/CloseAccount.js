@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Card, Alert, Button, Popconfirm, notification,
-} from 'antd';
+import { Card, Alert, Button, Popconfirm, notification } from 'antd';
 
 import { ACC_API } from '../../constants/config';
 
@@ -10,7 +8,7 @@ const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
 function removeAllCookies() {
 	const cookiesString = document.cookie;
 	const cookies = cookiesString.split(';');
-	cookies.forEach((item) => {
+	cookies.forEach(item => {
 		const key = item.split('=');
 		document.cookie = `${key[0]} =; expires = Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 	});
@@ -34,7 +32,8 @@ const deleteUser = async () => {
 		window.location.href = logoutURL;
 	} catch (err) {
 		notification.error({
-			message: 'Something went wrong. Please report to us if this bug persists',
+			message:
+				'Something went wrong. Please report to us if this bug persists',
 		});
 	}
 };

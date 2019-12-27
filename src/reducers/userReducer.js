@@ -18,7 +18,11 @@ export default function userReducer(
 			};
 		}
 		case USER.LOAD_SUCCESS: {
-			const { picture: userPicture, avatar_url, ...rest } = action.payload;
+			const {
+				picture: userPicture,
+				avatar_url,
+				...rest
+			} = action.payload;
 			const picture = userPicture || avatar_url;
 			return {
 				isLoading: false,

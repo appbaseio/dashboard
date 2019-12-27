@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
- Button, Dropdown, Menu, Modal, Input, message, notification,
+	Button,
+	Dropdown,
+	Menu,
+	Modal,
+	Input,
+	message,
+	notification,
 } from 'antd';
 import { css } from 'emotion';
 
@@ -34,7 +40,7 @@ class HelpButton extends React.Component {
 		});
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const { name, value } = e.target;
 		this.setState({
 			[name]: value,
@@ -54,9 +60,11 @@ class HelpButton extends React.Component {
 		const errorMessage = (
 			<div>
 				<p>
-					There was an error in sending the issue, but we have saved your issue details.
-					Click below to send a tracked e-mail to{' '}
-					<a href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}>
+					There was an error in sending the issue, but we have saved
+					your issue details. Click below to send a tracked e-mail to{' '}
+					<a
+						href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
+					>
 						support@appbase.io
 					</a>
 					.
@@ -129,7 +137,7 @@ class HelpButton extends React.Component {
 		}
 	};
 
-	handleClick = (e) => {
+	handleClick = e => {
 		const { key } = e;
 		switch (key) {
 			case 'chat': {
@@ -158,7 +166,11 @@ class HelpButton extends React.Component {
 		} = this.state; // prettier-ignore
 		const menu = (
 			<Menu onClick={this.handleClick}>
-				<Menu.Item key="chat" style={{ padding: '10px 15px' }} className="open_intercom">
+				<Menu.Item
+					key="chat"
+					style={{ padding: '10px 15px' }}
+					className="open_intercom"
+				>
 					<h3 className={heading}>
 						Ask us anything!{' '}
 						<span role="img" aria-label="Wave">
@@ -180,7 +192,11 @@ class HelpButton extends React.Component {
 		);
 		return (
 			<React.Fragment>
-				<Dropdown overlay={menu} trigger={['click']} placement="topLeft">
+				<Dropdown
+					overlay={menu}
+					trigger={['click']}
+					placement="topLeft"
+				>
 					<Button
 						className={helpIcon}
 						type="primary"
@@ -194,6 +210,10 @@ class HelpButton extends React.Component {
 	}
 }
 
-const HelpChat = props => ReactDOM.createPortal(<HelpButton {...props} />, document.getElementById('help'));
+const HelpChat = props =>
+	ReactDOM.createPortal(
+		<HelpButton {...props} />,
+		document.getElementById('help'),
+	);
 
 export default HelpChat;

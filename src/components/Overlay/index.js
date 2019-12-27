@@ -48,11 +48,20 @@ const Overlay = ({
 }) => (
 	<div css={imgContainer} {...props}>
 		<div css={overlay}>
-			<div css={upgradePlan} style={lockSectionStyle} className={lockSectionClassName}>
+			<div
+				css={upgradePlan}
+				style={lockSectionStyle}
+				className={lockSectionClassName}
+			>
 				<div>
 					<Icon type="lock" css={icon} style={iconStyle} />
 				</div>
-				<Button type="primary" css="margin-top: 10px" href="billing" target="_blank">
+				<Button
+					type="primary"
+					css="margin-top: 10px"
+					href="billing"
+					target="_blank"
+				>
 					Upgrade Now
 				</Button>
 			</div>

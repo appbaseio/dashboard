@@ -26,10 +26,7 @@ const configureStore = () => {
 	const store = createStore(
 		persistedReducer,
 		window.__REDUX_DEVTOOLS_EXTENSION__
-			? compose(
-					middlewares,
-					window.__REDUX_DEVTOOLS_EXTENSION__(),
-			  ) // eslint-disable-line
+			? compose(middlewares, window.__REDUX_DEVTOOLS_EXTENSION__()) // eslint-disable-line
 			: middlewares,
 	);
 	const persistor = persistStore(store);

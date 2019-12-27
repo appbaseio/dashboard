@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Modal, Button, Collapse, Icon, Typography, Divider,
-} from 'antd';
+import { Modal, Button, Collapse, Icon, Typography, Divider } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import { css } from 'emotion';
 
@@ -107,38 +105,64 @@ class ConnectCluster extends React.Component {
 				>
 					<Collapse defaultActiveKey="1" accordion bordered={false}>
 						<Collapse.Panel
-							header={(
-<PanelHeader
+							header={
+								<PanelHeader
 									title="Connect via API"
 									icon="api"
 									text="Use REST API to connect to your cluster."
-/>
-)}
+								/>
+							}
 							showArrow={false}
 							key={1}
 						>
-							<Paragraph strong copyable={{ text: getURL(arcInstance) }}>
+							<Paragraph
+								strong
+								copyable={{ text: getURL(arcInstance) }}
+							>
 								Appbase.io URL (with credentials)
 							</Paragraph>
 							<Paragraph>
-								It is the recommended way to use the cluster publicly. Any requests
-								made via this automatically creates logs, provides search analytics
-								and the credentials can be configured with additional security.
+								It is the recommended way to use the cluster
+								publicly. Any requests made via this
+								automatically creates logs, provides search
+								analytics and the credentials can be configured
+								with additional security.
 							</Paragraph>
-							<Paragraph copyable={{ text: cluster.elasticsearch_url || getURL(deployment.elasticsearch) }} strong>
+							<Paragraph
+								copyable={{
+									text:
+										cluster.elasticsearch_url ||
+										getURL(deployment.elasticsearch),
+								}}
+								strong
+							>
 								ElasticSearch URL (with credentials)
 							</Paragraph>
 							<Paragraph>
-								You can also use the ElasticSearch URL directly, although we don
-								{"'"}t recommend this to be used in a public environment.
+								You can also use the ElasticSearch URL directly,
+								although we don
+								{"'"}t recommend this to be used in a public
+								environment.
 							</Paragraph>
 							<Divider />
 							<Paragraph strong>API Usage Example</Paragraph>
 							<Paragraph
-								style={{ display: 'flex', alignItems: 'baseline', margin: 0 }}
-								copyable={{ text: `curl ${getURL(arcInstance)}` }}
+								style={{
+									display: 'flex',
+									alignItems: 'baseline',
+									margin: 0,
+								}}
+								copyable={{
+									text: `curl ${getURL(arcInstance)}`,
+								}}
 							>
-								<pre style={{ padding: '8px 10px', background: '#f5f5f5', 'white-space': 'pre-wrap' }}>
+								<pre
+									style={{
+										padding: '8px 10px',
+										background: '#f5f5f5',
+										'white-space': 'pre-wrap',
+									}}
+								>
 									{`curl ${getURL(arcInstance)}`}
 								</pre>
 							</Paragraph>
@@ -152,22 +176,27 @@ class ConnectCluster extends React.Component {
 							/>
 						</Collapse.Panel>
 						<Collapse.Panel
-							header={(
-<PanelHeader
+							header={
+								<PanelHeader
 									title="Connect via GUI Dashboard"
 									icon="dashboard"
 									text="Browse your indices, create a new index, view search analytics and set security permissions."
-/>
-)}
+								/>
+							}
 							showArrow={false}
 							key={2}
 						>
 							<Link to={`/clusters/${cluster.id}/explore`}>
-								<Button style={{ marginBottom: 15 }} type="primary">
+								<Button
+									style={{ marginBottom: 15 }}
+									type="primary"
+								>
 									Explore Dashboard
 								</Button>
 							</Link>
-							<Paragraph>Or go to one of the following views directly:</Paragraph>
+							<Paragraph>
+								Or go to one of the following views directly:
+							</Paragraph>
 							<RedirectTitle
 								title="User Management"
 								id={cluster.id}
@@ -186,23 +215,29 @@ class ConnectCluster extends React.Component {
 						</Collapse.Panel>
 
 						<Collapse.Panel
-							header={(
-<PanelHeader
+							header={
+								<PanelHeader
 									title="Import Data"
 									icon="import"
 									text="Bring your data from JSON, CSV, SQL or ElasticSearch sources."
-/>
-)}
+								/>
+							}
 							showArrow={false}
 							key={3}
 						>
-							<Link to={`/clusters/${cluster.id}/explore?view=/cluster/import`}>
-								<Button style={{ marginBottom: 15 }} type="primary">
+							<Link
+								to={`/clusters/${cluster.id}/explore?view=/cluster/import`}
+							>
+								<Button
+									style={{ marginBottom: 15 }}
+									type="primary"
+								>
 									Go to Importer
 								</Button>
 							</Link>
 							<Paragraph>
-								You can also import via CLI, REST API and using Zapier. Read more{' '}
+								You can also import via CLI, REST API and using
+								Zapier. Read more{' '}
 								<a
 									href="https://docs.appbase.io/docs/data/Import/"
 									target="_blank"

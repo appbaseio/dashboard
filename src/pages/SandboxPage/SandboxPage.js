@@ -47,7 +47,12 @@ class SandboxPage extends Component {
 		}
 
 		return (
-			<SearchSandbox appId={appId} appName={appName} credentials={credentials} isDashboard>
+			<SearchSandbox
+				appId={appId}
+				appName={appName}
+				credentials={credentials}
+				isDashboard
+			>
 				<Editor />
 			</SearchSandbox>
 		);
@@ -62,19 +67,21 @@ SandboxPage.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
+const mapStateToProps = state => {
+	const { username, password } = get(
+		getAppPermissionsByName(state),
+		'credentials',
+		{},
+	);
 	return {
 		credentials: username ? `${username}:${password}` : null,
 	};
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	getPermission: appId => dispatch(getPermissionFromAppbase(appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(SandboxPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SandboxPage);

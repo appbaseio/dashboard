@@ -6,7 +6,10 @@ import { getAppMetrics } from '../../batteries/modules/actions';
 import FreeUserOverview from './FreeUserOverview';
 import Loader from '../../batteries/components/shared/Loader/Spinner';
 import PaidUserOverview from './PaidUserOverview';
-import { getAppPlanByName, getAppMetricsByName } from '../../batteries/modules/selectors';
+import {
+	getAppPlanByName,
+	getAppMetricsByName,
+} from '../../batteries/modules/selectors';
 
 class OverviewPage extends React.Component {
 	componentDidMount() {
@@ -20,8 +23,9 @@ class OverviewPage extends React.Component {
 			return <Loader />;
 		}
 		if (
-			(plan && plan !== 'free')
-			|| (computedMetrics && (computedMetrics.calls || computedMetrics.records))
+			(plan && plan !== 'free') ||
+			(computedMetrics &&
+				(computedMetrics.calls || computedMetrics.records))
 		) {
 			return <PaidUserOverview />;
 		}
@@ -42,10 +46,8 @@ const mapStateToProps = state => ({
 	computedMetrics: get(getAppMetricsByName(state), 'computedMetrics'),
 });
 const mapDispatchToProps = dispatch => ({
-	fetchAppMetrics: (appId, appName) => dispatch(getAppMetrics(appId, appName)),
+	fetchAppMetrics: (appId, appName) =>
+		dispatch(getAppMetrics(appId, appName)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(OverviewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(OverviewPage);

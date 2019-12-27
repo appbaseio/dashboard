@@ -26,7 +26,8 @@ const bannerMessagesAnalytics = {
 		title: 'No Result Searches',
 		description: 'Understand which user searches are yielding no results.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
 	},
 };
 
@@ -34,15 +35,24 @@ const NoResultSearchWrapper = ({ appName, plan, isPaidUser }) => (
 	<React.Fragment>
 		{isPaidUser ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
-					<NoResultSearch displayReplaySearch appName={appName} plan={plan} />
+					<NoResultSearch
+						displayReplaySearch
+						appName={appName}
+						plan={plan}
+					/>
 				</Container>
 			</React.Fragment>
 		) : (
 			<React.Fragment>
 				<Banner {...bannerMessagesAnalytics.free} />
-				<Overlay src="/static/images/analytics/NoResults.png" alt="no results searches" />
+				<Overlay
+					src="/static/images/analytics/NoResults.png"
+					alt="no results searches"
+				/>
 			</React.Fragment>
 		)}
 	</React.Fragment>
@@ -54,7 +64,7 @@ NoResultSearchWrapper.propTypes = {
 	isPaidUser: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),
