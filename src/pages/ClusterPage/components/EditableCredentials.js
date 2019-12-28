@@ -34,12 +34,12 @@ export default class EditableCredentials extends Component {
 
 	copySuccess = source => {
 		// eslint-disable-next-line
-		message.success(`${source} credentials have been copied successully!`);
+		message.success(`${source} has been copied successully!`);
 	};
 
 	render() {
 		const { value } = this.state;
-		const { text, name, visible, updateVisibility } = this.props;
+		const { text, name, visible, updateVisibility, disabled } = this.props;
 
 		return (
 			<div className={credsBox}>
@@ -48,10 +48,11 @@ export default class EditableCredentials extends Component {
 						className="input"
 						value={value}
 						onChange={this.handleChange}
+						disabled={disabled}
 					/>
 				) : (
 					<span className="cred-text">
-						#######################################
+						############################&nbsp;
 					</span>
 				)}
 
