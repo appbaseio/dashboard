@@ -144,7 +144,7 @@ class NewMyCluster extends Component {
 						});
 					}
 				})
-				.catch((e) => {
+				.catch(e => {
 					this.setState({
 						verifyingURL: false,
 						isInvalidURL: true,
@@ -526,18 +526,22 @@ class NewMyCluster extends Component {
 												color: 'red',
 											}}
 										>
-											{urlErrorMessage === 'Auth Error' ? (
+											{urlErrorMessage ===
+											'Auth Error' ? (
 												<React.Fragment>
-													We received a authentication error. Does your
-													ElasticSearch require additional authentication?
+													We received a authentication
+													error. Does your
+													ElasticSearch require
+													additional authentication?
 													Read more{' '}
 													<a
 														target="_blank"
 														rel="noopener noreferrer"
-														href="https://docs.appbase.io"
+														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
 													>
 														here
-													</a>.
+													</a>
+													.
 												</React.Fragment>
 											) : (
 												urlErrorMessage
