@@ -196,9 +196,10 @@ class ArcDetail extends React.Component {
 							<div>
 								<EditableCredentials
 									visible={showCred}
-									name="arc"
+									name="Arc credentials"
 									onChange={this.updateArcCred}
 									text={`${username}:${password}`}
+									disabled={false}
 								/>
 								<Tooltip
 									title={
@@ -231,7 +232,7 @@ class ArcDetail extends React.Component {
 									<span>
 										You can add access whitelist for this IP
 										address to your ElasticSearch cluster.{' '}
-										<a href="https://docs.appbase.io/docs/hosting/BYOC/">
+										<a href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch">
 											Read More
 										</a>
 									</span>
@@ -244,7 +245,7 @@ class ArcDetail extends React.Component {
 							<div>
 								<EditableCredentials
 									visible
-									name="ip"
+									name="IP"
 									disabled
 									text={`${cluster.cluster_ip}`}
 								/>
