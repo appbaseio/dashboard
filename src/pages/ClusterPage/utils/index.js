@@ -355,7 +355,12 @@ export function verifyCluster(url) {
 			method: 'GET',
 			headers,
 		})
-			.then(res => res.json())
+			.then(res => {
+				if (res.status === 401 || res.status === 403) {
+					throw new Error('Auth Error');
+				}
+				res.json();
+			})
 			.then(data => {
 				resolve(data);
 			})

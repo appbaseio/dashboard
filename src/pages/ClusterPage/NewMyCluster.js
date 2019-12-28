@@ -144,13 +144,15 @@ class NewMyCluster extends Component {
 						});
 					}
 				})
-				.catch(() => {
+				.catch(e => {
 					this.setState({
 						verifyingURL: false,
 						isInvalidURL: true,
 						verifiedCluster: false,
 						urlErrorMessage:
-							'Connection Failed. Make sure the details you entered are correct.',
+							e.message === 'Auth Error'
+								? 'Auth Error'
+								: 'Connection Failed. Make sure the details you entered are correct.',
 					});
 				});
 		} else {
@@ -524,7 +526,26 @@ class NewMyCluster extends Component {
 												color: 'red',
 											}}
 										>
-											{urlErrorMessage}
+											{urlErrorMessage ===
+											'Auth Error' ? (
+												<React.Fragment>
+													We received a authentication
+													error. Does your
+													ElasticSearch require
+													additional authentication?
+													Read more{' '}
+													<a
+														target="_blank"
+														rel="noopener noreferrer"
+														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+													>
+														here
+													</a>
+													.
+												</React.Fragment>
+											) : (
+												urlErrorMessage
+											)}
 										</p>
 									) : null}
 								</div>
