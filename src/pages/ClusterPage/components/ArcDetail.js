@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Button, notification, Tag, Tooltip } from 'antd';
+import { Button, notification, Tag, Tooltip, Icon } from 'antd';
 import { get } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { updateArcDetails, verifyCluster } from '../utils';
@@ -233,13 +233,15 @@ class ArcDetail extends React.Component {
 										You can add access whitelist for this IP
 										address to your ElasticSearch cluster.{' '}
 										<a href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch">
-											Read More
+											IP Address
 										</a>
 									</span>
 								}
 							>
 								<h4 style={{ cursor: 'pointer' }}>
-									Cluster IP
+									<span>
+										IP Address <Icon type="info-circle" />
+									</span>
 								</h4>
 							</Tooltip>
 							<div>

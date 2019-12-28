@@ -34,7 +34,7 @@ export default class EditableCredentials extends Component {
 
 	copySuccess = source => {
 		// eslint-disable-next-line
-		message.success(`${source} have been copied successully!`);
+		message.success(`${source} has been copied successully!`);
 	};
 
 	render() {
