@@ -256,7 +256,11 @@ export default class ClusterScreen extends Component {
 	};
 
 	renderClusterEndpoint = source => {
-		if (Object.keys(source).length) {
+		if (
+			Object.keys(source).length &&
+			source.name &&
+			source.name !== 'gateway'
+		) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
 			const [protocol, url] = (source.url || source.dashboard_url).split(
@@ -511,91 +515,6 @@ export default class ClusterScreen extends Component {
 								The leading open-source tool for metrics
 								visualization.
 							</p>
-						</div>
-					</div>
-				</li>
-
-				<li className={card}>
-					<div className="col light">
-						<h3>{isViewer ? 'View' : 'Edit'} Cluster Settings</h3>
-						{isViewer || <p>Customise as per your needs</p>}
-					</div>
-					<div className="col grow">
-						<div className={settingsItem}>
-							<h4>Kibana</h4>
-							<div>
-								<label htmlFor="yes">
-									<input
-										type="radio"
-										name="kibana"
-										defaultChecked={kibana}
-										id="yes"
-										disabled={isViewer}
-										onChange={() =>
-											this.setConfig('kibana', true)
-										}
-									/>
-									Yes
-								</label>
-
-								<label htmlFor="no">
-									<input
-										type="radio"
-										name="kibana"
-										defaultChecked={!kibana}
-										id="no"
-										disabled={isViewer}
-										onChange={() =>
-											this.setConfig('kibana', false)
-										}
-									/>
-									No
-								</label>
-							</div>
-						</div>
-
-						<div className={settingsItem}>
-							<h4>Add-ons</h4>
-							<div className="settings-label">
-								<label htmlFor="arc">
-									<input
-										type="checkbox"
-										defaultChecked={arc}
-										id="arc"
-										disabled={isViewer}
-										onChange={() =>
-											this.toggleConfig('arc')
-										}
-									/>
-									Appbase.io GUI
-								</label>
-
-								<label htmlFor="streams">
-									<input
-										type="checkbox"
-										defaultChecked={streams}
-										id="streams"
-										disabled={isViewer}
-										onChange={() =>
-											this.toggleConfig('streams')
-										}
-									/>
-									Realtime Streaming
-								</label>
-
-								<label htmlFor="elasticsearchHQ">
-									<input
-										type="checkbox"
-										defaultChecked={elasticsearchHQ}
-										id="elasticsearchHQ"
-										disabled={isViewer}
-										onChange={() =>
-											this.toggleConfig('elasticsearchHQ')
-										}
-									/>
-									Elasticsearch-HQ
-								</label>
-							</div>
 						</div>
 					</div>
 				</li>
