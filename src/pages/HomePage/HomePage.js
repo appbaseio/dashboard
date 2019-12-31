@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
-import {
- Row, Col, Icon, Button, Tooltip, Dropdown, Menu, Tag,
-} from 'antd';
+import { Row, Col, Icon, Button, Tooltip, Dropdown, Menu, Tag } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -15,7 +13,10 @@ import CreateAppModal from './CreateAppModal';
 import AppCard from '../../components/AppCard';
 
 import { getAppsOwners as getOwners } from '../../actions';
-import { getUserPermissions, getUserPlan } from '../../batteries/modules/actions';
+import {
+	getUserPermissions,
+	getUserPlan,
+} from '../../batteries/modules/actions';
 
 import { mediaKey } from '../../utils/media';
 
@@ -36,7 +37,10 @@ const link = css`
 class HomePage extends Component {
 	constructor() {
 		super();
-		this.sortOptions = [{ label: 'Name', key: 'name' }, { label: 'Most Recent', key: 'time' }];
+		this.sortOptions = [
+			{ label: 'Name', key: 'name' },
+			{ label: 'Most Recent', key: 'time' },
+		];
 		this.state = {
 			showModal: false, // modal for create new app
 			sortBy: 'name',
@@ -55,7 +59,9 @@ class HomePage extends Component {
 			history,
 		} = this.props;
 
-		const hasVisitedTutorial = JSON.parse(localStorage.getItem('hasVisitedTutorial'));
+		const hasVisitedTutorial = JSON.parse(
+			localStorage.getItem('hasVisitedTutorial'),
+		);
 
 		if (!hasVisitedTutorial && !Object.keys(apps).length) {
 			history.push('/tutorial');
@@ -71,7 +77,7 @@ class HomePage extends Component {
 		// fetchUserPlan();
 	}
 
-	handleSortOption = (e) => {
+	handleSortOption = e => {
 		const { key } = e;
 		this.setState({
 			sortBy: key,
@@ -80,7 +86,9 @@ class HomePage extends Component {
 
 	renderSortOptions = () => {
 		const { sortBy } = this.state;
-		const selectedOption = this.sortOptions.find(option => option.key === sortBy);
+		const selectedOption = this.sortOptions.find(
+			option => option.key === sortBy,
+		);
 		const menu = (
 			<Menu onClick={this.handleSortOption}>
 				{this.sortOptions.map(option => (
@@ -108,8 +116,9 @@ class HomePage extends Component {
 			case 'time': {
 				const sortedApps = Object.entries(data)
 					.sort(
-						(prevApp, nextApp) => new Date(nextApp[1].timestamp).getTime()
-							- new Date(prevApp[1].timestamp).getTime(),
+						(prevApp, nextApp) =>
+							new Date(nextApp[1].timestamp).getTime() -
+							new Date(prevApp[1].timestamp).getTime(),
 					)
 					.map(app => app[0]);
 				return sortedApps;
@@ -146,13 +155,16 @@ class HomePage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Howdy, {firstName}. Welcome to your dashboard!</h2>
+							<h2>
+								Howdy, {firstName}. Welcome to your dashboard!
+							</h2>
 
 							<Row>
 								<Col lg={18}>
 									<p>
-										This is your apps manager view. Here, you can create a new
-										app and manage your existing apps.
+										This is your apps manager view. Here,
+										you can create a new app and manage your
+										existing apps.
 									</p>
 								</Col>
 							</Row>
@@ -189,7 +201,12 @@ class HomePage extends Component {
 								},
 							}}
 						>
-							<Button size="large" type="primary" block onClick={this.handleChange}>
+							<Button
+								size="large"
+								type="primary"
+								block
+								onClick={this.handleChange}
+							>
 								<Icon type="plus" /> Create a new app
 							</Button>
 						</Col>
@@ -237,12 +254,13 @@ class HomePage extends Component {
 								/>
 								<h2>No apps found</h2>
 								<p>
-									Create an app or try out the interactive tutorial to get started
+									Create an app or try out the interactive
+									tutorial to get started
 								</p>
 							</section>
 						)}
 
-						{sortedApps.map((name) => {
+						{sortedApps.map(name => {
 							const title = (
 								<div
 									css={{
@@ -252,20 +270,33 @@ class HomePage extends Component {
 										alignItems: 'center',
 									}}
 								>
-									<div css={{ display: 'flex', alignItems: 'center' }}>
+									<div
+										css={{
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
 										{name}{' '}
-										{data
-										&& data[name]
-										&& data[name].tier
-										&& data[name].tier !== 'free' ? (
-											<Tag css={{ marginLeft: 8 }} color="blue">
+										{data &&
+										data[name] &&
+										data[name].tier &&
+										data[name].tier !== 'free' ? (
+											<Tag
+												css={{ marginLeft: 8 }}
+												color="blue"
+											>
 												Paid
 											</Tag>
 										) : null}
 									</div>
 									{owners[name] && user !== owners[name] ? (
-										<Tooltip title={`Shared by ${owners[name]}`}>
-											<Button shape="circle" icon="share-alt" />
+										<Tooltip
+											title={`Shared by ${owners[name]}`}
+										>
+											<Button
+												shape="circle"
+												icon="share-alt"
+											/>
 										</Tooltip>
 									) : null}
 								</div>
@@ -275,7 +306,10 @@ class HomePage extends Component {
 								<Col key={name} lg={8} md={12} sm={24}>
 									<Link
 										to={`/app/${name}/overview`}
-										css={{ marginBottom: 20, display: 'block' }}
+										css={{
+											marginBottom: 20,
+											display: 'block',
+										}}
 									>
 										<AppCard
 											key={name}
@@ -283,8 +317,15 @@ class HomePage extends Component {
 											data={data}
 											appName={name}
 											appId={apps[name]}
-											permissions={permissions ? permissions[name] : null}
-											shared={owners[name] && user !== owners[name]}
+											permissions={
+												permissions
+													? permissions[name]
+													: null
+											}
+											shared={
+												owners[name] &&
+												user !== owners[name]
+											}
 										/>
 									</Link>
 								</Col>
@@ -330,7 +371,4 @@ const mapDispatchToProps = dispatch => ({
 	fetchPermissions: () => dispatch(getUserPermissions()),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

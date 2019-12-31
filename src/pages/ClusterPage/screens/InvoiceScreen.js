@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
- notification, Card, DatePicker, Table, Typography,
-} from 'antd';
+import { notification, Card, DatePicker, Table, Typography } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
 
@@ -32,7 +30,8 @@ export default class InvoiceScreen extends PureComponent {
 
 	componentDidMount() {
 		getClusterInvoice(this.props.clusterId)
-			.then(data => this.setState(() => {
+			.then(data =>
+				this.setState(() => {
 					// prettier-ignore
 					const invoice = data && data.invoice_breakdown
 							? data.invoice_breakdown.map(item => ({
@@ -46,10 +45,12 @@ export default class InvoiceScreen extends PureComponent {
 						invoice,
 						filteredInvoice: invoice,
 					};
-				}))
-			.catch((e) => {
+				}),
+			)
+			.catch(e => {
 				notification.error({
-					message: 'Error occured while fetching the data. Please try again.',
+					message:
+						'Error occured while fetching the data. Please try again.',
 				});
 				console.error(e);
 				this.setState({
@@ -64,7 +65,7 @@ export default class InvoiceScreen extends PureComponent {
 			const endDate = new Date(dateString[1]).getTime();
 			const { invoice } = this.state;
 			const filteredData = invoice
-				.filter((item) => {
+				.filter(item => {
 					// prettier-ignore
 					const isInRange = (moment(item.from).isSame(startDate, 'date')
 						|| moment(item.from).isAfter(moment(startDate)))
@@ -126,12 +127,15 @@ export default class InvoiceScreen extends PureComponent {
 		return (
 			<div>
 				<Card
-					title={(
+					title={
 						<div className={flex}>
 							<span>Usage</span>
-							<RangePicker disabledDate={disabledDate} onChange={this.handleFilter} />
+							<RangePicker
+								disabledDate={disabledDate}
+								onChange={this.handleFilter}
+							/>
 						</div>
-					)}
+					}
 				>
 					<Table
 						rowKey={data => data.from}
@@ -139,17 +143,27 @@ export default class InvoiceScreen extends PureComponent {
 						loading={isLoading}
 						dataSource={filteredInvoice}
 						locale={{
-							emptyText: 'No Data. New data is reported after 24 hours',
+							emptyText:
+								'No Data. New data is reported after 24 hours',
 						}}
 						columns={columns}
 						footer={() => (
-							<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'space-between',
+								}}
+							>
 								<Typography.Text>
-									Total consumption: <b>{totalConsumption.hour} hours</b>
+									Total consumption:{' '}
+									<b>{totalConsumption.hour} hours</b>
 								</Typography.Text>
 								{isTrial ? null : (
 									<Typography.Text>
-										Total cost: <b>${totalConsumption.cost.toFixed(2)}</b>
+										Total cost:{' '}
+										<b>
+											${totalConsumption.cost.toFixed(2)}
+										</b>
 									</Typography.Text>
 								)}
 							</div>

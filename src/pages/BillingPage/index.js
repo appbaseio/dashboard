@@ -37,30 +37,40 @@ class Billing extends Component {
 			isLoading,
 		} = this.props;
 		if (isLoading) {
-			return <Loader show message="Updating Payment Method... Please wait!" />;
+			return (
+				<Loader
+					show
+					message="Updating Payment Method... Please wait!"
+				/>
+			);
 		}
 		return (
 			<React.Fragment>
 				<BannerHeader
 					title="Appbase.io Billing"
-					component={(
+					component={
 						<Row>
 							<Col>
 								<p>Transparent pricing that scales with you.</p>
 								<p>
-									You are currently on the <strong>{capitalizePlan(plan)}</strong>{' '}
+									You are currently on the{' '}
+									<strong>{capitalizePlan(plan)}</strong>{' '}
 									plan.{' '}
 									{planValidity ? (
 										<span>
 											Valid till{' '}
 											<strong>
-												{new Date(planValidity * 1000).toDateString()}
+												{new Date(
+													planValidity * 1000,
+												).toDateString()}
 											</strong>
 											.
 										</span>
 									) : null}
 								</p>
-								{isOnTrial ? <p>You are currently in trial mode.</p> : null}
+								{isOnTrial ? (
+									<p>You are currently in trial mode.</p>
+								) : null}
 								<Stripe
 									stripeKey={STRIPE_KEY.LIVE}
 									panelLabel="Update Payment"
@@ -70,7 +80,7 @@ class Billing extends Component {
 								</Stripe>
 							</Col>
 						</Row>
-					)}
+					}
 				/>
 				<Container>
 					<Card bodyStyle={{ padding: 0 }}>
@@ -91,7 +101,7 @@ Billing.propTypes = {
 	errors: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'tier'),
@@ -106,7 +116,4 @@ const mapDispatchToProps = dispatch => ({
 	updatePayment: token => dispatch(updateAppPaymentMethod(token, 'APP')),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(Billing);
+export default connect(mapStateToProps, mapDispatchToProps)(Billing);

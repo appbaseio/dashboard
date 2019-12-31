@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Button, Modal } from 'antd';
 import get from 'lodash/get';
 import * as typeformEmbed from '@typeform/embed';
-import { deleteAppSubscription, getAppPlan } from '../../batteries/modules/actions';
+import {
+	deleteAppSubscription,
+	getAppPlan,
+} from '../../batteries/modules/actions';
 import { displayErrors } from '../../utils/helper';
 import { TYPE_FORM } from '../../constants';
 
@@ -41,7 +44,7 @@ class Unsubscribe extends Component {
 
 	deleteSubscription = () => {
 		const { deleteSubscription, fetchAppPlan } = this.props;
-		deleteSubscription().then((action) => {
+		deleteSubscription().then(action => {
 			if (get(action, 'payload')) {
 				fetchAppPlan();
 				this.cancelConfirmBox();
@@ -78,7 +81,9 @@ class Unsubscribe extends Component {
 					</Button>,
 				]}
 				width={645}
-				bodyStyle={{ height: typeFormStep === TYPE_FORM.LOADED && '600px' }}
+				bodyStyle={{
+					height: typeFormStep === TYPE_FORM.LOADED && '600px',
+				}}
 			>
 				<>
 					{typeFormStep !== TYPE_FORM.SUBMITTED && (
@@ -93,18 +98,19 @@ class Unsubscribe extends Component {
 					)}
 					{typeFormStep === TYPE_FORM.UNLOADED && (
 						<p>
-							We{"'"}re sorry to see you go. Are you sure you want to unsubscribe from
-							the current plan?
+							We{"'"}re sorry to see you go. Are you sure you want
+							to unsubscribe from the current plan?
 							<br />
 							<p style={{ fontSize: '14px' }}>
-								You{"'"}ll be asked for a one question feedback survey.
+								You{"'"}ll be asked for a one question feedback
+								survey.
 							</p>
 						</p>
 					)}
 					{typeFormStep === TYPE_FORM.SUBMITTED && (
 						<p>
-							Thanks for giving us feedback. We{"'"}ll keep in mind to make appbase.io
-							better.
+							Thanks for giving us feedback. We{"'"}ll keep in
+							mind to make appbase.io better.
 						</p>
 					)}
 				</>
@@ -131,7 +137,4 @@ const mapDispatchToProps = dispatch => ({
 	fetchAppPlan: () => dispatch(getAppPlan()),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(Unsubscribe);
+export default connect(mapStateToProps, mapDispatchToProps)(Unsubscribe);

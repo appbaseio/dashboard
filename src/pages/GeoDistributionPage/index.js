@@ -29,7 +29,8 @@ const bannerMessagesAnalytics = {
 		description:
 			'Understand where you search traffic is coming from. Learn how to make the most of geo distribution insights.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/analytics/Overview/#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview/#getting-insights-from-analytics',
 	},
 };
 
@@ -37,7 +38,9 @@ const PopularResultsWrapper = ({ plan, isGrowth }) => (
 	<React.Fragment>
 		{isGrowth ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
 					<GeoDistributionPage />
 				</Container>
@@ -62,7 +65,7 @@ PopularResultsWrapper.propTypes = {
 	isGrowth: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'plan', 'free'),

@@ -40,7 +40,7 @@ class DeleteAppModal extends React.Component {
 			});
 	};
 
-	handleInputChange = (e) => {
+	handleInputChange = e => {
 		const { name, value } = e.target;
 		this.setState({
 			[name]: value,
@@ -67,8 +67,9 @@ class DeleteAppModal extends React.Component {
 				okButtonProps={{ type: 'danger', disabled, loading }}
 			>
 				<p>
-					Type the app name <span style={{ fontWeight: '600' }}>{appName}</span> below to
-					delete the app. This action cannot be undone.
+					Type the app name{' '}
+					<span style={{ fontWeight: '600' }}>{appName}</span> below
+					to delete the app. This action cannot be undone.
 				</p>
 				<Input
 					placeholder="Confirm appname"
@@ -97,7 +98,4 @@ const mapDispatchToProps = dispatch => ({
 	handleRemoveApp: options => dispatch(removeAppData(options)),
 });
 
-export default connect(
-	null,
-	mapDispatchToProps,
-)(DeleteAppModal);
+export default connect(null, mapDispatchToProps)(DeleteAppModal);

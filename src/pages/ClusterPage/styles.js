@@ -442,7 +442,6 @@ const invoiceTable = css`
 	}
 `;
 
-
 const esContainer = css`
 	display: flex;
 	justify-content: center;
@@ -458,7 +457,6 @@ const esContainer = css`
 		font-weight: 500;
 	}
 `;
-
 
 export {
 	clusterContainer,

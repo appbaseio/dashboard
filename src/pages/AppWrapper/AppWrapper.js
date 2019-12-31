@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {
- Layout, Menu, Icon, Tag,
-} from 'antd';
+import { Layout, Menu, Icon, Tag } from 'antd';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import AppLayout from '../../components/AppLayout';
@@ -51,7 +49,11 @@ const routes = {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },
-			{ label: 'Role Based Access', link: 'role-based-access', tag: 'Beta' },
+			{
+				label: 'Role Based Access',
+				link: 'role-based-access',
+				tag: 'Beta',
+			},
 			{ label: 'Sharing Settings', link: 'share-settings' },
 		],
 	},
@@ -70,9 +72,11 @@ const getActiveMenu = (props, prevActiveSubMenu = []) => {
 		pathname = getParam('view') || '';
 	}
 
-	Object.keys(routes).some((route) => {
+	Object.keys(routes).some(route => {
 		if (routes[route].menu) {
-			const active = routes[route].menu.find(item => pathname === item.link);
+			const active = routes[route].menu.find(
+				item => pathname === item.link,
+			);
 
 			if (active) {
 				activeSubMenu = route;
@@ -154,7 +158,7 @@ class AppWrapper extends Component {
 		}
 	}
 
-	onCollapse = (collapsed) => {
+	onCollapse = collapsed => {
 		this.setState({ collapsed });
 	};
 
@@ -163,7 +167,7 @@ class AppWrapper extends Component {
 			collapsed,
 			appName,
 			activeSubMenu,
-			activeMenuItem, // prettier-ignore
+			activeMenuItem // prettier-ignore
 		} = this.state;
 		return (
 			<Layout>
@@ -189,7 +193,7 @@ class AppWrapper extends Component {
 							width: '100%',
 							height: 'calc(100% - 102px)',
 						}}
-						onOpenChange={(param) => {
+						onOpenChange={param => {
 							this.setState({
 								activeSubMenu: param,
 							});
@@ -204,7 +208,7 @@ class AppWrapper extends Component {
 								)}
 							</Link>
 						</Menu.Item>
-						{Object.keys(routes).map((route) => {
+						{Object.keys(routes).map(route => {
 							if (routes[route].menu) {
 								const Title = (
 									<span>
@@ -216,11 +220,17 @@ class AppWrapper extends Component {
 									<SubMenu key={route} title={Title}>
 										{routes[route].menu.map(item => (
 											<Menu.Item key={item.label}>
-												<Link replace to={`/app/${appName}/${item.link}`}>
+												<Link
+													replace
+													to={`/app/${appName}/${item.link}`}
+												>
 													{item.label}
 													{item.tag ? (
 														<Tag
-															style={{ fontSize: 10, marginLeft: 8 }}
+															style={{
+																fontSize: 10,
+																marginLeft: 8,
+															}}
 															color="#001529"
 														>
 															{item.tag}
@@ -234,14 +244,19 @@ class AppWrapper extends Component {
 							}
 							return (
 								<Menu.Item key={route}>
-									<Link replace to={`/app/${appName}/${routes[route].link}`}>
+									<Link
+										replace
+										to={`/app/${appName}/${routes[route].link}`}
+									>
 										<Icon type={routes[route].icon} />
 										<span>{route}</span>
 									</Link>
 								</Menu.Item>
 							);
 						})}
-						{!collapsed && <UpgradeButton link={`/app/${appName}/billing`} />}
+						{!collapsed && (
+							<UpgradeButton link={`/app/${appName}/billing`} />
+						)}
 					</Menu>
 				</Sider>
 				<AppLayout collapsed={collapsed} {...this.props} />
@@ -255,10 +270,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(AppWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

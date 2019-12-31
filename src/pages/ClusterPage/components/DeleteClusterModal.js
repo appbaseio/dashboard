@@ -18,7 +18,7 @@ class DeleteClusterModal extends React.Component {
 		handleModal();
 	};
 
-	handleInputChange = (e) => {
+	handleInputChange = e => {
 		const { name, value } = e.target;
 		this.setState({
 			[name]: value,
@@ -47,7 +47,8 @@ class DeleteClusterModal extends React.Component {
 				okButtonProps={{ type: 'danger', disabled }}
 			>
 				<p>
-					Type the cluster name <span style={{ fontWeight: '600' }}>{clusterName}</span>{' '}
+					Type the cluster name{' '}
+					<span style={{ fontWeight: '600' }}>{clusterName}</span>{' '}
 					below to delete this cluster. This action cannot be undone.
 				</p>
 				<Input

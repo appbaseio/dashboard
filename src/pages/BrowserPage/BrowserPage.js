@@ -62,9 +62,7 @@ class BrowserPage extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${
-			dejavu.url
-		}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
+		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${dejavu.url}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
 
 		return (
 			<section>
@@ -94,19 +92,21 @@ BrowserPage.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
+const mapStateToProps = state => {
+	const { username, password } = get(
+		getAppPermissionsByName(state),
+		'credentials',
+		{},
+	);
 	return {
 		credentials: username ? `${username}:${password}` : '',
 	};
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	getPermission: appId => dispatch(getPermissionFromAppbase(appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(BrowserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BrowserPage);

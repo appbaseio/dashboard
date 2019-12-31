@@ -1,7 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import {
- Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col,
-} from 'antd';
+import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
 
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -71,7 +69,7 @@ class NewMyCluster extends Component {
 
 	componentDidMount() {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -81,7 +79,7 @@ class NewMyCluster extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -95,13 +93,13 @@ class NewMyCluster extends Component {
 		});
 	};
 
-	setPricing = (plan) => {
+	setPricing = plan => {
 		this.setState({
 			pricing_plan: plan.plan,
 		});
 	};
 
-	toggleConfig = (type) => {
+	toggleConfig = type => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -128,7 +126,7 @@ class NewMyCluster extends Component {
 				verifyingURL: true,
 			});
 			verifyCluster(clusterURL)
-				.then((data) => {
+				.then(data => {
 					const version = get(data, 'version.number', '');
 					if (version.split('.')[0] >= 5) {
 						this.setState({
@@ -146,13 +144,15 @@ class NewMyCluster extends Component {
 						});
 					}
 				})
-				.catch(() => {
+				.catch(e => {
 					this.setState({
 						verifyingURL: false,
 						isInvalidURL: true,
 						verifiedCluster: false,
 						urlErrorMessage:
-							'Connection Failed. Make sure the details you entered are correct.',
+							e.message === 'Auth Error'
+								? 'Auth Error'
+								: 'Connection Failed. Make sure the details you entered are correct.',
 					});
 				});
 		} else {
@@ -203,7 +203,7 @@ class NewMyCluster extends Component {
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					isLoading: false,
 					deploymentError: e,
@@ -230,9 +230,12 @@ class NewMyCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data => data.map((region) => {
+		const regionsToRender = data =>
+			data.map(region => {
 				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
+				const isDisabled = allowedRegions
+					? !allowedRegions.includes(region)
+					: false;
 				return (
 					// eslint-disable-next-line
 					<li
@@ -240,7 +243,11 @@ class NewMyCluster extends Component {
 						onClick={() => this.setConfig('region', region)}
 						className={
 							// eslint-disable-next-line
-							isDisabled ? 'disabled' : this.state.region === region ? 'active' : ''
+							isDisabled
+								? 'disabled'
+								: this.state.region === region
+								? 'active'
+								: ''
 						}
 					>
 						{regionValue.flag && (
@@ -266,16 +273,24 @@ class NewMyCluster extends Component {
 		return (
 			<Tabs size="large" style={style}>
 				<TabPane tab="America" key="america">
-					<ul className="region-list">{regionsToRender(usRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(usRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">{regionsToRender(asiaRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(asiaRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">{regionsToRender(euRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(euRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">{regionsToRender(otherRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(otherRegions)}
+					</ul>
 				</TabPane>
 			</Tabs>
 		);
@@ -294,7 +309,7 @@ class NewMyCluster extends Component {
 		});
 	};
 
-	handleCluster = (value) => {
+	handleCluster = value => {
 		this.setState({
 			restore_from: value,
 		});
@@ -320,12 +335,15 @@ class NewMyCluster extends Component {
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
-							<h2>Deploy appbase.io for your ElasticSearch Cluster</h2>
+							<h2>
+								Deploy appbase.io for your ElasticSearch Cluster
+							</h2>
 							<Row>
 								<Col span={18}>
 									<p>
-										Get a better security, analytics and development experience
-										with your own ElasticSearch cluster.
+										Get a better security, analytics and
+										development experience with your own
+										ElasticSearch cluster.
 									</p>
 								</Col>
 							</Row>
@@ -344,7 +362,9 @@ class NewMyCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() => this.props.history.push('/clusters/new')}
+									onClick={() =>
+										this.props.history.push('/clusters/new')
+									}
 									icon="question-circle"
 								>
 									Don't have a Cluster
@@ -363,14 +383,17 @@ class NewMyCluster extends Component {
 									<p>Scale as you go</p>
 									{isUsingClusterTrial ? (
 										<p>
-											<b>Note: </b>You can only create {machineMarks[0].label}{' '}
-											Cluster while on trial.
+											<b>Note: </b>You can only create{' '}
+											{machineMarks[0].label} Cluster
+											while on trial.
 										</p>
 									) : null}
 								</div>
 
 								<PricingSlider
-									sliderProps={{ disabled: isUsingClusterTrial }}
+									sliderProps={{
+										disabled: isUsingClusterTrial,
+									}}
 									marks={machineMarks}
 									onChange={this.setPricing}
 								/>
@@ -389,7 +412,9 @@ class NewMyCluster extends Component {
 							<div className={card}>
 								<div className="col light">
 									<h3>Choose a cluster name</h3>
-									<p>Name your cluster. A name is permanent.</p>
+									<p>
+										Name your cluster. A name is permanent.
+									</p>
 								</div>
 								<div
 									className="col grow vcenter"
@@ -408,19 +433,25 @@ class NewMyCluster extends Component {
 											marginBottom: 10,
 											outline: 'none',
 											border:
-												isInvalid && this.state.clusterName !== ''
+												isInvalid &&
+												this.state.clusterName !== ''
 													? '1px solid red'
 													: '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
-										onChange={e => this.setConfig('clusterName', e.target.value)
+										onChange={e =>
+											this.setConfig(
+												'clusterName',
+												e.target.value,
+											)
 										}
 									/>
 									<p
 										style={{
 											color:
-												isInvalid && this.state.clusterName !== ''
+												isInvalid &&
+												this.state.clusterName !== ''
 													? 'red'
 													: 'inherit',
 										}}
@@ -432,8 +463,13 @@ class NewMyCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Connect to your ElasticSearch Cluster</h3>
-									<p>Enter your Cluster credentials and username</p>
+									<h3>
+										Connect to your ElasticSearch Cluster
+									</h3>
+									<p>
+										Enter your Cluster credentials and
+										username
+									</p>
 								</div>
 								<div
 									className="col grow vcenter"
@@ -452,13 +488,19 @@ class NewMyCluster extends Component {
 											marginBottom: 10,
 											outline: 'none',
 											border:
-												isInvalidURL && this.state.clusterURL !== ''
+												isInvalidURL &&
+												this.state.clusterURL !== ''
 													? '1px solid red'
 													: '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your Elastic URL"
 										value={this.state.clusterURL}
-										onChange={e => this.setConfig('clusterURL', e.target.value)}
+										onChange={e =>
+											this.setConfig(
+												'clusterURL',
+												e.target.value,
+											)
+										}
 									/>
 									<Button
 										onClick={this.handleVerify}
@@ -469,8 +511,12 @@ class NewMyCluster extends Component {
 									</Button>
 
 									{verifiedCluster ? (
-										<Tag style={{ marginTop: 10 }} color="green">
-											Verified Connection. Version Detected: {clusterVersion}
+										<Tag
+											style={{ marginTop: 10 }}
+											color="green"
+										>
+											Verified Connection. Version
+											Detected: {clusterVersion}
 										</Tag>
 									) : null}
 
@@ -480,19 +526,49 @@ class NewMyCluster extends Component {
 												color: 'red',
 											}}
 										>
-											{urlErrorMessage}
+											{urlErrorMessage ===
+											'Auth Error' ? (
+												<React.Fragment>
+													We received a authentication
+													error. Does your
+													ElasticSearch require
+													additional authentication?
+													Read more{' '}
+													<a
+														target="_blank"
+														rel="noopener noreferrer"
+														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+													>
+														here
+													</a>
+													.
+												</React.Fragment>
+											) : (
+												urlErrorMessage
+											)}
 										</p>
 									) : null}
 								</div>
 							</div>
 
-							<div style={{ textAlign: 'right', marginBottom: 40 }}>
+							<div
+								style={{ textAlign: 'right', marginBottom: 40 }}
+							>
 								{this.state.error ? (
-									<p style={{ color: 'tomato', margin: '20px 0' }}>
+									<p
+										style={{
+											color: 'tomato',
+											margin: '20px 0',
+										}}
+									>
 										{this.state.error}
 									</p>
 								) : null}
-								<Button type="primary" size="large" onClick={this.createCluster}>
+								<Button
+									type="primary"
+									size="large"
+									onClick={this.createCluster}
+								>
 									Create Cluster
 									<Icon type="arrow-right" theme="outlined" />
 								</Button>
@@ -509,7 +585,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(NewMyCluster);
+export default connect(mapStateToProps, null)(NewMyCluster);

@@ -5,7 +5,12 @@ import styles from './styles';
 import Flex from '../../batteries/components/shared/Flex';
 
 const Grid = ({
- label, component, toolTipMessage, gridRatio, toolTipProps, ...rest
+	label,
+	component,
+	toolTipMessage,
+	gridRatio,
+	toolTipProps,
+	...rest
 }) => (
 	<Flex css="margin-top: 30px" {...rest}>
 		<Flex

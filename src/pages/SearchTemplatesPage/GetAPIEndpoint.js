@@ -3,11 +3,12 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { css } from 'emotion';
+import { Card, Modal, Button, notification } from 'antd';
 import {
- Card, Modal, Button, notification,
-} from 'antd';
-import {
- FieldControl, FormBuilder, Validators, FieldGroup,
+	FieldControl,
+	FormBuilder,
+	Validators,
+	FieldGroup,
 } from 'react-reactive-form';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getAppTemplate, getPermission } from '../../batteries/modules/actions';
@@ -38,7 +39,7 @@ class GetAPIEndpoint extends React.Component {
 			const { fetchPermissions } = props;
 			fetchPermissions();
 		}
-		props.fetchTemplate(props.templateId).then((action) => {
+		props.fetchTemplate(props.templateId).then(action => {
 			if (get(action, 'payload')) {
 				const value = get(action, 'payload');
 				const source = get(value, 'script.source');
@@ -113,7 +114,11 @@ ${getString(query)}
 							<Button key="back" onClick={() => handleCancel()}>
 								Cancel
 							</Button>,
-							<CopyToClipboard key="ok" text={this.request} onCopy={this.handleCopyCred}>
+							<CopyToClipboard
+								key="ok"
+								text={this.request}
+								onCopy={this.handleCopyCred}
+							>
 								<Button type="primary" disabled={invalid}>
 									Copy as cURL
 								</Button>
@@ -139,8 +144,8 @@ ${getString(query)}
 								<Grid
 									gridRatio={0.1}
 									label="Body"
-									component={(
-<FieldControl
+									component={
+										<FieldControl
 											name="query"
 											render={({ handler }) => (
 												<Ace
@@ -166,8 +171,8 @@ ${getString(query)}
 													}}
 												/>
 											)}
-/>
-)}
+										/>
+									}
 								/>
 							</React.Fragment>
 						)}
@@ -195,8 +200,8 @@ GetAPIEndpoint.propTypes = {
 
 const mapStateToProps = state => ({
 	isLoading:
-		get(state, '$getAppTemplate.isFetching', false)
-		|| get(state, '$getAppPermissions.isFetching', false),
+		get(state, '$getAppTemplate.isFetching', false) ||
+		get(state, '$getAppPermissions.isFetching', false),
 	credentials: get(getAppPermissionsByName(state), 'credentials'),
 	appName: get(state, '$getCurrentApp.name'),
 });
@@ -206,7 +211,4 @@ const mapDispatchToProps = dispatch => ({
 	fetchPermissions: appName => dispatch(getPermission(appName)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(GetAPIEndpoint);
+export default connect(mapStateToProps, mapDispatchToProps)(GetAPIEndpoint);

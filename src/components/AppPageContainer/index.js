@@ -9,7 +9,10 @@ import {
 	getAppPlan,
 	getUserPlan,
 } from '../../batteries/modules/actions';
-import { getAppInfoByName, getAppPlanByName } from '../../batteries/modules/selectors';
+import {
+	getAppInfoByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 import Loader from '../Loader';
 import { displayErrors } from '../../utils/helper';
 
@@ -61,7 +64,11 @@ class AppPageContainer extends Component {
 			return <Loader />;
 		}
 
-		return <div key={props.appName}>{React.createElement(component, props)}</div>;
+		return (
+			<div key={props.appName}>
+				{React.createElement(component, props)}
+			</div>
+		);
 	}
 }
 
@@ -97,16 +104,19 @@ const mapStateToProps = (state, ownProps) => {
 		appName,
 		appId: get(state, 'apps', {})[appName],
 		isLoading:
-			get(state, '$getAppInfo.isFetching')
-			|| get(state, '$getAppPlan.isFetching')
-			|| get(state, '$getUserPlan.isFetching'),
+			get(state, '$getAppInfo.isFetching') ||
+			get(state, '$getAppPlan.isFetching') ||
+			get(state, '$getUserPlan.isFetching'),
 		isAppPlanFetched: !!getAppPlanByName(state),
 		isUserPlanFetched: !!get(state, '$getUserPlan.results'),
 		isAppInfoPresent: !!getAppInfoByName(state),
 		errors: [
-			ownProps.shouldFetchAppInfo !== false && get(state, '$getAppInfo.error'),
-			ownProps.shouldFetchAppPlan !== false && get(state, '$getAppPlan.error'),
-			ownProps.shouldFetchUserPlan !== false && get(state, '$getUserPlan.error'),
+			ownProps.shouldFetchAppInfo !== false &&
+				get(state, '$getAppInfo.error'),
+			ownProps.shouldFetchAppPlan !== false &&
+				get(state, '$getAppPlan.error'),
+			ownProps.shouldFetchUserPlan !== false &&
+				get(state, '$getUserPlan.error'),
 		],
 	};
 };
@@ -115,10 +125,8 @@ const mapDispatchToProps = dispatch => ({
 	fetchAppInfo: appId => dispatch(getAppInfo(appId)),
 	fetchAppPlan: appName => dispatch(getAppPlan(appName)),
 	fetchUserPlan: () => dispatch(getUserPlan()),
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(AppPageContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AppPageContainer);

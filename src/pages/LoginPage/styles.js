@@ -113,5 +113,11 @@ const gitlabBtn = css`
 `;
 
 export {
- container, card, githubBtn, googleBtn, gitlabBtn, emailBtn, inputStyles,
+	container,
+	card,
+	githubBtn,
+	googleBtn,
+	gitlabBtn,
+	emailBtn,
+	inputStyles,
 };

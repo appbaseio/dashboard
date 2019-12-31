@@ -11,7 +11,10 @@ import Overlay from '../../components/Overlay';
 import Flex from '../../batteries/components/shared/Flex';
 import DemoCards from '../../components/DemoCard';
 import Container from '../../components/Container';
-import { getAppAnalyticsByName, getAppPlanByName } from '../../batteries/modules/selectors';
+import {
+	getAppAnalyticsByName,
+	getAppPlanByName,
+} from '../../batteries/modules/selectors';
 import { exampleConfig } from '../../constants/config';
 import { getAppAnalytics } from '../../batteries/modules/actions';
 import { getFilteredResults } from '../../batteries/utils/heplers';
@@ -70,7 +73,7 @@ class PaidUserOverview extends React.Component {
 		}
 	}
 
-	redirectTo = (url) => {
+	redirectTo = url => {
 		window.location = url;
 	};
 
@@ -94,31 +97,35 @@ class PaidUserOverview extends React.Component {
 					</div>
 					<div css={chart}>
 						{isPaid ? (
-							<SearchVolumeChart margin={10} height={210} data={searchVolume} />
+							<SearchVolumeChart
+								margin={10}
+								height={210}
+								data={searchVolume}
+							/>
 						) : (
-								<Overlay
-									style={{
-										maxWidth: '100%',
-										height: '100%',
-										backgroundColor: '#fff',
-									}}
-									lockSectionStyle={{
-										marginTop: 100,
-									}}
-									imageStyle={{
-										position: 'absolute',
-										top: 0,
-										bottom: 0,
-										left: 0,
-										margin: 'auto',
-									}}
-									iconStyle={{
-										fontSize: 30,
-									}}
-									src="/static/images/analytics/SearchVolume.png"
-									alt="analytics"
-								/>
-							)}
+							<Overlay
+								style={{
+									maxWidth: '100%',
+									height: '100%',
+									backgroundColor: '#fff',
+								}}
+								lockSectionStyle={{
+									marginTop: 100,
+								}}
+								imageStyle={{
+									position: 'absolute',
+									top: 0,
+									bottom: 0,
+									left: 0,
+									margin: 'auto',
+								}}
+								iconStyle={{
+									fontSize: 30,
+								}}
+								src="/static/images/analytics/SearchVolume.png"
+								alt="analytics"
+							/>
+						)}
 					</div>
 				</Flex>
 				{isPaid && (
@@ -178,7 +185,7 @@ PaidUserOverview.propTypes = {
 	isFetching: PropTypes.bool.isRequired,
 	noResults: PropTypes.array,
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const analytics = getAppAnalyticsByName(state);
 	const appPlan = getAppPlanByName(state);
 	return {
@@ -192,9 +199,7 @@ const mapStateToProps = (state) => {
 	};
 };
 const mapDispatchToProps = dispatch => ({
-	fetchAppAnalytics: (appName, plan) => dispatch(getAppAnalytics(appName, plan)),
+	fetchAppAnalytics: (appName, plan) =>
+		dispatch(getAppAnalytics(appName, plan)),
 });
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(PaidUserOverview);
+export default connect(mapStateToProps, mapDispatchToProps)(PaidUserOverview);

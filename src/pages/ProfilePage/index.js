@@ -1,12 +1,8 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import {
- Switch, Route, Redirect, withRouter,
-} from 'react-router-dom';
-import {
- Menu, Dropdown, Button, Icon,
-} from 'antd';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Menu, Dropdown, Button, Icon } from 'antd';
 
 import Account from './Account';
 import Email from './Email';
@@ -24,7 +20,7 @@ type Props = {
 };
 
 class Profile extends Component<Props> {
-	handleMenuClick = (item) => {
+	handleMenuClick = item => {
 		const {
 			history: { push },
 		} = this.props;
@@ -42,7 +38,11 @@ class Profile extends Component<Props> {
 			<Menu
 				onClick={this.handleMenuClick}
 				defaultSelectedKeys={[pathParts[2] || 'account']}
-				mode={window.innerWidth <= breakpoints.medium ? 'horizontal' : 'inline'}
+				mode={
+					window.innerWidth <= breakpoints.medium
+						? 'horizontal'
+						: 'inline'
+				}
 				css={{
 					backgroundColor: 'transparent',
 					borderRight: 0,
@@ -97,7 +97,8 @@ class Profile extends Component<Props> {
 										textTransform: 'capitalize',
 									}}
 								>
-									{[pathParts[2] || 'account']} <Icon type="down" />
+									{[pathParts[2] || 'account']}{' '}
+									<Icon type="down" />
 								</Button>
 							</Dropdown>
 						) : (
@@ -113,11 +114,24 @@ class Profile extends Component<Props> {
 						}}
 					>
 						<Switch>
-							<Route path="/profile/account" component={Account} />
+							<Route
+								path="/profile/account"
+								component={Account}
+							/>
 							<Route path="/profile/email" component={Email} />
-							<Route path="/profile/credentials" component={Credentials} />
-							<Route path="/profile/close" component={CloseAccount} />
-							<Redirect from="/profile" exact to="/profile/account" />
+							<Route
+								path="/profile/credentials"
+								component={Credentials}
+							/>
+							<Route
+								path="/profile/close"
+								component={CloseAccount}
+							/>
+							<Redirect
+								from="/profile"
+								exact
+								to="/profile/account"
+							/>
 						</Switch>
 					</div>
 				</Flex>

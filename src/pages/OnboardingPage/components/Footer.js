@@ -1,9 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 
-const Footer = ({
- previousScreen, disabled, app, label, nextScreen,
-}) => (
+const Footer = ({ previousScreen, disabled, app, label, nextScreen }) => (
 	<footer>
 		<div className="left-column">
 			{previousScreen ? (
@@ -12,8 +10,7 @@ const Footer = ({
 					style={{ padding: '0 24px 0 16px' }}
 					onClick={previousScreen}
 				>
-					<Icon type="left" theme="outlined" />{' '}
-					&nbsp; Previous
+					<Icon type="left" theme="outlined" /> &nbsp; Previous
 				</a>
 			) : null}
 		</div>

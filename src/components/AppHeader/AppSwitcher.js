@@ -1,7 +1,5 @@
 import React from 'react';
-import {
- Dropdown, Menu, Button, Icon, Tooltip,
-} from 'antd';
+import { Dropdown, Menu, Button, Icon, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 
@@ -30,7 +28,7 @@ const AppSwitcher = ({
 	const menu = (
 		<Menu
 			css={{ maxHeight: 250, overflowY: 'scroll' }}
-			onClick={(e) => {
+			onClick={e => {
 				const appName = e.key;
 				updateCurrentApp(appName, apps[appName]);
 				fetchAppInfo(appName);
@@ -50,9 +48,13 @@ const AppSwitcher = ({
 					<Icon type="down" />
 				</Button>
 			</Dropdown>
-			{appOwner
-				&& (appOwner !== user ? (
-					<Tooltip title={`Shared by ${appOwner}`} trigger={['hover']} placement="bottom">
+			{appOwner &&
+				(appOwner !== user ? (
+					<Tooltip
+						title={`Shared by ${appOwner}`}
+						trigger={['hover']}
+						placement="bottom"
+					>
 						<Button
 							className={ownerButton}
 							size="small"
@@ -66,11 +68,9 @@ const AppSwitcher = ({
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	fetchAppInfo: appName => dispatch(getAppInfo(appName)),
 });
 
-export default connect(
-	null,
-	mapDispatchToProps,
-)(AppSwitcher);
+export default connect(null, mapDispatchToProps)(AppSwitcher);
