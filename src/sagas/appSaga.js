@@ -1,6 +1,4 @@
-import {
- take, takeEvery, call, put,
-} from 'redux-saga/effects';
+import { take, takeEvery, call, put } from 'redux-saga/effects';
 import { APPS } from '../constants';
 import { getAppsOwners, getAppsOverview } from '../utils';
 import {

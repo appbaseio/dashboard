@@ -40,7 +40,7 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 	</Link>
 );
 
-const TrialButton = (props) => {
+const TrialButton = props => {
 	const {
 		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
 	} = props; // prettier-ignore
@@ -52,7 +52,8 @@ const TrialButton = (props) => {
 
 	const daysLeftValue = isCluster ? clusterDaysLeft : daysLeft;
 	const appNames = apps ? Object.keys(apps) : [];
-	const redirectApp = currentApp && appNames.includes(currentApp) ? currentApp : '';
+	const redirectApp =
+		currentApp && appNames.includes(currentApp) ? currentApp : '';
 
 	if (cluster) {
 		return buttonWithMessage({
@@ -86,7 +87,7 @@ TrialButton.defaultProps = {
 	cluster: '',
 	isCluster: false,
 	trialMessage:
-		'You are currently on a trial which unlocks all the Growth monthly features. You can upgrade to a paid plan anytime till the trial expires. Post trial expiration, you will be subscribed to the free plan.', // Apps Message
+		'You are currently on a trial which unlocks all the Growth plan features. You can upgrade to a paid plan anytime till the trial expires. After that, you will be downgraded to the free plan.', // Apps Message
 };
 
 TrialButton.propTypes = {

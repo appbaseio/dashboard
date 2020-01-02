@@ -8,12 +8,15 @@ import Loader from '../../components/Loader';
 import { getClusterData } from './utils';
 import { clusterContainer } from './styles';
 import Frame from '../../components/Frame';
+import { getUrlParams } from '../../utils/helper';
 
 export default class ExploreCluster extends Component {
 	constructor(props) {
 		super(props);
 		const arc = props.location.state ? props.location.state.arc : null;
-		const cluster = props.location.state ? props.location.state.cluster : null;
+		const cluster = props.location.state
+			? props.location.state.cluster
+			: null;
 
 		this.state = {
 			arc,
@@ -73,11 +76,17 @@ export default class ExploreCluster extends Component {
 					style={{ textAlign: 'center', paddingTop: 40 }}
 				>
 					<article>
-						<Icon css={{ fontSize: 42 }} type="frown" theme="outlined" />
+						<Icon
+							css={{ fontSize: 42 }}
+							type="frown"
+							theme="outlined"
+						/>
 						<h2>Some error occurred</h2>
 						<p>{this.state.error || message}</p>
 						<div style={{ marginTop: 30 }}>
-							<Link to={`/clusters/${this.props.match.params.id}`}>
+							<Link
+								to={`/clusters/${this.props.match.params.id}`}
+							>
 								<Button size="large" icon="arrow-left">
 									Go Back
 								</Button>
@@ -106,9 +115,21 @@ export default class ExploreCluster extends Component {
 		if (this.state.error) {
 			return this.renderErrorScreen();
 		}
+		const { location } = this.props;
+		const urlParams = getUrlParams(location.search);
 
-		const arcURL = this.state.arc.url ? this.state.arc.url.slice(0, -1) : '';
-		const url = `https://arc-dashboard.appbase.io/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
+		const arcURL = this.state.arc.url
+			? this.state.arc.url.slice(0, -1)
+			: '';
+		let mainURL = 'https://arc-dashboard.appbase.io';
+		if (urlParams && urlParams.view) {
+			const nestedRoute = urlParams.view.startsWith('/')
+				? urlParams.view.replace('/', '')
+				: urlParams.view;
+
+			mainURL = `${mainURL}/${nestedRoute}`;
+		}
+		const url = `${mainURL}/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>

@@ -7,12 +7,11 @@ import PropTypes from 'prop-types';
 import EmailAuth from './EmailAuth';
 import Logo from '../../components/Logo';
 import { ACC_API } from '../../constants/config';
-import {
- container, card, githubBtn, googleBtn, gitlabBtn,
-} from './styles';
+import { container, card, githubBtn, googleBtn, gitlabBtn } from './styles';
 import { getUrlParams } from '../../utils/helper';
 
-const getLoginURL = (provider, returnURL) => `${ACC_API}/login/${provider}?next=${returnURL}`;
+const getLoginURL = (provider, returnURL) =>
+	`${ACC_API}/login/${provider}?next=${returnURL}`;
 
 class LoginPage extends React.Component {
 	state = {
@@ -115,7 +114,4 @@ const mapStateToProps = ({ user }) => ({
 	user,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(LoginPage);
+export default connect(mapStateToProps, null)(LoginPage);

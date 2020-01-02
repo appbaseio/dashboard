@@ -4,8 +4,10 @@
 	"files.trimFinalNewlines": true,
 	// to resolve flow issues - Refer: https://github.com/flowtype/flow-for-vscode#setup
 	"javascript.validate.enable": false,
-	"eslint.autoFixOnSave": true,
+	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll.tslint": true
-	}
+		"source.fixAll.tslint": true,
+		"source.fixAll.eslint": true
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }

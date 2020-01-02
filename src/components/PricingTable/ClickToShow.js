@@ -24,7 +24,11 @@ export default class ClickToShow extends Component {
 	};
 
 	render() {
-		const { children, label = 'All Features', hideLabel = 'Hide Features' } = this.props;
+		const {
+			children,
+			label = 'All Features',
+			hideLabel = 'Hide Features',
+		} = this.props;
 		const { visible } = this.state;
 
 		if (visible) {

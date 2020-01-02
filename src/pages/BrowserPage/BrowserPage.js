@@ -85,18 +85,20 @@ BrowserPage.propTypes = {
 };
 
 const mapStateToProps = state => {
-	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
+	const { username, password } = get(
+		getAppPermissionsByName(state),
+		'credentials',
+		{},
+	);
 	return {
 		credentials: username ? `${username}:${password}` : '',
 	};
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	getPermission: appId => dispatch(getPermissionFromAppbase(appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(BrowserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BrowserPage);

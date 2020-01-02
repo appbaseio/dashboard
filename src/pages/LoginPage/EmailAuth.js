@@ -13,7 +13,7 @@ class EmailAuth extends React.Component {
 		otp: '',
 	};
 
-	handleInput = (e) => {
+	handleInput = e => {
 		const {
 			target: { name, value },
 		} = e;
@@ -135,7 +135,11 @@ class EmailAuth extends React.Component {
 					</React.Fragment>
 				) : (
 					<Button
-						onClick={isEmailAuth ? this.handleEmailSubmission : toggleEmailAuth}
+						onClick={
+							isEmailAuth
+								? this.handleEmailSubmission
+								: toggleEmailAuth
+						}
 						icon={isEmailAuth ? '' : 'mail'}
 						size="large"
 						disabled={disabled}

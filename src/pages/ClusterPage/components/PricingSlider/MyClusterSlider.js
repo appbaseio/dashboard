@@ -25,7 +25,7 @@ export default class PricingSlider extends Component {
 		this.state = { marks, active, value: 0 };
 	}
 
-	onChange = (active) => {
+	onChange = active => {
 		const { marks } = this.state;
 		const keys = Object.keys(marks).map(number => Number(number));
 
@@ -89,7 +89,11 @@ export default class PricingSlider extends Component {
 						<div className="cluster-info__item">
 							<div>
 								$
-								<AnimatedNumber value={mark.pph} duration={100} stepPrecision={0} />
+								<AnimatedNumber
+									value={mark.pph}
+									duration={100}
+									stepPrecision={0}
+								/>
 							</div>
 							<div>Price per hour</div>
 						</div>

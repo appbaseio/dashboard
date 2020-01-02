@@ -21,13 +21,16 @@ const bannerMessagesAnalytics = {
 		description:
 			"View the last 1,000 request logs to glean insights into your app's behaviors.",
 		buttonText: 'Read More',
-		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 	growth: {
 		title: 'Request Logs',
-		description: "View the last 1,000 request logs to glean insights into your app's behavior.",
+		description:
+			"View the last 1,000 request logs to glean insights into your app's behavior.",
 		buttonText: 'Read More',
-		href: 'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+		href:
+			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 
@@ -35,7 +38,9 @@ const RequestLogsWrapper = ({ appName, plan, isPaidUser }) => (
 	<React.Fragment>
 		{isPaidUser ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
 					<RequestLogs appName={appName} />
 				</Container>
@@ -64,7 +69,7 @@ RequestLogsWrapper.propTypes = {
 	isPaidUser: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),

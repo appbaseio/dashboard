@@ -22,7 +22,9 @@ export async function getUser() {
 	]);
 	let metrics = '';
 	try {
-		const metricsResponse = await fetch(`${ACC_API}/user/metrics`, { credentials: 'include' });
+		const metricsResponse = await fetch(`${ACC_API}/user/metrics`, {
+			credentials: 'include',
+		});
 		if (metricsResponse.status >= 400) {
 			throw new Error();
 		}
@@ -42,13 +44,17 @@ export async function getUser() {
 		total_apps: user.apps && Object.keys(user.apps).length,
 		context: 'appbase.io',
 		api_calls:
-			(metrics && metrics.body && metrics.body.month && metrics.body.month.apiCalls) || 0,
+			(metrics &&
+				metrics.body &&
+				metrics.body.month &&
+				metrics.body.month.apiCalls) ||
+			0,
 		storage:
-			(metrics
-				&& metrics.body
-				&& metrics.body.overall
-				&& metrics.body.overall.storage / 1048576)
-			|| 0,
+			(metrics &&
+				metrics.body &&
+				metrics.body.overall &&
+				metrics.body.overall.storage / 1048576) ||
+			0,
 		company: {
 			name: user.company,
 			id: user.company,
@@ -60,7 +66,9 @@ export async function getUser() {
 }
 
 export async function getAppsMetrics() {
-	const response = await fetch(`${ACC_API}/user/apps/metrics`, { credentials: 'include' });
+	const response = await fetch(`${ACC_API}/user/apps/metrics`, {
+		credentials: 'include',
+	});
 	const data = await response.json();
 	if (response.status >= 400) {
 		throw new Error(data);
@@ -70,7 +78,9 @@ export async function getAppsMetrics() {
 }
 
 export async function getAppsOwners() {
-	const response = await fetch(`${ACC_API}/user/apps`, { credentials: 'include' });
+	const response = await fetch(`${ACC_API}/user/apps`, {
+		credentials: 'include',
+	});
 	const data = await response.json();
 	if (response.status >= 400) {
 		throw new Error(data);
@@ -85,7 +95,9 @@ export async function getAppsOverview() {
 	});
 	const data = await response.json();
 	if (data.body) {
-		const paidApps = Object.keys(data.body).map(app => data.body[app].tier !== 'plan');
+		const paidApps = Object.keys(data.body).map(
+			app => data.body[app].tier !== 'plan',
+		);
 		let plan = 'free';
 		if (paidApps.length > 0) {
 			plan = 'paid';

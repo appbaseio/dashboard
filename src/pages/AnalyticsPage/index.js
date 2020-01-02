@@ -36,7 +36,9 @@ const AnalyticsView = ({ appName, isPaidUser, plan }) => (
 	<React.Fragment>
 		{isPaidUser ? (
 			<React.Fragment>
-				{bannerMessagesAnalytics[plan] && <Banner {...bannerMessagesAnalytics[plan]} />}
+				{bannerMessagesAnalytics[plan] && (
+					<Banner {...bannerMessagesAnalytics[plan]} />
+				)}
 				<Container>
 					<Analytics
 						displayReplaySearch
@@ -65,7 +67,7 @@ AnalyticsView.propTypes = {
 	plan: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPlan = getAppPlanByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),

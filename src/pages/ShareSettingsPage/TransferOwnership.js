@@ -4,7 +4,10 @@ import get from 'lodash/get';
 import { Popconfirm, Button, Input } from 'antd';
 import { css } from 'react-emotion';
 import {
- FieldGroup, FieldControl, FormBuilder, Validators,
+	FieldGroup,
+	FieldControl,
+	FormBuilder,
+	Validators,
 } from 'react-reactive-form';
 import Flex from '../../batteries/components/shared/Flex';
 import { transferAppOwnership } from '../../batteries/modules/actions';
@@ -115,7 +118,4 @@ const mapDispatchToProps = dispatch => ({
 	transferOwnership: info => dispatch(transferAppOwnership(null, info)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(TransferOwnership);
+export default connect(mapStateToProps, mapDispatchToProps)(TransferOwnership);

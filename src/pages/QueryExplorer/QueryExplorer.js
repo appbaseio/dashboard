@@ -52,7 +52,7 @@ class QueryExplorer extends Component {
 			appname: appName,
 		});
 
-		LZMA.LZMA_WORKER.compress(mirage, 9, (url) => {
+		LZMA.LZMA_WORKER.compress(mirage, 9, url => {
 			const res = window.SafeEncode.encode(window.SafeEncode.buffer(url));
 			this.setState({
 				isProcessingUrl: false,
@@ -112,19 +112,21 @@ QueryExplorer.propTypes = {
 	getPermission: func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-	const { username, password } = get(getAppPermissionsByName(state), 'credentials', {});
+const mapStateToProps = state => {
+	const { username, password } = get(
+		getAppPermissionsByName(state),
+		'credentials',
+		{},
+	);
 	return {
 		credentials: username ? `${username}:${password}` : '',
 	};
 };
 
 const mapDispatchToProps = dispatch => ({
-	updateCurrentApp: (appName, appId) => dispatch(setCurrentApp(appName, appId)),
+	updateCurrentApp: (appName, appId) =>
+		dispatch(setCurrentApp(appName, appId)),
 	getPermission: appId => dispatch(getPermissionFromAppbase(appId)),
 });
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(QueryExplorer);
+export default connect(mapStateToProps, mapDispatchToProps)(QueryExplorer);

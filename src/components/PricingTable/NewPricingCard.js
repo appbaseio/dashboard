@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
- array, node, string, func, bool,
-} from 'prop-types';
+import { array, node, string, func, bool } from 'prop-types';
 import styled, { css } from 'react-emotion';
 import Stripe from 'react-stripe-checkout';
 import { media } from '../../utils/media';
@@ -104,7 +102,10 @@ class NewPricingCard extends Component {
 						stripeKey={stripeKey}
 					>
 						{/* eslint-disable-next-line */}
-						<Link onClick={onClickButton} css={{ color: linkColor }}>
+						<Link
+							onClick={onClickButton}
+							css={{ color: linkColor }}
+						>
 							{buttonText}
 						</Link>
 					</Stripe>
@@ -116,7 +117,9 @@ class NewPricingCard extends Component {
 				</PricingList>
 				{children && (
 					<ClickToShow>
-						<PricingList css={{ fontSize: '0.875rem', fontWeight: 600 }}>
+						<PricingList
+							css={{ fontSize: '0.875rem', fontWeight: 600 }}
+						>
 							{children}
 						</PricingList>
 					</ClickToShow>

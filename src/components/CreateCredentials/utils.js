@@ -20,7 +20,7 @@ export const Suggestions = {
 		description: 'Matches referers containing',
 	},
 };
-export const getSuggestionCode = (str) => {
+export const getSuggestionCode = str => {
 	if (str === '*') {
 		return 'Matches All';
 	}
@@ -35,11 +35,11 @@ export const getSuggestionCode = (str) => {
 	}
 	return Suggestions[1].description;
 };
-export const ipValidator = (value) => {
+export const ipValidator = value => {
 	const splitIp = value && value.split('/');
 	if (
-		splitIp
-		&& /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+		splitIp &&
+		/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
 			splitIp[0],
 		)
 	) {
@@ -51,7 +51,7 @@ export const ipValidator = (value) => {
 	}
 	return false;
 };
-export const isNegative = (control) => {
+export const isNegative = control => {
 	if (control.value && parseInt(control.value, 10) < 0) {
 		return { isNegative: true };
 	}
@@ -76,14 +76,30 @@ export const Types = {
 	},
 };
 // Acl options
-export const aclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
+export const aclOptions = [
+	'index',
+	'get',
+	'search',
+	'settings',
+	'stream',
+	'bulk',
+	'delete',
+];
 // Default Selected Acl
-export const defaultAclOptions = ['index', 'get', 'search', 'settings', 'stream', 'bulk', 'delete'];
+export const defaultAclOptions = [
+	'index',
+	'get',
+	'search',
+	'settings',
+	'stream',
+	'bulk',
+	'delete',
+];
 /**
  * To get acl options according to the users plan
  * @param {string} plan
  */
-export const getAclOptionsByPlan = (plan) => {
+export const getAclOptionsByPlan = plan => {
 	if (plan === 'growth') {
 		return [...aclOptions, 'analytics'];
 	}
@@ -93,7 +109,7 @@ export const getAclOptionsByPlan = (plan) => {
  * To get default selected acl options according to the users plan
  * @param {string} plan
  */
-export const getDefaultAclOptionsByPlan = (plan) => {
+export const getDefaultAclOptionsByPlan = plan => {
 	if (plan === 'growth') {
 		return [...defaultAclOptions, 'analytics'];
 	}

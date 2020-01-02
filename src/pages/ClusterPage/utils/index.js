@@ -1,5 +1,53 @@
 import { ACC_API } from '../../../constants/config';
 
+export const CLUSTER_PLANS = {
+	SANDBOX_2019: '2019-sandbox',
+	HOBBY_2019: '2019-hobby',
+	STARTER_2019: '2019-starter',
+	PRODUCTION_2019_1: '2019-production-1',
+	PRODUCTION_2019_2: '2019-production-2',
+	PRODUCTION_2019_3: '2019-production-3',
+};
+
+export const ARC_PLANS = {
+	ARC_BASIC: 'arc-basic',
+	ARC_STANDARD: 'arc-standard',
+	ARC_ENTERPRISE: 'arc-enterprise',
+	HOSTED_ARC_BASIC: 'hosted-arc-basic',
+	HOSTED_ARC_STANDARD: 'hosted-arc-standard',
+	HOSTED_ARC_ENTERPRISE: 'hosted-arc-enterprise',
+};
+
+export const EFFECTIVE_PRICE_BY_PLANS = {
+	[ARC_PLANS.ARC_BASIC]: 0.03,
+	[ARC_PLANS.ARC_STANDARD]: 0.08,
+	[ARC_PLANS.ARC_ENTERPRISE]: 0.69,
+	[ARC_PLANS.HOSTED_ARC_BASIC]: 0.05,
+	[ARC_PLANS.HOSTED_ARC_STANDARD]: 0.12,
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 0.83,
+	[CLUSTER_PLANS.SANDBOX_2019]: 0.08,
+	[CLUSTER_PLANS.HOBBY_2019]: 0.17,
+	[CLUSTER_PLANS.STARTER_2019]: 0.28,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 0.55,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 1.11,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 2.22,
+};
+
+export const PRICE_BY_PLANS = {
+	[ARC_PLANS.ARC_BASIC]: 19,
+	[ARC_PLANS.ARC_STANDARD]: 59,
+	[ARC_PLANS.ARC_ENTERPRISE]: 499,
+	[ARC_PLANS.HOSTED_ARC_BASIC]: 39,
+	[ARC_PLANS.HOSTED_ARC_STANDARD]: 89,
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 599,
+	[CLUSTER_PLANS.SANDBOX_2019]: 59,
+	[CLUSTER_PLANS.HOBBY_2019]: 119,
+	[CLUSTER_PLANS.STARTER_2019]: 199,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 399,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 700,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 1599,
+};
+
 export function getClusters() {
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/v1/clusters`, {
@@ -10,10 +58,10 @@ export function getClusters() {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data.clusters);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -29,10 +77,10 @@ export function getClusterInvoice(id) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -48,10 +96,10 @@ export function getSnapshots(cluster, restoreFrom) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data.snapshots);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -71,10 +119,10 @@ export function restore(cluster, restoreFrom, snapshot_id) {
 			},
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -90,20 +138,22 @@ export function getClusterData(id) {
 				'Content-Type': 'application/json',
 			},
 		})
-			.then((res) => {
+			.then(res => {
 				if (res.status > 300) {
 					hasError = true;
 				}
 				return res.json();
 			})
-			.then((data) => {
+			.then(data => {
 				if (hasError) {
 					const { status, ...others } = data;
-					reject(JSON.stringify({ message: status.message, ...others }));
+					reject(
+						JSON.stringify({ message: status.message, ...others }),
+					);
 				}
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -121,13 +171,13 @@ export function deployCluster(cluster, id) {
 			},
 			body,
 		})
-			.then((res) => {
+			.then(res => {
 				if (res.status > 300) {
 					hasError = true;
 				}
 				return res.json();
 			})
-			.then((data) => {
+			.then(data => {
 				if (hasError) {
 					reject(data.status.message);
 				}
@@ -139,7 +189,7 @@ export function deployCluster(cluster, id) {
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -152,13 +202,13 @@ export function deleteCluster(id) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -194,7 +244,7 @@ export function scaleCluster(id, nodes) {
 			}),
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -212,7 +262,7 @@ export function getSharedUsers(id) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -237,7 +287,7 @@ export function addSharedUser(id, email, role) {
 			}),
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -255,7 +305,7 @@ export function deleteSharedUser(id, email) {
 			credentials: 'include',
 		})
 			.then(res => res.json())
-			.then((res) => {
+			.then(res => {
 				if (res.status.code >= 400) {
 					reject(res.status.message);
 				} else {
@@ -279,13 +329,13 @@ export function deployMyCluster(body) {
 			}),
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -305,11 +355,16 @@ export function verifyCluster(url) {
 			method: 'GET',
 			headers,
 		})
-			.then(res => res.json())
-			.then((data) => {
+			.then(res => {
+				if (res.status === 401 || res.status === 403) {
+					throw new Error('Auth Error');
+				}
+				res.json();
+			})
+			.then(data => {
 				resolve(data);
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
@@ -328,17 +383,19 @@ export function updateArcDetails(id, body) {
 			}),
 		})
 			.then(res => res.json())
-			.then((data) => {
+			.then(data => {
 				if (data.error) {
 					reject(data.error);
 				}
 				resolve();
 			})
-			.catch((e) => {
+			.catch(e => {
 				reject(e);
 			});
 	});
 }
 
-export const hasAddon = (item, source) => !!(source.addons || []).find(key => key.name === item);
-export const getAddon = (item, source) => (source.addons || []).find(key => key.name === item);
+export const hasAddon = (item, source) =>
+	!!(source.addons || []).find(key => key.name === item);
+export const getAddon = (item, source) =>
+	(source.addons || []).find(key => key.name === item);

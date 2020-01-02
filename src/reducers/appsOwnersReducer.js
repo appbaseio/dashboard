@@ -19,7 +19,7 @@ export default function appsOwnersReducer(
 		}
 		case APPS.LOAD_OWNERS_SUCCESS: {
 			let data = {};
-			action.payload.forEach((item) => {
+			action.payload.forEach(item => {
 				data = {
 					...data,
 					[item.appname]: item.owner,

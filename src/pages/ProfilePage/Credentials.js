@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
- Card, Button, notification, Popconfirm, Spin, Row, Alert,
-} from 'antd';
+import { Card, Button, notification, Popconfirm, Spin, Row, Alert } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { ACC_API } from '../../constants/config';
@@ -88,15 +86,14 @@ class Credentials extends Component {
 		} catch (err) {
 			this.toggleReseting();
 			notification.error({
-				message: 'Something went Wrong.Please report if the bug persists.',
+				message:
+					'Something went Wrong.Please report if the bug persists.',
 			});
 		}
 	};
 
 	render() {
-		const {
- isHidden, key, isLoading, isReseting,
-} = this.state;
+		const { isHidden, key, isLoading, isReseting } = this.state;
 		return (
 			<Card title="Master Credentials" css={{ minHeight: 200 }}>
 				{isLoading ? (
@@ -106,7 +103,9 @@ class Credentials extends Component {
 				) : (
 					<div className={credsBox}>
 						<span className="cred-text">
-							{isHidden ? '#######################################' : key}
+							{isHidden
+								? '#######################################'
+								: key}
 						</span>
 						<span className="cred-button">
 							<Button
@@ -116,8 +115,15 @@ class Credentials extends Component {
 								data-clipboard-text={key}
 								theme="outlined"
 							/>
-							<CopyToClipboard text={key} onCopy={this.handleCopyCred}>
-								<Button css={{ border: 0 }} icon="copy" data-clipboard-text={key} />
+							<CopyToClipboard
+								text={key}
+								onCopy={this.handleCopyCred}
+							>
+								<Button
+									css={{ border: 0 }}
+									icon="copy"
+									data-clipboard-text={key}
+								/>
 							</CopyToClipboard>
 							<Popconfirm
 								title="Are you sure you want to reset this key?"
@@ -125,7 +131,11 @@ class Credentials extends Component {
 								okText="Yes"
 								cancelText="No"
 							>
-								<Button disabled={isReseting} css={{ border: 0 }} icon="reload" />
+								<Button
+									disabled={isReseting}
+									css={{ border: 0 }}
+									icon="reload"
+								/>
 							</Popconfirm>
 						</span>
 					</div>

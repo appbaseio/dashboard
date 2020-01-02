@@ -15,7 +15,7 @@ class WhiteList extends React.Component {
 		};
 	}
 
-	handleSelectOption = (value) => {
+	handleSelectOption = value => {
 		this.setState(() => {
 			const { control } = this.props;
 			if (value && !control.value.includes(value)) {
@@ -30,13 +30,13 @@ class WhiteList extends React.Component {
 		});
 	};
 
-	hanldeOnChange = (value) => {
+	hanldeOnChange = value => {
 		this.setState({
 			text: value,
 		});
 	};
 
-	handleOnSearch = (value) => {
+	handleOnSearch = value => {
 		if (!(value && value.startsWith('**'))) {
 			this.setState({
 				text: value.trim(),
@@ -44,7 +44,7 @@ class WhiteList extends React.Component {
 		}
 	};
 
-	removeItem = (item) => {
+	removeItem = item => {
 		const { control } = this.props;
 		const { value } = control;
 		const index = value.indexOf(item);
@@ -57,7 +57,10 @@ class WhiteList extends React.Component {
 	submitOnBlur = () => {
 		if (!this.props.control.value.includes(this.state.text)) {
 			if (ipValidator(this.state.text)) {
-				this.props.control.onChange([...this.props.control.value, this.state.text]);
+				this.props.control.onChange([
+					...this.props.control.value,
+					this.state.text,
+				]);
 				this.setState({
 					text: undefined,
 				});
@@ -79,9 +82,7 @@ class WhiteList extends React.Component {
 			label,
 			inputProps,
 			defaultSuggestionValue,
-			control: {
- value, handler, hasError, disabled, enabled,
-},
+			control: { value, handler, hasError, disabled, enabled },
 			type,
 			toolTipMessage,
 		} = this.props;
@@ -90,8 +91,11 @@ class WhiteList extends React.Component {
 			<Grid
 				label={<span css={styles.subHeader}>{label}</span>}
 				toolTipMessage={toolTipMessage}
-				component={(
-<Flex css="width: 100%;position: relative" flexDirection="column">
+				component={
+					<Flex
+						css="width: 100%;position: relative"
+						flexDirection="column"
+					>
 						{value.map(item => (
 							<Flex
 								key={item}
@@ -109,7 +113,9 @@ class WhiteList extends React.Component {
 								{enabled && (
 									<div css="cursor:pointer">
 										<Icon
-											onClick={() => this.removeItem(item)}
+											onClick={() =>
+												this.removeItem(item)
+											}
 											type="close-circle-o"
 										/>
 									</div>
@@ -141,36 +147,57 @@ class WhiteList extends React.Component {
 											</Flex>
 										</Select.Option>
 									) : (
-										Object.keys(Suggestions).map((k) => {
+										Object.keys(Suggestions).map(k => {
 											const suggestion = Suggestions[k];
 											if (text) {
-												const suggestionValue = `${
-													suggestion.prefix
-												}${text}${suggestion.suffix}`;
+												const suggestionValue = `${suggestion.prefix}${text}${suggestion.suffix}`;
 												return (
-													<Select.Option key={suggestionValue}>
+													<Select.Option
+														key={suggestionValue}
+													>
 														<Flex justifyContent="space-between">
-															<span>{suggestionValue}</span>
-															<span css={styles.description}>
-																{suggestion.description}
+															<span>
+																{
+																	suggestionValue
+																}
+															</span>
+															<span
+																css={
+																	styles.description
+																}
+															>
+																{
+																	suggestion.description
+																}
 															</span>
 														</Flex>
 													</Select.Option>
 												);
 											}
 											return (
-												<Select.Option css="pointer-events: none" key={k}>
+												<Select.Option
+													css="pointer-events: none"
+													key={k}
+												>
 													<Flex
 														justifyContent="space-between"
 														css="color: #d9d9d9;font-weight: 100;font-size: 12px"
 													>
 														<span>
 															{suggestion.prefix}
-															{defaultSuggestionValue}
+															{
+																defaultSuggestionValue
+															}
 															{suggestion.suffix}
 														</span>
-														<span css={styles.description}>
-															{suggestion.description}
+														<span
+															css={
+																styles.description
+															}
+														>
+															{
+																suggestion.description
+															}
 														</span>
 													</Flex>
 												</Select.Option>
@@ -183,21 +210,23 @@ class WhiteList extends React.Component {
 									{...inputProps}
 									{...handler()}
 									value={text}
-									onChange={(e) => {
+									onChange={e => {
 										this.hanldeOnChange(e.target.value);
 									}}
 									onBlur={this.submitOnBlur}
-									onKeyPress={(event) => {
+									onKeyPress={event => {
 										if (event.key === 'Enter') {
 											this.submitOnBlur();
 										}
 									}}
 								/>
 							)}
-							{hasError('invalidIP') && <div css={styles.error}>Not a valid IP</div>}
+							{hasError('invalidIP') && (
+								<div css={styles.error}>Not a valid IP</div>
+							)}
 						</div>
-</Flex>
-)}
+					</Flex>
+				}
 			/>
 		);
 	}

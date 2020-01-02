@@ -4,14 +4,17 @@ import { Radio } from 'antd';
 import Footer from '../components/Footer';
 
 const sandboxLinks = {
-	react: 'https://codesandbox.io/embed/reactivesearch-interactive-tutorial-9pd97',
+	react:
+		'https://codesandbox.io/embed/reactivesearch-interactive-tutorial-9pd97',
 	raw_json: 'https://codesandbox.io/embed/zrpr98095x',
 };
 
 export default class SearchCode extends Component {
 	state = {
 		error: '',
-		selectedOption: this.props.ui ? { label: this.props.ui, value: this.props.ui } : '',
+		selectedOption: this.props.ui
+			? { label: this.props.ui, value: this.props.ui }
+			: '',
 	};
 
 	options = [
@@ -25,7 +28,7 @@ export default class SearchCode extends Component {
 		},
 	];
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -39,7 +42,7 @@ export default class SearchCode extends Component {
 		);
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const {
 			target: { value },
 		} = e;
@@ -73,7 +76,10 @@ export default class SearchCode extends Component {
 		>
 			<div>
 				<h3>Choose the template</h3>
-				<p>You can check the differences in results in below search app.</p>
+				<p>
+					You can check the differences in results in below search
+					app.
+				</p>
 			</div>
 			<div className="input-wrapper" style={{ textAlign: 'center' }}>
 				<Radio.Group
@@ -83,12 +89,16 @@ export default class SearchCode extends Component {
 					buttonStyle="solid"
 				>
 					{this.options.map(option => (
-						<Radio.Button value={option.value}>{option.label}</Radio.Button>
+						<Radio.Button value={option.value}>
+							{option.label}
+						</Radio.Button>
 					))}
 				</Radio.Group>
 			</div>
 			{this.state.error && (
-				<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>
+				<p style={{ marginTop: 15, color: 'tomato' }}>
+					{this.state.error}
+				</p>
 			)}
 		</div>
 	);
@@ -98,16 +108,25 @@ export default class SearchCode extends Component {
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/static/images/onboarding/Searchable.svg" alt="search" />
+						<img
+							src="/static/images/onboarding/Searchable.svg"
+							alt="search"
+						/>
 					</div>
 					<div className="content">
 						<header>
 							<h2>Build your UI</h2>
 							<p>
-								The UI we were seeing thus far was created using React. appbase.io offers readily available components / SDKs for React, Vue and Vanilla Javascript. There's a REST API too!
+								The UI we were seeing thus far was created using
+								React. appbase.io offers readily available
+								components / SDKs for React, Vue and Vanilla
+								Javascript. There's a REST API too!
 							</p>
 						</header>
-						<h3>You can choose a UI template to see the resulting code for the relevant UI:</h3>
+						<h3>
+							You can choose a UI template to see the resulting
+							code for the relevant UI:
+						</h3>
 					</div>
 				</div>
 

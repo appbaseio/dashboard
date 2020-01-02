@@ -29,7 +29,7 @@ class ScaleClusterScreen extends Component {
 		};
 	}
 
-	handleChange = (nodes) => {
+	handleChange = nodes => {
 		this.setState({
 			nodes,
 			isDirty: true,
@@ -43,13 +43,13 @@ class ScaleClusterScreen extends Component {
 			isDirty: false,
 		});
 		scaleCluster(clusterId, nodes)
-			.then((res) => {
+			.then(res => {
 				notification.success({
 					message: 'Cluster scaling has started',
 					description: res,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				notification.error({
 					message: "Cluster scaling couldn't be applied",
 					description: e,
@@ -63,8 +63,11 @@ class ScaleClusterScreen extends Component {
 	render() {
 		const { isDirty, nodes, defaultValue } = this.state;
 		const {
- isUsingClusterTrial, cluster, toggleOverlay, handleToken,
-} = this.props;
+			isUsingClusterTrial,
+			cluster,
+			toggleOverlay,
+			handleToken,
+		} = this.props;
 
 		return (
 			<div>
@@ -78,17 +81,23 @@ class ScaleClusterScreen extends Component {
 						{isUsingClusterTrial ? (
 							<React.Fragment>
 								<p style={{ margin: '0', width: '100%' }}>
-									Scaling the cluster size requires an upgrade to a paid plan.
+									Scaling the cluster size requires an upgrade
+									to a paid plan.
 								</p>
 								<Stripe
 									name="Appbase.io Clusters"
 									amount={(cluster.plan_rate || 0) * 100}
-									token={token => handleToken(cluster.id, token)}
+									token={token =>
+										handleToken(cluster.id, token)
+									}
 									disabled={false}
 									stripeKey={STRIPE_KEY}
 									closed={toggleOverlay}
 								>
-									<Button type="primary" onClick={toggleOverlay}>
+									<Button
+										type="primary"
+										onClick={toggleOverlay}
+									>
 										Upgrade Now
 									</Button>
 								</Stripe>
@@ -125,7 +134,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(ScaleClusterScreen);
+export default connect(mapStateToProps, null)(ScaleClusterScreen);

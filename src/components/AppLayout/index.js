@@ -127,84 +127,120 @@ class AppLayout extends React.PureComponent {
 							exact
 							path="/app/:appName"
 							component={props => (
-								<AppPageContainer {...props} component={OverviewPage} />
+								<AppPageContainer
+									{...props}
+									component={OverviewPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/overview"
 							component={props => (
-								<AppPageContainer {...props} component={OverviewPage} />
+								<AppPageContainer
+									{...props}
+									component={OverviewPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/analytics/:tab?/:subTab?"
 							component={props => (
-								<AppPageContainer {...props} component={AnalyticsPage} />
+								<AppPageContainer
+									{...props}
+									component={AnalyticsPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/popular-searches"
 							component={props => (
-								<AppPageContainer {...props} component={PopularSearches} />
+								<AppPageContainer
+									{...props}
+									component={PopularSearches}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/credentials"
 							component={props => (
-								<AppPageContainer {...props} component={CredentialsPage} />
+								<AppPageContainer
+									{...props}
+									component={CredentialsPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/popular-results"
 							component={props => (
-								<AppPageContainer {...props} component={PopularResults} />
+								<AppPageContainer
+									{...props}
+									component={PopularResults}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/geo-distribution"
 							component={props => (
-								<AppPageContainer {...props} component={GeoDistributionPage} />
+								<AppPageContainer
+									{...props}
+									component={GeoDistributionPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/search-latency"
 							component={props => (
-								<AppPageContainer {...props} component={SearchLatency} />
+								<AppPageContainer
+									{...props}
+									component={SearchLatency}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/popular-filters"
 							component={props => (
-								<AppPageContainer {...props} component={PopularFilters} />
+								<AppPageContainer
+									{...props}
+									component={PopularFilters}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/request-logs/:tab?"
 							component={props => (
-								<AppPageContainer {...props} component={RequestLogs} />
+								<AppPageContainer
+									{...props}
+									component={RequestLogs}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/requests-per-minute"
 							component={props => (
-								<AppPageContainer {...props} component={RequestDistributionPage} />
+								<AppPageContainer
+									{...props}
+									component={RequestDistributionPage}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/no-results-searches"
 							component={props => (
-								<AppPageContainer {...props} component={NoResultSearches} />
+								<AppPageContainer
+									{...props}
+									component={NoResultSearches}
+								/>
 							)}
 						/>
 						<Route
@@ -260,14 +296,20 @@ class AppLayout extends React.PureComponent {
 							exact
 							path="/app/:appName/share-settings"
 							component={props => (
-								<AppPageContainer {...props} component={ShareSettings} />
+								<AppPageContainer
+									{...props}
+									component={ShareSettings}
+								/>
 							)}
 						/>
 						<Route
 							exact
 							path="/app/:appName/billing"
 							component={props => (
-								<AppPageContainer {...props} component={BillingPage} />
+								<AppPageContainer
+									{...props}
+									component={BillingPage}
+								/>
 							)}
 						/>
 						<Route
@@ -310,7 +352,10 @@ class AppLayout extends React.PureComponent {
 							exact
 							path="/app/:appName/role-based-access"
 							component={props => (
-								<AppPageContainer {...props} component={RoleBaseAccess} />
+								<AppPageContainer
+									{...props}
+									component={RoleBaseAccess}
+								/>
 							)}
 						/>
 					</Switch>

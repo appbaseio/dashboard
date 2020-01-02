@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
- Card, Button, Icon, Checkbox,
-} from 'antd';
+import { Card, Button, Icon, Checkbox } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import EmailAuth from '../LoginPage/EmailAuth';
 import LoginContainer from '../../components/LoginContainer';
 import { ACC_API } from '../../constants/config';
 
-import {
- card, githubBtn, googleBtn, gitlabBtn,
-} from '../LoginPage/styles';
+import { card, githubBtn, googleBtn, gitlabBtn } from '../LoginPage/styles';
 import { checkbox } from './styles';
 
-const getSignupURL = (provider, search) => `${ACC_API}/login/${provider}?next=${window.location.origin}${search}`;
+const getSignupURL = (provider, search) =>
+	`${ACC_API}/login/${provider}?next=${window.location.origin}${search}`;
 
 class SignupPage extends React.Component {
 	state = {
@@ -29,7 +26,7 @@ class SignupPage extends React.Component {
 		}));
 	};
 
-	handleChange = (e) => {
+	handleChange = e => {
 		const {
 			target: { name: checkboxName },
 		} = e;
@@ -74,8 +71,8 @@ class SignupPage extends React.Component {
 										paddingLeft: 5,
 									}}
 								>
-									By creating an account, you agree to our Terms of Service and
-									Privacy Policy.
+									By creating an account, you agree to our
+									Terms of Service and Privacy Policy.
 								</div>
 							</Checkbox>
 							<Checkbox
@@ -90,8 +87,9 @@ class SignupPage extends React.Component {
 										paddingLeft: 5,
 									}}
 								>
-									Yes, I would like to receive a monthly e-mail on Appbase
-									products, use-cases and promotions via e-mail.
+									Yes, I would like to receive a monthly
+									e-mail on Appbase products, use-cases and
+									promotions via e-mail.
 								</div>
 							</Checkbox>
 						</section>
@@ -168,7 +166,4 @@ const mapStateToProps = ({ user }) => ({
 	user,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(SignupPage);
+export default connect(mapStateToProps, null)(SignupPage);

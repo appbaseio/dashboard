@@ -11,11 +11,18 @@
 		"start": "NODE_ENV=development webpack-dev-server --mode development --content-base . --history-api-fallback  --hot --inline --progress --colors --port 1357",
 		"build": "NODE_ENV=production node ./scripts/create-env.js && webpack --mode production",
 		"glow": "glow --watch",
+		"format": "prettier --write --use-tabs 'src/!(batteries*)**/**/*.js'",
 		"lint": "eslint ."
 	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
 	"lint-staged": {
-		"*.js": [
-			"eslint"
+		"./src/!(batteries*)**/*.js": [
+			"prettier --write",
+			"git add"
 		]
 	},
 	"devDependencies": {
@@ -35,15 +42,20 @@
 		"css-loader": "^1.0.0",
 		"eslint": "^5.3.0",
 		"eslint-config-airbnb": "^17.1.0",
+		"eslint-config-prettier": "^6.9.0",
 		"eslint-plugin-import": "^2.14.0",
 		"eslint-plugin-jsx-a11y": "^6.1.1",
+		"eslint-plugin-prettier": "^3.1.2",
 		"eslint-plugin-react": "^7.11.1",
 		"file-loader": "^2.0.0",
 		"flow-bin": "^0.78.0",
 		"glow": "^1.2.2",
 		"html-webpack-plugin": "3.0.7",
+		"husky": "^3.1.0",
 		"less": "^3.8.1",
 		"less-loader": "^4.1.0",
+		"lint-staged": "^9.5.0",
+		"prettier": "^1.19.1",
 		"style-loader": "^0.22.1",
 		"webpack": "^4.16.5",
 		"webpack-cli": "^3.1.0",
@@ -52,7 +64,7 @@
 	"dependencies": {
 		"@appbaseio/designkit": "^0.9.1",
 		"@appbaseio/reactivecore": "^8.2.6",
-		"@appbaseio/reactivesearch": "^3.0.2",
+		"@appbaseio/reactivesearch": "^3.2.2",
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
 		"@sentry/browser": "^4.2.1",
 		"@typeform/embed": "^0.13.1",

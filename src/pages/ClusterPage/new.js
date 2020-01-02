@@ -1,7 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import {
- Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col,
-} from 'antd';
+import { Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { css } from 'emotion';
@@ -11,7 +9,7 @@ import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 
-import { clusterContainer, card, settingsItem } from './styles';
+import { clusterContainer, card, settingsItem, esContainer } from './styles';
 import { deployCluster, getClusters } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -21,9 +19,11 @@ const { Option } = Select;
 
 const { TabPane } = Tabs;
 
-const SSH_KEY =	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
+const SSH_KEY =
+	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
+	'7.5.0',
 	'7.4.2',
 	'7.3.2',
 	'7.2.1',
@@ -43,8 +43,8 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.8.3-cluster';
-const V6_ARC = '0.1.6';
+const V7_ARC = '7.10.2-cluster';
+const V6_ARC = '7.10.2-cluster';
 const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
@@ -138,7 +138,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.08,
 		},
-		20: {
+		16: {
 			label: 'Hobby',
 			plan: '2019-hobby',
 			storage: 60,
@@ -149,7 +149,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.17,
 		},
-		40: {
+		33: {
 			label: 'Starter',
 			plan: '2019-starter',
 			storage: 120,
@@ -160,7 +160,7 @@ export const machineMarks = {
 			machine: 'custom-2-4096',
 			pph: 0.28,
 		},
-		60: {
+		49: {
 			label: 'Production-I',
 			plan: '2019-production-1',
 			storage: 240,
@@ -171,7 +171,7 @@ export const machineMarks = {
 			machine: 'n1-standard-2',
 			pph: 0.55,
 		},
-		80: {
+		66: {
 			label: 'Production-II',
 			plan: '2019-production-2',
 			storage: 480,
@@ -182,7 +182,7 @@ export const machineMarks = {
 			machine: 'n1-standard-4',
 			pph: 1.11,
 		},
-		100: {
+		83: {
 			label: 'Production-III',
 			plan: '2019-production-3',
 			storage: 999,
@@ -192,6 +192,17 @@ export const machineMarks = {
 			cost: 1599,
 			machine: 'n1-standard-8',
 			pph: 2.22,
+		},
+		100: {
+			label: 'Production-IV',
+			plan: '2019-production-4',
+			storage: 2997,
+			memory: 64,
+			nodes: 3,
+			cpu: 16,
+			cost: 3199,
+			machine: 'n1-standard-16',
+			pph: 4.44,
 		},
 	},
 };
@@ -203,28 +214,12 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
-const esContainer = css`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	max-width: 200px;
-	margin-right: 20px;
-	min-width: 160px;
-	p {
-		padding: 5px;
-		margin: 0;
-		font-size: 15px;
-		font-weight: 500;
-	}
-`;
-
 class NewCluster extends Component {
 	constructor(props) {
 		super(props);
 
 		const pluginState = {};
-		Object.keys(plugins).forEach((item) => {
+		Object.keys(plugins).forEach(item => {
 			pluginState[item] = item !== 'x-pack';
 		});
 
@@ -256,7 +251,7 @@ class NewCluster extends Component {
 
 	componentDidMount() {
 		getClusters()
-			.then((clusters) => {
+			.then(clusters => {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -266,7 +261,7 @@ class NewCluster extends Component {
 					isClusterLoading: false,
 				});
 			})
-			.catch((e) => {
+			.catch(e => {
 				console.error(e);
 				this.setState({
 					isClusterLoading: false,
@@ -277,9 +272,9 @@ class NewCluster extends Component {
 	componentDidUpdate(_, prevState) {
 		const { provider } = this.state;
 		if (prevState.provider !== provider) {
-			const [currentMachine] = Object.entries(machineMarks[prevState.provider]).find(
-				([, value]) => value.machine === prevState.vm_size,
-			);
+			const [currentMachine] = Object.entries(
+				machineMarks[prevState.provider],
+			).find(([, value]) => value.machine === prevState.vm_size);
 			// eslint-disable-next-line
 			this.setState({
 				pricing_plan: machineMarks[provider][currentMachine].plan,
@@ -295,14 +290,14 @@ class NewCluster extends Component {
 		});
 	};
 
-	setPricing = (plan) => {
+	setPricing = plan => {
 		this.setState({
 			vm_size: plan.machine,
 			pricing_plan: plan.plan,
 		});
 	};
 
-	toggleConfig = (type) => {
+	toggleConfig = type => {
 		this.setState(state => ({
 			...state,
 			[type]: !state[type],
@@ -340,11 +335,13 @@ class NewCluster extends Component {
 			return;
 		}
 
-		const selectedMachine = Object.values(machineMarks[this.state.provider]).find(
-			item => item.plan === this.state.pricing_plan,
-		);
+		const selectedMachine = Object.values(
+			machineMarks[this.state.provider],
+		).find(item => item.plan === this.state.pricing_plan);
 
-		const arcTag = arcVersions[this.state.clusterVersion.split('.')[0]] || arcVersions['6'];
+		const arcTag =
+			arcVersions[this.state.clusterVersion.split('.')[0]] ||
+			arcVersions['6'];
 
 		const body = {
 			elasticsearch: {
@@ -409,7 +406,7 @@ class NewCluster extends Component {
 			.then(() => {
 				this.props.history.push('/clusters');
 			})
-			.catch((e) => {
+			.catch(e => {
 				this.setState({
 					isLoading: false,
 					deploymentError: e,
@@ -435,7 +432,9 @@ class NewCluster extends Component {
 									name={plugin}
 									defaultChecked={this.state[plugin]}
 									id={`${plugin}-yes`}
-									onChange={() => this.setConfig(plugin, true)}
+									onChange={() =>
+										this.setConfig(plugin, true)
+									}
 								/>
 								Yes
 							</label>
@@ -446,7 +445,9 @@ class NewCluster extends Component {
 									name={plugin}
 									defaultChecked={!this.state[plugin]}
 									id={`${plugin}-no`}
-									onChange={() => this.setConfig(plugin, false)}
+									onChange={() =>
+										this.setConfig(plugin, false)
+									}
 								/>
 								No
 							</label>
@@ -474,9 +475,12 @@ class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data => data.map((region) => {
+		const regionsToRender = data =>
+			data.map(region => {
 				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions ? !allowedRegions.includes(region) : false;
+				const isDisabled = allowedRegions
+					? !allowedRegions.includes(region)
+					: false;
 				return (
 					// eslint-disable-next-line
 					<li
@@ -484,7 +488,11 @@ class NewCluster extends Component {
 						onClick={() => this.setConfig('region', region)}
 						className={
 							// eslint-disable-next-line
-							isDisabled ? 'disabled' : this.state.region === region ? 'active' : ''
+							isDisabled
+								? 'disabled'
+								: this.state.region === region
+								? 'active'
+								: ''
 						}
 					>
 						{regionValue.flag && (
@@ -510,16 +518,24 @@ class NewCluster extends Component {
 		return (
 			<Tabs size="large" style={style}>
 				<TabPane tab="America" key="america">
-					<ul className="region-list">{regionsToRender(usRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(usRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">{regionsToRender(asiaRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(asiaRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">{regionsToRender(euRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(euRegions)}
+					</ul>
 				</TabPane>
 				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">{regionsToRender(otherRegions)}</ul>
+					<ul className="region-list">
+						{regionsToRender(otherRegions)}
+					</ul>
 				</TabPane>
 			</Tabs>
 		);
@@ -538,7 +554,7 @@ class NewCluster extends Component {
 		});
 	};
 
-	handleCluster = (value) => {
+	handleCluster = value => {
 		this.setState({
 			restore_from: value,
 		});
@@ -550,7 +566,8 @@ class NewCluster extends Component {
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
-		const versions = this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
+		const versions =
+			this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
 		const defaultVersion = this.state.clusterVersion;
 		return (
 			<Fragment>
@@ -562,7 +579,8 @@ class NewCluster extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Create a new ElasticSearch Cluster with appbase.io.{' '}
+										Create a new ElasticSearch Cluster with
+										appbase.io.{' '}
 										<a
 											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
@@ -588,7 +606,10 @@ class NewCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() => this.props.history.push('/clusters/new/my-cluster')
+									onClick={() =>
+										this.props.history.push(
+											'/clusters/new/my-cluster',
+										)
 									}
 									icon="question-circle"
 								>
@@ -609,8 +630,8 @@ class NewCluster extends Component {
 									{isUsingClusterTrial ? (
 										<p>
 											<b>Note: </b>You can only create{' '}
-											{machineMarks[provider][0].label} Cluster while on
-											trial.
+											{machineMarks[provider][0].label}{' '}
+											Cluster while on trial.
 										</p>
 									) : null}
 								</div>
@@ -619,7 +640,9 @@ class NewCluster extends Component {
 									key={this.state.provider}
 									marks={machineMarks[this.state.provider]}
 									onChange={this.setPricing}
-									sliderProps={{ disabled: isUsingClusterTrial }}
+									sliderProps={{
+										disabled: isUsingClusterTrial,
+									}}
 								/>
 							</div>
 
@@ -688,7 +711,9 @@ class NewCluster extends Component {
 							<div className={card}>
 								<div className="col light">
 									<h3>Choose a cluster name</h3>
-									<p>Name your cluster. A name is permanent.</p>
+									<p>
+										Name your cluster. A name is permanent.
+									</p>
 								</div>
 								<div
 									className="col grow vcenter"
@@ -707,19 +732,25 @@ class NewCluster extends Component {
 											marginBottom: 10,
 											outline: 'none',
 											border:
-												isInvalid && this.state.clusterName !== ''
+												isInvalid &&
+												this.state.clusterName !== ''
 													? '1px solid red'
 													: '1px solid #e8e8e8',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
-										onChange={e => this.setConfig('clusterName', e.target.value)
+										onChange={e =>
+											this.setConfig(
+												'clusterName',
+												e.target.value,
+											)
 										}
 									/>
 									<p
 										style={{
 											color:
-												isInvalid && this.state.clusterName !== ''
+												isInvalid &&
+												this.state.clusterName !== ''
 													? 'red'
 													: 'inherit',
 										}}
@@ -745,7 +776,9 @@ class NewCluster extends Component {
 									<div className={esContainer}>
 										<Button
 											type={
-												this.state.esFlavor === 'es' ? 'primary' : 'default'
+												this.state.esFlavor === 'es'
+													? 'primary'
+													: 'default'
 											}
 											size="large"
 											css={{
@@ -757,8 +790,14 @@ class NewCluster extends Component {
 														: '#fff',
 											}}
 											onClick={() => {
-												this.setConfig('esFlavor', 'es');
-												this.setConfig('clusterVersion', esVersions[0]);
+												this.setConfig(
+													'esFlavor',
+													'es',
+												);
+												this.setConfig(
+													'clusterVersion',
+													esVersions[0],
+												);
 											}}
 										>
 											<img
@@ -767,7 +806,10 @@ class NewCluster extends Component {
 												alt="Elastic"
 											/>
 										</Button>
-										<p>The Open Source Elasticsearch Distribution.</p>
+										<p>
+											The Open Source Elasticsearch
+											Distribution.
+										</p>
 									</div>
 									<div className={esContainer}>
 										<Button
@@ -780,13 +822,20 @@ class NewCluster extends Component {
 											css={{
 												height: 160,
 												backgroundColor:
-													this.state.esFlavor === 'odfe'
+													this.state.esFlavor ===
+													'odfe'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
-												this.setConfig('esFlavor', 'odfe');
-												this.setConfig('clusterVersion', odfeVersions[0]);
+												this.setConfig(
+													'esFlavor',
+													'odfe',
+												);
+												this.setConfig(
+													'clusterVersion',
+													odfeVersions[0],
+												);
 											}}
 										>
 											<img
@@ -796,8 +845,8 @@ class NewCluster extends Component {
 											/>
 										</Button>
 										<p>
-											Open Distro by Amazon, includes additional security
-											enhancements.
+											Open Distro by Amazon, includes
+											additional security enhancements.
 										</p>
 									</div>
 								</div>
@@ -813,14 +862,21 @@ class NewCluster extends Component {
 										<h4>Select a version</h4>
 										<select
 											className="form-control"
-											onChange={e => this.setConfig('clusterVersion', e.target.value)
+											onChange={e =>
+												this.setConfig(
+													'clusterVersion',
+													e.target.value,
+												)
 											}
 										>
 											{versions.map(version => (
 												<option
 													key={version}
 													value={version}
-													defaultChecked={defaultVersion === version}
+													defaultChecked={
+														defaultVersion ===
+														version
+													}
 												>
 													{version}
 												</option>
@@ -845,7 +901,8 @@ class NewCluster extends Component {
 									<div className={esContainer}>
 										<Button
 											type={
-												this.state.visualization === 'none'
+												this.state.visualization ===
+												'none'
 													? 'primary'
 													: 'default'
 											}
@@ -855,12 +912,16 @@ class NewCluster extends Component {
 												width: '100%',
 												color: '#000',
 												backgroundColor:
-													this.state.visualization === 'none'
+													this.state.visualization ===
+													'none'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
-												this.setConfig('visualization', 'none');
+												this.setConfig(
+													'visualization',
+													'none',
+												);
 											}}
 										>
 											None
@@ -870,7 +931,8 @@ class NewCluster extends Component {
 										<Button
 											size="large"
 											type={
-												this.state.visualization === 'kibana'
+												this.state.visualization ===
+												'kibana'
 													? 'primary'
 													: 'default'
 											}
@@ -878,12 +940,16 @@ class NewCluster extends Component {
 												height: 160,
 												width: '100%',
 												backgroundColor:
-													this.state.visualization === 'kibana'
+													this.state.visualization ===
+													'kibana'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
-												this.setConfig('visualization', 'kibana');
+												this.setConfig(
+													'visualization',
+													'kibana',
+												);
 											}}
 										>
 											<img
@@ -893,14 +959,16 @@ class NewCluster extends Component {
 											/>
 										</Button>
 										<p>
-											The default visualization dashboard for ElasticSearch.
+											The default visualization dashboard
+											for ElasticSearch.
 										</p>
 									</div>
 									<div className={esContainer}>
 										<Button
 											size="large"
 											type={
-												this.state.visualization === 'grafana'
+												this.state.visualization ===
+												'grafana'
 													? 'primary'
 													: 'default'
 											}
@@ -908,12 +976,16 @@ class NewCluster extends Component {
 												height: 160,
 												width: '100%',
 												backgroundColor:
-													this.state.visualization === 'grafana'
+													this.state.visualization ===
+													'grafana'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
-												this.setConfig('visualization', 'grafana');
+												this.setConfig(
+													'visualization',
+													'grafana',
+												);
 											}}
 										>
 											<img
@@ -923,7 +995,8 @@ class NewCluster extends Component {
 											/>
 										</Button>
 										<p>
-											The leading open-source tool for metrics visualization.
+											The leading open-source tool for
+											metrics visualization.
 										</p>
 									</div>
 								</div>
@@ -935,8 +1008,8 @@ class NewCluster extends Component {
 								<div className="col light">
 									<h3>Restore a cluster data</h3>
 									<p>
-										Select the cluster from which you want to restore the latest
-										snapshot from.
+										Select the cluster from which you want
+										to restore the latest snapshot from.
 									</p>
 								</div>
 								<div className="col grow vcenter">
@@ -949,19 +1022,32 @@ class NewCluster extends Component {
 										onChange={this.handleCluster}
 									>
 										{this.state.clusters.map(item => (
-											<Option key={item.id}>{item.name}</Option>
+											<Option key={item.id}>
+												{item.name}
+											</Option>
 										))}
 									</Select>
 								</div>
 							</div>
 
-							<div style={{ textAlign: 'right', marginBottom: 40 }}>
+							<div
+								style={{ textAlign: 'right', marginBottom: 40 }}
+							>
 								{this.state.error ? (
-									<p style={{ color: 'tomato', margin: '20px 0' }}>
+									<p
+										style={{
+											color: 'tomato',
+											margin: '20px 0',
+										}}
+									>
 										{this.state.error}
 									</p>
 								) : null}
-								<Button type="primary" size="large" onClick={this.createCluster}>
+								<Button
+									type="primary"
+									size="large"
+									onClick={this.createCluster}
+								>
 									Create Cluster
 									<Icon type="arrow-right" theme="outlined" />
 								</Button>
@@ -978,7 +1064,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(
-	mapStateToProps,
-	null,
-)(NewCluster);
+export default connect(mapStateToProps, null)(NewCluster);

@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Icon, Button, Divider, Tag, Tooltip } from 'antd';
+import { Row, Col, Icon, Button, Divider, Tooltip, Modal } from 'antd';
 import Stripe from 'react-stripe-checkout';
 
 import { get } from 'lodash';
@@ -10,7 +10,12 @@ import Header from '../../components/Header';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 
-import { getClusters, createSubscription, deleteCluster } from './utils';
+import {
+	getClusters,
+	createSubscription,
+	deleteCluster,
+	EFFECTIVE_PRICE_BY_PLANS,
+} from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
 import { getParam } from '../../utils';
@@ -36,6 +41,7 @@ class ClusterPage extends Component {
 			deleteClusterId: '',
 			deleteClusterName: '',
 			deleteModal: false,
+			showStripeModal: false,
 		};
 	}
 
@@ -49,7 +55,8 @@ class ClusterPage extends Component {
 
 	paramsValue = () => {
 		const id = getParam('id', window.location.search) || undefined;
-		const subscription = getParam('subscription', window.location.search) || undefined;
+		const subscription =
+			getParam('subscription', window.location.search) || undefined;
 		return {
 			id,
 			subscription,
@@ -136,14 +143,18 @@ class ClusterPage extends Component {
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
 		const selectedRegion =
-			Object.keys(regions[provider]).find(item => region.startsWith(item)) || region;
+			Object.keys(regions[provider]).find(item =>
+				region.startsWith(item),
+			) || region;
 
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
 			: { name: 'region', flag: `${selectedRegion}.png` };
 		return (
 			<div className="region-info">
-				{flag && <img src={`/static/images/flags/${flag}`} alt={name} />}
+				{flag && (
+					<img src={`/static/images/flags/${flag}`} alt={name} />
+				)}
 				<span>{name}</span>
 			</div>
 		);
@@ -157,11 +168,24 @@ class ClusterPage extends Component {
 		});
 	};
 
+	openStripeModal = () => {
+		this.setState({
+			showStripeModal: true,
+		});
+	};
+
+	hideStripeModal = () => {
+		this.setState({
+			showStripeModal: false,
+		});
+	};
+
 	renderClusterCard = cluster => {
 		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
+		const { showStripeModal } = this.state;
 		const isExternalCluster = cluster.recipe === 'byoc';
-		let allMarks = machineMarks.azure;
+		let allMarks = machineMarks.gke;
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
@@ -174,12 +198,23 @@ class ClusterPage extends Component {
 				mark.plan.startsWith(cluster.pricing_plan),
 		);
 
+		const paymentStyles = isExternalCluster
+			? {
+					paddingLeft: '25%',
+					[mediaKey.small]: {
+						paddingLeft: 0,
+					},
+			  }
+			: {};
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
 					{cluster.name}
 					<span className="tag">
-						{cluster.status === 'delInProg' ? 'deletion in progress' : cluster.status}
+						{cluster.status === 'delInProg'
+							? 'deletion in progress'
+							: cluster.status}
 					</span>
 					{cluster.role === 'admin' &&
 					(cluster.status === 'active' ||
@@ -198,9 +233,11 @@ class ClusterPage extends Component {
 						<Tooltip
 							title={
 								<span>
-									Bring your own Cluster allows you to bring an externally hosted
-									ElasticSearch and take advantage of appbase.io features such as
-									security, analytics, better developer experience.{' '}
+									Bring your own Cluster allows you to bring
+									an externally hosted ElasticSearch and take
+									advantage of appbase.io features such as
+									security, analytics, better developer
+									experience.{' '}
 									<a
 										href="docs.appbase.io"
 										target="_blank"
@@ -211,7 +248,12 @@ class ClusterPage extends Component {
 								</span>
 							}
 						>
-							<span className="tag top-right">Bring your own Cluster</span>
+							<span
+								className="tag top-right"
+								style={{ marginRight: 0 }}
+							>
+								Bring your own Cluster
+							</span>
 						</Tooltip>
 					) : null}
 				</h3>
@@ -219,7 +261,10 @@ class ClusterPage extends Component {
 				<div className="info-row">
 					<div>
 						<h4>Region</h4>
-						{this.renderClusterRegion(cluster.region, cluster.provider)}
+						{this.renderClusterRegion(
+							cluster.region,
+							cluster.provider,
+						)}
 					</div>
 
 					<div>
@@ -265,14 +310,21 @@ class ClusterPage extends Component {
 						<div>{cluster.total_nodes}</div>
 					</div>
 
-					{cluster.status === 'active' || cluster.status === 'deployments in progress' ? (
+					{cluster.status === 'active' ||
+					cluster.status === 'deployments in progress' ? (
 						<div>
 							{isUsingClusterTrial || cluster.subscription_id ? (
-								<Link to={`/clusters/${cluster.id}`}>
+								<Link
+									to={`/clusters/${cluster.id}`}
+									style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+									}}
+								>
 									<Button type="primary">View Details</Button>
 								</Link>
 							) : (
-								<div>
+								<div css={paymentStyles}>
 									<p
 										css={{
 											fontSize: 12,
@@ -281,23 +333,79 @@ class ClusterPage extends Component {
 											margin: '-10px 0 12px 0',
 										}}
 									>
-										Your regular payment is due for this cluster.
+										Your regular payment is due for this
+										cluster.
 									</p>
-									<Stripe
-										name="Appbase.io Clusters"
-										amount={(cluster.plan_rate || 0) * 100}
-										token={token => this.handleToken(cluster.id, token)}
-										disabled={false}
-										stripeKey={STRIPE_KEY}
-										closed={this.toggleOverlay}
-										desktopShowModal={
-											subscription && cluster.id === id ? true : undefined
-										}
+
+									<Button onClick={this.openStripeModal}>
+										Subscribe to access
+									</Button>
+									<Modal
+										title="Subcription Details"
+										visible={showStripeModal}
+										onOk={this.hideStripeModal}
+										onCancel={this.hideStripeModal}
+										footer={[
+											<Button
+												key="cancel"
+												onClick={this.hideStripeModal}
+											>
+												Cancel
+											</Button>,
+											<Stripe
+												name="Appbase.io Clusters"
+												panelLabel="Subscribe"
+												amount={
+													(cluster.plan_rate || 0) *
+													100
+												}
+												token={token =>
+													this.handleToken(
+														cluster.id,
+														token,
+													)
+												}
+												disabled={false}
+												stripeKey={STRIPE_KEY}
+												closed={this.toggleOverlay}
+												desktopShowModal={
+													subscription &&
+													cluster.id === id
+														? true
+														: undefined
+												}
+											>
+												<Button
+													style={{
+														marginLeft: 10,
+													}}
+													key="submit"
+													type="primary"
+													onClick={() => {
+														this.hideStripeModal();
+														this.toggleOverlay();
+													}}
+												>
+													Subscribe
+												</Button>
+											</Stripe>,
+										]}
 									>
-										<Button onClick={this.toggleOverlay}>
-											Pay now to access
-										</Button>
-									</Stripe>
+										You&apos;re subscribing to the{' '}
+										<strong>{cluster.pricing_plan}</strong>{' '}
+										plan. It&apos;s billed at{' '}
+										<strong>
+											$
+											{
+												EFFECTIVE_PRICE_BY_PLANS[
+													cluster.pricing_plan
+												]
+											}{' '}
+											per node hour
+										</strong>{' '}
+										based on the actual usage at the end of
+										the subscription month.
+									</Modal>
 								</div>
 							)}
 						</div>
@@ -337,8 +445,12 @@ class ClusterPage extends Component {
 		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
-		const deletedClusters = clusters.filter(cluster => deleteStatus.includes(cluster.status));
-		const activeClusters = clusters.filter(cluster => cluster.status === 'active');
+		const deletedClusters = clusters.filter(cluster =>
+			deleteStatus.includes(cluster.status),
+		);
+		const activeClusters = clusters.filter(
+			cluster => cluster.status === 'active',
+		);
 
 		const clustersInProgress = clusters.filter(
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
@@ -387,8 +499,9 @@ class ClusterPage extends Component {
 							<Row>
 								<Col lg={18}>
 									<p>
-										This is your clusters manager view. Here, you can create a
-										new cluster and manage your existing ones.
+										This is your clusters manager view.
+										Here, you can create a new cluster and
+										manage your existing ones.
 									</p>
 								</Col>
 							</Row>
@@ -424,7 +537,9 @@ class ClusterPage extends Component {
 							)}
 							{activeClusters.length ? (
 								<ul className={clustersList}>
-									{activeClusters.map(cluster => this.renderClusterCard(cluster))}
+									{activeClusters.map(cluster =>
+										this.renderClusterCard(cluster),
+									)}
 								</ul>
 							) : null}
 
@@ -440,7 +555,10 @@ class ClusterPage extends Component {
 								</ul>
 							) : null}
 
-							{this.renderClusterHeading('Deleted Clusters', deletedClusters.length)}
+							{this.renderClusterHeading(
+								'Deleted Clusters',
+								deletedClusters.length,
+							)}
 							{deletedClusters.length ? (
 								<ul className={clustersList}>
 									{deletedClusters.map(cluster =>

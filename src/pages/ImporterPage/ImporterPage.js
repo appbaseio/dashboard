@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
-import {
- Row, Col, Button, Icon,
-} from 'antd';
+import { Row, Col, Button, Icon } from 'antd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -23,7 +21,9 @@ function getLink(appname, credentials) {
 		parameters.app = appname;
 		parameters.type = 'App';
 	}
-	return `${IMPORTER_LINK}?destination=${JSON.stringify(parameters)}&embed=true`;
+	return `${IMPORTER_LINK}?destination=${JSON.stringify(
+		parameters,
+	)}&embed=true`;
 }
 
 function getUrlParams(url) {
@@ -83,12 +83,13 @@ class ImporterPage extends React.Component {
 							<Row>
 								<Col lg={18}>
 									<p>
-										Bring your data from JSON or CSV files into appbase.io via
-										the Import GUI.
+										Bring your data from JSON or CSV files
+										into appbase.io via the Import GUI.
 										<br />
 										<br />
-										Or use our CLI tool for importing data from data sources
-										like MongoDB, Postgres, MySQL -{' '}
+										Or use our CLI tool for importing data
+										from data sources like MongoDB,
+										Postgres, MySQL -{' '}
 										<a
 											href="https://medium.appbase.io/abc-import-import-your-mongodb-sql-json-csv-data-into-elasticsearch-a202cafafc0d"
 											target="_blank"
@@ -163,7 +164,7 @@ ImporterPage.propTypes = {
 	credentials: PropTypes.object,
 	errors: PropTypes.array.isRequired,
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	const appPermissions = getAppPermissionsByName(state);
 	return {
 		appName: get(state, '$getCurrentApp.name'),
@@ -175,7 +176,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
 	fetchPermissions: appName => dispatch(getPermission(appName)),
 });
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(ImporterPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ImporterPage);

@@ -44,7 +44,7 @@ export default class Introduction extends Component {
 		};
 	}
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -73,7 +73,8 @@ export default class Introduction extends Component {
 			.then(appbaseHelpers.updateMapping)
 			.then(() => {
 				this.setState({
-					status: 'Indexing movies data of 500 records... Almost done!',
+					status:
+						'Indexing movies data of 500 records... Almost done!',
 				});
 			})
 			.then(appbaseHelpers.indexData)
@@ -85,10 +86,10 @@ export default class Introduction extends Component {
 			.then(() => {
 				appbaseHelpers.createURL(this.setURL);
 			})
-			.catch((e) => {
+			.catch(e => {
 				if (
-					e._bodyInit
-					=== '{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}'
+					e._bodyInit ===
+					'{"error":{"root_cause":[{"type":"parse_exception","reason":"request body is required"}],"type":"parse_exception","reason":"request body is required"},"status":400}'
 				) {
 					appbaseHelpers.createURL(this.setURL);
 				}
@@ -97,7 +98,8 @@ export default class Introduction extends Component {
 				console.log('error', e);
 				notification.error({
 					message: 'Something went wrong',
-					description: 'Please try again & If the problem persists please report to us.',
+					description:
+						'Please try again & If the problem persists please report to us.',
 				});
 			});
 	};
@@ -120,7 +122,7 @@ export default class Introduction extends Component {
 		</div>
 	);
 
-	setURL = (url) => {
+	setURL = url => {
 		this.setState({
 			url,
 		});
@@ -137,14 +139,20 @@ export default class Introduction extends Component {
 		<div>
 			<div className="wrapper">
 				<div>
-					<img src="/static/images/onboarding/Import.svg" alt="importing data" />
+					<img
+						src="/static/images/onboarding/Import.svg"
+						alt="importing data"
+					/>
 				</div>
 				<div className="content">
 					<header className="vcenter">
 						<h2>Import data into your app</h2>
 					</header>
 					<div>
-						<h3>There are three ways to bring your data into appbase.io:</h3>
+						<h3>
+							There are three ways to bring your data into
+							appbase.io:
+						</h3>
 
 						<div className="feature-list">
 							<div>
@@ -156,8 +164,8 @@ export default class Introduction extends Component {
 									/>
 								</div>
 								<p>
-									Dashboard offers a GUI for importing JSON/CSV files when
-									creating a new app.
+									Dashboard offers a GUI for importing
+									JSON/CSV files when creating a new app.
 								</p>
 							</div>
 							<div>
@@ -177,8 +185,9 @@ export default class Introduction extends Component {
 									>
 										CLI
 									</a>{' '}
-									syncs data from popular database and file formats like MongoDB,
-									MySQL, PostgreSQL, SQLServer, Kafka, JSON and CSV.
+									syncs data from popular database and file
+									formats like MongoDB, MySQL, PostgreSQL,
+									SQLServer, Kafka, JSON and CSV.
 								</p>
 							</div>
 							<div>
@@ -198,7 +207,8 @@ export default class Introduction extends Component {
 									>
 										REST based APIs
 									</a>{' '}
-									enable indexing data in a programming language of your choice.
+									enable indexing data in a programming
+									language of your choice.
 								</p>
 							</div>
 						</div>
@@ -225,29 +235,38 @@ export default class Introduction extends Component {
 			const config = JSON.parse(url);
 			const { protocol, host, auth } = parser(config.url);
 			const dejavuAddress = `${protocol}://${auth}@${host}`;
-			iframeURL = `https://dejavu.appbase.io/?appname=${
-				config.appname
-			}&url=${dejavuAddress}&footer=false&sidebar=false&appswitcher=false&mode=view&cloneApp=false&oldBanner=false`;
+			iframeURL = `https://dejavu.appbase.io/?appname=${config.appname}&url=${dejavuAddress}&footer=false&sidebar=false&appswitcher=false&mode=view&cloneApp=false&oldBanner=false`;
 		}
 
 		return (
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/static/images/onboarding/Import.svg" alt="importing data" />
+						<img
+							src="/static/images/onboarding/Import.svg"
+							alt="importing data"
+						/>
 					</div>
 					<div className="content">
 						<header className="vcenter">
 							<h2>Import data into your app</h2>
 							{this.state.url ? (
-								<p>Explore your imported dataset for the movies store.</p>
+								<p>
+									Explore your imported dataset for the movies
+									store.
+								</p>
 							) : (
-								<p>We will import a dataset of 500 movies obtained from TMDB.</p>
+								<p>
+									We will import a dataset of 500 movies
+									obtained from TMDB.
+								</p>
 							)}
 						</header>
 
 						{this.state.url ? null : (
-							<div className="col-wrapper">{this.renderJSONBlock()}</div>
+							<div className="col-wrapper">
+								{this.renderJSONBlock()}
+							</div>
 						)}
 					</div>
 				</div>
@@ -271,7 +290,10 @@ export default class Introduction extends Component {
 					<footer>
 						<div className="left-column" />
 						<div className="right-column">
-							<a onClick={this.setMapping} className="primary button big">
+							<a
+								onClick={this.setMapping}
+								className="primary button big"
+							>
 								Import Movies Dataset
 							</a>
 						</div>

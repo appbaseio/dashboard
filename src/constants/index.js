@@ -35,6 +35,4 @@ const STRIPE_KEY = {
 	LIVE: 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR',
 };
 
-export {
- USER, APPS, CREATE_APP, STRIPE_KEY, TYPE_FORM,
-};
+export { USER, APPS, CREATE_APP, STRIPE_KEY, TYPE_FORM };

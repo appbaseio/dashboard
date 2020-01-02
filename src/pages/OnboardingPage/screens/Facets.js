@@ -7,14 +7,18 @@ import Footer from '../components/Footer';
 export default class Search extends Component {
 	state = {
 		error: '',
-		selectedOption: this.props.facetFields.map(item => ({ label: item, value: item })) || [],
+		selectedOption:
+			this.props.facetFields.map(item => ({
+				label: item,
+				value: item,
+			})) || [],
 	};
 
-	handleChange = (selectedOption) => {
+	handleChange = selectedOption => {
 		this.setState({ selectedOption });
 	};
 
-	setError = (e) => {
+	setError = e => {
 		if (this.interval) clearInterval(this.interval);
 		this.setState(
 			{
@@ -28,9 +32,11 @@ export default class Search extends Component {
 		);
 	};
 
-	handleChange = (selectedOption) => {
+	handleChange = selectedOption => {
 		if (!selectedOption.length) {
-			this.setError('There should be at least one field set for aggregation.');
+			this.setError(
+				'There should be at least one field set for aggregation.',
+			);
 		} else {
 			this.setState({
 				selectedOption,
@@ -44,17 +50,22 @@ export default class Search extends Component {
 	renderSearchApp = () => (
 		<div>
 			{this.renderFacetInput(true)}
-			<SearchApp fields={this.props.searchFields} facets={this.props.facetFields} />
+			<SearchApp
+				fields={this.props.searchFields}
+				facets={this.props.facetFields}
+			/>
 		</div>
 	);
 
 	renderFacetInput = horizontal => (
-		<div className={`search-field-container ${horizontal ? 'full-row' : ''}`}>
+		<div
+			className={`search-field-container ${horizontal ? 'full-row' : ''}`}
+		>
 			<div>
 				<h3>Set Aggregation Fields</h3>
 				<p>
-					Select the fields you want to set to be of Aggregation kind. They will be
-					updated dynamically in the UI.
+					Select the fields you want to set to be of Aggregation kind.
+					They will be updated dynamically in the UI.
 				</p>
 			</div>
 			<div className="input-wrapper">
@@ -68,12 +79,17 @@ export default class Search extends Component {
 					options={[
 						{ value: 'release_year', label: 'release_year' },
 						{ value: 'genres', label: 'genres' },
-						{ value: 'original_language', label: 'original_language' },
+						{
+							value: 'original_language',
+							label: 'original_language',
+						},
 					]}
 				/>
 			</div>
 			{this.state.error && (
-				<p style={{ marginTop: 15, color: 'tomato' }}>{this.state.error}</p>
+				<p style={{ marginTop: 15, color: 'tomato' }}>
+					{this.state.error}
+				</p>
 			)}
 		</div>
 	);
@@ -83,15 +99,19 @@ export default class Search extends Component {
 			<div>
 				<div className="wrapper">
 					<div>
-						<img src="/static/images/onboarding/Aggregation.svg" alt="aggregations" />
+						<img
+							src="/static/images/onboarding/Aggregation.svg"
+							alt="aggregations"
+						/>
 					</div>
 					<div className="content">
 						<header>
 							<h2>Set aggregation fields</h2>
 							<p>
-								Similarly, we can also set certain fields to be of{' '}
-								<strong>Aggregation</strong> kind. These fields will be indexed into
-								data-structures that are optimized for performing computations and
+								Similarly, we can also set certain fields to be
+								of <strong>Aggregation</strong> kind. These
+								fields will be indexed into data-structures that
+								are optimized for performing computations and
 								sorting functionalites.
 							</p>
 							<p>
@@ -99,7 +119,9 @@ export default class Search extends Component {
 								<strong>Aggregation</strong> fields.
 							</p>
 						</header>
-						{this.props.facetFields.length ? null : this.renderFacetInput()}
+						{this.props.facetFields.length
+							? null
+							: this.renderFacetInput()}
 					</div>
 				</div>
 
