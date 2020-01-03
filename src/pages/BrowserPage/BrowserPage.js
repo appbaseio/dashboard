@@ -66,6 +66,7 @@ class BrowserPage extends Component {
 							credentials={credentials}
 							URLParams={false}
 							showHeaders={false}
+							forceReconnect
 						/>
 					</div>
 				) : (
