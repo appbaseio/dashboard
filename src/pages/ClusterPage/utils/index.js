@@ -359,7 +359,7 @@ export function verifyCluster(url) {
 				if (res.status === 401 || res.status === 403) {
 					throw new Error('Auth Error');
 				}
-				res.json();
+				return res.json();
 			})
 			.then(data => {
 				resolve(data);
