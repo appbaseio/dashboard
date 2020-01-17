@@ -207,6 +207,12 @@ export const machineMarks = {
 	},
 };
 
+const validOpenFaasPlans = [
+	'2019-production-4',
+	'2019-production-3',
+	'2019-production-2',
+];
+
 const namingConvention = {
 	azure:
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
@@ -373,6 +379,10 @@ class NewCluster extends Component {
 				},
 			],
 		};
+
+		if (validOpenFaasPlans.indexOf(this.state.pricing_plan) > -1) {
+			body.open_faas = true;
+		}
 
 		if (this.state.visualization === 'kibana') {
 			body.kibana = {
