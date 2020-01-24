@@ -3,6 +3,7 @@ import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import Loadable from 'react-loadable';
+import { injectGlobal } from 'emotion';
 import { SCALR_API } from '../../constants/config';
 
 import {
@@ -13,8 +14,17 @@ import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
 
+/* eslint-disable */
+injectGlobal`
+	.ace_editor,
+	.ace_editor div,
+	.ace_editor div span {
+		font-family: monospace !important;
+	}
+`;
+
 const DejavuComponent = Loadable({
-	loader: () => import('dejavu-data-browser'),
+	loader: () => import('@appbaseio/dejavu-browser'),
 	loading: Loader,
 });
 

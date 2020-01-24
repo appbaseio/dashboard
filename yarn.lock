@@ -30,6 +30,22 @@
   resolved "https://registry.npmjs.org/@ant-design/icons/-/icons-2.1.0.tgz#06b8ea9a02cbe331d523a20453fa5ee224328b11"
   integrity sha512-o2q2GeamZ99dQEIsuls3zGkeAlUH/z9pJt9Kt3zrTdbFQlJtyFH2NjPXobcExINsg/2cYd8zvLcoSQ69UBvOeg==
 
+"@appbaseio/dejavu-browser@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@appbaseio/dejavu-browser/-/dejavu-browser-0.1.2.tgz#48c90b91bc59338f1a27392963f9bd9f8d8a421a"
+  integrity sha512-rJUdyy8f3OFQEDnbOODCf7a13nZwLqPu5LbfalFTo/sxL9ZQ+k/ZDS9BfQwi7IK3jyLXA4QoHHFc/cy72szcJQ==
+  dependencies:
+    "@divyanshu013/media" "^1.0.0"
+    cross-storage "^1.0.0"
+    dom-helpers "^3.4.0"
+    file-saver "^2.0.0-rc.4"
+    flat "^4.1.0"
+    ismobilejs "^0.5.1"
+    papaparse "^4.6.1"
+    react-custom-scrollbars "^4.2.1"
+    react-json-editor-ajrm "^2.5.8"
+    react-virtualized "^9.21.0"
+
 "@appbaseio/designkit@^0.9.1":
   version "0.9.10"
   resolved "https://registry.npmjs.org/@appbaseio/designkit/-/designkit-0.9.10.tgz#9da66ad1bd0b7909f3a0c161ae0a50edc5e286e6"
@@ -4790,22 +4806,6 @@ defined@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
   integrity sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM=
-
-dejavu-data-browser@^0.2.4-alpha.0:
-  version "0.2.4-alpha.0"
-  resolved "https://registry.yarnpkg.com/dejavu-data-browser/-/dejavu-data-browser-0.2.4-alpha.0.tgz#ab57f6c68965d7829b8d8542e37fa6fd1c5f9661"
-  integrity sha512-djsHrJyGR71nEkYc/Nik84bvqcT4L17VRmZWvY+yLknZ/fVO5LzHJwgiffGH7wZRQPsVn+SiaMHqLXhENSsy9Q==
-  dependencies:
-    "@divyanshu013/media" "^1.0.0"
-    cross-storage "^1.0.0"
-    dom-helpers "^3.4.0"
-    file-saver "^2.0.0-rc.4"
-    flat "^4.1.0"
-    ismobilejs "^0.5.1"
-    papaparse "^4.6.1"
-    react-custom-scrollbars "^4.2.1"
-    react-json-editor-ajrm "^2.5.8"
-    react-virtualized "^9.21.0"
 
 del@^4.1.1:
   version "4.1.1"
