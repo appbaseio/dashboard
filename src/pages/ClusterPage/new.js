@@ -23,13 +23,13 @@ const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'7.5.0',
+	'7.5.2',
 	'7.4.2',
 	'7.3.2',
 	'7.2.1',
 	'7.1.1',
 	'7.0.1',
-	'6.8.4',
+	'6.8.6',
 	'6.7.2',
 	'6.6.2',
 	'6.5.4',
@@ -43,8 +43,8 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.10.2-cluster';
-const V6_ARC = '7.10.2-cluster';
+const V7_ARC = '7.13.1-cluster';
+const V6_ARC = '7.13.1-cluster';
 const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
@@ -206,6 +206,12 @@ export const machineMarks = {
 		},
 	},
 };
+
+const validOpenFaasPlans = [
+	'2019-production-4',
+	'2019-production-3',
+	'2019-production-2',
+];
 
 const namingConvention = {
 	azure:
@@ -373,6 +379,10 @@ class NewCluster extends Component {
 				},
 			],
 		};
+
+		if (validOpenFaasPlans.indexOf(this.state.pricing_plan) > -1) {
+			body.open_faas = true;
+		}
 
 		if (this.state.visualization === 'kibana') {
 			body.kibana = {
