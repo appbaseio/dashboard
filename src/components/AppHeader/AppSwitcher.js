@@ -43,7 +43,7 @@ const AppSwitcher = ({
 	return (
 		<React.Fragment>
 			<Dropdown trigger={['click']} overlay={menu}>
-				<Button css={{ border: 0, boxShadow: 'none', padding: 0 }}>
+				<Button style={{ border: 0, boxShadow: 'none', padding: 0 }}>
 					<span>{currentApp || 'Loading...'}</span>
 					<Icon type="down" />
 				</Button>

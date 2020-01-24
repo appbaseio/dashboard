@@ -67,7 +67,12 @@ class BrowserPage extends Component {
 			appname: appName,
 		};
 		return (
-			<section style={{ backgroundColor: '#ffffff' }}>
+			<section
+				style={{
+					backgroundColor: '#ffffff',
+					height: `${window.innerHeight - 65}px`,
+				}}
+			>
 				{credentials ? (
 					<div style={{ padding: '10px' }}>
 						<DejavuComponent
