@@ -71,11 +71,10 @@ class BrowserPage extends Component {
 				style={{
 					backgroundColor: '#ffffff',
 					height: `${window.innerHeight - 65}px`,
-					padding: 20,
 				}}
 			>
 				{credentials ? (
-					<div>
+					<div style={{ padding: '10px' }}>
 						<DejavuComponent
 							app={dejavu.appname}
 							url={dejavu.url}
