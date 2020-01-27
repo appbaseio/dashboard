@@ -83,6 +83,7 @@ class BrowserPage extends Component {
 							URLParams={false}
 							showHeaders={false}
 							forceReconnect
+							hasCloneApp={false}
 						/>
 					</div>
 				) : (
