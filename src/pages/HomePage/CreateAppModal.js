@@ -222,7 +222,7 @@ class CreateAppModal extends Component {
 						<Icon
 							type="info-circle"
 							css={{
-								color: 'rgb(24,144,255)',
+								color: 'rgb(24,144,255) !important',
 								marginRight: 8,
 							}}
 							theme="filled"
