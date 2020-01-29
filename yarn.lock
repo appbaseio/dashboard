@@ -30,10 +30,10 @@
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-2.1.1.tgz#7b9c08dffd4f5d41db667d9dbe5e0107d0bd9a4a"
   integrity sha512-jCH+k2Vjlno4YWl6g535nHR09PwCEmTBKAG6VqF+rhkrSPRLfgpU2maagwbZPLjaHuU5Jd1DFQ2KJpQuI6uG8w==
 
-"@appbaseio/dejavu-browser@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@appbaseio/dejavu-browser/-/dejavu-browser-0.1.5.tgz#18b108f508278392ddeed090974d299dc6b1c6d2"
-  integrity sha512-1kMGbA3r7xIERjrYNmnUrZG1+DWf4qdtGnXwBM/zWJQdbsUmCwe+o33Wog3/bBtjAfr3S61uP6WW97tSARd38A==
+"@appbaseio/dejavu-browser@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@appbaseio/dejavu-browser/-/dejavu-browser-0.1.6.tgz#f017c318fcc748efcaf934e65c7fc526c6e6b90a"
+  integrity sha512-glwiY/PKG9YKTlhPNusAHGt6HEt9T29qXLBNvXxfQVfpPn9m8gBMrJVWcbL5HTm98nD4lGyXxW36vTjBb9Wzsw==
   dependencies:
     "@divyanshu013/media" "^1.0.0"
     cross-storage "^1.0.0"
