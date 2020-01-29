@@ -103,7 +103,12 @@ class ConnectCluster extends React.Component {
 					onCancel={this.handleToggle}
 					footer={null}
 				>
-					<Collapse defaultActiveKey="1" accordion bordered={false}>
+					<Collapse
+						style={{ backgroundColor: '#fff' }}
+						defaultActiveKey="1"
+						accordion
+						bordered={false}
+					>
 						<Collapse.Panel
 							header={
 								<PanelHeader

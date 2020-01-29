@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { string, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import Loadable from 'react-loadable';
+import { injectGlobal } from 'emotion';
 import { SCALR_API } from '../../constants/config';
 
 import {
@@ -11,13 +13,22 @@ import {
 import { getAppPermissionsByName } from '../../batteries/modules/selectors';
 
 import Loader from '../../components/Loader';
-import Frame from '../../components/Frame';
+
+/* eslint-disable */
+injectGlobal`
+	.ace_editor,
+	.ace_editor div,
+	.ace_editor div span {
+		font-family: monospace !important;
+	}
+`;
+
+const DejavuComponent = Loadable({
+	loader: () => import('@appbaseio/dejavu-browser'),
+	loading: Loader,
+});
 
 class BrowserPage extends Component {
-	state = {
-		isFrameLoading: true,
-	};
-
 	componentDidMount() {
 		const { credentials } = this.props;
 		if (!credentials) {
@@ -31,12 +42,6 @@ class BrowserPage extends Component {
 			this.init();
 		}
 	}
-
-	frameLoaded = () => {
-		this.setState({
-			isFrameLoading: false,
-		});
-	};
 
 	init() {
 		// prettier-ignore
@@ -52,9 +57,8 @@ class BrowserPage extends Component {
 
 	render() {
 		const { appName, credentials } = this.props;
-		const { isFrameLoading } = this.state;
-		const splitHost = SCALR_API.split('https://');
 		let clusterHost = 'scalr.api.appbase.io';
+		const splitHost = SCALR_API.split('https://');
 		if (splitHost.length === 2) {
 			[, clusterHost] = splitHost;
 		}
@@ -62,20 +66,26 @@ class BrowserPage extends Component {
 			url: `https://${credentials}@${clusterHost}`,
 			appname: appName,
 		};
-		const iframeURL = `https://dejavu.appbase.io/?appname=${dejavu.appname}&url=${dejavu.url}&footer=false&sidebar=false&appswitcher=false&mode=edit&cloneApp=false&oldBanner=false`;
-
 		return (
-			<section>
-				{isFrameLoading && <Loader />}
+			<section
+				style={{
+					backgroundColor: '#ffffff',
+					height: `${window.innerHeight - 65}px`,
+					padding: 20,
+				}}
+			>
 				{credentials ? (
-					<Frame
-						height={`${window.innerHeight - 65}px`}
-						width="100%"
-						id="dejavu"
-						src={iframeURL}
-						frameBorder="0"
-						onLoad={this.frameLoaded}
-					/>
+					<div>
+						<DejavuComponent
+							app={dejavu.appname}
+							url={dejavu.url}
+							credentials={credentials}
+							URLParams={false}
+							showHeaders={false}
+							forceReconnect
+							hasCloneApp={false}
+						/>
+					</div>
 				) : (
 					<Loader />
 				)}

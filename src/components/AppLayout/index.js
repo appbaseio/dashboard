@@ -113,7 +113,7 @@ class AppLayout extends React.PureComponent {
 		const { collapsed } = this.props;
 		return (
 			<Layout
-				css={{
+				style={{
 					paddingTop: 60,
 					minHeight: '100vh',
 					marginLeft: collapsed ? '80px' : '260px',
