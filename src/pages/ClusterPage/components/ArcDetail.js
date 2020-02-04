@@ -11,11 +11,13 @@ class ArcDetail extends React.Component {
 		super(props);
 		this.state = {
 			loading: false,
-			username: props.arc.username,
-			password: props.arc.password,
+			username: props.arc ? props.arc.username : '',
+			password: props.arc ? props.arc.password : '',
 			esURL: (props.cluster && props.cluster.elasticsearch_url) || '',
 			showCred: false,
-			updatedArcCred: `${props.arc.username}:${props.arc.password}`,
+			updatedArcCred: props.arc
+				? `${props.arc.username}:${props.arc.password}`
+				: '',
 		};
 	}
 

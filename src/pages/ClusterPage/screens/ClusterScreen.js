@@ -332,6 +332,7 @@ export default class ClusterScreen extends Component {
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&
+				deployment.addons &&
 				deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
