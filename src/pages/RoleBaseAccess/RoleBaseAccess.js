@@ -9,6 +9,7 @@ import {
 	Table,
 	Skeleton,
 	notification,
+	Popover,
 } from 'antd';
 import { connect } from 'react-redux';
 
@@ -247,7 +248,36 @@ class RoleBaseAccess extends React.Component {
 										/>
 									</Form.Item>
 									<Form.Item
-										label="Default Role Key"
+										label={
+											<Popover
+												content={
+													<>
+														Key in JWT Object that
+														helps
+														<br /> in asserting the
+														role information.{' '}
+														<a
+															href="https://docs.appbase.io/docs/security/Role/"
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															Read More
+														</a>
+														<br />
+														<img
+															src="https://www.dropbox.com/s/lnjpfglm4wt89q9/Screenshot%202020-02-10%2011.32.01.png?raw=1"
+															alt="role info"
+															style={{
+																height: 100,
+															}}
+														/>
+													</>
+												}
+											>
+												Role Claim{' '}
+												<Icon type="question-circle" />
+											</Popover>
+										}
 										style={labelMargin}
 									>
 										<Input
