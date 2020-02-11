@@ -342,30 +342,44 @@ export function deployMyCluster(body) {
 }
 
 export function verifyCluster(url) {
-	const { origin, username, password } = new URL(url);
-	let headers = {};
-
-	if (username && password) {
-		headers = {
-			Authorization: `Basic ${btoa(`${username}:${password}`)}`,
-		};
-	}
 	return new Promise((resolve, reject) => {
-		fetch(origin, {
-			method: 'GET',
-			headers,
+		fetch(`${ACC_API}/v1/_verify_es_connection`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				elasticsearch_url: url,
+			}),
 		})
-			.then(res => {
-				if (res.status === 401 || res.status === 403) {
-					throw new Error('Auth Error');
-				}
-				return res.json();
-			})
+			.then(res => res.json())
 			.then(data => {
-				resolve(data);
+				if (
+					data.version &&
+					parseInt(data.version.number.split('.')[0], 10) < 6
+				) {
+					reject(
+						new Error(
+							'Appbase.io is only supported for ElasticSearch version >= 6',
+						),
+					);
+				} else if (data.error) {
+					reject(new Error(`${data.error.reason}`));
+				} else {
+					resolve(data);
+				}
 			})
 			.catch(e => {
-				reject(e);
+				if (e.error && e.error.message) {
+					reject(e.error.message);
+				} else {
+					reject(
+						new Error(
+							'Connection Failed. Make sure the details you entered are correct.',
+						),
+					);
+				}
 			});
 	});
 }

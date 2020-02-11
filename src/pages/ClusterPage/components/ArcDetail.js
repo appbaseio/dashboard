@@ -26,33 +26,25 @@ class ArcDetail extends React.Component {
 		if (esURL) {
 			this.setState({
 				verifyingURL: true,
+				verifiedCluster: false,
+				clusterVersion: '',
 			});
 			verifyCluster(esURL)
 				.then(data => {
 					const version = get(data, 'version.number', '');
-					if (version.split('.')[0] >= 5) {
-						this.setState({
-							verifyingURL: false,
-							clusterVersion: version || 'N/A',
-							isInvalidURL: false,
-							verifiedCluster: true,
-						});
-					} else {
-						this.setState({
-							verifyingURL: false,
-							isInvalidURL: true,
-							urlErrorMessage:
-								'ElasticSearch version 5 and above are only supported.',
-						});
-					}
+					this.setState({
+						verifyingURL: false,
+						clusterVersion: version || 'N/A',
+						isInvalidURL: false,
+						verifiedCluster: true,
+					});
 				})
-				.catch(() => {
+				.catch(e => {
 					this.setState({
 						verifyingURL: false,
 						isInvalidURL: true,
 						verifiedCluster: false,
-						urlErrorMessage:
-							'Connection Failed. Make sure the details you entered are correct.',
+						urlErrorMessage: e.toString(),
 					});
 				});
 		} else {
