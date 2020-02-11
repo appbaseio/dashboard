@@ -359,7 +359,11 @@ export function verifyCluster(url) {
 					data.version &&
 					parseInt(data.version.number.split('.')[0], 10) < 6
 				) {
-					reject(new Error('Arc is not supported for version < 5'));
+					reject(
+						new Error(
+							'Appbase.io is only supported for ElasticSearch version >= 6',
+						),
+					);
 				} else if (data.error) {
 					reject(new Error(`${data.error.reason}`));
 				} else {
