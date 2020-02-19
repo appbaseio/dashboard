@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
+import { Home } from 'react-feather';
 import Loader from '../../components/Loader';
 
 const AppWrapper = Loadable({
@@ -84,11 +85,11 @@ function hasFilledDetails(user) {
 const Wrapper = ({ user }) =>
 	hasFilledDetails(user) ? (
 		<Switch>
-			<Route exact path="/" component={HomePage} />
+			<Route exact path="/" component={ClusterPage} />
 			<Route exact path="/tutorial" component={OnboardingPage} />
 			<Route exact path="/tutorial/finish" component={EndPage} />
 			<Route exact path="/marketplace" component={MarketPlacePage} />
-			<Route exact path="/clusters" component={ClusterPage} />
+			<Route exact path="/apps" component={HomePage} />
 			<Route path="/clusters/new/hosted" component={NewClusterPage} />
 			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />

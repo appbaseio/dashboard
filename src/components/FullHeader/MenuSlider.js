@@ -85,13 +85,13 @@ class MenuSlider extends React.Component {
 					>
 						{isHomepage && (
 							<Menu.Item key="1">
-								<Link to="/">Apps</Link>
+								<Link to="/">Clusters</Link>
 							</Menu.Item>
 						)}
 
 						{isHomepage && (
 							<Menu.Item key="2">
-								<Link to="/clusters">Clusters</Link>
+								<Link to="/apps">Apps</Link>
 							</Menu.Item>
 						)}
 

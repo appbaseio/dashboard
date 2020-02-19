@@ -103,9 +103,24 @@ class ConnectCluster extends React.Component {
 					onCancel={this.handleToggle}
 					footer={null}
 				>
+					<div style={{ display: 'flex' }}>
+						<div>
+							Try this 2-mins tutorial to get an overview of how
+							Appbase.io works
+						</div>
+						<Link
+							to={`/clusters/${cluster.id}/explore?view=/tutorial`}
+							style={{
+								display: 'flex',
+								justifyContent: 'flex-end',
+							}}
+						>
+							<Button type="primary">Interactive Tutorial</Button>
+						</Link>
+					</div>
+					<Divider />
 					<Collapse
 						style={{ backgroundColor: '#fff' }}
-						defaultActiveKey="1"
 						accordion
 						bordered={false}
 					>

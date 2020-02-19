@@ -232,7 +232,7 @@ class CreateAppModal extends Component {
 							cluster.
 						</span>
 					</div>
-					<Link to="/clusters">Create a Cluster</Link>
+					<Link to="/">Create a Cluster</Link>
 				</section>
 
 				<div>
