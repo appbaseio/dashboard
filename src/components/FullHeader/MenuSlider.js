@@ -62,6 +62,7 @@ class MenuSlider extends React.Component {
 		const {
 			defaultSelectedKeys, isHomepage, isUsingTrial, daysLeft,
 		} = this.props; // prettier-ignore
+		console.log('defaultSelected', defaultSelectedKeys);
 		return (
 			<div className={menuSlider}>
 				<Button
@@ -84,29 +85,29 @@ class MenuSlider extends React.Component {
 						defaultSelectedKeys={defaultSelectedKeys}
 					>
 						{isHomepage && (
-							<Menu.Item key="1">
-								<Link to="/">Apps</Link>
+							<Menu.Item key="/">
+								<Link to="/">Clusters</Link>
 							</Menu.Item>
 						)}
 
 						{isHomepage && (
-							<Menu.Item key="2">
-								<Link to="/clusters">Clusters</Link>
+							<Menu.Item key="/apps">
+								<Link to="/apps">Apps</Link>
 							</Menu.Item>
 						)}
 
-						<Menu.Item key="3">
+						<Menu.Item key="/profile">
 							<Link to="/profile">Profile</Link>
 						</Menu.Item>
 
-						<Menu.Item key="4">
+						<Menu.Item key="/marketplace">
 							<Link to="/marketplace">
 								MarketPlace <Tag>New</Tag>
 							</Link>
 						</Menu.Item>
 
 						{window.innerWidth < 576 ? (
-							<Menu.Item key="5">
+							<Menu.Item key="/docs">
 								<a
 									href="https://docs.appbase.io/"
 									className={link}
@@ -119,7 +120,7 @@ class MenuSlider extends React.Component {
 						) : null}
 
 						{isUsingTrial && (
-							<Menu.Item>
+							<Menu.Item key="/billing">
 								<Link
 									to="/billing"
 									css={{ color: 'tomato !important' }}
@@ -133,7 +134,7 @@ class MenuSlider extends React.Component {
 							</Menu.Item>
 						)}
 
-						<Menu.Item onClick={this.handleLogout}>
+						<Menu.Item onClick={this.handleLogout} key="/logout">
 							Logout
 						</Menu.Item>
 					</Menu>

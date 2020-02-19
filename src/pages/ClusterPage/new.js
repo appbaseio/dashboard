@@ -415,7 +415,7 @@ class NewCluster extends Component {
 
 		deployCluster(body)
 			.then(() => {
-				this.props.history.push('/clusters');
+				this.props.history.push('/');
 			})
 			.catch(e => {
 				this.setState({

@@ -20,10 +20,10 @@ const getSelectedKeys = pathname => {
 	switch (pathname) {
 		case '/marketplace':
 			return '4';
-		case '/clusters':
-			return '2';
 		case '/':
 			return '1';
+		case '/apps':
+			return '3';
 		default:
 			return null;
 	}
@@ -77,31 +77,25 @@ const FullHeader = ({
 			<Menu
 				mode="horizontal"
 				className="options"
-				defaultSelectedKeys={
-					cluster
-						? ['3']
-						: [getSelectedKeys(window.location.pathname)]
-				}
+				defaultSelectedKeys={[window.location.pathname]}
 			>
-				<Menu.Item key="1">
-					<Link to="/">Apps</Link>
-				</Menu.Item>
-
-				<Menu.Item key="2">
-					<Link to="/clusters">
-						Clusters <Tag>Beta</Tag>
-					</Link>
+				<Menu.Item key="/">
+					<Link to="/">Clusters</Link>
 				</Menu.Item>
 
 				{cluster ? (
-					<Menu.Item key="3">
+					<Menu.Item key={`/clusters/${cluster}`}>
 						<Link to={`/clusters/${cluster}`}>
 							<Icon type="cluster" /> {cluster}
 						</Link>
 					</Menu.Item>
 				) : null}
 
-				<Menu.Item key="4">
+				<Menu.Item key="/apps">
+					<Link to="/apps">Apps</Link>
+				</Menu.Item>
+
+				<Menu.Item key="/marketplace">
 					<Link to="/marketplace">
 						MarketPlace <Tag>New</Tag>
 					</Link>
@@ -133,7 +127,7 @@ const FullHeader = ({
 		</Row>
 		<MenuSlider
 			isHomepage
-			defaultSelectedKeys={[getSelectedKeys(window.location.pathname)]}
+			defaultSelectedKeys={[window.location.pathname]}
 			isUsingTrial={isUsingTrial}
 			daysLeft={daysLeft}
 		/>

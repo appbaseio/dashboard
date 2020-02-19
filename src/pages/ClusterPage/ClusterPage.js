@@ -104,6 +104,10 @@ class ClusterPage extends Component {
 	initClusters = () => {
 		getClusters()
 			.then(clusters => {
+				if (!clusters.length) {
+					this.props.history.push('/clusters/new');
+					return;
+				}
 				this.setState({
 					clustersAvailable: !!clusters.length,
 					clusters,

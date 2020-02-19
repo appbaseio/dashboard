@@ -191,7 +191,7 @@ class NewMyCluster extends Component {
 
 		deployMyCluster(body)
 			.then(() => {
-				this.props.history.push('/clusters');
+				this.props.history.push('/');
 			})
 			.catch(e => {
 				this.setState({

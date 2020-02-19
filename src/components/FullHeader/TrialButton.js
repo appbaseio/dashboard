@@ -59,7 +59,7 @@ const TrialButton = props => {
 		return buttonWithMessage({
 			daysLeft: daysLeftValue,
 			trialMessage: tooltipTitle,
-			redirectURL: `/clusters?id=${cluster}&subscription=true`,
+			redirectURL: `/?id=${cluster}&subscription=true`,
 		});
 	}
 

@@ -162,7 +162,7 @@ export default class Clusters extends Component {
 		});
 		deleteCluster(id)
 			.then(() => {
-				this.props.history.push('/clusters');
+				this.props.history.push('/');
 			})
 			.catch(e => {
 				this.setState({
@@ -254,7 +254,7 @@ export default class Clusters extends Component {
 									: this.state.error}
 							</p>
 							<div style={{ marginTop: 30 }}>
-								<Link to="/clusters">
+								<Link to="/">
 									<Button
 										size="large"
 										icon="arrow-left"
@@ -315,7 +315,7 @@ export default class Clusters extends Component {
 		<div css={{ marginTop: 20, textAlign: 'center' }}>
 			<Button
 				size="large"
-				onClick={() => this.props.history.push('/clusters')}
+				onClick={() => this.props.history.push('/')}
 				icon="arrow-left"
 			>
 				Go Back

@@ -56,7 +56,7 @@ const integrations = [
 		image1x: '/static/images/onboarding/finish-screen/Clusters@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/Clusters@2x.png',
 		description: 'ElasticSearch clusters powered by appbase.io',
-		url: 'https://dashboard.appbase.io/clusters',
+		url: 'https://dashboard.appbase.io',
 	},
 ];
 
