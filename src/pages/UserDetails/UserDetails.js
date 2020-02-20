@@ -37,8 +37,7 @@ class UserDetails extends React.Component {
 						if (isShopify) {
 							window.location.href = params.returnURL;
 						} else {
-							history.replace('/');
-							window.location.reload();
+							window.location.href = '/clusters/new';
 						}
 					}}
 				/>
