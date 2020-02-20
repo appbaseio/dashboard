@@ -62,7 +62,6 @@ class MenuSlider extends React.Component {
 		const {
 			defaultSelectedKeys, isHomepage, isUsingTrial, daysLeft,
 		} = this.props; // prettier-ignore
-		console.log('defaultSelected', defaultSelectedKeys);
 		return (
 			<div className={menuSlider}>
 				<Button
