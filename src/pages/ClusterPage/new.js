@@ -42,7 +42,7 @@ const esVersions = [
 	'5.6.16',
 ];
 
-const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
+const odfeVersions = ['1.4.0', '1.3.0', '1.2.1', '1.1.0'];
 
 const V7_ARC = '7.15.1-cluster';
 const V6_ARC = '7.15.1-cluster';
