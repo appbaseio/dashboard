@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import { Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
-import { css } from 'emotion';
+import Stripe from 'react-stripe-checkout';
 
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -10,7 +10,12 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 
 import { clusterContainer, card, settingsItem, esContainer } from './styles';
-import { deployCluster, getClusters } from './utils';
+import {
+	deployCluster,
+	getClusters,
+	createSubscription,
+	STRIPE_KEY,
+} from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
@@ -565,6 +570,14 @@ class NewCluster extends Component {
 		});
 	};
 
+	handleToken = async (clusterId, token) => {
+		try {
+			await createSubscription(clusterId, token);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 	handleCluster = value => {
 		this.setState({
 			restore_from: value,
@@ -572,7 +585,7 @@ class NewCluster extends Component {
 	};
 
 	render() {
-		const { provider, isLoading } = this.state;
+		const { provider, isLoading, clusters } = this.state;
 		const { isUsingClusterTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
@@ -580,9 +593,13 @@ class NewCluster extends Component {
 		const versions =
 			this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
 		const defaultVersion = this.state.clusterVersion;
+
+		const activeClusters = clusters.filter(
+			cluster => cluster.status === 'active',
+		);
 		return (
 			<Fragment>
-				<FullHeader isCluster />
+				<FullHeader clusters={activeClusters} isCluster />
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
@@ -627,6 +644,27 @@ class NewCluster extends Component {
 									Already have a Cluster
 								</Button>
 							</Tooltip>
+							{isUsingClusterTrial && clusters.length > 0 ? (
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={(clusters[0].plan_rate || 0) * 100}
+									token={token =>
+										this.handleToken(clusters[0].id, token)
+									}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+								>
+									<Button
+										ghost
+										style={{ marginBottom: 10 }}
+										type="primary"
+										size="large"
+										block
+									>
+										Upgrade Now
+									</Button>
+								</Stripe>
+							) : null}
 						</Col>
 					</Row>
 				</Header>
@@ -1054,14 +1092,42 @@ class NewCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								<Button
-									type="primary"
-									size="large"
-									onClick={this.createCluster}
-								>
-									Create Cluster
-									<Icon type="arrow-right" theme="outlined" />
-								</Button>
+								{isUsingClusterTrial && clusters.length > 0 ? (
+									<Stripe
+										name="Appbase.io Clusters"
+										amount={
+											(clusters[0].plan_rate || 0) * 100
+										}
+										token={token =>
+											this.handleToken(
+												clusters[0].id,
+												token,
+											)
+										}
+										disabled={false}
+										stripeKey={STRIPE_KEY}
+									>
+										<Button
+											ghost
+											style={{ marginBottom: 10 }}
+											type="primary"
+										>
+											Upgrade Now
+										</Button>
+									</Stripe>
+								) : (
+									<Button
+										type="primary"
+										size="large"
+										onClick={this.createCluster}
+									>
+										Create Cluster
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
+								)}
 							</div>
 						</article>
 					</section>

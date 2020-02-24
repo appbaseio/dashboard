@@ -2,9 +2,11 @@ import React from 'react';
 import { Button, Tag, Tooltip } from 'antd';
 import { object, string, bool } from 'prop-types';
 import { Link } from 'react-router-dom';
+import Stripe from 'react-stripe-checkout';
 import { css } from 'react-emotion';
 
 import { media } from '../../utils/media';
+import { createSubscription, STRIPE_KEY } from '../../pages/ClusterPage/utils';
 
 const trialText = css`
 	line-height: 2em;
@@ -24,6 +26,15 @@ const trialLink = css`
 	`)};
 `;
 
+const handleToken = async (clusterId, token) => {
+	try {
+		await createSubscription(clusterId, token);
+		this.init();
+	} catch (e) {
+		console.log(e);
+	}
+};
+
 const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 	<Link className={trialLink} to={redirectURL}>
 		<Tooltip title={trialMessage}>
@@ -42,7 +53,15 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 
 const TrialButton = props => {
 	const {
-		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
+		cluster,
+		clusterDaysLeft,
+		daysLeft,
+		isCluster,
+		currentApp,
+		trialMessage,
+		user: { apps },
+		clusters,
+		clusterPlan,
 	} = props; // prettier-ignore
 
 	// prettier-ignore
@@ -56,11 +75,47 @@ const TrialButton = props => {
 		currentApp && appNames.includes(currentApp) ? currentApp : '';
 
 	if (cluster) {
-		return buttonWithMessage({
-			daysLeft: daysLeftValue,
-			trialMessage: tooltipTitle,
-			redirectURL: `/?id=${cluster}&subscription=true`,
-		});
+		return (
+			<Stripe
+				name="Appbase.io Clusters"
+				amount={(clusterPlan || 0) * 100}
+				token={token => handleToken(clusters, token)}
+				disabled={false}
+				stripeKey={STRIPE_KEY}
+			>
+				<Tooltip title={tooltipTitle}>
+					<Tag color="red">
+						{daysLeftValue > 0
+							? `Trial expires in ${daysLeftValue} ${
+									daysLeftValue > 1 ? 'days' : 'day'
+							  }. Upgrade Now`
+							: 'Trial has expired. Upgrade Now'}
+					</Tag>
+				</Tooltip>
+			</Stripe>
+		);
+	}
+
+	if (isCluster && clusters && clusters.length > 0) {
+		return (
+			<Stripe
+				name="Appbase.io Clusters"
+				amount={(clusters[0].plan_rate || 0) * 100}
+				token={token => handleToken(clusters[0].id, token)}
+				disabled={false}
+				stripeKey={STRIPE_KEY}
+			>
+				<Tooltip title={tooltipTitle}>
+					<Tag color="red">
+						{daysLeftValue > 0
+							? `Trial expires in ${daysLeftValue} ${
+									daysLeftValue > 1 ? 'days' : 'day'
+							  }. Upgrade Now`
+							: 'Trial has expired. Upgrade Now'}
+					</Tag>
+				</Tooltip>
+			</Stripe>
+		);
 	}
 
 	if (redirectApp) {

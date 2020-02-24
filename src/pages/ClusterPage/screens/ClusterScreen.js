@@ -5,7 +5,13 @@ import Stripe from 'react-stripe-checkout';
 
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import { hasAddon, getClusters, getSnapshots, restore } from '../utils';
+import {
+	hasAddon,
+	getClusters,
+	getSnapshots,
+	restore,
+	STRIPE_KEY,
+} from '../utils';
 import {
 	card,
 	settingsItem,
@@ -13,7 +19,6 @@ import {
 	clusterButtons,
 	esContainer,
 } from '../styles';
-import { STRIPE_KEY } from '../ClusterPage';
 import ArcDetail from '../components/ArcDetail';
 
 const { Option } = Select;

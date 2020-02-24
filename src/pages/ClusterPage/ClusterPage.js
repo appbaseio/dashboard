@@ -15,6 +15,7 @@ import {
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
+	STRIPE_KEY,
 } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
@@ -24,10 +25,6 @@ import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
-// test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
-// live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 class ClusterPage extends Component {
 	constructor(props) {
@@ -493,7 +490,7 @@ class ClusterPage extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader isCluster />
+				<FullHeader clusters={activeClusters} isCluster />
 				{showOverlay && <Overlay />}
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
