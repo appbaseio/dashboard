@@ -17,13 +17,16 @@ export default class ExploreCluster extends Component {
 		const cluster = props.location.state
 			? props.location.state.cluster
 			: null;
-
+		const isClusterBilling = props.location.state
+			? props.location.state.isClusterBilling
+			: null;
 		this.state = {
 			arc,
 			isLoading: !arc,
 			error: null,
 			isFrameLoading: false,
 			cluster,
+			isClusterBilling,
 		};
 	}
 
@@ -121,7 +124,10 @@ export default class ExploreCluster extends Component {
 		const arcURL = this.state.arc.url
 			? this.state.arc.url.slice(0, -1)
 			: '';
-		let mainURL = 'https://arc-dashboard.appbase.io';
+		let mainURL = this.state.isClusterBilling
+			? 'https://arc-dashboard.appbase.io/cluster/billing'
+			: 'https://arc-dashboard.appbase.io';
+
 		if (urlParams && urlParams.view) {
 			const nestedRoute = urlParams.view.startsWith('/')
 				? urlParams.view.replace('/', '')

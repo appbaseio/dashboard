@@ -230,10 +230,13 @@ export default class Clusters extends Component {
 			.toLowerCase()
 			.startsWith('payment');
 		const clusterId = this.props.match.params.id;
+		const { cluster, deployment } = this.state;
 		return (
 			<Fragment>
 				<FullHeader
 					cluster={clusterId}
+					clusterDetails={cluster}
+					deployment={deployment}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
 				<Container>
@@ -388,12 +391,14 @@ export default class Clusters extends Component {
 				mark.plan.endsWith(this.state.cluster.pricing_plan) ||
 				mark.plan.startsWith(this.state.cluster.pricing_plan),
 		);
-
+		const { cluster, deployment } = this.state;
 		return (
 			<Fragment>
 				<FullHeader
 					isCluster
 					cluster={this.props.match.params.id}
+					clusterDetails={cluster}
+					deployment={deployment}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
 				{showOverlay && <Overlay />}

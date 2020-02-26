@@ -68,6 +68,8 @@ const FullHeader = ({
 	currentApp,
 	isCluster,
 	trialMessage,
+	clusterDetails,
+	deployment,
 }) => (
 	<Header className={headerStyles}>
 		<div className="row">
@@ -113,6 +115,8 @@ const FullHeader = ({
 					isCluster={isCluster}
 					user={user}
 					trialMessage={trialMessage}
+					clusterDetails={clusterDetails}
+					deployment={deployment}
 				/>
 			)}
 			<a
@@ -153,6 +157,8 @@ FullHeader.propTypes = {
 	isUsingClusterTrial: bool.isRequired,
 	daysLeft: number,
 	clusterDaysLeft: number,
+	clusterDetails: object,
+	deployment: object,
 };
 
 const mapStateToProps = state => {

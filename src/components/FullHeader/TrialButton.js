@@ -6,6 +6,9 @@ import { css } from 'react-emotion';
 
 import { media } from '../../utils/media';
 
+export const getAddon = (item, source) =>
+	(source.addons || []).find(key => key.name === item);
+
 const trialText = css`
 	line-height: 2em;
 	font-size: 0.9em;
@@ -42,7 +45,7 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 
 const TrialButton = props => {
 	const {
-		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage, user: { apps },
+		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage,clusterDetails,deployment, user: { apps },
 	} = props; // prettier-ignore
 
 	// prettier-ignore
@@ -59,7 +62,15 @@ const TrialButton = props => {
 		return buttonWithMessage({
 			daysLeft: daysLeftValue,
 			trialMessage: tooltipTitle,
-			redirectURL: `/?id=${cluster}&subscription=true`,
+			// Given scenario of type -> cluster, this will require iframe url with arc metadata to be supplied
+			redirectURL: {
+				pathname: `/clusters/${cluster}/explore`,
+				state: {
+					arc: deployment ? getAddon('arc', deployment) : {},
+					cluster: clusterDetails ? clusterDetails.name : {},
+					isClusterBilling: true,
+				},
+			},
 		});
 	}
 
