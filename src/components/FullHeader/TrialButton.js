@@ -68,7 +68,7 @@ const TrialButton = props => {
 				state: {
 					arc: deployment ? getAddon('arc', deployment) : {},
 					cluster: clusterDetails ? clusterDetails.name : {},
-					isClusterBilling: true,
+					redirectToBilling: true,
 				},
 			},
 		});

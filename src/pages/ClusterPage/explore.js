@@ -17,8 +17,8 @@ export default class ExploreCluster extends Component {
 		const cluster = props.location.state
 			? props.location.state.cluster
 			: null;
-		const isClusterBilling = props.location.state
-			? props.location.state.isClusterBilling
+		const redirectToBilling = props.location.state
+			? props.location.state.redirectToBilling
 			: null;
 		this.state = {
 			arc,
@@ -26,7 +26,7 @@ export default class ExploreCluster extends Component {
 			error: null,
 			isFrameLoading: false,
 			cluster,
-			isClusterBilling,
+			redirectToBilling,
 		};
 	}
 
@@ -124,7 +124,7 @@ export default class ExploreCluster extends Component {
 		const arcURL = this.state.arc.url
 			? this.state.arc.url.slice(0, -1)
 			: '';
-		let mainURL = this.state.isClusterBilling
+		let mainURL = this.state.redirectToBilling
 			? 'https://arc-dashboard.appbase.io/cluster/billing'
 			: 'https://arc-dashboard.appbase.io';
 
@@ -135,7 +135,9 @@ export default class ExploreCluster extends Component {
 
 			mainURL = `${mainURL}/${nestedRoute}`;
 		}
-		const url = `${mainURL}/?clusterId=${this.props.match.params.id}&url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
+		const url = this.state.redirectToBilling
+			? `${mainURL}?clusterId=${this.props.match.params.id}&url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`
+			: `${mainURL}/?clusterId=${this.props.match.params.id}&url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
 
 		return (
 			<Fragment>
