@@ -45,8 +45,16 @@ const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
 
 const TrialButton = props => {
 	const {
-		cluster, clusterDaysLeft, daysLeft, isCluster, currentApp, trialMessage,clusterDetails,deployment, user: { apps },
-	} = props; // prettier-ignore
+		cluster,
+		clusterDaysLeft,
+		daysLeft,
+		isCluster,
+		currentApp,
+		trialMessage,
+		clusterDetails,
+		deployment,
+		user: { apps },
+	} = props;
 
 	// prettier-ignore
 	const clusterTrialMessage =	'You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.';
