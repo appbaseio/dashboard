@@ -179,7 +179,7 @@ class HelpButton extends React.Component {
 					<h3 className={heading}>Get Support!</h3>
 				</Menu.Item>
 				<Menu.Item key="whats_new">
-					<p className={subHeading}>What{`'`}s new?</p>
+					<p className={subHeading}>See what{`'`}s new ✨</p>
 				</Menu.Item>
 				<Menu.Item key="twitter">
 					<p className={subHeading}>@appbaseio - Twitter</p>
