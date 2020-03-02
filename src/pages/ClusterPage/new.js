@@ -44,8 +44,8 @@ const esVersions = [
 
 const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
 
-const V7_ARC = '7.15.4-cluster';
-const V6_ARC = '7.15.4-cluster';
+const V7_ARC = '7.16.0-cluster';
+const V6_ARC = '7.16.0-cluster';
 const V5_ARC = 'v5-0.0.1';
 
 const arcVersions = {
