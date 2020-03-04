@@ -679,7 +679,7 @@ export default class Clusters extends Component {
 										this.state.cluster.recipe,
 									) && (
 										<Alert
-											message="New Appbase.io version is available!"
+											message="A new appbase.io version is available!"
 											description={
 												<div
 													style={{
@@ -690,15 +690,20 @@ export default class Clusters extends Component {
 													}}
 												>
 													<div>
-														New appbase.io version{' '}
+														A new version{' '}
 														{V7_ARC.split('-')[0]}{' '}
-														is available. Checkout
-														the change log{' '}
+														is available now.
+														You&apos;re currently on{' '}
+														{
+															arcDeployment.image
+																.split('/')[1]
+																.split(':')[1]
+														}
+														. See what&apos;s new in{' '}
 														<a href="https://github.com/appbaseio/arc/releases">
-															here
-														</a>{' '}
-														for more information on
-														what is new!
+															this release
+														</a>
+														.
 													</div>
 													<Button
 														type="primary"
@@ -709,7 +714,7 @@ export default class Clusters extends Component {
 														}
 													>
 														{' '}
-														Update now
+														Update Now
 													</Button>
 												</div>
 											}
