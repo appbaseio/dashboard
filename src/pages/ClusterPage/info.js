@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, Button, Icon, Tag, Tooltip } from 'antd';
+import { Modal, Button, Icon, Tag, Tooltip, Alert, message } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 
 import { regions } from './utils/regions';
-import { machineMarks } from './new';
+import { machineMarks, V7_ARC, ARC_BYOC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -28,6 +28,18 @@ import ShareClusterScreen from './screens/ShareClusterScreen';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
 import ConnectCluster from './components/ConnectCluster';
+import { ACC_API } from '../../constants/config';
+
+const checkIfUpdateIsAvailable = (image, recipe) => {
+	const version = image.split('/')[1].split(':')[1];
+	console.log('version', version, recipe, ARC_BYOC, V7_ARC);
+
+	if (recipe === 'byoc') {
+		return version !== ARC_BYOC;
+	}
+
+	return version !== V7_ARC;
+};
 
 export default class Clusters extends Component {
 	constructor(props) {
@@ -225,6 +237,48 @@ export default class Clusters extends Component {
 		}
 	};
 
+	handleArcUpgrade = async () => {
+		try {
+			const {
+				cluster: { id, recipe },
+			} = this.state;
+			this.setState({
+				isLoading: true,
+			});
+			const response = await fetch(
+				`${ACC_API}/v1/_update_deployment/${id}`,
+				{
+					method: 'PUT',
+					credentials: 'include',
+					body: JSON.stringify({
+						deployment_name: 'arc',
+						image: `siddharthlatest/arc:${
+							recipe === 'byoc' ? ARC_BYOC : V7_ARC
+						}`,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				},
+			);
+
+			const data = await response.json();
+			if (response.status >= 400) {
+				throw new Error(data);
+			}
+			this.setState({
+				deployment: data,
+				isLoading: false,
+			});
+		} catch (err) {
+			message.error('Something went wrong please try again');
+			this.setState({
+				isLoading: false,
+			});
+			console.log('error');
+		}
+	};
+
 	renderErrorScreen = () => {
 		const paymentRequired = this.state.error
 			.toLowerCase()
@@ -371,7 +425,7 @@ export default class Clusters extends Component {
 
 		if (this.state.isLoading) return <Loader />;
 
-		const { showOverlay, isPaid } = this.state;
+		const { showOverlay, isPaid, deployment } = this.state;
 
 		const isViewer = this.state.cluster.user_role === 'viewer';
 		const isExternalCluster = this.state.cluster.recipe === 'byoc';
@@ -389,6 +443,10 @@ export default class Clusters extends Component {
 				mark.plan.startsWith(this.state.cluster.pricing_plan),
 		);
 
+		const arcDeployment =
+			deployment &&
+			deployment.addons &&
+			deployment.addons.find(addon => addon.name === 'arc');
 		return (
 			<Fragment>
 				<FullHeader
@@ -614,6 +672,54 @@ export default class Clusters extends Component {
 										</div>
 									</li>
 								) : null}
+								{this.state.arc &&
+									arcDeployment.image &&
+									checkIfUpdateIsAvailable(
+										arcDeployment.image,
+										this.state.cluster.recipe,
+									) && (
+										<Alert
+											message="New Appbase.io version is available!"
+											description={
+												<div
+													style={{
+														display: 'flex',
+														justifyContent:
+															'space-between',
+														alignItems: 'center',
+													}}
+												>
+													<div>
+														New appbase.io version{' '}
+														{V7_ARC.split('-')[0]}{' '}
+														is available. Checkout
+														the change log{' '}
+														<a href="https://github.com/appbaseio/arc/releases">
+															here
+														</a>{' '}
+														for more information on
+														what is new!
+													</div>
+													<Button
+														type="primary"
+														ghost
+														onClick={
+															this
+																.handleArcUpgrade
+														}
+													>
+														{' '}
+														Update now
+													</Button>
+												</div>
+											}
+											type="info"
+											showIcon
+											style={{
+												marginBottom: 25,
+											}}
+										/>
+									)}
 
 								{this.state.cluster.status === 'active' ? (
 									<div
