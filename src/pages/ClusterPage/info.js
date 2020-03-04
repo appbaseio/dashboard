@@ -32,7 +32,6 @@ import { ACC_API } from '../../constants/config';
 
 const checkIfUpdateIsAvailable = (image, recipe) => {
 	const version = image.split('/')[1].split(':')[1];
-	console.log('version', version, recipe, ARC_BYOC, V7_ARC);
 
 	if (recipe === 'byoc') {
 		return version !== ARC_BYOC;
@@ -275,7 +274,7 @@ export default class Clusters extends Component {
 			this.setState({
 				isLoading: false,
 			});
-			console.log('error');
+			console.error(err);
 		}
 	};
 
