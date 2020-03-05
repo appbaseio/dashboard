@@ -125,8 +125,8 @@ export default class ExploreCluster extends Component {
 			? this.state.arc.url.slice(0, -1)
 			: '';
 		let mainURL = this.state.redirectToBilling
-			? 'https://arc-dashboard.appbase.io/cluster/billing'
-			: 'https://arc-dashboard.appbase.io';
+			? 'http://localhost:3333/cluster/billing'
+			: 'http://localhost:3333';
 
 		if (urlParams && urlParams.view) {
 			const nestedRoute = urlParams.view.startsWith('/')
