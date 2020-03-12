@@ -44,11 +44,12 @@ const esVersions = [
 
 const odfeVersions = ['1.4.0', '0.10.0'];
 
-const V7_ARC = '7.16.3-cluster';
-const V6_ARC = '7.16.3-cluster';
-const V5_ARC = 'v5-0.0.1';
+export const V7_ARC = '7.16.3-cluster';
+export const V6_ARC = '7.16.3-cluster';
+export const ARC_BYOC = '7.16.3-byoc';
+export const V5_ARC = 'v5-0.0.1';
 
-const arcVersions = {
+export const arcVersions = {
 	7: V7_ARC,
 	6: V6_ARC,
 	5: V5_ARC,
