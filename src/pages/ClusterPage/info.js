@@ -31,7 +31,7 @@ import ConnectCluster from './components/ConnectCluster';
 import { ACC_API } from '../../constants/config';
 
 const checkIfUpdateIsAvailable = (image, recipe) => {
-	const version = image.split('/')[1].split(':')[1];
+	const version = (image.split('/')[1] || '').split(':')[1];
 
 	if (recipe === 'byoc') {
 		return version !== ARC_BYOC;
