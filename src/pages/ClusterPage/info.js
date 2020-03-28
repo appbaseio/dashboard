@@ -697,6 +697,7 @@ export default class Clusters extends Component {
 															arcDeployment.image
 																.split('/')[1]
 																.split(':')[1]
+																.split('-')[0]
 														}
 														. See what&apos;s new in{' '}
 														<a href="https://github.com/appbaseio/arc/releases">
