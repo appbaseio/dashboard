@@ -129,7 +129,7 @@ export default class ExploreCluster extends Component {
 
 			mainURL = `${mainURL}/${nestedRoute}`;
 		}
-		const url = `${mainURL}/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&header=false&showHelpChat=false`;
+		const url = `${mainURL}/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&showHelpChat=false&showProfile=false`;
 
 		return (
 			<Fragment>
