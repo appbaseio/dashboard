@@ -144,7 +144,7 @@ export default class ExploreCluster extends Component {
 					id="cluster"
 					frameBorder="0"
 					width="100%"
-					height={`${window.innerHeight - 60}px`}
+					height={`${window.innerHeight - 65}px`}
 					onLoad={this.frameLoaded}
 				/>
 			</Fragment>
