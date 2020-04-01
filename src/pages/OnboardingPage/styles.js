@@ -115,7 +115,7 @@ const onboardingStyles = css`
 		position: absolute;
 		right: 0;
 		color: #424242;
-		overflow-y: scroll;
+		overflow-y: auto;
 		header.vcenter {
 			padding-top: 10px;
 		}
