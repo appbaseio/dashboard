@@ -344,6 +344,27 @@ class ClusterPage extends Component {
 									<Button onClick={this.openStripeModal}>
 										Subscribe to access
 									</Button>
+									<p
+										css={{
+											fontSize: 12,
+											lineHeight: '18px',
+											color: '#999',
+											margin: '10px 0 12px 0',
+										}}
+									>
+										Need a trial extend?{' '}
+										<span
+											style={{
+												color: 'dodgerblue',
+												cursor: 'pointer',
+											}}
+											onClick={() => {
+												window.Intercom('show');
+											}}
+										>
+											Chat with us
+										</span>
+									</p>
 									<Modal
 										title="Subcription Details"
 										visible={showStripeModal}
