@@ -28,14 +28,14 @@ const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'7.6.0',
+	'7.6.2',
 	'7.5.2',
 	'7.4.2',
 	'7.3.2',
 	'7.2.1',
 	'7.1.1',
 	'7.0.1',
-	'6.8.6',
+	'6.8.8',
 	'6.7.2',
 	'6.6.2',
 	'6.5.4',
@@ -47,13 +47,14 @@ const esVersions = [
 	'5.6.16',
 ];
 
-const odfeVersions = ['1.2.0', '1.1.0', '0.9.0'];
+const odfeVersions = ['1.4.0', '0.10.0'];
 
-const V7_ARC = '7.15.4-cluster';
-const V6_ARC = '7.15.4-cluster';
-const V5_ARC = 'v5-0.0.1';
+export const V7_ARC = '7.21.0-cluster';
+export const V6_ARC = '7.21.0-cluster';
+export const ARC_BYOC = '7.21.0-byoc';
+export const V5_ARC = 'v5-0.0.1';
 
-const arcVersions = {
+export const arcVersions = {
 	7: V7_ARC,
 	6: V6_ARC,
 	5: V5_ARC,
