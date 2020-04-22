@@ -421,12 +421,7 @@ export default class ClusterScreen extends Component {
 					</div>
 				</li>
 				{(visualization !== 'none' ||
-					[
-						CLUSTER_PLANS.PRODUCTION_2019_1,
-						CLUSTER_PLANS.PRODUCTION_2019_2,
-						CLUSTER_PLANS.PRODUCTION_2019_3,
-						CLUSTER_PLANS.PRODUCTION_2019_4,
-					].indexOf(cluster.pricing_plan) > -1) && (
+					cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019) && (
 					<li className={card}>
 						<div className="col light">
 							<h3>Choose Visualization Tool</h3>
