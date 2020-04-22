@@ -581,10 +581,6 @@ class NewCluster extends Component {
 		const versions =
 			this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
 		const defaultVersion = this.state.clusterVersion;
-		const isProductionPlan =
-			[CLUSTER_PLANS.PRODUCTION_2019_1, ...validOpenFaasPlans].indexOf(
-				this.state.pricing_plan,
-			) > -1;
 		return (
 			<Fragment>
 				<FullHeader isCluster />
@@ -901,7 +897,8 @@ class NewCluster extends Component {
 									</div>
 								</div>
 							</div>
-							{isProductionPlan && (
+							{this.state.pricing_plan !==
+								CLUSTER_PLANS.SANDBOX_2019 && (
 								<div className={card}>
 									<div className="col light">
 										<h3>Choose Visualization Tool</h3>
