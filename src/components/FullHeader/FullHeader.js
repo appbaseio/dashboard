@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Tag, Icon, Button, Row, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
-import { object, string, bool, number } from 'prop-types';
+import { object, string, bool, number, array } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -68,6 +68,8 @@ const FullHeader = ({
 	currentApp,
 	isCluster,
 	trialMessage,
+	clusters,
+	clusterPlan,
 }) => (
 	<Header className={headerStyles}>
 		<div className="row">
@@ -108,7 +110,9 @@ const FullHeader = ({
 					showButton={isCluster}
 					currentApp={currentApp}
 					cluster={cluster}
+					clusters={clusters}
 					daysLeft={daysLeft}
+					clusterPlan={clusterPlan}
 					clusterDaysLeft={clusterDaysLeft}
 					isCluster={isCluster}
 					user={user}
@@ -146,6 +150,7 @@ FullHeader.defaultProps = {
 FullHeader.propTypes = {
 	user: object.isRequired,
 	cluster: string,
+	clusters: array,
 	currentApp: string.isRequired,
 	isCluster: bool,
 	trialMessage: string,

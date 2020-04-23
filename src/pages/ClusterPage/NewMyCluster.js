@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import Stripe from 'react-stripe-checkout';
 import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
 
 import { get } from 'lodash';
@@ -9,7 +10,13 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 
 import { clusterContainer, card } from './styles';
-import { deployMyCluster, getClusters, verifyCluster } from './utils';
+import {
+	deployMyCluster,
+	getClusters,
+	verifyCluster,
+	STRIPE_KEY,
+	createSubscription,
+} from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
@@ -117,6 +124,14 @@ class NewMyCluster extends Component {
 			showError: false,
 			deploymentError: '',
 		});
+	};
+
+	handleToken = async (clusterId, token) => {
+		try {
+			await createSubscription(clusterId, token);
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	handleVerify = async () => {
@@ -313,15 +328,20 @@ class NewMyCluster extends Component {
 			verifiedCluster,
 			clusterVersion,
 			verifyingURL,
+			clusters,
 		} = this.state;
 		const { isUsingClusterTrial } = this.props;
+
+		const activeClusters = clusters.filter(
+			cluster => cluster.status === 'active',
+		);
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
 
 		return (
 			<Fragment>
-				<FullHeader isCluster />
+				<FullHeader clusters={activeClusters} isCluster />
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
@@ -360,6 +380,28 @@ class NewMyCluster extends Component {
 									Don't have a Cluster
 								</Button>
 							</Tooltip>
+							{isUsingClusterTrial && clusters.length > 0 ? (
+								<Stripe
+									name="Appbase.io Clusters"
+									amount={(clusters[0].plan_rate || 0) * 100}
+									token={token =>
+										this.handleToken(clusters[0].id, token)
+									}
+									disabled={false}
+									stripeKey={STRIPE_KEY}
+									closed={this.toggleOverlay}
+								>
+									<Button
+										ghost
+										style={{ marginBottom: 10 }}
+										type="primary"
+										size="large"
+										block
+									>
+										Upgrade Now
+									</Button>
+								</Stripe>
+							) : null}
 						</Col>
 					</Row>
 				</Header>
@@ -554,14 +596,43 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								<Button
-									type="primary"
-									size="large"
-									onClick={this.createCluster}
-								>
-									Create Cluster
-									<Icon type="arrow-right" theme="outlined" />
-								</Button>
+								{isUsingClusterTrial && clusters.length > 0 ? (
+									<Stripe
+										name="Appbase.io Clusters"
+										amount={
+											(clusters[0].plan_rate || 0) * 100
+										}
+										token={token =>
+											this.handleToken(
+												clusters[0].id,
+												token,
+											)
+										}
+										disabled={false}
+										stripeKey={STRIPE_KEY}
+										closed={this.toggleOverlay}
+									>
+										<Button
+											ghost
+											style={{ marginBottom: 10 }}
+											type="primary"
+										>
+											Upgrade Now
+										</Button>
+									</Stripe>
+								) : (
+									<Button
+										type="primary"
+										size="large"
+										onClick={this.createCluster}
+									>
+										Create Cluster
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
+								)}
 							</div>
 						</article>
 					</section>

@@ -19,8 +19,8 @@ import {
 	createSubscription,
 	hasAddon,
 	getAddon,
+	STRIPE_KEY,
 } from './utils';
-import { STRIPE_KEY } from './ClusterPage';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import InvoiceScreen from './screens/InvoiceScreen';
@@ -424,7 +424,7 @@ export default class Clusters extends Component {
 
 		if (this.state.isLoading) return <Loader />;
 
-		const { showOverlay, isPaid, deployment } = this.state;
+		const { showOverlay, isPaid, deployment, cluster } = this.state;
 
 		const isViewer = this.state.cluster.user_role === 'viewer';
 		const isExternalCluster = this.state.cluster.recipe === 'byoc';
@@ -451,6 +451,7 @@ export default class Clusters extends Component {
 				<FullHeader
 					isCluster
 					cluster={this.props.match.params.id}
+					clusterPlan={cluster && cluster.plan_rate}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
 				{showOverlay && <Overlay />}

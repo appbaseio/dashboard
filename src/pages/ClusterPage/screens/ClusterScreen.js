@@ -10,6 +10,7 @@ import {
 	getClusters,
 	getSnapshots,
 	restore,
+	STRIPE_KEY,
 	CLUSTER_PLANS,
 } from '../utils';
 import {
@@ -19,7 +20,6 @@ import {
 	clusterButtons,
 	esContainer,
 } from '../styles';
-import { STRIPE_KEY } from '../ClusterPage';
 import ArcDetail from '../components/ArcDetail';
 import { V7_ARC } from '../new';
 

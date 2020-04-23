@@ -7,8 +7,7 @@ import { get } from 'lodash';
 
 import IntegerStep from '../components/IntegerStep';
 import { card } from '../styles';
-import { STRIPE_KEY } from '../ClusterPage';
-import { scaleCluster } from '../utils';
+import { scaleCluster, STRIPE_KEY } from '../utils';
 
 const column = css`
 	display: flex;
