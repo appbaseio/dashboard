@@ -6,6 +6,7 @@ module.exports = {
 		'plugin:prettier/recommended',
 		'prettier/react',
 		'prettier/standard',
+		'plugin:jest/recommended',
 	],
 	plugins: ['prettier'],
 	env: {
