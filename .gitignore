@@ -59,3 +59,8 @@ typings/
 .env
 
 *.DS_Store
+
+# sentry
+.sentryclirc
+
+.idea

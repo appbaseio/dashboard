@@ -27,7 +27,7 @@ const bannerMessagesAnalytics = {
 		description: 'Understand which user searches are yielding no results.',
 		buttonText: 'Read Docs',
 		href:
-			'https://docs.appbase.io/concepts/analytics.html#getting-insights-from-analytics',
+			'https://docs.appbase.io/docs/analytics/overview/#identify-content-gaps',
 	},
 };
 
