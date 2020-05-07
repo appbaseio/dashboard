@@ -356,9 +356,6 @@ class CreateAppModal extends Component {
 							<Radio className={radiobtn} value="5">
 								5
 							</Radio>
-							<Radio className={radiobtn} value="6">
-								6
-							</Radio>
 							<Radio className={radiobtn} value="7">
 								7
 							</Radio>
