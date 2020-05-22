@@ -23,6 +23,7 @@ async function checkSite() {
 	const result = await checker.check({
 		path: isProduction ? process.env.URL : 'http://localhost:1357',
 		recurse: true,
+		linksToSkip: ['http://localhost:1357'],
 	});
 
 	// How many links did we scan?
