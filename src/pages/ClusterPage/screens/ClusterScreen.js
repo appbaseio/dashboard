@@ -12,7 +12,7 @@ import {
 	restore,
 	STRIPE_KEY,
 	CLUSTER_PLANS,
-	hasKubernetesSetup,
+	hasAnsibleSetup,
 } from '../utils';
 import {
 	card,
@@ -398,7 +398,7 @@ export default class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				{hasKubernetesSetup(cluster.pricing_plan) && (
+				{!hasAnsibleSetup(cluster.pricing_plan) && (
 					<li className={card}>
 						<div className="col light">
 							<h3>Dashboard</h3>

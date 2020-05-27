@@ -137,7 +137,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
-			plan: '2019-sandbox',
+			plan: '2020-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -148,7 +148,7 @@ export const machineMarks = {
 		},
 		16: {
 			label: 'Hobby',
-			plan: '2019-hobby',
+			plan: '2020-hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -159,7 +159,7 @@ export const machineMarks = {
 		},
 		33: {
 			label: 'Starter',
-			plan: '2019-starter',
+			plan: '2020-starter',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
@@ -937,126 +937,131 @@ class NewCluster extends Component {
 								</div>
 							</div>
 							{this.state.pricing_plan !==
-								CLUSTER_PLANS.SANDBOX_2019 && (
-								<div className={card}>
-									<div className="col light">
-										<h3>Choose Visualization Tool</h3>
-									</div>
+								CLUSTER_PLANS.SANDBOX_2019 &&
+								this.state.pricing_plan !==
+									CLUSTER_PLANS.SANDBOX_2020 && (
+									<div className={card}>
+										<div className="col light">
+											<h3>Choose Visualization Tool</h3>
+										</div>
 
-									<div
-										className={settingsItem}
-										css={{
-											padding: 30,
-											alignItems: 'baseline',
-										}}
-									>
-										<div className={esContainer}>
-											<Button
-												type={
-													this.state.visualization ===
-													'none'
-														? 'primary'
-														: 'default'
-												}
-												size="large"
-												css={{
-													height: 160,
-													width: '100%',
-													color: '#000',
-													backgroundColor:
+										<div
+											className={settingsItem}
+											css={{
+												padding: 30,
+												alignItems: 'baseline',
+											}}
+										>
+											<div className={esContainer}>
+												<Button
+													type={
 														this.state
 															.visualization ===
 														'none'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'none',
-													);
-												}}
-											>
-												None
-											</Button>
-										</div>
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
-													this.state.visualization ===
-													'kibana'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													width: '100%',
-													backgroundColor:
+															? 'primary'
+															: 'default'
+													}
+													size="large"
+													css={{
+														height: 160,
+														width: '100%',
+														color: '#000',
+														backgroundColor:
+															this.state
+																.visualization ===
+															'none'
+																? '#eaf5ff'
+																: '#fff',
+													}}
+													onClick={() => {
+														this.setConfig(
+															'visualization',
+															'none',
+														);
+													}}
+												>
+													None
+												</Button>
+											</div>
+											<div className={esContainer}>
+												<Button
+													size="large"
+													type={
 														this.state
 															.visualization ===
 														'kibana'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'kibana',
-													);
-												}}
-											>
-												<img
-													width={150}
-													src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
-													alt="Kibana"
-												/>
-											</Button>
-											<p>
-												The default visualization
-												dashboard for ElasticSearch.
-											</p>
-										</div>
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
-													this.state.visualization ===
-													'grafana'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													width: '100%',
-													backgroundColor:
+															? 'primary'
+															: 'default'
+													}
+													css={{
+														height: 160,
+														width: '100%',
+														backgroundColor:
+															this.state
+																.visualization ===
+															'kibana'
+																? '#eaf5ff'
+																: '#fff',
+													}}
+													onClick={() => {
+														this.setConfig(
+															'visualization',
+															'kibana',
+														);
+													}}
+												>
+													<img
+														width={150}
+														src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+														alt="Kibana"
+													/>
+												</Button>
+												<p>
+													The default visualization
+													dashboard for ElasticSearch.
+												</p>
+											</div>
+											<div className={esContainer}>
+												<Button
+													size="large"
+													type={
 														this.state
 															.visualization ===
 														'grafana'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'grafana',
-													);
-												}}
-											>
-												<img
-													width={120}
-													src="/static/images/clusters/grafana.png"
-													alt="Grafana"
-												/>
-											</Button>
-											<p>
-												The leading open-source tool for
-												metrics visualization.
-											</p>
+															? 'primary'
+															: 'default'
+													}
+													css={{
+														height: 160,
+														width: '100%',
+														backgroundColor:
+															this.state
+																.visualization ===
+															'grafana'
+																? '#eaf5ff'
+																: '#fff',
+													}}
+													onClick={() => {
+														this.setConfig(
+															'visualization',
+															'grafana',
+														);
+													}}
+												>
+													<img
+														width={120}
+														src="/static/images/clusters/grafana.png"
+														alt="Grafana"
+													/>
+												</Button>
+												<p>
+													The leading open-source tool
+													for metrics visualization.
+												</p>
+											</div>
 										</div>
 									</div>
-								</div>
-							)}
+								)}
 
 							{this.renderPlugins()}
 							<div className={card}>

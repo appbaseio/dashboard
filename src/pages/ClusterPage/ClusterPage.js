@@ -17,7 +17,7 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	STRIPE_KEY,
 	CLUSTER_PLANS,
-	hasKubernetesSetup,
+	hasAnsibleSetup,
 } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
@@ -27,6 +27,7 @@ import { regions } from './utils/regions';
 import Overlay from './components/Overlay';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { machineMarks as ansibleMachineMarks } from './new-ansible';
 
 class ClusterPage extends Component {
 	constructor(props) {
@@ -194,8 +195,8 @@ class ClusterPage extends Component {
 			allMarks = arcMachineMarks;
 		}
 
-		if (hasKubernetesSetup(cluster.pricing_plan)) {
-			allMarks = machineMarks.oldGke;
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			allMarks = ansibleMachineMarks.gke;
 		}
 
 		const planDetails = Object.values(allMarks).find(

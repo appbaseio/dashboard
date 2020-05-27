@@ -63,14 +63,14 @@ export const PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2019_3]: 1599,
 };
 
-export function hasKubernetesSetup(pricingPlan) {
-	const oldPlans = [
-		CLUSTER_PLANS.SANDBOX_2019,
-		CLUSTER_PLANS.HOBBY_2019,
-		CLUSTER_PLANS.STARTER_2019,
+export function hasAnsibleSetup(pricingPlan) {
+	const plans = [
+		CLUSTER_PLANS.SANDBOX_2020,
+		CLUSTER_PLANS.HOBBY_2020,
+		CLUSTER_PLANS.STARTER_2020,
 	];
 
-	return oldPlans.some(i => i === pricingPlan);
+	return plans.some(i => i === pricingPlan);
 }
 
 export function getClusters() {

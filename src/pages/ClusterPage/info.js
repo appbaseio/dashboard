@@ -6,6 +6,7 @@ import Stripe from 'react-stripe-checkout';
 import { regions } from './utils/regions';
 import { machineMarks, V7_ARC, ARC_BYOC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { machineMarks as ansibleMachineMarks } from './new-ansible';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -21,7 +22,7 @@ import {
 	getAddon,
 	STRIPE_KEY,
 	CLUSTER_PLANS,
-	hasKubernetesSetup,
+	hasAnsibleSetup,
 } from './utils';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
@@ -437,8 +438,8 @@ export default class Clusters extends Component {
 			allMarks = arcMachineMarks;
 		}
 
-		if (hasKubernetesSetup(cluster.pricing_plan)) {
-			allMarks = machineMarks.oldGke;
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			allMarks = ansibleMachineMarks.gke;
 		}
 
 		const planDetails = Object.values(allMarks).find(

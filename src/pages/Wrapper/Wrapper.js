@@ -30,6 +30,11 @@ const NewClusterPage = Loadable({
 	loading: Loader,
 });
 
+const NewAnsibleClusterPage = Loadable({
+	loader: () => import('../ClusterPage/new-ansible'),
+	loading: Loader,
+});
+
 const ClusterInfoPage = Loadable({
 	loader: () => import('../ClusterPage/info'),
 	loading: Loader,
@@ -93,6 +98,10 @@ const Wrapper = ({ user }) =>
 			<Route path="/clusters/new/hosted" component={NewClusterPage} />
 			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />
+			<Route
+				path="/clusters/new-ansible"
+				component={NewAnsibleClusterPage}
+			/>
 			<Route
 				path="/clusters/:id/explore"
 				component={ExploreClusterPage}
