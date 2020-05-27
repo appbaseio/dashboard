@@ -20,6 +20,8 @@ import {
 	hasAddon,
 	getAddon,
 	STRIPE_KEY,
+	CLUSTER_PLANS,
+	hasKubernetesSetup,
 } from './utils';
 import ClusterScreen from './screens/ClusterScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
@@ -433,6 +435,10 @@ export default class Clusters extends Component {
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
+		}
+
+		if (hasKubernetesSetup(cluster.pricing_plan)) {
+			allMarks = machineMarks.oldGke;
 		}
 
 		const planDetails = Object.values(allMarks).find(

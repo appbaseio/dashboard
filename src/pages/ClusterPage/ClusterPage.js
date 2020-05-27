@@ -16,6 +16,8 @@ import {
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
 	STRIPE_KEY,
+	CLUSTER_PLANS,
+	hasKubernetesSetup,
 } from './utils';
 import { machineMarks } from './new';
 import { mediaKey } from '../../utils/media';
@@ -190,6 +192,10 @@ class ClusterPage extends Component {
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
+		}
+
+		if (hasKubernetesSetup(cluster.pricing_plan)) {
+			allMarks = machineMarks.oldGke;
 		}
 
 		const planDetails = Object.values(allMarks).find(

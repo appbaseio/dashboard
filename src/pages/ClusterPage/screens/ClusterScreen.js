@@ -12,6 +12,7 @@ import {
 	restore,
 	STRIPE_KEY,
 	CLUSTER_PLANS,
+	hasKubernetesSetup,
 } from '../utils';
 import {
 	card,
@@ -397,16 +398,18 @@ export default class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				<li className={card}>
-					<div className="col light">
-						<h3>Dashboard</h3>
-						<p>Manage your cluster</p>
-					</div>
+				{hasKubernetesSetup(cluster.pricing_plan) && (
+					<li className={card}>
+						<div className="col light">
+							<h3>Dashboard</h3>
+							<p>Manage your cluster</p>
+						</div>
 
-					<div className="col">
-						{this.renderClusterEndpoint(cluster)}
-					</div>
-				</li>
+						<div className="col">
+							{this.renderClusterEndpoint(cluster)}
+						</div>
+					</li>
+				)}
 
 				<li className={card}>
 					<div className="col light">
@@ -421,7 +424,9 @@ export default class ClusterScreen extends Component {
 					</div>
 				</li>
 				{(visualization !== 'none' ||
-					cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019) && (
+					(cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019 &&
+						cluster.pricing_plan !==
+							CLUSTER_PLANS.SANDBOX_2020)) && (
 					<li className={card}>
 						<div className="col light">
 							<h3>Choose Visualization Tool</h3>
