@@ -79,10 +79,13 @@ export default class Clusters extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
+		let allMarks = machineMarks;
+		if (hasAnsibleSetup(plan)) {
+			allMarks = ansibleMachineMarks;
+		}
 		const selectedPlan = (
-			Object.values(
-				machineMarks[this.state.cluster.provider || 'azure'],
-			) || []
+			Object.values(allMarks[this.state.cluster.provider || 'azure']) ||
+			[]
 		).find(item => item.plan === plan || item.plan.endsWith(plan));
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';

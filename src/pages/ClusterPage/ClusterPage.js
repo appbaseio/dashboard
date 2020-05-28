@@ -95,7 +95,11 @@ class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(
+		let allMarks = machineMarks[provider];
+		if (hasAnsibleSetup(plan)) {
+			allMarks = ansibleMachineMarks[provider];
+		}
+		const selectedPlan = Object.values(allMarks).find(
 			item => item.plan === plan || item.plan.endsWith(plan),
 		);
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
@@ -205,7 +209,6 @@ class ClusterPage extends Component {
 				mark.plan.endsWith(cluster.pricing_plan) ||
 				mark.plan.startsWith(cluster.pricing_plan),
 		);
-
 		const paymentStyles = isExternalCluster
 			? {
 					paddingLeft: '25%',
