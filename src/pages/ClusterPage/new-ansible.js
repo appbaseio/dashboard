@@ -16,6 +16,7 @@ import {
 	createSubscription,
 	STRIPE_KEY,
 	CLUSTER_PLANS,
+	hasAnsibleSetup,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -812,96 +813,101 @@ class NewCluster extends Component {
 									</p>
 								</div>
 							</div>
-							<div className={card}>
-								<div className="col light">
-									<h3>Choose Elasticsearch Flavor</h3>
-								</div>
-
-								<div
-									className={settingsItem}
-									css={{
-										padding: 30,
-										alignItems: 'baseline',
-									}}
-								>
-									<div className={esContainer}>
-										<Button
-											type={
-												this.state.esFlavor === 'es'
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											css={{
-												height: 160,
-												marginRight: 20,
-												backgroundColor:
-													this.state.esFlavor === 'es'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'es',
-												);
-												this.setConfig(
-													'clusterVersion',
-													esVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
-												alt="Elastic"
-											/>
-										</Button>
-										<p>
-											The Open Source Elasticsearch
-											Distribution.
-										</p>
+							{!hasAnsibleSetup(this.state.pricing_plan) && (
+								<div className={card}>
+									<div className="col light">
+										<h3>Choose Elasticsearch Flavor</h3>
 									</div>
-									<div className={esContainer}>
-										<Button
-											size="large"
-											type={
-												this.state.esFlavor === 'odfe'
-													? 'primary'
-													: 'default'
-											}
-											css={{
-												height: 160,
-												backgroundColor:
+
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+											alignItems: 'baseline',
+										}}
+									>
+										<div className={esContainer}>
+											<Button
+												type={
+													this.state.esFlavor === 'es'
+														? 'primary'
+														: 'default'
+												}
+												size="large"
+												css={{
+													height: 160,
+													marginRight: 20,
+													backgroundColor:
+														this.state.esFlavor ===
+														'es'
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'esFlavor',
+														'es',
+													);
+													this.setConfig(
+														'clusterVersion',
+														esVersions[0],
+													);
+												}}
+											>
+												<img
+													width="150"
+													src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+													alt="Elastic"
+												/>
+											</Button>
+											<p>
+												The Open Source Elasticsearch
+												Distribution.
+											</p>
+										</div>
+										<div className={esContainer}>
+											<Button
+												size="large"
+												type={
 													this.state.esFlavor ===
 													'odfe'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'odfe',
-												);
-												this.setConfig(
-													'clusterVersion',
-													odfeVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="/static/images/clusters/odfe.svg"
-												alt="ODFE"
-											/>
-										</Button>
-										<p>
-											Open Distro by Amazon, includes
-											additional security enhancements.
-										</p>
+														? 'primary'
+														: 'default'
+												}
+												css={{
+													height: 160,
+													backgroundColor:
+														this.state.esFlavor ===
+														'odfe'
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'esFlavor',
+														'odfe',
+													);
+													this.setConfig(
+														'clusterVersion',
+														odfeVersions[0],
+													);
+												}}
+											>
+												<img
+													width="150"
+													src="/static/images/clusters/odfe.svg"
+													alt="ODFE"
+												/>
+											</Button>
+											<p>
+												Open Distro by Amazon, includes
+												additional security
+												enhancements.
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
+							)}
 
 							<div className={card}>
 								<div className="col light">
@@ -910,7 +916,15 @@ class NewCluster extends Component {
 								</div>
 								<div className="col grow">
 									<div className={settingsItem}>
-										<h4>Select a version</h4>
+										<h4
+											style={{
+												marginLeft: -20,
+												fontWeight: 'normal',
+												color: 'rgba(0, 0, 0, 0.65)',
+											}}
+										>
+											Select a version
+										</h4>
 										<select
 											className="form-control"
 											onChange={e =>
@@ -1021,49 +1035,54 @@ class NewCluster extends Component {
 													dashboard for ElasticSearch.
 												</p>
 											</div>
-											<div className={esContainer}>
-												<Button
-													size="large"
-													type={
-														this.state
-															.visualization ===
-														'grafana'
-															? 'primary'
-															: 'default'
-													}
-													css={{
-														height: 160,
-														width: '100%',
-														backgroundColor:
+											{!hasAnsibleSetup(
+												this.state.pricing_plan,
+											) && (
+												<div className={esContainer}>
+													<Button
+														size="large"
+														type={
 															this.state
 																.visualization ===
 															'grafana'
-																? '#eaf5ff'
-																: '#fff',
-													}}
-													onClick={() => {
-														this.setConfig(
-															'visualization',
-															'grafana',
-														);
-													}}
-												>
-													<img
-														width={120}
-														src="/static/images/clusters/grafana.png"
-														alt="Grafana"
-													/>
-												</Button>
-												<p>
-													The leading open-source tool
-													for metrics visualization.
-												</p>
-											</div>
+																? 'primary'
+																: 'default'
+														}
+														css={{
+															height: 160,
+															width: '100%',
+															backgroundColor:
+																this.state
+																	.visualization ===
+																'grafana'
+																	? '#eaf5ff'
+																	: '#fff',
+														}}
+														onClick={() => {
+															this.setConfig(
+																'visualization',
+																'grafana',
+															);
+														}}
+													>
+														<img
+															width={120}
+															src="/static/images/clusters/grafana.png"
+															alt="Grafana"
+														/>
+													</Button>
+													<p>
+														The leading open-source
+														tool for metrics
+														visualization.
+													</p>
+												</div>
+											)}
 										</div>
 									</div>
 								)}
 
-							{this.renderPlugins()}
+							{/** this.renderPlugins() **/}
 							<div className={card}>
 								<div className="col light">
 									<h3>Restore a cluster data</h3>

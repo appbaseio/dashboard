@@ -502,43 +502,46 @@ export default class ClusterScreen extends Component {
 									ElasticSearch.
 								</p>
 							</div>
-							<div className={esContainer}>
-								<Button
-									size="large"
-									type={
-										this.state.visualization === 'grafana'
-											? 'primary'
-											: 'default'
-									}
-									css={{
-										height: 160,
-										width: '100%',
-										backgroundColor:
+							{!hasAnsibleSetup(cluster.pricing_plan) && (
+								<div className={esContainer}>
+									<Button
+										size="large"
+										type={
 											this.state.visualization ===
 											'grafana'
-												? '#eaf5ff'
-												: '#fff',
-									}}
-									onClick={() => {
-										this.setConfig(
-											'visualization',
-											'grafana',
-										);
-										this.setConfig('kibana', false);
-										this.setConfig('grafana', true);
-									}}
-								>
-									<img
-										width={120}
-										src="/static/images/clusters/grafana.png"
-										alt="Grafana"
-									/>
-								</Button>
-								<p>
-									The leading open-source tool for metrics
-									visualization.
-								</p>
-							</div>
+												? 'primary'
+												: 'default'
+										}
+										css={{
+											height: 160,
+											width: '100%',
+											backgroundColor:
+												this.state.visualization ===
+												'grafana'
+													? '#eaf5ff'
+													: '#fff',
+										}}
+										onClick={() => {
+											this.setConfig(
+												'visualization',
+												'grafana',
+											);
+											this.setConfig('kibana', false);
+											this.setConfig('grafana', true);
+										}}
+									>
+										<img
+											width={120}
+											src="/static/images/clusters/grafana.png"
+											alt="Grafana"
+										/>
+									</Button>
+									<p>
+										The leading open-source tool for metrics
+										visualization.
+									</p>
+								</div>
+							)}
 						</div>
 					</li>
 				)}
