@@ -289,7 +289,7 @@ class PricingTable extends Component {
 		// test key
 		// this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 		// live key
-		this.stripeKey = STRIPE_KEY.LIVE;
+		this.stripeKey = STRIPE_KEY.TEST;
 	}
 
 	componentDidMount() {
