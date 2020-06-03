@@ -274,10 +274,13 @@ export default class ClusterScreen extends Component {
 			const [protocol, url] = (source.url || source.dashboard_url).split(
 				'://',
 			);
-			const copyURL = `${protocol}://${username}:${password}@${url}`.replace(
-				/\/$/,
-				'',
-			);
+			const copyURL =
+				source.name === 'kibana'
+					? url
+					: `${protocol}://${username}:${password}@${url}`.replace(
+							/\/$/,
+							'',
+					  );
 			return (
 				<div key={source.name} className={clusterEndpoint}>
 					<h4>
@@ -327,6 +330,7 @@ export default class ClusterScreen extends Component {
 			showOverlay,
 			visualization,
 		} = this.state;
+
 		const {
 			clusterId,
 			deployment: originalDeployment,
