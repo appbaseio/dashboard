@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Input, message } from 'antd';
+import get from 'lodash/get';
 
 import { emailBtn, inputStyles } from './styles';
 import { ACC_API } from '../../constants/config';
@@ -31,6 +32,25 @@ class EmailAuth extends React.Component {
 	handleEmailSubmission = async () => {
 		const { emailInput } = this.state;
 		this.toggleLoading();
+
+		try {
+			const disposableEmailResponse = await fetch(
+				`https://open.kickbox.com/v1/disposable/${emailInput}`,
+			);
+
+			const disposableEmailData = await disposableEmailResponse.json();
+
+			if (get(disposableEmailData, 'disposable') === true) {
+				this.toggleLoading();
+				message.error(
+					'Please use a valid e-mail address. We do not allow disposable addresses.',
+				);
+				return;
+			}
+		} catch (e) {
+			// Do nothing
+		}
+
 		try {
 			const response = await fetch(`${ACC_API}/user/email`, {
 				method: 'POST',
