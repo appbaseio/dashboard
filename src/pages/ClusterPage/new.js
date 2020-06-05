@@ -29,7 +29,7 @@ const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
 const esVersions = [
-	'7.7.0',
+	'7.7.1',
 	'7.6.2',
 	'7.5.2',
 	'7.4.2',
@@ -48,11 +48,11 @@ const esVersions = [
 	'6.0.1',
 ];
 
-const odfeVersions = ['1.4.0', '0.10.0'];
+const odfeVersions = ['1.8.0', '0.10.0'];
 
-export const V7_ARC = '7.25.0-cluster';
-export const V6_ARC = '7.25.0-cluster';
-export const ARC_BYOC = '7.25.0-byoc';
+export const V7_ARC = '7.26.1-cluster';
+export const V6_ARC = '7.26.1-cluster';
+export const ARC_BYOC = '7.26.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
@@ -137,51 +137,40 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
-			plan: '2019-sandbox',
+			plan: '2020-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
 			cpu: 2,
-			cost: 59,
+			cost: 49,
 			machine: 'custom-2-4096',
-			pph: 0.08,
+			pph: 0.07,
 		},
-		16: {
+		20: {
 			label: 'Hobby',
-			plan: '2019-hobby',
+			plan: '2020-hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
-			cost: 119,
+			cost: 99,
 			machine: 'custom-2-4096',
-			pph: 0.17,
+			pph: 0.14,
 		},
-		33: {
+		40: {
 			label: 'Starter',
-			plan: '2019-starter',
+			plan: '2020-starter',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
-			cost: 199,
+			cost: 149,
 			machine: 'custom-2-4096',
-			pph: 0.28,
+			pph: 0.2,
 		},
-		49: {
+		60: {
 			label: 'Production-I',
 			plan: '2019-production-1',
-			storage: 240,
-			memory: 8,
-			nodes: 3,
-			cpu: 2,
-			cost: 399,
-			machine: 'n1-standard-2',
-			pph: 0.55,
-		},
-		66: {
-			label: 'Production-II',
-			plan: '2019-production-2',
 			storage: 480,
 			memory: 16,
 			nodes: 3,
@@ -190,9 +179,9 @@ export const machineMarks = {
 			machine: 'n1-standard-4',
 			pph: 1.11,
 		},
-		83: {
-			label: 'Production-III',
-			plan: '2019-production-3',
+		80: {
+			label: 'Production-II',
+			plan: '2019-production-2',
 			storage: 999,
 			memory: 32,
 			nodes: 3,
@@ -202,8 +191,8 @@ export const machineMarks = {
 			pph: 2.22,
 		},
 		100: {
-			label: 'Production-IV',
-			plan: '2019-production-4',
+			label: 'Production-III',
+			plan: '2019-production-3',
 			storage: 2997,
 			memory: 64,
 			nodes: 3,
