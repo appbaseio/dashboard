@@ -121,7 +121,7 @@ class ClusterPage extends Component {
 				});
 
 				clusters.every(cluster => {
-					if (cluster.status.endsWith('in progress')) {
+					if (get(cluster, 'status', '').endsWith('in progress')) {
 						this.timer = setTimeout(this.initClusters, 30000);
 						return false;
 					}
@@ -150,6 +150,7 @@ class ClusterPage extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
+		if (!regions[provider]) return null;
 		const selectedRegion =
 			Object.keys(regions[provider]).find(item =>
 				region.startsWith(item),
@@ -189,6 +190,7 @@ class ClusterPage extends Component {
 	};
 
 	renderClusterCard = cluster => {
+		if (!cluster) return null;
 		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal } = this.state;
@@ -280,7 +282,9 @@ class ClusterPage extends Component {
 
 					<div>
 						<h4>Pricing Plan</h4>
-						<div>{planDetails.label || cluster.pricing_plan}</div>
+						<div>
+							{get(planDetails, 'label') || cluster.pricing_plan}
+						</div>
 					</div>
 
 					<div>
