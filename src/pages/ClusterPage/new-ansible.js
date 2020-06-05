@@ -1,26 +1,24 @@
-import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col } from 'antd';
-import { connect } from 'react-redux';
+import { Button, Col, Icon, Modal, Row, Select, Tabs, Tooltip } from 'antd';
 import { get } from 'lodash';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-
-import FullHeader from '../../components/FullHeader';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
+import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
-
-import { clusterContainer, card, settingsItem, esContainer } from './styles';
+import { card, clusterContainer, esContainer, settingsItem } from './styles';
 import {
+	CLUSTER_PLANS,
+	createSubscription,
 	deployCluster,
 	getClusters,
-	createSubscription,
-	STRIPE_KEY,
-	CLUSTER_PLANS,
 	hasAnsibleSetup,
+	STRIPE_KEY,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
-import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
 const { Option } = Select;
 
@@ -201,17 +199,6 @@ export const machineMarks = {
 			cost: 1599,
 			machine: 'n1-standard-8',
 			pph: 2.22,
-		},
-		100: {
-			label: 'Production-IV',
-			plan: '2019-production-4',
-			storage: 2997,
-			memory: 64,
-			nodes: 3,
-			cpu: 16,
-			cost: 3199,
-			machine: 'n1-standard-16',
-			pph: 4.44,
 		},
 	},
 };

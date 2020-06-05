@@ -1,25 +1,23 @@
-import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Select, Tabs, Tooltip, Row, Col } from 'antd';
-import { connect } from 'react-redux';
+import { Button, Col, Icon, Modal, Row, Select, Tabs, Tooltip } from 'antd';
 import { get } from 'lodash';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-
-import FullHeader from '../../components/FullHeader';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
+import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
-
-import { clusterContainer, card, settingsItem, esContainer } from './styles';
+import { card, clusterContainer, esContainer, settingsItem } from './styles';
 import {
+	CLUSTER_PLANS,
+	createSubscription,
 	deployCluster,
 	getClusters,
-	createSubscription,
 	STRIPE_KEY,
-	CLUSTER_PLANS,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
-import Header from '../../batteries/components/shared/UpgradePlan/Header';
 
 const { Option } = Select;
 
@@ -137,7 +135,7 @@ export const machineMarks = {
 	gke: {
 		0: {
 			label: 'Sandbox',
-			plan: '2020-sandbox',
+			plan: '2019-sandbox',
 			storage: 30,
 			memory: 4,
 			nodes: 1,
@@ -148,7 +146,7 @@ export const machineMarks = {
 		},
 		20: {
 			label: 'Hobby',
-			plan: '2020-hobby',
+			plan: '2019-hobby',
 			storage: 60,
 			memory: 4,
 			nodes: 2,
@@ -159,7 +157,7 @@ export const machineMarks = {
 		},
 		40: {
 			label: 'Starter',
-			plan: '2020-starter',
+			plan: '2019-starter',
 			storage: 120,
 			memory: 4,
 			nodes: 3,
