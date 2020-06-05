@@ -205,9 +205,9 @@ export const machineMarks = {
 };
 
 const validOpenFaasPlans = [
-	CLUSTER_PLANS.PRODUCTION_2019_4,
 	CLUSTER_PLANS.PRODUCTION_2019_3,
 	CLUSTER_PLANS.PRODUCTION_2019_2,
+	CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
 const namingConvention = {
