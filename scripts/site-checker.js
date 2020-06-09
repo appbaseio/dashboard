@@ -9,7 +9,7 @@ async function checkSite() {
 
 	// Respond to the beginning of a new page being scanned
 	checker.on('pagestart', url => {
-		console.log(`Scanning ${url}`);
+		// console.log(`Scanning ${url}`);
 	});
 
 	// After a page is scanned, check out the results!
@@ -27,7 +27,7 @@ async function checkSite() {
 	});
 
 	// How many links did we scan?
-	console.log(`Scanned total of ${result.links.length} links!`);
+	// console.log(`Scanned total of ${result.links.length} links!`);
 
 	// Check to see if the scan passed!
 	if (result.passed) return true;

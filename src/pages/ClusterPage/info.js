@@ -448,7 +448,6 @@ export default class Clusters extends Component {
 				mark.plan.endsWith(this.state.cluster.pricing_plan) ||
 				mark.plan.startsWith(this.state.cluster.pricing_plan),
 		);
-		console.log(allMarks);
 
 		const arcDeployment =
 			deployment &&

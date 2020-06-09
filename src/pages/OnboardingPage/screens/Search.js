@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-
-import SearchApp from './SearchApp';
 import Footer from '../components/Footer';
+import SearchApp from './SearchApp';
 
 export default class Search extends Component {
 	state = {
@@ -29,7 +28,6 @@ export default class Search extends Component {
 	};
 
 	handleChange = selectedOption => {
-		console.log(selectedOption);
 		if (!selectedOption.length) {
 			this.setError('There should be at least one field set for search.');
 		} else {
