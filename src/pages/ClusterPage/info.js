@@ -37,7 +37,9 @@ const checkIfUpdateIsAvailable = (image, recipe) => {
 		return version !== ARC_BYOC;
 	}
 
-	return version !== V7_ARC;
+	//TODO fix this after arc upgrade is figured out;
+	return false;
+	// return version !== V7_ARC;
 };
 
 export default class Clusters extends Component {
