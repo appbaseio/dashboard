@@ -1,27 +1,27 @@
+import { Tooltip } from 'antd';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled, { css } from 'react-emotion';
 import { Check } from 'react-feather';
 import { connect } from 'react-redux';
 import Stripe from 'react-stripe-checkout';
-import { Tooltip } from 'antd';
-import get from 'lodash/get';
-import PropTypes from 'prop-types';
-import AppButton from './AppButton';
 import Loader from '../../batteries/components/shared/Loader';
-import PlusMinus from './PlusMinus';
-import NewPricingCard from './NewPricingCard';
-import theme from './theme';
-import { media, hexToRgb } from '../../utils/media';
-import { getParam } from '../../utils';
-import { planBasePrice, displayErrors } from '../../utils/helper';
 import {
 	createAppSubscription,
 	deleteAppSubscription,
 	getAppPlan,
 } from '../../batteries/modules/actions';
 import { getAppPlanByName } from '../../batteries/modules/selectors';
-import Unsubscribe from './Unsubscribe';
 import { STRIPE_KEY } from '../../constants';
+import { getParam } from '../../utils';
+import { displayErrors, planBasePrice } from '../../utils/helper';
+import { hexToRgb, media } from '../../utils/media';
+import AppButton from './AppButton';
+import NewPricingCard from './NewPricingCard';
+import PlusMinus from './PlusMinus';
+import theme from './theme';
+import Unsubscribe from './Unsubscribe';
 
 const CheckList = ({ list }) =>
 	list.map(item => (
@@ -289,7 +289,7 @@ class PricingTable extends Component {
 		// test key
 		// this.stripeKey = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 		// live key
-		this.stripeKey = STRIPE_KEY.TEST;
+		this.stripeKey = STRIPE_KEY.LIVE;
 	}
 
 	componentDidMount() {

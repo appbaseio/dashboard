@@ -1,8 +1,6 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
-
-import { Home } from 'react-feather';
+import { Route, Switch } from 'react-router-dom';
 import Loader from '../../components/Loader';
 
 const AppWrapper = Loadable({
@@ -27,11 +25,6 @@ const MarketPlacePage = Loadable({
 
 const NewClusterPage = Loadable({
 	loader: () => import('../ClusterPage/new'),
-	loading: Loader,
-});
-
-const NewAnsibleClusterPage = Loadable({
-	loader: () => import('../ClusterPage/new-ansible'),
 	loading: Loader,
 });
 
@@ -98,10 +91,7 @@ const Wrapper = ({ user }) =>
 			<Route path="/clusters/new/hosted" component={NewClusterPage} />
 			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />
-			<Route
-				path="/clusters/new-ansible"
-				component={NewAnsibleClusterPage}
-			/>
+
 			<Route
 				path="/clusters/:id/explore"
 				component={ExploreClusterPage}

@@ -14,6 +14,7 @@ import {
 	createSubscription,
 	deployCluster,
 	getClusters,
+	hasAnsibleSetup,
 	STRIPE_KEY,
 } from './utils';
 import plugins from './utils/plugins';
@@ -28,6 +29,7 @@ const SSH_KEY =
 
 const esVersions = [
 	'7.7.1',
+	'7.7.0',
 	'7.6.2',
 	'7.5.2',
 	'7.4.2',
@@ -62,7 +64,6 @@ export const arcVersions = {
 	1: V7_ARC,
 	/* odfe versions end */
 };
-
 export const machineMarks = {
 	azure: {
 		0: {
@@ -201,11 +202,149 @@ export const machineMarks = {
 		},
 	},
 };
+export const ansibleMachineMarks = {
+	azure: {
+		0: {
+			label: 'Sandbox',
+			plan: '2019-sandbox',
+			storage: 30,
+			memory: 4,
+			nodes: 1,
+			cpu: 2,
+			cost: 59,
+			machine: 'Standard_B2s',
+			pph: 0.08,
+		},
+		20: {
+			label: 'Hobby',
+			plan: '2019-hobby',
+			storage: 60,
+			memory: 4,
+			nodes: 2,
+			cpu: 2,
+			cost: 119,
+			machine: 'Standard_B2s',
+			pph: 0.17,
+		},
+		40: {
+			label: 'Starter',
+			plan: '2019-starter',
+			storage: 120,
+			memory: 4,
+			nodes: 3,
+			cpu: 2,
+			cost: 199,
+			machine: 'Standard_B2s',
+			pph: 0.28,
+		},
+		60: {
+			label: 'Production-I',
+			plan: '2019-production-1',
+			storage: 240,
+			memory: 8,
+			nodes: 3,
+			cpu: 2,
+			cost: 399,
+			machine: 'Standard_B2s',
+			pph: 0.55,
+		},
+		80: {
+			label: 'Production-II',
+			plan: '2019-production-2',
+			storage: 480,
+			memory: 16,
+			nodes: 3,
+			cpu: 4,
+			cost: 799,
+			machine: 'Standard_B2ms',
+			pph: 1.11,
+		},
+		100: {
+			label: 'Production-III',
+			plan: '2019-production-3',
+			storage: 999,
+			memory: 32,
+			nodes: 3,
+			cpu: 8,
+			cost: 1599,
+			machine: 'Standard_B4ms',
+			pph: 2.22,
+		},
+	},
+	gke: {
+		0: {
+			label: 'Sandbox',
+			plan: '2020-sandbox',
+			storage: 30,
+			memory: 4,
+			nodes: 1,
+			cpu: 2,
+			cost: 59,
+			machine: 'custom-2-4096',
+			pph: 0.08,
+		},
+		20: {
+			label: 'Hobby',
+			plan: '2020-hobby',
+			storage: 60,
+			memory: 4,
+			nodes: 2,
+			cpu: 2,
+			cost: 119,
+			machine: 'custom-2-4096',
+			pph: 0.17,
+		},
+		40: {
+			label: 'Starter',
+			plan: '2020-starter',
+			storage: 120,
+			memory: 4,
+			nodes: 3,
+			cpu: 2,
+			cost: 199,
+			machine: 'custom-2-4096',
+			pph: 0.28,
+		},
+		60: {
+			label: 'Production-I',
+			plan: '2019-production-1',
+			storage: 240,
+			memory: 8,
+			nodes: 3,
+			cpu: 2,
+			cost: 399,
+			machine: 'n1-standard-2',
+			pph: 0.55,
+		},
+		80: {
+			label: 'Production-II',
+			plan: '2019-production-2',
+			storage: 480,
+			memory: 16,
+			nodes: 3,
+			cpu: 4,
+			cost: 799,
+			machine: 'n1-standard-4',
+			pph: 1.11,
+		},
+		100: {
+			label: 'Production-III',
+			plan: '2019-production-3',
+			storage: 999,
+			memory: 32,
+			nodes: 3,
+			cpu: 8,
+			cost: 1599,
+			machine: 'n1-standard-8',
+			pph: 2.22,
+		},
+	},
+};
 
 const validOpenFaasPlans = [
+	CLUSTER_PLANS.PRODUCTION_2019_4,
 	CLUSTER_PLANS.PRODUCTION_2019_3,
 	CLUSTER_PLANS.PRODUCTION_2019_2,
-	CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
 const namingConvention = {
@@ -230,8 +369,8 @@ class NewCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: machineMarks[provider][0].plan,
-			vm_size: machineMarks[provider][0].machine,
+			pricing_plan: ansibleMachineMarks[provider][0].plan,
+			vm_size: ansibleMachineMarks[provider][0].machine,
 			region: '',
 			kibana: false,
 			streams: false,
@@ -274,12 +413,13 @@ class NewCluster extends Component {
 		const { provider } = this.state;
 		if (prevState.provider !== provider) {
 			const [currentMachine] = Object.entries(
-				machineMarks[prevState.provider],
+				ansibleMachineMarks[prevState.provider],
 			).find(([, value]) => value.machine === prevState.vm_size);
 			// eslint-disable-next-line
 			this.setState({
-				pricing_plan: machineMarks[provider][currentMachine].plan,
-				vm_size: machineMarks[provider][currentMachine].machine,
+				pricing_plan:
+					ansibleMachineMarks[provider][currentMachine].plan,
+				vm_size: ansibleMachineMarks[provider][currentMachine].machine,
 				region: '',
 			});
 		}
@@ -337,7 +477,7 @@ class NewCluster extends Component {
 		}
 
 		const selectedMachine = Object.values(
-			machineMarks[this.state.provider],
+			ansibleMachineMarks[this.state.provider],
 		).find(item => item.plan === this.state.pricing_plan);
 
 		const arcTag =
@@ -668,7 +808,10 @@ class NewCluster extends Component {
 									{isUsingClusterTrial ? (
 										<p>
 											<b>Note: </b>You can only create{' '}
-											{machineMarks[provider][0].label}{' '}
+											{
+												ansibleMachineMarks[provider][0]
+													.label
+											}{' '}
 											Cluster while on trial.
 										</p>
 									) : null}
@@ -676,7 +819,9 @@ class NewCluster extends Component {
 
 								<PricingSlider
 									key={this.state.provider}
-									marks={machineMarks[this.state.provider]}
+									marks={
+										ansibleMachineMarks[this.state.provider]
+									}
 									onChange={this.setPricing}
 									sliderProps={{
 										disabled: isUsingClusterTrial,
@@ -799,96 +944,101 @@ class NewCluster extends Component {
 									</p>
 								</div>
 							</div>
-							<div className={card}>
-								<div className="col light">
-									<h3>Choose Elasticsearch Flavor</h3>
-								</div>
-
-								<div
-									className={settingsItem}
-									css={{
-										padding: 30,
-										alignItems: 'baseline',
-									}}
-								>
-									<div className={esContainer}>
-										<Button
-											type={
-												this.state.esFlavor === 'es'
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											css={{
-												height: 160,
-												marginRight: 20,
-												backgroundColor:
-													this.state.esFlavor === 'es'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'es',
-												);
-												this.setConfig(
-													'clusterVersion',
-													esVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
-												alt="Elastic"
-											/>
-										</Button>
-										<p>
-											The Open Source Elasticsearch
-											Distribution.
-										</p>
+							{!hasAnsibleSetup(this.state.pricing_plan) && (
+								<div className={card}>
+									<div className="col light">
+										<h3>Choose Elasticsearch Flavor</h3>
 									</div>
-									<div className={esContainer}>
-										<Button
-											size="large"
-											type={
-												this.state.esFlavor === 'odfe'
-													? 'primary'
-													: 'default'
-											}
-											css={{
-												height: 160,
-												backgroundColor:
+
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+											alignItems: 'baseline',
+										}}
+									>
+										<div className={esContainer}>
+											<Button
+												type={
+													this.state.esFlavor === 'es'
+														? 'primary'
+														: 'default'
+												}
+												size="large"
+												css={{
+													height: 160,
+													marginRight: 20,
+													backgroundColor:
+														this.state.esFlavor ===
+														'es'
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'esFlavor',
+														'es',
+													);
+													this.setConfig(
+														'clusterVersion',
+														esVersions[0],
+													);
+												}}
+											>
+												<img
+													width="150"
+													src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+													alt="Elastic"
+												/>
+											</Button>
+											<p>
+												The Open Source Elasticsearch
+												Distribution.
+											</p>
+										</div>
+										<div className={esContainer}>
+											<Button
+												size="large"
+												type={
 													this.state.esFlavor ===
 													'odfe'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'odfe',
-												);
-												this.setConfig(
-													'clusterVersion',
-													odfeVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="/static/images/clusters/odfe.svg"
-												alt="ODFE"
-											/>
-										</Button>
-										<p>
-											Open Distro by Amazon, includes
-											additional security enhancements.
-										</p>
+														? 'primary'
+														: 'default'
+												}
+												css={{
+													height: 160,
+													backgroundColor:
+														this.state.esFlavor ===
+														'odfe'
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'esFlavor',
+														'odfe',
+													);
+													this.setConfig(
+														'clusterVersion',
+														odfeVersions[0],
+													);
+												}}
+											>
+												<img
+													width="150"
+													src="/static/images/clusters/odfe.svg"
+													alt="ODFE"
+												/>
+											</Button>
+											<p>
+												Open Distro by Amazon, includes
+												additional security
+												enhancements.
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
+							)}
 
 							<div className={card}>
 								<div className="col light">
@@ -897,7 +1047,15 @@ class NewCluster extends Component {
 								</div>
 								<div className="col grow">
 									<div className={settingsItem}>
-										<h4>Select a version</h4>
+										<h4
+											style={{
+												marginLeft: -20,
+												fontWeight: 'normal',
+												color: 'rgba(0, 0, 0, 0.65)',
+											}}
+										>
+											Select a version
+										</h4>
 										<select
 											className="form-control"
 											onChange={e =>
@@ -924,128 +1082,138 @@ class NewCluster extends Component {
 								</div>
 							</div>
 							{this.state.pricing_plan !==
-								CLUSTER_PLANS.SANDBOX_2019 && (
-								<div className={card}>
-									<div className="col light">
-										<h3>Choose Visualization Tool</h3>
-									</div>
+								CLUSTER_PLANS.SANDBOX_2019 &&
+								this.state.pricing_plan !==
+									CLUSTER_PLANS.SANDBOX_2020 && (
+									<div className={card}>
+										<div className="col light">
+											<h3>Choose Visualization Tool</h3>
+										</div>
 
-									<div
-										className={settingsItem}
-										css={{
-											padding: 30,
-											alignItems: 'baseline',
-										}}
-									>
-										<div className={esContainer}>
-											<Button
-												type={
-													this.state.visualization ===
-													'none'
-														? 'primary'
-														: 'default'
-												}
-												size="large"
-												css={{
-													height: 160,
-													width: '100%',
-													color: '#000',
-													backgroundColor:
+										<div
+											className={settingsItem}
+											css={{
+												padding: 30,
+												alignItems: 'baseline',
+											}}
+										>
+											<div className={esContainer}>
+												<Button
+													type={
 														this.state
 															.visualization ===
 														'none'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'none',
-													);
-												}}
-											>
-												None
-											</Button>
-										</div>
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
-													this.state.visualization ===
-													'kibana'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													width: '100%',
-													backgroundColor:
+															? 'primary'
+															: 'default'
+													}
+													size="large"
+													css={{
+														height: 160,
+														width: '100%',
+														color: '#000',
+														backgroundColor:
+															this.state
+																.visualization ===
+															'none'
+																? '#eaf5ff'
+																: '#fff',
+													}}
+													onClick={() => {
+														this.setConfig(
+															'visualization',
+															'none',
+														);
+													}}
+												>
+													None
+												</Button>
+											</div>
+											<div className={esContainer}>
+												<Button
+													size="large"
+													type={
 														this.state
 															.visualization ===
 														'kibana'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'kibana',
-													);
-												}}
-											>
-												<img
-													width={150}
-													src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
-													alt="Kibana"
-												/>
-											</Button>
-											<p>
-												The default visualization
-												dashboard for ElasticSearch.
-											</p>
-										</div>
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
-													this.state.visualization ===
-													'grafana'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													width: '100%',
-													backgroundColor:
-														this.state
-															.visualization ===
-														'grafana'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'grafana',
-													);
-												}}
-											>
-												<img
-													width={120}
-													src="/static/images/clusters/grafana.png"
-													alt="Grafana"
-												/>
-											</Button>
-											<p>
-												The leading open-source tool for
-												metrics visualization.
-											</p>
+															? 'primary'
+															: 'default'
+													}
+													css={{
+														height: 160,
+														width: '100%',
+														backgroundColor:
+															this.state
+																.visualization ===
+															'kibana'
+																? '#eaf5ff'
+																: '#fff',
+													}}
+													onClick={() => {
+														this.setConfig(
+															'visualization',
+															'kibana',
+														);
+													}}
+												>
+													<img
+														width={150}
+														src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+														alt="Kibana"
+													/>
+												</Button>
+												<p>
+													The default visualization
+													dashboard for ElasticSearch.
+												</p>
+											</div>
+											{!hasAnsibleSetup(
+												this.state.pricing_plan,
+											) && (
+												<div className={esContainer}>
+													<Button
+														size="large"
+														type={
+															this.state
+																.visualization ===
+															'grafana'
+																? 'primary'
+																: 'default'
+														}
+														css={{
+															height: 160,
+															width: '100%',
+															backgroundColor:
+																this.state
+																	.visualization ===
+																'grafana'
+																	? '#eaf5ff'
+																	: '#fff',
+														}}
+														onClick={() => {
+															this.setConfig(
+																'visualization',
+																'grafana',
+															);
+														}}
+													>
+														<img
+															width={120}
+															src="/static/images/clusters/grafana.png"
+															alt="Grafana"
+														/>
+													</Button>
+													<p>
+														The leading open-source
+														tool for metrics
+														visualization.
+													</p>
+												</div>
+											)}
 										</div>
 									</div>
-								</div>
-							)}
+								)}
 
-							{this.renderPlugins()}
+							{/** this.renderPlugins() **/}
 							<div className={card}>
 								<div className="col light">
 									<h3>Restore a cluster data</h3>

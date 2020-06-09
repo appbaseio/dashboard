@@ -1,28 +1,27 @@
+import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
-import { Button, Select, message, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Stripe from 'react-stripe-checkout';
-
+import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import {
-	hasAddon,
-	getClusters,
-	getSnapshots,
-	restore,
-	STRIPE_KEY,
-	CLUSTER_PLANS,
-	hasAnsibleSetup,
-} from '../utils';
+import { V7_ARC } from '../new';
 import {
 	card,
-	settingsItem,
-	clusterEndpoint,
 	clusterButtons,
+	clusterEndpoint,
 	esContainer,
+	settingsItem,
 } from '../styles';
-import ArcDetail from '../components/ArcDetail';
-import { V7_ARC } from '../new';
+import {
+	CLUSTER_PLANS,
+	getClusters,
+	getSnapshots,
+	hasAddon,
+	hasAnsibleSetup,
+	restore,
+	STRIPE_KEY,
+} from '../utils';
 
 const { Option } = Select;
 
@@ -342,6 +341,11 @@ export default class ClusterScreen extends Component {
 		} = this.props;
 		const isViewer = cluster.user_role === 'viewer';
 
+		let addons = deployment.addons || [];
+
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			addons = addons.filter(i => i.name === 'arc');
+		}
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&
@@ -422,9 +426,7 @@ export default class ClusterScreen extends Component {
 					</div>
 
 					<div className="col">
-						{(deployment.addons || []).map(key =>
-							this.renderClusterEndpoint(key),
-						)}
+						{addons.map(key => this.renderClusterEndpoint(key))}
 					</div>
 				</li>
 				{(visualization !== 'none' ||

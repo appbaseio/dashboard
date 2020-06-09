@@ -1,9 +1,9 @@
 import { ACC_API } from '../../../constants/config';
 
 // test key
-export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
-// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
@@ -241,8 +241,7 @@ export function deleteCluster(id) {
 
 export function createSubscription(id, token) {
 	return new Promise((resolve, reject) => {
-		// TODO remove test=true before merging to live
-		fetch(`${ACC_API}/v1/subscription/cluster/${id}?test=true`, {
+		fetch(`${ACC_API}/v1/subscription/cluster/${id}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {

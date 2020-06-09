@@ -1,33 +1,29 @@
-import React, { Fragment, Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, Icon, Button, Divider, Tooltip, Modal } from 'antd';
-import Stripe from 'react-stripe-checkout';
-
+import { Button, Col, Divider, Icon, Modal, Row, Tooltip } from 'antd';
 import { get } from 'lodash';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Stripe from 'react-stripe-checkout';
+import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
-import Container from '../../components/Container';
 import Loader from '../../components/Loader';
-
+import { getParam } from '../../utils';
+import { mediaKey } from '../../utils/media';
+import DeleteClusterModal from './components/DeleteClusterModal';
+import Overlay from './components/Overlay';
+import { ansibleMachineMarks, machineMarks } from './new';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { clusterContainer, clustersList } from './styles';
 import {
-	getClusters,
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
-	STRIPE_KEY,
-	CLUSTER_PLANS,
+	getClusters,
 	hasAnsibleSetup,
+	STRIPE_KEY,
 } from './utils';
-import { machineMarks } from './new';
-import { mediaKey } from '../../utils/media';
-import { getParam } from '../../utils';
-import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
-import Overlay from './components/Overlay';
-import DeleteClusterModal from './components/DeleteClusterModal';
-import { machineMarks as arcMachineMarks } from './NewMyCluster';
-import { machineMarks as ansibleMachineMarks } from './new-ansible';
 
 class ClusterPage extends Component {
 	constructor(props) {
