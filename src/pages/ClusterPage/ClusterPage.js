@@ -1,30 +1,29 @@
-import React, { Fragment, Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, Icon, Button, Divider, Tooltip, Modal } from 'antd';
-import Stripe from 'react-stripe-checkout';
-
+import { Button, Col, Divider, Icon, Modal, Row, Tooltip } from 'antd';
 import { get } from 'lodash';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Stripe from 'react-stripe-checkout';
+import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
-import Container from '../../components/Container';
 import Loader from '../../components/Loader';
-
+import { getParam } from '../../utils';
+import { mediaKey } from '../../utils/media';
+import DeleteClusterModal from './components/DeleteClusterModal';
+import Overlay from './components/Overlay';
+import { ansibleMachineMarks, machineMarks } from './new';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { clusterContainer, clustersList } from './styles';
 import {
-	getClusters,
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
+	getClusters,
+	hasAnsibleSetup,
 	STRIPE_KEY,
 } from './utils';
-import { machineMarks } from './new';
-import { mediaKey } from '../../utils/media';
-import { getParam } from '../../utils';
-import { clusterContainer, clustersList } from './styles';
 import { regions } from './utils/regions';
-import Overlay from './components/Overlay';
-import DeleteClusterModal from './components/DeleteClusterModal';
-import { machineMarks as arcMachineMarks } from './NewMyCluster';
 
 class ClusterPage extends Component {
 	constructor(props) {
@@ -92,7 +91,11 @@ class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		const selectedPlan = Object.values(machineMarks[provider]).find(
+		let allMarks = machineMarks[provider];
+		if (hasAnsibleSetup(plan)) {
+			allMarks = ansibleMachineMarks[provider];
+		}
+		const selectedPlan = Object.values(allMarks).find(
 			item => item.plan === plan || item.plan.endsWith(plan),
 		);
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
@@ -194,13 +197,16 @@ class ClusterPage extends Component {
 			allMarks = arcMachineMarks;
 		}
 
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			allMarks = ansibleMachineMarks.gke;
+		}
+
 		const planDetails = Object.values(allMarks).find(
 			mark =>
 				mark.plan === cluster.pricing_plan ||
 				mark.plan.endsWith(cluster.pricing_plan) ||
 				mark.plan.startsWith(cluster.pricing_plan),
 		);
-
 		const paymentStyles = isExternalCluster
 			? {
 					paddingLeft: '25%',

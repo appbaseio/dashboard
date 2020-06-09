@@ -1,34 +1,34 @@
+import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
-import { Modal, Button, Icon, Tag, Tooltip, Alert, message } from 'antd';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
-
-import { regions } from './utils/regions';
-import { machineMarks, V7_ARC, ARC_BYOC } from './new';
-import { machineMarks as arcMachineMarks } from './NewMyCluster';
-import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
+import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
-import Overlay from './components/Overlay';
-import Sidebar, { RightContainer } from './components/Sidebar';
-import { clusterContainer, clustersList, card } from './styles';
-import {
-	getClusterData,
-	deployCluster,
-	deleteCluster,
-	createSubscription,
-	hasAddon,
-	getAddon,
-	STRIPE_KEY,
-} from './utils';
-import ClusterScreen from './screens/ClusterScreen';
-import ScaleClusterScreen from './screens/ScaleClusterScreen';
-import InvoiceScreen from './screens/InvoiceScreen';
-import ShareClusterScreen from './screens/ShareClusterScreen';
+import { ACC_API } from '../../constants/config';
+import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
-import ConnectCluster from './components/ConnectCluster';
-import { ACC_API } from '../../constants/config';
+import Overlay from './components/Overlay';
+import Sidebar, { RightContainer } from './components/Sidebar';
+import { ansibleMachineMarks, ARC_BYOC, machineMarks, V7_ARC } from './new';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import ClusterScreen from './screens/ClusterScreen';
+import InvoiceScreen from './screens/InvoiceScreen';
+import ScaleClusterScreen from './screens/ScaleClusterScreen';
+import ShareClusterScreen from './screens/ShareClusterScreen';
+import { card, clusterContainer, clustersList } from './styles';
+import {
+	createSubscription,
+	deleteCluster,
+	deployCluster,
+	getAddon,
+	getClusterData,
+	hasAddon,
+	hasAnsibleSetup,
+	STRIPE_KEY,
+} from './utils';
+import { regions } from './utils/regions';
 
 const checkIfUpdateIsAvailable = (image, recipe) => {
 	const version = (image.split('/')[1] || '').split(':')[1];
@@ -37,7 +37,9 @@ const checkIfUpdateIsAvailable = (image, recipe) => {
 		return version !== ARC_BYOC;
 	}
 
-	return version !== V7_ARC;
+	//TODO fix this after arc upgrade is figured out;
+	return false;
+	// return version !== V7_ARC;
 };
 
 export default class Clusters extends Component {
@@ -76,10 +78,13 @@ export default class Clusters extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
+		let allMarks = machineMarks;
+		if (hasAnsibleSetup(plan)) {
+			allMarks = ansibleMachineMarks;
+		}
 		const selectedPlan = (
-			Object.values(
-				machineMarks[this.state.cluster.provider || 'azure'],
-			) || []
+			Object.values(allMarks[this.state.cluster.provider || 'azure']) ||
+			[]
 		).find(item => item.plan === plan || item.plan.endsWith(plan));
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
@@ -433,6 +438,10 @@ export default class Clusters extends Component {
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
+		}
+
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			allMarks = ansibleMachineMarks.gke;
 		}
 
 		const planDetails = Object.values(allMarks).find(

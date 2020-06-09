@@ -1,27 +1,27 @@
+import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
-import { Button, Select, message, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Stripe from 'react-stripe-checkout';
-
+import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
-import {
-	hasAddon,
-	getClusters,
-	getSnapshots,
-	restore,
-	STRIPE_KEY,
-	CLUSTER_PLANS,
-} from '../utils';
+import { V7_ARC } from '../new';
 import {
 	card,
-	settingsItem,
-	clusterEndpoint,
 	clusterButtons,
+	clusterEndpoint,
 	esContainer,
+	settingsItem,
 } from '../styles';
-import ArcDetail from '../components/ArcDetail';
-import { V7_ARC } from '../new';
+import {
+	CLUSTER_PLANS,
+	getClusters,
+	getSnapshots,
+	hasAddon,
+	hasAnsibleSetup,
+	restore,
+	STRIPE_KEY,
+} from '../utils';
 
 const { Option } = Select;
 
@@ -273,10 +273,13 @@ export default class ClusterScreen extends Component {
 			const [protocol, url] = (source.url || source.dashboard_url).split(
 				'://',
 			);
-			const copyURL = `${protocol}://${username}:${password}@${url}`.replace(
-				/\/$/,
-				'',
-			);
+			const copyURL =
+				source.name === 'kibana'
+					? url
+					: `${protocol}://${username}:${password}@${url}`.replace(
+							/\/$/,
+							'',
+					  );
 			return (
 				<div key={source.name} className={clusterEndpoint}>
 					<h4>
@@ -326,6 +329,7 @@ export default class ClusterScreen extends Component {
 			showOverlay,
 			visualization,
 		} = this.state;
+
 		const {
 			clusterId,
 			deployment: originalDeployment,
@@ -337,6 +341,11 @@ export default class ClusterScreen extends Component {
 		} = this.props;
 		const isViewer = cluster.user_role === 'viewer';
 
+		let addons = deployment.addons || [];
+
+		if (hasAnsibleSetup(cluster.pricing_plan)) {
+			addons = addons.filter(i => i.name === 'arc');
+		}
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&
@@ -397,16 +406,18 @@ export default class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				<li className={card}>
-					<div className="col light">
-						<h3>Dashboard</h3>
-						<p>Manage your cluster</p>
-					</div>
+				{!hasAnsibleSetup(cluster.pricing_plan) && (
+					<li className={card}>
+						<div className="col light">
+							<h3>Dashboard</h3>
+							<p>Manage your cluster</p>
+						</div>
 
-					<div className="col">
-						{this.renderClusterEndpoint(cluster)}
-					</div>
-				</li>
+						<div className="col">
+							{this.renderClusterEndpoint(cluster)}
+						</div>
+					</li>
+				)}
 
 				<li className={card}>
 					<div className="col light">
@@ -415,13 +426,13 @@ export default class ClusterScreen extends Component {
 					</div>
 
 					<div className="col">
-						{(deployment.addons || []).map(key =>
-							this.renderClusterEndpoint(key),
-						)}
+						{addons.map(key => this.renderClusterEndpoint(key))}
 					</div>
 				</li>
 				{(visualization !== 'none' ||
-					cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019) && (
+					(cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019 &&
+						cluster.pricing_plan !==
+							CLUSTER_PLANS.SANDBOX_2020)) && (
 					<li className={card}>
 						<div className="col light">
 							<h3>Choose Visualization Tool</h3>
@@ -497,43 +508,46 @@ export default class ClusterScreen extends Component {
 									ElasticSearch.
 								</p>
 							</div>
-							<div className={esContainer}>
-								<Button
-									size="large"
-									type={
-										this.state.visualization === 'grafana'
-											? 'primary'
-											: 'default'
-									}
-									css={{
-										height: 160,
-										width: '100%',
-										backgroundColor:
+							{!hasAnsibleSetup(cluster.pricing_plan) && (
+								<div className={esContainer}>
+									<Button
+										size="large"
+										type={
 											this.state.visualization ===
 											'grafana'
-												? '#eaf5ff'
-												: '#fff',
-									}}
-									onClick={() => {
-										this.setConfig(
-											'visualization',
-											'grafana',
-										);
-										this.setConfig('kibana', false);
-										this.setConfig('grafana', true);
-									}}
-								>
-									<img
-										width={120}
-										src="/static/images/clusters/grafana.png"
-										alt="Grafana"
-									/>
-								</Button>
-								<p>
-									The leading open-source tool for metrics
-									visualization.
-								</p>
-							</div>
+												? 'primary'
+												: 'default'
+										}
+										css={{
+											height: 160,
+											width: '100%',
+											backgroundColor:
+												this.state.visualization ===
+												'grafana'
+													? '#eaf5ff'
+													: '#fff',
+										}}
+										onClick={() => {
+											this.setConfig(
+												'visualization',
+												'grafana',
+											);
+											this.setConfig('kibana', false);
+											this.setConfig('grafana', true);
+										}}
+									>
+										<img
+											width={120}
+											src="/static/images/clusters/grafana.png"
+											alt="Grafana"
+										/>
+									</Button>
+									<p>
+										The leading open-source tool for metrics
+										visualization.
+									</p>
+								</div>
+							)}
 						</div>
 					</li>
 				)}

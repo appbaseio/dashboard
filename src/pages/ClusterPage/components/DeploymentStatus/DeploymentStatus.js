@@ -26,7 +26,11 @@ export default function DeploymentStatus({ data, onProgress }) {
 		source => deployments[source].status === 'in progress',
 	);
 
-	if (deploymentsInProgress.length) {
+	const deploymentDeletionInProgress = Object.keys(deployments).filter(
+		source => deployments[source].status === 'deletion in progress',
+	);
+
+	if (deploymentsInProgress.length || deploymentDeletionInProgress.length) {
 		// onProgress callback enables the parent to re-fetch the data in some time
 		// if any deployment is in progress
 		onProgress();
@@ -36,6 +40,17 @@ export default function DeploymentStatus({ data, onProgress }) {
 					<Alert
 						key={item}
 						message={getMessage(item)}
+						type="info"
+						showIcon
+						css={{
+							marginBottom: 12,
+						}}
+					/>
+				))}
+				{deploymentDeletionInProgress.map(item => (
+					<Alert
+						key={item}
+						message={`Removing ${item}. Hang tight!`}
 						type="info"
 						showIcon
 						css={{
