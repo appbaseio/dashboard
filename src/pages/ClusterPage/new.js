@@ -1056,6 +1056,7 @@ class NewCluster extends Component {
 										>
 											Select a version
 										</h4>
+										{/* TODO remove disabled fix after we release support for multiple versions on ansible clusters */}
 										<select
 											className="form-control"
 											onChange={e =>
@@ -1064,6 +1065,9 @@ class NewCluster extends Component {
 													e.target.value,
 												)
 											}
+											disabled={hasAnsibleSetup(
+												this.state.pricing_plan,
+											)}
 										>
 											{versions.map(version => (
 												<option
