@@ -72,7 +72,7 @@ class Billing extends Component {
 									<p>You are currently in trial mode.</p>
 								) : null}
 								<Stripe
-									stripeKey={STRIPE_KEY.TEST}
+									stripeKey={STRIPE_KEY.LIVE}
 									panelLabel="Update Payment"
 									token={updatePayment}
 								>
