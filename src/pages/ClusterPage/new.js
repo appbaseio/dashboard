@@ -197,80 +197,11 @@ export const machineMarks = {
 			nodes: 3,
 			cpu: 16,
 			cost: 3199,
-			machine: 'n1-standard-16',
 			pph: 4.44,
 		},
 	},
 };
 export const ansibleMachineMarks = {
-	azure: {
-		0: {
-			label: 'Sandbox',
-			plan: '2019-sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cpu: 2,
-			cost: 59,
-			machine: 'Standard_B2s',
-			pph: 0.08,
-		},
-		20: {
-			label: 'Hobby',
-			plan: '2019-hobby',
-			storage: 60,
-			memory: 4,
-			nodes: 2,
-			cpu: 2,
-			cost: 119,
-			machine: 'Standard_B2s',
-			pph: 0.17,
-		},
-		40: {
-			label: 'Starter',
-			plan: '2019-starter',
-			storage: 120,
-			memory: 4,
-			nodes: 3,
-			cpu: 2,
-			cost: 199,
-			machine: 'Standard_B2s',
-			pph: 0.28,
-		},
-		60: {
-			label: 'Production-I',
-			plan: '2019-production-1',
-			storage: 240,
-			memory: 8,
-			nodes: 3,
-			cpu: 2,
-			cost: 399,
-			machine: 'Standard_B2s',
-			pph: 0.55,
-		},
-		80: {
-			label: 'Production-II',
-			plan: '2019-production-2',
-			storage: 480,
-			memory: 16,
-			nodes: 3,
-			cpu: 4,
-			cost: 799,
-			machine: 'Standard_B2ms',
-			pph: 1.11,
-		},
-		100: {
-			label: 'Production-III',
-			plan: '2019-production-3',
-			storage: 999,
-			memory: 32,
-			nodes: 3,
-			cpu: 8,
-			cost: 1599,
-			machine: 'Standard_B4ms',
-			pph: 2.22,
-		},
-	},
 	gke: {
 		0: {
 			label: 'Sandbox',
@@ -279,9 +210,9 @@ export const ansibleMachineMarks = {
 			memory: 4,
 			nodes: 1,
 			cpu: 2,
-			cost: 59,
+			cost: 49,
 			machine: 'custom-2-4096',
-			pph: 0.08,
+			pph: 0.07,
 		},
 		20: {
 			label: 'Hobby',
@@ -290,9 +221,9 @@ export const ansibleMachineMarks = {
 			memory: 4,
 			nodes: 2,
 			cpu: 2,
-			cost: 119,
+			cost: 99,
 			machine: 'custom-2-4096',
-			pph: 0.17,
+			pph: 0.14,
 		},
 		40: {
 			label: 'Starter',
@@ -301,9 +232,9 @@ export const ansibleMachineMarks = {
 			memory: 4,
 			nodes: 3,
 			cpu: 2,
-			cost: 199,
+			cost: 149,
 			machine: 'custom-2-4096',
-			pph: 0.28,
+			pph: 0.21,
 		},
 		60: {
 			label: 'Production-I',
@@ -312,9 +243,9 @@ export const ansibleMachineMarks = {
 			memory: 8,
 			nodes: 3,
 			cpu: 2,
-			cost: 399,
+			cost: 799,
 			machine: 'n1-standard-2',
-			pph: 0.55,
+			pph: 1.11,
 		},
 		80: {
 			label: 'Production-II',
@@ -323,9 +254,9 @@ export const ansibleMachineMarks = {
 			memory: 16,
 			nodes: 3,
 			cpu: 4,
-			cost: 799,
+			cost: 1599,
 			machine: 'n1-standard-4',
-			pph: 1.11,
+			pph: 2.22,
 		},
 		100: {
 			label: 'Production-III',
@@ -334,9 +265,9 @@ export const ansibleMachineMarks = {
 			memory: 32,
 			nodes: 3,
 			cpu: 8,
-			cost: 1599,
+			cost: 3199,
 			machine: 'n1-standard-8',
-			pph: 2.22,
+			pph: 4.44,
 		},
 	},
 };
@@ -1217,7 +1148,7 @@ class NewCluster extends Component {
 									</div>
 								)}
 
-							{/** this.renderPlugins() **/}
+							{/* this.renderPlugins() */}
 							<div className={card}>
 								<div className="col light">
 									<h3>Restore a cluster data</h3>
