@@ -15,7 +15,6 @@ export const CLUSTER_PLANS = {
 	PRODUCTION_2019_1: '2019-production-1',
 	PRODUCTION_2019_2: '2019-production-2',
 	PRODUCTION_2019_3: '2019-production-3',
-	PRODUCTION_2019_4: '2019-production-4',
 };
 
 export const ARC_PLANS = {
