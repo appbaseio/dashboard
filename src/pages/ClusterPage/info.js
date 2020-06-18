@@ -34,7 +34,8 @@ const checkIfUpdateIsAvailable = (image, recipe) => {
 	const version = (image.split('/')[1] || '').split(':')[1];
 
 	if (recipe === 'byoc') {
-		return version !== ARC_BYOC;
+		// return version !== ARC_BYOC;
+		return false;
 	}
 
 	//TODO fix this after arc upgrade is figured out;
