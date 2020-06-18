@@ -19,7 +19,7 @@ import {
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-
+import { ARC_BYOC } from './new';
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -202,6 +202,7 @@ class NewMyCluster extends Component {
 			cluster_name: this.state.clusterName,
 			pricing_plan: this.state.pricing_plan,
 			location: this.state.region,
+			arc_image: ARC_BYOC,
 		};
 
 		deployMyCluster(body)
