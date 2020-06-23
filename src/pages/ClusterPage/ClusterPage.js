@@ -193,12 +193,13 @@ class ClusterPage extends Component {
 		const isExternalCluster = cluster.recipe === 'byoc';
 		let allMarks = machineMarks.gke;
 
-		if (isExternalCluster) {
-			allMarks = arcMachineMarks;
-		}
-
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
 			allMarks = ansibleMachineMarks.gke;
+		}
+
+		// override plans for byoc cluster even though they are deployed using ansible
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
 		}
 
 		const planDetails = Object.values(allMarks).find(

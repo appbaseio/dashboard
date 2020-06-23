@@ -461,13 +461,12 @@ export default class Clusters extends Component {
 		const isExternalCluster = this.state.cluster.recipe === 'byoc';
 
 		let allMarks = machineMarks.gke;
-
-		if (isExternalCluster) {
-			allMarks = arcMachineMarks;
-		}
-
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
 			allMarks = ansibleMachineMarks.gke;
+		}
+		// override plans for byoc cluster even though they are deployed using ansible
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
 		}
 
 		const planDetails = Object.values(allMarks).find(
@@ -638,7 +637,11 @@ export default class Clusters extends Component {
 								{this.state.cluster.status ===
 								'deployments in progress' ? (
 									<div>
-										<p style={{ textAlign: 'center' }}>
+										<p
+											style={{
+												textAlign: 'center',
+											}}
+										>
 											Deployment is in progress. Please
 											wait.
 										</p>
