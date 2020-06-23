@@ -448,7 +448,8 @@ export async function getArcVersion(arcURL, arcUsername, arcPassword) {
 		const json = await res.json();
 		return json;
 	} catch (err) {
-		throw err;
+		console.error(err);
+		return {};
 	}
 }
 
