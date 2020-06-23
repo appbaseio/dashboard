@@ -197,7 +197,7 @@ class ClusterPage extends Component {
 			allMarks = ansibleMachineMarks.gke;
 		}
 
-		// override plans for byoc cluster even though they are deployed using ansible
+		// override plans for byoc cluster
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
 		}
