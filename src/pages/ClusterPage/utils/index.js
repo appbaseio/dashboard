@@ -67,6 +67,9 @@ export function hasAnsibleSetup(pricingPlan) {
 		CLUSTER_PLANS.SANDBOX_2020,
 		CLUSTER_PLANS.HOBBY_2020,
 		CLUSTER_PLANS.STARTER_2020,
+		ARC_PLANS.HOSTED_ARC_BASIC,
+		ARC_PLANS.HOSTED_ARC_STANDARD,
+		ARC_PLANS.HOSTED_ARC_ENTERPRISE,
 	];
 
 	return plans.some(i => i === pricingPlan);
@@ -431,6 +434,23 @@ export function updateArcDetails(id, body) {
 				reject(e);
 			});
 	});
+}
+
+export async function getArcVersion(arcURL, arcUsername, arcPassword) {
+	try {
+		const res = await fetch(`${arcURL}arc/plan`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: btoa(`${arcUsername}:${arcPassword}`),
+			},
+		});
+		const json = await res.json();
+		return json;
+	} catch (err) {
+		console.error(err);
+		return {};
+	}
 }
 
 export const hasAddon = (item, source) =>

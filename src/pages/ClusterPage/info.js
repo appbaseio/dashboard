@@ -24,23 +24,25 @@ import {
 	deployCluster,
 	getAddon,
 	getClusterData,
+	getArcVersion,
 	hasAddon,
 	hasAnsibleSetup,
 	STRIPE_KEY,
 } from './utils';
 import { regions } from './utils/regions';
 
-const checkIfUpdateIsAvailable = (image, recipe) => {
-	const version = (image.split('/')[1] || '').split(':')[1];
+const checkIfUpdateIsAvailable = (version, recipe) => {
+	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
 
 	if (recipe === 'byoc') {
-		// return version !== ARC_BYOC;
-		return false;
+		return version && version !== ARC_BYOC.split('-')[0];
 	}
 
-	//TODO fix this after arc upgrade is figured out;
-	return false;
-	// return version !== V7_ARC;
+	if (k8sVersion) {
+		return k8sVersion !== V7_ARC;
+	}
+
+	return version && version !== V7_ARC.split('-')[0];
 };
 
 export default class Clusters extends Component {
@@ -64,6 +66,7 @@ export default class Clusters extends Component {
 			isPaid: false,
 			deleteModal: false,
 			streams: false,
+			arcVersion: null,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -93,7 +96,7 @@ export default class Clusters extends Component {
 
 	init = () => {
 		getClusterData(this.props.match.params.id)
-			.then(res => {
+			.then(async res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
@@ -115,14 +118,30 @@ export default class Clusters extends Component {
 							deployment,
 						),
 						planRate: cluster.plan_rate || 0,
-						isLoading: false,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 						streams: streamsData.status === 'ready',
 					});
 
 					if (cluster.status === 'deployments in progress') {
 						this.timer = setTimeout(this.init, 30000);
+					} else {
+						if (hasAnsibleSetup(cluster.pricing_plan)) {
+							const arcPlanData = await getArcVersion(
+								arcData.url,
+								arcData.username,
+								arcData.password,
+							);
+							if (arcPlanData.version) {
+								this.setState({
+									arcVersion: arcPlanData.version,
+								});
+							}
+						}
 					}
+
+					this.setState({
+						isLoading: false,
+					});
 				} else {
 					this.setState({
 						loadingError: true,
@@ -245,36 +264,42 @@ export default class Clusters extends Component {
 	handleArcUpgrade = async () => {
 		try {
 			const {
-				cluster: { id, recipe },
+				cluster: { id, recipe, pricing_plan },
 			} = this.state;
 			this.setState({
 				isLoading: true,
 			});
-			const response = await fetch(
-				`${ACC_API}/v1/_update_deployment/${id}`,
-				{
-					method: 'PUT',
-					credentials: 'include',
-					body: JSON.stringify({
+			const isDeployedUsingAnsible = hasAnsibleSetup(pricing_plan);
+			const url = isDeployedUsingAnsible
+				? `${ACC_API}/v2/_deploy/${id}`
+				: `${ACC_API}/v1/_update_deployment/${id}`;
+			const body = isDeployedUsingAnsible
+				? {
+						arc: {
+							version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+							status: 'restarted',
+						},
+				  }
+				: {
 						deployment_name: 'arc',
 						image: `siddharthlatest/arc:${
 							recipe === 'byoc' ? ARC_BYOC : V7_ARC
 						}`,
-					}),
-					headers: {
-						'Content-Type': 'application/json',
-					},
+				  };
+			const response = await fetch(url, {
+				method: 'PUT',
+				credentials: 'include',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
 				},
-			);
+			});
 
 			const data = await response.json();
 			if (response.status >= 400) {
 				throw new Error(data);
 			}
-			this.setState({
-				deployment: data,
-				isLoading: false,
-			});
+			this.init();
 		} catch (err) {
 			message.error('Something went wrong please try again');
 			this.setState({
@@ -436,13 +461,12 @@ export default class Clusters extends Component {
 		const isExternalCluster = this.state.cluster.recipe === 'byoc';
 
 		let allMarks = machineMarks.gke;
-
-		if (isExternalCluster) {
-			allMarks = arcMachineMarks;
-		}
-
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
 			allMarks = ansibleMachineMarks.gke;
+		}
+		// override plans for byoc cluster even though they are deployed using ansible
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
 		}
 
 		const planDetails = Object.values(allMarks).find(
@@ -613,7 +637,11 @@ export default class Clusters extends Component {
 								{this.state.cluster.status ===
 								'deployments in progress' ? (
 									<div>
-										<p style={{ textAlign: 'center' }}>
+										<p
+											style={{
+												textAlign: 'center',
+											}}
+										>
 											Deployment is in progress. Please
 											wait.
 										</p>
@@ -683,9 +711,11 @@ export default class Clusters extends Component {
 									</li>
 								) : null}
 								{this.state.arc &&
-									arcDeployment.image &&
+									(this.state.arcVersion ||
+										arcDeployment.image) &&
 									checkIfUpdateIsAvailable(
-										arcDeployment.image,
+										this.state.arcVersion ||
+											arcDeployment.image,
 										this.state.cluster.recipe,
 									) && (
 										<Alert
@@ -704,12 +734,21 @@ export default class Clusters extends Component {
 														{V7_ARC.split('-')[0]}{' '}
 														is available now.
 														You&apos;re currently on{' '}
-														{
-															arcDeployment.image
-																.split('/')[1]
-																.split(':')[1]
-																.split('-')[0]
-														}
+														{hasAnsibleSetup(
+															cluster.pricing_plan,
+														)
+															? this.state
+																	.arcVersion
+															: arcDeployment.image
+																	.split(
+																		'/',
+																	)[1]
+																	.split(
+																		':',
+																	)[1]
+																	.split(
+																		'-',
+																	)[0]}
 														. See what&apos;s new in{' '}
 														<a href="https://github.com/appbaseio/arc/releases">
 															this release
