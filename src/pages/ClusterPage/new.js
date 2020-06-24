@@ -27,27 +27,7 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = [
-	'7.8.0',
-	'7.7.1',
-	'7.7.0',
-	'7.6.2',
-	'7.5.2',
-	'7.4.2',
-	'7.3.2',
-	'7.2.1',
-	'7.1.1',
-	'7.0.1',
-	'6.8.9',
-	'6.7.2',
-	'6.6.2',
-	'6.5.4',
-	'6.4.3',
-	'6.3.2',
-	'6.2.4',
-	'6.1.4',
-	'6.0.1',
-];
+const esVersions = ['7.8.0', '7.7.1'];
 
 const odfeVersions = ['1.8.0', '0.10.0'];
 
@@ -988,7 +968,6 @@ class NewCluster extends Component {
 										>
 											Select a version
 										</h4>
-										{/* TODO remove disabled fix after we release support for multiple versions on ansible clusters */}
 										<select
 											className="form-control"
 											onChange={e =>
@@ -997,9 +976,6 @@ class NewCluster extends Component {
 													e.target.value,
 												)
 											}
-											disabled={hasAnsibleSetup(
-												this.state.pricing_plan,
-											)}
 										>
 											{versions.map(version => (
 												<option
