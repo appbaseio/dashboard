@@ -176,7 +176,7 @@ class ArcDetail extends React.Component {
 									onCopy={() =>
 										notification.success({
 											message:
-												'Appbase.io URL Copied Successfully',
+												'Appbase.io URL copied successfully',
 										})
 									}
 								>

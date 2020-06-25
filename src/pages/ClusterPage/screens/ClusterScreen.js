@@ -294,7 +294,7 @@ export default class ClusterScreen extends Component {
 							text={copyURL}
 							onCopy={() =>
 								notification.success({
-									message: ` ${name} URL Copied Successfully`,
+									message: ` ${name} URL copied successfully`,
 								})
 							}
 						>
