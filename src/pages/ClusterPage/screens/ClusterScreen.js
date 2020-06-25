@@ -266,7 +266,8 @@ export default class ClusterScreen extends Component {
 		if (
 			Object.keys(source).length &&
 			source.name &&
-			source.name !== 'gateway'
+			source.name !== 'gateway' &&
+			source.name !== 'elasticsearch-hq'
 		) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
@@ -280,15 +281,20 @@ export default class ClusterScreen extends Component {
 							/\/$/,
 							'',
 					  );
+			let name = source.name;
+
+			if (name === 'arc') {
+				name = 'Appbase.io';
+			}
 			return (
-				<div key={source.name} className={clusterEndpoint}>
+				<div key={name} className={clusterEndpoint}>
 					<h4>
-						{source.name}
+						{name}
 						<CopyToClipboard
 							text={copyURL}
 							onCopy={() =>
 								notification.success({
-									message: ` ${source.name} URL Copied Successfully`,
+									message: ` ${name} URL copied successfully`,
 								})
 							}
 						>
@@ -296,7 +302,7 @@ export default class ClusterScreen extends Component {
 						</CopyToClipboard>
 					</h4>
 					<CredentialsBox
-						name={source.name}
+						name={name}
 						text={`${username}:${password}`}
 					/>
 				</div>
@@ -421,8 +427,13 @@ export default class ClusterScreen extends Component {
 
 				<li className={card}>
 					<div className="col light">
-						<h3>Add-ons</h3>
-						<p>Elasticsearch add-ons endpoint</p>
+						<h3>Appbase.io Server</h3>
+						<a
+							href="https://docs.appbase.io/docs/hosting/clusters/"
+							target="_blank"
+						>
+							Learn more
+						</a>
 					</div>
 
 					<div className="col">
