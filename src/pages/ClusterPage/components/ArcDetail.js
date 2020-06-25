@@ -157,9 +157,9 @@ class ArcDetail extends React.Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Appbase.io Server (Arc)</h3>{' '}
+						<h3>Appbase.io Server</h3>{' '}
 						<a
-							href="docs.appbase.io"
+							href="https://docs.appbase.io/docs/hosting/byoc/#using-appbaseio"
 							rel="noopener noreferrer"
 							target="_blank"
 						>
@@ -170,13 +170,13 @@ class ArcDetail extends React.Component {
 					<div className="col">
 						<div className={clusterEndpoint}>
 							<h4>
-								Arc
+								Appbase.io
 								<CopyToClipboard
 									text={`${protocol}://${username}:${password}@${url}`}
 									onCopy={() =>
 										notification.success({
 											message:
-												'arc URL Copied Successfully',
+												'Appbase.io URL Copied Successfully',
 										})
 									}
 								>
@@ -251,8 +251,8 @@ class ArcDetail extends React.Component {
 				</li>
 				<li className={card}>
 					<div className="col light">
-						<h3>BYOC URL</h3>
-						<p>Bring your own Cluster URL</p>
+						<h3>Upstream URL</h3>
+						<p>Bring your Elasticsearch URL</p>
 					</div>
 
 					<div className="col full">
