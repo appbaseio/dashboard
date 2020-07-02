@@ -29,7 +29,7 @@ const SSH_KEY =
 
 const esVersions = ['7.8.0', '7.7.1'];
 
-const odfeVersions = ['1.8.0', '0.10.0'];
+const odfeVersions = ['1.8.0'];
 
 export const V7_ARC = '7.28.2-cluster';
 export const V6_ARC = '7.28.2-cluster';
@@ -856,101 +856,97 @@ class NewCluster extends Component {
 									</p>
 								</div>
 							</div>
-							{!hasAnsibleSetup(this.state.pricing_plan) && (
-								<div className={card}>
-									<div className="col light">
-										<h3>Choose Elasticsearch Flavor</h3>
-									</div>
 
-									<div
-										className={settingsItem}
-										css={{
-											padding: 30,
-											alignItems: 'baseline',
-										}}
-									>
-										<div className={esContainer}>
-											<Button
-												type={
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose Elasticsearch Flavor</h3>
+								</div>
+
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										alignItems: 'baseline',
+									}}
+								>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.esFlavor === 'es'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
 													this.state.esFlavor === 'es'
-														? 'primary'
-														: 'default'
-												}
-												size="large"
-												css={{
-													height: 160,
-													marginRight: 20,
-													backgroundColor:
-														this.state.esFlavor ===
-														'es'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'esFlavor',
-														'es',
-													);
-													this.setConfig(
-														'clusterVersion',
-														esVersions[0],
-													);
-												}}
-											>
-												<img
-													width="150"
-													src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
-													alt="Elastic"
-												/>
-											</Button>
-											<p>
-												The Open Source Elasticsearch
-												Distribution.
-											</p>
-										</div>
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig(
+													'esFlavor',
+													'es',
+												);
+												this.setConfig(
+													'clusterVersion',
+													esVersions[0],
+												);
+											}}
+										>
+											<img
+												width="150"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>
+											The Open Source Elasticsearch
+											Distribution.
+										</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											size="large"
+											type={
+												this.state.esFlavor === 'odfe'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												backgroundColor:
 													this.state.esFlavor ===
 													'odfe'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													backgroundColor:
-														this.state.esFlavor ===
-														'odfe'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'esFlavor',
-														'odfe',
-													);
-													this.setConfig(
-														'clusterVersion',
-														odfeVersions[0],
-													);
-												}}
-											>
-												<img
-													width="150"
-													src="/static/images/clusters/odfe.svg"
-													alt="ODFE"
-												/>
-											</Button>
-											<p>
-												Open Distro by Amazon, includes
-												additional security
-												enhancements.
-											</p>
-										</div>
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() => {
+												this.setConfig(
+													'esFlavor',
+													'odfe',
+												);
+												this.setConfig(
+													'clusterVersion',
+													odfeVersions[0],
+												);
+											}}
+										>
+											<img
+												width="150"
+												src="/static/images/clusters/odfe.svg"
+												alt="ODFE"
+											/>
+										</Button>
+										<p>
+											Open Distro by Amazon, includes
+											additional security enhancements.
+										</p>
 									</div>
 								</div>
-							)}
+							</div>
 
 							<div className={card}>
 								<div className="col light">
