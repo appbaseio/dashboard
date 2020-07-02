@@ -26,9 +26,9 @@ export const machineMarks = {
 	0: {
 		label: 'Basic',
 		nodes: 1,
-		cost: 39,
-		plan: 'hosted-arc-basic',
-		pph: 0.06,
+		cost: 29,
+		plan: 'hosted-arc-basic-v2',
+		pph: 0.04,
 	},
 	50: {
 		label: 'Standard',
