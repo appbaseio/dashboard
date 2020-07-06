@@ -38,7 +38,7 @@ const checkIfUpdateIsAvailable = (image, recipe) => {
 		return false;
 	}
 
-	//TODO fix this after arc upgrade is figured out;
+	// TODO fix this after arc upgrade is figured out;
 	return false;
 	// return version !== V7_ARC;
 };
@@ -682,60 +682,54 @@ export default class Clusters extends Component {
 										</div>
 									</li>
 								) : null}
-								{this.state.arc &&
-									arcDeployment.image &&
-									checkIfUpdateIsAvailable(
-										arcDeployment.image,
-										this.state.cluster.recipe,
-									) && (
-										<Alert
-											message="A new appbase.io version is available!"
-											description={
-												<div
-													style={{
-														display: 'flex',
-														justifyContent:
-															'space-between',
-														alignItems: 'center',
-													}}
-												>
-													<div>
-														A new version{' '}
-														{V7_ARC.split('-')[0]}{' '}
-														is available now.
-														You&apos;re currently on{' '}
-														{
-															arcDeployment.image
-																.split('/')[1]
-																.split(':')[1]
-																.split('-')[0]
-														}
-														. See what&apos;s new in{' '}
-														<a href="https://github.com/appbaseio/arc/releases">
-															this release
-														</a>
-														.
-													</div>
-													<Button
-														type="primary"
-														ghost
-														onClick={
-															this
-																.handleArcUpgrade
-														}
-													>
-														{' '}
-														Update Now
-													</Button>
+								{this.state.arc && arcDeployment.image && (
+									<Alert
+										message="A new appbase.io version is available!"
+										description={
+											<div
+												style={{
+													display: 'flex',
+													justifyContent:
+														'space-between',
+													alignItems: 'center',
+												}}
+											>
+												<div>
+													A new version{' '}
+													{V7_ARC.split('-')[0]} is
+													available now. You&apos;re
+													currently on{' '}
+													{
+														arcDeployment.image
+															.split('/')[1]
+															.split(':')[1]
+															.split('-')[0]
+													}
+													. See what&apos;s new in{' '}
+													<a href="https://github.com/appbaseio/arc/releases">
+														this release
+													</a>
+													.
 												</div>
-											}
-											type="info"
-											showIcon
-											style={{
-												marginBottom: 25,
-											}}
-										/>
-									)}
+												<Button
+													type="primary"
+													ghost
+													onClick={
+														this.handleArcUpgrade
+													}
+												>
+													{' '}
+													Update Now
+												</Button>
+											</div>
+										}
+										type="info"
+										showIcon
+										style={{
+											marginBottom: 25,
+										}}
+									/>
+								)}
 
 								{this.state.cluster.status === 'active' ? (
 									<div

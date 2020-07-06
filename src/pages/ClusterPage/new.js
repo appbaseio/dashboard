@@ -51,9 +51,9 @@ const esVersions = [
 
 const odfeVersions = ['1.8.0', '0.10.0'];
 
-export const V7_ARC = '7.27.0-cluster';
-export const V6_ARC = '7.27.0-cluster';
-export const ARC_BYOC = '7.27.0-byoc';
+export const V7_ARC = '7.28.4-cluster';
+export const V6_ARC = '7.28.4-cluster';
+export const ARC_BYOC = '7.28.4-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
