@@ -2,6 +2,7 @@ import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Stripe from 'react-stripe-checkout';
+import get from 'lodash/get';
 import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
 import Overlay from '../components/Overlay';
@@ -142,10 +143,10 @@ export default class ClusterScreen extends Component {
 				if (response.status.code >= 400) {
 					notification.error({
 						message: 'Restoration Failed!',
-						description: response.status.message,
+						description: get(response, 'status.message'),
 					});
 				} else {
-					message.success(response.status.message);
+					message.success(get(response, 'status.message'));
 				}
 				this.setState({
 					isRestoring: false,
@@ -175,8 +176,8 @@ export default class ClusterScreen extends Component {
 
 	includedInOriginal = key => {
 		const { deployment: original } = this.props;
-		return original[key]
-			? !!Object.keys(original[key]).length
+		return get(original, key)
+			? !!Object.keys(get(original, key)).length
 			: hasAddon(key, original);
 	};
 

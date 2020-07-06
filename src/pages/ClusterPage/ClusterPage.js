@@ -91,14 +91,16 @@ class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		let allMarks = machineMarks[provider];
+		let allMarks = get(machineMarks, provider);
 		if (hasAnsibleSetup(plan)) {
-			allMarks = ansibleMachineMarks[provider];
+			allMarks = get(ansibleMachineMarks, provider);
 		}
 		const selectedPlan = Object.values(allMarks).find(
-			item => item.plan === plan || item.plan.endsWith(plan),
+			item =>
+				get(item, 'plan') === plan ||
+				get(item, 'plan', '').endsWith(plan),
 		);
-		return (selectedPlan ? selectedPlan[key] : '-') || '-';
+		return get(selectedPlan, key, '-');
 	};
 
 	initClusters = () => {
@@ -190,15 +192,15 @@ class ClusterPage extends Component {
 		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal } = this.state;
-		const isExternalCluster = cluster.recipe === 'byoc';
-		let allMarks = machineMarks.gke;
+		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
+		let allMarks = get(machineMarks, 'gke');
 
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
 		}
 
-		if (hasAnsibleSetup(cluster.pricing_plan)) {
-			allMarks = ansibleMachineMarks.gke;
+		if (hasAnsibleSetup(get(cluster, 'pricing_plan'))) {
+			allMarks = get(ansibleMachineMarks, 'gke');
 		}
 
 		const planDetails = Object.values(allMarks).find(

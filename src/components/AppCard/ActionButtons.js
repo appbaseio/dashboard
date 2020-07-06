@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Icon, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 import { withRouter } from 'react-router-dom';
 
 import { columnSeparator, actionIcon, deleteButton } from './styles';
@@ -27,7 +28,7 @@ class ActionButtons extends React.Component {
 	handleClone = () => {
 		const { appName, permissions, history } = this.props;
 		if (permissions) {
-			const { username, password } = permissions.results[0];
+			const { username, password } = get(permissions, 'results[0]');
 			const parameters = {
 				type: 'elasticsearch',
 				indexName: appName,
@@ -58,7 +59,9 @@ class ActionButtons extends React.Component {
 	getWriteKey = () => {
 		const { permissions } = this.props;
 		if (permissions) {
-			const data = getCredentialsFromPermissions(permissions.results);
+			const data = getCredentialsFromPermissions(
+				get(permissions, 'results'),
+			);
 			if (data) {
 				const { username, password } = data;
 				return `${username}:${password}`;
@@ -71,7 +74,9 @@ class ActionButtons extends React.Component {
 	getReadKey = () => {
 		const { permissions } = this.props;
 		if (permissions) {
-			const data = getReadCredentialsFromPermissions(permissions.results);
+			const data = getReadCredentialsFromPermissions(
+				get(permissions, 'results'),
+			);
 			if (data) {
 				const { username, password } = data;
 				return `${username}:${password}`;
@@ -93,8 +98,8 @@ class ActionButtons extends React.Component {
 		let write = false;
 		let read = false;
 		if (permissions) {
-			write = permissions.results[0].write; // eslint-disable-line
-			read = permissions.results[0].read; // eslint-disable-line
+			write = get(permissions, 'results[0].write'); // eslint-disable-line
+			read = get(permissions, 'results[0].read'); // eslint-disable-line
 		}
 
 		if (write && !read) {
@@ -125,7 +130,10 @@ class ActionButtons extends React.Component {
 		let sharedKey = '';
 		if (shared && permissions && permissions.results) {
 			// We only get one key for shared app either it will be read key or a write key
-			sharedKey = `${permissions.results[0].username}:${permissions.results[0].password}`;
+			sharedKey = `${get(permissions, 'results[0].username')}:${get(
+				permissions,
+				'results[0].password',
+			)}`;
 		}
 
 		return (

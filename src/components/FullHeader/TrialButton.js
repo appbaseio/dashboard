@@ -4,6 +4,7 @@ import { object, string, bool } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
 import { css } from 'react-emotion';
+import get from 'lodash/get';
 
 import { media } from '../../utils/media';
 import { createSubscription, STRIPE_KEY } from '../../pages/ClusterPage/utils';
@@ -100,8 +101,8 @@ const TrialButton = props => {
 		return (
 			<Stripe
 				name="Appbase.io Clusters"
-				amount={(clusters[0].plan_rate || 0) * 100}
-				token={token => handleToken(clusters[0].id, token)}
+				amount={get(clusters, `[0].plan_rate`, 0) * 100}
+				token={token => handleToken(get(clusters, `[0].id`, 0), token)}
 				disabled={false}
 				stripeKey={STRIPE_KEY}
 			>

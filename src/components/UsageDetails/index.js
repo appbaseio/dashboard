@@ -73,7 +73,9 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 								</strong>
 								&nbsp;/&nbsp;
 								<span>
-									{compressNumber(planLimits[plan].action)}
+									{compressNumber(
+										get(planLimits, `${plan}.action`),
+									)}
 								</span>
 							</div>
 						) : null}
@@ -108,7 +110,9 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 								</strong>
 								&nbsp;/&nbsp;
 								<span>
-									{compressNumber(planLimits[plan].records)}
+									{compressNumber(
+										get(planLimits, `${plan}.records`),
+									)}
 								</span>
 							</div>
 						) : null}

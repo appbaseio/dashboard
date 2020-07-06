@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Dropdown, Menu, message, notification } from 'antd';
 import { css } from 'emotion';
+import get from 'lodash/get';
 
 import { heading, subHeading } from './styles';
 
@@ -82,11 +83,11 @@ class HelpButton extends React.Component {
 							fields: [
 								{
 									name: 'email',
-									value: user.email,
+									value: get(user, 'email'),
 								},
 								{
 									name: 'firstname',
-									value: user.name,
+									value: get(user, 'name'),
 								},
 								{
 									name: 'subject',

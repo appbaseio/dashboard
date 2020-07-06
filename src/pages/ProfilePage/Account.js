@@ -133,8 +133,14 @@ class ProfilePage extends React.Component {
 		const { submitCountryCode } = this.state;
 		const data = {
 			...this.profileForm.value,
-			'deployment-timeframe': this.profileForm.value.deploymentTimeframe,
-			phone: `${submitCountryCode}-${this.profileForm.value.phone}`,
+			'deployment-timeframe': get(
+				this,
+				'profileForm.value.deploymentTimeframe',
+			),
+			phone: `${submitCountryCode}-${get(
+				this,
+				'profileForm.value.phone',
+			)}`,
 		};
 		delete data.deploymentTimeframe;
 		setUser(data);

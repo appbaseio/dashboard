@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, List, Switch, message } from 'antd';
+import get from 'lodash/get';
 
 import { ACC_API } from '../../constants/config';
 
@@ -46,7 +47,7 @@ class Emails extends React.Component {
 				message.error(parsedResponse.message);
 			}
 
-			if (parsedResponse.body.email_preferences) {
+			if (get(parsedResponse, 'body.email_preferences')) {
 				this.setState({
 					...parsedResponse.body,
 				});

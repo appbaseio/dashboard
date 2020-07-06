@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert } from 'antd';
 import { object, func } from 'prop-types';
+import get from 'lodash/get';
 
 function getMessage(source) {
 	switch (source) {
@@ -23,11 +24,12 @@ export default function DeploymentStatus({ data, onProgress }) {
 		});
 	}
 	const deploymentsInProgress = Object.keys(deployments).filter(
-		source => deployments[source].status === 'in progress',
+		source => get(deployments, `${source}.status`) === 'in progress',
 	);
 
 	const deploymentDeletionInProgress = Object.keys(deployments).filter(
-		source => deployments[source].status === 'deletion in progress',
+		source =>
+			get(deployments, `${source}.status`) === 'deletion in progress',
 	);
 
 	if (deploymentsInProgress.length || deploymentDeletionInProgress.length) {

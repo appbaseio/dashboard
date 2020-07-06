@@ -66,7 +66,7 @@ const routes = {
 const getActiveMenu = (props, prevActiveSubMenu = []) => {
 	let activeSubMenu = 'App Overview';
 	let activeMenuItem = 'App Overview';
-	let { route: pathname } = props.match.params; // eslint-disable-line
+	let { route: pathname } = get(props, 'match.params'); // eslint-disable-line
 
 	if (!pathname) {
 		pathname = getParam('view') || '';
@@ -74,7 +74,7 @@ const getActiveMenu = (props, prevActiveSubMenu = []) => {
 
 	Object.keys(routes).some(route => {
 		if (routes[route].menu) {
-			const active = routes[route].menu.find(
+			const active = get(routes, `${route}.menu`).find(
 				item => pathname === item.link,
 			);
 
@@ -83,7 +83,7 @@ const getActiveMenu = (props, prevActiveSubMenu = []) => {
 				activeMenuItem = active.label;
 				return true;
 			}
-		} else if (pathname === routes[route].link) {
+		} else if (pathname === get(routes, `${route}.link`)) {
 			activeSubMenu = route;
 			activeMenuItem = route;
 			return true;
@@ -116,7 +116,7 @@ class AppWrapper extends Component {
 	}
 
 	static getDerivedStateFromProps(props, state) {
-		const { appName } = props.match.params;
+		const { appName } = get(props, 'match.params');
 		const { currentApp } = props;
 		let setActiveMenu = null;
 		if (props.match.url !== url) {
@@ -142,7 +142,7 @@ class AppWrapper extends Component {
 		const { history, match } = this.props;
 		const view = getParam('view') || '';
 
-		if (!match.params.appName && appName) {
+		if (!get(match, 'params.appName') && appName) {
 			history.push(`/app/${appName}/${view}`);
 		}
 	}
@@ -151,7 +151,7 @@ class AppWrapper extends Component {
 		const { history, currentApp, match } = this.props;
 		const { appName } = this.state;
 
-		const route = match.params.route || '';
+		const route = get(match, 'params.route', '');
 
 		if (currentApp && appName !== currentApp) {
 			history.push(`/app/${currentApp}/${route}`);
@@ -212,7 +212,9 @@ class AppWrapper extends Component {
 							if (routes[route].menu) {
 								const Title = (
 									<span>
-										<Icon type={routes[route].icon} />
+										<Icon
+											type={get(routes, `${route}.icon`)}
+										/>
 										<span>{route}</span>
 									</span>
 								);
@@ -246,9 +248,14 @@ class AppWrapper extends Component {
 								<Menu.Item key={route}>
 									<Link
 										replace
-										to={`/app/${appName}/${routes[route].link}`}
+										to={`/app/${appName}/${get(
+											routes,
+											`${route}.link`,
+										)}`}
 									>
-										<Icon type={routes[route].icon} />
+										<Icon
+											type={get(routes, `${route}.icon`)}
+										/>
 										<span>{route}</span>
 									</Link>
 								</Menu.Item>
