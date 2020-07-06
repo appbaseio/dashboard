@@ -330,7 +330,6 @@ const clusterEndpoint = css`
 	`)}
 
 	h4 {
-		text-transform: capitalize;
 		font-size: 16px;
 		font-weight: 600;
 		width: 180px;
