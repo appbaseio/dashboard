@@ -19,6 +19,7 @@ import {
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
+import { getUserPlan } from '../../batteries/modules/actions';
 
 const { Option } = Select;
 
@@ -612,8 +613,10 @@ class NewCluster extends Component {
 	};
 
 	handleToken = async (clusterId, token) => {
+		const { getPlan } = this.props;
 		try {
 			await createSubscription(clusterId, token);
+			getPlan();
 		} catch (e) {
 			console.log(e);
 		}
@@ -1200,4 +1203,8 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(mapStateToProps, null)(NewCluster);
+const mapDispatchToProps = dispatch => ({
+	getPlan: () => dispatch(() => getUserPlan()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewCluster);
