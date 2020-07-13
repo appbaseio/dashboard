@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import { ACC_API } from '../../../constants/config';
 
 // test key
@@ -342,6 +343,7 @@ export function deleteSharedUser(id, email) {
 
 export function deployMyCluster(body) {
 	return new Promise((resolve, reject) => {
+		let hasError = false;
 		fetch(`${ACC_API}/v1/_deploy_recipe/arc`, {
 			method: 'POST',
 			credentials: 'include',
@@ -352,8 +354,16 @@ export function deployMyCluster(body) {
 				...body,
 			}),
 		})
-			.then(res => res.json())
+			.then(res => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
 			.then(data => {
+				if (hasError) {
+					reject(get(data, 'status.message'));
+				}
 				if (data.error) {
 					reject(data.error);
 				}
