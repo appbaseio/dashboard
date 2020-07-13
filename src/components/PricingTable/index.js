@@ -12,7 +12,7 @@ import {
 	deleteAppSubscription,
 	getAppPlan,
 } from '../../batteries/modules/actions';
-import { getAppPlanByName } from '../../batteries/modules/selectors';
+import { getRawAppPlanByName } from '../../batteries/modules/selectors';
 import { STRIPE_KEY } from '../../constants';
 import { getParam } from '../../utils';
 import { displayErrors, planBasePrice } from '../../utils/helper';
@@ -967,12 +967,13 @@ PricingTable.propTypes = {
 	errors: PropTypes.array.isRequired,
 };
 const mapStateToProps = state => {
-	const appPlan = getAppPlanByName(state);
+	const appPlan = getRawAppPlanByName(state);
+	const isOnTrial = get(appPlan, 'trial');
 	return {
 		isLoading: get(state, '$createAppSubscription.isFetching'),
-		isFreePlan: !get(appPlan, 'isPaid'),
-		isBootstrapPlan: get(appPlan, 'isBootstrap'),
-		isGrowthPlan: get(appPlan, 'isGrowth'),
+		isFreePlan: !get(appPlan, 'isPaid') && !isOnTrial,
+		isBootstrapPlan: get(appPlan, 'isBootstrap') && !isOnTrial,
+		isGrowthPlan: get(appPlan, 'isGrowth') && !isOnTrial,
 		errors: [get(state, '$createAppSubscription.error')],
 	};
 };

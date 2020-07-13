@@ -9,7 +9,7 @@ import Container from '../../components/Container';
 import BannerHeader from '../../components/Banner/Header';
 import PricingTable from '../../components/PricingTable';
 import { capitalizePlan, displayErrors } from '../../utils/helper';
-import { getAppPlanByName } from '../../batteries/modules/selectors';
+import { getRawAppPlanByName } from '../../batteries/modules/selectors';
 import { updateAppPaymentMethod } from '../../batteries/modules/actions';
 import Loader from '../../batteries/components/shared/Loader';
 import { STRIPE_KEY } from '../../constants';
@@ -102,7 +102,7 @@ Billing.propTypes = {
 };
 
 const mapStateToProps = state => {
-	const appPlan = getAppPlanByName(state);
+	const appPlan = getRawAppPlanByName(state);
 	return {
 		plan: get(appPlan, 'tier'),
 		planValidity: get(appPlan, 'tier_validity'),

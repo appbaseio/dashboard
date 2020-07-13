@@ -124,18 +124,16 @@ export default class Clusters extends Component {
 
 					if (cluster.status === 'deployments in progress') {
 						this.timer = setTimeout(this.init, 30000);
-					} else {
-						if (hasAnsibleSetup(cluster.pricing_plan)) {
-							const arcPlanData = await getArcVersion(
-								arcData.url,
-								arcData.username,
-								arcData.password,
-							);
-							if (arcPlanData.version) {
-								this.setState({
-									arcVersion: arcPlanData.version,
-								});
-							}
+					} else if (hasAnsibleSetup(cluster.pricing_plan)) {
+						const arcPlanData = await getArcVersion(
+							arcData.url,
+							arcData.username,
+							arcData.password,
+						);
+						if (arcPlanData.version) {
+							this.setState({
+								arcVersion: arcPlanData.version,
+							});
 						}
 					}
 
