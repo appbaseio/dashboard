@@ -19,6 +19,7 @@ import {
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 	getClusters,
 	hasAnsibleSetup,
 	STRIPE_KEY,
@@ -134,11 +135,12 @@ class ClusterPage extends Component {
 
 	handleToken = async (clusterId, token) => {
 		try {
-			await createSubscription(clusterId, token);
 			this.setState({
 				isLoading: true,
 			});
-			this.initClusters();
+			await createSubscription(clusterId, token);
+			// TODO remove after integrating new stripe version
+			window.location.reload();
 		} catch (e) {
 			console.log('error', e);
 		}
@@ -193,12 +195,13 @@ class ClusterPage extends Component {
 		const isExternalCluster = cluster.recipe === 'byoc';
 		let allMarks = machineMarks.gke;
 
-		if (isExternalCluster) {
-			allMarks = arcMachineMarks;
-		}
-
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
 			allMarks = ansibleMachineMarks.gke;
+		}
+
+		// override plans for byoc cluster
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
 		}
 
 		const planDetails = Object.values(allMarks).find(
@@ -432,8 +435,14 @@ class ClusterPage extends Component {
 												EFFECTIVE_PRICE_BY_PLANS[
 													cluster.pricing_plan
 												]
-											}{' '}
-											per node hour
+											}
+											/hour ($
+											{
+												PRICE_BY_PLANS[
+													cluster.pricing_plan
+												]
+											}
+											/month)
 										</strong>{' '}
 										based on the actual usage at the end of
 										the subscription month.
