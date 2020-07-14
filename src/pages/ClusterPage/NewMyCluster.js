@@ -20,7 +20,7 @@ import {
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import { ARC_BYOC } from './new';
-import { getUserPlan } from '../../batteries/modules/actions';
+
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -128,11 +128,9 @@ class NewMyCluster extends Component {
 	};
 
 	handleToken = async (clusterId, token) => {
-		const { getPlan } = this.props;
-
 		try {
 			await createSubscription(clusterId, token);
-			getPlan();
+			window.location.reload();
 		} catch (e) {
 			console.log(e);
 		}
@@ -651,8 +649,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-const mapDispatchToProps = dispatch => ({
-	getPlan: () => dispatch(() => getUserPlan()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewMyCluster);
+export default connect(mapStateToProps, null)(NewMyCluster);
