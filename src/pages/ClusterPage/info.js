@@ -2,6 +2,7 @@ import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import Stripe from 'react-stripe-checkout';
+import get from 'lodash/get';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
@@ -87,15 +88,16 @@ export default class Clusters extends Component {
 			allMarks = ansibleMachineMarks;
 		}
 		const selectedPlan = (
-			Object.values(allMarks[this.state.cluster.provider || 'azure']) ||
-			[]
+			Object.values(
+				allMarks[get(this, 'state.cluster.provider', 'azure')],
+			) || []
 		).find(item => item.plan === plan || item.plan.endsWith(plan));
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
 	init = () => {
-		getClusterData(this.props.match.params.id)
+		getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
@@ -154,10 +156,11 @@ export default class Clusters extends Component {
 					state => ({
 						...state,
 						error: error.message,
-						planRate:
-							(error.details
-								? error.details.plan_rate
-								: state.planRate) || 0,
+						planRate: get(
+							error,
+							'details.plan_rate',
+							get(state, 'planRate', 0),
+						),
 						isLoading: false,
 					}),
 					this.triggerPayment,
@@ -174,7 +177,7 @@ export default class Clusters extends Component {
 	triggerPayment = () => {
 		if (
 			!this.paymentTriggered &&
-			this.props.location.search.startsWith('?subscribe=true')
+			get(this, 'props.location.search', '').startsWith('?subscribe=true')
 		) {
 			if (this.paymentButton.current) {
 				this.paymentButton.current.buttonNode.click();
@@ -190,7 +193,7 @@ export default class Clusters extends Component {
 		}));
 	};
 
-	deleteCluster = (id = this.props.match.params.id) => {
+	deleteCluster = (id = get(this, 'props.match.params.id')) => {
 		this.setState({
 			isLoading: true,
 		});
@@ -233,6 +236,7 @@ export default class Clusters extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
+		if (!regions[provider]) return null;
 		const selectedRegion =
 			Object.keys(regions[provider]).find(item =>
 				region.startsWith(item),
@@ -311,7 +315,7 @@ export default class Clusters extends Component {
 		const paymentRequired = this.state.error
 			.toLowerCase()
 			.startsWith('payment');
-		const clusterId = this.props.match.params.id;
+		const clusterId = get(this, 'props.match.params.id');
 		return (
 			<Fragment>
 				<FullHeader
@@ -403,7 +407,7 @@ export default class Clusters extends Component {
 				Go Back
 			</Button>
 
-			{this.state.cluster && this.state.cluster.user_role === 'admin' ? (
+			{get(this, 'state.cluster.user_role') === 'admin' ? (
 				<Button
 					size="large"
 					onClick={this.deleteCluster}
@@ -455,8 +459,8 @@ export default class Clusters extends Component {
 
 		const { showOverlay, isPaid, deployment, cluster } = this.state;
 
-		const isViewer = this.state.cluster.user_role === 'viewer';
-		const isExternalCluster = this.state.cluster.recipe === 'byoc';
+		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
+		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
 
 		let allMarks = machineMarks.gke;
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
@@ -482,7 +486,7 @@ export default class Clusters extends Component {
 			<Fragment>
 				<FullHeader
 					isCluster
-					cluster={this.props.match.params.id}
+					cluster={get(this, 'props.match.params.id')}
 					clusterPlan={cluster && cluster.plan_rate}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
@@ -498,17 +502,18 @@ export default class Clusters extends Component {
 						</Modal>
 						<article>
 							<h2>
-								{this.state.cluster.name}
+								{get(this, 'state.cluster.name')}
 								<span className="tag">
-									{this.state.cluster.status === 'delInProg'
+									{get(this, 'state.cluster.status') ===
+									'delInProg'
 										? 'Deletion in progress'
-										: this.state.cluster.status}
+										: get(this, 'state.cluster.status')}
 								</span>
 							</h2>
 
 							<ul className={clustersList}>
 								<li
-									key={this.state.cluster.name}
+									key={get(this, 'state.cluster.name')}
 									className="cluster-card compact"
 								>
 									<div className="info-row">
@@ -686,7 +691,10 @@ export default class Clusters extends Component {
 											/>
 											<Link
 												to={{
-													pathname: `/clusters/${this.props.match.params.id}/explore`,
+													pathname: `/clusters/${get(
+														this,
+														'props.match.params.id',
+													)}/explore`,
 													state: {
 														arc: getAddon(
 															'arc',
@@ -783,7 +791,10 @@ export default class Clusters extends Component {
 										}}
 									>
 										<Sidebar
-											id={this.props.match.params.id}
+											id={get(
+												this,
+												'props.match.params.id',
+											)}
 											isViewer={isViewer}
 											isExternalCluster={
 												isExternalCluster
@@ -796,10 +807,10 @@ export default class Clusters extends Component {
 													path="/clusters/:id"
 													component={() => (
 														<ClusterScreen
-															clusterId={
-																this.props.match
-																	.params.id
-															}
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
 															cluster={
 																this.state
 																	.cluster
@@ -867,10 +878,10 @@ export default class Clusters extends Component {
 													path="/clusters/:id/usage"
 													component={() => (
 														<InvoiceScreen
-															clusterId={
-																this.props.match
-																	.params.id
-															}
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
 															isTrial={
 																this.state
 																	.cluster
@@ -887,13 +898,10 @@ export default class Clusters extends Component {
 																path="/clusters/:id/scale"
 																component={() => (
 																	<ScaleClusterScreen
-																		clusterId={
-																			this
-																				.props
-																				.match
-																				.params
-																				.id
-																		}
+																		clusterId={get(
+																			this,
+																			'props.match.params.id',
+																		)}
 																		nodes={
 																			this
 																				.state
@@ -922,13 +930,10 @@ export default class Clusters extends Component {
 															path="/clusters/:id/share"
 															component={() => (
 																<ShareClusterScreen
-																	clusterId={
-																		this
-																			.props
-																			.match
-																			.params
-																			.id
-																	}
+																	clusterId={get(
+																		this,
+																		'props.match.params.id',
+																	)}
 																/>
 															)}
 														/>

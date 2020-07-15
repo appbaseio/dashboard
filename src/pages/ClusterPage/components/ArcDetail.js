@@ -11,12 +11,16 @@ class ArcDetail extends React.Component {
 		super(props);
 		this.state = {
 			loading: false,
-			username: props.arc ? props.arc.username : '',
-			password: props.arc ? props.arc.password : '',
-			esURL: (props.cluster && props.cluster.elasticsearch_url) || '',
+			username: get(props, 'arc.username', ''),
+			password: get(props, 'arc.password', ''),
+			esURL: get(props, 'cluster.elasticsearch_url', ''),
 			showCred: false,
 			updatedArcCred: props.arc
-				? `${props.arc.username}:${props.arc.password}`
+				? `${get(props, 'arc.username', '')}:${get(
+						props,
+						'arc.password',
+						'',
+				  )}`
 				: '',
 		};
 	}
@@ -148,7 +152,7 @@ class ArcDetail extends React.Component {
 			[protocol, url] = (arc.url || arc.dashboard_url).split('://');
 		}
 
-		const currentURL = cluster && cluster.elasticsearch_url;
+		const currentURL = get(cluster, 'elasticsearch_url');
 
 		if (esURL !== currentURL && !verifiedCluster) {
 			isButtonDisable = true;

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Slider, Tooltip, Icon } from 'antd';
 import AnimatedNumber from 'react-animated-number';
+import get from 'lodash/get';
 
 import { clusterInfo } from '../../styles';
 
@@ -68,7 +69,7 @@ export default class PricingSlider extends Component {
 
 	render() {
 		const { marks, active, value } = this.state;
-		const mark = marks[active] || {};
+		const mark = get(marks, active, {});
 		const { sliderProps } = this.props;
 
 		return (

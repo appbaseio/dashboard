@@ -281,8 +281,8 @@ class NewCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: ansibleMachineMarks[provider][0].plan,
-			vm_size: ansibleMachineMarks[provider][0].machine,
+			pricing_plan: get(ansibleMachineMarks, `${provider}[0].plan`),
+			vm_size: get(ansibleMachineMarks, `${provider}[0].machine`),
 			region: '',
 			kibana: false,
 			streams: false,
@@ -325,13 +325,18 @@ class NewCluster extends Component {
 		const { provider } = this.state;
 		if (prevState.provider !== provider) {
 			const [currentMachine] = Object.entries(
-				ansibleMachineMarks[prevState.provider],
+				get(ansibleMachineMarks, `${prevState.provider}`),
 			).find(([, value]) => value.machine === prevState.vm_size);
 			// eslint-disable-next-line
 			this.setState({
-				pricing_plan:
-					ansibleMachineMarks[provider][currentMachine].plan,
-				vm_size: ansibleMachineMarks[provider][currentMachine].machine,
+				pricing_plan: get(
+					ansibleMachineMarks,
+					`${provider}.${currentMachine}.plan`,
+				),
+				vm_size: get(
+					ansibleMachineMarks,
+					`${provider}.${currentMachine}.machine`,
+				),
 				region: '',
 			});
 		}

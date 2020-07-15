@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import * as Sentry from '@sentry/browser';
+import get from 'lodash/get';
 
 Sentry.init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
@@ -16,7 +17,7 @@ class ErrorPage extends React.Component {
 		const {
 			location: { pathname }, // eslint-disable-line
 		} = this.props;
-		if (prevProps.location.pathname !== pathname) {
+		if (get(prevProps, 'location.pathname') !== pathname) {
 			// eslint-disable-next-line
 			this.setState({
 				error: false,

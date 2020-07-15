@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Skeleton, Icon } from 'antd';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 
 import UsageRenderer from './UsageRenderer';
 import ActionButtons from './ActionButtons';
@@ -25,10 +26,10 @@ const AppCard = ({ title, data, appName, appId, permissions, shared }) => (
 		>
 			{data && data[appName] ? (
 				<UsageRenderer
-					plan={data[appName].tier || 'free'}
+					plan={get(data, `${appName}.tier`, 'free')}
 					computedMetrics={{
-						calls: data[appName].api_calls,
-						records: data[appName].records,
+						calls: get(data, `${appName}.api_calls`),
+						records: get(data, `${appName}.records`),
 					}}
 				/>
 			) : null}

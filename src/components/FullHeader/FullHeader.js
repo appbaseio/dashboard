@@ -167,7 +167,7 @@ const mapStateToProps = state => {
 		currentApp = storedApp;
 	}
 	return {
-		user: state.user.data,
+		user: get(state, 'user.data'),
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,
 		isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 		daysLeft: get(state, '$getUserPlan.daysLeft', 0),

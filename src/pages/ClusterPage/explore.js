@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Button, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import get from 'lodash/get';
 
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -13,10 +14,8 @@ import { getUrlParams } from '../../utils/helper';
 export default class ExploreCluster extends Component {
 	constructor(props) {
 		super(props);
-		const arc = props.location.state ? props.location.state.arc : null;
-		const cluster = props.location.state
-			? props.location.state.cluster
-			: null;
+		const arc = get(props, 'location.state.arc', null);
+		const cluster = get(props, 'location.state.cluster', null);
 
 		this.state = {
 			arc,
@@ -34,7 +33,7 @@ export default class ExploreCluster extends Component {
 	}
 
 	init = () => {
-		getClusterData(this.props.match.params.id)
+		getClusterData(get(this, 'props.match.params.id'))
 			.then(res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
@@ -67,7 +66,7 @@ export default class ExploreCluster extends Component {
 		<Fragment>
 			<FullHeader
 				isCluster
-				cluster={this.props.match.params.id}
+				cluster={get(this, 'props.match.params.id')}
 				trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 			/>
 			<Container>
@@ -85,7 +84,10 @@ export default class ExploreCluster extends Component {
 						<p>{this.state.error || message}</p>
 						<div style={{ marginTop: 30 }}>
 							<Link
-								to={`/clusters/${this.props.match.params.id}`}
+								to={`/clusters/${get(
+									this,
+									'props.match.params.id',
+								)}`}
 							>
 								<Button size="large" icon="arrow-left">
 									Go Back
@@ -118,9 +120,7 @@ export default class ExploreCluster extends Component {
 		const { location } = this.props;
 		const urlParams = getUrlParams(location.search);
 
-		const arcURL = this.state.arc.url
-			? this.state.arc.url.slice(0, -1)
-			: '';
+		const arcURL = get(this, 'state.arc.url', '').slice(0, -1);
 		let mainURL = 'https://arc-dashboard.appbase.io';
 		if (urlParams && urlParams.view) {
 			const nestedRoute = urlParams.view.startsWith('/')
@@ -129,13 +129,19 @@ export default class ExploreCluster extends Component {
 
 			mainURL = `${mainURL}/${nestedRoute}`;
 		}
-		const url = `${mainURL}/?url=${arcURL}&username=${this.state.arc.username}&password=${this.state.arc.password}&cluster=${this.state.cluster}&showHelpChat=false&showProfile=false`;
+		const url = `${mainURL}/?url=${arcURL}&username=${get(
+			this,
+			'state.arc.username',
+		)}&password=${get(this, 'state.arc.password')}&cluster=${get(
+			this,
+			'state.cluster',
+		)}&showHelpChat=false&showProfile=false`;
 
 		return (
 			<Fragment>
 				<FullHeader
 					isCluster
-					cluster={this.props.match.params.id}
+					cluster={get(this, 'props.match.params.id')}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
 				{this.state.isFrameLoading && <Loader />}
