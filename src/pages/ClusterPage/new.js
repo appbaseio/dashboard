@@ -225,7 +225,7 @@ export const ansibleMachineMarks = {
 			nodes: 3,
 			cpu: 4,
 			cost: 799,
-			machine: 'n1-standard-4',
+			machine: 'e2-standard-4',
 			pph: 1.11,
 		},
 		80: {
@@ -236,7 +236,7 @@ export const ansibleMachineMarks = {
 			nodes: 3,
 			cpu: 8,
 			cost: 1599,
-			machine: 'n1-standard-8',
+			machine: 'e2-standard-8',
 			pph: 2.22,
 		},
 		100: {
@@ -247,7 +247,7 @@ export const ansibleMachineMarks = {
 			nodes: 3,
 			cpu: 16,
 			cost: 3199,
-			machine: 'n1-standard-16',
+			machine: 'e2-standard-16',
 			pph: 4.44,
 		},
 	},
