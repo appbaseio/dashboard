@@ -614,6 +614,7 @@ class NewCluster extends Component {
 	handleToken = async (clusterId, token) => {
 		try {
 			await createSubscription(clusterId, token);
+			window.location.reload();
 		} catch (e) {
 			console.log(e);
 		}

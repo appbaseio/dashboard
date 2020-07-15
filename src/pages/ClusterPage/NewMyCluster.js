@@ -20,6 +20,7 @@ import {
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import { ARC_BYOC } from './new';
+
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -129,6 +130,7 @@ class NewMyCluster extends Component {
 	handleToken = async (clusterId, token) => {
 		try {
 			await createSubscription(clusterId, token);
+			window.location.reload();
 		} catch (e) {
 			console.log(e);
 		}
