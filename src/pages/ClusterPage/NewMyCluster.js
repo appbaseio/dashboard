@@ -20,15 +20,16 @@ import {
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import { ARC_BYOC } from './new';
+
 const { TabPane } = Tabs;
 
 export const machineMarks = {
 	0: {
 		label: 'Basic',
 		nodes: 1,
-		cost: 39,
-		plan: 'hosted-arc-basic',
-		pph: 0.06,
+		cost: 29,
+		plan: 'hosted-arc-basic-v2',
+		pph: 0.04,
 	},
 	50: {
 		label: 'Standard',
@@ -129,6 +130,7 @@ class NewMyCluster extends Component {
 	handleToken = async (clusterId, token) => {
 		try {
 			await createSubscription(clusterId, token);
+			window.location.reload();
 		} catch (e) {
 			console.log(e);
 		}
