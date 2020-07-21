@@ -122,12 +122,23 @@ export default class ExploreCluster extends Component {
 
 		const arcURL = get(this, 'state.arc.url', '').slice(0, -1);
 		let mainURL = 'https://arc-dashboard.appbase.io';
-		if (urlParams && urlParams.view) {
-			const nestedRoute = urlParams.view.startsWith('/')
-				? urlParams.view.replace('/', '')
-				: urlParams.view;
+		let arcParams = '';
 
-			mainURL = `${mainURL}/${nestedRoute}`;
+		if (urlParams) {
+			const { view, ...otherParams } = urlParams;
+			if (view) {
+				const nestedRoute = view.startsWith('/')
+					? view.replace('/', '')
+					: view;
+
+				mainURL = `${mainURL}/${nestedRoute}`;
+			}
+
+			if (otherParams) {
+				arcParams = Object.keys(otherParams).reduce((agg, key) => {
+					return `${agg}&${key}=${otherParams[key]}`;
+				}, '');
+			}
 		}
 		const url = `${mainURL}/?url=${arcURL}&username=${get(
 			this,
@@ -135,7 +146,7 @@ export default class ExploreCluster extends Component {
 		)}&password=${get(this, 'state.arc.password')}&cluster=${get(
 			this,
 			'state.cluster',
-		)}&showHelpChat=false&showProfile=false`;
+		)}&showHelpChat=false&showProfile=false${arcParams}`;
 
 		return (
 			<Fragment>

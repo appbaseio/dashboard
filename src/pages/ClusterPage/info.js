@@ -31,6 +31,7 @@ import {
 	STRIPE_KEY,
 } from './utils';
 import { regions } from './utils/regions';
+import { getUrlParams } from '../../utils/helper';
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
@@ -74,6 +75,16 @@ export default class Clusters extends Component {
 	}
 
 	componentDidMount() {
+		const params = getUrlParams(window.location.search);
+		const { history, location } = this.props;
+		if (params && params['insights-sidebar'] && params['insights-id']) {
+			history.push(
+				`${get(location, 'pathname')}/explore${get(
+					location,
+					'search',
+				)}&view=/cluster/analytics`,
+			);
+		}
 		this.init();
 	}
 
