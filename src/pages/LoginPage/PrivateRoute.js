@@ -16,7 +16,9 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => (
 				</React.Fragment>
 			) : AUTH_ROUTES.includes(window.location.pathname) ? null : (
 				<Redirect
-					to={`/login?returnURL=${window.location.origin}${window.location.pathname}`}
+					to={`/login?returnURL=${window.location.origin}${
+						window.location.pathname
+					}${window.location.search.replace('?', '&')}`}
 				/>
 			)
 		}
