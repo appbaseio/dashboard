@@ -77,7 +77,7 @@ export default class Clusters extends Component {
 	componentDidMount() {
 		const params = getUrlParams(window.location.search);
 		const { history, location } = this.props;
-		if (params && params['insights-sidebar'] && params['insights-id']) {
+		if (params && params['insights-id']) {
 			history.push(
 				`${get(location, 'pathname')}/explore${get(
 					location,

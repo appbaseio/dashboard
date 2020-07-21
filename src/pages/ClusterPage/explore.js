@@ -126,7 +126,7 @@ export default class ExploreCluster extends Component {
 
 		if (urlParams) {
 			const { view, ...otherParams } = urlParams;
-			if (view) {
+			if (view && !get(otherParams, 'insights-id')) {
 				const nestedRoute = view.startsWith('/')
 					? view.replace('/', '')
 					: view;
@@ -134,10 +134,14 @@ export default class ExploreCluster extends Component {
 				mainURL = `${mainURL}/${nestedRoute}`;
 			}
 
-			if (otherParams) {
-				arcParams = Object.keys(otherParams).reduce((agg, key) => {
-					return `${agg}&${key}=${otherParams[key]}`;
-				}, '');
+			const insightsId = get(otherParams, 'insights-id');
+			if (insightsId) {
+				arcParams = `&insights-id=${get(
+					otherParams,
+					'insights-id',
+				)}&insights-sidebar=true`;
+
+				mainURL = `${mainURL}/cluster/analytics`;
 			}
 		}
 		const url = `${mainURL}/?url=${arcURL}&username=${get(
