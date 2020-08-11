@@ -31,8 +31,15 @@ export const regions = {
 			continent: 'us',
 		},
 		// New regions
-		australiaeast: { name: 'Australia East', flag: 'australia.png' },
-		japaneast: { name: 'Japan East', flag: 'japan.png', continent: 'asia' },
+		australiaeast: {
+			name: 'Australia East',
+			flag: 'australia.png',
+		},
+		japaneast: {
+			name: 'Japan East',
+			flag: 'japan.png',
+			continent: 'asia',
+		},
 		uksouth: { name: 'Uk South', flag: 'uk.png', continent: 'eu' },
 		northeurope: {
 			name: 'North Europe',
@@ -101,18 +108,30 @@ export const regions = {
 			flag: 'united-states.png',
 			continent: 'us',
 		},
+		'us-west1': {
+			name: 'Oregon',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
 		'northamerica-northeast1': {
 			name: 'Montreal',
 			flag: 'canada.png',
 			continent: 'us',
 		},
-		'australia-southeast1': { name: 'Sydney', flag: 'australia.png' },
+		'australia-southeast1': {
+			name: 'Sydney',
+			flag: 'australia.png',
+		},
 		'asia-southeast1': {
 			name: 'Singapore',
 			flag: 'singapore.png',
 			continent: 'asia',
 		},
-		'asia-east1': { name: 'Taiwan', flag: 'taiwan.png', continent: 'asia' },
+		'asia-east1': {
+			name: 'Taiwan',
+			flag: 'taiwan.png',
+			continent: 'asia',
+		},
 		'asia-south1': {
 			name: 'Mumbai',
 			flag: 'mumbai@3x.png',
