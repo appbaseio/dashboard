@@ -45,7 +45,7 @@ const routes = {
 			{ label: 'Search Latency', link: 'search-latency' },
 		],
 	},
-	Security: {
+	'Access Control': {
 		icon: 'key',
 		menu: [
 			{ label: 'API Credentials', link: 'credentials' },

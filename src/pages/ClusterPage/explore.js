@@ -121,7 +121,7 @@ export default class ExploreCluster extends Component {
 		const urlParams = getUrlParams(location.search);
 
 		const arcURL = get(this, 'state.arc.url', '').slice(0, -1);
-		let mainURL = 'https://arc-dashboard.appbase.io';
+		let mainURL = 'https://dash.appbase.io';
 		let arcParams = '';
 
 		if (urlParams) {
