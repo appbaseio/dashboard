@@ -10,6 +10,8 @@ import {
 	List,
 	Popover,
 	notification,
+	Tag,
+	Tooltip,
 } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
@@ -213,7 +215,43 @@ class CreateAppModal extends Component {
 				destroyOnClose
 				okButtonProps={{ loading: createdApp.isLoading }}
 				okText="Create App"
-				title="Create App"
+				title={
+					<div
+						style={{
+							color: 'rgba(0, 0, 0, 0.85)',
+							fontWeight: 500,
+							fontSize: '16px',
+							lineHeight: '22px',
+							display: 'flex',
+							alignItems: 'center',
+						}}
+					>
+						Create App
+						<Tooltip
+							title={
+								<span>
+									Creating apps is deprecated. We recommend
+									creating a cluster instead. Read more{' '}
+									<a
+										target="_blank"
+										rel="noopener noreferrer"
+										href="https://appbase.io/migrate-to-clusters"
+									>
+										here
+									</a>
+									.
+								</span>
+							}
+						>
+							<Tag
+								color="red"
+								style={{ marginLeft: 20, cursor: 'pointer' }}
+							>
+								<Icon type="warning" /> Deprecated
+							</Tag>
+						</Tooltip>
+					</div>
+				}
 				onCancel={this.handleCancel}
 				width={600}
 			>
@@ -227,10 +265,7 @@ class CreateAppModal extends Component {
 							}}
 							theme="filled"
 						/>
-						<span>
-							Alternatively, you can also create a dedicated
-							cluster.
-						</span>
+						<span>You should create cluster instead.</span>
 					</div>
 					<Link to="/">Create a Cluster</Link>
 				</section>
@@ -305,22 +340,6 @@ class CreateAppModal extends Component {
 								calls: '100K API calls',
 							})}
 						</Radio>
-						<Radio value="bootstrap" className={pricebtn}>
-							{this.generateGrid({
-								type: 'Bootstrap',
-								price: '$29 per month',
-								records: '100K records',
-								calls: '1M API calls',
-							})}
-						</Radio>
-						<Radio value="growth" className={pricebtn}>
-							{this.generateGrid({
-								type: 'Growth',
-								price: '$89 per month',
-								records: '1M records',
-								calls: '10M API calls',
-							})}
-						</Radio>
 					</RadioGroup>
 				</div>
 
@@ -342,26 +361,6 @@ class CreateAppModal extends Component {
 						</Radio>
 					</RadioGroup>
 				</div>
-
-				<Row>
-					<Col span={14}>
-						<h3 className={modalHeading}>
-							Pick Your Elasticsearch Version
-						</h3>
-						<RadioGroup
-							value={elasticVersion}
-							name="elasticVersion"
-							onChange={this.handleChange}
-						>
-							<Radio className={radiobtn} value="5">
-								5
-							</Radio>
-							<Radio className={radiobtn} value="7">
-								7
-							</Radio>
-						</RadioGroup>
-					</Col>
-				</Row>
 			</Modal>
 		);
 	}
