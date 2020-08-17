@@ -60,6 +60,7 @@ const link = css`
 
 const FullHeader = ({
 	user,
+	apps,
 	cluster,
 	isUsingTrial,
 	isUsingClusterTrial,
@@ -93,9 +94,11 @@ const FullHeader = ({
 					</Menu.Item>
 				) : null}
 
-				<Menu.Item key="/apps">
-					<Link to="/apps">Apps</Link>
-				</Menu.Item>
+				{apps && Boolean(Object.keys(apps).length) && (
+					<Menu.Item key="/apps">
+						<Link to="/apps">Apps</Link>
+					</Menu.Item>
+				)}
 
 				<Menu.Item key="/marketplace">
 					<Link to="/marketplace">
@@ -149,6 +152,7 @@ FullHeader.defaultProps = {
 
 FullHeader.propTypes = {
 	user: object.isRequired,
+	apps: object,
 	cluster: string,
 	clusters: array,
 	currentApp: string.isRequired,
@@ -166,8 +170,10 @@ const mapStateToProps = state => {
 	if (storedApp) {
 		currentApp = storedApp;
 	}
+
 	return {
 		user: get(state, 'user.data'),
+		apps: get(state, 'appsOwners.data'),
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,
 		isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 		daysLeft: get(state, '$getUserPlan.daysLeft', 0),
