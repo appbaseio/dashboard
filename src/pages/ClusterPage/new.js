@@ -10,12 +10,13 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 import { card, clusterContainer, esContainer, settingsItem } from './styles';
 import {
-	CLUSTER_PLANS,
 	createSubscription,
 	deployCluster,
 	getClusters,
 	hasAnsibleSetup,
 	STRIPE_KEY,
+	PRICE_BY_PLANS,
+	CLUSTER_PLANS,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -375,106 +376,115 @@ class NewCluster extends Component {
 		});
 	};
 
-	createCluster = () => {
-		if (!this.validateClusterName()) {
-			// prettier-ignore
-			const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
-			this.setState({
-				error: errorMessage,
-			});
-			document.getElementById('cluster-name').focus();
-			return;
-		}
-
-		if (!this.state.region) {
-			this.setState({
-				error: 'Please select a region to deploy your cluster',
-			});
-			return;
-		}
-
-		const selectedMachine = Object.values(
-			ansibleMachineMarks[this.state.provider],
-		).find(item => item.plan === this.state.pricing_plan);
-
-		const arcTag =
-			arcVersions[this.state.clusterVersion.split('.')[0]] ||
-			arcVersions['6'];
-
-		const body = {
-			elasticsearch: {
-				nodes: selectedMachine.nodes,
-				version: this.state.clusterVersion,
-				volume_size: selectedMachine.storage / selectedMachine.nodes,
-				plugins: Object.keys(plugins).filter(item => this.state[item]),
-				restore_from: this.state.restore_from,
-				odfe: parseInt(this.state.clusterVersion, 10) < 5,
-			},
-			cluster: {
-				name: this.state.clusterName,
-				location: this.state.region,
-				vm_size: this.state.vm_size,
-				pricing_plan: this.state.pricing_plan,
-				ssh_public_key: SSH_KEY,
-				provider: this.state.provider,
-			},
-			addons: [
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
-					exposed_port: 5000,
-				},
-				{
-					name: 'arc',
-					image: `siddharthlatest/arc:${arcTag}`,
-					exposed_port: 8000,
-				},
-			],
-		};
-
-		if (validOpenFaasPlans.indexOf(this.state.pricing_plan) > -1) {
-			body.open_faas = true;
-		}
-
-		if (this.state.visualization === 'kibana') {
-			body.kibana = {
-				create_node: false,
-				version: this.state.clusterVersion,
-				odfe: parseInt(this.state.clusterVersion, 10) < 5,
-			};
-		}
-
-		if (this.state.visualization === 'grafana') {
-			body.grafana = true;
-		}
-
-		// if (this.state.streams) {
-		// 	body.addons = body.addons || [];
-		// 	body.addons = [
-		// 		...body.addons,
-		// 		{
-		// 			name: 'streams',
-		// 			image: 'appbaseio/streams:6',
-		// 			exposed_port: 80,
-		// 		},
-		// 	];
-		// }
-
-		this.setState({
-			isLoading: true,
-		});
-
-		deployCluster(body)
-			.then(() => {
-				this.props.history.push('/');
-			})
-			.catch(e => {
+	createCluster = async (token = null) => {
+		try {
+			if (!this.validateClusterName()) {
+				// prettier-ignore
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 				this.setState({
-					isLoading: false,
-					deploymentError: e,
-					showError: true,
+					error: errorMessage,
 				});
+				document.getElementById('cluster-name').focus();
+				return;
+			}
+
+			if (!this.state.region) {
+				this.setState({
+					error: 'Please select a region to deploy your cluster',
+				});
+				return;
+			}
+
+			const selectedMachine = Object.values(
+				ansibleMachineMarks[this.state.provider],
+			).find(item => item.plan === this.state.pricing_plan);
+
+			const arcTag =
+				arcVersions[this.state.clusterVersion.split('.')[0]] ||
+				arcVersions['6'];
+
+			const body = {
+				elasticsearch: {
+					nodes: selectedMachine.nodes,
+					version: this.state.clusterVersion,
+					volume_size:
+						selectedMachine.storage / selectedMachine.nodes,
+					plugins: Object.keys(plugins).filter(
+						item => this.state[item],
+					),
+					restore_from: this.state.restore_from,
+					odfe: parseInt(this.state.clusterVersion, 10) < 5,
+				},
+				cluster: {
+					name: this.state.clusterName,
+					location: this.state.region,
+					vm_size: this.state.vm_size,
+					pricing_plan: this.state.pricing_plan,
+					ssh_public_key: SSH_KEY,
+					provider: this.state.provider,
+				},
+				addons: [
+					{
+						name: 'elasticsearch-hq',
+						image: 'elastichq/elasticsearch-hq:release-v3.5.0',
+						exposed_port: 5000,
+					},
+					{
+						name: 'arc',
+						image: `siddharthlatest/arc:${arcTag}`,
+						exposed_port: 8000,
+					},
+				],
+			};
+
+			if (validOpenFaasPlans.indexOf(this.state.pricing_plan) > -1) {
+				body.open_faas = true;
+			}
+
+			if (this.state.visualization === 'kibana') {
+				body.kibana = {
+					create_node: false,
+					version: this.state.clusterVersion,
+					odfe: parseInt(this.state.clusterVersion, 10) < 5,
+				};
+			}
+
+			if (this.state.visualization === 'grafana') {
+				body.grafana = true;
+			}
+
+			if (token) {
+				body.enable_monitoring = true;
+			}
+
+			// if (this.state.streams) {
+			// 	body.addons = body.addons || [];
+			// 	body.addons = [
+			// 		...body.addons,
+			// 		{
+			// 			name: 'streams',
+			// 			image: 'appbaseio/streams:6',
+			// 			exposed_port: 80,
+			// 		},
+			// 	];
+			// }
+
+			this.setState({
+				isLoading: true,
 			});
+
+			const clusterRes = await deployCluster(body);
+			if (token) {
+				await createSubscription(clusterRes.cluster.id, token);
+				this.props.history.push('/');
+			}
+		} catch (e) {
+			this.setState({
+				isLoading: false,
+				deploymentError: e,
+				showError: true,
+			});
+		}
 	};
 
 	renderPlugins = () => (
@@ -691,27 +701,6 @@ class NewCluster extends Component {
 									Already have a Cluster
 								</Button>
 							</Tooltip>
-							{isUsingClusterTrial && clusters.length > 0 ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={(clusters[0].plan_rate || 0) * 100}
-									token={token =>
-										this.handleToken(clusters[0].id, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-								>
-									<Button
-										ghost
-										style={{ marginBottom: 10 }}
-										type="primary"
-										size="large"
-										block
-									>
-										Upgrade Now
-									</Button>
-								</Stripe>
-							) : null}
 						</Col>
 					</Row>
 				</Header>
@@ -741,9 +730,6 @@ class NewCluster extends Component {
 										ansibleMachineMarks[this.state.provider]
 									}
 									onChange={this.setPricing}
-									sliderProps={{
-										disabled: isUsingClusterTrial,
-									}}
 								/>
 							</div>
 
@@ -1157,27 +1143,33 @@ class NewCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{isUsingClusterTrial && clusters.length > 0 ? (
+								{(isUsingClusterTrial &&
+									this.state.pricing_plan !==
+										CLUSTER_PLANS.SANDBOX_2020) ||
+								clusters.length > 0 ? (
 									<Stripe
 										name="Appbase.io Clusters"
 										amount={
-											(clusters[0].plan_rate || 0) * 100
+											(PRICE_BY_PLANS[
+												this.state.pricing_plan
+											] || 0) * 100
 										}
 										token={token =>
-											this.handleToken(
-												clusters[0].id,
-												token,
-											)
+											this.createCluster(token)
 										}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
 									>
 										<Button
-											ghost
 											style={{ marginBottom: 10 }}
 											type="primary"
+											size="large"
+											disabled={
+												!this.validateClusterName() ||
+												!this.state.region
+											}
 										>
-											Upgrade Now
+											Add payment info and create cluster
 										</Button>
 									</Stripe>
 								) : (

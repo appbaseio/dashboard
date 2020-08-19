@@ -16,6 +16,8 @@ import {
 	verifyCluster,
 	STRIPE_KEY,
 	createSubscription,
+	PRICE_BY_PLANS,
+	ARC_PLANS,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
@@ -170,54 +172,60 @@ class NewMyCluster extends Component {
 		}
 	};
 
-	createCluster = () => {
-		if (!this.validateClusterName()) {
-			// prettier-ignore
-			const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
-			this.setState({
-				error: errorMessage,
-			});
-			document.getElementById('cluster-name').focus();
-			return;
-		}
-
-		if (!this.state.region) {
-			this.setState({
-				error: 'Please select a region to deploy your cluster',
-			});
-			return;
-		}
-
-		if (!this.state.clusterURL) {
-			this.setState({
-				error: 'Please enter URL',
-			});
-			return;
-		}
-
-		this.setState({
-			isLoading: true,
-		});
-
-		const body = {
-			elasticsearch_url: this.state.clusterURL,
-			cluster_name: this.state.clusterName,
-			pricing_plan: this.state.pricing_plan,
-			location: this.state.region,
-			arc_image: ARC_BYOC,
-		};
-
-		deployMyCluster(body)
-			.then(() => {
-				this.props.history.push('/');
-			})
-			.catch(e => {
+	createCluster = async (token = null) => {
+		try {
+			if (!this.validateClusterName()) {
+				// prettier-ignore
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 				this.setState({
-					isLoading: false,
-					deploymentError: e,
-					showError: true,
+					error: errorMessage,
 				});
+				document.getElementById('cluster-name').focus();
+				return;
+			}
+
+			if (!this.state.region) {
+				this.setState({
+					error: 'Please select a region to deploy your cluster',
+				});
+				return;
+			}
+
+			if (!this.state.clusterURL) {
+				this.setState({
+					error: 'Please enter URL',
+				});
+				return;
+			}
+
+			this.setState({
+				isLoading: true,
 			});
+
+			const body = {
+				elasticsearch_url: this.state.clusterURL,
+				cluster_name: this.state.clusterName,
+				pricing_plan: this.state.pricing_plan,
+				location: this.state.region,
+				arc_image: ARC_BYOC,
+			};
+
+			if (token) {
+				body.enable_monitoring = true;
+			}
+
+			const clusterRes = await deployMyCluster(body);
+			if (token) {
+				await createSubscription(clusterRes.cluster.id, token);
+				this.props.history.push('/');
+			}
+		} catch (e) {
+			this.setState({
+				isLoading: false,
+				deploymentError: e,
+				showError: true,
+			});
+		}
 	};
 
 	renderRegions = () => {
@@ -383,28 +391,6 @@ class NewMyCluster extends Component {
 									Don't have a Cluster
 								</Button>
 							</Tooltip>
-							{isUsingClusterTrial && clusters.length > 0 ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={(clusters[0].plan_rate || 0) * 100}
-									token={token =>
-										this.handleToken(clusters[0].id, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
-								>
-									<Button
-										ghost
-										style={{ marginBottom: 10 }}
-										type="primary"
-										size="large"
-										block
-									>
-										Upgrade Now
-									</Button>
-								</Stripe>
-							) : null}
 						</Col>
 					</Row>
 				</Header>
@@ -599,28 +585,34 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{isUsingClusterTrial && clusters.length > 0 ? (
+								{(isUsingClusterTrial &&
+									this.state.pricing_plan !==
+										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
+								clusters.length > 0 ? (
 									<Stripe
 										name="Appbase.io Clusters"
 										amount={
-											(clusters[0].plan_rate || 0) * 100
+											(PRICE_BY_PLANS[
+												this.state.pricing_plan
+											] || 0) * 100
 										}
 										token={token =>
-											this.handleToken(
-												clusters[0].id,
-												token,
-											)
+											this.createCluster(token)
 										}
 										disabled={false}
 										stripeKey={STRIPE_KEY}
 										closed={this.toggleOverlay}
 									>
 										<Button
-											ghost
 											style={{ marginBottom: 10 }}
 											type="primary"
+											size="large"
+											disabled={
+												!this.validateClusterName() ||
+												!this.state.region
+											}
 										>
-											Upgrade Now
+											Add payment info and create cluster
 										</Button>
 									</Stripe>
 								) : (

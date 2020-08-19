@@ -2,9 +2,9 @@ import get from 'lodash/get';
 import { ACC_API } from '../../../constants/config';
 
 // test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
+export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
 // live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
+// export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
@@ -222,7 +222,7 @@ export function deployCluster(cluster, id) {
 				if (data.body && data.body.response_info.failures.length) {
 					reject(data.body.response_info.failures);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);
@@ -251,7 +251,7 @@ export function deleteCluster(id) {
 
 export function createSubscription(id, token) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/subscription/cluster/${id}`, {
+		fetch(`${ACC_API}/v1/subscription/cluster/${id}?test=true`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -377,7 +377,7 @@ export function deployMyCluster(body) {
 				if (data.error) {
 					reject(data.error);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);
