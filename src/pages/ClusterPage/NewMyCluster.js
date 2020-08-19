@@ -609,7 +609,8 @@ class NewMyCluster extends Component {
 											size="large"
 											disabled={
 												!this.validateClusterName() ||
-												!this.state.region
+												!this.state.region ||
+												!this.state.clusterURL
 											}
 										>
 											Add payment info and create cluster
