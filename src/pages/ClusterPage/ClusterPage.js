@@ -11,7 +11,6 @@ import Loader from '../../components/Loader';
 import { getParam } from '../../utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
-import Overlay from './components/Overlay';
 import StripeCheckout from '../../components/StripeCheckout';
 import { ansibleMachineMarks, machineMarks } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
@@ -34,7 +33,6 @@ class ClusterPage extends Component {
 			isLoading: true,
 			clustersAvailable: true,
 			clusters: [],
-			showOverlay: false,
 			deleteClusterId: '',
 			deleteClusterName: '',
 			deleteModal: false,
@@ -81,13 +79,6 @@ class ClusterPage extends Component {
 	handleDeleteModal = () => {
 		this.setState(prevState => ({
 			deleteModal: !prevState.deleteModal,
-		}));
-	};
-
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
 		}));
 	};
 
@@ -425,12 +416,7 @@ class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const {
-			isLoading,
-			clustersAvailable,
-			clusters,
-			showOverlay // prettier-ignore
-		} = this.state;
+		const { isLoading, clustersAvailable, clusters } = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster =>
@@ -478,7 +464,6 @@ class ClusterPage extends Component {
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
-				{showOverlay && <Overlay />}
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>

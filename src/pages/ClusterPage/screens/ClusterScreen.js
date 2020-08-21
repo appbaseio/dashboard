@@ -49,7 +49,6 @@ class ClusterScreen extends Component {
 			kibana: props.kibana,
 			streams: props.streams,
 			elasticsearchHQ: props.elasticsearchHQ,
-			showOverlay: false,
 			clusters: [],
 			isClusterLoading: true,
 			snapshots: [],
@@ -258,9 +257,17 @@ class ClusterScreen extends Component {
 	};
 
 	handleStripeModal = () => {
+		console.log('here....');
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
+	};
+
+	handleStripeSubmit = (clusterId, token) => {
+		this.setState({
+			isStripeCheckoutOpen: false,
+		});
+		this.props.handleToken(clusterId, token);
 	};
 
 	renderClusterEndpoint = source => {
@@ -338,7 +345,6 @@ class ClusterScreen extends Component {
 
 		const {
 			clusterId,
-			handleToken,
 			isPaid,
 			handleDeleteModal,
 			isExternalCluster,
@@ -358,6 +364,19 @@ class ClusterScreen extends Component {
 			return (
 				<Fragment>
 					<ArcDetail cluster={cluster} arc={arcDeployment} />
+					{isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={isStripeCheckoutOpen}
+							plan={PLAN_LABEL[cluster.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={token =>
+								this.handleStripeSubmit(clusterId, token)
+							}
+						/>
+					)}
 					<div className={clusterButtons}>
 						<div>
 							{!isPaid &&
@@ -383,17 +402,6 @@ class ClusterScreen extends Component {
 
 		return (
 			<Fragment>
-				{isStripeCheckoutOpen && (
-					<StripeCheckout
-						visible={isStripeCheckoutOpen}
-						plan={PLAN_LABEL[cluster.pricing_plan]}
-						price={EFFECTIVE_PRICE_BY_PLANS[
-							cluster.pricing_plan
-						].toString()}
-						onCancel={this.handleStripeModal}
-						onSubmit={token => handleToken(clusterId, token)}
-					/>
-				)}
 				<li className={card}>
 					<div className="col light">
 						<h3>Elasticsearch</h3>

@@ -10,7 +10,6 @@ import { ACC_API } from '../../constants/config';
 import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
-import Overlay from './components/Overlay';
 import Sidebar, { RightContainer } from './components/Sidebar';
 import { ansibleMachineMarks, ARC_BYOC, machineMarks, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
@@ -66,7 +65,6 @@ class ClusterInfo extends Component {
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
-			showOverlay: false,
 			isPaid: false,
 			deleteModal: false,
 			streams: false,
@@ -136,6 +134,7 @@ class ClusterInfo extends Component {
 						planRate: cluster.plan_rate || 0,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 						streams: streamsData.status === 'ready',
+						error: null,
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -175,6 +174,7 @@ class ClusterInfo extends Component {
 							'details.plan_rate',
 							get(state, 'planRate', 0),
 						),
+						cluster: get(error, 'details'),
 						isLoading: false,
 					}),
 					this.triggerPayment,
@@ -263,6 +263,9 @@ class ClusterInfo extends Component {
 
 	handleToken = async (clusterId, token) => {
 		try {
+			this.setState({
+				isStripeCheckoutOpen: false,
+			});
 			await createSubscription(clusterId, token);
 			this.init();
 		} catch (e) {
@@ -325,6 +328,17 @@ class ClusterInfo extends Component {
 		const clusterId = get(this, 'props.match.params.id');
 		return (
 			<Fragment>
+				{this.state.isStripeCheckoutOpen && (
+					<StripeCheckout
+						visible={this.state.isStripeCheckoutOpen}
+						onCancel={this.handleStripeModal}
+						plan={PLAN_LABEL[this.state.cluster.pricing_plan]}
+						price={EFFECTIVE_PRICE_BY_PLANS[
+							this.state.cluster.pricing_plan
+						].toString()}
+						onSubmit={token => this.handleToken(clusterId, token)}
+					/>
+				)}
 				<FullHeader
 					cluster={clusterId}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
@@ -418,6 +432,7 @@ class ClusterInfo extends Component {
 	);
 
 	handleStripeModal = () => {
+		console.log('here');
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
@@ -458,7 +473,6 @@ class ClusterInfo extends Component {
 		if (this.state.isLoading) return <Loader />;
 
 		const {
-			showOverlay,
 			isPaid,
 			deployment,
 			cluster,
@@ -496,7 +510,6 @@ class ClusterInfo extends Component {
 					clusterPlan={cluster && cluster.plan_rate}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
-				{showOverlay && <Overlay />}
 				<Container>
 					{isStripeCheckoutOpen && (
 						<StripeCheckout
