@@ -8,7 +8,7 @@ import StripeForm from './StripeForm';
 
 import { STRIPE_KEY } from '../../constants';
 
-const stripePromise = loadStripe(STRIPE_KEY.TEST);
+const stripePromise = loadStripe(STRIPE_KEY.LIVE);
 
 const StripeCheckout = ({ visible, plan, price, onCancel, onSubmit }) => (
 	<Modal
