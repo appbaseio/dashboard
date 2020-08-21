@@ -1,9 +1,9 @@
-import { Button, Col, Divider, Icon, Modal, Row, Tooltip } from 'antd';
+import { Button, Col, Divider, Icon, Row, Tooltip } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Stripe from 'react-stripe-checkout';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -11,7 +11,7 @@ import Loader from '../../components/Loader';
 import { getParam } from '../../utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
-import Overlay from './components/Overlay';
+import StripeCheckout from '../../components/StripeCheckout';
 import { ansibleMachineMarks, machineMarks } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList } from './styles';
@@ -19,10 +19,9 @@ import {
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
-	PRICE_BY_PLANS,
 	getClusters,
 	hasAnsibleSetup,
-	STRIPE_KEY,
+	PLAN_LABEL,
 } from './utils';
 import { regions } from './utils/regions';
 
@@ -34,7 +33,6 @@ class ClusterPage extends Component {
 			isLoading: true,
 			clustersAvailable: true,
 			clusters: [],
-			showOverlay: false,
 			deleteClusterId: '',
 			deleteClusterName: '',
 			deleteModal: false,
@@ -81,13 +79,6 @@ class ClusterPage extends Component {
 	handleDeleteModal = () => {
 		this.setState(prevState => ({
 			deleteModal: !prevState.deleteModal,
-		}));
-	};
-
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
 		}));
 	};
 
@@ -191,7 +182,6 @@ class ClusterPage extends Component {
 
 	renderClusterCard = cluster => {
 		if (!cluster) return null;
-		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
@@ -377,78 +367,24 @@ class ClusterPage extends Component {
 											Chat with us
 										</span>
 									</p>
-									<Modal
-										title="Subcription Details"
-										visible={showStripeModal}
-										onOk={this.hideStripeModal}
-										onCancel={this.hideStripeModal}
-										footer={[
-											<Button
-												key="cancel"
-												onClick={this.hideStripeModal}
-											>
-												Cancel
-											</Button>,
-											<Stripe
-												name="Appbase.io Clusters"
-												panelLabel="Subscribe"
-												amount={
-													(cluster.plan_rate || 0) *
-													100
-												}
-												token={token =>
-													this.handleToken(
-														cluster.id,
-														token,
-													)
-												}
-												disabled={false}
-												stripeKey={STRIPE_KEY}
-												closed={this.toggleOverlay}
-												desktopShowModal={
-													subscription &&
-													cluster.id === id
-														? true
-														: undefined
-												}
-											>
-												<Button
-													style={{
-														marginLeft: 10,
-													}}
-													key="submit"
-													type="primary"
-													onClick={() => {
-														this.hideStripeModal();
-														this.toggleOverlay();
-													}}
-												>
-													Subscribe
-												</Button>
-											</Stripe>,
-										]}
-									>
-										You&apos;re subscribing to the{' '}
-										<strong>{cluster.pricing_plan}</strong>{' '}
-										plan. It&apos;s billed at{' '}
-										<strong>
-											$
-											{
-												EFFECTIVE_PRICE_BY_PLANS[
-													cluster.pricing_plan
-												]
+									{showStripeModal && (
+										<StripeCheckout
+											visible={showStripeModal}
+											onCancel={this.hideStripeModal}
+											plan={
+												PLAN_LABEL[cluster.pricing_plan]
 											}
-											/hour ($
-											{
-												PRICE_BY_PLANS[
-													cluster.pricing_plan
-												]
+											price={EFFECTIVE_PRICE_BY_PLANS[
+												cluster.pricing_plan
+											].toString()}
+											onSubmit={token =>
+												this.handleToken(
+													cluster.id,
+													token,
+												)
 											}
-											/month)
-										</strong>{' '}
-										based on the actual usage at the end of
-										the subscription month.
-									</Modal>
+										/>
+									)}
 								</div>
 							)}
 						</div>
@@ -480,12 +416,7 @@ class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const {
-			isLoading,
-			clustersAvailable,
-			clusters,
-			showOverlay // prettier-ignore
-		} = this.state;
+		const { isLoading, clustersAvailable, clusters } = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster =>
@@ -533,7 +464,6 @@ class ClusterPage extends Component {
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
-				{showOverlay && <Overlay />}
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
@@ -628,5 +558,8 @@ class ClusterPage extends Component {
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
-
+ClusterPage.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
+};
 export default connect(mapStateToProps, null)(ClusterPage);

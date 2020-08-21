@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
-import { Button, notification, Alert } from 'antd';
+import { Button, notification } from 'antd';
 import { connect } from 'react-redux';
-import Stripe from 'react-stripe-checkout';
 import { get } from 'lodash';
 
 import IntegerStep from '../components/IntegerStep';
+import StripeCheckout from '../../../components/StripeCheckout';
+
 import { card } from '../styles';
-import { scaleCluster, STRIPE_KEY } from '../utils';
+import { scaleCluster, PLAN_LABEL, EFFECTIVE_PRICE_BY_PLANS } from '../utils';
 
 const column = css`
 	display: flex;
@@ -25,6 +27,7 @@ class ScaleClusterScreen extends Component {
 			nodes: props.nodes,
 			defaultValue: props.nodes,
 			isDirty: false,
+			isStripeCheckoutOpen: false,
 		};
 	}
 
@@ -59,14 +62,27 @@ class ScaleClusterScreen extends Component {
 			});
 	};
 
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
+	handleStripeSubmit = token => {
+		const { handleStripeSubmit, clusterId } = this.props;
+		this.setState({ isStripeCheckoutOpen: false });
+
+		handleStripeSubmit(clusterId, token);
+	};
+
 	render() {
-		const { isDirty, nodes, defaultValue } = this.state;
 		const {
-			isUsingClusterTrial,
-			cluster,
-			toggleOverlay,
-			handleToken,
-		} = this.props;
+			isDirty,
+			nodes,
+			defaultValue,
+			isStripeCheckoutOpen,
+		} = this.state;
+		const { isUsingClusterTrial, cluster } = this.props;
 
 		return (
 			<div>
@@ -79,27 +95,27 @@ class ScaleClusterScreen extends Component {
 					<div className={column}>
 						{isUsingClusterTrial ? (
 							<React.Fragment>
+								{isStripeCheckoutOpen && (
+									<StripeCheckout
+										visible={isStripeCheckoutOpen}
+										onCancel={this.handleStripeModal}
+										plan={PLAN_LABEL[cluster.pricing_plan]}
+										price={EFFECTIVE_PRICE_BY_PLANS[
+											cluster.pricing_plan
+										].toString()}
+										onSubmit={this.handleStripeSubmit}
+									/>
+								)}
 								<p style={{ margin: '0', width: '100%' }}>
 									Scaling the cluster size requires an upgrade
 									to a paid plan.
 								</p>
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={(cluster.plan_rate || 0) * 100}
-									token={token =>
-										handleToken(cluster.id, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={toggleOverlay}
+								<Button
+									type="primary"
+									onClick={this.handleStripeModal}
 								>
-									<Button
-										type="primary"
-										onClick={toggleOverlay}
-									>
-										Upgrade Now
-									</Button>
-								</Stripe>
+									Upgrade Now
+								</Button>
 							</React.Fragment>
 						) : (
 							<IntegerStep
@@ -132,5 +148,13 @@ class ScaleClusterScreen extends Component {
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
+
+ScaleClusterScreen.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	cluster: PropTypes.object.isRequired,
+	clusterId: PropTypes.string.isRequired,
+	nodes: PropTypes.number.isRequired,
+	handleStripeSubmit: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, null)(ScaleClusterScreen);

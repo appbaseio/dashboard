@@ -1,11 +1,6 @@
 import get from 'lodash/get';
 import { ACC_API } from '../../../constants/config';
 
-// test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
-// live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
-
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
 	HOBBY_2019: '2019-hobby',
@@ -42,9 +37,9 @@ export const EFFECTIVE_PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.SANDBOX_2020]: 0.07,
 	[CLUSTER_PLANS.HOBBY_2020]: 0.14,
 	[CLUSTER_PLANS.STARTER_2020]: 0.21,
-	[CLUSTER_PLANS.PRODUCTION_2019_1]: 0.55,
-	[CLUSTER_PLANS.PRODUCTION_2019_2]: 1.11,
-	[CLUSTER_PLANS.PRODUCTION_2019_3]: 2.22,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 1.11,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 2.22,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 4.44,
 };
 
 export const PRICE_BY_PLANS = {
@@ -61,9 +56,24 @@ export const PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.SANDBOX_2020]: 49,
 	[CLUSTER_PLANS.HOBBY_2020]: 99,
 	[CLUSTER_PLANS.STARTER_2020]: 149,
-	[CLUSTER_PLANS.PRODUCTION_2019_1]: 399,
-	[CLUSTER_PLANS.PRODUCTION_2019_2]: 700,
-	[CLUSTER_PLANS.PRODUCTION_2019_3]: 1599,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 799,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 1599,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 3199,
+};
+
+export const PLAN_LABEL = {
+	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: 'Basic',
+	[ARC_PLANS.HOSTED_ARC_STANDARD]: 'Standard',
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 'Enterprise',
+	[CLUSTER_PLANS.SANDBOX_2019]: 'Sandbox',
+	[CLUSTER_PLANS.HOBBY_2019]: 'Hobby',
+	[CLUSTER_PLANS.STARTER_2019]: 'Starter',
+	[CLUSTER_PLANS.SANDBOX_2020]: 'Sandbox',
+	[CLUSTER_PLANS.HOBBY_2020]: 'Hobby',
+	[CLUSTER_PLANS.STARTER_2020]: 'Starter',
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 'Production 1',
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 'Production 2',
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 'Production 3',
 };
 
 export function hasAnsibleSetup(pricingPlan) {
@@ -222,7 +232,7 @@ export function deployCluster(cluster, id) {
 				if (data.body && data.body.response_info.failures.length) {
 					reject(data.body.response_info.failures);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);
@@ -377,7 +387,7 @@ export function deployMyCluster(body) {
 				if (data.error) {
 					reject(data.error);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);

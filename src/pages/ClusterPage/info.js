@@ -1,7 +1,7 @@
 import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import Stripe from 'react-stripe-checkout';
+import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
@@ -10,7 +10,6 @@ import { ACC_API } from '../../constants/config';
 import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
-import Overlay from './components/Overlay';
 import Sidebar, { RightContainer } from './components/Sidebar';
 import { ansibleMachineMarks, ARC_BYOC, machineMarks, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
@@ -28,10 +27,12 @@ import {
 	getArcVersion,
 	hasAddon,
 	hasAnsibleSetup,
-	STRIPE_KEY,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from './utils';
 import { regions } from './utils/regions';
 import { getUrlParams } from '../../utils/helper';
+import StripeCheckout from '../../components/StripeCheckout';
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
@@ -47,7 +48,7 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 	return version && version !== V7_ARC.split('-')[0];
 };
 
-export default class Clusters extends Component {
+class ClusterInfo extends Component {
 	constructor(props) {
 		super(props);
 
@@ -64,11 +65,11 @@ export default class Clusters extends Component {
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
-			showOverlay: false,
 			isPaid: false,
 			deleteModal: false,
 			streams: false,
 			arcVersion: null,
+			isStripeCheckoutOpen: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -133,6 +134,7 @@ export default class Clusters extends Component {
 						planRate: cluster.plan_rate || 0,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 						streams: streamsData.status === 'ready',
+						error: null,
 					});
 
 					if (cluster.status === 'deployments in progress') {
@@ -172,6 +174,7 @@ export default class Clusters extends Component {
 							'details.plan_rate',
 							get(state, 'planRate', 0),
 						),
+						cluster: get(error, 'details'),
 						isLoading: false,
 					}),
 					this.triggerPayment,
@@ -195,13 +198,6 @@ export default class Clusters extends Component {
 				this.paymentTriggered = true;
 			}
 		}
-	};
-
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
-		}));
 	};
 
 	deleteCluster = (id = get(this, 'props.match.params.id')) => {
@@ -267,6 +263,9 @@ export default class Clusters extends Component {
 
 	handleToken = async (clusterId, token) => {
 		try {
+			this.setState({
+				isStripeCheckoutOpen: false,
+			});
 			await createSubscription(clusterId, token);
 			this.init();
 		} catch (e) {
@@ -329,6 +328,17 @@ export default class Clusters extends Component {
 		const clusterId = get(this, 'props.match.params.id');
 		return (
 			<Fragment>
+				{this.state.isStripeCheckoutOpen && (
+					<StripeCheckout
+						visible={this.state.isStripeCheckoutOpen}
+						onCancel={this.handleStripeModal}
+						plan={PLAN_LABEL[this.state.cluster.pricing_plan]}
+						price={EFFECTIVE_PRICE_BY_PLANS[
+							this.state.cluster.pricing_plan
+						].toString()}
+						onSubmit={token => this.handleToken(clusterId, token)}
+					/>
+				)}
 				<FullHeader
 					cluster={clusterId}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
@@ -364,29 +374,16 @@ export default class Clusters extends Component {
 								</Link>
 
 								{paymentRequired ? (
-									<Stripe
-										name="Appbase.io Clusters"
-										amount={
-											(this.state.planRate || 0) * 100
-										}
-										token={token =>
-											this.handleToken(clusterId, token)
-										}
-										disabled={false}
-										stripeKey={STRIPE_KEY}
-										closed={this.toggleOverlay}
+									<Button
+										size="large"
+										css={{
+											marginRight: 12,
+										}}
+										ref={this.paymentButton}
+										onClick={this.handleStripeModal}
 									>
-										<Button
-											size="large"
-											ref={this.paymentButton}
-											css={{
-												marginRight: 12,
-											}}
-											onClick={this.toggleOverlay}
-										>
-											Pay now to access
-										</Button>
-									</Stripe>
+										Pay now to access
+									</Button>
 								) : null}
 
 								<Button
@@ -434,6 +431,13 @@ export default class Clusters extends Component {
 		</div>
 	);
 
+	handleStripeModal = () => {
+		console.log('here');
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -468,7 +472,12 @@ export default class Clusters extends Component {
 
 		if (this.state.isLoading) return <Loader />;
 
-		const { showOverlay, isPaid, deployment, cluster } = this.state;
+		const {
+			isPaid,
+			deployment,
+			cluster,
+			isStripeCheckoutOpen,
+		} = this.state;
 
 		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
 		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
@@ -501,8 +510,20 @@ export default class Clusters extends Component {
 					clusterPlan={cluster && cluster.plan_rate}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
-				{showOverlay && <Overlay />}
 				<Container>
+					{isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={isStripeCheckoutOpen}
+							onCancel={this.handleStripeModal}
+							plan={PLAN_LABEL[cluster.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							onSubmit={token =>
+								this.handleToken(cluster.id, token)
+							}
+						/>
+					)}
 					<section className={clusterContainer}>
 						<Modal
 							title="Error"
@@ -609,39 +630,19 @@ export default class Clusters extends Component {
 										{this.state.cluster.trial ? (
 											<div>
 												<div>
-													<Stripe
-														name="Appbase.io Clusters"
-														amount={
-															(this.state.cluster
-																.plan_rate ||
-																0) * 100
+													<Button
+														type="primary"
+														style={{
+															marginTop: 5,
+														}}
+														onClick={
+															this
+																.handleStripeModal
 														}
-														token={token =>
-															this.handleToken(
-																this.state
-																	.cluster.id,
-																token,
-															)
-														}
-														disabled={false}
-														stripeKey={STRIPE_KEY}
-														closed={
-															this.toggleOverlay
-														}
+														ref={this.paymentButton}
 													>
-														<Button
-															type="primary"
-															style={{
-																marginTop: 5,
-															}}
-															onClick={
-																this
-																	.toggleOverlay
-															}
-														>
-															Upgrade Now
-														</Button>
-													</Stripe>
+														Upgrade Now
+													</Button>
 												</div>
 											</div>
 										) : null}
@@ -919,18 +920,14 @@ export default class Clusters extends Component {
 																				.cluster
 																				.total_nodes
 																		}
-																		handleToken={
-																			this
-																				.handleToken
-																		}
-																		toggleOverlay={
-																			this
-																				.toggleOverlay
-																		}
 																		cluster={
 																			this
 																				.state
 																				.cluster
+																		}
+																		handleStripeSubmit={
+																			this
+																				.handleToken
 																		}
 																	/>
 																)}
@@ -969,3 +966,10 @@ export default class Clusters extends Component {
 		);
 	}
 }
+
+ClusterInfo.propTypes = {
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
+};
+
+export default ClusterInfo;
