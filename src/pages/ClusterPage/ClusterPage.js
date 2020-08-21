@@ -12,6 +12,7 @@ import { getParam } from '../../utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import Overlay from './components/Overlay';
+import StripeCheckout from '../../components/StripeCheckout';
 import { ansibleMachineMarks, machineMarks } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList } from './styles';
@@ -23,6 +24,7 @@ import {
 	getClusters,
 	hasAnsibleSetup,
 	STRIPE_KEY,
+	PLAN_LABEL,
 } from './utils';
 import { regions } from './utils/regions';
 
@@ -377,78 +379,24 @@ class ClusterPage extends Component {
 											Chat with us
 										</span>
 									</p>
-									<Modal
-										title="Subcription Details"
-										visible={showStripeModal}
-										onOk={this.hideStripeModal}
-										onCancel={this.hideStripeModal}
-										footer={[
-											<Button
-												key="cancel"
-												onClick={this.hideStripeModal}
-											>
-												Cancel
-											</Button>,
-											<Stripe
-												name="Appbase.io Clusters"
-												panelLabel="Subscribe"
-												amount={
-													(cluster.plan_rate || 0) *
-													100
-												}
-												token={token =>
-													this.handleToken(
-														cluster.id,
-														token,
-													)
-												}
-												disabled={false}
-												stripeKey={STRIPE_KEY}
-												closed={this.toggleOverlay}
-												desktopShowModal={
-													subscription &&
-													cluster.id === id
-														? true
-														: undefined
-												}
-											>
-												<Button
-													style={{
-														marginLeft: 10,
-													}}
-													key="submit"
-													type="primary"
-													onClick={() => {
-														this.hideStripeModal();
-														this.toggleOverlay();
-													}}
-												>
-													Subscribe
-												</Button>
-											</Stripe>,
-										]}
-									>
-										You&apos;re subscribing to the{' '}
-										<strong>{cluster.pricing_plan}</strong>{' '}
-										plan. It&apos;s billed at{' '}
-										<strong>
-											$
-											{
-												EFFECTIVE_PRICE_BY_PLANS[
-													cluster.pricing_plan
-												]
+									{showStripeModal && (
+										<StripeCheckout
+											visible={showStripeModal}
+											onCancel={this.hideStripeModal}
+											plan={
+												PLAN_LABEL[cluster.pricing_plan]
 											}
-											/hour ($
-											{
-												PRICE_BY_PLANS[
-													cluster.pricing_plan
-												]
+											price={EFFECTIVE_PRICE_BY_PLANS[
+												cluster.pricing_plan
+											].toString()}
+											onSubmit={token =>
+												this.handleToken(
+													cluster.id,
+													token,
+												)
 											}
-											/month)
-										</strong>{' '}
-										based on the actual usage at the end of
-										the subscription month.
-									</Modal>
+										/>
+									)}
 								</div>
 							)}
 						</div>

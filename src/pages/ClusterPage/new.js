@@ -1,22 +1,24 @@
 import { Button, Col, Icon, Modal, Row, Select, Tabs, Tooltip } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Stripe from 'react-stripe-checkout';
+
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
+import StripeCheckout from '../../components/StripeCheckout';
 import { card, clusterContainer, esContainer, settingsItem } from './styles';
 import {
 	createSubscription,
 	deployCluster,
 	getClusters,
 	hasAnsibleSetup,
-	STRIPE_KEY,
-	PRICE_BY_PLANS,
 	CLUSTER_PLANS,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -28,7 +30,7 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['7.9.0','7.8.1', '7.8.0', '7.7.1'];
+const esVersions = ['7.9.0', '7.8.1', '7.8.0', '7.7.1'];
 
 const odfeVersions = ['1.9.0', '1.8.0'];
 
@@ -47,74 +49,6 @@ export const arcVersions = {
 	/* odfe versions end */
 };
 export const machineMarks = {
-	azure: {
-		0: {
-			label: 'Sandbox',
-			plan: '2019-sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cpu: 2,
-			cost: 59,
-			machine: 'Standard_B2s',
-			pph: 0.08,
-		},
-		20: {
-			label: 'Hobby',
-			plan: '2019-hobby',
-			storage: 60,
-			memory: 4,
-			nodes: 2,
-			cpu: 2,
-			cost: 119,
-			machine: 'Standard_B2s',
-			pph: 0.17,
-		},
-		40: {
-			label: 'Starter',
-			plan: '2019-starter',
-			storage: 120,
-			memory: 4,
-			nodes: 3,
-			cpu: 2,
-			cost: 199,
-			machine: 'Standard_B2s',
-			pph: 0.28,
-		},
-		60: {
-			label: 'Production-I',
-			plan: '2019-production-1',
-			storage: 240,
-			memory: 8,
-			nodes: 3,
-			cpu: 2,
-			cost: 399,
-			machine: 'Standard_B2s',
-			pph: 0.55,
-		},
-		80: {
-			label: 'Production-II',
-			plan: '2019-production-2',
-			storage: 480,
-			memory: 16,
-			nodes: 3,
-			cpu: 4,
-			cost: 799,
-			machine: 'Standard_B2ms',
-			pph: 1.11,
-		},
-		100: {
-			label: 'Production-III',
-			plan: '2019-production-3',
-			storage: 999,
-			memory: 32,
-			nodes: 3,
-			cpu: 8,
-			cost: 1599,
-			machine: 'Standard_B4ms',
-			pph: 2.22,
-		},
-	},
 	gke: {
 		0: {
 			label: 'Sandbox',
@@ -298,6 +232,7 @@ class NewCluster extends Component {
 			esFlavor: 'es',
 			provider,
 			visualization: 'none',
+			isStripeCheckoutOpen: false,
 			...pluginState,
 		};
 	}
@@ -374,6 +309,17 @@ class NewCluster extends Component {
 			showError: false,
 			deploymentError: '',
 		});
+	};
+
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
+	handleStripeSubmit = token => {
+		this.createCluster(token);
+		this.setState({ isStripeCheckoutOpen: false });
 	};
 
 	createCluster = async (token = null) => {
@@ -456,18 +402,6 @@ class NewCluster extends Component {
 			if (token) {
 				body.enable_monitoring = true;
 			}
-
-			// if (this.state.streams) {
-			// 	body.addons = body.addons || [];
-			// 	body.addons = [
-			// 		...body.addons,
-			// 		{
-			// 			name: 'streams',
-			// 			image: 'appbaseio/streams:6',
-			// 			exposed_port: 80,
-			// 		},
-			// 	];
-			// }
 
 			this.setState({
 				isLoading: true,
@@ -705,6 +639,17 @@ class NewCluster extends Component {
 					</Row>
 				</Header>
 				<Container>
+					{this.state.isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={this.state.isStripeCheckoutOpen}
+							plan={PLAN_LABEL[this.state.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={this.handleStripeSubmit}
+						/>
+					)}
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
 						<article>
@@ -712,16 +657,6 @@ class NewCluster extends Component {
 								<div className="col light">
 									<h3>Pick the pricing plan</h3>
 									<p>Scale as you go</p>
-									{isUsingClusterTrial ? (
-										<p>
-											<b>Note: </b>You can only create{' '}
-											{
-												ansibleMachineMarks[provider][0]
-													.label
-											}{' '}
-											Cluster while on trial.
-										</p>
-									) : null}
 								</div>
 
 								<PricingSlider
@@ -732,58 +667,6 @@ class NewCluster extends Component {
 									onChange={this.setPricing}
 								/>
 							</div>
-
-							{/* <div className={card}>
-								<div className="col light">
-									<h3>Pick the provider</h3>
-								</div>
-
-								<div
-									className={settingsItem}
-									css={{
-										padding: 30,
-									}}
-								>
-									<Button
-										type={this.state.provider === 'gke' ? 'primary' : 'default'}
-										size="large"
-										css={{
-											height: 160,
-											marginRight: 20,
-											backgroundColor:
-												this.state.provider === 'gke' ? '#eaf5ff' : '#fff',
-										}}
-										onClick={() => this.setConfig('provider', 'gke')}
-									>
-										<img
-											width="120"
-											src="/static/images/clusters/google.png"
-											alt="Google"
-										/>
-									</Button>
-
-									<Button
-										size="large"
-										type={
-											this.state.provider === 'azure' ? 'primary' : 'default'
-										}
-										css={{
-											height: 160,
-											backgroundColor:
-												this.state.provider === 'azure'
-													? '#eaf5ff'
-													: '#fff',
-										}}
-										onClick={() => this.setConfig('provider', 'azure')}
-									>
-										<img
-											width="120"
-											src="/static/images/clusters/azure.png"
-											alt="Azure"
-										/>
-									</Button>
-								</div>
-							</div> */}
 
 							<div className={card}>
 								<div className="col light">
@@ -1147,31 +1030,21 @@ class NewCluster extends Component {
 									this.state.pricing_plan !==
 										CLUSTER_PLANS.SANDBOX_2020) ||
 								clusters.length > 0 ? (
-									<Stripe
-										name="Appbase.io Clusters"
-										amount={
-											(PRICE_BY_PLANS[
-												this.state.pricing_plan
-											] || 0) * 100
+									<Button
+										type="primary"
+										size="large"
+										disabled={
+											!this.validateClusterName() ||
+											!this.state.region
 										}
-										token={token =>
-											this.createCluster(token)
-										}
-										disabled={false}
-										stripeKey={STRIPE_KEY}
+										onClick={this.handleStripeModal}
 									>
-										<Button
-											style={{ marginBottom: 10 }}
-											type="primary"
-											size="large"
-											disabled={
-												!this.validateClusterName() ||
-												!this.state.region
-											}
-										>
-											Add payment info and create cluster
-										</Button>
-									</Stripe>
+										Add payment info and create cluster
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
 								) : (
 									<Button
 										type="primary"
@@ -1197,5 +1070,8 @@ class NewCluster extends Component {
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
-
+NewCluster.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
+};
 export default connect(mapStateToProps, null)(NewCluster);

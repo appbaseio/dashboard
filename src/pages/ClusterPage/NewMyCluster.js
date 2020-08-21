@@ -1,23 +1,24 @@
 import React, { Fragment, Component } from 'react';
-import Stripe from 'react-stripe-checkout';
 import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
-
+import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
+import StripeCheckout from '../../components/StripeCheckout';
 
 import { clusterContainer, card } from './styles';
 import {
 	deployMyCluster,
 	getClusters,
 	verifyCluster,
-	STRIPE_KEY,
 	createSubscription,
-	PRICE_BY_PLANS,
 	ARC_PLANS,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
@@ -74,6 +75,7 @@ class NewMyCluster extends Component {
 			isClusterLoading: true,
 			clusterVersion: '',
 			verifiedCluster: false,
+			isStripeCheckoutOpen: false,
 		};
 	}
 
@@ -331,6 +333,17 @@ class NewMyCluster extends Component {
 		});
 	};
 
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
+	handleStripeSubmit = token => {
+		this.createCluster(token);
+		this.setState({ isStripeCheckoutOpen: false });
+	};
+
 	render() {
 		const {
 			isLoading,
@@ -388,13 +401,24 @@ class NewMyCluster extends Component {
 									}
 									icon="question-circle"
 								>
-									Don't have a Cluster
+									Don&apos;t have a Cluster
 								</Button>
 							</Tooltip>
 						</Col>
 					</Row>
 				</Header>
 				<Container>
+					{this.state.isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={this.state.isStripeCheckoutOpen}
+							plan={PLAN_LABEL[this.state.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={this.handleStripeSubmit}
+						/>
+					)}
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
 						<article>
@@ -589,33 +613,23 @@ class NewMyCluster extends Component {
 									this.state.pricing_plan !==
 										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
 								clusters.length > 0 ? (
-									<Stripe
-										name="Appbase.io Clusters"
-										amount={
-											(PRICE_BY_PLANS[
-												this.state.pricing_plan
-											] || 0) * 100
+									<Button
+										type="primary"
+										size="large"
+										disabled={
+											!this.validateClusterName() ||
+											!this.state.region ||
+											!this.state.clusterURL ||
+											!this.state.verifiedCluster
 										}
-										token={token =>
-											this.createCluster(token)
-										}
-										disabled={false}
-										stripeKey={STRIPE_KEY}
-										closed={this.toggleOverlay}
+										onClick={this.handleStripeModal}
 									>
-										<Button
-											style={{ marginBottom: 10 }}
-											type="primary"
-											size="large"
-											disabled={
-												!this.validateClusterName() ||
-												!this.state.region ||
-												!this.state.clusterURL
-											}
-										>
-											Add payment info and create cluster
-										</Button>
-									</Stripe>
+										Add payment info and create cluster
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
 								) : (
 									<Button
 										type="primary"
@@ -641,5 +655,10 @@ class NewMyCluster extends Component {
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
+
+NewMyCluster.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, null)(NewMyCluster);
