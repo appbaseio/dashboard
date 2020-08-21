@@ -1,11 +1,11 @@
 import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Stripe from 'react-stripe-checkout';
 import get from 'lodash/get';
 import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
-import Overlay from '../components/Overlay';
+import StripeCheckout from '../../../components/StripeCheckout';
 import { V7_ARC } from '../new';
 import {
 	card,
@@ -15,18 +15,18 @@ import {
 	settingsItem,
 } from '../styles';
 import {
-	CLUSTER_PLANS,
 	getClusters,
 	getSnapshots,
 	hasAddon,
 	hasAnsibleSetup,
 	restore,
-	STRIPE_KEY,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from '../utils';
 
 const { Option } = Select;
 
-export default class ClusterScreen extends Component {
+class ClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
@@ -58,6 +58,7 @@ export default class ClusterScreen extends Component {
 			snapshot_id: null,
 			isRestoring: false,
 			visualization,
+			isStripeCheckoutOpen: false,
 		};
 
 		this.paymentButton = React.createRef();
@@ -167,13 +168,6 @@ export default class ClusterScreen extends Component {
 		}));
 	};
 
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
-		}));
-	};
-
 	includedInOriginal = key => {
 		const { deployment: original } = this.props;
 		return get(original, key)
@@ -263,6 +257,12 @@ export default class ClusterScreen extends Component {
 		onDeploy(body, clusterId);
 	};
 
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
 	renderClusterEndpoint = source => {
 		if (
 			Object.keys(source).length &&
@@ -282,7 +282,7 @@ export default class ClusterScreen extends Component {
 							/\/$/,
 							'',
 					  );
-			let name = source.name;
+			let { name } = source;
 
 			if (name === 'arc') {
 				name = 'Appbase.io';
@@ -299,7 +299,15 @@ export default class ClusterScreen extends Component {
 								})
 							}
 						>
-							<a data-clipboard-text={copyURL}>Copy URL</a>
+							<span
+								data-clipboard-text={copyURL}
+								style={{
+									color: 'dodgerblue',
+									cursor: 'pointer',
+								}}
+							>
+								Copy URL
+							</span>
 						</CopyToClipboard>
 					</h4>
 					<CredentialsBox
@@ -326,21 +334,10 @@ export default class ClusterScreen extends Component {
 	};
 
 	render() {
-		const {
-			cluster,
-			arc,
-			deployment,
-			kibana,
-			streams,
-			elasticsearchHQ,
-			showOverlay,
-			visualization,
-		} = this.state;
+		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
 
 		const {
 			clusterId,
-			deployment: originalDeployment,
-			planRate,
 			handleToken,
 			isPaid,
 			handleDeleteModal,
@@ -367,27 +364,16 @@ export default class ClusterScreen extends Component {
 							window.location.search.startsWith(
 								'?subscribe=true',
 							) ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={planRate * 100}
-									token={token =>
-										handleToken(clusterId, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
+								<Button
+									size="large"
+									css={{
+										marginRight: 12,
+									}}
+									ref={this.paymentButton}
+									onClick={this.handleStripeModal}
 								>
-									<Button
-										size="large"
-										ref={this.paymentButton}
-										css={{
-											marginRight: 12,
-										}}
-										onClick={this.toggleOverlay}
-									>
-										Pay now
-									</Button>
-								</Stripe>
+									Pay now
+								</Button>
 							) : null}
 						</div>
 					</div>
@@ -397,8 +383,18 @@ export default class ClusterScreen extends Component {
 
 		return (
 			<Fragment>
+				{isStripeCheckoutOpen && (
+					<StripeCheckout
+						visible={isStripeCheckoutOpen}
+						plan={PLAN_LABEL[cluster.pricing_plan]}
+						price={EFFECTIVE_PRICE_BY_PLANS[
+							cluster.pricing_plan
+						].toString()}
+						onCancel={this.handleStripeModal}
+						onSubmit={token => handleToken(clusterId, token)}
+					/>
+				)}
 				<li className={card}>
-					{showOverlay && <Overlay />}
 					<div className="col light">
 						<h3>Elasticsearch</h3>
 						<p>Live cluster endpoint</p>
@@ -432,6 +428,7 @@ export default class ClusterScreen extends Component {
 						<a
 							href="https://docs.appbase.io/docs/hosting/clusters/"
 							target="_blank"
+							rel="noopener noreferrer"
 						>
 							Learn more
 						</a>
@@ -629,27 +626,16 @@ export default class ClusterScreen extends Component {
 							window.location.search.startsWith(
 								'?subscribe=true',
 							) ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={planRate * 100}
-									token={token =>
-										handleToken(clusterId, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
+								<Button
+									size="large"
+									ref={this.paymentButton}
+									css={{
+										marginRight: 12,
+									}}
+									onClick={this.handleStripeModal}
 								>
-									<Button
-										size="large"
-										ref={this.paymentButton}
-										css={{
-											marginRight: 12,
-										}}
-										onClick={this.toggleOverlay}
-									>
-										Pay now
-									</Button>
-								</Stripe>
+									Pay now
+								</Button>
 							) : null}
 							<Button
 								size="large"
@@ -666,3 +652,21 @@ export default class ClusterScreen extends Component {
 		);
 	}
 }
+
+ClusterScreen.propTypes = {
+	clusterId: PropTypes.string.isRequired,
+	cluster: PropTypes.object.isRequired,
+	deployment: PropTypes.object.isRequired,
+	handleToken: PropTypes.func.isRequired,
+	isPaid: PropTypes.bool,
+	handleDeleteModal: PropTypes.func.isRequired,
+	isExternalCluster: PropTypes.bool,
+	onDeploy: PropTypes.func.isRequired,
+	kibana: PropTypes.bool.isRequired,
+	grafana: PropTypes.bool.isRequired,
+	elasticsearchHQ: PropTypes.bool.isRequired,
+	arc: PropTypes.bool.isRequired,
+	streams: PropTypes.bool.isRequired,
+};
+
+export default ClusterScreen;

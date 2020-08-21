@@ -365,6 +365,7 @@ class ClusterInfo extends Component {
 										css={{
 											marginRight: 12,
 										}}
+										ref={this.paymentButton}
 										onClick={this.handleStripeModal}
 									>
 										Pay now to access
@@ -625,6 +626,7 @@ class ClusterInfo extends Component {
 															this
 																.handleStripeModal
 														}
+														ref={this.paymentButton}
 													>
 														Upgrade Now
 													</Button>

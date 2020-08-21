@@ -1,9 +1,9 @@
-import { Button, Col, Divider, Icon, Modal, Row, Tooltip } from 'antd';
+import { Button, Col, Divider, Icon, Row, Tooltip } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Stripe from 'react-stripe-checkout';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -20,10 +20,8 @@ import {
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
-	PRICE_BY_PLANS,
 	getClusters,
 	hasAnsibleSetup,
-	STRIPE_KEY,
 	PLAN_LABEL,
 } from './utils';
 import { regions } from './utils/regions';
@@ -193,7 +191,6 @@ class ClusterPage extends Component {
 
 	renderClusterCard = cluster => {
 		if (!cluster) return null;
-		const { id, subscription } = this.paramsValue();
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
@@ -576,5 +573,8 @@ class ClusterPage extends Component {
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
-
+ClusterPage.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
+};
 export default connect(mapStateToProps, null)(ClusterPage);
