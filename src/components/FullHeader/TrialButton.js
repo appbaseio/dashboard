@@ -65,7 +65,7 @@ class TrialButton extends React.Component {
 			);
 		}
 		let unPaidClusters = [];
-		if (clusters.length) {
+		if (clusters && clusters.length) {
 			unPaidClusters = clusters.filter(i => i.subscription_id === '');
 		}
 		if (isCluster && unPaidClusters.length > 0) {
