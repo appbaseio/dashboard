@@ -131,6 +131,7 @@ FullHeader.propTypes = {
 	isUsingClusterTrial: bool.isRequired,
 	daysLeft: number,
 	clusterDaysLeft: number,
+	clusterPlan: string,
 };
 
 const mapStateToProps = state => {
