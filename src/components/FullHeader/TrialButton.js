@@ -1,35 +1,15 @@
-import React, { Fragment } from 'react';
-import { Button, Tag, Tooltip } from 'antd';
+import React from 'react';
+import { Tag, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { css } from 'react-emotion';
+
 import get from 'lodash/get';
 
 import StripeCheckout from '../StripeCheckout';
-import { media } from '../../utils/media';
 import {
 	createSubscription,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 } from '../../pages/ClusterPage/utils';
-
-const trialText = css`
-	line-height: 2em;
-	font-size: 0.9em;
-`;
-
-const trialBtn = css`
-	${media.medium(css`
-		display: none;
-	`)};
-`;
-
-const trialLink = css`
-	margin-right: 30px;
-	${media.xlarge(css`
-		display: none;
-	`)};
-`;
 
 class TrialButton extends React.Component {
 	state = {
@@ -85,7 +65,7 @@ class TrialButton extends React.Component {
 			);
 		}
 		let unPaidClusters = [];
-		if (clusters.length) {
+		if (clusters && clusters.length) {
 			unPaidClusters = clusters.filter(i => i.subscription_id === '');
 		}
 		if (isCluster && unPaidClusters.length > 0) {
@@ -153,8 +133,6 @@ TrialButton.defaultProps = {
 
 TrialButton.propTypes = {
 	cluster: PropTypes.string,
-	user: PropTypes.object.isRequired,
-	currentApp: PropTypes.string.isRequired,
 	isCluster: PropTypes.bool,
 	trialMessage: PropTypes.string,
 	daysLeft: PropTypes.number.isRequired,

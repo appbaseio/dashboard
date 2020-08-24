@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Tag, Icon, Button, Row, Tooltip } from 'antd';
+import { Layout, Menu, Tag, Icon, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool, number, array } from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,37 +15,6 @@ import { getUserPlan } from '../../batteries/modules/actions/account';
 import TrialButton from './TrialButton';
 
 const { Header } = Layout;
-
-const getSelectedKeys = pathname => {
-	switch (pathname) {
-		case '/marketplace':
-			return '4';
-		case '/':
-			return '1';
-		case '/apps':
-			return '3';
-		default:
-			return null;
-	}
-};
-
-const trialText = css`
-	line-height: 2em;
-	font-size: 0.9em;
-`;
-
-const trialBtn = css`
-	${media.medium(css`
-		display: none;
-	`)};
-`;
-
-const trialLink = css`
-	margin-right: 30px;
-	${media.xlarge(css`
-		display: none;
-	`)};
-`;
 
 const link = css`
 	margin-right: 30px;
@@ -162,6 +131,7 @@ FullHeader.propTypes = {
 	isUsingClusterTrial: bool.isRequired,
 	daysLeft: number,
 	clusterDaysLeft: number,
+	clusterPlan: string,
 };
 
 const mapStateToProps = state => {
