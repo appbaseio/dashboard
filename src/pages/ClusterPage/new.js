@@ -262,12 +262,7 @@ const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
-const namingConvention = {
-	azure:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-	gke:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-};
+const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
 class NewCluster extends Component {
 	constructor(props) {
@@ -591,26 +586,34 @@ class NewCluster extends Component {
 
 		return (
 			<Tabs size="large" style={style}>
-				<TabPane tab="America" key="america">
-					<ul className="region-list">
-						{regionsToRender(usRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">
-						{regionsToRender(asiaRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">
-						{regionsToRender(euRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">
-						{regionsToRender(otherRegions)}
-					</ul>
-				</TabPane>
+				{usRegions.length > 0 && (
+					<TabPane tab="America" key="america">
+						<ul className="region-list">
+							{regionsToRender(usRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{asiaRegions.length > 0 && (
+					<TabPane tab="Asia" key="asia">
+						<ul className="region-list">
+							{regionsToRender(asiaRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{euRegions.length > 0 && (
+					<TabPane tab="Europe" key="europe">
+						<ul className="region-list">
+							{regionsToRender(euRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{otherRegions.length > 0 && (
+					<TabPane tab="Other Regions" key="other">
+						<ul className="region-list">
+							{regionsToRender(otherRegions)}
+						</ul>
+					</TabPane>
+				)}
 			</Tabs>
 		);
 	};
@@ -735,6 +738,69 @@ class NewCluster extends Component {
 									onChange={this.setPricing}
 								/>
 							</div>
+							<div className={card}>
+								<div className="col light">
+									<h3>Pick the provider</h3>
+								</div>
+
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+									}}
+								>
+									<Button
+										type={
+											this.state.provider === 'gke'
+												? 'primary'
+												: 'default'
+										}
+										size="large"
+										css={{
+											height: 160,
+											marginRight: 20,
+											backgroundColor:
+												this.state.provider === 'gke'
+													? '#eaf5ff'
+													: '#fff',
+										}}
+										onClick={() =>
+											this.setConfig('provider', 'gke')
+										}
+									>
+										<img
+											width="120"
+											src="/static/images/clusters/google.png"
+											alt="Google"
+										/>
+									</Button>
+
+									<Button
+										size="large"
+										type={
+											this.state.provider === 'aws'
+												? 'primary'
+												: 'default'
+										}
+										css={{
+											height: 160,
+											backgroundColor:
+												this.state.provider === 'aws'
+													? '#eaf5ff'
+													: '#fff',
+										}}
+										onClick={() =>
+											this.setConfig('provider', 'aws')
+										}
+									>
+										<img
+											width="120"
+											src="/static/images/clusters/aws.png"
+											alt="aws"
+										/>
+									</Button>
+								</div>
+							</div>
 
 							<div className={card}>
 								<div className="col light">
@@ -793,9 +859,7 @@ class NewCluster extends Component {
 													: 'inherit',
 										}}
 									>
-										{provider === 'azure'
-											? namingConvention.azure
-											: namingConvention.gke}
+										{namingConvention}
 									</p>
 								</div>
 							</div>

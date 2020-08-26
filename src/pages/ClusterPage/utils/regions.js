@@ -143,9 +143,67 @@ export const regions = {
 			continent: 'asia',
 		},
 	},
+	aws: {
+		'eu-west-1': {
+			name: 'Ireland',
+			flag: 'ireland.jpg',
+			continent: 'eu',
+		},
+		'eu-west-2': {
+			name: 'London',
+			flag: 'london@3x.png',
+			continent: 'eu',
+		},
+		'eu-central-1': {
+			name: 'FrankFurt',
+			flag: 'germany.png',
+			continent: 'eu',
+		},
+		'us-east-1': {
+			name: 'N. Virginia',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
+		'us-east-2': {
+			name: 'Ohio',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
+		'us-west-1': {
+			name: 'N. California',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
+		'us-west-2': {
+			name: 'Oregon',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
+		'ap-southeast-1': {
+			name: 'Singapore',
+			flag: 'singapore.png',
+			continent: 'asia',
+		},
+		'ap-east-1': {
+			name: 'Hong Kong',
+			flag: 'hong-kong.png',
+			continent: 'asia',
+		},
+		'ap-south-1': {
+			name: 'Mumbai',
+			flag: 'mumbai@3x.png',
+			continent: 'asia',
+		},
+		'ap-northeast-1': {
+			name: 'Tokyo',
+			flag: 'japan.png',
+			continent: 'asia',
+		},
+	},
 };
 
 export const regionsByPlan = {
 	gke: {},
 	azure: {},
+	aws: {},
 };
