@@ -33,23 +33,23 @@ class EmailAuth extends React.Component {
 		const { emailInput } = this.state;
 		this.toggleLoading();
 
-		try {
-			const disposableEmailResponse = await fetch(
-				`https://open.kickbox.com/v1/disposable/${emailInput}`,
-			);
+		// try {
+		// 	const disposableEmailResponse = await fetch(
+		// 		`https://open.kickbox.com/v1/disposable/${emailInput}`,
+		// 	);
 
-			const disposableEmailData = await disposableEmailResponse.json();
+		// 	const disposableEmailData = await disposableEmailResponse.json();
 
-			if (get(disposableEmailData, 'disposable') === true) {
-				this.toggleLoading();
-				message.error(
-					'Please use a valid e-mail address. We do not allow disposable addresses.',
-				);
-				return;
-			}
-		} catch (e) {
-			// Do nothing
-		}
+		// 	if (get(disposableEmailData, 'disposable') === true) {
+		// 		this.toggleLoading();
+		// 		message.error(
+		// 			'Please use a valid e-mail address. We do not allow disposable addresses.',
+		// 		);
+		// 		return;
+		// 	}
+		// } catch (e) {
+		// 	// Do nothing
+		// }
 
 		try {
 			const response = await fetch(`${ACC_API}/user/email`, {
