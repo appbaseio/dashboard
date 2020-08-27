@@ -184,11 +184,6 @@ export const regions = {
 			flag: 'singapore.png',
 			continent: 'asia',
 		},
-		'ap-east-1': {
-			name: 'Hong Kong',
-			flag: 'hong-kong.png',
-			continent: 'asia',
-		},
 		'ap-south-1': {
 			name: 'Mumbai',
 			flag: 'mumbai@3x.png',

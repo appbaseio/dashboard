@@ -34,7 +34,7 @@ const esVersions = ['7.9.0', '7.8.1', '7.8.0', '7.7.1'];
 
 const odfeVersions = ['1.9.0', '1.8.0'];
 
-export const V7_ARC = '7.31.1-cluster';
+export const V7_ARC = '7.31.0-cluster';
 export const V6_ARC = '7.31.1-cluster';
 export const ARC_BYOC = '7.31.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
@@ -738,70 +738,77 @@ class NewCluster extends Component {
 									onChange={this.setPricing}
 								/>
 							</div>
-							<div className={card}>
-								<div className="col light">
-									<h3>Pick the provider</h3>
-								</div>
+							{!isUsingClusterTrial && (
+								<div className={card}>
+									<div className="col light">
+										<h3>Pick the provider</h3>
+									</div>
 
-								<div
-									className={settingsItem}
-									css={{
-										padding: 30,
-									}}
-								>
-									<Button
-										type={
-											this.state.provider === 'gke'
-												? 'primary'
-												: 'default'
-										}
-										size="large"
+									<div
+										className={settingsItem}
 										css={{
-											height: 160,
-											marginRight: 20,
-											backgroundColor:
-												this.state.provider === 'gke'
-													? '#eaf5ff'
-													: '#fff',
+											padding: 30,
 										}}
-										onClick={() =>
-											this.setConfig('provider', 'gke')
-										}
 									>
-										<img
-											width="120"
-											src="/static/images/clusters/google.png"
-											alt="Google"
-										/>
-									</Button>
+										<Button
+											type={
+												provider === 'gke'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													provider === 'gke'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() =>
+												this.setConfig(
+													'provider',
+													'gke',
+												)
+											}
+										>
+											<img
+												width="120"
+												src="/static/images/clusters/google.png"
+												alt="Google"
+											/>
+										</Button>
 
-									<Button
-										size="large"
-										type={
-											this.state.provider === 'aws'
-												? 'primary'
-												: 'default'
-										}
-										css={{
-											height: 160,
-											backgroundColor:
-												this.state.provider === 'aws'
-													? '#eaf5ff'
-													: '#fff',
-										}}
-										onClick={() =>
-											this.setConfig('provider', 'aws')
-										}
-									>
-										<img
-											width="120"
-											src="/static/images/clusters/aws.png"
-											alt="aws"
-										/>
-									</Button>
+										<Button
+											size="large"
+											type={
+												provider === 'aws'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												backgroundColor:
+													provider === 'aws'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() =>
+												this.setConfig(
+													'provider',
+													'aws',
+												)
+											}
+										>
+											<img
+												width="120"
+												src="/static/images/clusters/aws.png"
+												alt="aws"
+											/>
+										</Button>
+									</div>
 								</div>
-							</div>
-
+							)}
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick a region</h3>
