@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Popconfirm, Tooltip, notification } from 'antd';
 import { css } from 'react-emotion';
 import { object, func } from 'prop-types';
+import get from 'lodash/get';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Flex from '../../batteries/components/shared/Flex';
 
@@ -36,7 +37,10 @@ class Permission extends React.Component {
 
 	get key() {
 		const { permissionInfo } = this.props;
-		return `${permissionInfo.username}:${permissionInfo.password}`;
+		return `${get(permissionInfo, 'username')}:${get(
+			permissionInfo,
+			'password',
+		)}`;
 	}
 
 	handleViewClick = () => {

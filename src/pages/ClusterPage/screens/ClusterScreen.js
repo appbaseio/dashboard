@@ -1,10 +1,11 @@
 import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Stripe from 'react-stripe-checkout';
+import get from 'lodash/get';
 import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
-import Overlay from '../components/Overlay';
+import StripeCheckout from '../../../components/StripeCheckout';
 import { V7_ARC } from '../new';
 import {
 	card,
@@ -14,18 +15,18 @@ import {
 	settingsItem,
 } from '../styles';
 import {
-	CLUSTER_PLANS,
 	getClusters,
 	getSnapshots,
 	hasAddon,
 	hasAnsibleSetup,
 	restore,
-	STRIPE_KEY,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from '../utils';
 
 const { Option } = Select;
 
-export default class ClusterScreen extends Component {
+class ClusterScreen extends Component {
 	constructor(props) {
 		super(props);
 
@@ -48,7 +49,6 @@ export default class ClusterScreen extends Component {
 			kibana: props.kibana,
 			streams: props.streams,
 			elasticsearchHQ: props.elasticsearchHQ,
-			showOverlay: false,
 			clusters: [],
 			isClusterLoading: true,
 			snapshots: [],
@@ -57,6 +57,7 @@ export default class ClusterScreen extends Component {
 			snapshot_id: null,
 			isRestoring: false,
 			visualization,
+			isStripeCheckoutOpen: false,
 		};
 
 		this.paymentButton = React.createRef();
@@ -142,10 +143,10 @@ export default class ClusterScreen extends Component {
 				if (response.status.code >= 400) {
 					notification.error({
 						message: 'Restoration Failed!',
-						description: response.status.message,
+						description: get(response, 'status.message'),
 					});
 				} else {
-					message.success(response.status.message);
+					message.success(get(response, 'status.message'));
 				}
 				this.setState({
 					isRestoring: false,
@@ -166,17 +167,10 @@ export default class ClusterScreen extends Component {
 		}));
 	};
 
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
-		}));
-	};
-
 	includedInOriginal = key => {
 		const { deployment: original } = this.props;
-		return original[key]
-			? !!Object.keys(original[key]).length
+		return get(original, key)
+			? !!Object.keys(get(original, key)).length
 			: hasAddon(key, original);
 	};
 
@@ -262,11 +256,26 @@ export default class ClusterScreen extends Component {
 		onDeploy(body, clusterId);
 	};
 
+	handleStripeModal = () => {
+		console.log('here....');
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
+	handleStripeSubmit = (clusterId, token) => {
+		this.setState({
+			isStripeCheckoutOpen: false,
+		});
+		this.props.handleToken(clusterId, token);
+	};
+
 	renderClusterEndpoint = source => {
 		if (
 			Object.keys(source).length &&
 			source.name &&
-			source.name !== 'gateway'
+			source.name !== 'gateway' &&
+			source.name !== 'elasticsearch-hq'
 		) {
 			const username = source.username || source.dashboard_username;
 			const password = source.password || source.dashboard_password;
@@ -280,23 +289,36 @@ export default class ClusterScreen extends Component {
 							/\/$/,
 							'',
 					  );
+			let { name } = source;
+
+			if (name === 'arc') {
+				name = 'Appbase.io';
+			}
 			return (
-				<div key={source.name} className={clusterEndpoint}>
+				<div key={name} className={clusterEndpoint}>
 					<h4>
-						{source.name}
+						{name}
 						<CopyToClipboard
 							text={copyURL}
 							onCopy={() =>
 								notification.success({
-									message: ` ${source.name} URL Copied Successfully`,
+									message: ` ${name} URL copied successfully`,
 								})
 							}
 						>
-							<a data-clipboard-text={copyURL}>Copy URL</a>
+							<span
+								data-clipboard-text={copyURL}
+								style={{
+									color: 'dodgerblue',
+									cursor: 'pointer',
+								}}
+							>
+								Copy URL
+							</span>
 						</CopyToClipboard>
 					</h4>
 					<CredentialsBox
-						name={source.name}
+						name={name}
 						text={`${username}:${password}`}
 					/>
 				</div>
@@ -319,22 +341,10 @@ export default class ClusterScreen extends Component {
 	};
 
 	render() {
-		const {
-			cluster,
-			arc,
-			deployment,
-			kibana,
-			streams,
-			elasticsearchHQ,
-			showOverlay,
-			visualization,
-		} = this.state;
+		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
 
 		const {
 			clusterId,
-			deployment: originalDeployment,
-			planRate,
-			handleToken,
 			isPaid,
 			handleDeleteModal,
 			isExternalCluster,
@@ -354,33 +364,35 @@ export default class ClusterScreen extends Component {
 			return (
 				<Fragment>
 					<ArcDetail cluster={cluster} arc={arcDeployment} />
+					{isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={isStripeCheckoutOpen}
+							plan={PLAN_LABEL[cluster.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={token =>
+								this.handleStripeSubmit(clusterId, token)
+							}
+						/>
+					)}
 					<div className={clusterButtons}>
 						<div>
 							{!isPaid &&
 							window.location.search.startsWith(
 								'?subscribe=true',
 							) ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={planRate * 100}
-									token={token =>
-										handleToken(clusterId, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
+								<Button
+									size="large"
+									css={{
+										marginRight: 12,
+									}}
+									ref={this.paymentButton}
+									onClick={this.handleStripeModal}
 								>
-									<Button
-										size="large"
-										ref={this.paymentButton}
-										css={{
-											marginRight: 12,
-										}}
-										onClick={this.toggleOverlay}
-									>
-										Pay now
-									</Button>
-								</Stripe>
+									Pay now
+								</Button>
 							) : null}
 						</div>
 					</div>
@@ -391,7 +403,6 @@ export default class ClusterScreen extends Component {
 		return (
 			<Fragment>
 				<li className={card}>
-					{showOverlay && <Overlay />}
 					<div className="col light">
 						<h3>Elasticsearch</h3>
 						<p>Live cluster endpoint</p>
@@ -421,61 +432,98 @@ export default class ClusterScreen extends Component {
 
 				<li className={card}>
 					<div className="col light">
-						<h3>Add-ons</h3>
-						<p>Elasticsearch add-ons endpoint</p>
+						<h3>Appbase.io Server</h3>
+						<a
+							href="https://docs.appbase.io/docs/hosting/clusters/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Learn more
+						</a>
 					</div>
 
 					<div className="col">
 						{addons.map(key => this.renderClusterEndpoint(key))}
 					</div>
 				</li>
-				{(visualization !== 'none' ||
-					(cluster.pricing_plan !== CLUSTER_PLANS.SANDBOX_2019 &&
-						cluster.pricing_plan !==
-							CLUSTER_PLANS.SANDBOX_2020)) && (
-					<li className={card}>
-						<div className="col light">
-							<h3>Choose Visualization Tool</h3>
-						</div>
 
-						<div
-							className={settingsItem}
-							css={{
-								padding: 30,
-								alignItems: 'baseline',
-							}}
-						>
-							<div className={esContainer}>
-								<Button
-									type={
+				<li className={card}>
+					<div className="col light">
+						<h3>Choose Visualization Tool</h3>
+					</div>
+
+					<div
+						className={settingsItem}
+						css={{
+							padding: 30,
+							alignItems: 'baseline',
+						}}
+					>
+						<div className={esContainer}>
+							<Button
+								type={
+									this.state.visualization === 'none'
+										? 'primary'
+										: 'default'
+								}
+								size="large"
+								css={{
+									height: 160,
+									width: '100%',
+									color: '#000',
+									backgroundColor:
 										this.state.visualization === 'none'
-											? 'primary'
-											: 'default'
-									}
-									size="large"
-									css={{
-										height: 160,
-										width: '100%',
-										color: '#000',
-										backgroundColor:
-											this.state.visualization === 'none'
-												? '#eaf5ff'
-												: '#fff',
-									}}
-									onClick={() => {
-										this.setConfig('visualization', 'none');
-										this.setConfig('kibana', false);
-										this.setConfig('grafana', false);
-									}}
-								>
-									None
-								</Button>
-							</div>
+											? '#eaf5ff'
+											: '#fff',
+								}}
+								onClick={() => {
+									this.setConfig('visualization', 'none');
+									this.setConfig('kibana', false);
+									this.setConfig('grafana', false);
+								}}
+							>
+								None
+							</Button>
+						</div>
+						<div className={esContainer}>
+							<Button
+								size="large"
+								type={
+									this.state.visualization === 'kibana'
+										? 'primary'
+										: 'default'
+								}
+								css={{
+									height: 160,
+									width: '100%',
+									backgroundColor:
+										this.state.visualization === 'kibana'
+											? '#eaf5ff'
+											: '#fff',
+								}}
+								onClick={() => {
+									this.setConfig('visualization', 'kibana');
+									this.setConfig('kibana', true);
+									this.setConfig('grafana', false);
+								}}
+							>
+								<img
+									width={150}
+									src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+									alt="Kibana"
+								/>
+							</Button>
+							<p>
+								The default visualization dashboard for
+								ElasticSearch.
+							</p>
+						</div>
+						{!hasAnsibleSetup(cluster.pricing_plan) && (
 							<div className={esContainer}>
 								<Button
 									size="large"
 									type={
-										this.state.visualization === 'kibana'
+										this.state.visualization === 'grafana'
 											? 'primary'
 											: 'default'
 									}
@@ -484,73 +532,34 @@ export default class ClusterScreen extends Component {
 										width: '100%',
 										backgroundColor:
 											this.state.visualization ===
-											'kibana'
+											'grafana'
 												? '#eaf5ff'
 												: '#fff',
 									}}
 									onClick={() => {
 										this.setConfig(
 											'visualization',
-											'kibana',
+											'grafana',
 										);
-										this.setConfig('kibana', true);
-										this.setConfig('grafana', false);
+										this.setConfig('kibana', false);
+										this.setConfig('grafana', true);
 									}}
 								>
 									<img
-										width={150}
-										src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
-										alt="Kibana"
+										width={120}
+										src="/static/images/clusters/grafana.png"
+										alt="Grafana"
 									/>
 								</Button>
 								<p>
-									The default visualization dashboard for
-									ElasticSearch.
+									The leading open-source tool for metrics
+									visualization.
 								</p>
 							</div>
-							{!hasAnsibleSetup(cluster.pricing_plan) && (
-								<div className={esContainer}>
-									<Button
-										size="large"
-										type={
-											this.state.visualization ===
-											'grafana'
-												? 'primary'
-												: 'default'
-										}
-										css={{
-											height: 160,
-											width: '100%',
-											backgroundColor:
-												this.state.visualization ===
-												'grafana'
-													? '#eaf5ff'
-													: '#fff',
-										}}
-										onClick={() => {
-											this.setConfig(
-												'visualization',
-												'grafana',
-											);
-											this.setConfig('kibana', false);
-											this.setConfig('grafana', true);
-										}}
-									>
-										<img
-											width={120}
-											src="/static/images/clusters/grafana.png"
-											alt="Grafana"
-										/>
-									</Button>
-									<p>
-										The leading open-source tool for metrics
-										visualization.
-									</p>
-								</div>
-							)}
-						</div>
-					</li>
-				)}
+						)}
+					</div>
+				</li>
+
 				<li className={card}>
 					<div className="col light">
 						<h3>Restore From Snapshot</h3>
@@ -625,27 +634,16 @@ export default class ClusterScreen extends Component {
 							window.location.search.startsWith(
 								'?subscribe=true',
 							) ? (
-								<Stripe
-									name="Appbase.io Clusters"
-									amount={planRate * 100}
-									token={token =>
-										handleToken(clusterId, token)
-									}
-									disabled={false}
-									stripeKey={STRIPE_KEY}
-									closed={this.toggleOverlay}
+								<Button
+									size="large"
+									ref={this.paymentButton}
+									css={{
+										marginRight: 12,
+									}}
+									onClick={this.handleStripeModal}
 								>
-									<Button
-										size="large"
-										ref={this.paymentButton}
-										css={{
-											marginRight: 12,
-										}}
-										onClick={this.toggleOverlay}
-									>
-										Pay now
-									</Button>
-								</Stripe>
+									Pay now
+								</Button>
 							) : null}
 							<Button
 								size="large"
@@ -662,3 +660,21 @@ export default class ClusterScreen extends Component {
 		);
 	}
 }
+
+ClusterScreen.propTypes = {
+	clusterId: PropTypes.string.isRequired,
+	cluster: PropTypes.object.isRequired,
+	deployment: PropTypes.object.isRequired,
+	handleToken: PropTypes.func.isRequired,
+	isPaid: PropTypes.bool,
+	handleDeleteModal: PropTypes.func.isRequired,
+	isExternalCluster: PropTypes.bool,
+	onDeploy: PropTypes.func.isRequired,
+	kibana: PropTypes.bool.isRequired,
+	grafana: PropTypes.bool.isRequired,
+	elasticsearchHQ: PropTypes.bool.isRequired,
+	arc: PropTypes.bool.isRequired,
+	streams: PropTypes.bool.isRequired,
+};
+
+export default ClusterScreen;

@@ -1,4 +1,5 @@
 import { ACC_API } from '../constants/config';
+import get from 'lodash/get';
 
 export async function getUser() {
 	const response = await fetch(`${ACC_API}/user`, { credentials: 'include' });
@@ -96,7 +97,7 @@ export async function getAppsOverview() {
 	const data = await response.json();
 	if (data.body) {
 		const paidApps = Object.keys(data.body).map(
-			app => data.body[app].tier !== 'plan',
+			app => get(data, `body.${app}.tier`) !== 'plan',
 		);
 		let plan = 'free';
 		if (paidApps.length > 0) {

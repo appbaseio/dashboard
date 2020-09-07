@@ -1,88 +1,58 @@
 import React from 'react';
-import { Button, Tag, Tooltip } from 'antd';
-import { object, string, bool } from 'prop-types';
-import { Link } from 'react-router-dom';
-import Stripe from 'react-stripe-checkout';
-import { css } from 'react-emotion';
+import { Tag, Tooltip } from 'antd';
+import PropTypes from 'prop-types';
 
-import { media } from '../../utils/media';
-import { createSubscription, STRIPE_KEY } from '../../pages/ClusterPage/utils';
+import get from 'lodash/get';
 
-const trialText = css`
-	line-height: 2em;
-	font-size: 0.9em;
-`;
+import StripeCheckout from '../StripeCheckout';
+import {
+	createSubscription,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
+} from '../../pages/ClusterPage/utils';
 
-const trialBtn = css`
-	${media.medium(css`
-		display: none;
-	`)};
-`;
+class TrialButton extends React.Component {
+	state = {
+		isStripeCheckoutOpen: false,
+	};
 
-const trialLink = css`
-	margin-right: 30px;
-	${media.xlarge(css`
-		display: none;
-	`)};
-`;
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
 
-const handleToken = async (clusterId, token) => {
-	try {
-		await createSubscription(clusterId, token);
-		this.init();
-	} catch (e) {
-		console.log(e);
-	}
-};
+	handleToken = async (clusterId, token) => {
+		try {
+			this.setState({
+				isStripeCheckoutOpen: false,
+			});
+			await createSubscription(clusterId, token);
+			window.location.reload();
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
-const buttonWithMessage = ({ daysLeft, redirectURL, trialMessage }) => (
-	<Link className={trialLink} to={redirectURL}>
-		<Tooltip title={trialMessage}>
-			<Button css={trialBtn} type="danger">
-				<span css={trialText}>
-					{daysLeft > 0
-						? `Trial expires in ${daysLeft} ${
-								daysLeft > 1 ? 'days' : 'day'
-						  }. Upgrade Now`
-						: 'Trial has expired. Upgrade Now'}
-				</span>
-			</Button>
-		</Tooltip>
-	</Link>
-);
+	render() {
+		const {
+			cluster,
+			clusterDaysLeft,
+			daysLeft,
+			isCluster,
+			trialMessage,
+			clusters,
+		} = this.props;
 
-const TrialButton = props => {
-	const {
-		cluster,
-		clusterDaysLeft,
-		daysLeft,
-		isCluster,
-		currentApp,
-		trialMessage,
-		user: { apps },
-		clusters,
-		clusterPlan,
-	} = props; // prettier-ignore
+		const clusterTrialMessage =
+			'You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.';
 
-	// prettier-ignore
-	const clusterTrialMessage =	'You are currently on a free 14-day trial.You can upgrade to a paid plan now to continue accessing the cluster.';
+		const tooltipTitle = isCluster ? clusterTrialMessage : trialMessage;
 
-	const tooltipTitle = isCluster ? clusterTrialMessage : trialMessage;
+		const daysLeftValue = isCluster ? clusterDaysLeft : daysLeft;
 
-	const daysLeftValue = isCluster ? clusterDaysLeft : daysLeft;
-	const appNames = apps ? Object.keys(apps) : [];
-	const redirectApp =
-		currentApp && appNames.includes(currentApp) ? currentApp : '';
-
-	if (cluster) {
-		return (
-			<Stripe
-				name="Appbase.io Clusters"
-				amount={(clusterPlan || 0) * 100}
-				token={token => handleToken(clusters, token)}
-				disabled={false}
-				stripeKey={STRIPE_KEY}
-			>
+		if (cluster) {
+			return (
 				<Tooltip title={tooltipTitle}>
 					<Tag color="red">
 						{daysLeftValue > 0
@@ -92,51 +62,67 @@ const TrialButton = props => {
 							: 'Trial has expired. Upgrade Now'}
 					</Tag>
 				</Tooltip>
-			</Stripe>
-		);
-	}
+			);
+		}
+		let unPaidClusters = [];
+		if (clusters && clusters.length) {
+			unPaidClusters = clusters.filter(i => i.subscription_id === '');
+		}
+		if (isCluster && unPaidClusters.length > 0) {
+			return (
+				<>
+					{this.state.isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={this.state.isStripeCheckoutOpen}
+							plan={
+								PLAN_LABEL[
+									get(unPaidClusters, `[0].pricing_plan`, 0)
+								]
+							}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								get(unPaidClusters, `[0].pricing_plan`, 0)
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={token =>
+								this.handleToken(
+									get(unPaidClusters, `[0].id`, 0),
+									token,
+								)
+							}
+						/>
+					)}
+					<Tooltip title={tooltipTitle}>
+						<Tag
+							color="red"
+							onClick={this.handleStripeModal}
+							style={{ cursor: 'pointer' }}
+						>
+							{daysLeftValue > 0
+								? `Trial expires in ${daysLeftValue} ${
+										daysLeftValue > 1 ? 'days' : 'day'
+								  }. Upgrade Now`
+								: 'Trial has expired. Upgrade Now'}
+						</Tag>
+					</Tooltip>
+				</>
+			);
+		}
 
-	if (isCluster && clusters && clusters.length > 0) {
 		return (
-			<Stripe
-				name="Appbase.io Clusters"
-				amount={(clusters[0].plan_rate || 0) * 100}
-				token={token => handleToken(clusters[0].id, token)}
-				disabled={false}
-				stripeKey={STRIPE_KEY}
-			>
+			<>
 				<Tooltip title={tooltipTitle}>
 					<Tag color="red">
 						{daysLeftValue > 0
 							? `Trial expires in ${daysLeftValue} ${
 									daysLeftValue > 1 ? 'days' : 'day'
-							  }. Upgrade Now`
-							: 'Trial has expired. Upgrade Now'}
+							  }`
+							: 'Trial has expired'}
 					</Tag>
 				</Tooltip>
-			</Stripe>
+			</>
 		);
 	}
-
-	if (redirectApp) {
-		return buttonWithMessage({
-			daysLeft: daysLeftValue,
-			trialMessage: tooltipTitle,
-			redirectURL: `/app/${redirectApp}/billing`,
-		});
-	}
-	return (
-		<Tooltip title={tooltipTitle}>
-			<Tag color="red">
-				{daysLeftValue > 0
-					? `Trial expires in ${daysLeftValue} ${
-							daysLeftValue > 1 ? 'days' : 'day'
-					  }. Upgrade Now`
-					: 'Trial has expired. Upgrade Now'}
-			</Tag>
-		</Tooltip>
-	);
-};
+}
 
 TrialButton.defaultProps = {
 	cluster: '',
@@ -146,13 +132,12 @@ TrialButton.defaultProps = {
 };
 
 TrialButton.propTypes = {
-	cluster: string,
-	user: object.isRequired,
-	currentApp: string.isRequired,
-	isCluster: bool,
-	trialMessage: string,
-	daysLeft: Number.isRequired,
-	clusterDaysLeft: Number.isRequired,
+	cluster: PropTypes.string,
+	isCluster: PropTypes.bool,
+	trialMessage: PropTypes.string,
+	daysLeft: PropTypes.number.isRequired,
+	clusterDaysLeft: PropTypes.number.isRequired,
+	clusters: PropTypes.array,
 };
 
 export default TrialButton;

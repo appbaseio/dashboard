@@ -1,9 +1,5 @@
+import get from 'lodash/get';
 import { ACC_API } from '../../../constants/config';
-
-// test key
-// export const STRIPE_KEY = 'pk_test_DYtAxDRTg6cENksacX1zhE02';
-// live key
-export const STRIPE_KEY = 'pk_live_ihb1fzO4h1ykymhpZsA3GaQR';
 
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
@@ -22,6 +18,7 @@ export const ARC_PLANS = {
 	ARC_STANDARD: 'arc-standard',
 	ARC_ENTERPRISE: 'arc-enterprise',
 	HOSTED_ARC_BASIC: 'hosted-arc-basic',
+	HOSTED_ARC_BASIC_V2: 'hosted-arc-basic-v2',
 	HOSTED_ARC_STANDARD: 'hosted-arc-standard',
 	HOSTED_ARC_ENTERPRISE: 'hosted-arc-enterprise',
 };
@@ -31,17 +28,18 @@ export const EFFECTIVE_PRICE_BY_PLANS = {
 	[ARC_PLANS.ARC_STANDARD]: 0.08,
 	[ARC_PLANS.ARC_ENTERPRISE]: 0.69,
 	[ARC_PLANS.HOSTED_ARC_BASIC]: 0.05,
+	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: 0.04,
 	[ARC_PLANS.HOSTED_ARC_STANDARD]: 0.12,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 0.83,
 	[CLUSTER_PLANS.SANDBOX_2019]: 0.08,
 	[CLUSTER_PLANS.HOBBY_2019]: 0.17,
 	[CLUSTER_PLANS.STARTER_2019]: 0.28,
-	[CLUSTER_PLANS.SANDBOX_2020]: 0.08,
-	[CLUSTER_PLANS.HOBBY_2020]: 0.17,
-	[CLUSTER_PLANS.STARTER_2020]: 0.28,
-	[CLUSTER_PLANS.PRODUCTION_2019_1]: 0.55,
-	[CLUSTER_PLANS.PRODUCTION_2019_2]: 1.11,
-	[CLUSTER_PLANS.PRODUCTION_2019_3]: 2.22,
+	[CLUSTER_PLANS.SANDBOX_2020]: 0.07,
+	[CLUSTER_PLANS.HOBBY_2020]: 0.14,
+	[CLUSTER_PLANS.STARTER_2020]: 0.21,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 1.11,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 2.22,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 4.44,
 };
 
 export const PRICE_BY_PLANS = {
@@ -49,17 +47,33 @@ export const PRICE_BY_PLANS = {
 	[ARC_PLANS.ARC_STANDARD]: 59,
 	[ARC_PLANS.ARC_ENTERPRISE]: 499,
 	[ARC_PLANS.HOSTED_ARC_BASIC]: 39,
+	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: 29,
 	[ARC_PLANS.HOSTED_ARC_STANDARD]: 89,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 599,
 	[CLUSTER_PLANS.SANDBOX_2019]: 59,
 	[CLUSTER_PLANS.HOBBY_2019]: 119,
 	[CLUSTER_PLANS.STARTER_2019]: 199,
-	[CLUSTER_PLANS.SANDBOX_2020]: 59,
-	[CLUSTER_PLANS.HOBBY_2020]: 119,
-	[CLUSTER_PLANS.STARTER_2020]: 199,
-	[CLUSTER_PLANS.PRODUCTION_2019_1]: 399,
-	[CLUSTER_PLANS.PRODUCTION_2019_2]: 700,
-	[CLUSTER_PLANS.PRODUCTION_2019_3]: 1599,
+	[CLUSTER_PLANS.SANDBOX_2020]: 49,
+	[CLUSTER_PLANS.HOBBY_2020]: 99,
+	[CLUSTER_PLANS.STARTER_2020]: 149,
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 799,
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 1599,
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 3199,
+};
+
+export const PLAN_LABEL = {
+	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: 'Basic',
+	[ARC_PLANS.HOSTED_ARC_STANDARD]: 'Standard',
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 'Enterprise',
+	[CLUSTER_PLANS.SANDBOX_2019]: 'Sandbox',
+	[CLUSTER_PLANS.HOBBY_2019]: 'Hobby',
+	[CLUSTER_PLANS.STARTER_2019]: 'Starter',
+	[CLUSTER_PLANS.SANDBOX_2020]: 'Sandbox',
+	[CLUSTER_PLANS.HOBBY_2020]: 'Hobby',
+	[CLUSTER_PLANS.STARTER_2020]: 'Starter',
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: 'Production 1',
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: 'Production 2',
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: 'Production 3',
 };
 
 export function hasAnsibleSetup(pricingPlan) {
@@ -67,6 +81,13 @@ export function hasAnsibleSetup(pricingPlan) {
 		CLUSTER_PLANS.SANDBOX_2020,
 		CLUSTER_PLANS.HOBBY_2020,
 		CLUSTER_PLANS.STARTER_2020,
+		CLUSTER_PLANS.PRODUCTION_2019_1,
+		CLUSTER_PLANS.PRODUCTION_2019_2,
+		CLUSTER_PLANS.PRODUCTION_2019_3,
+		ARC_PLANS.HOSTED_ARC_BASIC,
+		ARC_PLANS.HOSTED_ARC_BASIC_V2,
+		ARC_PLANS.HOSTED_ARC_STANDARD,
+		ARC_PLANS.HOSTED_ARC_ENTERPRISE,
 	];
 
 	return plans.some(i => i === pricingPlan);
@@ -211,7 +232,7 @@ export function deployCluster(cluster, id) {
 				if (data.body && data.body.response_info.failures.length) {
 					reject(data.body.response_info.failures);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);
@@ -342,6 +363,7 @@ export function deleteSharedUser(id, email) {
 
 export function deployMyCluster(body) {
 	return new Promise((resolve, reject) => {
+		let hasError = false;
 		fetch(`${ACC_API}/v1/_deploy_recipe/arc`, {
 			method: 'POST',
 			credentials: 'include',
@@ -352,12 +374,20 @@ export function deployMyCluster(body) {
 				...body,
 			}),
 		})
-			.then(res => res.json())
+			.then(res => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
 			.then(data => {
+				if (hasError) {
+					reject(get(data, 'status.message'));
+				}
 				if (data.error) {
 					reject(data.error);
 				}
-				resolve();
+				resolve(data);
 			})
 			.catch(e => {
 				reject(e);
@@ -431,6 +461,23 @@ export function updateArcDetails(id, body) {
 				reject(e);
 			});
 	});
+}
+
+export async function getArcVersion(arcURL, arcUsername, arcPassword) {
+	try {
+		const res = await fetch(`${arcURL}arc/plan`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: btoa(`${arcUsername}:${arcPassword}`),
+			},
+		});
+		const json = await res.json();
+		return json;
+	} catch (err) {
+		console.error(err);
+		return {};
+	}
 }
 
 export const hasAddon = (item, source) =>

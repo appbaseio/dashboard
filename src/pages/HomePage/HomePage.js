@@ -67,7 +67,7 @@ class HomePage extends Component {
 			history.push('/tutorial');
 		}
 
-		if (!appsOwners.isFetching && !getAppsOwners.data) {
+		if (!appsOwners.isFetching && !appsOwners.data) {
 			getAppsOwners();
 		}
 		if (!permissions) {

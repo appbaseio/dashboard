@@ -31,12 +31,16 @@ class LoginPage extends React.Component {
 		} = this.props;
 
 		const params = getUrlParams(window.location.search);
+
 		let returnURL = window.location.origin;
 		if (params.returnURL) {
 			({ returnURL } = params);
 			returnURL = returnURL.replace(/"/g, '');
 		}
 
+		if (params['insights-sidebar'] && params['insights-id']) {
+			returnURL = `${returnURL}/explore?insights-id=${params['insights-id']}`;
+		}
 		const { isEmailLogin } = this.state;
 		if (user.data) {
 			return <Redirect to="/" />;

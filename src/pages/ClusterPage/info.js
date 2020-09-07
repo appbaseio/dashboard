@@ -1,7 +1,8 @@
 import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import Stripe from 'react-stripe-checkout';
+import PropTypes from 'prop-types';
+import get from 'lodash/get';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
@@ -9,7 +10,6 @@ import { ACC_API } from '../../constants/config';
 import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
-import Overlay from './components/Overlay';
 import Sidebar, { RightContainer } from './components/Sidebar';
 import { ansibleMachineMarks, ARC_BYOC, machineMarks, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
@@ -24,26 +24,31 @@ import {
 	deployCluster,
 	getAddon,
 	getClusterData,
+	getArcVersion,
 	hasAddon,
 	hasAnsibleSetup,
-	STRIPE_KEY,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
 } from './utils';
 import { regions } from './utils/regions';
+import { getUrlParams } from '../../utils/helper';
+import StripeCheckout from '../../components/StripeCheckout';
 
-const checkIfUpdateIsAvailable = (image, recipe) => {
-	const version = (image.split('/')[1] || '').split(':')[1];
+const checkIfUpdateIsAvailable = (version, recipe) => {
+	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
 
 	if (recipe === 'byoc') {
-		// return version !== ARC_BYOC;
-		return false;
+		return version && version !== ARC_BYOC.split('-')[0];
 	}
 
-	// TODO fix this after arc upgrade is figured out;
-	return false;
-	// return version !== V7_ARC;
+	if (k8sVersion) {
+		return k8sVersion !== V7_ARC;
+	}
+
+	return version && version !== V7_ARC.split('-')[0];
 };
 
-export default class Clusters extends Component {
+class ClusterInfo extends Component {
 	constructor(props) {
 		super(props);
 
@@ -60,16 +65,27 @@ export default class Clusters extends Component {
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
-			showOverlay: false,
 			isPaid: false,
 			deleteModal: false,
 			streams: false,
+			arcVersion: null,
+			isStripeCheckoutOpen: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
 	}
 
 	componentDidMount() {
+		const params = getUrlParams(window.location.search);
+		const { history, location } = this.props;
+		if (params && params['insights-id']) {
+			history.push(
+				`${get(location, 'pathname')}/explore${get(
+					location,
+					'search',
+				)}&view=/cluster/analytics`,
+			);
+		}
 		this.init();
 	}
 
@@ -84,16 +100,17 @@ export default class Clusters extends Component {
 			allMarks = ansibleMachineMarks;
 		}
 		const selectedPlan = (
-			Object.values(allMarks[this.state.cluster.provider || 'azure']) ||
-			[]
+			Object.values(
+				allMarks[get(this, 'state.cluster.provider', 'azure')],
+			) || []
 		).find(item => item.plan === plan || item.plan.endsWith(plan));
 
 		return (selectedPlan ? selectedPlan[key] : '-') || '-';
 	};
 
 	init = () => {
-		getClusterData(this.props.match.params.id)
-			.then(res => {
+		getClusterData(get(this, 'props.match.params.id'))
+			.then(async res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
@@ -115,14 +132,29 @@ export default class Clusters extends Component {
 							deployment,
 						),
 						planRate: cluster.plan_rate || 0,
-						isLoading: false,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 						streams: streamsData.status === 'ready',
+						error: null,
 					});
 
 					if (cluster.status === 'deployments in progress') {
 						this.timer = setTimeout(this.init, 30000);
+					} else if (hasAnsibleSetup(cluster.pricing_plan)) {
+						const arcPlanData = await getArcVersion(
+							arcData.url,
+							arcData.username,
+							arcData.password,
+						);
+						if (arcPlanData.version) {
+							this.setState({
+								arcVersion: arcPlanData.version,
+							});
+						}
 					}
+
+					this.setState({
+						isLoading: false,
+					});
 				} else {
 					this.setState({
 						loadingError: true,
@@ -137,10 +169,12 @@ export default class Clusters extends Component {
 					state => ({
 						...state,
 						error: error.message,
-						planRate:
-							(error.details
-								? error.details.plan_rate
-								: state.planRate) || 0,
+						planRate: get(
+							error,
+							'details.plan_rate',
+							get(state, 'planRate', 0),
+						),
+						cluster: get(error, 'details'),
 						isLoading: false,
 					}),
 					this.triggerPayment,
@@ -157,7 +191,7 @@ export default class Clusters extends Component {
 	triggerPayment = () => {
 		if (
 			!this.paymentTriggered &&
-			this.props.location.search.startsWith('?subscribe=true')
+			get(this, 'props.location.search', '').startsWith('?subscribe=true')
 		) {
 			if (this.paymentButton.current) {
 				this.paymentButton.current.buttonNode.click();
@@ -166,14 +200,7 @@ export default class Clusters extends Component {
 		}
 	};
 
-	toggleOverlay = () => {
-		this.setState(state => ({
-			...state,
-			showOverlay: !state.showOverlay,
-		}));
-	};
-
-	deleteCluster = (id = this.props.match.params.id) => {
+	deleteCluster = (id = get(this, 'props.match.params.id')) => {
 		this.setState({
 			isLoading: true,
 		});
@@ -216,6 +243,7 @@ export default class Clusters extends Component {
 
 	renderClusterRegion = (region, provider = 'azure') => {
 		if (!region) return null;
+		if (!regions[provider]) return null;
 		const selectedRegion =
 			Object.keys(regions[provider]).find(item =>
 				region.startsWith(item),
@@ -235,6 +263,9 @@ export default class Clusters extends Component {
 
 	handleToken = async (clusterId, token) => {
 		try {
+			this.setState({
+				isStripeCheckoutOpen: false,
+			});
 			await createSubscription(clusterId, token);
 			this.init();
 		} catch (e) {
@@ -245,36 +276,42 @@ export default class Clusters extends Component {
 	handleArcUpgrade = async () => {
 		try {
 			const {
-				cluster: { id, recipe },
+				cluster: { id, recipe, pricing_plan },
 			} = this.state;
 			this.setState({
 				isLoading: true,
 			});
-			const response = await fetch(
-				`${ACC_API}/v1/_update_deployment/${id}`,
-				{
-					method: 'PUT',
-					credentials: 'include',
-					body: JSON.stringify({
+			const isDeployedUsingAnsible = hasAnsibleSetup(pricing_plan);
+			const url = isDeployedUsingAnsible
+				? `${ACC_API}/v2/_deploy/${id}`
+				: `${ACC_API}/v1/_update_deployment/${id}`;
+			const body = isDeployedUsingAnsible
+				? {
+						arc: {
+							version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+							status: 'restarted',
+						},
+				  }
+				: {
 						deployment_name: 'arc',
 						image: `siddharthlatest/arc:${
 							recipe === 'byoc' ? ARC_BYOC : V7_ARC
 						}`,
-					}),
-					headers: {
-						'Content-Type': 'application/json',
-					},
+				  };
+			const response = await fetch(url, {
+				method: 'PUT',
+				credentials: 'include',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
 				},
-			);
+			});
 
 			const data = await response.json();
 			if (response.status >= 400) {
 				throw new Error(data);
 			}
-			this.setState({
-				deployment: data,
-				isLoading: false,
-			});
+			this.init();
 		} catch (err) {
 			message.error('Something went wrong please try again');
 			this.setState({
@@ -288,9 +325,20 @@ export default class Clusters extends Component {
 		const paymentRequired = this.state.error
 			.toLowerCase()
 			.startsWith('payment');
-		const clusterId = this.props.match.params.id;
+		const clusterId = get(this, 'props.match.params.id');
 		return (
 			<Fragment>
+				{this.state.isStripeCheckoutOpen && (
+					<StripeCheckout
+						visible={this.state.isStripeCheckoutOpen}
+						onCancel={this.handleStripeModal}
+						plan={PLAN_LABEL[this.state.cluster.pricing_plan]}
+						price={EFFECTIVE_PRICE_BY_PLANS[
+							this.state.cluster.pricing_plan
+						].toString()}
+						onSubmit={token => this.handleToken(clusterId, token)}
+					/>
+				)}
 				<FullHeader
 					cluster={clusterId}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
@@ -326,29 +374,16 @@ export default class Clusters extends Component {
 								</Link>
 
 								{paymentRequired ? (
-									<Stripe
-										name="Appbase.io Clusters"
-										amount={
-											(this.state.planRate || 0) * 100
-										}
-										token={token =>
-											this.handleToken(clusterId, token)
-										}
-										disabled={false}
-										stripeKey={STRIPE_KEY}
-										closed={this.toggleOverlay}
+									<Button
+										size="large"
+										css={{
+											marginRight: 12,
+										}}
+										ref={this.paymentButton}
+										onClick={this.handleStripeModal}
 									>
-										<Button
-											size="large"
-											ref={this.paymentButton}
-											css={{
-												marginRight: 12,
-											}}
-											onClick={this.toggleOverlay}
-										>
-											Pay now to access
-										</Button>
-									</Stripe>
+										Pay now to access
+									</Button>
 								) : null}
 
 								<Button
@@ -380,7 +415,7 @@ export default class Clusters extends Component {
 				Go Back
 			</Button>
 
-			{this.state.cluster && this.state.cluster.user_role === 'admin' ? (
+			{get(this, 'state.cluster.user_role') === 'admin' ? (
 				<Button
 					size="large"
 					onClick={this.deleteCluster}
@@ -395,6 +430,13 @@ export default class Clusters extends Component {
 			) : null}
 		</div>
 	);
+
+	handleStripeModal = () => {
+		console.log('here');
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
 
 	render() {
 		const vcenter = {
@@ -430,19 +472,23 @@ export default class Clusters extends Component {
 
 		if (this.state.isLoading) return <Loader />;
 
-		const { showOverlay, isPaid, deployment, cluster } = this.state;
+		const {
+			isPaid,
+			deployment,
+			cluster,
+			isStripeCheckoutOpen,
+		} = this.state;
 
-		const isViewer = this.state.cluster.user_role === 'viewer';
-		const isExternalCluster = this.state.cluster.recipe === 'byoc';
+		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
+		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
 
 		let allMarks = machineMarks.gke;
-
-		if (isExternalCluster) {
-			allMarks = arcMachineMarks;
-		}
-
 		if (hasAnsibleSetup(cluster.pricing_plan)) {
 			allMarks = ansibleMachineMarks.gke;
+		}
+		// override plans for byoc cluster even though they are deployed using ansible
+		if (isExternalCluster) {
+			allMarks = arcMachineMarks;
 		}
 
 		const planDetails = Object.values(allMarks).find(
@@ -460,12 +506,24 @@ export default class Clusters extends Component {
 			<Fragment>
 				<FullHeader
 					isCluster
-					cluster={this.props.match.params.id}
+					cluster={get(this, 'props.match.params.id')}
 					clusterPlan={cluster && cluster.plan_rate}
 					trialMessage="You are currently on a free 14-day trial. Once this expires, you will have to upgrade to a paid plan to continue accessing the cluster. The cluster will be removed after a trial expires."
 				/>
-				{showOverlay && <Overlay />}
 				<Container>
+					{isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={isStripeCheckoutOpen}
+							onCancel={this.handleStripeModal}
+							plan={PLAN_LABEL[cluster.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							onSubmit={token =>
+								this.handleToken(cluster.id, token)
+							}
+						/>
+					)}
 					<section className={clusterContainer}>
 						<Modal
 							title="Error"
@@ -476,17 +534,18 @@ export default class Clusters extends Component {
 						</Modal>
 						<article>
 							<h2>
-								{this.state.cluster.name}
+								{get(this, 'state.cluster.name')}
 								<span className="tag">
-									{this.state.cluster.status === 'delInProg'
+									{get(this, 'state.cluster.status') ===
+									'delInProg'
 										? 'Deletion in progress'
-										: this.state.cluster.status}
+										: get(this, 'state.cluster.status')}
 								</span>
 							</h2>
 
 							<ul className={clustersList}>
 								<li
-									key={this.state.cluster.name}
+									key={get(this, 'state.cluster.name')}
 									className="cluster-card compact"
 								>
 									<div className="info-row">
@@ -571,39 +630,19 @@ export default class Clusters extends Component {
 										{this.state.cluster.trial ? (
 											<div>
 												<div>
-													<Stripe
-														name="Appbase.io Clusters"
-														amount={
-															(this.state.cluster
-																.plan_rate ||
-																0) * 100
+													<Button
+														type="primary"
+														style={{
+															marginTop: 5,
+														}}
+														onClick={
+															this
+																.handleStripeModal
 														}
-														token={token =>
-															this.handleToken(
-																this.state
-																	.cluster.id,
-																token,
-															)
-														}
-														disabled={false}
-														stripeKey={STRIPE_KEY}
-														closed={
-															this.toggleOverlay
-														}
+														ref={this.paymentButton}
 													>
-														<Button
-															type="primary"
-															style={{
-																marginTop: 5,
-															}}
-															onClick={
-																this
-																	.toggleOverlay
-															}
-														>
-															Upgrade Now
-														</Button>
-													</Stripe>
+														Upgrade Now
+													</Button>
 												</div>
 											</div>
 										) : null}
@@ -613,7 +652,11 @@ export default class Clusters extends Component {
 								{this.state.cluster.status ===
 								'deployments in progress' ? (
 									<div>
-										<p style={{ textAlign: 'center' }}>
+										<p
+											style={{
+												textAlign: 'center',
+											}}
+										>
 											Deployment is in progress. Please
 											wait.
 										</p>
@@ -660,7 +703,10 @@ export default class Clusters extends Component {
 											/>
 											<Link
 												to={{
-													pathname: `/clusters/${this.props.match.params.id}/explore`,
+													pathname: `/clusters/${get(
+														this,
+														'props.match.params.id',
+													)}/explore`,
 													state: {
 														arc: getAddon(
 															'arc',
@@ -682,54 +728,71 @@ export default class Clusters extends Component {
 										</div>
 									</li>
 								) : null}
-								{this.state.arc && arcDeployment.image && (
-									<Alert
-										message="A new appbase.io version is available!"
-										description={
-											<div
-												style={{
-													display: 'flex',
-													justifyContent:
-														'space-between',
-													alignItems: 'center',
-												}}
-											>
-												<div>
-													A new version{' '}
-													{V7_ARC.split('-')[0]} is
-													available now. You&apos;re
-													currently on{' '}
-													{
-														arcDeployment.image
-															.split('/')[1]
-															.split(':')[1]
-															.split('-')[0]
-													}
-													. See what&apos;s new in{' '}
-													<a href="https://github.com/appbaseio/arc/releases">
-														this release
-													</a>
-													.
-												</div>
-												<Button
-													type="primary"
-													ghost
-													onClick={
-														this.handleArcUpgrade
-													}
+								{this.state.arc &&
+									(this.state.arcVersion ||
+										arcDeployment.image) &&
+									checkIfUpdateIsAvailable(
+										this.state.arcVersion ||
+											arcDeployment.image,
+										this.state.cluster.recipe,
+									) && (
+										<Alert
+											message="A new appbase.io version is available!"
+											description={
+												<div
+													style={{
+														display: 'flex',
+														justifyContent:
+															'space-between',
+														alignItems: 'center',
+													}}
 												>
-													{' '}
-													Update Now
-												</Button>
-											</div>
-										}
-										type="info"
-										showIcon
-										style={{
-											marginBottom: 25,
-										}}
-									/>
-								)}
+													<div>
+														A new version{' '}
+														{V7_ARC.split('-')[0]}{' '}
+														is available now.
+														You&apos;re currently on{' '}
+														{hasAnsibleSetup(
+															cluster.pricing_plan,
+														)
+															? this.state
+																	.arcVersion
+															: arcDeployment.image
+																	.split(
+																		'/',
+																	)[1]
+																	.split(
+																		':',
+																	)[1]
+																	.split(
+																		'-',
+																	)[0]}
+														. See what&apos;s new in{' '}
+														<a href="https://github.com/appbaseio/arc/releases">
+															this release
+														</a>
+														.
+													</div>
+													<Button
+														type="primary"
+														ghost
+														onClick={
+															this
+																.handleArcUpgrade
+														}
+													>
+														{' '}
+														Update Now
+													</Button>
+												</div>
+											}
+											type="info"
+											showIcon
+											style={{
+												marginBottom: 25,
+											}}
+										/>
+									)}
 
 								{this.state.cluster.status === 'active' ? (
 									<div
@@ -740,7 +803,10 @@ export default class Clusters extends Component {
 										}}
 									>
 										<Sidebar
-											id={this.props.match.params.id}
+											id={get(
+												this,
+												'props.match.params.id',
+											)}
 											isViewer={isViewer}
 											isExternalCluster={
 												isExternalCluster
@@ -753,10 +819,10 @@ export default class Clusters extends Component {
 													path="/clusters/:id"
 													component={() => (
 														<ClusterScreen
-															clusterId={
-																this.props.match
-																	.params.id
-															}
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
 															cluster={
 																this.state
 																	.cluster
@@ -824,10 +890,10 @@ export default class Clusters extends Component {
 													path="/clusters/:id/usage"
 													component={() => (
 														<InvoiceScreen
-															clusterId={
-																this.props.match
-																	.params.id
-															}
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
 															isTrial={
 																this.state
 																	.cluster
@@ -844,31 +910,24 @@ export default class Clusters extends Component {
 																path="/clusters/:id/scale"
 																component={() => (
 																	<ScaleClusterScreen
-																		clusterId={
-																			this
-																				.props
-																				.match
-																				.params
-																				.id
-																		}
+																		clusterId={get(
+																			this,
+																			'props.match.params.id',
+																		)}
 																		nodes={
 																			this
 																				.state
 																				.cluster
 																				.total_nodes
 																		}
-																		handleToken={
-																			this
-																				.handleToken
-																		}
-																		toggleOverlay={
-																			this
-																				.toggleOverlay
-																		}
 																		cluster={
 																			this
 																				.state
 																				.cluster
+																		}
+																		handleStripeSubmit={
+																			this
+																				.handleToken
 																		}
 																	/>
 																)}
@@ -879,13 +938,10 @@ export default class Clusters extends Component {
 															path="/clusters/:id/share"
 															component={() => (
 																<ShareClusterScreen
-																	clusterId={
-																		this
-																			.props
-																			.match
-																			.params
-																			.id
-																	}
+																	clusterId={get(
+																		this,
+																		'props.match.params.id',
+																	)}
 																/>
 															)}
 														/>
@@ -910,3 +966,10 @@ export default class Clusters extends Component {
 		);
 	}
 }
+
+ClusterInfo.propTypes = {
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
+};
+
+export default ClusterInfo;

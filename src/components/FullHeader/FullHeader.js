@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Tag, Icon, Button, Row, Tooltip } from 'antd';
+import { Layout, Menu, Tag, Icon, Row } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool, number, array } from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,37 +16,6 @@ import TrialButton from './TrialButton';
 
 const { Header } = Layout;
 
-const getSelectedKeys = pathname => {
-	switch (pathname) {
-		case '/marketplace':
-			return '4';
-		case '/':
-			return '1';
-		case '/apps':
-			return '3';
-		default:
-			return null;
-	}
-};
-
-const trialText = css`
-	line-height: 2em;
-	font-size: 0.9em;
-`;
-
-const trialBtn = css`
-	${media.medium(css`
-		display: none;
-	`)};
-`;
-
-const trialLink = css`
-	margin-right: 30px;
-	${media.xlarge(css`
-		display: none;
-	`)};
-`;
-
 const link = css`
 	margin-right: 30px;
 	color: rgba(0, 0, 0, 0.65);
@@ -60,6 +29,7 @@ const link = css`
 
 const FullHeader = ({
 	user,
+	apps,
 	cluster,
 	isUsingTrial,
 	isUsingClusterTrial,
@@ -93,9 +63,11 @@ const FullHeader = ({
 					</Menu.Item>
 				) : null}
 
-				<Menu.Item key="/apps">
-					<Link to="/apps">Apps</Link>
-				</Menu.Item>
+				{apps && Boolean(Object.keys(apps).length) && (
+					<Menu.Item key="/apps">
+						<Link to="/apps">Apps</Link>
+					</Menu.Item>
+				)}
 
 				<Menu.Item key="/marketplace">
 					<Link to="/marketplace">
@@ -149,6 +121,7 @@ FullHeader.defaultProps = {
 
 FullHeader.propTypes = {
 	user: object.isRequired,
+	apps: object,
 	cluster: string,
 	clusters: array,
 	currentApp: string.isRequired,
@@ -158,6 +131,7 @@ FullHeader.propTypes = {
 	isUsingClusterTrial: bool.isRequired,
 	daysLeft: number,
 	clusterDaysLeft: number,
+	clusterPlan: string,
 };
 
 const mapStateToProps = state => {
@@ -166,8 +140,10 @@ const mapStateToProps = state => {
 	if (storedApp) {
 		currentApp = storedApp;
 	}
+
 	return {
-		user: state.user.data,
+		user: get(state, 'user.data'),
+		apps: get(state, 'appsOwners.data'),
 		isUsingTrial: get(state, '$getUserPlan.trial') || false,
 		isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 		daysLeft: get(state, '$getUserPlan.daysLeft', 0),

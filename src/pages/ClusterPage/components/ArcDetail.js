@@ -11,12 +11,16 @@ class ArcDetail extends React.Component {
 		super(props);
 		this.state = {
 			loading: false,
-			username: props.arc ? props.arc.username : '',
-			password: props.arc ? props.arc.password : '',
-			esURL: (props.cluster && props.cluster.elasticsearch_url) || '',
+			username: get(props, 'arc.username', ''),
+			password: get(props, 'arc.password', ''),
+			esURL: get(props, 'cluster.elasticsearch_url', ''),
 			showCred: false,
 			updatedArcCred: props.arc
-				? `${props.arc.username}:${props.arc.password}`
+				? `${get(props, 'arc.username', '')}:${get(
+						props,
+						'arc.password',
+						'',
+				  )}`
 				: '',
 		};
 	}
@@ -148,7 +152,7 @@ class ArcDetail extends React.Component {
 			[protocol, url] = (arc.url || arc.dashboard_url).split('://');
 		}
 
-		const currentURL = cluster && cluster.elasticsearch_url;
+		const currentURL = get(cluster, 'elasticsearch_url');
 
 		if (esURL !== currentURL && !verifiedCluster) {
 			isButtonDisable = true;
@@ -157,9 +161,9 @@ class ArcDetail extends React.Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Appbase.io Server (Arc)</h3>{' '}
+						<h3>Appbase.io Server</h3>{' '}
 						<a
-							href="docs.appbase.io"
+							href="https://docs.appbase.io/docs/hosting/byoc/#using-appbaseio"
 							rel="noopener noreferrer"
 							target="_blank"
 						>
@@ -170,13 +174,13 @@ class ArcDetail extends React.Component {
 					<div className="col">
 						<div className={clusterEndpoint}>
 							<h4>
-								Arc
+								Appbase.io
 								<CopyToClipboard
 									text={`${protocol}://${username}:${password}@${url}`}
 									onCopy={() =>
 										notification.success({
 											message:
-												'arc URL Copied Successfully',
+												'Appbase.io URL copied successfully',
 										})
 									}
 								>
@@ -251,8 +255,8 @@ class ArcDetail extends React.Component {
 				</li>
 				<li className={card}>
 					<div className="col light">
-						<h3>BYOC URL</h3>
-						<p>Bring your own Cluster URL</p>
+						<h3>Upstream URL</h3>
+						<p>Bring your Elasticsearch URL</p>
 					</div>
 
 					<div className="col full">

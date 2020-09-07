@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { object } from 'prop-types';
-import { Menu, Avatar, Dropdown, Icon, Row } from 'antd';
+import { Menu, Avatar, Dropdown, Icon } from 'antd';
+import get from 'lodash/get';
 import { css } from 'react-emotion';
 import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
@@ -43,7 +44,7 @@ const UserMenu = ({ user }) => {
 		<Menu style={{ width: 'auto' }}>
 			<Menu.Item className={userEmailDetail}>
 				<h5>Logged in as</h5>
-				<h4>{user.email}</h4>
+				<h4>{get(user, 'email')}</h4>
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item>
@@ -67,12 +68,17 @@ const UserMenu = ({ user }) => {
 	return (
 		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
 			<span style={{ cursor: 'pointer' }}>
-				<Avatar src={user.picture} css={{ backgroundColor: '#1890ff' }}>
-					{user.name && user.name.charAt(0).toLocaleUpperCase()}
+				<Avatar
+					src={get(user, 'picture')}
+					css={{ backgroundColor: '#1890ff' }}
+				>
+					{get(user, 'name', '')
+						.charAt(0)
+						.toLocaleUpperCase()}
 				</Avatar>
 				&nbsp;&nbsp;
 				<span className={userName}>
-					{user ? user.name : 'Loading...'}
+					{get(user, 'name', 'Loading...')}
 				</span>
 				&nbsp;&nbsp;
 				<Icon type="down" />

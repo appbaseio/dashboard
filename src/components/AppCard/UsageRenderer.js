@@ -31,7 +31,10 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 								{compressNumber(get(appCount, 'action.count'))}{' '}
 							</span>
 							<span>
-								/ {compressNumber(planLimits[plan].action)}
+								/{' '}
+								{compressNumber(
+									get(planLimits, `${plan}.action`),
+								)}
 							</span>
 						</h4>
 					</Col>
@@ -55,7 +58,10 @@ const UsageRenderer = ({ computedMetrics, plan }) => {
 								{compressNumber(get(appCount, 'records.count'))}{' '}
 							</span>
 							<span>
-								/ {compressNumber(planLimits[plan].records)}
+								/{' '}
+								{compressNumber(
+									get(planLimits, `${plan}.records`),
+								)}
 							</span>
 						</h4>
 					</Col>
