@@ -98,6 +98,10 @@ class ClusterPage extends Component {
 	initClusters = () => {
 		getClusters()
 			.then(clusters => {
+				window.Intercom('update', {
+					total_clusters: clusters.length,
+					trial_end_date: this.props.clusterTrialEndDate,
+				});
 				if (!clusters.length) {
 					this.props.history.push('/clusters/new');
 					return;
@@ -557,9 +561,11 @@ class ClusterPage extends Component {
 
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
 ClusterPage.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
+	clusterTrialEndDate: PropTypes.number,
 	history: PropTypes.object.isRequired,
 };
 export default connect(mapStateToProps, null)(ClusterPage);
