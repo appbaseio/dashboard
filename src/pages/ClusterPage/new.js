@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -240,6 +241,18 @@ class NewCluster extends Component {
 	componentDidMount() {
 		getClusters()
 			.then(clusters => {
+				console.log({
+					total_clusters: clusters.length,
+					trial_end_date: moment
+						.unix(this.props.clusterTrialEndDate)
+						.toDate(),
+				});
+				window.Intercom('update', {
+					total_clusters: clusters.length,
+					trial_end_date: moment
+						.unix(this.props.clusterTrialEndDate)
+						.toDate(),
+				});
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -1069,9 +1082,11 @@ class NewCluster extends Component {
 
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
 NewCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	clusterTrialEndDate: PropTypes.number,
 };
 export default connect(mapStateToProps, null)(NewCluster);

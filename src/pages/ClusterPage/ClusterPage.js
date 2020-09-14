@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -100,7 +101,9 @@ class ClusterPage extends Component {
 			.then(clusters => {
 				window.Intercom('update', {
 					total_clusters: clusters.length,
-					trial_end_date: this.props.clusterTrialEndDate,
+					trial_end_date: moment
+						.unix(this.props.clusterTrialEndDate)
+						.toDate(),
 				});
 				if (!clusters.length) {
 					this.props.history.push('/clusters/new');
