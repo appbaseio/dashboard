@@ -247,12 +247,14 @@ class NewCluster extends Component {
 						.unix(this.props.clusterTrialEndDate)
 						.toDate(),
 				});
-				window.Intercom('update', {
-					total_clusters: clusters.length,
-					trial_end_date: moment
-						.unix(this.props.clusterTrialEndDate)
-						.toDate(),
-				});
+				if (window.Intercom) {
+					window.Intercom('update', {
+						total_clusters: clusters.length,
+						trial_end_date: moment
+							.unix(this.props.clusterTrialEndDate)
+							.toDate(),
+					});
+				}
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);

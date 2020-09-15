@@ -1,5 +1,5 @@
-import { ACC_API } from '../constants/config';
 import get from 'lodash/get';
+import { ACC_API } from '../constants/config';
 
 export async function getUser() {
 	const response = await fetch(`${ACC_API}/user`, { credentials: 'include' });
@@ -34,33 +34,35 @@ export async function getUser() {
 		console.error('Unable to fetch Metrics');
 	}
 
-	window.Intercom('boot', {
-		app_id: 'f9514ssx',
-		custom_launcher_selector: '#intercom',
-		email: user.email,
-		name: user.name,
-		use_case: user.usecase,
-		timeframe: user['deployment-timeframe'],
-		phone: user.phone,
-		total_apps: user.apps && Object.keys(user.apps).length,
-		context: 'appbase.io',
-		api_calls:
-			(metrics &&
-				metrics.body &&
-				metrics.body.month &&
-				metrics.body.month.apiCalls) ||
-			0,
-		storage:
-			(metrics &&
-				metrics.body &&
-				metrics.body.overall &&
-				metrics.body.overall.storage / 1048576) ||
-			0,
-		company: {
-			name: user.company,
-			id: user.company,
-		},
-	});
+	if (window.Intercom) {
+		window.Intercom('boot', {
+			app_id: 'f9514ssx',
+			custom_launcher_selector: '#intercom',
+			email: user.email,
+			name: user.name,
+			use_case: user.usecase,
+			timeframe: user['deployment-timeframe'],
+			phone: user.phone,
+			total_apps: user.apps && Object.keys(user.apps).length,
+			context: 'appbase.io',
+			api_calls:
+				(metrics &&
+					metrics.body &&
+					metrics.body.month &&
+					metrics.body.month.apiCalls) ||
+				0,
+			storage:
+				(metrics &&
+					metrics.body &&
+					metrics.body.overall &&
+					metrics.body.overall.storage / 1048576) ||
+				0,
+			company: {
+				name: user.company,
+				id: user.company,
+			},
+		});
+	}
 
 	const { apps } = data.body;
 	return { user, apps };
@@ -103,11 +105,12 @@ export async function getAppsOverview() {
 		if (paidApps.length > 0) {
 			plan = 'paid';
 		}
-
-		window.Intercom('update', {
-			app_id: 'f9514ssx',
-			plan,
-		});
+		if (window.Intercom) {
+			window.Intercom('update', {
+				app_id: 'f9514ssx',
+				plan,
+			});
+		}
 	}
 	if (response.status >= 400) {
 		throw new Error(data);

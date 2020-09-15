@@ -99,12 +99,14 @@ class ClusterPage extends Component {
 	initClusters = () => {
 		getClusters()
 			.then(clusters => {
-				window.Intercom('update', {
-					total_clusters: clusters.length,
-					trial_end_date: moment
-						.unix(this.props.clusterTrialEndDate)
-						.toDate(),
-				});
+				if (window.Intercom) {
+					window.Intercom('update', {
+						total_clusters: clusters.length,
+						trial_end_date: moment
+							.unix(this.props.clusterTrialEndDate)
+							.toDate(),
+					});
+				}
 				if (!clusters.length) {
 					this.props.history.push('/clusters/new');
 					return;
@@ -368,7 +370,9 @@ class ClusterPage extends Component {
 												cursor: 'pointer',
 											}}
 											onClick={() => {
-												window.Intercom('show');
+												if (window.Intercom) {
+													window.Intercom('show');
+												}
 											}}
 										>
 											Chat with us
