@@ -363,7 +363,7 @@ class ClusterPage extends Component {
 											margin: '10px 0 12px 0',
 										}}
 									>
-										Need a trial extend?{' '}
+										Need a trial extension?{' '}
 										<span
 											style={{
 												color: 'dodgerblue',
