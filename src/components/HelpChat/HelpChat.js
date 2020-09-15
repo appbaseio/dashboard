@@ -131,7 +131,9 @@ class HelpButton extends React.Component {
 		const { key } = e;
 		switch (key) {
 			case 'chat': {
-				window.Intercom('show');
+				if (window.Intercom) {
+					window.Intercom('show');
+				}
 				break;
 			}
 			case 'support':

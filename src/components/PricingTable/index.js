@@ -324,9 +324,11 @@ class PricingTable extends Component {
 		const { createSubscription, fetchAppPlan } = this.props;
 		createSubscription(token, plan).then(action => {
 			if (get(action, 'payload')) {
-				window.Intercom('update', {
-					plan: plan === 'free' ? 'free' : 'paid',
-				});
+				if (window.Intercom) {
+					window.Intercom('update', {
+						plan: plan === 'free' ? 'free' : 'paid',
+					});
+				}
 				fetchAppPlan();
 			}
 		});

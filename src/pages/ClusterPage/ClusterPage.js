@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -98,6 +99,14 @@ class ClusterPage extends Component {
 	initClusters = () => {
 		getClusters()
 			.then(clusters => {
+				if (window.Intercom) {
+					window.Intercom('update', {
+						total_clusters: clusters.length,
+						trial_end_date: moment
+							.unix(this.props.clusterTrialEndDate)
+							.toDate(),
+					});
+				}
 				if (!clusters.length) {
 					this.props.history.push('/clusters/new');
 					return;
@@ -354,14 +363,16 @@ class ClusterPage extends Component {
 											margin: '10px 0 12px 0',
 										}}
 									>
-										Need a trial extend?{' '}
+										Need a trial extension?{' '}
 										<span
 											style={{
 												color: 'dodgerblue',
 												cursor: 'pointer',
 											}}
 											onClick={() => {
-												window.Intercom('show');
+												if (window.Intercom) {
+													window.Intercom('show');
+												}
 											}}
 										>
 											Chat with us
@@ -557,9 +568,11 @@ class ClusterPage extends Component {
 
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
 ClusterPage.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
+	clusterTrialEndDate: PropTypes.number,
 	history: PropTypes.object.isRequired,
 };
 export default connect(mapStateToProps, null)(ClusterPage);

@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -34,9 +35,9 @@ const esVersions = ['7.9.0', '7.8.1', '7.8.0', '7.7.1'];
 
 const odfeVersions = ['1.9.0', '1.8.0'];
 
-export const V7_ARC = '7.31.1-cluster';
-export const V6_ARC = '7.31.1-cluster';
-export const ARC_BYOC = '7.31.1-byoc';
+export const V7_ARC = '7.32.0-cluster';
+export const V6_ARC = '7.32.0-cluster';
+export const ARC_BYOC = '7.32.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
@@ -303,6 +304,20 @@ class NewCluster extends Component {
 	componentDidMount() {
 		getClusters()
 			.then(clusters => {
+				console.log({
+					total_clusters: clusters.length,
+					trial_end_date: moment
+						.unix(this.props.clusterTrialEndDate)
+						.toDate(),
+				});
+				if (window.Intercom) {
+					window.Intercom('update', {
+						total_clusters: clusters.length,
+						trial_end_date: moment
+							.unix(this.props.clusterTrialEndDate)
+							.toDate(),
+					});
+				}
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
@@ -1208,9 +1223,11 @@ class NewCluster extends Component {
 
 const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
 NewCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	clusterTrialEndDate: PropTypes.number,
 };
 export default connect(mapStateToProps, null)(NewCluster);
