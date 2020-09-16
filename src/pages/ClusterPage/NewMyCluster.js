@@ -131,9 +131,9 @@ class NewMyCluster extends Component {
 		});
 	};
 
-	handleToken = async (clusterId, token) => {
+	handleToken = async (clusterId, token, coupon) => {
 		try {
-			await createSubscription(clusterId, token);
+			await createSubscription(clusterId, token, coupon);
 			window.location.reload();
 		} catch (e) {
 			console.log(e);
@@ -174,7 +174,7 @@ class NewMyCluster extends Component {
 		}
 	};
 
-	createCluster = async (token = null) => {
+	createCluster = async (token = null, coupon = '') => {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -218,7 +218,7 @@ class NewMyCluster extends Component {
 
 			const clusterRes = await deployMyCluster(body);
 			if (token) {
-				await createSubscription(clusterRes.cluster.id, token);
+				await createSubscription(clusterRes.cluster.id, token, coupon);
 				this.props.history.push('/');
 			}
 		} catch (e) {
@@ -339,8 +339,8 @@ class NewMyCluster extends Component {
 		}));
 	};
 
-	handleStripeSubmit = token => {
-		this.createCluster(token);
+	handleStripeSubmit = (token, coupon = '') => {
+		this.createCluster(token, coupon);
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 

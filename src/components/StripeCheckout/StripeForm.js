@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { Button, Alert } from 'antd';
 import styled from 'react-emotion';
+import { getCoupon } from '../../pages/ClusterPage/utils';
 
 const Wrapper = styled.div`
 	label {
@@ -71,30 +72,58 @@ const options = {
 
 const StripeForm = ({ onSubmit }) => {
 	const [error, setError] = useState(null);
+	const [couponCode, setCouponCode] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const stripe = useStripe();
 	const elements = useElements();
-
+	const handleError = err => {
+		setError(err);
+		setTimeout(() => {
+			setError(null);
+			setIsLoading(false);
+		}, 7000);
+	};
 	const handleSubmit = async event => {
-		event.preventDefault();
+		try {
+			event.preventDefault();
 
-		if (!stripe || !elements) {
-			// Stripe.js has not loaded yet. Make sure to disable
-			// form submission until Stripe.js has loaded.
-			return;
+			if (!stripe || !elements) {
+				// Stripe.js has not loaded yet. Make sure to disable
+				// form submission until Stripe.js has loaded.
+				return;
+			}
+
+			setIsLoading(true);
+			setError(null);
+
+			if (couponCode.trim()) {
+				// validate couponCode
+				const res = await getCoupon(couponCode);
+				if (!res.valid || res.message) {
+					handleError({
+						message: res.message || `Invalid coupon code`,
+					});
+					setIsLoading(false);
+
+					return;
+				}
+			}
+
+			const payload = await stripe.createToken(
+				elements.getElement(CardNumberElement),
+			);
+
+			setIsLoading(false);
+
+			if (payload.error) {
+				handleError(payload.error);
+			}
+
+			onSubmit(payload.token, couponCode.trim());
+		} catch (err) {
+			console.log(err.message);
+			handleError(err);
 		}
-
-		const payload = await stripe.createToken(
-			elements.getElement(CardNumberElement),
-		);
-
-		if (payload.error) {
-			setError(payload.error);
-			setTimeout(() => {
-				setError(null);
-			}, 7000);
-		}
-		console.log('[PaymentMethod]', payload);
-		onSubmit(payload.token);
 	};
 	return (
 		<Wrapper>
@@ -121,6 +150,20 @@ const StripeForm = ({ onSubmit }) => {
 						<CardCvcElement options={options} />
 					</label>
 				</div>
+				<label>
+					Discount Coupon Code
+					<input
+						type="text"
+						className="StripeElement"
+						placeholder="eg PRODUCTHUNT2020"
+						onChange={e => {
+							setCouponCode(e.target.value);
+						}}
+						style={{
+							width: '100%',
+						}}
+					/>
+				</label>
 				{error && (
 					<>
 						<Alert type="error" showIcon message={error.message} />
@@ -132,7 +175,8 @@ const StripeForm = ({ onSubmit }) => {
 					type="primary"
 					block
 					htmlType="submit"
-					disabled={!stripe}
+					disabled={!stripe || isLoading}
+					loading={isLoading}
 					size="large"
 				>
 					Subscribe

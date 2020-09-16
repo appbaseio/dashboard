@@ -259,7 +259,7 @@ export function deleteCluster(id) {
 	});
 }
 
-export function createSubscription(id, token) {
+export function createSubscription(id, token, coupon = '') {
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/v1/subscription/cluster/${id}`, {
 			method: 'POST',
@@ -269,6 +269,7 @@ export function createSubscription(id, token) {
 			},
 			body: JSON.stringify({
 				token,
+				coupon,
 			}),
 		})
 			.then(resolve)
@@ -478,6 +479,25 @@ export async function getArcVersion(arcURL, arcUsername, arcPassword) {
 		console.error(err);
 		return {};
 	}
+}
+
+export function getCoupon(couponCode) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/coupon/${couponCode}`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(res => res.json())
+			.then(data => {
+				resolve(data);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
 }
 
 export const hasAddon = (item, source) =>

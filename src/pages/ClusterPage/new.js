@@ -332,12 +332,12 @@ class NewCluster extends Component {
 		}));
 	};
 
-	handleStripeSubmit = token => {
-		this.createCluster(token);
+	handleStripeSubmit = (token, coupon = '') => {
+		this.createCluster(token, coupon);
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
-	createCluster = async (token = null) => {
+	createCluster = async (token = null, coupon = '') => {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -424,7 +424,7 @@ class NewCluster extends Component {
 
 			const clusterRes = await deployCluster(body);
 			if (token) {
-				await createSubscription(clusterRes.cluster.id, token);
+				await createSubscription(clusterRes.cluster.id, token, coupon);
 				this.props.history.push('/');
 			}
 		} catch (e) {
