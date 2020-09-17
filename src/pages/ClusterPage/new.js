@@ -332,12 +332,12 @@ class NewCluster extends Component {
 		}));
 	};
 
-	handleStripeSubmit = (token, coupon = '') => {
-		this.createCluster(token, coupon);
+	handleStripeSubmit = data => {
+		this.createCluster(data);
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
-	createCluster = async (token = null, coupon = '') => {
+	createCluster = async (stripeData = {}) => {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -414,7 +414,7 @@ class NewCluster extends Component {
 				body.grafana = true;
 			}
 
-			if (token) {
+			if (stripeData.token) {
 				body.enable_monitoring = true;
 			}
 
@@ -423,8 +423,11 @@ class NewCluster extends Component {
 			});
 
 			const clusterRes = await deployCluster(body);
-			if (token) {
-				await createSubscription(clusterRes.cluster.id, token, coupon);
+			if (stripeData.token) {
+				await createSubscription({
+					clusterId: clusterRes.cluster.id,
+					...stripeData,
+				});
 				this.props.history.push('/');
 			}
 		} catch (e) {
@@ -573,15 +576,6 @@ class NewCluster extends Component {
 				});
 			},
 		});
-	};
-
-	handleToken = async (clusterId, token) => {
-		try {
-			await createSubscription(clusterId, token);
-			window.location.reload();
-		} catch (e) {
-			console.log(e);
-		}
 	};
 
 	handleCluster = value => {

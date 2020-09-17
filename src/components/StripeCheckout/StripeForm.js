@@ -70,7 +70,7 @@ const options = {
 	},
 };
 
-const StripeForm = ({ onSubmit }) => {
+const StripeForm = ({ onSubmit, showBack, onBack }) => {
 	const [error, setError] = useState(null);
 	const [couponCode, setCouponCode] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -119,7 +119,11 @@ const StripeForm = ({ onSubmit }) => {
 				handleError(payload.error);
 			}
 
-			onSubmit(payload.token, couponCode.trim());
+			onSubmit({
+				token: payload.token,
+				coupon: couponCode.trim(),
+				useDefaultPaymentMethod: false,
+			});
 		} catch (err) {
 			console.log(err.message);
 			handleError(err);
@@ -181,6 +185,11 @@ const StripeForm = ({ onSubmit }) => {
 				>
 					Subscribe
 				</Button>
+				{showBack && (
+					<Button type="link" block onClick={onBack}>
+						Use existing cards
+					</Button>
+				)}
 				<div
 					style={{ textAlign: 'center', fontSize: 12, marginTop: 15 }}
 				>
@@ -193,6 +202,8 @@ const StripeForm = ({ onSubmit }) => {
 
 StripeForm.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
+	showBack: PropTypes.bool,
+	onBack: PropTypes.func,
 };
 
 export default StripeForm;

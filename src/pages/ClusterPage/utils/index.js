@@ -62,6 +62,7 @@ export const PRICE_BY_PLANS = {
 };
 
 export const PLAN_LABEL = {
+	[ARC_PLANS.HOSTED_ARC_BASIC]: 'Basic',
 	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: 'Basic',
 	[ARC_PLANS.HOSTED_ARC_STANDARD]: 'Standard',
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: 'Enterprise',
@@ -259,18 +260,15 @@ export function deleteCluster(id) {
 	});
 }
 
-export function createSubscription(id, token, coupon = '') {
+export function createSubscription({ clusterId, ...rest }) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/subscription/cluster/${id}`, {
+		fetch(`${ACC_API}/v1/subscription/cluster/${clusterId}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({
-				token,
-				coupon,
-			}),
+			body: JSON.stringify(rest),
 		})
 			.then(resolve)
 			.catch(reject);
@@ -484,6 +482,25 @@ export async function getArcVersion(arcURL, arcUsername, arcPassword) {
 export function getCoupon(couponCode) {
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/coupon/${couponCode}`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(res => res.json())
+			.then(data => {
+				resolve(data);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
+
+export function getPaymentMethods() {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/user/payment_methods`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
