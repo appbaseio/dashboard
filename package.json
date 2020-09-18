@@ -71,7 +71,7 @@
 		"@appbaseio/reactivecore": "^8.2.6",
 		"@appbaseio/reactivesearch": "^3.12.3",
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
-		"@sentry/browser": "^4.2.1",
+		"@sentry/browser": "^5.24.1",
 		"@stripe/react-stripe-js": "^1.1.2",
 		"@stripe/stripe-js": "^1.9.0",
 		"@typeform/embed": "^0.13.1",
