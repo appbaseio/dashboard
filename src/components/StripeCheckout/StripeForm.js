@@ -214,12 +214,12 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 									? `${couponData.amount_off}`
 									: `${couponData.percent_off}%`
 							} off ${
-								couponData.duration === 'once'
+								couponData.duration === 'once.'
 									? 'once'
 									: `${
 											couponData.duration === 'repeating'
-												? `for ${couponData.duration_in_months} months`
-												: `for your subscription duration`
+												? `for ${couponData.duration_in_months} months.`
+												: `for your subscription duration.`
 									  }`
 							}`}
 						/>
