@@ -84,7 +84,13 @@ const PaymentMethods = ({ onSubmit, paymentMethods, onCardView }) => {
 			<br />
 			<Divider>OR</Divider>
 
-			<Button type="primary" size="large" onClick={onCardView} block>
+			<Button
+				type="primary"
+				size="large"
+				onClick={onCardView}
+				block
+				style={{ borderRadius: 2, height: 43 }}
+			>
 				Update the payment method
 			</Button>
 		</>

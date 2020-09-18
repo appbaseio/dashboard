@@ -7,7 +7,7 @@ import {
 	CardExpiryElement,
 } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
-import { Button, Alert } from 'antd';
+import { Button, Alert, Icon } from 'antd';
 import styled from 'react-emotion';
 import { getCoupon } from '../../pages/ClusterPage/utils';
 
@@ -74,6 +74,9 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 	const [error, setError] = useState(null);
 	const [couponCode, setCouponCode] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
+	const [couponData, setCouponData] = useState(null);
+
 	const stripe = useStripe();
 	const elements = useElements();
 	const handleError = err => {
@@ -83,6 +86,27 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 			setIsLoading(false);
 		}, 7000);
 	};
+
+	const handleApplyCoupon = async event => {
+		event.preventDefault();
+		setIsLoadingCoupon(true);
+		setError(null);
+		if (couponCode.trim()) {
+			// validate couponCode
+			const res = await getCoupon(couponCode);
+			if (!res.valid || res.message) {
+				handleError({
+					message: `The coupon is invalid`,
+				});
+
+				return;
+			}
+
+			setCouponData(res);
+			setIsLoadingCoupon(false);
+		}
+	};
+
 	const handleSubmit = async event => {
 		try {
 			event.preventDefault();
@@ -95,19 +119,6 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 
 			setIsLoading(true);
 			setError(null);
-
-			if (couponCode.trim()) {
-				// validate couponCode
-				const res = await getCoupon(couponCode);
-				if (!res.valid || res.message) {
-					handleError({
-						message: res.message || `Invalid coupon code`,
-					});
-					setIsLoading(false);
-
-					return;
-				}
-			}
 
 			const payload = await stripe.createToken(
 				elements.getElement(CardNumberElement),
@@ -129,6 +140,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 			handleError(err);
 		}
 	};
+
 	return (
 		<Wrapper>
 			<form onSubmit={handleSubmit}>
@@ -154,20 +166,66 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 						<CardCvcElement options={options} />
 					</label>
 				</div>
-				<label>
-					Discount Coupon Code
+				<label>Discount Coupon Code</label>
+				<div
+					style={{
+						display: 'flex',
+						alignItem: 'center',
+						marginTop: 10,
+						marginBottom: 20,
+					}}
+				>
 					<input
 						type="text"
 						className="StripeElement"
-						placeholder="eg PRODUCTHUNT2020"
+						placeholder="eg product-hunt2020"
 						onChange={e => {
 							setCouponCode(e.target.value);
 						}}
-						style={{
-							width: '100%',
-						}}
+						style={{ width: '60%', margin: 0 }}
 					/>
-				</label>
+					<Button
+						disabled={!couponCode.trim() || isLoadingCoupon}
+						loading={isLoadingCoupon}
+						icon="tag"
+						onClick={handleApplyCoupon}
+						htmlType="button"
+						size="large"
+						type="primary"
+						style={{
+							marginLeft: 10,
+							height: 43,
+							borderRadius: 2,
+							width: '40%',
+						}}
+						block
+					>
+						Apply Coupon
+					</Button>
+				</div>
+				{couponData && couponCode.trim() && (
+					<>
+						<Alert
+							type="success"
+							showIcon
+							icon={<Icon type="tags" />}
+							message={`Coupon has been applied successfully. You will receive ${
+								couponData.amount_off
+									? `${couponData.amount_off}`
+									: `${couponData.percent_off}%`
+							} off ${
+								couponData.duration === 'once'
+									? 'once'
+									: `${
+											couponData.duration === 'repeating'
+												? `for ${couponData.duration_in_months} months`
+												: `for your subscription duration`
+									  }`
+							}`}
+						/>
+						<br />
+					</>
+				)}
 				{error && (
 					<>
 						<Alert type="error" showIcon message={error.message} />
@@ -182,6 +240,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 					disabled={!stripe || isLoading}
 					loading={isLoading}
 					size="large"
+					style={{ borderRadius: 2, height: 43 }}
 				>
 					Subscribe
 				</Button>

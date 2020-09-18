@@ -428,8 +428,8 @@ class NewCluster extends Component {
 					clusterId: clusterRes.cluster.id,
 					...stripeData,
 				});
-				this.props.history.push('/');
 			}
+			this.props.history.push('/');
 		} catch (e) {
 			this.setState({
 				isLoading: false,
