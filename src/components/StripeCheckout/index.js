@@ -104,7 +104,7 @@ const StripeCheckout = ({ visible, plan, price, onCancel, onSubmit }) => {
 					{view === VIEWS.CARD && (
 						<StripeForm
 							onSubmit={onSubmit}
-							showBack={Boolean(paymentMethods.methods)}
+							showBack={Boolean(paymentMethods.methods.length)}
 							onBack={() => setView(VIEWS.PAYMENT_METHODS)}
 						/>
 					)}
