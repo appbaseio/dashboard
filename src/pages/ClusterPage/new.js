@@ -241,12 +241,6 @@ class NewCluster extends Component {
 	componentDidMount() {
 		getClusters()
 			.then(clusters => {
-				console.log({
-					total_clusters: clusters.length,
-					trial_end_date: moment
-						.unix(this.props.clusterTrialEndDate)
-						.toDate(),
-				});
 				if (window.Intercom) {
 					window.Intercom('update', {
 						total_clusters: clusters.length,

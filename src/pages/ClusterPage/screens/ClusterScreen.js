@@ -257,7 +257,6 @@ class ClusterScreen extends Component {
 	};
 
 	handleStripeModal = () => {
-		console.log('here....');
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
