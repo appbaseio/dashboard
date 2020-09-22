@@ -173,7 +173,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 						<CardCvcElement options={options} />
 					</label>
 				</div>
-				<label>Discount Coupon Code</label>
+				<label>Coupon Code</label>
 				<div
 					style={{
 						display: 'flex',
@@ -185,7 +185,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 					<input
 						type="text"
 						className="StripeElement"
-						placeholder="eg product-hunt2020"
+						placeholder=""
 						onChange={e => {
 							setCouponCode(e.target.value);
 						}}
