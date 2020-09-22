@@ -91,18 +91,25 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 		event.preventDefault();
 		setIsLoadingCoupon(true);
 		setError(null);
-		if (couponCode.trim()) {
-			// validate couponCode
-			const res = await getCoupon(couponCode);
-			if (!res.valid || res.message) {
-				handleError({
-					message: `The coupon is invalid`,
-				});
+		try {
+			if (couponCode.trim()) {
+				// validate couponCode
+				const res = await getCoupon(couponCode);
+				if (!res.valid || res.message) {
+					setError({
+						message: `The coupon is invalid`,
+					});
+					setIsLoadingCoupon(false);
+					return;
+				}
 
-				return;
+				setCouponData(res);
+				setIsLoadingCoupon(false);
 			}
-
-			setCouponData(res);
+		} catch (err) {
+			setError({
+				message: `The coupon is invalid`,
+			});
 			setIsLoadingCoupon(false);
 		}
 	};
@@ -143,7 +150,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 
 	return (
 		<Wrapper>
-			<form onSubmit={handleSubmit}>
+			<form>
 				<label>
 					Card number
 					<CardNumberElement
@@ -236,7 +243,8 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 				<Button
 					type="primary"
 					block
-					htmlType="submit"
+					onClick={handleSubmit}
+					htmlType="button"
 					disabled={!stripe || isLoading}
 					loading={isLoading}
 					size="large"
