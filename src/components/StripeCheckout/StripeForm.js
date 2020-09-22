@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { Button, Alert, Icon } from 'antd';
 import styled from 'react-emotion';
+import { set } from 'lodash';
 import { getCoupon } from '../../pages/ClusterPage/utils';
 
 const Wrapper = styled.div`
@@ -91,6 +92,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 		event.preventDefault();
 		setIsLoadingCoupon(true);
 		setError(null);
+		setCouponData(null);
 		try {
 			if (couponCode.trim()) {
 				// validate couponCode
