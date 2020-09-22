@@ -261,7 +261,7 @@ export function deleteCluster(id) {
 
 export function createSubscription(id, token) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/subscription/cluster/${id}?test=true`, {
+		fetch(`${ACC_API}/v1/subscription/cluster/${id}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
