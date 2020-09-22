@@ -119,6 +119,74 @@ export const machineMarks = {
 	},
 };
 export const ansibleMachineMarks = {
+	aws: {
+		0: {
+			label: 'Sandbox',
+			plan: '2020-sandbox',
+			storage: 30,
+			memory: 4,
+			nodes: 1,
+			cpu: 2,
+			cost: 49,
+			machine: 't3.medium',
+			pph: 0.07,
+		},
+		20: {
+			label: 'Hobby',
+			plan: '2020-hobby',
+			storage: 60,
+			memory: 4,
+			nodes: 2,
+			cpu: 2,
+			cost: 99,
+			machine: 't3.medium',
+			pph: 0.14,
+		},
+		40: {
+			label: 'Starter',
+			plan: '2020-starter',
+			storage: 120,
+			memory: 4,
+			nodes: 3,
+			cpu: 2,
+			cost: 149,
+			machine: 't3.medium',
+			pph: 0.21,
+		},
+		60: {
+			label: 'Production-I',
+			plan: '2019-production-1',
+			storage: 480,
+			memory: 16,
+			nodes: 3,
+			cpu: 4,
+			cost: 799,
+			machine: 't3.xlarge',
+			pph: 1.11,
+		},
+		80: {
+			label: 'Production-II',
+			plan: '2019-production-2',
+			storage: 999,
+			memory: 32,
+			nodes: 3,
+			cpu: 8,
+			cost: 1599,
+			machine: 't3.2xlarge',
+			pph: 2.22,
+		},
+		100: {
+			label: 'Production-III',
+			plan: '2019-production-3',
+			storage: 2997,
+			memory: 64,
+			nodes: 3,
+			cpu: 16,
+			cost: 3199,
+			machine: 'm5a.4xlarge',
+			pph: 4.44,
+		},
+	},
 	gke: {
 		0: {
 			label: 'Sandbox',
@@ -195,12 +263,7 @@ const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
-const namingConvention = {
-	azure:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-	gke:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
-};
+const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
 class NewCluster extends Component {
 	constructor(props) {
@@ -535,26 +598,34 @@ class NewCluster extends Component {
 
 		return (
 			<Tabs size="large" style={style}>
-				<TabPane tab="America" key="america">
-					<ul className="region-list">
-						{regionsToRender(usRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">
-						{regionsToRender(asiaRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">
-						{regionsToRender(euRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">
-						{regionsToRender(otherRegions)}
-					</ul>
-				</TabPane>
+				{usRegions.length > 0 && (
+					<TabPane tab="America" key="america">
+						<ul className="region-list">
+							{regionsToRender(usRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{asiaRegions.length > 0 && (
+					<TabPane tab="Asia" key="asia">
+						<ul className="region-list">
+							{regionsToRender(asiaRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{euRegions.length > 0 && (
+					<TabPane tab="Europe" key="europe">
+						<ul className="region-list">
+							{regionsToRender(euRegions)}
+						</ul>
+					</TabPane>
+				)}
+				{otherRegions.length > 0 && (
+					<TabPane tab="Other Regions" key="other">
+						<ul className="region-list">
+							{regionsToRender(otherRegions)}
+						</ul>
+					</TabPane>
+				)}
 			</Tabs>
 		);
 	};
@@ -670,7 +741,77 @@ class NewCluster extends Component {
 									onChange={this.setPricing}
 								/>
 							</div>
+							{!isUsingClusterTrial && (
+								<div className={card}>
+									<div className="col light">
+										<h3>Pick the provider</h3>
+									</div>
 
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+										}}
+									>
+										<Button
+											type={
+												provider === 'gke'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											css={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													provider === 'gke'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() =>
+												this.setConfig(
+													'provider',
+													'gke',
+												)
+											}
+										>
+											<img
+												width="120"
+												src="/static/images/clusters/google.png"
+												alt="Google"
+											/>
+										</Button>
+
+										<Button
+											size="large"
+											type={
+												provider === 'aws'
+													? 'primary'
+													: 'default'
+											}
+											css={{
+												height: 160,
+												backgroundColor:
+													provider === 'aws'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											onClick={() =>
+												this.setConfig(
+													'provider',
+													'aws',
+												)
+											}
+										>
+											<img
+												width="120"
+												src="/static/images/clusters/aws.png"
+												alt="aws"
+											/>
+										</Button>
+									</div>
+								</div>
+							)}
 							<div className={card}>
 								<div className="col light">
 									<h3>Pick a region</h3>
@@ -728,9 +869,7 @@ class NewCluster extends Component {
 													: 'inherit',
 										}}
 									>
-										{provider === 'azure'
-											? namingConvention.azure
-											: namingConvention.gke}
+										{namingConvention}
 									</p>
 								</div>
 							</div>
