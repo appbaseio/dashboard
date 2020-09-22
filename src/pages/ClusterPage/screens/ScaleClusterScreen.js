@@ -93,7 +93,8 @@ class ScaleClusterScreen extends Component {
 					</div>
 
 					<div className={column}>
-						{isUsingClusterTrial ? (
+						{isUsingClusterTrial &&
+						get(cluster, 'subscription_id') !== '' ? (
 							<React.Fragment>
 								{isStripeCheckoutOpen && (
 									<StripeCheckout
