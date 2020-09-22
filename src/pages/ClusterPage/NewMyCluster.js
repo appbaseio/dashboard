@@ -131,15 +131,6 @@ class NewMyCluster extends Component {
 		});
 	};
 
-	handleToken = async (clusterId, token) => {
-		try {
-			await createSubscription(clusterId, token);
-			window.location.reload();
-		} catch (e) {
-			console.log(e);
-		}
-	};
-
 	handleVerify = async () => {
 		const { clusterURL } = this.state;
 		if (clusterURL) {
@@ -174,7 +165,7 @@ class NewMyCluster extends Component {
 		}
 	};
 
-	createCluster = async (token = null) => {
+	createCluster = async (stripeData = {}) => {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -212,13 +203,16 @@ class NewMyCluster extends Component {
 				arc_image: ARC_BYOC,
 			};
 
-			if (token) {
+			if (stripeData.token) {
 				body.enable_monitoring = true;
 			}
 
 			const clusterRes = await deployMyCluster(body);
-			if (token) {
-				await createSubscription(clusterRes.cluster.id, token);
+			if (stripeData.token) {
+				await createSubscription({
+					clusterId: clusterRes.cluster.id,
+					...stripeData,
+				});
 				this.props.history.push('/');
 			}
 		} catch (e) {
@@ -339,8 +333,8 @@ class NewMyCluster extends Component {
 		}));
 	};
 
-	handleStripeSubmit = token => {
-		this.createCluster(token);
+	handleStripeSubmit = data => {
+		this.createCluster(data);
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 

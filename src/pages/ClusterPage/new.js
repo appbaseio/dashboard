@@ -304,12 +304,6 @@ class NewCluster extends Component {
 	componentDidMount() {
 		getClusters()
 			.then(clusters => {
-				console.log({
-					total_clusters: clusters.length,
-					trial_end_date: moment
-						.unix(this.props.clusterTrialEndDate)
-						.toDate(),
-				});
 				if (window.Intercom) {
 					window.Intercom('update', {
 						total_clusters: clusters.length,
@@ -395,12 +389,12 @@ class NewCluster extends Component {
 		}));
 	};
 
-	handleStripeSubmit = token => {
-		this.createCluster(token);
+	handleStripeSubmit = data => {
+		this.createCluster(data);
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
-	createCluster = async (token = null) => {
+	createCluster = async (stripeData = {}) => {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -477,7 +471,7 @@ class NewCluster extends Component {
 				body.grafana = true;
 			}
 
-			if (token) {
+			if (stripeData.token) {
 				body.enable_monitoring = true;
 			}
 
@@ -486,10 +480,13 @@ class NewCluster extends Component {
 			});
 
 			const clusterRes = await deployCluster(body);
-			if (token) {
-				await createSubscription(clusterRes.cluster.id, token);
-				this.props.history.push('/');
+			if (stripeData.token) {
+				await createSubscription({
+					clusterId: clusterRes.cluster.id,
+					...stripeData,
+				});
 			}
+			this.props.history.push('/');
 		} catch (e) {
 			this.setState({
 				isLoading: false,
@@ -644,15 +641,6 @@ class NewCluster extends Component {
 				});
 			},
 		});
-	};
-
-	handleToken = async (clusterId, token) => {
-		try {
-			await createSubscription(clusterId, token);
-			window.location.reload();
-		} catch (e) {
-			console.log(e);
-		}
 	};
 
 	handleCluster = value => {

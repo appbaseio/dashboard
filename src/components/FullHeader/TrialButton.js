@@ -22,12 +22,12 @@ class TrialButton extends React.Component {
 		}));
 	};
 
-	handleToken = async (clusterId, token) => {
+	handleToken = async data => {
 		try {
 			this.setState({
 				isStripeCheckoutOpen: false,
 			});
-			await createSubscription(clusterId, token);
+			await createSubscription(data);
 			window.location.reload();
 		} catch (e) {
 			console.log(e);
@@ -83,11 +83,11 @@ class TrialButton extends React.Component {
 								get(unPaidClusters, `[0].pricing_plan`, 0)
 							].toString()}
 							onCancel={this.handleStripeModal}
-							onSubmit={token =>
-								this.handleToken(
-									get(unPaidClusters, `[0].id`, 0),
-									token,
-								)
+							onSubmit={data =>
+								this.handleToken({
+									clusterId: get(unPaidClusters, `[0].id`, 0),
+									...data,
+								})
 							}
 						/>
 					)}

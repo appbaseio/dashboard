@@ -7,8 +7,10 @@ import {
 	CardExpiryElement,
 } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
-import { Button, Alert } from 'antd';
+import { Button, Alert, Icon } from 'antd';
 import styled from 'react-emotion';
+import { set } from 'lodash';
+import { getCoupon } from '../../pages/ClusterPage/utils';
 
 const Wrapper = styled.div`
 	label {
@@ -69,36 +71,88 @@ const options = {
 	},
 };
 
-const StripeForm = ({ onSubmit }) => {
+const StripeForm = ({ onSubmit, showBack, onBack }) => {
 	const [error, setError] = useState(null);
+	const [couponCode, setCouponCode] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
+	const [couponData, setCouponData] = useState(null);
+
 	const stripe = useStripe();
 	const elements = useElements();
+	const handleError = err => {
+		setError(err);
+		setTimeout(() => {
+			setError(null);
+			setIsLoading(false);
+		}, 7000);
+	};
+
+	const handleApplyCoupon = async event => {
+		event.preventDefault();
+		setIsLoadingCoupon(true);
+		setError(null);
+		setCouponData(null);
+		try {
+			if (couponCode.trim()) {
+				// validate couponCode
+				const res = await getCoupon(couponCode);
+				if (!res.valid || res.message) {
+					setError({
+						message: `The coupon is invalid`,
+					});
+					setIsLoadingCoupon(false);
+					return;
+				}
+
+				setCouponData(res);
+				setIsLoadingCoupon(false);
+			}
+		} catch (err) {
+			setError({
+				message: `The coupon is invalid`,
+			});
+			setIsLoadingCoupon(false);
+		}
+	};
 
 	const handleSubmit = async event => {
-		event.preventDefault();
+		try {
+			event.preventDefault();
 
-		if (!stripe || !elements) {
-			// Stripe.js has not loaded yet. Make sure to disable
-			// form submission until Stripe.js has loaded.
-			return;
+			if (!stripe || !elements) {
+				// Stripe.js has not loaded yet. Make sure to disable
+				// form submission until Stripe.js has loaded.
+				return;
+			}
+
+			setIsLoading(true);
+			setError(null);
+
+			const payload = await stripe.createToken(
+				elements.getElement(CardNumberElement),
+			);
+
+			setIsLoading(false);
+
+			if (payload.error) {
+				handleError(payload.error);
+			}
+
+			onSubmit({
+				token: payload.token,
+				coupon: couponCode.trim(),
+				useDefaultPaymentMethod: false,
+			});
+		} catch (err) {
+			console.log(err.message);
+			handleError(err);
 		}
-
-		const payload = await stripe.createToken(
-			elements.getElement(CardNumberElement),
-		);
-
-		if (payload.error) {
-			setError(payload.error);
-			setTimeout(() => {
-				setError(null);
-			}, 7000);
-		}
-		console.log('[PaymentMethod]', payload);
-		onSubmit(payload.token);
 	};
+
 	return (
 		<Wrapper>
-			<form onSubmit={handleSubmit}>
+			<form>
 				<label>
 					Card number
 					<CardNumberElement
@@ -121,6 +175,66 @@ const StripeForm = ({ onSubmit }) => {
 						<CardCvcElement options={options} />
 					</label>
 				</div>
+				<label>Coupon Code</label>
+				<div
+					style={{
+						display: 'flex',
+						alignItem: 'center',
+						marginTop: 10,
+						marginBottom: 20,
+					}}
+				>
+					<input
+						type="text"
+						className="StripeElement"
+						placeholder=""
+						onChange={e => {
+							setCouponCode(e.target.value);
+						}}
+						style={{ width: '60%', margin: 0 }}
+					/>
+					<Button
+						disabled={!couponCode.trim() || isLoadingCoupon}
+						loading={isLoadingCoupon}
+						icon="tag"
+						onClick={handleApplyCoupon}
+						htmlType="button"
+						size="large"
+						type="primary"
+						style={{
+							marginLeft: 10,
+							height: 43,
+							borderRadius: 2,
+							width: '40%',
+						}}
+						block
+					>
+						Apply Coupon
+					</Button>
+				</div>
+				{couponData && couponCode.trim() && (
+					<>
+						<Alert
+							type="success"
+							showIcon
+							icon={<Icon type="tags" />}
+							message={`Coupon has been applied successfully. You will receive ${
+								couponData.amount_off
+									? `${couponData.amount_off}`
+									: `${couponData.percent_off}%`
+							} off ${
+								couponData.duration === 'once.'
+									? 'once'
+									: `${
+											couponData.duration === 'repeating'
+												? `for ${couponData.duration_in_months} months.`
+												: `for your subscription duration.`
+									  }`
+							}`}
+						/>
+						<br />
+					</>
+				)}
 				{error && (
 					<>
 						<Alert type="error" showIcon message={error.message} />
@@ -131,12 +245,20 @@ const StripeForm = ({ onSubmit }) => {
 				<Button
 					type="primary"
 					block
-					htmlType="submit"
-					disabled={!stripe}
+					onClick={handleSubmit}
+					htmlType="button"
+					disabled={!stripe || isLoading}
+					loading={isLoading}
 					size="large"
+					style={{ borderRadius: 2, height: 43 }}
 				>
 					Subscribe
 				</Button>
+				{showBack && (
+					<Button type="link" block onClick={onBack}>
+						Use existing cards
+					</Button>
+				)}
 				<div
 					style={{ textAlign: 'center', fontSize: 12, marginTop: 15 }}
 				>
@@ -149,6 +271,8 @@ const StripeForm = ({ onSubmit }) => {
 
 StripeForm.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
+	showBack: PropTypes.bool,
+	onBack: PropTypes.func,
 };
 
 export default StripeForm;

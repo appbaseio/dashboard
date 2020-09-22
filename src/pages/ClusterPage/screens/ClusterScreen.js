@@ -257,17 +257,16 @@ class ClusterScreen extends Component {
 	};
 
 	handleStripeModal = () => {
-		console.log('here....');
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
 	};
 
-	handleStripeSubmit = (clusterId, token) => {
+	handleStripeSubmit = data => {
 		this.setState({
 			isStripeCheckoutOpen: false,
 		});
-		this.props.handleToken(clusterId, token);
+		this.props.handleToken(data);
 	};
 
 	renderClusterEndpoint = source => {
@@ -372,8 +371,8 @@ class ClusterScreen extends Component {
 								cluster.pricing_plan
 							].toString()}
 							onCancel={this.handleStripeModal}
-							onSubmit={token =>
-								this.handleStripeSubmit(clusterId, token)
+							onSubmit={data =>
+								this.handleStripeSubmit({ clusterId, ...data })
 							}
 						/>
 					)}

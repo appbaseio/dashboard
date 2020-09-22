@@ -261,12 +261,12 @@ class ClusterInfo extends Component {
 		);
 	};
 
-	handleToken = async (clusterId, token) => {
+	handleToken = async data => {
 		try {
 			this.setState({
 				isStripeCheckoutOpen: false,
 			});
-			await createSubscription(clusterId, token);
+			await createSubscription(data);
 			this.init();
 		} catch (e) {
 			console.log(e);
@@ -336,7 +336,9 @@ class ClusterInfo extends Component {
 						price={EFFECTIVE_PRICE_BY_PLANS[
 							this.state.cluster.pricing_plan
 						].toString()}
-						onSubmit={token => this.handleToken(clusterId, token)}
+						onSubmit={data =>
+							this.handleToken({ clusterId, ...data })
+						}
 					/>
 				)}
 				<FullHeader
@@ -432,7 +434,6 @@ class ClusterInfo extends Component {
 	);
 
 	handleStripeModal = () => {
-		console.log('here');
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
@@ -519,8 +520,11 @@ class ClusterInfo extends Component {
 							price={EFFECTIVE_PRICE_BY_PLANS[
 								cluster.pricing_plan
 							].toString()}
-							onSubmit={token =>
-								this.handleToken(cluster.id, token)
+							onSubmit={data =>
+								this.handleToken({
+									clusterId: cluster.id,
+									...data,
+								})
 							}
 						/>
 					)}

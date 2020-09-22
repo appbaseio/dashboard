@@ -68,11 +68,11 @@ class ScaleClusterScreen extends Component {
 		}));
 	};
 
-	handleStripeSubmit = token => {
+	handleStripeSubmit = data => {
 		const { handleStripeSubmit, clusterId } = this.props;
 		this.setState({ isStripeCheckoutOpen: false });
 
-		handleStripeSubmit(clusterId, token);
+		handleStripeSubmit({ clusterId, ...data });
 	};
 
 	render() {

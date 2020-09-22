@@ -38,6 +38,7 @@ class ClusterPage extends Component {
 			deleteClusterName: '',
 			deleteModal: false,
 			showStripeModal: false,
+			currentCluster: null,
 		};
 	}
 
@@ -135,12 +136,12 @@ class ClusterPage extends Component {
 			});
 	};
 
-	handleToken = async (clusterId, token) => {
+	handleToken = async data => {
 		try {
 			this.setState({
 				isLoading: true,
 			});
-			await createSubscription(clusterId, token);
+			await createSubscription(data);
 			// TODO remove after integrating new stripe version
 			window.location.reload();
 		} catch (e) {
@@ -177,22 +178,24 @@ class ClusterPage extends Component {
 		});
 	};
 
-	openStripeModal = () => {
+	openStripeModal = cluster => {
 		this.setState({
 			showStripeModal: true,
+			currentCluster: cluster,
 		});
 	};
 
 	hideStripeModal = () => {
 		this.setState({
 			showStripeModal: false,
+			currentCluster: null,
 		});
 	};
 
 	renderClusterCard = cluster => {
 		if (!cluster) return null;
 		const { isUsingClusterTrial } = this.props;
-		const { showStripeModal } = this.state;
+		const { showStripeModal, currentCluster } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
 		let allMarks = get(machineMarks, 'gke');
 
@@ -352,7 +355,11 @@ class ClusterPage extends Component {
 										cluster.
 									</p>
 
-									<Button onClick={this.openStripeModal}>
+									<Button
+										onClick={() =>
+											this.openStripeModal(cluster)
+										}
+									>
 										Subscribe to access
 									</Button>
 									<p
@@ -378,24 +385,27 @@ class ClusterPage extends Component {
 											Chat with us
 										</span>
 									</p>
-									{showStripeModal && (
-										<StripeCheckout
-											visible={showStripeModal}
-											onCancel={this.hideStripeModal}
-											plan={
-												PLAN_LABEL[cluster.pricing_plan]
-											}
-											price={EFFECTIVE_PRICE_BY_PLANS[
-												cluster.pricing_plan
-											].toString()}
-											onSubmit={token =>
-												this.handleToken(
-													cluster.id,
-													token,
-												)
-											}
-										/>
-									)}
+									{showStripeModal &&
+										currentCluster.id === cluster.id && (
+											<StripeCheckout
+												visible={showStripeModal}
+												onCancel={this.hideStripeModal}
+												plan={
+													PLAN_LABEL[
+														cluster.pricing_plan
+													]
+												}
+												price={EFFECTIVE_PRICE_BY_PLANS[
+													cluster.pricing_plan
+												].toString()}
+												onSubmit={data =>
+													this.handleToken({
+														clusterId: cluster.id,
+														...data,
+													})
+												}
+											/>
+										)}
 								</div>
 							)}
 						</div>
