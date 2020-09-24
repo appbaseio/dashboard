@@ -47,7 +47,6 @@ class Unsubscribe extends Component {
 		deleteSubscription().then(action => {
 			if (get(action, 'payload')) {
 				fetchAppPlan();
-				this.cancelConfirmBox();
 			}
 		});
 	};
