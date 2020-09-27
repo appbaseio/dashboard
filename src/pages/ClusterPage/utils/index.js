@@ -194,7 +194,11 @@ export function getClusterData(id) {
 				if (hasError) {
 					const { status, ...others } = data;
 					reject(
-						JSON.stringify({ message: status.message, ...others }),
+						JSON.stringify({
+							message: status.message,
+							...others,
+							status,
+						}),
 					);
 				}
 				resolve(data);

@@ -61,7 +61,7 @@ class ClusterInfo extends Component {
 			elasticsearchHQ: false,
 			arc: false,
 			mirage: false,
-			error: '',
+			error: null,
 			deploymentError: '',
 			showError: false,
 			loadingError: false,
@@ -168,7 +168,7 @@ class ClusterInfo extends Component {
 				this.setState(
 					state => ({
 						...state,
-						error: error.message,
+						error: get(error, 'status'),
 						planRate: get(
 							error,
 							'details.plan_rate',
@@ -322,10 +322,16 @@ class ClusterInfo extends Component {
 	};
 
 	renderErrorScreen = () => {
-		const paymentRequired = this.state.error
-			.toLowerCase()
-			.startsWith('payment');
+		const errorCode = String(get(this.state, 'error.code') || '');
+		const paymentRequired = errorCode === '402';
+		const isNotFound = errorCode === '404';
 		const clusterId = get(this, 'props.match.params.id');
+		let errorMsg = 'Some error occurred';
+		if (paymentRequired) {
+			errorMsg = 'Payment Required';
+		} else if (isNotFound) {
+			errorMsg = `No cluster found for ${clusterId}. Please make sure to use a valid cluster ID.`;
+		}
 		return (
 			<Fragment>
 				{this.state.isStripeCheckoutOpen && (
@@ -352,15 +358,18 @@ class ClusterInfo extends Component {
 					>
 						<article>
 							<Icon css={{ fontSize: 42 }} type="warning" />
-							<h2>
-								{paymentRequired
-									? 'Payment Required'
-									: 'Some error occurred'}
+							<h2
+								style={{
+									maxWidth: 400,
+									margin: '0 auto',
+								}}
+							>
+								{errorMsg}
 							</h2>
 							<p>
 								{paymentRequired
 									? 'Your regular payment is due for this cluster.'
-									: this.state.error}
+									: get(this.state, 'error.message')}
 							</p>
 							<div style={{ marginTop: 30 }}>
 								<Link to="/">
@@ -388,17 +397,19 @@ class ClusterInfo extends Component {
 									</Button>
 								) : null}
 
-								<Button
-									onClick={this.deleteCluster}
-									type="danger"
-									style={{
-										marginRight: 12,
-									}}
-									size="large"
-									icon="delete"
-								>
-									Delete Cluster
-								</Button>
+								{isNotFound ? null : (
+									<Button
+										onClick={this.deleteCluster}
+										type="danger"
+										style={{
+											marginRight: 12,
+										}}
+										size="large"
+										icon="delete"
+									>
+										Delete Cluster
+									</Button>
+								)}
 							</div>
 						</article>
 					</section>
