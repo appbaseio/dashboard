@@ -35,9 +35,9 @@ const esVersions = ['7.9.0', '7.8.1', '7.8.0', '7.7.1'];
 
 const odfeVersions = ['1.9.0', '1.8.0'];
 
-export const V7_ARC = '7.32.0-cluster';
-export const V6_ARC = '7.32.0-cluster';
-export const ARC_BYOC = '7.32.0-byoc';
+export const V7_ARC = '7.32.1-cluster';
+export const V6_ARC = '7.32.1-cluster';
+export const ARC_BYOC = '7.32.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
@@ -521,7 +521,7 @@ class NewCluster extends Component {
 									}
 								/>
 								Yes{' '}
-							</label>
+							</label>{' '}
 							<label htmlFor={`${plugin}-no`}>
 								<input
 									type="radio"
@@ -743,7 +743,7 @@ class NewCluster extends Component {
 								<div className="col light">
 									<h3> Pick the pricing plan </h3>{' '}
 									<p> Scale as you go </p>{' '}
-								</div>
+								</div>{' '}
 								<PricingSlider
 									key={this.state.provider}
 									marks={
@@ -756,7 +756,7 @@ class NewCluster extends Component {
 								<div className={card}>
 									<div className="col light">
 										<h3> Pick the provider </h3>{' '}
-									</div>
+									</div>{' '}
 									<div
 										className={settingsItem}
 										css={{
@@ -790,7 +790,7 @@ class NewCluster extends Component {
 												src="/static/images/clusters/google.png"
 												alt="Google"
 											/>
-										</Button>
+										</Button>{' '}
 										<Button
 											size="large"
 											type={
@@ -830,7 +830,7 @@ class NewCluster extends Component {
 									{' '}
 									{this.renderRegions()}{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							<div className={card}>
 								<div className="col light">
 									<h3> Choose a cluster name </h3>{' '}
@@ -881,11 +881,11 @@ class NewCluster extends Component {
 										{namingConvention}{' '}
 									</p>{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							<div className={card}>
 								<div className="col light">
 									<h3> Choose Elasticsearch Flavor </h3>{' '}
-								</div>
+								</div>{' '}
 								<div
 									className={settingsItem}
 									css={{
@@ -970,7 +970,7 @@ class NewCluster extends Component {
 										</p>{' '}
 									</div>{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							<div className={card}>
 								<div className="col light">
 									<h3> Additional Settings </h3>{' '}
@@ -1011,11 +1011,11 @@ class NewCluster extends Component {
 										</select>{' '}
 									</div>{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							<div className={card}>
 								<div className="col light">
 									<h3> Choose Visualization Tool </h3>{' '}
-								</div>
+								</div>{' '}
 								<div
 									className={settingsItem}
 									css={{
@@ -1130,7 +1130,7 @@ class NewCluster extends Component {
 										</div>
 									)}{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							{/* this.renderPlugins() */}{' '}
 							<div className={card}>
 								<div className="col light">
@@ -1157,7 +1157,7 @@ class NewCluster extends Component {
 										))}{' '}
 									</Select>{' '}
 								</div>{' '}
-							</div>
+							</div>{' '}
 							<div
 								style={{
 									textAlign: 'right',
