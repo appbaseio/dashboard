@@ -501,14 +501,13 @@ class NewCluster extends Component {
 	renderPlugins = () => (
 		<div className={card}>
 			<div className="col light">
-				<h3> Edit Cluster Plugins </h3>{' '}
-				<p> Add or remove cluster plugins </p>{' '}
-			</div>{' '}
+				<h3> Edit Cluster Plugins </h3>
+				<p> Add or remove cluster plugins </p>
+			</div>
 			<div className="col grow">
-				{' '}
 				{Object.keys(plugins).map(plugin => (
 					<div key={plugin} className={`${settingsItem} grow`}>
-						<h4> {plugins[plugin]} </h4>{' '}
+						<h4> {plugins[plugin]} </h4>
 						<div>
 							<label htmlFor={`${plugin}-yes`}>
 								<input
@@ -520,8 +519,8 @@ class NewCluster extends Component {
 										this.setConfig(plugin, true)
 									}
 								/>
-								Yes{' '}
-							</label>{' '}
+								Yes
+							</label>
 							<label htmlFor={`${plugin}-no`}>
 								<input
 									type="radio"
@@ -532,12 +531,12 @@ class NewCluster extends Component {
 										this.setConfig(plugin, false)
 									}
 								/>
-								No{' '}
-							</label>{' '}
-						</div>{' '}
+								No
+							</label>
+						</div>
 					</div>
-				))}{' '}
-			</div>{' '}
+				))}
+			</div>
 		</div>
 	);
 
@@ -583,8 +582,8 @@ class NewCluster extends Component {
 								src={`/static/images/flags/${regionValue.flag}`}
 								alt={regionValue.name}
 							/>
-						)}{' '}
-						<span> {regionValue.name} </span>{' '}
+						)}
+						<span> {regionValue.name} </span>
 					</li>
 				);
 			});
@@ -595,47 +594,41 @@ class NewCluster extends Component {
 		if (provider === 'azure') {
 			return (
 				<ul style={style} className="region-list">
-					{' '}
-					{regionsToRender(Object.keys(regions[provider]))}{' '}
+					{regionsToRender(Object.keys(regions[provider]))}
 				</ul>
 			);
 		}
 
 		return (
 			<Tabs size="large" style={style}>
-				{' '}
 				{usRegions.length > 0 && (
 					<TabPane tab="America" key="america">
 						<ul className="region-list">
-							{' '}
-							{regionsToRender(usRegions)}{' '}
-						</ul>{' '}
+							{regionsToRender(usRegions)}
+						</ul>
 					</TabPane>
-				)}{' '}
+				)}
 				{asiaRegions.length > 0 && (
 					<TabPane tab="Asia" key="asia">
 						<ul className="region-list">
-							{' '}
-							{regionsToRender(asiaRegions)}{' '}
-						</ul>{' '}
+							{regionsToRender(asiaRegions)}
+						</ul>
 					</TabPane>
-				)}{' '}
+				)}
 				{euRegions.length > 0 && (
 					<TabPane tab="Europe" key="europe">
 						<ul className="region-list">
-							{' '}
-							{regionsToRender(euRegions)}{' '}
-						</ul>{' '}
+							{regionsToRender(euRegions)}
+						</ul>
 					</TabPane>
-				)}{' '}
+				)}
 				{otherRegions.length > 0 && (
 					<TabPane tab="Other Regions" key="other">
 						<ul className="region-list">
-							{' '}
-							{regionsToRender(otherRegions)}{' '}
-						</ul>{' '}
+							{regionsToRender(otherRegions)}
+						</ul>
 					</TabPane>
-				)}{' '}
+				)}
 			</Tabs>
 		);
 	};
@@ -678,23 +671,23 @@ class NewCluster extends Component {
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
-							<h2> Create a New Cluster </h2>{' '}
+							<h2> Create a New Cluster </h2>
 							<Row>
 								<Col span={18}>
 									<p>
 										Create a new ElasticSearch Cluster with
-										appbase.io.{' '}
+										appbase.io.
 										<a
 											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
 											target="_blank"
 										>
-											Learn More{' '}
-										</a>{' '}
-									</p>{' '}
-								</Col>{' '}
-							</Row>{' '}
-						</Col>{' '}
+											Learn More
+										</a>
+									</p>
+								</Col>
+							</Row>
+						</Col>
 						<Col
 							md={6}
 							css={{
@@ -716,14 +709,13 @@ class NewCluster extends Component {
 									}
 									icon="question-circle"
 								>
-									Already have a Cluster{' '}
-								</Button>{' '}
-							</Tooltip>{' '}
-						</Col>{' '}
-					</Row>{' '}
-				</Header>{' '}
+									Already have a Cluster
+								</Button>
+							</Tooltip>
+						</Col>
+					</Row>
+				</Header>
 				<Container>
-					{' '}
 					{this.state.isStripeCheckoutOpen && (
 						<StripeCheckout
 							visible={this.state.isStripeCheckoutOpen}
@@ -734,29 +726,28 @@ class NewCluster extends Component {
 							onCancel={this.handleStripeModal}
 							onSubmit={this.handleStripeSubmit}
 						/>
-					)}{' '}
+					)}
 					<section className={clusterContainer}>
-						{' '}
-						{this.state.showError ? this.handleError() : null}{' '}
+						{this.state.showError ? this.handleError() : null}
 						<article>
 							<div className={card}>
 								<div className="col light">
-									<h3> Pick the pricing plan </h3>{' '}
-									<p> Scale as you go </p>{' '}
-								</div>{' '}
+									<h3> Pick the pricing plan </h3>
+									<p> Scale as you go </p>
+								</div>
 								<PricingSlider
 									key={this.state.provider}
 									marks={
 										ansibleMachineMarks[this.state.provider]
 									}
 									onChange={this.setPricing}
-								/>{' '}
-							</div>{' '}
+								/>
+							</div>
 							{!isUsingClusterTrial && (
 								<div className={card}>
 									<div className="col light">
-										<h3> Pick the provider </h3>{' '}
-									</div>{' '}
+										<h3> Pick the provider </h3>
+									</div>
 									<div
 										className={settingsItem}
 										css={{
@@ -790,7 +781,7 @@ class NewCluster extends Component {
 												src="/static/images/clusters/google.png"
 												alt="Google"
 											/>
-										</Button>{' '}
+										</Button>
 										<Button
 											size="large"
 											type={
@@ -817,27 +808,26 @@ class NewCluster extends Component {
 												src="/static/images/clusters/aws.png"
 												alt="aws"
 											/>
-										</Button>{' '}
-									</div>{' '}
+										</Button>
+									</div>
 								</div>
-							)}{' '}
+							)}
 							<div className={card}>
 								<div className="col light">
-									<h3> Pick a region </h3>{' '}
-									<p> All around the globe </p>{' '}
-								</div>{' '}
+									<h3> Pick a region </h3>
+									<p> All around the globe </p>
+								</div>
 								<div className="col grow region-container">
-									{' '}
-									{this.renderRegions()}{' '}
-								</div>{' '}
-							</div>{' '}
+									{this.renderRegions()}
+								</div>
+							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Choose a cluster name </h3>{' '}
+									<h3> Choose a cluster name </h3>
 									<p>
-										Name your cluster.A name is permanent.{' '}
-									</p>{' '}
-								</div>{' '}
+										Name your cluster.A name is permanent.
+									</p>
+								</div>
 								<div
 									className="col grow vcenter"
 									css={{
@@ -868,7 +858,7 @@ class NewCluster extends Component {
 												e.target.value,
 											)
 										}
-									/>{' '}
+									/>
 									<p
 										style={{
 											color:
@@ -878,14 +868,14 @@ class NewCluster extends Component {
 													: 'inherit',
 										}}
 									>
-										{namingConvention}{' '}
-									</p>{' '}
-								</div>{' '}
-							</div>{' '}
+										{namingConvention}
+									</p>
+								</div>
+							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Choose Elasticsearch Flavor </h3>{' '}
-								</div>{' '}
+									<h3> Choose Elasticsearch Flavor </h3>
+								</div>
 								<div
 									className={settingsItem}
 									css={{
@@ -925,12 +915,12 @@ class NewCluster extends Component {
 												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
 												alt="Elastic"
 											/>
-										</Button>{' '}
+										</Button>
 										<p>
 											The Open Source Elasticsearch
-											Distribution.{' '}
-										</p>{' '}
-									</div>{' '}
+											Distribution.
+										</p>
+									</div>
 									<div className={esContainer}>
 										<Button
 											size="large"
@@ -963,19 +953,19 @@ class NewCluster extends Component {
 												src="/static/images/clusters/odfe.svg"
 												alt="ODFE"
 											/>
-										</Button>{' '}
+										</Button>
 										<p>
 											Open Distro by Amazon, includes
-											additional security enhancements.{' '}
-										</p>{' '}
-									</div>{' '}
-								</div>{' '}
-							</div>{' '}
+											additional security enhancements.
+										</p>
+									</div>
+								</div>
+							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Additional Settings </h3>{' '}
-									<p> Customise as per your needs </p>{' '}
-								</div>{' '}
+									<h3> Additional Settings </h3>
+									<p> Customise as per your needs </p>
+								</div>
 								<div className="col grow">
 									<div className={settingsItem}>
 										<h4
@@ -985,8 +975,8 @@ class NewCluster extends Component {
 												color: 'rgba(0, 0, 0, 0.65)',
 											}}
 										>
-											Select a version{' '}
-										</h4>{' '}
+											Select a version
+										</h4>
 										<select
 											className="form-control"
 											onChange={e =>
@@ -1005,17 +995,17 @@ class NewCluster extends Component {
 														version
 													}
 												>
-													{version}{' '}
+													{version}
 												</option>
-											))}{' '}
-										</select>{' '}
-									</div>{' '}
-								</div>{' '}
-							</div>{' '}
+											))}
+										</select>
+									</div>
+								</div>
+							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Choose Visualization Tool </h3>{' '}
-								</div>{' '}
+									<h3> Choose Visualization Tool </h3>
+								</div>
 								<div
 									className={settingsItem}
 									css={{
@@ -1049,9 +1039,9 @@ class NewCluster extends Component {
 												);
 											}}
 										>
-											None{' '}
-										</Button>{' '}
-									</div>{' '}
+											None
+										</Button>
+									</div>
 									<div className={esContainer}>
 										<Button
 											size="large"
@@ -1082,12 +1072,12 @@ class NewCluster extends Component {
 												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
 												alt="Kibana"
 											/>
-										</Button>{' '}
+										</Button>
 										<p>
 											The default visualization dashboard
-											for ElasticSearch.{' '}
-										</p>{' '}
-									</div>{' '}
+											for ElasticSearch.
+										</p>
+									</div>
 									{!hasAnsibleSetup(
 										this.state.pricing_plan,
 									) && (
@@ -1122,24 +1112,24 @@ class NewCluster extends Component {
 													src="/static/images/clusters/grafana.png"
 													alt="Grafana"
 												/>
-											</Button>{' '}
+											</Button>
 											<p>
 												The leading open - source tool
-												for metrics visualization.{' '}
-											</p>{' '}
+												for metrics visualization.
+											</p>
 										</div>
-									)}{' '}
-								</div>{' '}
-							</div>{' '}
-							{/* this.renderPlugins() */}{' '}
+									)}
+								</div>
+							</div>
+							{/* this.renderPlugins() */}
 							<div className={card}>
 								<div className="col light">
-									<h3> Restore a cluster data </h3>{' '}
+									<h3> Restore a cluster data </h3>
 									<p>
 										Select the cluster from which you want
-										to restore the latest snapshot from.{' '}
-									</p>{' '}
-								</div>{' '}
+										to restore the latest snapshot from.
+									</p>
+								</div>
 								<div className="col grow vcenter">
 									<Select
 										css={{
@@ -1151,13 +1141,12 @@ class NewCluster extends Component {
 									>
 										{this.state.clusters.map(item => (
 											<Option key={item.id}>
-												{' '}
-												{item.name}{' '}
+												{item.name}
 											</Option>
-										))}{' '}
-									</Select>{' '}
-								</div>{' '}
-							</div>{' '}
+										))}
+									</Select>
+								</div>
+							</div>
 							<div
 								style={{
 									textAlign: 'right',
@@ -1171,9 +1160,9 @@ class NewCluster extends Component {
 											margin: '20px 0',
 										}}
 									>
-										{this.state.error}{' '}
+										{this.state.error}
 									</p>
-								) : null}{' '}
+								) : null}
 								{(isUsingClusterTrial &&
 									this.state.pricing_plan !==
 										CLUSTER_PLANS.SANDBOX_2020) ||
@@ -1187,7 +1176,7 @@ class NewCluster extends Component {
 										}
 										onClick={this.handleStripeModal}
 									>
-										Add payment info and create cluster{' '}
+										Add payment info and create cluster
 										<Icon
 											type="arrow-right"
 											theme="outlined"
@@ -1199,17 +1188,17 @@ class NewCluster extends Component {
 										size="large"
 										onClick={this.createCluster}
 									>
-										Create Cluster{' '}
+										Create Cluster
 										<Icon
 											type="arrow-right"
 											theme="outlined"
 										/>
 									</Button>
-								)}{' '}
-							</div>{' '}
-						</article>{' '}
-					</section>{' '}
-				</Container>{' '}
+								)}
+							</div>
+						</article>
+					</section>
+				</Container>
 			</Fragment>
 		);
 	}
