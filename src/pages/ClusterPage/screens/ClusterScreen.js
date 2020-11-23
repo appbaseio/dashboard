@@ -18,7 +18,6 @@ import {
 	getClusters,
 	getSnapshots,
 	hasAddon,
-	hasAnsibleSetup,
 	restore,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
@@ -352,9 +351,7 @@ class ClusterScreen extends Component {
 
 		let addons = deployment.addons || [];
 
-		if (hasAnsibleSetup(cluster.pricing_plan)) {
-			addons = addons.filter(i => i.name === 'arc');
-		}
+		addons = addons.filter(i => i.name === 'arc');
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&
@@ -415,19 +412,6 @@ class ClusterScreen extends Component {
 							)}
 					</div>
 				</li>
-
-				{!hasAnsibleSetup(cluster.pricing_plan) && (
-					<li className={card}>
-						<div className="col light">
-							<h3>Dashboard</h3>
-							<p>Manage your cluster</p>
-						</div>
-
-						<div className="col">
-							{this.renderClusterEndpoint(cluster)}
-						</div>
-					</li>
-				)}
 
 				<li className={card}>
 					<div className="col light">
@@ -517,45 +501,6 @@ class ClusterScreen extends Component {
 								ElasticSearch.
 							</p>
 						</div>
-						{!hasAnsibleSetup(cluster.pricing_plan) && (
-							<div className={esContainer}>
-								<Button
-									size="large"
-									type={
-										this.state.visualization === 'grafana'
-											? 'primary'
-											: 'default'
-									}
-									css={{
-										height: 160,
-										width: '100%',
-										backgroundColor:
-											this.state.visualization ===
-											'grafana'
-												? '#eaf5ff'
-												: '#fff',
-									}}
-									onClick={() => {
-										this.setConfig(
-											'visualization',
-											'grafana',
-										);
-										this.setConfig('kibana', false);
-										this.setConfig('grafana', true);
-									}}
-								>
-									<img
-										width={120}
-										src="/static/images/clusters/grafana.png"
-										alt="Grafana"
-									/>
-								</Button>
-								<p>
-									The leading open-source tool for metrics
-									visualization.
-								</p>
-							</div>
-						)}
 					</div>
 				</li>
 
