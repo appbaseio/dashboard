@@ -16,7 +16,6 @@ import {
 	createSubscription,
 	deployCluster,
 	getClusters,
-	hasAnsibleSetup,
 	CLUSTER_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
@@ -1078,47 +1077,6 @@ class NewCluster extends Component {
 											for ElasticSearch.
 										</p>
 									</div>
-									{!hasAnsibleSetup(
-										this.state.pricing_plan,
-									) && (
-										<div className={esContainer}>
-											<Button
-												size="large"
-												type={
-													this.state.visualization ===
-													'grafana'
-														? 'primary'
-														: 'default'
-												}
-												css={{
-													height: 160,
-													width: '100%',
-													backgroundColor:
-														this.state
-															.visualization ===
-														'grafana'
-															? '#eaf5ff'
-															: '#fff',
-												}}
-												onClick={() => {
-													this.setConfig(
-														'visualization',
-														'grafana',
-													);
-												}}
-											>
-												<img
-													width={120}
-													src="/static/images/clusters/grafana.png"
-													alt="Grafana"
-												/>
-											</Button>
-											<p>
-												The leading open - source tool
-												for metrics visualization.
-											</p>
-										</div>
-									)}
 								</div>
 							</div>
 							{/* this.renderPlugins() */}

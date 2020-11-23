@@ -11,7 +11,7 @@ import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
 import Sidebar, { RightContainer } from './components/Sidebar';
-import { ansibleMachineMarks, ARC_BYOC, machineMarks, V7_ARC } from './new';
+import { ansibleMachineMarks, ARC_BYOC, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import ClusterScreen from './screens/ClusterScreen';
 import InvoiceScreen from './screens/InvoiceScreen';
@@ -26,7 +26,6 @@ import {
 	getClusterData,
 	getArcVersion,
 	hasAddon,
-	hasAnsibleSetup,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 } from './utils';
@@ -95,10 +94,8 @@ class ClusterInfo extends Component {
 	}
 
 	getFromPricing = (plan, key) => {
-		let allMarks = machineMarks;
-		if (hasAnsibleSetup(plan)) {
-			allMarks = ansibleMachineMarks;
-		}
+		const allMarks = ansibleMachineMarks;
+
 		const selectedPlan = (
 			Object.values(
 				allMarks[get(this, 'state.cluster.provider', 'azure')],
@@ -139,7 +136,7 @@ class ClusterInfo extends Component {
 
 					if (cluster.status === 'deployments in progress') {
 						this.timer = setTimeout(this.init, 30000);
-					} else if (hasAnsibleSetup(cluster.pricing_plan)) {
+					} else {
 						const arcPlanData = await getArcVersion(
 							arcData.url,
 							arcData.username,
@@ -281,23 +278,15 @@ class ClusterInfo extends Component {
 			this.setState({
 				isLoading: true,
 			});
-			const isDeployedUsingAnsible = hasAnsibleSetup(pricing_plan);
-			const url = isDeployedUsingAnsible
-				? `${ACC_API}/v2/_deploy/${id}`
-				: `${ACC_API}/v1/_update_deployment/${id}`;
-			const body = isDeployedUsingAnsible
-				? {
-						arc: {
-							version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
-							status: 'restarted',
-						},
-				  }
-				: {
-						deployment_name: 'arc',
-						image: `siddharthlatest/arc:${
-							recipe === 'byoc' ? ARC_BYOC : V7_ARC
-						}`,
-				  };
+
+			const url = `${ACC_API}/v2/_deploy/${id}`;
+			const body = {
+				arc: {
+					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+					status: 'restarted',
+				},
+			};
+
 			const response = await fetch(url, {
 				method: 'PUT',
 				credentials: 'include',
@@ -494,10 +483,8 @@ class ClusterInfo extends Component {
 		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
 		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
 
-		let allMarks = machineMarks.gke;
-		if (hasAnsibleSetup(cluster.pricing_plan)) {
-			allMarks = ansibleMachineMarks.gke;
-		}
+		let allMarks = ansibleMachineMarks.gke;
+
 		// override plans for byoc cluster even though they are deployed using ansible
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
@@ -767,22 +754,8 @@ class ClusterInfo extends Component {
 														{V7_ARC.split('-')[0]}{' '}
 														is available now.
 														You&apos;re currently on{' '}
-														{hasAnsibleSetup(
-															cluster.pricing_plan,
-														)
-															? this.state
-																	.arcVersion
-															: arcDeployment.image
-																	.split(
-																		'/',
-																	)[1]
-																	.split(
-																		':',
-																	)[1]
-																	.split(
-																		'-',
-																	)[0]}
-														. See what&apos;s new in{' '}
+														{this.state.arcVersion}.
+														See what&apos;s new in{' '}
 														<a href="https://github.com/appbaseio/arc/releases">
 															this release
 														</a>

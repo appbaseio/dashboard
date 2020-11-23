@@ -21,7 +21,6 @@ import {
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
 	getClusters,
-	hasAnsibleSetup,
 	PLAN_LABEL,
 } from './utils';
 import { regions } from './utils/regions';
@@ -85,10 +84,8 @@ class ClusterPage extends Component {
 	};
 
 	getFromPricing = (plan, key, provider = 'azure') => {
-		let allMarks = get(machineMarks, provider);
-		if (hasAnsibleSetup(plan)) {
-			allMarks = get(ansibleMachineMarks, provider);
-		}
+		const allMarks = get(ansibleMachineMarks, provider);
+
 		const selectedPlan = Object.values(allMarks).find(
 			item =>
 				get(item, 'plan') === plan ||
@@ -197,11 +194,7 @@ class ClusterPage extends Component {
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal, currentCluster } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
-		let allMarks = get(machineMarks, 'gke');
-
-		if (hasAnsibleSetup(cluster.pricing_plan)) {
-			allMarks = ansibleMachineMarks.gke;
-		}
+		let allMarks = ansibleMachineMarks.gke;
 
 		// override plans for byoc cluster
 		if (isExternalCluster) {

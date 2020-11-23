@@ -77,23 +77,6 @@ export const PLAN_LABEL = {
 	[CLUSTER_PLANS.PRODUCTION_2019_3]: 'Production 3',
 };
 
-export function hasAnsibleSetup(pricingPlan) {
-	const plans = [
-		CLUSTER_PLANS.SANDBOX_2020,
-		CLUSTER_PLANS.HOBBY_2020,
-		CLUSTER_PLANS.STARTER_2020,
-		CLUSTER_PLANS.PRODUCTION_2019_1,
-		CLUSTER_PLANS.PRODUCTION_2019_2,
-		CLUSTER_PLANS.PRODUCTION_2019_3,
-		ARC_PLANS.HOSTED_ARC_BASIC,
-		ARC_PLANS.HOSTED_ARC_BASIC_V2,
-		ARC_PLANS.HOSTED_ARC_STANDARD,
-		ARC_PLANS.HOSTED_ARC_ENTERPRISE,
-	];
-
-	return plans.some(i => i === pricingPlan);
-}
-
 export function getClusters() {
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/v1/clusters`, {
