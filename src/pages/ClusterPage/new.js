@@ -815,12 +815,6 @@ class NewCluster extends Component {
 												alt="aws"
 											/>
 										</Button>
-										{isUsingClusterTrial &&
-											this.state.clusters.length < 1 && (
-												<code>
-													No card needed for the trial
-												</code>
-											)}
 									</div>
 								</div>
 							)}
