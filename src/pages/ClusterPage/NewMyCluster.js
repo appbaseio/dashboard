@@ -83,7 +83,10 @@ class NewMyCluster extends Component {
 		getClusters()
 			.then(clusters => {
 				const activeClusters = clusters.filter(
-					item => item.status === 'active' && item.role === 'admin',
+					item =>
+						(item.status === 'active' ||
+							item.status === 'in progress') &&
+						item.role === 'admin',
 				);
 				this.setState({
 					clustersAvailable: !!clusters.length,
@@ -435,6 +438,10 @@ class NewMyCluster extends Component {
 									}}
 									marks={machineMarks}
 									onChange={this.setPricing}
+									showNoCardNeeded={
+										isUsingClusterTrial &&
+										this.state.clusters.length < 1
+									}
 								/>
 							</div>
 

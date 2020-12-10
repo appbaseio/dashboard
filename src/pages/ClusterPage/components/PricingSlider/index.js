@@ -154,6 +154,11 @@ class PricingSlider extends Component {
 							<h3>Estimated Cost</h3>
 						</div>
 					</div>
+					<div style={{ marginTop: '20px' }}>
+						{this.props.showNoCardNeeded && (
+							<code>No card needed for the trial</code>
+						)}
+					</div>
 				</div>
 			</Fragment>
 		);

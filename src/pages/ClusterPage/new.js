@@ -312,7 +312,10 @@ class NewCluster extends Component {
 					});
 				}
 				const activeClusters = clusters.filter(
-					item => item.status === 'active' && item.role === 'admin',
+					item =>
+						(item.status === 'active' ||
+							item.status === 'in progress') &&
+						item.role === 'admin',
 				);
 				this.setState({
 					clustersAvailable: !!clusters.length,
@@ -740,6 +743,10 @@ class NewCluster extends Component {
 										ansibleMachineMarks[this.state.provider]
 									}
 									onChange={this.setPricing}
+									showNoCardNeeded={
+										isUsingClusterTrial &&
+										this.state.clusters.length < 1
+									}
 								/>
 							</div>
 							{!isUsingClusterTrial && (
@@ -808,6 +815,12 @@ class NewCluster extends Component {
 												alt="aws"
 											/>
 										</Button>
+										{isUsingClusterTrial &&
+											this.state.clusters.length < 1 && (
+												<code>
+													No card needed for the trial
+												</code>
+											)}
 									</div>
 								</div>
 							)}
