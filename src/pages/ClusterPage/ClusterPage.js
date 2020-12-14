@@ -103,6 +103,7 @@ class ClusterPage extends Component {
 						trial_end_date: moment
 							.unix(this.props.clusterTrialEndDate)
 							.toDate(),
+						trial_end_at: this.props.clusterTrialEndDate,
 					});
 				}
 				if (!clusters.length) {
