@@ -309,6 +309,7 @@ class NewCluster extends Component {
 						trial_end_date: moment
 							.unix(this.props.clusterTrialEndDate)
 							.toDate(),
+						trial_end_at: this.props.clusterTrialEndDate,
 					});
 				}
 				const activeClusters = clusters.filter(
