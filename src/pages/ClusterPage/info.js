@@ -17,6 +17,7 @@ import ClusterScreen from './screens/ClusterScreen';
 import InvoiceScreen from './screens/InvoiceScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
+import ClusterMonitoringScreen from './screens/ClusterMonitoring';
 import { card, clusterContainer, clustersList } from './styles';
 import {
 	createSubscription,
@@ -870,6 +871,26 @@ class ClusterInfo extends Component {
 																this.handleToken
 															}
 															isPaid={isPaid}
+														/>
+													)}
+												/>
+												<Route
+													exact
+													path="/clusters/:id/monitoring"
+													component={() => (
+														<ClusterMonitoringScreen
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
+															deployments={
+																this.state
+																	.deployment
+															}
+															plan={get(
+																this.state,
+																'cluster.pricing_plan',
+															)}
 														/>
 													)}
 												/>
