@@ -29,6 +29,7 @@ import {
 	hasAddon,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	isSandBoxPlan,
 } from './utils';
 import { regions } from './utils/regions';
 import { getUrlParams } from '../../utils/helper';
@@ -132,7 +133,12 @@ class ClusterInfo extends Component {
 						planRate: cluster.plan_rate || 0,
 						isPaid: cluster.trial || !!cluster.subscription_id,
 						streams: streamsData.status === 'ready',
-						error: null,
+						error:
+							cluster.trial &&
+							!isSandBoxPlan(cluster.pricing_plan) &&
+							!cluster.subscription_id
+								? { code: 402 }
+								: null,
 					});
 
 					if (cluster.status === 'deployments in progress') {

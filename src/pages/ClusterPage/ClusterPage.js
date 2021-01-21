@@ -13,7 +13,7 @@ import { getParam } from '../../utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import StripeCheckout from '../../components/StripeCheckout';
-import { ansibleMachineMarks, machineMarks } from './new';
+import { ansibleMachineMarks } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList } from './styles';
 import {
@@ -22,6 +22,7 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	getClusters,
 	PLAN_LABEL,
+	isSandBoxPlan,
 } from './utils';
 import { regions } from './utils/regions';
 
@@ -325,7 +326,9 @@ class ClusterPage extends Component {
 					{cluster.status === 'active' ||
 					cluster.status === 'deployments in progress' ? (
 						<div>
-							{isUsingClusterTrial || cluster.subscription_id ? (
+							{(isUsingClusterTrial &&
+								isSandBoxPlan(cluster.pricing_plan)) ||
+							cluster.subscription_id ? (
 								<Link
 									to={`/clusters/${cluster.id}`}
 									style={{
