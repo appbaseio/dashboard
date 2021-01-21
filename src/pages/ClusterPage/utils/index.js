@@ -13,6 +13,9 @@ export const CLUSTER_PLANS = {
 	PRODUCTION_2019_3: '2019-production-3',
 };
 
+export const isSandBoxPlan = plan =>
+	plan === CLUSTER_PLANS.SANDBOX_2019 || plan === CLUSTER_PLANS.SANDBOX_2020;
+
 export const ARC_PLANS = {
 	ARC_BASIC: 'arc-basic',
 	ARC_STANDARD: 'arc-standard',
