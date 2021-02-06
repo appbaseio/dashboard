@@ -13,9 +13,6 @@ export const CLUSTER_PLANS = {
 	PRODUCTION_2019_3: '2019-production-3',
 };
 
-export const isSandBoxPlan = plan =>
-	plan === CLUSTER_PLANS.SANDBOX_2019 || plan === CLUSTER_PLANS.SANDBOX_2020;
-
 export const ARC_PLANS = {
 	ARC_BASIC: 'arc-basic',
 	ARC_STANDARD: 'arc-standard',
@@ -25,6 +22,13 @@ export const ARC_PLANS = {
 	HOSTED_ARC_STANDARD: 'hosted-arc-standard',
 	HOSTED_ARC_ENTERPRISE: 'hosted-arc-enterprise',
 };
+
+export const isSandBoxPlan = plan =>
+	plan === CLUSTER_PLANS.SANDBOX_2019 ||
+	plan === CLUSTER_PLANS.SANDBOX_2020 ||
+	plan === ARC_PLANS.ARC_BASIC ||
+	plan === ARC_PLANS.HOSTED_ARC_BASIC ||
+	plan === ARC_PLANS.HOSTED_ARC_BASIC_V2;
 
 export const EFFECTIVE_PRICE_BY_PLANS = {
 	[ARC_PLANS.ARC_BASIC]: 0.03,
