@@ -281,6 +281,7 @@ class NewCluster extends Component {
 			clusterVersion: esVersions[0],
 			pricing_plan: get(ansibleMachineMarks, `${provider}[0].plan`),
 			vm_size: get(ansibleMachineMarks, `${provider}[0].machine`),
+			vm_machine: 0,
 			region: '',
 			kibana: false,
 			streams: false,
@@ -337,7 +338,11 @@ class NewCluster extends Component {
 		if (prevState.provider !== provider) {
 			const [currentMachine] = Object.entries(
 				get(ansibleMachineMarks, `${prevState.provider}`),
-			).find(([, value]) => value.machine === prevState.vm_size);
+			).find(
+				item =>
+					item[0] === prevState.vm_machine.toString() &&
+					item[1].machine === prevState.vm_size,
+			);
 			// eslint-disable-next-line
 			this.setState({
 				pricing_plan: get(
@@ -349,6 +354,7 @@ class NewCluster extends Component {
 					`${provider}.${currentMachine}.machine`,
 				),
 				region: '',
+				vm_machine: prevState.vm_machine,
 			});
 		}
 	}
@@ -359,10 +365,11 @@ class NewCluster extends Component {
 		});
 	};
 
-	setPricing = plan => {
+	setPricing = (plan, machine) => {
 		this.setState({
 			vm_size: plan.machine,
 			pricing_plan: plan.plan,
+			vm_machine: machine,
 		});
 	};
 
@@ -748,6 +755,7 @@ class NewCluster extends Component {
 										isUsingClusterTrial &&
 										this.state.clusters.length < 1
 									}
+									currValue={this.state.vm_machine}
 								/>
 							</div>
 							{!isUsingClusterTrial && (
