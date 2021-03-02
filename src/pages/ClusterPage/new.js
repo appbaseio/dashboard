@@ -281,7 +281,7 @@ class NewCluster extends Component {
 			clusterVersion: esVersions[0],
 			pricing_plan: get(ansibleMachineMarks, `${provider}[0].plan`),
 			vm_size: get(ansibleMachineMarks, `${provider}[0].machine`),
-			region: '',
+			region: 'us-central1',
 			kibana: false,
 			streams: false,
 			elasticsearchHQ: true,
