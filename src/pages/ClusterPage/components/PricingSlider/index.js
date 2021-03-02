@@ -63,7 +63,12 @@ class PricingSlider extends Component {
 		const { onChange, marks } = this.props;
 		// snap to nearest value
 		this.setState({ value: active });
-		onChange(marks[active]);
+		onChange(marks[active], active);
+	};
+
+	componentDidMount = () => {
+		const { currValue } = this.props;
+		this.onChange(currValue);
 	};
 
 	render() {
@@ -80,6 +85,7 @@ class PricingSlider extends Component {
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}
+						value={value}
 						{...sliderProps}
 					/>
 				</div>
