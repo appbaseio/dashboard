@@ -110,6 +110,13 @@ class ClusterPage extends Component {
 		return this.state.clusterPlan;
 	};
 
+	getPlanLabel = plan => {
+		if (plan === 'unsubscribed' || plan === 'trial') {
+			return plan;
+		}
+		return PLAN_LABEL[this.state.clusterPlan];
+	};
+
 	setClusterPlan = clusters => {
 		if (clusters.length > 0) {
 			clusters.forEach(cluster => {
@@ -145,7 +152,7 @@ class ClusterPage extends Component {
 							.toDate(),
 						trial_end_at: this.props.clusterTrialEndDate,
 						paid_plan: this.state.paidPlan,
-						cluster_plan: this.state.clusterPlan,
+						cluster_plan: this.getPlanLabel(this.state.clusterPlan),
 					});
 				}
 				if (!clusters.length) {
