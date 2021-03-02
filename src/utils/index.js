@@ -98,17 +98,9 @@ export async function getAppsOverview() {
 	});
 	const data = await response.json();
 	if (data.body) {
-		const paidApps = Object.keys(data.body).map(
-			app => get(data, `body.${app}.tier`) !== 'plan',
-		);
-		let plan = 'free';
-		if (paidApps.length > 0) {
-			plan = 'paid';
-		}
 		if (window.Intercom) {
 			window.Intercom('update', {
 				app_id: 'f9514ssx',
-				plan,
 			});
 		}
 	}

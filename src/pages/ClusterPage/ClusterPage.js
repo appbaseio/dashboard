@@ -151,7 +151,7 @@ class ClusterPage extends Component {
 							.unix(this.props.clusterTrialEndDate)
 							.toDate(),
 						trial_end_at: this.props.clusterTrialEndDate,
-						paid_plan: this.state.paidPlan,
+						plan: this.state.paidPlan ? 'paid' : 'free',
 						cluster_plan: this.getPlanLabel(this.state.clusterPlan),
 					});
 				}
