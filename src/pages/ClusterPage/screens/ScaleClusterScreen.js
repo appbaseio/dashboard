@@ -104,6 +104,9 @@ class ScaleClusterScreen extends Component {
 										price={EFFECTIVE_PRICE_BY_PLANS[
 											cluster.pricing_plan
 										].toString()}
+										monthlyPrice={PRICE_BY_PLANS[
+											cluster.pricing_plan
+										].toString()}
 										onSubmit={this.handleStripeSubmit}
 									/>
 								)}

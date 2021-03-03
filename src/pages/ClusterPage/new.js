@@ -19,6 +19,7 @@ import {
 	CLUSTER_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -731,6 +732,9 @@ class NewCluster extends Component {
 							visible={this.state.isStripeCheckoutOpen}
 							plan={PLAN_LABEL[this.state.pricing_plan]}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								this.state.pricing_plan
 							].toString()}
 							onCancel={this.handleStripeModal}

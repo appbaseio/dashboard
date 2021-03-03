@@ -9,6 +9,7 @@ import {
 	createSubscription,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 } from '../../pages/ClusterPage/utils';
 
 class TrialButton extends React.Component {
@@ -80,6 +81,9 @@ class TrialButton extends React.Component {
 								]
 							}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								get(unPaidClusters, `[0].pricing_plan`, 0)
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								get(unPaidClusters, `[0].pricing_plan`, 0)
 							].toString()}
 							onCancel={this.handleStripeModal}

@@ -17,7 +17,14 @@ const VIEWS = {
 	CARD: 'CARD',
 };
 
-const StripeCheckout = ({ visible, plan, price, onCancel, onSubmit }) => {
+const StripeCheckout = ({
+	visible,
+	plan,
+	price,
+	monthlyPrice,
+	onCancel,
+	onSubmit,
+}) => {
 	const [paymentMethods, setPaymentMethods] = useState({
 		loading: true,
 		methods: [],
@@ -63,8 +70,8 @@ const StripeCheckout = ({ visible, plan, price, onCancel, onSubmit }) => {
 						Subscribe for {plan} cluster
 					</div>
 					<p style={{ marginTop: 15, color: 'rgba(0, 0, 0, 0.65)' }}>
-						Billed at <b>${price}/hr</b> at the end of the
-						subscription cycle based on actual usage
+						Billed at <b>${price}/hr</b> (or ${monthlyPrice}/mo) at
+						the end of the subscription cycle based on actual usage
 					</p>
 				</div>
 			}
@@ -118,6 +125,7 @@ StripeCheckout.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	plan: PropTypes.string.isRequired,
 	price: PropTypes.string.isRequired,
+	monthlyPrice: PropTypes.string.isRequired,
 	onCancel: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 };
