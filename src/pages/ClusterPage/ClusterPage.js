@@ -9,13 +9,14 @@ import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import Directives from '../../components/Directives';
 import { getParam } from '../../utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import StripeCheckout from '../../components/StripeCheckout';
 import { ansibleMachineMarks } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
-import { clusterContainer, clustersList } from './styles';
+import { clusterContainer, clustersList, bannerContainer } from './styles';
 import {
 	createSubscription,
 	deleteCluster,
@@ -518,6 +519,29 @@ class ClusterPage extends Component {
 					</Row>
 				</Header>
 				<Container>
+					{clustersInProgress.length ? (
+						<section className={bannerContainer}>
+							<article className="banner banner-bg banner-border">
+								<div className="banner__content-wraper">
+									<div className="banner__logo-wrapper">
+										<Icon
+											type="question-circle"
+											theme="twoTone"
+											twoToneColor="#eeeeeee0"
+											style={{ fontSize: 50 }}
+										/>
+									</div>
+									<div className="banner__text">
+										While your cluster is getting deployed,
+										get familiarized with the appbase.io
+										platform.
+									</div>
+								</div>
+
+								<Directives />
+							</article>
+						</section>
+					) : null}
 					<section className={clusterContainer}>
 						<article>
 							<h2>My Clusters</h2>

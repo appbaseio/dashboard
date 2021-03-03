@@ -457,6 +457,41 @@ const esContainer = css`
 	}
 `;
 
+const bannerContainer = css`
+	.banner {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		margin: 10px 0px 50px 0px;
+		padding: 1.5em 2em;
+		border-radius: 5px;
+		color: #000;
+	}
+	.banner-bg {
+		background-color: #fff;
+	}
+	.banner-border {
+		border: 1px solid #ccc !important;
+	}
+	.banner__content-wraper {
+		display: flex;
+		flex-direction: row;
+	}
+	.banner__logo-wrapper {
+		padding: 5px;
+		margin-right: 25px;
+	}
+	.banner__text {
+		letter-spacing: 1.5px;
+		line-height: 4;
+		font-size: 1em;
+		font-weight: 600;
+		color: #0000006e;
+	}
+`;
+
 export {
 	clusterContainer,
 	clusterInfo,
@@ -468,4 +503,5 @@ export {
 	invoiceTable,
 	esContainer,
 	clusterButtons,
+	bannerContainer,
 };
