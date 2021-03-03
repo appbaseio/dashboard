@@ -21,6 +21,7 @@ import {
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 	getClusters,
 	PLAN_LABEL,
 	isSandBoxPlan,
@@ -394,6 +395,9 @@ class ClusterPage extends Component {
 													]
 												}
 												price={EFFECTIVE_PRICE_BY_PLANS[
+													cluster.pricing_plan
+												].toString()}
+												monthlyPrice={PRICE_BY_PLANS[
 													cluster.pricing_plan
 												].toString()}
 												onSubmit={data =>

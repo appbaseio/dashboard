@@ -21,6 +21,7 @@ import {
 	restore,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 } from '../utils';
 
 const { Option } = Select;
@@ -365,6 +366,9 @@ class ClusterScreen extends Component {
 							visible={isStripeCheckoutOpen}
 							plan={PLAN_LABEL[cluster.pricing_plan]}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								cluster.pricing_plan
 							].toString()}
 							onCancel={this.handleStripeModal}

@@ -93,16 +93,17 @@ export const regions = {
 			flag: 'finland@3x.png',
 			continent: 'eu',
 		},
-		'us-east1': {
-			name: 'South Carolina',
-			flag: 'united-states.png',
-			continent: 'us',
-		},
 		'us-central1': {
 			name: 'Iowa',
 			flag: 'united-states.png',
 			continent: 'us',
 		},
+		'us-east1': {
+			name: 'South Carolina',
+			flag: 'united-states.png',
+			continent: 'us',
+		},
+
 		'us-east4': {
 			name: 'N. Virginia',
 			flag: 'united-states.png',

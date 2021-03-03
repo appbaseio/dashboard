@@ -19,6 +19,7 @@ import {
 	ARC_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
@@ -65,7 +66,7 @@ class NewMyCluster extends Component {
 			clusterName: '',
 			clusterURL: '',
 			pricing_plan: machineMarks[0].plan,
-			region: '',
+			region: 'us-central1',
 			verifyingURL: false,
 			error: '',
 			isInvalidURL: false,
@@ -410,6 +411,9 @@ class NewMyCluster extends Component {
 							visible={this.state.isStripeCheckoutOpen}
 							plan={PLAN_LABEL[this.state.pricing_plan]}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								this.state.pricing_plan
 							].toString()}
 							onCancel={this.handleStripeModal}

@@ -29,6 +29,7 @@ import {
 	hasAddon,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 	isSandBoxPlan,
 } from './utils';
 import { regions } from './utils/regions';
@@ -338,6 +339,9 @@ class ClusterInfo extends Component {
 						price={EFFECTIVE_PRICE_BY_PLANS[
 							this.state.cluster.pricing_plan
 						].toString()}
+						monthlyPrice={PRICE_BY_PLANS[
+							this.state.cluster.pricing_plan
+						].toString()}
 						onSubmit={data =>
 							this.handleToken({ clusterId, ...data })
 						}
@@ -523,6 +527,9 @@ class ClusterInfo extends Component {
 							onCancel={this.handleStripeModal}
 							plan={PLAN_LABEL[cluster.pricing_plan]}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								cluster.pricing_plan
 							].toString()}
 							onSubmit={data =>
