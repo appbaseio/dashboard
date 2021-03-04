@@ -453,6 +453,10 @@ class ClusterPage extends Component {
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
 		);
 
+		const clusterDeploymentInProgress = clusters.filter(
+			cluster => cluster.status === 'in progress',
+		);
+
 		if (isLoading) {
 			return <Loader />;
 		}
@@ -523,7 +527,7 @@ class ClusterPage extends Component {
 					</Row>
 				</Header>
 				<Container>
-					{clustersInProgress.length ? (
+					{clusterDeploymentInProgress.length ? (
 						<section className={bannerContainer}>
 							<article className="banner banner-bg banner-border">
 								<div className="banner__content-wraper">
