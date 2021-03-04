@@ -28,6 +28,12 @@ import {
 } from './utils';
 import { regions } from './utils/regions';
 
+// overiding the fromNow() method in moment to return the diff only in hours
+moment.fn.fromNow = function fromNow() {
+	const duration = moment().diff(this, 'hours');
+	return duration;
+};
+
 class ClusterPage extends Component {
 	constructor(props) {
 		super(props);

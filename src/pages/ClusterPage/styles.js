@@ -485,10 +485,10 @@ const bannerContainer = css`
 	}
 	.banner__text {
 		letter-spacing: 1.5px;
-		line-height: 4;
-		font-size: 1em;
+		line-height: 4.5;
+		font-size: 14px;
 		font-weight: 600;
-		color: #0000006e;
+		color: #999;
 	}
 `;
 

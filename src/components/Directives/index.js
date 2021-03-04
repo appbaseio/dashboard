@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'react-emotion';
-import { Modal, Button, Icon, Row, Col, Card, Divider } from 'antd';
+import { Modal, Button, Icon, Row, Col, Card } from 'antd';
 
 const cancelButton = css`
 	display: inline;
@@ -11,17 +11,36 @@ const modalTitle = css`
 	letter-spacing: 1.3px;
 	font-size: 1em;
 	font-weight: 600;
-	color: #0000006e;
-	margin: 15px 15px 10px 20px;
+	color: #999;
+	margin: 15px 25px 10px 10px;
 	text-align: center;
 	vertical-align: middle;
 `;
 
 const cardWrapper = css`
-	height: 180px;
+	height: 240px;
 	width: 300px;
-	margin: 20px;
+	margin: 10px;
 	position: relative;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+`;
+
+const searchCard = css`
+	background-image: url('/static/images/explainer/search_preview.png');
+`;
+
+const relevancyCard = css`
+	background-image: url('/static/images/explainer/manage_mappings.png');
+`;
+
+const securityCard = css`
+	background-image: url('/static/images/explainer/security.png');
+`;
+
+const analyticsCard = css`
+	background-image: url('/static/images/explainer/setup_analytics.png');
 `;
 
 const cardHeading = css`
@@ -30,13 +49,21 @@ const cardHeading = css`
 	font-weight: 500;
 	text-align: center;
 	vertical-align: middle;
-	height: 40px;
+	height: 20px;
+	width: 90%;
+	position: absolute;
+	top: 5%;
+	left: 5%;
 `;
 
 const cardActions = css`
 	position: absolute;
-	bottom: 20%;
-	left: 5%;
+	bottom: 7%;
+	left: 5.5%;
+`;
+
+const button = css`
+	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 `;
 
 class Directives extends React.Component {
@@ -129,12 +156,11 @@ class Directives extends React.Component {
 					</Row>
 					<Row gutter={16}>
 						<Col span={12}>
-							<Card className={cardWrapper}>
+							<Card className={[cardWrapper, searchCard]}>
 								<Row className={cardHeading}>
 									Building your first search app powered by
 									appbase.io
 								</Row>
-								<Divider />
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
 										<Button
@@ -142,6 +168,7 @@ class Directives extends React.Component {
 											onClick={() =>
 												this.openDocs('search-app')
 											}
+											className={button}
 										>
 											Read (5 min)
 										</Button>
@@ -151,6 +178,7 @@ class Directives extends React.Component {
 											onClick={() =>
 												this.openPLaylist('search-app')
 											}
+											className={button}
 										>
 											<Icon type="play-circle" /> Watch
 											series
@@ -160,11 +188,10 @@ class Directives extends React.Component {
 							</Card>
 						</Col>
 						<Col span={12}>
-							<Card className={cardWrapper}>
+							<Card className={[cardWrapper, relevancyCard]}>
 								<Row className={cardHeading}>
 									How relevant search works with appbase.io
 								</Row>
-								<Divider />
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
 										<Button
@@ -172,6 +199,7 @@ class Directives extends React.Component {
 											onClick={() =>
 												this.openDocs('relevant-search')
 											}
+											className={button}
 										>
 											Read (5 min)
 										</Button>
@@ -183,6 +211,7 @@ class Directives extends React.Component {
 													'relevant-search',
 												)
 											}
+											className={button}
 										>
 											<Icon type="play-circle" /> Watch
 											series
@@ -194,12 +223,11 @@ class Directives extends React.Component {
 					</Row>
 					<Row gutter={16}>
 						<Col span={12}>
-							<Card className={cardWrapper}>
+							<Card className={[cardWrapper, analyticsCard]}>
 								<Row className={cardHeading}>
 									How search and click analytics works with
 									appbase.io
 								</Row>
-								<Divider />
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
 										<Button
@@ -209,6 +237,7 @@ class Directives extends React.Component {
 													'search-analytics',
 												)
 											}
+											className={button}
 										>
 											Read (5 min)
 										</Button>
@@ -220,6 +249,7 @@ class Directives extends React.Component {
 													'search-analytics',
 												)
 											}
+											className={button}
 										>
 											<Icon type="play-circle" /> Watch
 											series
@@ -229,11 +259,10 @@ class Directives extends React.Component {
 							</Card>
 						</Col>
 						<Col span={12}>
-							<Card className={cardWrapper}>
+							<Card className={[cardWrapper, securityCard]}>
 								<Row className={cardHeading}>
 									Set access control for search
 								</Row>
-								<Divider />
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
 										<Button
@@ -241,6 +270,7 @@ class Directives extends React.Component {
 											onClick={() =>
 												this.openDocs('access-control')
 											}
+											className={button}
 										>
 											Read (5 min)
 										</Button>
@@ -252,6 +282,7 @@ class Directives extends React.Component {
 													'access-control',
 												)
 											}
+											className={button}
 										>
 											<Icon type="play-circle" /> Watch
 											series
