@@ -360,7 +360,11 @@ class ClusterScreen extends Component {
 				deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
-					<ArcDetail cluster={cluster} arc={arcDeployment} />
+					<ArcDetail
+						cluster={cluster}
+						arc={arcDeployment}
+						handleDeleteModal={handleDeleteModal}
+					/>
 					{isStripeCheckoutOpen && (
 						<StripeCheckout
 							visible={isStripeCheckoutOpen}
