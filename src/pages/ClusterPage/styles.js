@@ -13,7 +13,17 @@ const clusterContainer = css`
 		border: 1px solid #ccc;
 	}
 	.tag.top-right {
+		width: fit-content(20em);
 		margin-left: auto;
+	}
+	.tag.tag-issue {
+		background-color: #fff;
+		font-size: 15px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid #ffae42;
 	}
 	h2,
 	h3 {
@@ -30,6 +40,12 @@ const clusterContainer = css`
 		padding: 0;
 		font-size: 16px;
 		line-height: 26px;
+	}
+	h4 {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 500;
+		color: #ffae42;
 	}
 	.region-container {
 		display: flex;
@@ -76,6 +92,13 @@ const clusterContainer = css`
 				opacity: 0.2;
 			}
 		}
+	}
+	.message-text {
+		margin: 0;
+		font-size: 12px;
+		font-weight: 600;
+		color: #999;
+		margin-left: auto;
 	}
 `;
 
@@ -489,6 +512,9 @@ const bannerContainer = css`
 		font-size: 14px;
 		font-weight: 600;
 		color: #999;
+	}
+	.banner-button {
+		width: 200px;
 	}
 `;
 

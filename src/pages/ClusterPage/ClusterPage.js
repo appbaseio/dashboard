@@ -11,13 +11,8 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Directives from '../../components/Directives';
 import { getParam } from '../../utils';
-import { mediaKey } from '../../utils/media';
-import DeleteClusterModal from './components/DeleteClusterModal';
-import StripeCheckout from '../../components/StripeCheckout';
-import { ansibleMachineMarks } from './new';
-import { machineMarks as arcMachineMarks } from './NewMyCluster';
-import { clusterContainer, clustersList, bannerContainer } from './styles';
 import {
+	getClusterData,
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
@@ -26,7 +21,15 @@ import {
 	PLAN_LABEL,
 	isSandBoxPlan,
 } from './utils';
+import { mediaKey } from '../../utils/media';
+import DeleteClusterModal from './components/DeleteClusterModal';
+import StripeCheckout from '../../components/StripeCheckout';
+import { ansibleMachineMarks } from './new';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { clusterContainer, clustersList, bannerContainer } from './styles';
+
 import { regions } from './utils/regions';
+import ConnectCluster from './components/ConnectCluster';
 
 // overiding the fromNow() method in moment to return the diff only in hours
 moment.fn.fromNow = function fromNow() {
@@ -47,6 +50,8 @@ class ClusterPage extends Component {
 			deleteModal: false,
 			showStripeModal: false,
 			currentCluster: null,
+			recentClusterDeployed: false,
+			recentClusterDetails: {},
 		};
 	}
 
@@ -126,7 +131,23 @@ class ClusterPage extends Component {
 					deleteClusterId: '',
 					deleteClusterName: '',
 				});
-
+				clusters.forEach(async cluster => {
+					if (
+						cluster.status === 'active' &&
+						moment(cluster.created_at).fromNow() <= 72
+					) {
+						const data = await getClusterData(cluster.id);
+						if (data && data.cluster && data.deployment) {
+							this.setState(() => ({
+								recentClusterDeployed: true,
+								recentClusterDetails: {
+									cluster: data.cluster,
+									deployment: data.deployment,
+								},
+							}));
+						}
+					}
+				});
 				clusters.every(cluster => {
 					if (get(cluster, 'status', '').endsWith('in progress')) {
 						this.timer = setTimeout(this.initClusters, 30000);
@@ -225,16 +246,29 @@ class ClusterPage extends Component {
 					},
 			  }
 			: {};
-
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
 					{cluster.name}
-					<span className="tag">
-						{cluster.status === 'delInProg'
-							? 'deletion in progress'
-							: cluster.status}
-					</span>
+					{cluster.status === 'failed' &&
+					moment(cluster.created_at).fromNow() <= 72 ? (
+						<span className="tag tag-issue">
+							<Icon
+								type="warning"
+								theme="twoTone"
+								twoToneColor="#ffae42"
+								style={{ fontSize: 18, paddingRight: '10px' }}
+							/>
+							{'  '}
+							<h4>Issue</h4>
+						</span>
+					) : (
+						<span className="tag">
+							{cluster.status === 'delInProg'
+								? 'deletion in progress'
+								: cluster.status}
+						</span>
+					)}
 					{cluster.role === 'admin' &&
 					(cluster.status === 'active' ||
 						cluster.status === 'in progress' ||
@@ -248,6 +282,14 @@ class ClusterPage extends Component {
 							Delete
 						</Button>
 					) : null}
+					{cluster.status === 'failed' &&
+						moment(cluster.created_at).fromNow() < 72 && (
+							<span className="message-text">
+								There was an issue with your cluster&apos;s
+								provisioning. Our team is manually reviewing it
+								and will provision it for you.
+							</span>
+						)}
 					{isExternalCluster ? (
 						<Tooltip
 							title={
@@ -420,6 +462,19 @@ class ClusterPage extends Component {
 					) : (
 						<div />
 					)}
+					{cluster.status === 'failed' &&
+						moment(cluster.created_at).fromNow() <= 72 && (
+							<Button
+								type="primary"
+								onClick={() => {
+									if (window.Intercom) {
+										window.Intercom('show');
+									}
+								}}
+							>
+								Contact Support
+							</Button>
+						)}
 				</div>
 			</li>
 		);
@@ -445,7 +500,13 @@ class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const { isLoading, clustersAvailable, clusters } = this.state;
+		const {
+			isLoading,
+			clustersAvailable,
+			clusters,
+			recentClusterDeployed,
+			recentClusterDetails,
+		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster =>
@@ -533,15 +594,15 @@ class ClusterPage extends Component {
 					</Row>
 				</Header>
 				<Container>
-					{clusterDeploymentInProgress.length ? (
+					{/* clusterDeploymentInProgress.length */ true ? (
 						<section className={bannerContainer}>
 							<article className="banner banner-bg banner-border">
 								<div className="banner__content-wraper">
 									<div className="banner__logo-wrapper">
 										<Icon
-											type="question-circle"
+											type="info-circle"
 											theme="twoTone"
-											twoToneColor="#eeeeeee0"
+											twoToneColor="#fbe137"
 											style={{ fontSize: 50 }}
 										/>
 									</div>
@@ -553,6 +614,45 @@ class ClusterPage extends Component {
 								</div>
 
 								<Directives />
+							</article>
+						</section>
+					) : null}
+					{recentClusterDeployed ? (
+						<section className={bannerContainer}>
+							<article className="banner banner-bg banner-border">
+								<div className="banner__content-wraper">
+									<div className="banner__logo-wrapper">
+										<Icon
+											type="check-circle"
+											theme="twoTone"
+											twoToneColor="#72e538"
+											style={{ fontSize: 50 }}
+										/>
+									</div>
+									<div className="banner__text">
+										{`Now that your "${
+											recentClusterDetails.cluster.name
+												.length <= 15
+												? recentClusterDetails.cluster
+														.name
+												: `${recentClusterDetails.cluster.name.substring(
+														0,
+														14,
+												  )}...`
+										}" cluster is deployed,
+										let's get you started with the appbase.io platform.`}
+									</div>
+								</div>
+
+								{recentClusterDeployed && (
+									<ConnectCluster
+										cluster={recentClusterDetails.cluster}
+										deployment={
+											recentClusterDetails.deployment
+										}
+										showConnect={false}
+									/>
+								)}
 							</article>
 						</section>
 					) : null}

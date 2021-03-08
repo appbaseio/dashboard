@@ -2,8 +2,7 @@ import React from 'react';
 import { css } from 'react-emotion';
 import { Modal, Button, Icon, Row, Col, Card } from 'antd';
 
-const cancelButton = css`
-	display: inline;
+const loadButton = css`
 	width: 200px;
 `;
 
@@ -136,10 +135,19 @@ class Directives extends React.Component {
 			<div>
 				<Button
 					type="primary"
-					className={cancelButton}
+					className={loadButton}
 					onClick={this.showModal}
 				>
-					<Icon type="switcher" /> Learn More
+					<Icon
+						component={() => (
+							<img
+								src="/static/images/buttons/learn-more.svg"
+								style={{ width: '17px' }}
+								alt="learn more"
+							/>
+						)}
+					/>{' '}
+					Learn More
 				</Button>
 				<Modal
 					visible={visible}

@@ -83,19 +83,38 @@ class ConnectCluster extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { cluster, deployment } = this.props;
+		const { cluster, deployment, showConnect = true } = this.props;
 		const arcInstance = deployment.addons.find(item => item.name === 'arc');
 		return (
 			<div>
-				<Button
-					ghost
-					size="large"
-					style={{ marginRight: 10 }}
-					type="primary"
-					onClick={this.showModal}
-				>
-					Connect
-				</Button>
+				{showConnect ? (
+					<Button
+						ghost
+						size="large"
+						style={{ marginRight: 10 }}
+						type="primary"
+						onClick={this.showModal}
+					>
+						Connect
+					</Button>
+				) : (
+					<Button
+						type="primary"
+						className="banner-button"
+						onClick={this.showModal}
+					>
+						<Icon
+							component={() => (
+								<img
+									src="/static/images/buttons/getting-started.svg"
+									style={{ width: '17px' }}
+									alt="getting started"
+								/>
+							)}
+						/>{' '}
+						Get started
+					</Button>
+				)}
 				<Modal
 					visible={visible}
 					title="Connect your Cluster"
