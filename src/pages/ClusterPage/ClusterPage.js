@@ -594,7 +594,7 @@ class ClusterPage extends Component {
 					</Row>
 				</Header>
 				<Container>
-					{/* clusterDeploymentInProgress.length */ true ? (
+					{clusterDeploymentInProgress.length ? (
 						<section className={bannerContainer}>
 							<article className="banner banner-bg banner-border">
 								<div className="banner__content-wraper">
