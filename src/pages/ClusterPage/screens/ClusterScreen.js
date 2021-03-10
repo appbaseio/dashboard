@@ -283,7 +283,7 @@ class ClusterScreen extends Component {
 			);
 			const copyURL =
 				source.name === 'kibana'
-					? url
+					? `${protocol}://${url}`
 					: `${protocol}://${username}:${password}@${url}`.replace(
 							/\/$/,
 							'',
