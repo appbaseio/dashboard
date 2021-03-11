@@ -200,7 +200,9 @@ class Directives extends React.Component {
 									<Col span={12}>
 										<Button
 											onClick={() =>
-												this.openPLaylist('search-app')
+												this.openPLaylist(
+													PLAY_LISTS.SEARCH_APP,
+												)
 											}
 											className={button}
 										>
@@ -234,7 +236,7 @@ class Directives extends React.Component {
 										<Button
 											onClick={() =>
 												this.openPLaylist(
-													'relevant-search',
+													PLAY_LISTS.RELEVANT_SEARCH,
 												)
 											}
 											className={button}
@@ -272,7 +274,7 @@ class Directives extends React.Component {
 										<Button
 											onClick={() =>
 												this.openPLaylist(
-													'search-analytics',
+													PLAY_LISTS.SEARCH_ANALYTICS,
 												)
 											}
 											className={button}
@@ -307,7 +309,7 @@ class Directives extends React.Component {
 										<Button
 											onClick={() =>
 												this.openPLaylist(
-													'access-control',
+													PLAY_LISTS.ACCESS_CONTROL,
 												)
 											}
 											className={button}
