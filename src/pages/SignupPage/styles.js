@@ -20,6 +20,10 @@ const main = css`
 		width: 100%;
 		padding: 50px 0px;
 	}
+	a {
+		height: auto;
+		display: inline';
+	}
 	.content {
 		margin-right: 100px;
 		.title {

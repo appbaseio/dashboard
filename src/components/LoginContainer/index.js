@@ -18,43 +18,51 @@ const LoginContainer = ({ children }) => (
 					</mark>
 				</h2>
 				<div className="signup_description">
-					<h4>
-						Build the best search experience &amp; scale as you
-						grow!
-					</h4>
+					<h4>What's included in the 14-day trial:</h4>
 					<ul className="signup_benefits">
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Free 10,000 records and 100,000 API calls / mo
+								<strong>Develop</strong>: Import and browse
+								data, view API logs
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Import JSON / CSV data or use our CLI for
-								importing from your favorite data source
+								<strong>Search Relevance</strong>: Set Language,
+								Search, Aggregations, Synonyms, Query Rules and
+								more
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Browse data, edit mappings, build search
-								visually, and create query rules
+								<strong>Actionable Analytics</strong>: Record
+								and view search and click analytics, popular
+								searches, results, and more
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Get actionable analytics to improve content and
-								increase your search ROI
+								<strong>Search UI</strong>: Build Search and
+								Recommendations UIs with NoCode
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								Get best-in-class security with read/write
-								permissions, granular ACLs and more
+								<strong>Access Control</strong>: Granular
+								read/write permissions, RBAC, and user
+								management
+							</span>
+						</li>
+						<li>
+							<Icon type="check" className="icon" />
+							<span>
+								<strong>Support</strong>: Available via in-app
+								chat and e-mail
 							</span>
 						</li>
 					</ul>
@@ -63,7 +71,7 @@ const LoginContainer = ({ children }) => (
 			<Flex flexDirection="column">{children}</Flex>
 		</Flex>
 		<div css={footer}>
-			<AppbaseUsers title="Trusted by these companies" />
+			<AppbaseUsers title="Powering hundreds of search experiences" />
 		</div>
 	</React.Fragment>
 );
