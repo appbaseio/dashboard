@@ -298,7 +298,7 @@ class ClusterPage extends Component {
 				<h3>
 					{cluster.name}
 					{cluster.status === 'failed' &&
-					moment(cluster.created_at).fromNow() <= 72000 ? (
+					moment(cluster.created_at).fromNow() <= 72 ? (
 						<span className="tag tag-issue">
 							<Icon
 								type="warning"
