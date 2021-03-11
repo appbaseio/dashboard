@@ -13,7 +13,23 @@ const clusterContainer = css`
 		border: 1px solid #ccc;
 	}
 	.tag.top-right {
+		width: fit-content(20em);
 		margin-left: auto;
+	}
+	.tag.tag-issue {
+		background-color: #fff;
+		font-size: 15px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid #ffae42;
+	}
+	.tag-text {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 500;
+		color: #ffae42;
 	}
 	h2,
 	h3 {
@@ -76,6 +92,13 @@ const clusterContainer = css`
 				opacity: 0.2;
 			}
 		}
+	}
+	.message-text {
+		margin: 0;
+		font-size: 12px;
+		font-weight: 600;
+		color: #999;
+		margin-left: auto;
 	}
 `;
 
@@ -457,6 +480,47 @@ const esContainer = css`
 	}
 `;
 
+const bannerContainer = css`
+	.banner {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		margin: 10px 0px 50px 0px;
+		padding: 1.5em 2em;
+		border-radius: 5px;
+		color: #000;
+	}
+	.banner-bg {
+		background-color: #fff;
+	}
+	.banner-border {
+		border: 1px solid #ccc !important;
+	}
+	.banner__content-wraper {
+		display: flex;
+		flex-direction: row;
+	}
+	.banner__logo-wrapper {
+		padding: 5px;
+		margin-right: 25px;
+	}
+	.banner__text {
+		letter-spacing: 0.01rem;
+		word-spacing: 0.05em;
+		line-height: 26px;
+		font-size: 16px;
+		color: #595959;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.banner-button {
+		width: 200px;
+	}
+`;
+
 export {
 	clusterContainer,
 	clusterInfo,
@@ -468,4 +532,5 @@ export {
 	invoiceTable,
 	esContainer,
 	clusterButtons,
+	bannerContainer,
 };

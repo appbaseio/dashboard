@@ -9,14 +9,10 @@ import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
+import Directives from '../../components/Directives';
 import { getParam } from '../../utils';
-import { mediaKey } from '../../utils/media';
-import DeleteClusterModal from './components/DeleteClusterModal';
-import StripeCheckout from '../../components/StripeCheckout';
-import { ansibleMachineMarks } from './new';
-import { machineMarks as arcMachineMarks } from './NewMyCluster';
-import { clusterContainer, clustersList } from './styles';
 import {
+	getClusterData,
 	createSubscription,
 	deleteCluster,
 	EFFECTIVE_PRICE_BY_PLANS,
@@ -27,7 +23,19 @@ import {
 	CLUSTER_PLANS,
 	ARC_PLANS,
 } from './utils';
+import { mediaKey } from '../../utils/media';
+import DeleteClusterModal from './components/DeleteClusterModal';
+import StripeCheckout from '../../components/StripeCheckout';
+import { ansibleMachineMarks } from './new';
+import { machineMarks as arcMachineMarks } from './NewMyCluster';
+import { clusterContainer, clustersList, bannerContainer } from './styles';
+
 import { regions } from './utils/regions';
+
+function getHoursDiff(time) {
+	const duration = moment().diff(time, 'hours');
+	return duration;
+}
 
 class ClusterPage extends Component {
 	constructor(props) {
@@ -42,6 +50,8 @@ class ClusterPage extends Component {
 			deleteModal: false,
 			showStripeModal: false,
 			currentCluster: null,
+			recentClusterDeployed: false,
+			recentClusterDetails: {},
 			paidPlan: false,
 			clusterPlan: 'unsubscribed',
 		};
@@ -167,7 +177,23 @@ class ClusterPage extends Component {
 					deleteClusterId: '',
 					deleteClusterName: '',
 				});
-
+				clusters.forEach(async cluster => {
+					if (
+						cluster.status === 'active' &&
+						getHoursDiff(cluster.created_at) <= 72
+					) {
+						const data = await getClusterData(cluster.id);
+						if (data && data.cluster && data.deployment) {
+							this.setState(() => ({
+								recentClusterDeployed: true,
+								recentClusterDetails: {
+									cluster: data.cluster,
+									deployment: data.deployment,
+								},
+							}));
+						}
+					}
+				});
 				clusters.every(cluster => {
 					if (get(cluster, 'status', '').endsWith('in progress')) {
 						this.timer = setTimeout(this.initClusters, 30000);
@@ -266,16 +292,29 @@ class ClusterPage extends Component {
 					},
 			  }
 			: {};
-
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3>
 					{cluster.name}
-					<span className="tag">
-						{cluster.status === 'delInProg'
-							? 'deletion in progress'
-							: cluster.status}
-					</span>
+					{cluster.status === 'failed' &&
+					getHoursDiff(cluster.created_at) <= 72 ? (
+						<span className="tag tag-issue">
+							<Icon
+								type="warning"
+								theme="twoTone"
+								twoToneColor="#ffae42"
+								style={{ fontSize: 18, paddingRight: '10px' }}
+							/>
+							{'  '}
+							<h4 className="tag-text">Issue</h4>
+						</span>
+					) : (
+						<span className="tag">
+							{cluster.status === 'delInProg'
+								? 'deletion in progress'
+								: cluster.status}
+						</span>
+					)}
 					{cluster.role === 'admin' &&
 					(cluster.status === 'active' ||
 						cluster.status === 'in progress' ||
@@ -289,6 +328,14 @@ class ClusterPage extends Component {
 							Delete
 						</Button>
 					) : null}
+					{cluster.status === 'failed' &&
+						getHoursDiff(cluster.created_at) < 72 && (
+							<span className="message-text">
+								There was an issue with your cluster&apos;s
+								provisioning. Our team is manually reviewing it
+								and will provision it for you.
+							</span>
+						)}
 					{isExternalCluster ? (
 						<Tooltip
 							title={
@@ -461,6 +508,19 @@ class ClusterPage extends Component {
 					) : (
 						<div />
 					)}
+					{cluster.status === 'failed' &&
+						getHoursDiff(cluster.created_at) <= 72 && (
+							<Button
+								type="primary"
+								onClick={() => {
+									if (window.Intercom) {
+										window.Intercom('show');
+									}
+								}}
+							>
+								Contact Support
+							</Button>
+						)}
 				</div>
 			</li>
 		);
@@ -486,7 +546,13 @@ class ClusterPage extends Component {
 			fontSize: '20px',
 		};
 
-		const { isLoading, clustersAvailable, clusters } = this.state;
+		const {
+			isLoading,
+			clustersAvailable,
+			clusters,
+			recentClusterDeployed,
+			recentClusterDetails,
+		} = this.state;
 
 		const deleteStatus = ['deleted', 'failed'];
 		const deletedClusters = clusters.filter(cluster =>
@@ -498,6 +564,10 @@ class ClusterPage extends Component {
 
 		const clustersInProgress = clusters.filter(
 			cluster => ![...deleteStatus, 'active'].includes(cluster.status),
+		);
+
+		const clusterDeploymentInProgress = clusters.filter(
+			cluster => cluster.status === 'in progress',
 		);
 
 		if (isLoading) {
@@ -570,6 +640,86 @@ class ClusterPage extends Component {
 					</Row>
 				</Header>
 				<Container>
+					{clusterDeploymentInProgress.length ? (
+						<section className={bannerContainer}>
+							<article className="banner banner-bg banner-border">
+								<div className="banner__content-wraper">
+									<div className="banner__logo-wrapper">
+										<Icon
+											type="info-circle"
+											theme="twoTone"
+											twoToneColor="#fbe137"
+											style={{ fontSize: 50 }}
+										/>
+									</div>
+									<div className="banner__text">
+										While your cluster is getting deployed,
+										get familiarized with the appbase.io
+										platform.
+									</div>
+								</div>
+
+								<Directives />
+							</article>
+						</section>
+					) : null}
+					{recentClusterDeployed ? (
+						<section className={bannerContainer}>
+							<article className="banner banner-bg banner-border">
+								<div className="banner__content-wraper">
+									<div className="banner__logo-wrapper">
+										<Icon
+											type="check-circle"
+											theme="twoTone"
+											twoToneColor="#72e538"
+											style={{ fontSize: 50 }}
+										/>
+									</div>
+									<div className="banner__text">
+										{`Now that your "${
+											recentClusterDetails.cluster.name
+												.length <= 15
+												? recentClusterDetails.cluster
+														.name
+												: `${recentClusterDetails.cluster.name.substring(
+														0,
+														14,
+												  )}...`
+										}" cluster is deployed,
+										let's get you started with the appbase.io platform.`}
+									</div>
+								</div>
+
+								{recentClusterDeployed && (
+									<Link
+										to={`/clusters/${recentClusterDetails.cluster.id}?connect=true`}
+										style={{
+											display: 'flex',
+											justifyContent: 'flex-end',
+										}}
+									>
+										<Button
+											type="primary"
+											className="banner-button"
+										>
+											<Icon
+												component={() => (
+													<img
+														src="/static/images/buttons/getting-started.svg"
+														style={{
+															width: '17px',
+														}}
+														alt="getting started"
+													/>
+												)}
+											/>{' '}
+											Get started
+										</Button>
+									</Link>
+								)}
+							</article>
+						</section>
+					) : null}
 					<section className={clusterContainer}>
 						<article>
 							<h2>My Clusters</h2>

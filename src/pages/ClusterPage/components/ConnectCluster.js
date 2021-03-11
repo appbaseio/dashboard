@@ -69,6 +69,12 @@ const DirectLink = ({ title, href }) => (
 class ConnectCluster extends React.Component {
 	state = { visible: false };
 
+	componentDidMount() {
+		if (new URLSearchParams(window.location.search).get('connect')) {
+			this.showModal();
+		}
+	}
+
 	showModal = () => {
 		this.setState({
 			visible: true,
