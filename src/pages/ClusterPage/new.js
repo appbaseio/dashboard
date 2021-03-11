@@ -453,6 +453,7 @@ class NewCluster extends Component {
 					pricing_plan: this.state.pricing_plan,
 					ssh_public_key: SSH_KEY,
 					provider: this.state.provider,
+					is_multi_zone: !(selectedMachine.nodes > 1),
 				},
 				addons: [
 					{
