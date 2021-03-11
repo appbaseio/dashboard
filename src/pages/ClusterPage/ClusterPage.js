@@ -32,11 +32,10 @@ import { clusterContainer, clustersList, bannerContainer } from './styles';
 
 import { regions } from './utils/regions';
 
-// overiding the fromNow() method in moment to return the diff only in hours
-moment.fn.fromNow = function fromNow() {
-	const duration = moment().diff(this, 'hours');
+function getHoursDiff(time) {
+	const duration = moment().diff(time, 'hours');
 	return duration;
-};
+}
 
 class ClusterPage extends Component {
 	constructor(props) {
@@ -179,9 +178,14 @@ class ClusterPage extends Component {
 					deleteClusterName: '',
 				});
 				clusters.forEach(async cluster => {
+					console.log(
+						'cluster ==>> ',
+						cluster,
+						getHoursDiff(cluster.created_at),
+					);
 					if (
 						cluster.status === 'active' &&
-						moment(cluster.created_at).fromNow() <= 72
+						getHoursDiff(cluster.created_at) <= 72
 					) {
 						const data = await getClusterData(cluster.id);
 						if (data && data.cluster && data.deployment) {
@@ -298,7 +302,7 @@ class ClusterPage extends Component {
 				<h3>
 					{cluster.name}
 					{cluster.status === 'failed' &&
-					moment(cluster.created_at).fromNow() <= 72 ? (
+					getHoursDiff(cluster.created_at) <= 72 ? (
 						<span className="tag tag-issue">
 							<Icon
 								type="warning"
@@ -330,7 +334,7 @@ class ClusterPage extends Component {
 						</Button>
 					) : null}
 					{cluster.status === 'failed' &&
-						moment(cluster.created_at).fromNow() < 72 && (
+						getHoursDiff(cluster.created_at) < 72 && (
 							<span className="message-text">
 								There was an issue with your cluster&apos;s
 								provisioning. Our team is manually reviewing it
@@ -510,7 +514,7 @@ class ClusterPage extends Component {
 						<div />
 					)}
 					{cluster.status === 'failed' &&
-						moment(cluster.created_at).fromNow() <= 72 && (
+						getHoursDiff(cluster.created_at) <= 72 && (
 							<Button
 								type="primary"
 								onClick={() => {

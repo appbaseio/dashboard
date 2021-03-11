@@ -71,6 +71,13 @@ const button = css`
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 `;
 
+const PLAY_LISTS = {
+	SEARCH_APP: 'search-app',
+	RELEVANT_SEARCH: 'relevant-search',
+	SEARCH_ANALYTICS: 'search-analytics',
+	ACCESS_CONTROL: 'access-control',
+};
+
 class Directives extends React.Component {
 	state = {
 		visible: false,
@@ -181,7 +188,9 @@ class Directives extends React.Component {
 										<Button
 											type="primary"
 											onClick={() =>
-												this.openDocs('search-app')
+												this.openDocs(
+													PLAY_LISTS.SEARCH_APP,
+												)
 											}
 											className={button}
 										>
@@ -212,7 +221,9 @@ class Directives extends React.Component {
 										<Button
 											type="primary"
 											onClick={() =>
-												this.openDocs('relevant-search')
+												this.openDocs(
+													PLAY_LISTS.RELEVANT_SEARCH,
+												)
 											}
 											className={button}
 										>
@@ -249,7 +260,7 @@ class Directives extends React.Component {
 											type="primary"
 											onClick={() =>
 												this.openDocs(
-													'search-analytics',
+													PLAY_LISTS.SEARCH_ANALYTICS,
 												)
 											}
 											className={button}
@@ -283,7 +294,9 @@ class Directives extends React.Component {
 										<Button
 											type="primary"
 											onClick={() =>
-												this.openDocs('access-control')
+												this.openDocs(
+													PLAY_LISTS.ACCESS_CONTROL,
+												)
 											}
 											className={button}
 										>

@@ -293,6 +293,9 @@ class ClusterScreen extends Component {
 			if (name === 'arc') {
 				name = 'Appbase.io';
 			}
+			if (name === 'elasticsearch') {
+				name = 'Elasticsearch';
+			}
 			return (
 				<div key={name} className={clusterEndpoint}>
 					<h4>
