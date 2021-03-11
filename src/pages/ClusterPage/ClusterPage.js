@@ -24,6 +24,8 @@ import {
 	getClusters,
 	PLAN_LABEL,
 	isSandBoxPlan,
+	CLUSTER_PLANS,
+	ARC_PLANS,
 } from './utils';
 import { regions } from './utils/regions';
 
@@ -40,6 +42,8 @@ class ClusterPage extends Component {
 			deleteModal: false,
 			showStripeModal: false,
 			currentCluster: null,
+			paidPlan: false,
+			clusterPlan: 'unsubscribed',
 		};
 	}
 
@@ -96,8 +100,50 @@ class ClusterPage extends Component {
 		return get(selectedPlan, key, '-');
 	};
 
+	getPlan = plan => {
+		if (
+			plan === 'unsubscribed' ||
+			get(PRICE_BY_PLANS, plan) >
+				get(PRICE_BY_PLANS, this.state.clusterPlan, 0)
+		) {
+			return plan;
+		}
+		return this.state.clusterPlan;
+	};
+
+	getPlanLabel = plan => {
+		if (plan === 'unsubscribed' || plan === 'trial') {
+			return plan;
+		}
+		return PLAN_LABEL[this.state.clusterPlan];
+	};
+
+	setClusterPlan = clusters => {
+		if (clusters.length > 0) {
+			clusters.forEach(cluster => {
+				if (cluster.status === 'active') {
+					Object.values(CLUSTER_PLANS)
+						.concat(Object.values(ARC_PLANS))
+						.forEach(plan => {
+							if (cluster.pricing_plan === plan) {
+								const plan_name = cluster.trial
+									? 'trial'
+									: this.getPlan(plan);
+								this.setState({
+									paidPlan: !cluster.trial,
+									clusterPlan: plan_name,
+								});
+							}
+						});
+				}
+			});
+		}
+		return clusters;
+	};
+
 	initClusters = () => {
 		getClusters()
+			.then(clusters => this.setClusterPlan(clusters))
 			.then(clusters => {
 				if (window.Intercom) {
 					window.Intercom('update', {
@@ -106,6 +152,8 @@ class ClusterPage extends Component {
 							.unix(this.props.clusterTrialEndDate)
 							.toDate(),
 						trial_end_at: this.props.clusterTrialEndDate,
+						plan: this.state.paidPlan ? 'paid' : 'free',
+						cluster_plan: this.getPlanLabel(this.state.clusterPlan),
 					});
 				}
 				if (!clusters.length) {
