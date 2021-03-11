@@ -178,11 +178,6 @@ class ClusterPage extends Component {
 					deleteClusterName: '',
 				});
 				clusters.forEach(async cluster => {
-					console.log(
-						'cluster ==>> ',
-						cluster,
-						getHoursDiff(cluster.created_at),
-					);
 					if (
 						cluster.status === 'active' &&
 						getHoursDiff(cluster.created_at) <= 72

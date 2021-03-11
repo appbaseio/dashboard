@@ -96,17 +96,17 @@ class Directives extends React.Component {
 	openDocs = name => {
 		let url = '';
 		switch (name) {
-			case 'search-app':
+			case PLAY_LISTS.SEARCH_APP:
 				url =
 					'https://docs.appbase.io/docs/reactivesearch/gettingstarted/';
 				break;
-			case 'relevant-search':
+			case PLAY_LISTS.RELEVANT_SEARCH:
 				url = 'https://docs.appbase.io/docs/search/relevancy/';
 				break;
-			case 'search-analytics':
+			case PLAY_LISTS.SEARCH_ANALYTICS:
 				url = 'https://docs.appbase.io/docs/analytics/overview/';
 				break;
-			case 'access-control':
+			case PLAY_LISTS.ACCESS_CONTROL:
 				url = 'https://docs.appbase.io/docs/security/credentials/';
 				break;
 			default:
@@ -119,19 +119,19 @@ class Directives extends React.Component {
 	openPLaylist = name => {
 		let url = '';
 		switch (name) {
-			case 'search-app':
+			case PLAY_LISTS.SEARCH_APP:
 				url =
 					'https://www.youtube.com/playlist?list=PL33Tgi3iO5Fi83YY-weI8oVaWhp_DK_nd';
 				break;
-			case 'relevant-search':
+			case PLAY_LISTS.RELEVANT_SEARCH:
 				url =
 					'https://www.youtube.com/playlist?list=PL33Tgi3iO5FgknACjZYDniot5bWCrShPc';
 				break;
-			case 'search-analytics':
+			case PLAY_LISTS.SEARCH_ANALYTICS:
 				url =
 					'https://www.youtube.com/playlist?list=PL33Tgi3iO5FjZ71-D749Vug1XBH6mrjYC';
 				break;
-			case 'access-control':
+			case PLAY_LISTS.ACCESS_CONTROL:
 				url =
 					'https://www.youtube.com/playlist?list=PL33Tgi3iO5Fg1HZ_8kjq1bNB3WnVJdq22';
 				break;
