@@ -283,7 +283,7 @@ class ClusterScreen extends Component {
 			);
 			const copyURL =
 				source.name === 'kibana'
-					? url
+					? `${protocol}://${url}`
 					: `${protocol}://${username}:${password}@${url}`.replace(
 							/\/$/,
 							'',
@@ -360,7 +360,11 @@ class ClusterScreen extends Component {
 				deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
-					<ArcDetail cluster={cluster} arc={arcDeployment} />
+					<ArcDetail
+						cluster={cluster}
+						arc={arcDeployment}
+						handleDeleteModal={handleDeleteModal}
+					/>
 					{isStripeCheckoutOpen && (
 						<StripeCheckout
 							visible={isStripeCheckoutOpen}

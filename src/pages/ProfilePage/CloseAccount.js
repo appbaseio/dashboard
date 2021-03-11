@@ -27,6 +27,12 @@ const deleteUser = async () => {
 		notification.success({
 			message: data.message,
 		});
+		if (window.Intercom) {
+			window.Intercom('update', {
+				plan: 'free',
+				cluster_plan: 'unsubscribed',
+			});
+		}
 		localStorage.clear();
 		removeAllCookies();
 		window.location.href = logoutURL;
