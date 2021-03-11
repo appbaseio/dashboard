@@ -21,6 +21,7 @@ import {
 	restore,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
 } from '../utils';
 
 const { Option } = Select;
@@ -282,7 +283,7 @@ class ClusterScreen extends Component {
 			);
 			const copyURL =
 				source.name === 'kibana'
-					? url
+					? `${protocol}://${url}`
 					: `${protocol}://${username}:${password}@${url}`.replace(
 							/\/$/,
 							'',
@@ -359,12 +360,19 @@ class ClusterScreen extends Component {
 				deployment.addons.find(addon => addon.name === 'arc');
 			return (
 				<Fragment>
-					<ArcDetail cluster={cluster} arc={arcDeployment} />
+					<ArcDetail
+						cluster={cluster}
+						arc={arcDeployment}
+						handleDeleteModal={handleDeleteModal}
+					/>
 					{isStripeCheckoutOpen && (
 						<StripeCheckout
 							visible={isStripeCheckoutOpen}
 							plan={PLAN_LABEL[cluster.pricing_plan]}
 							price={EFFECTIVE_PRICE_BY_PLANS[
+								cluster.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
 								cluster.pricing_plan
 							].toString()}
 							onCancel={this.handleStripeModal}

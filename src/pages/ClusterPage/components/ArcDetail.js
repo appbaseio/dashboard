@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
 import { Button, notification, Tag, Tooltip, Icon } from 'antd';
 import { get } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import PropTypes from 'prop-types';
 import { updateArcDetails, verifyCluster } from '../utils';
-import { card, clusterEndpoint } from '../styles';
+import { card, clusterEndpoint, clusterButtons } from '../styles';
 import EditableCredentials from './EditableCredentials';
 
 class ArcDetail extends React.Component {
@@ -114,10 +116,7 @@ class ArcDetail extends React.Component {
 			});
 	};
 
-	isButtonDisable = () => {
-		const { cluster } = this.props;
-		const { esURL, verifiedCluster } = this.state;
-	};
+	isButtonDisable = () => {};
 
 	toggleCred = () => {
 		this.setState(state => ({
@@ -144,7 +143,7 @@ class ArcDetail extends React.Component {
 			clusterVersion,
 			showCred,
 		} = this.state;
-		const { arc, cluster } = this.props;
+		const { arc, cluster, handleDeleteModal } = this.props;
 		let isButtonDisable = false;
 		let protocol = '';
 		let url = '';
@@ -305,19 +304,36 @@ class ArcDetail extends React.Component {
 						) : null}
 					</div>
 				</li>
-				<Button
-					disabled={isButtonDisable}
-					size="large"
-					loading={loading}
-					icon="save"
-					type="primary"
-					onClick={this.handleUpdate}
-				>
-					Update Cluster Settings
-				</Button>
+				<div className={clusterButtons}>
+					<Button
+						onClick={handleDeleteModal}
+						type="danger"
+						size="large"
+						icon="delete"
+						className="delete"
+					>
+						Delete Cluster
+					</Button>
+					<Button
+						disabled={isButtonDisable}
+						size="large"
+						loading={loading}
+						icon="save"
+						type="primary"
+						onClick={this.handleUpdate}
+					>
+						Update Cluster Settings
+					</Button>
+				</div>
 			</Fragment>
 		);
 	}
 }
+
+ArcDetail.propTypes = {
+	arc: PropTypes.object,
+	cluster: PropTypes.object,
+	handleDeleteModal: PropTypes.func,
+};
 
 export default ArcDetail;
