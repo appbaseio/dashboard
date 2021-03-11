@@ -69,6 +69,12 @@ const DirectLink = ({ title, href }) => (
 class ConnectCluster extends React.Component {
 	state = { visible: false };
 
+	componentDidMount() {
+		if (new URLSearchParams(window.location.search).get('connect')) {
+			this.showModal();
+		}
+	}
+
 	showModal = () => {
 		this.setState({
 			visible: true,
@@ -83,38 +89,19 @@ class ConnectCluster extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { cluster, deployment, showConnect = true } = this.props;
+		const { cluster, deployment } = this.props;
 		const arcInstance = deployment.addons.find(item => item.name === 'arc');
 		return (
 			<div>
-				{showConnect ? (
-					<Button
-						ghost
-						size="large"
-						style={{ marginRight: 10 }}
-						type="primary"
-						onClick={this.showModal}
-					>
-						Connect
-					</Button>
-				) : (
-					<Button
-						type="primary"
-						className="banner-button"
-						onClick={this.showModal}
-					>
-						<Icon
-							component={() => (
-								<img
-									src="/static/images/buttons/getting-started.svg"
-									style={{ width: '17px' }}
-									alt="getting started"
-								/>
-							)}
-						/>{' '}
-						Get started
-					</Button>
-				)}
+				<Button
+					ghost
+					size="large"
+					style={{ marginRight: 10 }}
+					type="primary"
+					onClick={this.showModal}
+				>
+					Connect
+				</Button>
 				<Modal
 					visible={visible}
 					title="Connect your Cluster"

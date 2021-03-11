@@ -25,6 +25,12 @@ const clusterContainer = css`
 		align-items: center;
 		border: 1px solid #ffae42;
 	}
+	.tag-text {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 500;
+		color: #ffae42;
+	}
 	h2,
 	h3 {
 		font-size: 18px;
@@ -40,12 +46,6 @@ const clusterContainer = css`
 		padding: 0;
 		font-size: 16px;
 		line-height: 26px;
-	}
-	h4 {
-		margin: 0;
-		font-size: 14px;
-		font-weight: 500;
-		color: #ffae42;
 	}
 	.region-container {
 		display: flex;
@@ -507,11 +507,14 @@ const bannerContainer = css`
 		margin-right: 25px;
 	}
 	.banner__text {
-		letter-spacing: 1.5px;
-		line-height: 4.5;
-		font-size: 14px;
-		font-weight: 600;
-		color: #999;
+		letter-spacing: 0.01rem;
+		word-spacing: 0.05em;
+		line-height: 26px;
+		font-size: 16px;
+		color: #595959;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.banner-button {
 		width: 200px;

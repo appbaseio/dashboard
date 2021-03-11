@@ -29,7 +29,6 @@ import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList, bannerContainer } from './styles';
 
 import { regions } from './utils/regions';
-import ConnectCluster from './components/ConnectCluster';
 
 // overiding the fromNow() method in moment to return the diff only in hours
 moment.fn.fromNow = function fromNow() {
@@ -251,7 +250,7 @@ class ClusterPage extends Component {
 				<h3>
 					{cluster.name}
 					{cluster.status === 'failed' &&
-					moment(cluster.created_at).fromNow() <= 72 ? (
+					moment(cluster.created_at).fromNow() <= 72000 ? (
 						<span className="tag tag-issue">
 							<Icon
 								type="warning"
@@ -260,7 +259,7 @@ class ClusterPage extends Component {
 								style={{ fontSize: 18, paddingRight: '10px' }}
 							/>
 							{'  '}
-							<h4>Issue</h4>
+							<h4 className="tag-text">Issue</h4>
 						</span>
 					) : (
 						<span className="tag">
@@ -645,13 +644,31 @@ class ClusterPage extends Component {
 								</div>
 
 								{recentClusterDeployed && (
-									<ConnectCluster
-										cluster={recentClusterDetails.cluster}
-										deployment={
-											recentClusterDetails.deployment
-										}
-										showConnect={false}
-									/>
+									<Link
+										to={`/clusters/${recentClusterDetails.cluster.id}?connect=true`}
+										style={{
+											display: 'flex',
+											justifyContent: 'flex-end',
+										}}
+									>
+										<Button
+											type="primary"
+											className="banner-button"
+										>
+											<Icon
+												component={() => (
+													<img
+														src="/static/images/buttons/getting-started.svg"
+														style={{
+															width: '17px',
+														}}
+														alt="getting started"
+													/>
+												)}
+											/>{' '}
+											Get started
+										</Button>
+									</Link>
 								)}
 							</article>
 						</section>

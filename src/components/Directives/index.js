@@ -7,13 +7,19 @@ const loadButton = css`
 `;
 
 const modalTitle = css`
-	letter-spacing: 1.3px;
+	letter-spacing: 0.01rem;
 	font-size: 1em;
-	font-weight: 600;
-	color: #999;
 	margin: 15px 25px 10px 10px;
 	text-align: center;
 	vertical-align: middle;
+
+	word-spacing: 0.05em;
+	line-height: 26px;
+	font-size: 16px;
+	color: #595959;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 const cardWrapper = css`
@@ -84,7 +90,8 @@ class Directives extends React.Component {
 		let url = '';
 		switch (name) {
 			case 'search-app':
-				url = 'https://docs.appbase.io/docs/gettingstarted/quickstart/';
+				url =
+					'https://docs.appbase.io/docs/reactivesearch/gettingstarted/';
 				break;
 			case 'relevant-search':
 				url = 'https://docs.appbase.io/docs/search/relevancy/';
