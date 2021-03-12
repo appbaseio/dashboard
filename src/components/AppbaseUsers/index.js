@@ -36,25 +36,19 @@ const AppbaseUsers = ({ className, style, title }) => (
 		{title && <h2 css={headingCls}>{title}</h2>}
 		<div className={cx(styles, className)} style={style}>
 			<img
-				src="https://softr-prod.imgix.net/applications/d919d2ef-4bb1-4b91-aa55-6040ea8667e1/assets/3bc243e4-d5dc-4686-885d-6d8064811f93.png"
+				src="/static/images/testimonials/accenture.png"
 				alt="Accenture"
 			/>
 			<img
-				src="https://softr-prod.imgix.net/applications/d919d2ef-4bb1-4b91-aa55-6040ea8667e1/assets/28af582d-3e20-4852-8ded-61ed8e263574.png"
+				src="/static/images/testimonials/changeup.png"
 				alt="Changeup"
 			/>
+			<img src="/static/images/testimonials/decibio.png" alt="Decibio" />
 			<img
-				src="https://softr-prod.imgix.net/applications/d919d2ef-4bb1-4b91-aa55-6040ea8667e1/assets/db7b66d4-95f3-40bd-9ebe-7096bd702e33.png"
-				alt="Decibio"
-			/>
-			<img
-				src="https://softr-prod.imgix.net/applications/d919d2ef-4bb1-4b91-aa55-6040ea8667e1/assets/d2ab811e-e44e-4029-bc15-6bec9ad436f5.png"
+				src="/static/images/testimonials/hirecloud.png"
 				alt="HireCloud"
 			/>
-			<img
-				src="https://softr-prod.imgix.net/applications/d919d2ef-4bb1-4b91-aa55-6040ea8667e1/assets/f87133c4-f57f-41e7-90f8-9940907030fe.png"
-				alt="Rivalry"
-			/>
+			<img src="/static/images/testimonials/rivalry.png" alt="Rivalry" />
 		</div>
 	</React.Fragment>
 );
