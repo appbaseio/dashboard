@@ -10,8 +10,8 @@ const styles = css`
 	align-items: center;
 	margin-top: 20px;
 	img {
-		max-width: 30%;
-		margin: 10px;
+		max-width: 35%;
+		margin: 20px;
 		${media.medium(css`
 			max-width: 30%;
 			margin: 30px 5px;
@@ -23,7 +23,7 @@ const headingCls = css({
 	textAlign: 'center',
 	paddingTop: 10,
 	fontSize: '1.7em',
-	fontWeight: 500,
+	fontWeight: '100 !important',
 	maxWidth: '900px',
 	color: '#232E44',
 	[mediaKey.medium]: {
@@ -35,17 +35,20 @@ const AppbaseUsers = ({ className, style, title }) => (
 	<React.Fragment>
 		{title && <h2 css={headingCls}>{title}</h2>}
 		<div className={cx(styles, className)} style={style}>
-			<img src="/static/images/testimonials/aerial.png" alt="Aerial" />
-			<img src="/static/images/testimonials/helium.png" alt="Helium" />
 			<img
-				src="/static/images/testimonials/inquisit.png"
-				alt="Inquisit"
+				src="/static/images/testimonials/accenture.png"
+				alt="Accenture"
 			/>
-			<img src="/static/images/testimonials/lyearn.png" alt="Lyearn" />
 			<img
-				src="/static/images/testimonials/shopelect.png"
-				alt="Shopelect"
+				src="/static/images/testimonials/changeup.png"
+				alt="Changeup"
 			/>
+			<img src="/static/images/testimonials/decibio.png" alt="Decibio" />
+			<img
+				src="/static/images/testimonials/hirecloud.png"
+				alt="HireCloud"
+			/>
+			<img src="/static/images/testimonials/rivalry.png" alt="Rivalry" />
 		</div>
 	</React.Fragment>
 );
