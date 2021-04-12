@@ -388,9 +388,9 @@ export function deployMyCluster(body) {
 	});
 }
 
-export function verifyCluster(url) {
-	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/_verify_es_connection`, {
+export async function verifyCluster(url) {
+	try {
+		const res = await fetch(`${ACC_API}/v1/_verify_es_connection`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -399,36 +399,39 @@ export function verifyCluster(url) {
 			body: JSON.stringify({
 				elasticsearch_url: url,
 			}),
-		})
-			.then(res => res.json())
-			.then(data => {
-				if (
-					data.version &&
-					parseInt(data.version.number.split('.')[0], 10) < 6
-				) {
-					reject(
-						new Error(
-							'Appbase.io is only supported for ElasticSearch version >= 6',
-						),
-					);
-				} else if (data.error) {
-					reject(new Error(`${data.error.reason}`));
-				} else {
-					resolve(data);
-				}
-			})
-			.catch(e => {
-				if (e.error && e.error.message) {
-					reject(e.error.message);
-				} else {
-					reject(
-						new Error(
-							'Connection Failed. Make sure the details you entered are correct.',
-						),
-					);
-				}
-			});
-	});
+		});
+
+		if (res.status >= 400 && res.status < 500) {
+			const textData = await res.text();
+			throw new Error(`${res.status}: ${textData}`);
+		}
+
+		if (res.status >= 500) {
+			const jsonData = await res.json();
+			throw new Error(`${res.status}: ${jsonData.message}`);
+		}
+
+		const data = await res.json();
+		if (
+			data.version &&
+			parseInt(data.version.number.split('.')[0], 10) < 6
+		) {
+			throw new Error(
+				'Appbase.io is only supported for ElasticSearch version >= 6',
+			);
+		} else if (data.error) {
+			throw new Error(`${data.error.reason}`);
+		}
+		return data;
+	} catch (err) {
+		if (err.error && err.error.message) {
+			throw err.error.message;
+		} else {
+			throw new Error(
+				`Connection failed with error: ${err.message}\n Make sure the details you entered are correct.`,
+			);
+		}
+	}
 }
 
 export function updateArcDetails(id, body) {
