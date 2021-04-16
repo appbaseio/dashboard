@@ -55,6 +55,7 @@ class ClusterScreen extends Component {
 			isSnapshotsLoading: false,
 			restore_from: null,
 			snapshot_id: null,
+			repository_name: null,
 			isRestoring: false,
 			visualization,
 			isStripeCheckoutOpen: false,
@@ -104,23 +105,27 @@ class ClusterScreen extends Component {
 	};
 
 	handleSnapshot = value => {
+		const split = value.split(`___`);
 		this.setState({
-			snapshot_id: value,
+			snapshot_id: split[0],
+			repository_name: split[1],
 		});
 	};
 
-	fetchClusterSnapshots = restoreId => {
-		const { clusterId } = this.props;
+	fetchClusterSnapshots = restoreFrom => {
 		this.setState({
 			isSnapshotsLoading: true,
 		});
-		getSnapshots(clusterId, restoreId)
+		getSnapshots(restoreFrom)
 			.then(snapshots => {
 				this.setState({
 					snapshotsAvailable: !!snapshots.length,
 					snapshots,
 					isSnapshotsLoading: false,
 				});
+				if (!snapshots.length) {
+					message.info(`No snapshots found`);
+				}
 			})
 			.catch(e => {
 				console.error(e);
@@ -131,14 +136,14 @@ class ClusterScreen extends Component {
 	};
 
 	restoreCluster = () => {
-		const { restore_from, snapshot_id } = this.state;
+		const { restore_from, snapshot_id, repository_name } = this.state;
 		const { clusterId } = this.props;
 
 		this.setState({
 			isRestoring: true,
 		});
 
-		restore(clusterId, restore_from, snapshot_id)
+		restore(clusterId, restore_from, snapshot_id, repository_name)
 			.then(response => {
 				if (response.status.code >= 400) {
 					notification.error({
@@ -530,9 +535,11 @@ class ClusterScreen extends Component {
 							placeholder="Select a cluster"
 							onChange={this.handleCluster}
 						>
-							{this.state.clusters.map(item => (
-								<Option key={item.id}>{item.name}</Option>
-							))}
+							{this.state.clusters
+								.filter(i => i.recipe === 'default')
+								.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
 						</Select>
 						{this.state.isSnapshotsLoading && (
 							<p>Snapshots Loading</p>
@@ -551,7 +558,10 @@ class ClusterScreen extends Component {
 									.sort(item => +item.id)
 									.reverse()
 									.map(item => (
-										<Option key={item.id}>
+										<Option
+											key={`${item.id}___${item.repository_name}`}
+											value={`${item.id}___${item.repository_name}`}
+										>
 											{new Date(
 												+item.id * 1000,
 											).toString()}
