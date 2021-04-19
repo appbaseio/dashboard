@@ -96,18 +96,6 @@ class ClusterInfo extends Component {
 		clearTimeout(this.statusTimer);
 	}
 
-	getFromPricing = (plan, key) => {
-		const allMarks = ansibleMachineMarks;
-
-		const selectedPlan = (
-			Object.values(
-				allMarks[get(this, 'state.cluster.provider', 'azure')],
-			) || []
-		).find(item => item.plan === plan || item.plan.endsWith(plan));
-
-		return (selectedPlan ? selectedPlan[key] : '-') || '-';
-	};
-
 	init = () => {
 		getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
@@ -281,7 +269,7 @@ class ClusterInfo extends Component {
 	handleArcUpgrade = async () => {
 		try {
 			const {
-				cluster: { id, recipe, pricing_plan },
+				cluster: { id, recipe },
 			} = this.state;
 			this.setState({
 				isLoading: true,
@@ -494,20 +482,14 @@ class ClusterInfo extends Component {
 		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
 		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
 
-		let allMarks = ansibleMachineMarks.gke;
+		let allMarks = ansibleMachineMarks;
 
 		// override plans for byoc cluster even though they are deployed using ansible
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
 		}
 
-		const planDetails = Object.values(allMarks).find(
-			mark =>
-				mark.plan === this.state.cluster.pricing_plan ||
-				mark.plan.endsWith(this.state.cluster.pricing_plan) ||
-				mark.plan.startsWith(this.state.cluster.pricing_plan),
-		);
-
+		const planDetails = allMarks[this.state.cluster.pricing_plan];
 		const arcDeployment =
 			deployment &&
 			deployment.addons &&
@@ -610,13 +592,13 @@ class ClusterInfo extends Component {
 
 										{isExternalCluster ? null : (
 											<div>
-												<h4>Memory</h4>
+												<h4>Memory / Per Node</h4>
 												<div>
-													{this.getFromPricing(
-														this.state.cluster
-															.pricing_plan,
-														'memory',
-													)}{' '}
+													{get(
+														ansibleMachineMarks,
+														`${this.state.cluster.pricing_plan}.memory`,
+														'',
+													)}
 													GB
 												</div>
 											</div>
@@ -624,13 +606,13 @@ class ClusterInfo extends Component {
 
 										{isExternalCluster ? null : (
 											<div>
-												<h4>Disk Size</h4>
+												<h4>Disk Size / Per Node</h4>
 												<div>
-													{this.getFromPricing(
-														this.state.cluster
-															.pricing_plan,
-														'storage',
-													)}{' '}
+													{get(
+														ansibleMachineMarks,
+														`${this.state.cluster.pricing_plan}.storagePerNode`,
+														'',
+													)}
 													GB
 												</div>
 											</div>

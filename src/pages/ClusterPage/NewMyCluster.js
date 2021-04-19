@@ -28,27 +28,54 @@ import { ARC_BYOC } from './new';
 const { TabPane } = Tabs;
 
 export const machineMarks = {
-	0: {
-		label: 'Basic',
+	[ARC_PLANS.HOSTED_ARC_BASIC]: {
+		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_BASIC],
 		nodes: 1,
-		cost: 29,
-		plan: 'hosted-arc-basic-v2',
-		pph: 0.04,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC],
+		plan: ARC_PLANS.HOSTED_ARC_BASIC,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC],
 	},
-	50: {
-		label: 'Standard',
-		nodes: 3,
-		cost: 89,
-		plan: 'hosted-arc-standard',
-		pph: 0.12,
+	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: {
+		label: ARC_PLANS[ARC_PLANS.HOSTED_ARC_BASIC_V2],
+		nodes: 1,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC_V2],
+		plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC_V2],
 	},
-	100: {
-		label: 'Enterprise',
-		plan: 'hosted-arc-enterprise',
-		nodes: 10,
-		cost: 599,
-		pph: 0.83,
+	[ARC_PLANS.HOSTED_ARC_STANDARD]: {
+		label: ARC_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD],
+		nodes: 1,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD],
+		plan: ARC_PLANS.HOSTED_ARC_STANDARD,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD],
 	},
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: {
+		label: ARC_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
+		nodes: 1,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
+		plan: ARC_PLANS.HOSTED_ARC_ENTERPRISE,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
+	},
+	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: {
+		label: ARC_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
+		nodes: 1,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
+		plan: ARC_PLANS.HOSTED_ARC_STANDARD_2021,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
+	},
+	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: {
+		label: ARC_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
+		nodes: 1,
+		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
+		plan: ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021,
+		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
+	},
+};
+
+export const priceSlider = {
+	0: machineMarks[ARC_PLANS.HOSTED_ARC_BASIC_V2],
+	50: machineMarks[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
+	100: machineMarks[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
 };
 
 const namingConvention = {
@@ -65,7 +92,7 @@ class NewMyCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			clusterURL: '',
-			pricing_plan: machineMarks[0].plan,
+			pricing_plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
 			region: 'us-central1',
 			verifyingURL: false,
 			error: '',
@@ -430,8 +457,12 @@ class NewMyCluster extends Component {
 									{isUsingClusterTrial ? (
 										<p>
 											<b>Note: </b>You can only create{' '}
-											{machineMarks[0].label} Cluster
-											while on trial.
+											{
+												machineMarks[
+													this.state.pricing_plan
+												].label
+											}{' '}
+											Cluster while on trial.
 										</p>
 									) : null}
 								</div>
@@ -440,7 +471,7 @@ class NewMyCluster extends Component {
 									sliderProps={{
 										disabled: isUsingClusterTrial,
 									}}
-									marks={machineMarks}
+									marks={priceSlider}
 									onChange={this.setPricing}
 									showNoCardNeeded={
 										isUsingClusterTrial &&
