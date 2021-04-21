@@ -559,7 +559,7 @@ class ClusterScreen extends Component {
 										key={`${item.id}___${item.repository_name}`}
 										value={`${item.id}___${item.repository_name}`}
 									>
-										{new Date(+item.id * 1000).toString()}
+										{new Date(+item.id * 1000).toString().substring(0, 15)}
 									</Option>
 								))}
 							</Select>
