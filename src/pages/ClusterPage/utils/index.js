@@ -133,7 +133,11 @@ export function getSnapshots(cluster) {
 		})
 			.then(res => res.json())
 			.then(data => {
-				resolve(data.snapshots);
+				let snapshots = [...data.snapshots];
+				snapshots = snapshots.sort(
+					(a, b) => Number(b.id) - Number(a.id),
+				);
+				resolve(snapshots);
 			})
 			.catch(e => {
 				reject(e);

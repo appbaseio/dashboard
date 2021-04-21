@@ -554,19 +554,14 @@ class ClusterScreen extends Component {
 								placeholder="Select a snapshot"
 								onChange={this.handleSnapshot}
 							>
-								{this.state.snapshots
-									.sort(item => +item.id)
-									.reverse()
-									.map(item => (
-										<Option
-											key={`${item.id}___${item.repository_name}`}
-											value={`${item.id}___${item.repository_name}`}
-										>
-											{new Date(
-												+item.id * 1000,
-											).toString()}
-										</Option>
-									))}
+								{this.state.snapshots.map(item => (
+									<Option
+										key={`${item.id}___${item.repository_name}`}
+										value={`${item.id}___${item.repository_name}`}
+									>
+										{new Date(+item.id * 1000).toString()}
+									</Option>
+								))}
 							</Select>
 						)}
 
