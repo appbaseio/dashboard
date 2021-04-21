@@ -122,9 +122,9 @@ export function getClusterInvoice(id) {
 	});
 }
 
-export function getSnapshots(cluster, restoreFrom) {
+export function getSnapshots(cluster) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/snapshots/${cluster}/repository/${restoreFrom}`, {
+		fetch(`${ACC_API}/v1/_snapshots/${cluster}`, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
@@ -133,7 +133,11 @@ export function getSnapshots(cluster, restoreFrom) {
 		})
 			.then(res => res.json())
 			.then(data => {
-				resolve(data.snapshots);
+				let snapshots = [...data.snapshots];
+				snapshots = snapshots.sort(
+					(a, b) => Number(b.id) - Number(a.id),
+				);
+				resolve(snapshots);
 			})
 			.catch(e => {
 				reject(e);
@@ -141,14 +145,15 @@ export function getSnapshots(cluster, restoreFrom) {
 	});
 }
 
-export function restore(cluster, restoreFrom, snapshot_id) {
+export function restore(cluster, restoreFrom, snapshot_id, repository) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/restore/${cluster}/repository/${restoreFrom}`, {
+		fetch(`${ACC_API}/v1/_restore/${restoreFrom}/${cluster}`, {
 			method: 'POST',
 			credentials: 'include',
 			body: JSON.stringify({
 				snapshot_id,
 				indices: '-.*',
+				repository_name: repository,
 			}),
 			headers: {
 				'Content-Type': 'application/json',

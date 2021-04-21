@@ -1118,11 +1118,13 @@ class NewCluster extends Component {
 										placeholder="Select a cluster"
 										onChange={this.handleCluster}
 									>
-										{this.state.clusters.map(item => (
-											<Option key={item.id}>
-												{item.name}
-											</Option>
-										))}
+										{activeClusters
+											.filter(i => i.recipe === 'default')
+											.map(item => (
+												<Option key={item.id}>
+													{item.name}
+												</Option>
+											))}
 									</Select>
 								</div>
 							</div>
