@@ -99,14 +99,8 @@ class ClusterPage extends Component {
 		}));
 	};
 
-	getFromPricing = (plan, key, provider = 'azure') => {
-		const allMarks = get(ansibleMachineMarks, provider);
-
-		const selectedPlan = Object.values(allMarks).find(
-			item =>
-				get(item, 'plan') === plan ||
-				get(item, 'plan', '').endsWith(plan),
-		);
+	getFromPricing = (plan, key) => {
+		const selectedPlan = get(ansibleMachineMarks, plan);
 		return get(selectedPlan, key, '-');
 	};
 
@@ -223,7 +217,7 @@ class ClusterPage extends Component {
 		}
 	};
 
-	renderClusterRegion = (region, provider = 'azure') => {
+	renderClusterRegion = (region, provider = 'gke') => {
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -271,19 +265,14 @@ class ClusterPage extends Component {
 		const { isUsingClusterTrial } = this.props;
 		const { showStripeModal, currentCluster } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
-		let allMarks = ansibleMachineMarks.gke;
+		let allMarks = ansibleMachineMarks;
 
 		// override plans for byoc cluster
 		if (isExternalCluster) {
 			allMarks = arcMachineMarks;
 		}
 
-		const planDetails = Object.values(allMarks).find(
-			mark =>
-				mark.plan === cluster.pricing_plan ||
-				mark.plan.endsWith(cluster.pricing_plan) ||
-				mark.plan.startsWith(cluster.pricing_plan),
-		);
+		const planDetails = allMarks[cluster.pricing_plan];
 		const paymentStyles = isExternalCluster
 			? {
 					paddingLeft: '25%',
@@ -393,7 +382,6 @@ class ClusterPage extends Component {
 								{this.getFromPricing(
 									cluster.pricing_plan,
 									'memory',
-									cluster.provider,
 								)}{' '}
 								GB
 							</div>
@@ -407,7 +395,6 @@ class ClusterPage extends Component {
 								{this.getFromPricing(
 									cluster.pricing_plan,
 									'storage',
-									cluster.provider,
 								)}{' '}
 								GB
 							</div>

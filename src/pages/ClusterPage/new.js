@@ -49,212 +49,147 @@ export const arcVersions = {
 	1: V7_ARC,
 	/* odfe versions end */
 };
-export const machineMarks = {
-	gke: {
-		0: {
-			label: 'Sandbox',
-			plan: '2019-sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cpu: 2,
-			cost: 49,
-			machine: 'custom-2-4096',
-			pph: 0.07,
-		},
-		20: {
-			label: 'Hobby',
-			plan: '2019-hobby',
-			storage: 60,
-			memory: 4,
-			nodes: 2,
-			cpu: 2,
-			cost: 99,
-			machine: 'custom-2-4096',
-			pph: 0.14,
-		},
-		40: {
-			label: 'Starter',
-			plan: '2019-starter',
-			storage: 120,
-			memory: 4,
-			nodes: 3,
-			cpu: 2,
-			cost: 149,
-			machine: 'custom-2-4096',
-			pph: 0.2,
-		},
-		60: {
-			label: 'Production-I',
-			plan: '2019-production-1',
-			storage: 480,
-			memory: 16,
-			nodes: 3,
-			cpu: 4,
-			cost: 799,
-			machine: 'n1-standard-4',
-			pph: 1.11,
-		},
-		80: {
-			label: 'Production-II',
-			plan: '2019-production-2',
-			storage: 999,
-			memory: 32,
-			nodes: 3,
-			cpu: 8,
-			cost: 1599,
-			machine: 'n1-standard-8',
-			pph: 2.22,
-		},
-		100: {
-			label: 'Production-III',
-			plan: '2019-production-3',
-			storage: 2997,
-			memory: 64,
-			nodes: 3,
-			cpu: 16,
-			cost: 3199,
-			pph: 4.44,
-		},
+
+export const ansibleMachineMarks = {
+	[CLUSTER_PLANS.SANDBOX_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.SANDBOX_2020],
+		plan: CLUSTER_PLANS.SANDBOX_2020,
+		storage: 30,
+		memory: 4,
+		nodes: 1,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
+		gkeMachine: 'custom-2-4096',
+		awsMachine: 't3.medium',
+		storagePerNode: 30,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
+	},
+	[CLUSTER_PLANS.HOBBY_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.HOBBY_2020],
+		plan: CLUSTER_PLANS.HOBBY_2020,
+		storage: 60,
+		memory: 4,
+		nodes: 2,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
+		gkeMachine: 'custom-2-4096',
+		awsMachine: 't3.medium',
+		storagePerNode: 30,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
+	},
+	[CLUSTER_PLANS.STARTER_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2020],
+		plan: CLUSTER_PLANS.STARTER_2020,
+		storage: 120,
+		memory: 4,
+		nodes: 3,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
+		gkeMachine: 'custom-2-4096',
+		awsMachine: 't3.medium',
+		storagePerNode: 40,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_1],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_1,
+		storage: 480,
+		memory: 1,
+		nodes: 3,
+		cpu: 4,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
+		gkeMachine: 'e2-standard-4',
+		awsMachine: 't3.xlarge',
+		storagePerNode: 160,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_2],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_2,
+		storage: 999,
+		memory: 32,
+		nodes: 3,
+		cpu: 8,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
+		gkeMachine: 'e2-standard-8',
+		awsMachine: 't3.2xlarge',
+		storagePerNode: 333,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_3],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_3,
+		storage: 2997,
+		memory: 64,
+		nodes: 3,
+		cpu: 16,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
+		gkeMachine: 'e2-standard-16',
+		awsMachine: 'm5a.4xlarge',
+		storagePerNode: 999,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
+	},
+	[CLUSTER_PLANS.STARTER_2021]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2021],
+		plan: CLUSTER_PLANS.STARTER_2021,
+		storage: 240,
+		memory: 8,
+		nodes: 3,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
+		gkeMachine: 'e2-standard-2',
+		awsMachine: 't3.large',
+		storagePerNode: 80,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_1]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_1],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_1,
+		storage: 480,
+		memory: 1,
+		nodes: 3,
+		cpu: 4,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
+		gkeMachine: 'e2-standard-4',
+		awsMachine: 't3.xlarge',
+		storagePerNode: 160,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_2]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_2],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_2,
+		storage: 999,
+		memory: 32,
+		nodes: 3,
+		cpu: 8,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
+		gkeMachine: 'e2-standard-8',
+		awsMachine: 't3.2xlarge',
+		storagePerNode: 333,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_3]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_3],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_3,
+		storage: 2997,
+		memory: 64,
+		nodes: 3,
+		cpu: 16,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
+		gkeMachine: 'e2-standard-16',
+		awsMachine: 'm5a.4xlarge',
+		storagePerNode: 999,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
 	},
 };
-export const ansibleMachineMarks = {
-	aws: {
-		0: {
-			label: 'Sandbox',
-			plan: '2020-sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cpu: 2,
-			cost: 49,
-			machine: 't3.medium',
-			pph: 0.07,
-		},
-		20: {
-			label: 'Hobby',
-			plan: '2020-hobby',
-			storage: 60,
-			memory: 4,
-			nodes: 2,
-			cpu: 2,
-			cost: 99,
-			machine: 't3.medium',
-			pph: 0.14,
-		},
-		40: {
-			label: 'Starter',
-			plan: '2020-starter',
-			storage: 120,
-			memory: 4,
-			nodes: 3,
-			cpu: 2,
-			cost: 149,
-			machine: 't3.medium',
-			pph: 0.21,
-		},
-		60: {
-			label: 'Production-I',
-			plan: '2019-production-1',
-			storage: 480,
-			memory: 16,
-			nodes: 3,
-			cpu: 4,
-			cost: 799,
-			machine: 't3.xlarge',
-			pph: 1.11,
-		},
-		80: {
-			label: 'Production-II',
-			plan: '2019-production-2',
-			storage: 999,
-			memory: 32,
-			nodes: 3,
-			cpu: 8,
-			cost: 1599,
-			machine: 't3.2xlarge',
-			pph: 2.22,
-		},
-		100: {
-			label: 'Production-III',
-			plan: '2019-production-3',
-			storage: 2997,
-			memory: 64,
-			nodes: 3,
-			cpu: 16,
-			cost: 3199,
-			machine: 'm5a.4xlarge',
-			pph: 4.44,
-		},
-	},
-	gke: {
-		0: {
-			label: 'Sandbox',
-			plan: '2020-sandbox',
-			storage: 30,
-			memory: 4,
-			nodes: 1,
-			cpu: 2,
-			cost: 49,
-			machine: 'custom-2-4096',
-			pph: 0.07,
-		},
-		20: {
-			label: 'Hobby',
-			plan: '2020-hobby',
-			storage: 60,
-			memory: 4,
-			nodes: 2,
-			cpu: 2,
-			cost: 99,
-			machine: 'custom-2-4096',
-			pph: 0.14,
-		},
-		40: {
-			label: 'Starter',
-			plan: '2020-starter',
-			storage: 120,
-			memory: 4,
-			nodes: 3,
-			cpu: 2,
-			cost: 149,
-			machine: 'custom-2-4096',
-			pph: 0.21,
-		},
-		60: {
-			label: 'Production-I',
-			plan: '2019-production-1',
-			storage: 480,
-			memory: 16,
-			nodes: 3,
-			cpu: 4,
-			cost: 799,
-			machine: 'e2-standard-4',
-			pph: 1.11,
-		},
-		80: {
-			label: 'Production-II',
-			plan: '2019-production-2',
-			storage: 999,
-			memory: 32,
-			nodes: 3,
-			cpu: 8,
-			cost: 1599,
-			machine: 'e2-standard-8',
-			pph: 2.22,
-		},
-		100: {
-			label: 'Production-III',
-			plan: '2019-production-3',
-			storage: 2997,
-			memory: 64,
-			nodes: 3,
-			cpu: 16,
-			cost: 3199,
-			machine: 'e2-standard-16',
-			pph: 4.44,
-		},
-	},
+
+export const machineMarks = {
+	0: ansibleMachineMarks[CLUSTER_PLANS.SANDBOX_2020],
+	20: ansibleMachineMarks[CLUSTER_PLANS.HOBBY_2020],
+	40: ansibleMachineMarks[CLUSTER_PLANS.STARTER_2021],
+	60: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_1],
+	80: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_2],
+	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
 };
 
 const validOpenFaasPlans = [
@@ -275,13 +210,17 @@ class NewCluster extends Component {
 		});
 
 		const provider = 'gke';
+		const pricing_plan = CLUSTER_PLANS.SAN;
 
 		this.state = {
 			isLoading: false,
 			clusterName: '',
 			clusterVersion: esVersions[0],
-			pricing_plan: get(ansibleMachineMarks, `${provider}[0].plan`),
-			vm_size: get(ansibleMachineMarks, `${provider}[0].machine`),
+			pricing_plan,
+			vm_size: get(
+				ansibleMachineMarks[pricing_plan],
+				`${provider}Machine`,
+			),
 			region: 'us-central1',
 			vm_machine: 0,
 			kibana: false,
@@ -334,31 +273,22 @@ class NewCluster extends Component {
 			});
 	}
 
-	componentDidUpdate(_, prevState) {
-		const { provider } = this.state;
-		if (prevState.provider !== provider) {
-			const [currentMachine] = Object.entries(
-				get(ansibleMachineMarks, `${prevState.provider}`),
-			).find(
-				item =>
-					item[0] === prevState.vm_machine.toString() &&
-					item[1].machine === prevState.vm_size,
-			);
-			// eslint-disable-next-line
-			this.setState({
-				pricing_plan: get(
-					ansibleMachineMarks,
-					`${provider}.${currentMachine}.plan`,
-				),
-				vm_size: get(
-					ansibleMachineMarks,
-					`${provider}.${currentMachine}.machine`,
-				),
-				region: '',
-				vm_machine: prevState.vm_machine,
-			});
-		}
-	}
+	handleProviderChange = provider => {
+		this.setState(currentState => {
+			if (currentState.provider !== provider) {
+				return {
+					provider,
+					vm_size: get(
+						ansibleMachineMarks[currentState.pricing_plan],
+						`${provider}Machine`,
+					),
+					region: provider === 'gke' ? 'us-central1' : 'us-east-1',
+				};
+			}
+
+			return currentState;
+		});
+	};
 
 	setConfig = (type, value) => {
 		this.setState({
@@ -367,8 +297,9 @@ class NewCluster extends Component {
 	};
 
 	setPricing = (plan, machine) => {
+		const { provider } = this.state;
 		this.setState({
-			vm_size: plan.machine,
+			vm_size: get(plan, `${provider}Machine`),
 			pricing_plan: plan.plan,
 			vm_machine: machine,
 		});
@@ -426,9 +357,8 @@ class NewCluster extends Component {
 				return;
 			}
 
-			const selectedMachine = Object.values(
-				ansibleMachineMarks[this.state.provider],
-			).find(item => item.plan === this.state.pricing_plan);
+			const selectedMachine =
+				ansibleMachineMarks[this.state.pricing_plan];
 
 			const arcTag =
 				arcVersions[this.state.clusterVersion.split('.')[0]] ||
@@ -752,9 +682,7 @@ class NewCluster extends Component {
 								</div>
 								<PricingSlider
 									key={this.state.provider}
-									marks={
-										ansibleMachineMarks[this.state.provider]
-									}
+									marks={machineMarks}
 									onChange={this.setPricing}
 									showNoCardNeeded={
 										isUsingClusterTrial &&
@@ -790,10 +718,7 @@ class NewCluster extends Component {
 														: '#fff',
 											}}
 											onClick={() =>
-												this.setConfig(
-													'provider',
-													'gke',
-												)
+												this.handleProviderChange('gke')
 											}
 										>
 											<img
@@ -817,10 +742,7 @@ class NewCluster extends Component {
 														: '#fff',
 											}}
 											onClick={() =>
-												this.setConfig(
-													'provider',
-													'aws',
-												)
+												this.handleProviderChange('aws')
 											}
 										>
 											<img
