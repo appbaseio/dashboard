@@ -54,6 +54,7 @@ class ClusterPage extends Component {
 			recentClusterDetails: {},
 			paidPlan: false,
 			clusterPlan: 'unsubscribed',
+			isFetchingInBackground: false,
 		};
 	}
 
@@ -170,42 +171,53 @@ class ClusterPage extends Component {
 					this.props.history.push('/clusters/new');
 					return;
 				}
-				this.setState({
-					clustersAvailable: !!clusters.length,
-					clusters,
-					isLoading: false,
-					deleteClusterId: '',
-					deleteClusterName: '',
-				});
-				clusters.forEach(async cluster => {
-					if (
-						cluster.status === 'active' &&
-						getHoursDiff(cluster.created_at) <= 72
-					) {
-						const data = await getClusterData(cluster.id);
-						if (data && data.cluster && data.deployment) {
-							this.setState(() => ({
-								recentClusterDeployed: true,
-								recentClusterDetails: {
-									cluster: data.cluster,
-									deployment: data.deployment,
-								},
-							}));
+				this.setState(
+					{
+						clustersAvailable: !!clusters.length,
+						clusters,
+						isLoading: false,
+						deleteClusterId: '',
+						deleteClusterName: '',
+						isFetchingInBackground: false,
+					},
+					() => {
+						clusters.forEach(async cluster => {
+							if (
+								cluster.status === 'active' &&
+								getHoursDiff(cluster.created_at) <= 72
+							) {
+								const data = await getClusterData(cluster.id);
+								if (data && data.cluster && data.deployment) {
+									this.setState(() => ({
+										recentClusterDeployed: true,
+										recentClusterDetails: {
+											cluster: data.cluster,
+											deployment: data.deployment,
+										},
+									}));
+								}
+							}
+						});
+						const hasInProgressCluster = clusters.some(cluster =>
+							get(cluster, 'status', '').endsWith('in progress'),
+						);
+						if (
+							hasInProgressCluster &&
+							!this.state.isFetchingInBackground
+						) {
+							this.setState({
+								isFetchingInBackground: true,
+							});
+							this.timer = setTimeout(this.initClusters, 30000);
 						}
-					}
-				});
-				clusters.every(cluster => {
-					if (get(cluster, 'status', '').endsWith('in progress')) {
-						this.timer = setTimeout(this.initClusters, 30000);
-						return false;
-					}
-					return true;
-				});
+					},
+				);
 			})
 			.catch(e => {
 				console.error(e);
 				this.setState({
 					isLoading: false,
+					isFetchingInBackground: false,
 				});
 			});
 	};
