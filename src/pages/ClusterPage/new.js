@@ -210,7 +210,7 @@ class NewCluster extends Component {
 		});
 
 		const provider = 'gke';
-		const pricing_plan = CLUSTER_PLANS.SAN;
+		const pricing_plan = CLUSTER_PLANS.SANDBOX_2020;
 
 		this.state = {
 			isLoading: false,
