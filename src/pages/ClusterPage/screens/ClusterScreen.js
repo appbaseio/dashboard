@@ -22,6 +22,7 @@ import {
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
+	rotateAPICredentials,
 } from '../utils';
 
 const { Option } = Select;
@@ -327,6 +328,8 @@ class ClusterScreen extends Component {
 					<CredentialsBox
 						name={name}
 						text={`${username}:${password}`}
+						rotateAPICredentials={rotateAPICredentials}
+						clusterId={this.props.clusterId}
 					/>
 				</div>
 			);
@@ -559,7 +562,9 @@ class ClusterScreen extends Component {
 										key={`${item.id}___${item.repository_name}`}
 										value={`${item.id}___${item.repository_name}`}
 									>
-										{new Date(+item.id * 1000).toString().substring(0, 15)}
+										{new Date(+item.id * 1000)
+											.toString()
+											.substring(0, 15)}
 									</Option>
 								))}
 							</Select>

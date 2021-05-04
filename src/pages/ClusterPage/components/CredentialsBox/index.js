@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, message } from 'antd';
-import { string } from 'prop-types';
+import { Icon, message, Popover, Button } from 'antd';
+import { string, func } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { credsBox } from '../../styles';
+import { credsBox, confirmationBox } from '../../styles';
 
 export default class CredentialsBox extends Component {
 	constructor(props) {
@@ -10,8 +10,20 @@ export default class CredentialsBox extends Component {
 
 		this.state = {
 			hidden: props.hidden || true,
+			confirmationBoxVisible: false,
+			displayText: undefined,
 		};
 	}
+
+	hideConfirmationBox = () => {
+		this.setState({
+			confirmationBoxVisible: false,
+		});
+	};
+
+	handleVisibleChange = visible => {
+		this.setState({ confirmationBoxVisible: visible });
+	};
 
 	toggleHidden = () => {
 		this.setState(state => ({
@@ -24,9 +36,95 @@ export default class CredentialsBox extends Component {
 		message.success(`${source} credentials have been copied successully!`);
 	};
 
+	updateAPICredentials = async (type, clusterId, rotateAPICredentials) => {
+		this.hideConfirmationBox();
+		const res = await rotateAPICredentials(type, clusterId);
+		const { status, username, password } = res;
+		this.setState({
+			displayText: `${username}:${password}`,
+		});
+		if (status.code < 300) {
+			// eslint-disable-next-line
+			message.success(`${type} ${status.message}!`);
+		} else {
+			// eslint-disable-next-line
+			message.error(`${type} ${status.message}!`);
+		}
+	};
+
+	renderConfirmationBox = (type, rotateAPICredentials, clusterId) => {
+		return (
+			<Popover
+				content={
+					<div className={confirmationBox}>
+						<div className="confirmation-header">
+							<span className="icon-wrapper">
+								<Icon
+									type="warning"
+									theme="outlined"
+									className="icon"
+								/>
+							</span>
+							Warning
+						</div>
+						<div className="confirmation-text">
+							Rotating API credentials will invalidate the current
+							API credential. Do you still want to proceed?
+						</div>
+						<div className="buttons-wrapper">
+							<div>
+								<Button
+									type="danger"
+									ghost
+									size="small"
+									className="cancel-button"
+									onClick={this.hideConfirmationBox}
+								>
+									<span className="button-text">Cancel</span>
+								</Button>
+							</div>
+							<div>
+								<Button
+									type="primary"
+									size="small"
+									onClick={() =>
+										this.updateAPICredentials(
+											type,
+											clusterId,
+											rotateAPICredentials,
+										)
+									}
+									className="confirm-button"
+								>
+									<span className="button-text">Confirm</span>
+								</Button>
+							</div>
+						</div>
+					</div>
+				}
+				trigger="click"
+				visible={this.state.confirmationBoxVisible}
+				onVisibleChange={this.handleVisibleChange}
+			>
+				<Icon
+					type="sync"
+					theme="outlined"
+					style={{ color: '#ff0000' }}
+				/>
+			</Popover>
+		);
+	};
+
 	render() {
-		const { hidden } = this.state;
-		const { text, name, isEditable, inputRef } = this.props;
+		const { hidden, displayText } = this.state;
+		const {
+			text,
+			name,
+			isEditable,
+			inputRef,
+			rotateAPICredentials,
+			clusterId,
+		} = this.props;
 
 		return (
 			<div className={credsBox}>
@@ -35,7 +133,9 @@ export default class CredentialsBox extends Component {
 						className="cred-text"
 						ref={inputRef}
 						contentEditable
-						dangerouslySetInnerHTML={{ __html: text }}
+						dangerouslySetInnerHTML={{
+							__html: displayText || text,
+						}}
 					/>
 				) : (
 					<span
@@ -44,7 +144,7 @@ export default class CredentialsBox extends Component {
 					>
 						{hidden
 							? '#######################################'
-							: text}
+							: displayText || text}
 					</span>
 				)}
 
@@ -70,6 +170,13 @@ export default class CredentialsBox extends Component {
 							<span className="cred-button-text">Copy</span>
 						</a>
 					</CopyToClipboard>
+					<span>
+						{this.renderConfirmationBox(
+							name,
+							rotateAPICredentials,
+							clusterId,
+						)}
+					</span>
 				</span>
 			</div>
 		);
@@ -79,4 +186,5 @@ export default class CredentialsBox extends Component {
 CredentialsBox.propTypes = {
 	text: string.isRequired,
 	name: string.isRequired,
+	rotateAPICredentials: func.isRequired,
 };

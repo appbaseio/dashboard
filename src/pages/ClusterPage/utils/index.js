@@ -547,3 +547,78 @@ export const hasAddon = (item, source) =>
 	!!(source.addons || []).find(key => key.name === item);
 export const getAddon = (item, source) =>
 	(source.addons || []).find(key => key.name === item);
+const generateRandomString = length => {
+	const chars =
+		'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	let result = '';
+	for (let i = length; i > 0; i -= 1)
+		result += chars[Math.floor(Math.random() * chars.length)];
+	return result;
+};
+
+export const rotateAPICredentials = (type, clusterId) => {
+	const username = generateRandomString(9);
+	const password = `${generateRandomString(8)}-${generateRandomString(
+		4,
+	)}-${generateRandomString(4)}-${generateRandomString(
+		4,
+	)}-${generateRandomString(12)}`;
+
+	let reqBody = {};
+	switch (type) {
+		case 'Elasticsearch':
+			reqBody = {
+				es_username: username,
+				es_password: password,
+			};
+			break;
+		case 'Appbase.io':
+			reqBody = {
+				arc_username: username,
+				arc_password: password,
+			};
+			break;
+		case 'kibana':
+			reqBody = {
+				kibana_username: username,
+				kibana_password: password,
+			};
+			break;
+		default:
+			break;
+	}
+	return new Promise((resolve, reject) => {
+		let hasError = false;
+		fetch(`${ACC_API}/v1/_update_credentials/${clusterId}`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...reqBody,
+			}),
+		})
+			.then(res => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
+			.then(data => {
+				if (hasError) {
+					reject(data.status.message);
+				}
+				if (data.error) {
+					reject(data.error);
+				}
+				if (data.body && data.body.response_info.failures.length) {
+					reject(data.body.response_info.failures);
+				}
+				resolve({ ...data, username, password });
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+};
