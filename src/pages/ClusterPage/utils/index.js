@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import { v4 as uuidv4 } from 'uuid';
 import { ACC_API } from '../../../constants/config';
 
 export const CLUSTER_PLANS = {
@@ -547,7 +548,7 @@ export const hasAddon = (item, source) =>
 	!!(source.addons || []).find(key => key.name === item);
 export const getAddon = (item, source) =>
 	(source.addons || []).find(key => key.name === item);
-const generateRandomString = length => {
+const generateRandomUsername = length => {
 	const chars =
 		'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	let result = '';
@@ -557,13 +558,8 @@ const generateRandomString = length => {
 };
 
 export const rotateAPICredentials = (type, clusterId) => {
-	const username = generateRandomString(9);
-	const password = `${generateRandomString(8)}-${generateRandomString(
-		4,
-	)}-${generateRandomString(4)}-${generateRandomString(
-		4,
-	)}-${generateRandomString(12)}`;
-
+	const username = generateRandomUsername(9);
+	const password = uuidv4();
 	let reqBody = {};
 	switch (type) {
 		case 'Elasticsearch':
