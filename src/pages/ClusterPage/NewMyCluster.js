@@ -232,6 +232,8 @@ class NewMyCluster extends Component {
 				pricing_plan: this.state.pricing_plan,
 				location: this.state.region,
 				arc_image: ARC_BYOC,
+				is_multi_zone:
+					this.state.pricing_plan === ARC_PLANS.HOSTED_ARC_BASIC_V2,
 			};
 
 			if (stripeData.token) {

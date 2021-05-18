@@ -94,7 +94,7 @@ export const ansibleMachineMarks = {
 		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_1],
 		plan: CLUSTER_PLANS.PRODUCTION_2019_1,
 		storage: 480,
-		memory: 1,
+		memory: 16,
 		nodes: 3,
 		cpu: 4,
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
@@ -146,7 +146,7 @@ export const ansibleMachineMarks = {
 		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_1],
 		plan: CLUSTER_PLANS.PRODUCTION_2021_1,
 		storage: 480,
-		memory: 1,
+		memory: 16,
 		nodes: 3,
 		cpu: 4,
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
@@ -383,7 +383,8 @@ class NewCluster extends Component {
 					pricing_plan: this.state.pricing_plan,
 					ssh_public_key: SSH_KEY,
 					provider: this.state.provider,
-					is_multi_zone: false,
+					is_multi_zone:
+						this.state.pricing_plan === CLUSTER_PLANS.SANDBOX_2020,
 				},
 				addons: [
 					{
