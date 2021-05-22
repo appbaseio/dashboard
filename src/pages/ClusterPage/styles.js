@@ -446,6 +446,37 @@ const credsBox = css`
 	}
 `;
 
+const confirmationBox = css`
+	width: 250px;
+	.confirmation-header {
+		padding-bottom: 10px;
+	}
+	.icon-wrapper {
+		padding-right: 5px;
+	}
+	.icon {
+		color: #debd00;
+	}
+	.confirmation-text {
+		padding-bottom: 10px;
+	}
+	.buttons-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding-bottom: 10px;
+	}
+	.cancel-button {
+		margin-right: 2px;
+	}
+	.confirm-button {
+		margin-left: 5px;
+	}
+	.button-text {
+		font-size: 12;
+	}
+`;
+
 const invoiceTable = css`
 	width: 100%;
 	margin: 20px 20px 30px;
@@ -533,4 +564,5 @@ export {
 	esContainer,
 	clusterButtons,
 	bannerContainer,
+	confirmationBox,
 };
