@@ -177,7 +177,7 @@ export function restore(cluster, restoreFrom, snapshot_id, repository) {
 			credentials: 'include',
 			body: JSON.stringify({
 				snapshot_id,
-				indices: '-.*',
+				indices: '-.*,-metricbeat-*',
 				repository_name: repository,
 			}),
 			headers: {
