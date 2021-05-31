@@ -167,6 +167,7 @@ export default class ExploreCluster extends Component {
 					width="100%"
 					height={`${window.innerHeight - 65}px`}
 					onLoad={this.frameLoaded}
+					allow="clipboard-read; clipboard-write"
 					data-hj-allow-iframe=""
 				/>
 			</Fragment>
