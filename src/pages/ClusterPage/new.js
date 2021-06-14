@@ -383,8 +383,7 @@ class NewCluster extends Component {
 					pricing_plan: this.state.pricing_plan,
 					ssh_public_key: SSH_KEY,
 					provider: this.state.provider,
-					is_multi_zone:
-						this.state.pricing_plan === CLUSTER_PLANS.SANDBOX_2020,
+					is_multi_zone: false,
 				},
 				addons: [
 					{
