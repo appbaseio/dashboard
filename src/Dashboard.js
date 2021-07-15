@@ -10,7 +10,7 @@ import Loader from './components/Loader';
 import Logo from './components/Logo';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
 import Wrapper from './pages/Wrapper';
-import { loadUser, getAppsOwners } from './actions';
+import { loadUser } from './actions';
 
 Sentry.init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
@@ -37,12 +37,6 @@ class Dashboard extends Component {
 		loadAppbaseUser();
 	}
 
-	componentDidUpdate(prevProps) {
-		if (!prevProps.user.data && this.props.user.data) {
-			this.props.getAppsOwners();
-		}
-	}
-
 	componentDidCatch(error, errorInfo) {
 		this.setState({
 			error: true,
@@ -54,10 +48,10 @@ class Dashboard extends Component {
 	}
 
 	render() {
-		const { user, appsOwners } = this.props;
+		const { user } = this.props;
 		const { error } = this.state;
 
-		if (user.isLoading || appsOwners.isFetching) {
+		if (user.isLoading) {
 			return <Loader />;
 		}
 
@@ -116,19 +110,15 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
 	user: PropTypes.object.isRequired,
-	appsOwners: PropTypes.object.isRequired,
 	loadAppbaseUser: PropTypes.func.isRequired,
-	getAppsOwners: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ user, appsOwners }) => ({
+const mapStateToProps = ({ user }) => ({
 	user,
-	appsOwners,
 });
 
 const mapDispatchToProps = dispatch => ({
 	loadAppbaseUser: () => dispatch(loadUser()),
-	getAppsOwners: () => dispatch(getAppsOwners()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
