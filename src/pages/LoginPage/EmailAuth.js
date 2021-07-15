@@ -31,6 +31,7 @@ class EmailAuth extends React.Component {
 
 	handleEmailSubmission = async () => {
 		const { emailInput } = this.state;
+		const { isSignup } = this.props;
 		this.toggleLoading();
 
 		try {
@@ -40,10 +41,13 @@ class EmailAuth extends React.Component {
 
 			const disposableEmailData = await disposableEmailResponse.json();
 
-			if (get(disposableEmailData, 'disposable') === true) {
+			if (
+				get(disposableEmailData, 'disposable') === true ||
+				(isSignup && emailInput.indexOf('+') !== -1)
+			) {
 				this.toggleLoading();
 				message.error(
-					'Please use a valid e-mail address. We do not allow disposable addresses.',
+					'Please use a valid e-mail address. We do not allow disposable addresses or email subaddressing (+ sign use). Reach out to us at support@appbase.io if you believe this is an error.',
 				);
 				return;
 			}
@@ -114,10 +118,10 @@ class EmailAuth extends React.Component {
 
 	render() {
 		const {
-            isEmailAuth, toggleEmailAuth, authText, disabled,
+            isEmailAuth, toggleEmailAuth, authText, disabled
         } = this.props; // prettier-ignore
 		const {
-            isLoading, showOtp, emailInput, otp,
+            isLoading, showOtp, emailInput, otp
         } = this.state; // prettier-ignore
 		return (
 			<React.Fragment>

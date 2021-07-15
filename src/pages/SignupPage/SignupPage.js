@@ -16,7 +16,7 @@ const getSignupURL = (provider, search) =>
 class SignupPage extends React.Component {
 	state = {
 		hasAgreedTOS: false,
-		hasSubscribed: false,
+		hasSubscribed: true,
 		isEmailSignup: false,
 	};
 
@@ -112,8 +112,7 @@ class SignupPage extends React.Component {
 										paddingLeft: 5,
 									}}
 								>
-									I would like to receive occasional product
-									update e-mails.
+									Receive occasional product updates.
 								</div>
 							</Checkbox>
 						</section>
@@ -154,7 +153,7 @@ class SignupPage extends React.Component {
 							disabled={!hasAgreedTOS}
 							isEmailAuth={isEmailSignup}
 							toggleEmailAuth={this.toggleEmailSignup}
-							authText="Sign up via Email"
+							authText="Sign up via e-mail"
 							isSignup
 						/>
 					</Card>

@@ -18,21 +18,21 @@ const LoginContainer = ({ children }) => (
 					</mark>
 				</h2>
 				<div className="signup_description">
-					<h4>What's included in the 14-day trial:</h4>
+					<h4>What's included in the 14-day trial</h4>
 					<ul className="signup_benefits">
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								<strong>Develop</strong>: Import and browse
-								data, view API logs
+								<strong>Develop</strong>: Import data, test
+								search relevance visually, view API logs
 							</span>
 						</li>
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								<strong>Search Relevance</strong>: Set Language,
-								Search, Aggregations, Synonyms, Query Rules and
-								more
+								<strong>Search Relevance</strong>: Configure
+								language, search, aggregations, synonyms, query
+								rules and more settings
 							</span>
 						</li>
 						<li>
@@ -46,8 +46,8 @@ const LoginContainer = ({ children }) => (
 						<li>
 							<Icon type="check" className="icon" />
 							<span>
-								<strong>Search UI</strong>: Build Search and
-								Recommendations UIs with NoCode
+								<strong>Search UI</strong>: Build search and
+								recommendations UIs with no code
 							</span>
 						</li>
 						<li>

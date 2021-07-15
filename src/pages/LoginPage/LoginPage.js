@@ -101,7 +101,7 @@ class LoginPage extends React.Component {
 							letterSpacing: '0.02rem',
 						}}
 					>
-						New to appbase? &nbsp; Signup here
+						New to appbase.io? &nbsp; Signup here
 						<Icon type="arrow-right" />
 					</Button>
 				</Link>
