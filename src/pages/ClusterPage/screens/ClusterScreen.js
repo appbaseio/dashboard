@@ -288,7 +288,8 @@ class ClusterScreen extends Component {
 				'://',
 			);
 			const copyURL =
-				source.name === 'kibana'
+				source.name === 'kibana' ||
+				source.name === 'OpenSearch Dashboard'
 					? `${protocol}://${url}`
 					: `${protocol}://${username}:${password}@${url}`.replace(
 							/\/$/,
@@ -352,7 +353,8 @@ class ClusterScreen extends Component {
 
 	render() {
 		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
-
+		const isOpenSearchFlavour =
+			Number(this.state.cluster.es_version.split('.')[0]) < 7;
 		const {
 			clusterId,
 			isPaid,
@@ -511,7 +513,11 @@ class ClusterScreen extends Component {
 							>
 								<img
 									width={150}
-									src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+									src={
+										isOpenSearchFlavour
+											? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+											: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+									}
 									alt="Kibana"
 								/>
 							</Button>
