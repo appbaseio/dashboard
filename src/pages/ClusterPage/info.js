@@ -494,6 +494,7 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
+
 		return (
 			<Fragment>
 				<FullHeader

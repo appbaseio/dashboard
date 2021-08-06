@@ -33,7 +33,7 @@ const SSH_KEY =
 
 const esVersions = ['7.10.2', '7.9.3', '7.8.1', '7.8.0', '7.7.1'];
 
-const odfeVersions = ['1.13.2', '1.12.0', '1.11.0', '1.9.0', '1.8.0'];
+const openSearchVersions = ['1.0.0'];
 
 export const V7_ARC = '7.46.0-cluster';
 export const V6_ARC = '7.46.0-cluster';
@@ -374,7 +374,8 @@ class NewCluster extends Component {
 						item => this.state[item],
 					),
 					restore_from: this.state.restore_from,
-					odfe: parseInt(this.state.clusterVersion, 10) < 5,
+					odfe: false,
+					opensearch: this.state.esFlavor === 'opensearch',
 				},
 				cluster: {
 					name: this.state.clusterName,
@@ -407,12 +408,16 @@ class NewCluster extends Component {
 				body.kibana = {
 					create_node: false,
 					version: this.state.clusterVersion,
-					odfe: parseInt(this.state.clusterVersion, 10) < 5,
+					odfe: false,
 				};
 			}
 
 			if (this.state.visualization === 'grafana') {
 				body.grafana = true;
+			}
+
+			if (this.state.visualization === 'opensearch') {
+				body.elasticsearch.opensearch_dashboard = true;
 			}
 
 			if (stripeData.token) {
@@ -601,7 +606,9 @@ class NewCluster extends Component {
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
 		const versions =
-			this.state.esFlavor === 'odfe' ? odfeVersions : esVersions;
+			this.state.esFlavor === 'opensearch'
+				? openSearchVersions
+				: esVersions;
 		const defaultVersion = this.state.clusterVersion;
 
 		const activeClusters = clusters.filter(
@@ -867,7 +874,8 @@ class NewCluster extends Component {
 										<Button
 											size="large"
 											type={
-												this.state.esFlavor === 'odfe'
+												this.state.esFlavor ===
+												'opensearch'
 													? 'primary'
 													: 'default'
 											}
@@ -875,29 +883,29 @@ class NewCluster extends Component {
 												height: 160,
 												backgroundColor:
 													this.state.esFlavor ===
-													'odfe'
+													'opensearch'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
 												this.setConfig(
 													'esFlavor',
-													'odfe',
+													'opensearch',
 												);
 												this.setConfig(
 													'clusterVersion',
-													odfeVersions[0],
+													openSearchVersions[0],
 												);
 											}}
 										>
 											<img
 												width="150"
-												src="/static/images/clusters/odfe.svg"
-												alt="ODFE"
+												src="https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg"
+												alt="Open Search"
 											/>
 										</Button>
 										<p>
-											Open Distro by Amazon, includes
+											OpenSearch by Amazon, includes
 											additional security enhancements.
 										</p>
 									</div>
@@ -989,7 +997,9 @@ class NewCluster extends Component {
 											size="large"
 											type={
 												this.state.visualization ===
-												'kibana'
+													'kibana' ||
+												this.state.visualization ===
+													'opensearch'
 													? 'primary'
 													: 'default'
 											}
@@ -998,26 +1008,35 @@ class NewCluster extends Component {
 												width: '100%',
 												backgroundColor:
 													this.state.visualization ===
-													'kibana'
+														'kibana' ||
+													this.state.visualization ===
+														'opensearch'
 														? '#eaf5ff'
 														: '#fff',
 											}}
 											onClick={() => {
 												this.setConfig(
 													'visualization',
-													'kibana',
+													this.state.esFlavor ===
+														'opensearch'
+														? 'opensearch'
+														: 'kibana',
 												);
 											}}
 										>
 											<img
 												width={150}
-												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
-												alt="Kibana"
+												src={
+													this.state.esFlavor ===
+													'opensearch'
+														? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+														: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+												}
+												alt="visualization"
 											/>
 										</Button>
 										<p>
-											The default visualization dashboard
-											for ElasticSearch.
+											The default visualization dashboard.
 										</p>
 									</div>
 								</div>

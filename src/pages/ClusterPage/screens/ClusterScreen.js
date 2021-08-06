@@ -275,7 +275,7 @@ class ClusterScreen extends Component {
 		this.props.handleToken(data);
 	};
 
-	renderClusterEndpoint = source => {
+	renderClusterEndpoint = (source, isOpenSearchFlavour) => {
 		if (
 			Object.keys(source).length &&
 			source.name &&
@@ -288,7 +288,8 @@ class ClusterScreen extends Component {
 				'://',
 			);
 			const copyURL =
-				source.name === 'kibana'
+				source.name === 'kibana' ||
+				source.name === 'OpenSearch Dashboard'
 					? `${protocol}://${url}`
 					: `${protocol}://${username}:${password}@${url}`.replace(
 							/\/$/,
@@ -300,7 +301,7 @@ class ClusterScreen extends Component {
 				name = 'Appbase.io';
 			}
 			if (name === 'elasticsearch') {
-				name = 'Elasticsearch';
+				name = isOpenSearchFlavour ? 'OpenSearch' : 'Elasticsearch';
 			}
 			return (
 				<div key={name} className={clusterEndpoint}>
@@ -352,7 +353,8 @@ class ClusterScreen extends Component {
 
 	render() {
 		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
-
+		const isOpenSearchFlavour =
+			Number(this.state.cluster.es_version.split('.')[0]) < 7;
 		const {
 			clusterId,
 			isPaid,
@@ -419,7 +421,11 @@ class ClusterScreen extends Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Elasticsearch</h3>
+						<h3>
+							{isOpenSearchFlavour
+								? 'OpenSearch'
+								: 'Elasticsearch'}
+						</h3>
 						<p>Live cluster endpoint</p>
 					</div>
 
@@ -427,7 +433,10 @@ class ClusterScreen extends Component {
 						{Object.keys(deployment)
 							.filter(item => item !== 'addons')
 							.map(key =>
-								this.renderClusterEndpoint(deployment[key]),
+								this.renderClusterEndpoint(
+									deployment[key],
+									isOpenSearchFlavour,
+								),
 							)}
 					</div>
 				</li>
@@ -511,7 +520,11 @@ class ClusterScreen extends Component {
 							>
 								<img
 									width={150}
-									src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg"
+									src={
+										isOpenSearchFlavour
+											? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+											: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+									}
 									alt="Kibana"
 								/>
 							</Button>
