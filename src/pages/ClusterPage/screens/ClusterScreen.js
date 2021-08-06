@@ -275,7 +275,7 @@ class ClusterScreen extends Component {
 		this.props.handleToken(data);
 	};
 
-	renderClusterEndpoint = source => {
+	renderClusterEndpoint = (source, isOpenSearchFlavour) => {
 		if (
 			Object.keys(source).length &&
 			source.name &&
@@ -301,7 +301,7 @@ class ClusterScreen extends Component {
 				name = 'Appbase.io';
 			}
 			if (name === 'elasticsearch') {
-				name = 'Elasticsearch';
+				name = isOpenSearchFlavour ? 'OpenSearch' : 'Elasticsearch';
 			}
 			return (
 				<div key={name} className={clusterEndpoint}>
@@ -421,7 +421,11 @@ class ClusterScreen extends Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Elasticsearch</h3>
+						<h3>
+							{isOpenSearchFlavour
+								? 'OpenSearch'
+								: 'Elasticsearch'}
+						</h3>
 						<p>Live cluster endpoint</p>
 					</div>
 
@@ -429,7 +433,10 @@ class ClusterScreen extends Component {
 						{Object.keys(deployment)
 							.filter(item => item !== 'addons')
 							.map(key =>
-								this.renderClusterEndpoint(deployment[key]),
+								this.renderClusterEndpoint(
+									deployment[key],
+									isOpenSearchFlavour,
+								),
 							)}
 					</div>
 				</li>
