@@ -549,6 +549,9 @@ const bannerContainer = css`
 	}
 	.banner-button {
 		width: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 `;
 
