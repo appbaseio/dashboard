@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-
+import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
@@ -200,6 +200,7 @@ const validOpenFaasPlans = [
 
 const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
+const slug = generateSlug();
 class NewCluster extends Component {
 	constructor(props) {
 		super(props);
@@ -214,7 +215,7 @@ class NewCluster extends Component {
 
 		this.state = {
 			isLoading: false,
-			clusterName: '',
+			clusterName: slug,
 			clusterVersion: esVersions[0],
 			pricing_plan,
 			vm_size: get(
@@ -793,11 +794,7 @@ class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border:
-												isInvalid &&
-												this.state.clusterName !== ''
-													? '1px solid red'
-													: '1px solid #e8e8e8',
+											border: '1px solid brown',
 										}}
 										placeholder="Enter your cluster name"
 										value={this.state.clusterName}
@@ -808,15 +805,11 @@ class NewCluster extends Component {
 											)
 										}
 									/>
-									<p
-										style={{
-											color:
-												isInvalid &&
-												this.state.clusterName !== ''
-													? 'red'
-													: 'inherit',
-										}}
-									>
+									<p style={{ color: 'brown' }}>
+										This is an auto-generated cluster name.
+										You can edit this.
+									</p>
+									<p style={{ color: 'inherit' }}>
 										{namingConvention}
 									</p>
 								</div>

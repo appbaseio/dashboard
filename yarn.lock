@@ -12291,6 +12291,11 @@ raf@^3.1.0, raf@^3.2.0, raf@^3.4.0, raf@^3.4.1:
   dependencies:
     performance-now "^2.1.0"
 
+random-word-slugs@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/random-word-slugs/-/random-word-slugs-0.0.5.tgz#6ccd6c7ea320be9fbc19507f8c3a7d4a970ff61f"
+  integrity sha512-KwelmWsWHiMl3MKauB5usAIPg2FgwAku+FVYEuf32yyhZmEh3Fq4nXBxeUAgXB2F+G/HTeDsqXsmuupmOMnjRg==
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.npmjs.org/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"

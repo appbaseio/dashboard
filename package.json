@@ -88,6 +88,7 @@
 		"moment": "^2.24.0",
 		"partial-json-parser": "^1.1.1",
 		"prop-types": "^15.6.2",
+		"random-word-slugs": "^0.0.5",
 		"rc-progress": "^2.2.5",
 		"react": "^16.4.2",
 		"react-ace": "^6.1.4",
