@@ -969,11 +969,12 @@ class NewCluster extends Component {
 												height: 160,
 												width: '100%',
 												color: '#000',
+												border: '1px solid #1890ff',
 												backgroundColor:
 													this.state.visualization ===
 													'none'
 														? '#eaf5ff'
-														: '#fff',
+														: '#eaf5ff',
 											}}
 											onClick={() => {
 												this.setConfig(
@@ -982,8 +983,13 @@ class NewCluster extends Component {
 												);
 											}}
 										>
-											None
+											appbase.io dashboard
 										</Button>
+										<p>
+											Includes index management, dev
+											tools, search relevancy, insights
+											and access controls.
+										</p>
 									</div>
 									<div className={esContainer}>
 										<Button
@@ -1029,7 +1035,11 @@ class NewCluster extends Component {
 											/>
 										</Button>
 										<p>
-											The default visualization dashboard.
+											Add Kibana - A BI tool for
+											visualizing Elasticsearch data and
+											navigating the Elastic stack. We
+											don't recommend adding Kibana on
+											Sandbox instances.
 										</p>
 									</div>
 								</div>
