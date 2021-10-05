@@ -952,7 +952,7 @@ class NewCluster extends Component {
 								<div
 									className={settingsItem}
 									css={{
-										padding: 30,
+										padding: '30px 30px 0px 30px',
 										alignItems: 'baseline',
 									}}
 								>
@@ -1037,12 +1037,34 @@ class NewCluster extends Component {
 										<p>
 											Add Kibana - A BI tool for
 											visualizing Elasticsearch data and
-											navigating the Elastic stack. We
-											don't recommend adding Kibana on
-											Sandbox instances.
+											navigating the Elastic stack.
 										</p>
 									</div>
 								</div>
+								{PLAN_LABEL[this.state.pricing_plan] ===
+									'Sandbox' && (
+									<div
+										style={{
+											margin: 30,
+											display: 'flex',
+											alignItems: 'center',
+										}}
+									>
+										<Icon
+											type="info-circle"
+											theme="twoTone"
+											twoToneColor="#fbe137"
+											style={{
+												marginRight: 5,
+												fontSize: 20,
+											}}
+										/>
+										<div>
+											We don't recommend adding Kibana on
+											Sandbox instances.
+										</div>
+									</div>
+								)}
 							</div>
 							{/* this.renderPlugins() */}
 							<div className={card}>
