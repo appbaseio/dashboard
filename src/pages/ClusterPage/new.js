@@ -949,122 +949,128 @@ class NewCluster extends Component {
 								<div className="col light">
 									<h3> Choose Visualization Tool </h3>
 								</div>
-								<div
-									className={settingsItem}
-									css={{
-										padding: '30px 30px 0px 30px',
-										alignItems: 'baseline',
-									}}
-								>
-									<div className={esContainer}>
-										<Button
-											type={
-												this.state.visualization ===
-												'none'
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											css={{
-												height: 160,
-												width: '100%',
-												color: '#000',
-												border: '1px solid #1890ff',
-												backgroundColor:
+								<div>
+									<div
+										className={settingsItem}
+										css={{
+											padding: '30px 30px 0px 30px',
+											alignItems: 'baseline',
+										}}
+									>
+										<div className={esContainer}>
+											<Button
+												type={
 													this.state.visualization ===
 													'none'
-														? '#eaf5ff'
-														: '#eaf5ff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'visualization',
-													'none',
-												);
-											}}
-										>
-											appbase.io dashboard
-										</Button>
-										<p>
-											Includes index management, dev
-											tools, search relevancy, insights
-											and access controls.
-										</p>
-									</div>
-									<div className={esContainer}>
-										<Button
-											size="large"
-											type={
-												this.state.visualization ===
-													'kibana' ||
-												this.state.visualization ===
-													'opensearch'
-													? 'primary'
-													: 'default'
-											}
-											css={{
-												height: 160,
-												width: '100%',
-												backgroundColor:
+														? 'primary'
+														: 'default'
+												}
+												size="large"
+												css={{
+													height: 160,
+													width: '100%',
+													color: '#000',
+													border: '1px solid #1890ff',
+													backgroundColor:
+														this.state
+															.visualization ===
+														'none'
+															? '#eaf5ff'
+															: '#eaf5ff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'visualization',
+														'none',
+													);
+												}}
+											>
+												appbase.io dashboard
+											</Button>
+											<p>
+												Includes index management, dev
+												tools, search relevancy,
+												insights and access controls.
+											</p>
+										</div>
+										<div className={esContainer}>
+											<Button
+												size="large"
+												type={
 													this.state.visualization ===
 														'kibana' ||
 													this.state.visualization ===
 														'opensearch'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											onClick={() => {
-												this.setConfig(
-													'visualization',
-													this.state.esFlavor ===
-														'opensearch'
-														? 'opensearch'
-														: 'kibana',
-												);
-											}}
-										>
-											<img
-												width={150}
-												src={
-													this.state.esFlavor ===
-													'opensearch'
-														? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
-														: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+														? 'primary'
+														: 'default'
 												}
-												alt="visualization"
-											/>
-										</Button>
-										<p>
-											Add Kibana - A BI tool for
-											visualizing Elasticsearch data and
-											navigating the Elastic stack.
-										</p>
-									</div>
-								</div>
-								{PLAN_LABEL[this.state.pricing_plan] ===
-									'Sandbox' && (
-									<div
-										style={{
-											margin: 30,
-											display: 'flex',
-											alignItems: 'center',
-										}}
-									>
-										<Icon
-											type="info-circle"
-											theme="twoTone"
-											twoToneColor="#fbe137"
-											style={{
-												marginRight: 5,
-												fontSize: 20,
-											}}
-										/>
-										<div>
-											We don't recommend adding Kibana on
-											Sandbox instances.
+												css={{
+													height: 160,
+													width: '100%',
+													backgroundColor:
+														this.state
+															.visualization ===
+															'kibana' ||
+														this.state
+															.visualization ===
+															'opensearch'
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												onClick={() => {
+													this.setConfig(
+														'visualization',
+														this.state.esFlavor ===
+															'opensearch'
+															? 'opensearch'
+															: 'kibana',
+													);
+												}}
+											>
+												<img
+													width={150}
+													src={
+														this.state.esFlavor ===
+														'opensearch'
+															? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+															: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+													}
+													alt="visualization"
+												/>
+											</Button>
+											<p>
+												Add Kibana - A BI tool for
+												visualizing Elasticsearch data
+												and navigating the Elastic
+												stack.
+											</p>
 										</div>
 									</div>
-								)}
+									{PLAN_LABEL[this.state.pricing_plan] ===
+										'Sandbox' && (
+										<div
+											style={{
+												margin: 30,
+												display: 'flex',
+												alignItems: 'center',
+											}}
+										>
+											<Icon
+												type="info-circle"
+												theme="twoTone"
+												twoToneColor="#fbe137"
+												style={{
+													marginRight: 5,
+													fontSize: 20,
+												}}
+											/>
+											<div>
+												We don't recommend adding Kibana
+												on Sandbox instances.
+											</div>
+										</div>
+									)}
+								</div>
 							</div>
 							{/* this.renderPlugins() */}
 							<div className={card}>
