@@ -78,8 +78,8 @@ export default class Search extends Component {
 					isClearable={false}
 					options={[
 						{
-							value: 'release_date',
-							label: 'release_date',
+							value: 'release_year',
+							label: 'release_year',
 						},
 						{
 							value: 'genres',
