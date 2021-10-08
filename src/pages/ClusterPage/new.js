@@ -200,7 +200,7 @@ const validOpenFaasPlans = [
 
 const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
-const slug = generateSlug();
+const slug = generateSlug(2);
 class NewCluster extends Component {
 	constructor(props) {
 		super(props);
