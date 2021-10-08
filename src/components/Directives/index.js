@@ -4,6 +4,9 @@ import { Modal, Button, Icon, Row, Col, Card } from 'antd';
 
 const loadButton = css`
 	width: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;
 
 const modalTitle = css`

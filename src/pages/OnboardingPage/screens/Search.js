@@ -68,9 +68,18 @@ export default class Search extends Component {
 					isMulti
 					isClearable={false}
 					options={[
-						{ value: 'original_title', label: 'original_title' },
-						{ value: 'overview', label: 'overview' },
-						{ value: 'tagline', label: 'tagline' },
+						{
+							value: 'title',
+							label: 'title',
+						},
+						{
+							value: 'original_title',
+							label: 'original_title',
+						},
+						{
+							value: 'overview',
+							label: 'overview',
+						},
 					]}
 				/>
 			</div>
