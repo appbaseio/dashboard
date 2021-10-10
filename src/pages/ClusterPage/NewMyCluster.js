@@ -3,6 +3,7 @@ import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+import { generateSlug } from 'random-word-slugs';
 
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -85,12 +86,13 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
+const slug = generateSlug(2);
 class NewMyCluster extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
-			clusterName: '',
+			clusterName: slug,
 			clusterURL: '',
 			pricing_plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
 			region: 'us-central1',
