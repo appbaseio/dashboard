@@ -287,6 +287,7 @@ class ClusterScreen extends Component {
 			const [protocol, url] = (source.url || source.dashboard_url).split(
 				'://',
 			);
+			// Kibana frowns on use of username/password in URL, hence we copy URL without them
 			const copyURL =
 				source.name === 'kibana' ||
 				source.name === 'OpenSearch Dashboard'
