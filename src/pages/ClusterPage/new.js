@@ -33,7 +33,7 @@ const SSH_KEY =
 
 const esVersions = ['7.15.0'];
 
-const openSearchVersions = ['1.0.0'];
+const openSearchVersions = ['1.1.0'];
 
 export const V7_ARC = '7.49.2-cluster';
 export const V6_ARC = '7.49.2-cluster';
