@@ -735,6 +735,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												provider === 'gke'
+													? 'fade-out-active-state'
+													: ''
+											}
 											onClick={() =>
 												this.handleProviderChange('gke')
 											}
@@ -759,6 +764,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												provider === 'aws'
+													? 'fade-out-active-state'
+													: ''
+											}
 											onClick={() =>
 												this.handleProviderChange('aws')
 											}
@@ -856,6 +866,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												this.state.esFlavor === 'es'
+													? 'fade-out-active-state'
+													: ''
+											}
 											onClick={() => {
 												this.setConfig(
 													'esFlavor',
@@ -892,6 +907,12 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												this.state.esFlavor ===
+												'opensearch'
+													? 'fade-out-active-state'
+													: ''
+											}
 											onClick={() => {
 												this.setConfig(
 													'esFlavor',
@@ -987,6 +1008,12 @@ class NewCluster extends Component {
 															? '#eaf5ff'
 															: '#eaf5ff',
 												}}
+												className={
+													this.state.visualization ===
+													'none'
+														? 'fade-out-active-state'
+														: ''
+												}
 												onClick={() => {
 													this.setConfig(
 														'visualization',
@@ -1026,6 +1053,12 @@ class NewCluster extends Component {
 															? '#eaf5ff'
 															: '#fff',
 												}}
+												className={
+													this.state.visualization ===
+													'kibana'
+														? 'fade-out-active-state'
+														: ''
+												}
 												onClick={() => {
 													this.setConfig(
 														'visualization',

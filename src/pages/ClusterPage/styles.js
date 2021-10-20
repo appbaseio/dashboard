@@ -242,6 +242,64 @@ const settingsItem = css`
 			flex-direction: column;
 		`)};
 	}
+
+	.fade-out-active-state {
+		animation: fadeOut 2s;
+		-webkit-animation: fadeOut 2s;
+		-moz-animation: fadeOut 2s;
+		-o-animation: fadeOut 2s;
+		-ms-animation: fadeOut 2s;
+	}
+
+	.fade-out-active-state:focus {
+		background-color: #eaf5ff;
+		color: black;
+	}
+
+	@keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-moz-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-webkit-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-o-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-ms-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
 `;
 
 const clusterButtons = css`
@@ -508,6 +566,63 @@ const esContainer = css`
 		margin: 0;
 		font-size: 15px;
 		font-weight: 500;
+	}
+
+	.fade-out-active-state {
+		animation: fadeOut 2s;
+		-webkit-animation: fadeOut 2s;
+		-moz-animation: fadeOut 2s;
+		-o-animation: fadeOut 2s;
+		-ms-animation: fadeOut 2s;
+	}
+
+	.fade-out-active-state:focus {
+		background-color: #eaf5ff;
+	}
+
+	@keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-moz-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-webkit-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-o-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
+	}
+
+	@-ms-keyframes fadeOut {
+		0% {
+			background-color: #1890ff;
+		}
+		100% {
+			background-color: #eaf5ff;
+		}
 	}
 `;
 
