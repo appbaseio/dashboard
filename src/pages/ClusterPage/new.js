@@ -200,7 +200,6 @@ const validOpenFaasPlans = [
 
 const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
-const slug = generateSlug(2);
 class NewCluster extends Component {
 	constructor(props) {
 		super(props);
@@ -215,7 +214,7 @@ class NewCluster extends Component {
 
 		this.state = {
 			isLoading: false,
-			clusterName: slug,
+			clusterName: '',
 			changed: false,
 			clusterVersion: esVersions[0],
 			pricing_plan,
@@ -244,6 +243,10 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
+		const slug = generateSlug(2);
+		this.setState({
+			clusterName: slug,
+		});
 		getClusters()
 			.then(clusters => {
 				if (window.Intercom) {
