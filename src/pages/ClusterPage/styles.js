@@ -198,60 +198,14 @@ const card = css`
 	`)};
 `;
 
-const settingsItem = css`
-	display: flex;
-	flex-direction: row;
-	margin: 5px 0 15px;
-	${media.xsmall(css`
-		flex-direction: column;
-	`)};
-	h4 {
-		width: 140px;
-		text-align: right;
-		margin: 8px 30px 0;
-		font-weight: 600;
-		font-size: 14px;
-		${media.medium(css`
-			text-align: left;
-		`)};
-		${media.xsmall(css`
-			margin: 0;
-		`)};
-	}
-	&.grow h4 {
-		width: 240px;
-	}
-	select {
-		max-width: 310px !important;
-	}
-	label {
-		font-weight: 400;
-		display: inline-flex;
-		flex-direction: row;
-		align-items: center;
-		margin-right: 24px;
-		input {
-			position: relative;
-			top: -1px;
-			margin-right: 8px;
-		}
-	}
-	.settings-label {
-		${media.medium(css`
-			display: flex;
-			flex-direction: column;
-		`)};
-	}
+const fadeOutStyles = css`
+	animation: fadeOut 2s;
+	-webkit-animation: fadeOut 2s;
+	-moz-animation: fadeOut 2s;
+	-o-animation: fadeOut 2s;
+	-ms-animation: fadeOut 2s;
 
-	.fade-out-active-state {
-		animation: fadeOut 2s;
-		-webkit-animation: fadeOut 2s;
-		-moz-animation: fadeOut 2s;
-		-o-animation: fadeOut 2s;
-		-ms-animation: fadeOut 2s;
-	}
-
-	.fade-out-active-state:focus {
+	&:focus {
 		background-color: #eaf5ff;
 		color: black;
 	}
@@ -299,6 +253,52 @@ const settingsItem = css`
 		100% {
 			background-color: #eaf5ff;
 		}
+	}
+`;
+
+const settingsItem = css`
+	display: flex;
+	flex-direction: row;
+	margin: 5px 0 15px;
+	${media.xsmall(css`
+		flex-direction: column;
+	`)};
+	h4 {
+		width: 140px;
+		text-align: right;
+		margin: 8px 30px 0;
+		font-weight: 600;
+		font-size: 14px;
+		${media.medium(css`
+			text-align: left;
+		`)};
+		${media.xsmall(css`
+			margin: 0;
+		`)};
+	}
+	&.grow h4 {
+		width: 240px;
+	}
+	select {
+		max-width: 310px !important;
+	}
+	label {
+		font-weight: 400;
+		display: inline-flex;
+		flex-direction: row;
+		align-items: center;
+		margin-right: 24px;
+		input {
+			position: relative;
+			top: -1px;
+			margin-right: 8px;
+		}
+	}
+	.settings-label {
+		${media.medium(css`
+			display: flex;
+			flex-direction: column;
+		`)};
 	}
 `;
 
@@ -567,63 +567,6 @@ const esContainer = css`
 		font-size: 15px;
 		font-weight: 500;
 	}
-
-	.fade-out-active-state {
-		animation: fadeOut 2s;
-		-webkit-animation: fadeOut 2s;
-		-moz-animation: fadeOut 2s;
-		-o-animation: fadeOut 2s;
-		-ms-animation: fadeOut 2s;
-	}
-
-	.fade-out-active-state:focus {
-		background-color: #eaf5ff;
-	}
-
-	@keyframes fadeOut {
-		0% {
-			background-color: #1890ff;
-		}
-		100% {
-			background-color: #eaf5ff;
-		}
-	}
-
-	@-moz-keyframes fadeOut {
-		0% {
-			background-color: #1890ff;
-		}
-		100% {
-			background-color: #eaf5ff;
-		}
-	}
-
-	@-webkit-keyframes fadeOut {
-		0% {
-			background-color: #1890ff;
-		}
-		100% {
-			background-color: #eaf5ff;
-		}
-	}
-
-	@-o-keyframes fadeOut {
-		0% {
-			background-color: #1890ff;
-		}
-		100% {
-			background-color: #eaf5ff;
-		}
-	}
-
-	@-ms-keyframes fadeOut {
-		0% {
-			background-color: #1890ff;
-		}
-		100% {
-			background-color: #eaf5ff;
-		}
-	}
 `;
 
 const bannerContainer = css`
@@ -675,6 +618,7 @@ export {
 	clusterInfo,
 	card,
 	settingsItem,
+	fadeOutStyles,
 	clustersList,
 	clusterEndpoint,
 	credsBox,

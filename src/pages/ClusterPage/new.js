@@ -11,7 +11,13 @@ import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 import StripeCheckout from '../../components/StripeCheckout';
-import { card, clusterContainer, esContainer, settingsItem } from './styles';
+import {
+	card,
+	clusterContainer,
+	esContainer,
+	settingsItem,
+	fadeOutStyles,
+} from './styles';
 import {
 	createSubscription,
 	deployCluster,
@@ -737,7 +743,7 @@ class NewCluster extends Component {
 											}}
 											className={
 												provider === 'gke'
-													? 'fade-out-active-state'
+													? fadeOutStyles
 													: ''
 											}
 											onClick={() =>
@@ -766,7 +772,7 @@ class NewCluster extends Component {
 											}}
 											className={
 												provider === 'aws'
-													? 'fade-out-active-state'
+													? fadeOutStyles
 													: ''
 											}
 											onClick={() =>
@@ -868,7 +874,7 @@ class NewCluster extends Component {
 											}}
 											className={
 												this.state.esFlavor === 'es'
-													? 'fade-out-active-state'
+													? fadeOutStyles
 													: ''
 											}
 											onClick={() => {
@@ -910,7 +916,7 @@ class NewCluster extends Component {
 											className={
 												this.state.esFlavor ===
 												'opensearch'
-													? 'fade-out-active-state'
+													? fadeOutStyles
 													: ''
 											}
 											onClick={() => {
@@ -1011,7 +1017,7 @@ class NewCluster extends Component {
 												className={
 													this.state.visualization ===
 													'none'
-														? 'fade-out-active-state'
+														? fadeOutStyles
 														: ''
 												}
 												onClick={() => {
@@ -1056,7 +1062,7 @@ class NewCluster extends Component {
 												className={
 													this.state.visualization ===
 													'kibana'
-														? 'fade-out-active-state'
+														? fadeOutStyles
 														: ''
 												}
 												onClick={() => {
