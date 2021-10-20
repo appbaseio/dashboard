@@ -216,6 +216,7 @@ class NewCluster extends Component {
 		this.state = {
 			isLoading: false,
 			clusterName: slug,
+			changed: false,
 			clusterVersion: esVersions[0],
 			pricing_plan,
 			vm_size: get(
@@ -601,7 +602,13 @@ class NewCluster extends Component {
 	};
 
 	render() {
-		const { provider, isLoading, clusters } = this.state;
+		const {
+			provider,
+			isLoading,
+			clusters,
+			clusterName,
+			changed,
+		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
@@ -794,21 +801,26 @@ class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: '1px solid brown',
+											border: '1px solid #40a9ff',
 										}}
 										placeholder="Enter your cluster name"
-										value={this.state.clusterName}
-										onChange={e =>
+										value={clusterName}
+										onChange={e => {
+											this.setState({
+												changed: true,
+											});
 											this.setConfig(
 												'clusterName',
 												e.target.value,
-											)
-										}
+											);
+										}}
 									/>
-									<p style={{ color: 'brown' }}>
-										This is an auto-generated cluster name.
-										You can edit this.
-									</p>
+									{!changed && (
+										<p style={{ color: 'orange' }}>
+											This is an auto-generated cluster
+											name. You can edit this.
+										</p>
+									)}
 									<p style={{ color: 'inherit' }}>
 										{namingConvention}
 									</p>
