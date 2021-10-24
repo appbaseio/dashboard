@@ -11,7 +11,13 @@ import FullHeader from '../../components/FullHeader';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider';
 import StripeCheckout from '../../components/StripeCheckout';
-import { card, clusterContainer, esContainer, settingsItem } from './styles';
+import {
+	card,
+	clusterContainer,
+	esContainer,
+	settingsItem,
+	fadeOutStyles,
+} from './styles';
 import {
 	createSubscription,
 	deployCluster,
@@ -200,7 +206,6 @@ const validOpenFaasPlans = [
 
 const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
-const slug = generateSlug(2);
 class NewCluster extends Component {
 	constructor(props) {
 		super(props);
@@ -215,7 +220,8 @@ class NewCluster extends Component {
 
 		this.state = {
 			isLoading: false,
-			clusterName: slug,
+			clusterName: '',
+			changed: false,
 			clusterVersion: esVersions[0],
 			pricing_plan,
 			vm_size: get(
@@ -243,6 +249,10 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
+		const slug = generateSlug(2);
+		this.setState({
+			clusterName: slug,
+		});
 		getClusters()
 			.then(clusters => {
 				if (window.Intercom) {
@@ -601,7 +611,13 @@ class NewCluster extends Component {
 	};
 
 	render() {
-		const { provider, isLoading, clusters } = this.state;
+		const {
+			provider,
+			isLoading,
+			clusters,
+			clusterName,
+			changed,
+		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
 		const isInvalid = !this.validateClusterName();
@@ -725,6 +741,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												provider === 'gke'
+													? fadeOutStyles
+													: ''
+											}
 											onClick={() =>
 												this.handleProviderChange('gke')
 											}
@@ -749,6 +770,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												provider === 'aws'
+													? fadeOutStyles
+													: ''
+											}
 											onClick={() =>
 												this.handleProviderChange('aws')
 											}
@@ -794,21 +820,26 @@ class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: '1px solid brown',
+											border: '1px solid #40a9ff',
 										}}
 										placeholder="Enter your cluster name"
-										value={this.state.clusterName}
-										onChange={e =>
+										value={clusterName}
+										onChange={e => {
+											this.setState({
+												changed: true,
+											});
 											this.setConfig(
 												'clusterName',
 												e.target.value,
-											)
-										}
+											);
+										}}
 									/>
-									<p style={{ color: 'brown' }}>
-										This is an auto-generated cluster name.
-										You can edit this.
-									</p>
+									{!changed && (
+										<p style={{ color: 'orange' }}>
+											This is an auto-generated cluster
+											name. You can edit this.
+										</p>
+									)}
 									<p style={{ color: 'inherit' }}>
 										{namingConvention}
 									</p>
@@ -841,6 +872,11 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												this.state.esFlavor === 'es'
+													? fadeOutStyles
+													: ''
+											}
 											onClick={() => {
 												this.setConfig(
 													'esFlavor',
@@ -877,6 +913,12 @@ class NewCluster extends Component {
 														? '#eaf5ff'
 														: '#fff',
 											}}
+											className={
+												this.state.esFlavor ===
+												'opensearch'
+													? fadeOutStyles
+													: ''
+											}
 											onClick={() => {
 												this.setConfig(
 													'esFlavor',
@@ -972,6 +1014,12 @@ class NewCluster extends Component {
 															? '#eaf5ff'
 															: '#eaf5ff',
 												}}
+												className={
+													this.state.visualization ===
+													'none'
+														? fadeOutStyles
+														: ''
+												}
 												onClick={() => {
 													this.setConfig(
 														'visualization',
@@ -1011,6 +1059,12 @@ class NewCluster extends Component {
 															? '#eaf5ff'
 															: '#fff',
 												}}
+												className={
+													this.state.visualization ===
+													'kibana'
+														? fadeOutStyles
+														: ''
+												}
 												onClick={() => {
 													this.setConfig(
 														'visualization',

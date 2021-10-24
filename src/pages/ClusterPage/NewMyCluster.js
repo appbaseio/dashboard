@@ -86,13 +86,13 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
-const slug = generateSlug(2);
 class NewMyCluster extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
-			clusterName: slug,
+			clusterName: '',
+			changed: false,
 			clusterURL: '',
 			pricing_plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
 			region: 'us-central1',
@@ -110,6 +110,10 @@ class NewMyCluster extends Component {
 	}
 
 	componentDidMount() {
+		const slug = generateSlug(2);
+		this.setState({
+			clusterName: slug,
+		});
 		getClusters()
 			.then(clusters => {
 				const activeClusters = clusters.filter(
@@ -381,6 +385,8 @@ class NewMyCluster extends Component {
 			clusterVersion,
 			verifyingURL,
 			clusters,
+			changed,
+			clusterName,
 		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
@@ -517,25 +523,32 @@ class NewMyCluster extends Component {
 											marginBottom: 10,
 											outline: 'none',
 											border:
-												isInvalid &&
-												this.state.clusterName !== ''
+												isInvalid && clusterName !== ''
 													? '1px solid red'
-													: '1px solid #e8e8e8',
+													: '1px solid #40a9ff',
 										}}
 										placeholder="Enter your cluster name"
-										value={this.state.clusterName}
-										onChange={e =>
+										value={clusterName}
+										onChange={e => {
+											this.setState({
+												changed: true,
+											});
 											this.setConfig(
 												'clusterName',
 												e.target.value,
-											)
-										}
+											);
+										}}
 									/>
+									{!changed && (
+										<p style={{ color: 'orange' }}>
+											This is an auto-generated cluster
+											name. You can edit this.
+										</p>
+									)}
 									<p
 										style={{
 											color:
-												isInvalid &&
-												this.state.clusterName !== ''
+												isInvalid && clusterName !== ''
 													? 'red'
 													: 'inherit',
 										}}
