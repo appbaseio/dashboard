@@ -55,6 +55,8 @@ class ClusterPage extends Component {
 			paidPlan: false,
 			clusterPlan: 'unsubscribed',
 			isFetchingInBackground: false,
+			statusFetchCount: 0,
+			isFetchingStatus: false,
 		};
 	}
 
@@ -147,7 +149,7 @@ class ClusterPage extends Component {
 	};
 
 	initClusters = () => {
-		getClusters()
+		return getClusters()
 			.then(clusters => this.setClusterPlan(clusters))
 			.then(clusters => {
 				if (window.Intercom) {
@@ -199,10 +201,25 @@ class ClusterPage extends Component {
 							hasInProgressCluster &&
 							!this.state.isFetchingInBackground
 						) {
-							this.setState({
-								isFetchingInBackground: true,
-							});
-							this.timer = setTimeout(this.initClusters, 30000);
+							this.setState(
+								prevState => ({
+									isFetchingInBackground: true,
+									statusFetchCount:
+										prevState.statusFetchCount + 1,
+								}),
+								() => {
+									if (this.state.statusFetchCount <= 5) {
+										this.timer = setTimeout(
+											this.initClusters,
+											30000,
+										);
+									} else {
+										this.setState({
+											isFetchingInBackground: false,
+										});
+									}
+								},
+							);
 						}
 					},
 				);
@@ -534,6 +551,22 @@ class ClusterPage extends Component {
 			</Divider>
 		) : null;
 
+	refetchStatus = async () => {
+		try {
+			this.setState({
+				isFetchingStatus: true,
+			});
+			await this.initClusters();
+			this.setState({
+				isFetchingStatus: false,
+			});
+		} catch (err) {
+			this.setState({
+				isFetchingStatus: false,
+			});
+		}
+	};
+
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -659,6 +692,16 @@ class ClusterPage extends Component {
 								</div>
 
 								<Directives />
+								{this.state.statusFetchCount >= 5 && (
+									<Button
+										onClick={this.refetchStatus}
+										loading={this.state.isFetchingStatus}
+										disabled={this.state.isFetchingStatus}
+										icon="redo"
+									>
+										Refetch Deployment Status
+									</Button>
+								)}
 							</article>
 						</section>
 					) : null}

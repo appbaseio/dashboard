@@ -1,7 +1,7 @@
 import React from 'react';
-import { Alert } from 'antd';
-import { object, func } from 'prop-types';
-import get from 'lodash/get';
+import { Alert, Button } from 'antd';
+import { object, func, bool, number } from 'prop-types';
+import Flex from '../../../../batteries/components/shared/Flex';
 
 function getMessage(source) {
 	switch (source) {
@@ -12,55 +12,55 @@ function getMessage(source) {
 	}
 }
 
-export default function DeploymentStatus({ data, onProgress }) {
-	if (!Object.keys(data).length) return null;
-	let { addons, ...deployments } = data; // eslint-disable-line
-	if (addons && addons.length) {
-		addons.forEach(index => {
-			deployments = {
-				...deployments,
-				[index.name]: index,
-			};
-		});
-	}
-	const deploymentsInProgress = Object.keys(deployments).filter(
-		source => get(deployments, `${source}.status`) === 'in progress',
-	);
-
-	const deploymentDeletionInProgress = Object.keys(deployments).filter(
-		source =>
-			get(deployments, `${source}.status`) === 'deletion in progress',
-	);
-
+export default function DeploymentStatus({
+	deploymentDeletionInProgress,
+	deploymentsInProgress,
+	statusFetchCount,
+	isFetchingStatus,
+	refetchDeploymentStatus,
+}) {
 	if (deploymentsInProgress.length || deploymentDeletionInProgress.length) {
-		// onProgress callback enables the parent to re-fetch the data in some time
-		// if any deployment is in progress
-		onProgress();
 		return (
-			<React.Fragment>
-				{deploymentsInProgress.map(item => (
-					<Alert
-						key={item}
-						message={getMessage(item)}
-						type="info"
-						showIcon
-						css={{
-							marginBottom: 12,
-						}}
-					/>
-				))}
-				{deploymentDeletionInProgress.map(item => (
-					<Alert
-						key={item}
-						message={`Removing ${item}. Hang tight!`}
-						type="info"
-						showIcon
-						css={{
-							marginBottom: 12,
-						}}
-					/>
-				))}
-			</React.Fragment>
+			<Flex
+				justifyContent="space-between"
+				alignItems="center"
+				style={{ marginBottom: 10 }}
+			>
+				<div
+					style={{
+						flex: 1,
+						paddingRight: 10,
+					}}
+				>
+					{deploymentsInProgress.map(item => (
+						<Alert
+							key={item}
+							message={getMessage(item)}
+							type="info"
+							showIcon
+						/>
+					))}
+					{deploymentDeletionInProgress.map(item => (
+						<Alert
+							key={item}
+							message={`Removing ${item}. Hang tight!`}
+							type="info"
+							showIcon
+						/>
+					))}
+				</div>
+				{statusFetchCount >= 5 && (
+					<Button
+						icon="redo"
+						loading={isFetchingStatus}
+						disabled={isFetchingStatus}
+						onClick={refetchDeploymentStatus}
+						size="large"
+					>
+						Refetch Deployment Status
+					</Button>
+				)}
+			</Flex>
 		);
 	}
 
@@ -68,6 +68,9 @@ export default function DeploymentStatus({ data, onProgress }) {
 }
 
 DeploymentStatus.propTypes = {
-	data: object.isRequired,
-	onProgress: func.isRequired,
+	deploymentsInProgress: object.isRequired,
+	deploymentDeletionInProgress: object.isRequired,
+	refetchDeploymentStatus: func.isRequired,
+	isFetchingStatus: bool.isRequired,
+	statusFetchCount: number.isRequired,
 };

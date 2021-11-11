@@ -72,6 +72,10 @@ class ClusterInfo extends Component {
 			streams: false,
 			arcVersion: null,
 			isStripeCheckoutOpen: false,
+			statusFetchCount: 0,
+			isFetchingStatus: false,
+			deploymentsInProgress: false,
+			deploymentDeletionInProgress: false,
 		};
 		this.paymentButton = React.createRef();
 		this.paymentTriggered = false;
@@ -97,11 +101,42 @@ class ClusterInfo extends Component {
 	}
 
 	init = () => {
-		getClusterData(get(this, 'props.match.params.id'))
+		return getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
+					let { addons, ...deployments } = deployment; // eslint-disable-line
+					if (addons && addons.length) {
+						addons.forEach(index => {
+							deployments = {
+								...deployments,
+								[index.name]: index,
+							};
+						});
+					}
+					const deploymentsInProgress = Object.keys(
+						deployments,
+					).filter(
+						source =>
+							get(deployments, `${source}.status`) ===
+							'in progress',
+					);
+
+					const deploymentDeletionInProgress = Object.keys(
+						deployments,
+					).filter(
+						source =>
+							get(deployments, `${source}.status`) ===
+							'deletion in progress',
+					);
+					let isArcReady = false;
+					try {
+						const arcRes = await fetch(`${arcData.url}arc/health`);
+						isArcReady = arcRes.status === 200;
+					} catch (err) {
+						console.log(`Error getting arc status:${err}`);
+					}
 					const streamsData = getAddon('streams', deployment) || {};
 					this.setState({
 						cluster,
@@ -114,7 +149,7 @@ class ClusterInfo extends Component {
 							: false,
 						mirage: hasAddon('mirage', deployment),
 						dejavu: hasAddon('dejavu', deployment),
-						arc: arcData.status === 'ready',
+						arc: isArcReady,
 						elasticsearchHQ: hasAddon(
 							'elasticsearch-hq',
 							deployment,
@@ -128,10 +163,26 @@ class ClusterInfo extends Component {
 							!cluster.subscription_id
 								? { code: 402 }
 								: null,
+						deploymentDeletionInProgress,
+						deploymentsInProgress,
 					});
 
-					if (cluster.status === 'deployments in progress') {
-						this.timer = setTimeout(this.init, 30000);
+					if (
+						cluster.status === 'deployments in progress' ||
+						deploymentDeletionInProgress.length ||
+						deploymentsInProgress.length
+					) {
+						this.setState(
+							prevState => ({
+								statusFetchCount:
+									prevState.statusFetchCount + 1,
+							}),
+							() => {
+								if (this.state.statusFetchCount <= 5) {
+									this.timer = setTimeout(this.init, 30000);
+								}
+							},
+						);
 					} else {
 						const arcPlanData = await getArcVersion(
 							arcData.url,
@@ -272,6 +323,7 @@ class ClusterInfo extends Component {
 				cluster: { id, recipe },
 			} = this.state;
 			this.setState({
+				statusFetchCount: 0,
 				isLoading: true,
 			});
 
@@ -436,6 +488,24 @@ class ClusterInfo extends Component {
 		this.setState(currentState => ({
 			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
 		}));
+	};
+
+	refetchDeploymentStatus = async () => {
+		try {
+			this.setState({
+				isFetchingStatus: true,
+			});
+
+			await this.init();
+
+			this.setState({
+				isFetchingStatus: false,
+			});
+		} catch (error) {
+			this.setState({
+				isFetchingStatus: false,
+			});
+		}
 	};
 
 	render() {
@@ -664,13 +734,21 @@ class ClusterInfo extends Component {
 								) : null}
 
 								<DeploymentStatus
-									data={this.state.deployment}
-									onProgress={() => {
-										this.statusTimer = setTimeout(
-											this.init,
-											30000,
-										);
-									}}
+									deploymentDeletionInProgress={
+										this.state.deploymentDeletionInProgress
+									}
+									deploymentsInProgress={
+										this.state.deploymentsInProgress
+									}
+									isFetchingStatus={
+										this.state.isFetchingStatus
+									}
+									refetchDeploymentStatus={
+										this.refetchDeploymentStatus
+									}
+									statusFetchCount={
+										this.state.statusFetchCount
+									}
 								/>
 
 								{this.state.arc ? (
