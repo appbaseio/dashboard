@@ -620,7 +620,6 @@ class NewCluster extends Component {
 		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
-		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
 		const versions =
 			this.state.esFlavor === 'opensearch'
