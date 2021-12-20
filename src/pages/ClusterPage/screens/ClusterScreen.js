@@ -297,6 +297,8 @@ class ClusterScreen extends Component {
 							'',
 					  );
 			let { name } = source;
+			const { cluster } = this.state;
+			const isViewer = cluster.user_role === 'viewer';
 
 			if (name === 'arc') {
 				name = 'Appbase.io';
@@ -332,6 +334,7 @@ class ClusterScreen extends Component {
 						text={`${username}:${password}`}
 						rotateAPICredentials={rotateAPICredentials}
 						clusterId={this.props.clusterId}
+						showRotateAPICredentials={!isViewer}
 					/>
 				</div>
 			);
@@ -537,65 +540,69 @@ class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				<li className={card}>
-					<div className="col light">
-						<h3>Restore From Snapshot</h3>
-						<p>Select cluster & snapshots</p>
-					</div>
+				{isViewer || (
+					<li className={card}>
+						<div className="col light">
+							<h3>Restore From Snapshot</h3>
+							<p>Select cluster & snapshots</p>
+						</div>
 
-					<div className="col">
-						<Select
-							css={{
-								width: '100%',
-								maxWidth: 400,
-							}}
-							placeholder="Select a cluster"
-							onChange={this.handleCluster}
-						>
-							{this.state.clusters
-								.filter(i => i.recipe === 'default')
-								.map(item => (
-									<Option key={item.id}>{item.name}</Option>
-								))}
-						</Select>
-						{this.state.isSnapshotsLoading && (
-							<p>Snapshots Loading</p>
-						)}
-						{this.state.snapshots.length > 0 && (
+						<div className="col">
 							<Select
 								css={{
 									width: '100%',
 									maxWidth: 400,
-									margin: '20px 0',
 								}}
-								placeholder="Select a snapshot"
-								onChange={this.handleSnapshot}
+								placeholder="Select a cluster"
+								onChange={this.handleCluster}
 							>
-								{this.state.snapshots.map(item => (
-									<Option
-										key={`${item.id}___${item.repository_name}`}
-										value={`${item.id}___${item.repository_name}`}
-									>
-										{new Date(+item.id * 1000)
-											.toString()
-											.substring(0, 15)}
-									</Option>
-								))}
+								{this.state.clusters
+									.filter(i => i.recipe === 'default')
+									.map(item => (
+										<Option key={item.id}>
+											{item.name}
+										</Option>
+									))}
 							</Select>
-						)}
+							{this.state.isSnapshotsLoading && (
+								<p>Snapshots Loading</p>
+							)}
+							{this.state.snapshots.length > 0 && (
+								<Select
+									css={{
+										width: '100%',
+										maxWidth: 400,
+										margin: '20px 0',
+									}}
+									placeholder="Select a snapshot"
+									onChange={this.handleSnapshot}
+								>
+									{this.state.snapshots.map(item => (
+										<Option
+											key={`${item.id}___${item.repository_name}`}
+											value={`${item.id}___${item.repository_name}`}
+										>
+											{new Date(+item.id * 1000)
+												.toString()
+												.substring(0, 15)}
+										</Option>
+									))}
+								</Select>
+							)}
 
-						{this.state.restore_from && this.state.snapshot_id && (
-							<Button
-								style={{ marginLeft: 8 }}
-								type="primary"
-								loading={this.state.isRestoring}
-								onClick={this.restoreCluster}
-							>
-								Restore
-							</Button>
-						)}
-					</div>
-				</li>
+							{this.state.restore_from && this.state.snapshot_id && (
+								<Button
+									style={{ marginLeft: 8 }}
+									type="primary"
+									loading={this.state.isRestoring}
+									onClick={this.restoreCluster}
+								>
+									Restore
+								</Button>
+							)}
+						</div>
+					</li>
+				)}
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button
