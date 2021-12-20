@@ -812,7 +812,8 @@ class ClusterInfo extends Component {
 										this.state.arcVersion ||
 											arcDeployment.image,
 										this.state.cluster.recipe,
-									) && (
+									) &&
+									!isViewer && (
 										<Alert
 											message="A new appbase.io version is available!"
 											description={

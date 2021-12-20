@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, message, Popover, Button } from 'antd';
-import { string, func } from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { credsBox, confirmationBox } from '../../styles';
 
@@ -12,6 +12,7 @@ export default class CredentialsBox extends Component {
 			hidden: props.hidden || true,
 			confirmationBoxVisible: false,
 			displayText: undefined,
+			showRotateAPICredentials: props.showRotateAPICredentials || false,
 		};
 	}
 
@@ -53,6 +54,7 @@ export default class CredentialsBox extends Component {
 	};
 
 	renderConfirmationBox = (type, rotateAPICredentials, clusterId) => {
+		const { showRotateAPICredentials } = this.state;
 		return (
 			<Popover
 				content={
@@ -68,8 +70,11 @@ export default class CredentialsBox extends Component {
 							Warning
 						</div>
 						<div className="confirmation-text">
-							Rotating API credentials will invalidate the current
-							API credential. Do you still want to proceed?
+							{showRotateAPICredentials &&
+								`Rotating API credentials will invalidate the current
+							API credential. Do you still want to proceed?`}
+							{!showRotateAPICredentials &&
+								`Your role is of type viewer. Only an admin role can rotate the API credentials.`}
 						</div>
 						<div className="buttons-wrapper">
 							<div>
@@ -83,22 +88,26 @@ export default class CredentialsBox extends Component {
 									<span className="button-text">Cancel</span>
 								</Button>
 							</div>
-							<div>
-								<Button
-									type="primary"
-									size="small"
-									onClick={() =>
-										this.updateAPICredentials(
-											type,
-											clusterId,
-											rotateAPICredentials,
-										)
-									}
-									className="confirm-button"
-								>
-									<span className="button-text">Confirm</span>
-								</Button>
-							</div>
+							{showRotateAPICredentials && (
+								<div>
+									<Button
+										type="primary"
+										size="small"
+										onClick={() =>
+											this.updateAPICredentials(
+												type,
+												clusterId,
+												rotateAPICredentials,
+											)
+										}
+										className="confirm-button"
+									>
+										<span className="button-text">
+											Confirm
+										</span>
+									</Button>
+								</div>
+							)}
 						</div>
 					</div>
 				}
@@ -187,4 +196,5 @@ CredentialsBox.propTypes = {
 	text: string.isRequired,
 	name: string.isRequired,
 	rotateAPICredentials: func.isRequired,
+	showRotateAPICredentials: bool,
 };
