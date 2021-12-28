@@ -3,8 +3,8 @@ const fs = require('fs');
 const sentryEnv = `
 [defaults]
 url=https://sentry.io/
-org=appbase-1
-project=frontend
+org=appbase-io
+project=appbase-dashboard
 [auth]
 token=${process.env.SENTRY_TOKEN}
 `;
