@@ -508,6 +508,23 @@ class ClusterInfo extends Component {
 		}
 	};
 
+	exploreClusterInNewTab = () => {
+		const mainURL = 'http://dash.appbase.io';
+
+		const { username, password, url: arcURL } = getAddon(
+			'arc',
+			this.state.deployment,
+		);
+		const url = `${mainURL}/?url=${arcURL.slice(
+			0,
+			-1,
+		)}&username=${username}&password=${password}&cluster=${get(
+			this,
+			'state.cluster.name',
+		)}`;
+		window.open(url, '_blank');
+	};
+
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -778,30 +795,15 @@ class ClusterInfo extends Component {
 													this.state.deployment
 												}
 											/>
-											<Link
-												to={{
-													pathname: `/clusters/${get(
-														this,
-														'props.match.params.id',
-													)}/explore`,
-													state: {
-														arc: getAddon(
-															'arc',
-															this.state
-																.deployment,
-														),
-														cluster: this.state
-															.cluster.name,
-													},
-												}}
+											<Button
+												type="primary"
+												size="large"
+												onClick={
+													this.exploreClusterInNewTab
+												}
 											>
-												<Button
-													type="primary"
-													size="large"
-												>
-													Explore Cluster
-												</Button>
-											</Link>
+												Explore Cluster
+											</Button>
 										</div>
 									</li>
 								) : null}
