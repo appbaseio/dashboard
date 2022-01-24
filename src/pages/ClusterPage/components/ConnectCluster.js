@@ -52,14 +52,6 @@ const PanelHeader = ({ icon, text, title }) => (
 	</div>
 );
 
-const RedirectTitle = ({ id, title, link }) => (
-	<Link to={`/clusters/${id}/explore?view=${link}`}>
-		<Paragraph className={linkTitle} strong>
-			{title} <Icon type="link" />
-		</Paragraph>
-	</Link>
-);
-
 const DirectLink = ({ title, href }) => (
 	<a href={href} rel="noopener noreferrer" target="_blank">
 		<Paragraph className={linkTitle} strong>
@@ -116,15 +108,19 @@ class ConnectCluster extends React.Component {
 							Try this 2-mins tutorial to get an overview of how
 							Appbase.io works
 						</div>
-						<Link
-							to={`/clusters/${cluster.id}/explore?view=/tutorial`}
-							style={{
-								display: 'flex',
-								justifyContent: 'flex-end',
+
+						<ClusterExploreRedirect
+							arc={arcInstance}
+							clusterName={cluster.name}
+							urlParams={{
+								view: '/tutorial',
 							}}
-						>
-							<Button type="primary">Interactive Tutorial</Button>
-						</Link>
+							customComponent={
+								<Button type="primary">
+									Interactive Tutorial
+								</Button>
+							}
+						/>
 					</div>
 					<Divider />
 					<Collapse
@@ -214,14 +210,22 @@ class ConnectCluster extends React.Component {
 							showArrow={false}
 							key={2}
 						>
-							<Link to={`/clusters/${cluster.id}/explore`}>
-								<Button
-									style={{ marginBottom: 15 }}
-									type="primary"
-								>
-									Explore Dashboard
-								</Button>
-							</Link>
+							<ClusterExploreRedirect
+								arc={arcInstance}
+								clusterName={cluster.name}
+								urlParams={{
+									...getUrlParams(window.location.search),
+								}}
+								customComponent={
+									<Button
+										style={{ marginBottom: 15 }}
+										type="primary"
+									>
+										Explore Dashboard
+									</Button>
+								}
+							/>
+
 							<Paragraph>
 								Or go to one of the following views directly:
 							</Paragraph>
@@ -280,16 +284,22 @@ class ConnectCluster extends React.Component {
 							showArrow={false}
 							key={3}
 						>
-							<Link
-								to={`/clusters/${cluster.id}/explore?view=/cluster/import`}
-							>
-								<Button
-									style={{ marginBottom: 15 }}
-									type="primary"
-								>
-									Go to Importer
-								</Button>
-							</Link>
+							<ClusterExploreRedirect
+								arc={arcInstance}
+								clusterName={cluster.name}
+								urlParams={{
+									view: '/cluster/import',
+									...getUrlParams(window.location.search),
+								}}
+								customComponent={
+									<Button
+										style={{ marginBottom: 15 }}
+										type="primary"
+									>
+										Go to Importer
+									</Button>
+								}
+							/>
 							<Paragraph>
 								You can also import via CLI, REST API and using
 								Zapier. Read more{' '}
