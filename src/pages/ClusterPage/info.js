@@ -11,6 +11,7 @@ import ConnectCluster from './components/ConnectCluster';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
 import Sidebar, { RightContainer } from './components/Sidebar';
+import ClusterExploreRedirect from '../../components/ClusterExploreRedirect';
 import { ansibleMachineMarks, ARC_BYOC, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import ClusterScreen from './screens/ClusterScreen';
@@ -82,16 +83,6 @@ class ClusterInfo extends Component {
 	}
 
 	componentDidMount() {
-		const params = getUrlParams(window.location.search);
-		const { history, location } = this.props;
-		if (params && params['insights-id']) {
-			history.push(
-				`${get(location, 'pathname')}/explore${get(
-					location,
-					'search',
-				)}&view=/cluster/analytics`,
-			);
-		}
 		this.init();
 	}
 
@@ -508,23 +499,6 @@ class ClusterInfo extends Component {
 		}
 	};
 
-	exploreClusterInNewTab = () => {
-		const mainURL = 'http://dash.appbase.io';
-
-		const { username, password, url: arcURL } = getAddon(
-			'arc',
-			this.state.deployment,
-		);
-		const url = `${mainURL}/?url=${arcURL.slice(
-			0,
-			-1,
-		)}&username=${username}&password=${password}&cluster=${get(
-			this,
-			'state.cluster.name',
-		)}`;
-		window.open(url, '_blank');
-	};
-
 	render() {
 		const vcenter = {
 			display: 'flex',
@@ -795,15 +769,21 @@ class ClusterInfo extends Component {
 													this.state.deployment
 												}
 											/>
-											<Button
-												type="primary"
-												size="large"
-												onClick={
-													this.exploreClusterInNewTab
-												}
-											>
-												Explore Cluster
-											</Button>
+											<ClusterExploreRedirect
+												arc={getAddon(
+													'arc',
+													this.state.deployment,
+												)}
+												clusterName={get(
+													this,
+													'state.cluster.name',
+												)}
+												urlParams={{
+													...getUrlParams(
+														window.location.search,
+													),
+												}}
+											/>
 										</div>
 									</li>
 								) : null}
@@ -1055,7 +1035,6 @@ class ClusterInfo extends Component {
 
 ClusterInfo.propTypes = {
 	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 };
 
 export default ClusterInfo;

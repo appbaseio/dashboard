@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Button, Collapse, Icon, Typography, Divider } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import { css } from 'emotion';
+import { getUrlParams } from '../../../utils/helper';
+import ClusterExploreRedirect from '../../../components/ClusterExploreRedirect';
 
 const getURL = ({ username, password, url: fullURL }) => {
 	const [protocol, url] = fullURL.split('://');
@@ -223,20 +225,47 @@ class ConnectCluster extends React.Component {
 							<Paragraph>
 								Or go to one of the following views directly:
 							</Paragraph>
-							<RedirectTitle
-								title="User Management"
-								id={cluster.id}
-								link="/cluster/user-management"
+							<ClusterExploreRedirect
+								arc={arcInstance}
+								clusterName={cluster.name}
+								urlParams={{
+									view: '/cluster/user-management',
+									...getUrlParams(window.location.search),
+								}}
+								customComponent={
+									<Paragraph className={linkTitle} strong>
+										User Management <Icon type="link" />
+									</Paragraph>
+								}
 							/>
-							<RedirectTitle
-								title="Security Credentials"
-								id={cluster.id}
-								link="/cluster/credentials"
+
+							<ClusterExploreRedirect
+								arc={arcInstance}
+								clusterName={cluster.name}
+								urlParams={{
+									view: '/cluster/credentials',
+									...getUrlParams(window.location.search),
+								}}
+								customComponent={
+									<Paragraph className={linkTitle} strong>
+										Security Credentials{' '}
+										<Icon type="link" />
+									</Paragraph>
+								}
 							/>
-							<RedirectTitle
-								title="Browse Data"
-								id={cluster.id}
-								link="/cluster/browse"
+
+							<ClusterExploreRedirect
+								arc={arcInstance}
+								clusterName={cluster.name}
+								urlParams={{
+									view: '/cluster/browse',
+									...getUrlParams(window.location.search),
+								}}
+								customComponent={
+									<Paragraph className={linkTitle} strong>
+										Browse Data <Icon type="link" />
+									</Paragraph>
+								}
 							/>
 						</Collapse.Panel>
 
