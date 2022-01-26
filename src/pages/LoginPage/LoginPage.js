@@ -39,7 +39,7 @@ class LoginPage extends React.Component {
 		}
 
 		if (params['insights-sidebar'] && params['insights-id']) {
-			returnURL = `${returnURL}/explore?insights-id=${params['insights-id']}`;
+			returnURL = `${returnURL}/?insights-id=${params['insights-id']}&auto-navigate=true`;
 		}
 		const { isEmailLogin } = this.state;
 		if (user.data) {
