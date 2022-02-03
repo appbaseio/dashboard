@@ -336,7 +336,8 @@ class ClusterPage extends Component {
 					{cluster.role === 'admin' &&
 					(cluster.status === 'active' ||
 						cluster.status === 'in progress' ||
-						cluster.status === 'deployments in progress') ? (
+						cluster.status === 'deployments in progress' ||
+						cluster.status === 'failed') ? (
 						<Button
 							type="danger"
 							icon="delete"
