@@ -215,7 +215,7 @@ class NewCluster extends Component {
 			pluginState[item] = item !== 'x-pack';
 		});
 
-		const provider = 'aws';
+		const provider = 'gke';
 		const pricing_plan = CLUSTER_PLANS.SANDBOX_2020;
 
 		this.state = {
