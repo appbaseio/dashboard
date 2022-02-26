@@ -1,4 +1,14 @@
-import { Button, Col, Icon, Modal, Row, Select, Tabs, Tooltip } from 'antd';
+import {
+	Button,
+	Col,
+	Icon,
+	Modal,
+	Row,
+	Select,
+	Tabs,
+	Tooltip,
+	Alert,
+} from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
@@ -617,6 +627,7 @@ class NewCluster extends Component {
 			clusters,
 			clusterName,
 			changed,
+			pricing_plan,
 		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
@@ -630,6 +641,8 @@ class NewCluster extends Component {
 		const activeClusters = clusters.filter(
 			cluster => cluster.status === 'active',
 		);
+
+		let pricingPlanArr = pricing_plan.split('-').slice(1);
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
@@ -695,6 +708,19 @@ class NewCluster extends Component {
 							onSubmit={this.handleStripeSubmit}
 						/>
 					)}
+					{isUsingClusterTrial && this.state.vm_machine ? (
+						<Alert
+							type="warning"
+							message={`We only support Sandbox plan for a free trial. Creating a ${pricingPlanArr.join(
+								'-',
+							)} plan cluster will require adding a payment method`}
+							showIcon
+							size="small"
+							style={{
+								marginBottom: 10,
+							}}
+						/>
+					) : null}
 					<section className={clusterContainer}>
 						{this.state.showError ? this.handleError() : null}
 						<article>
