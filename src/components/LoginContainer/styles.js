@@ -11,6 +11,7 @@ const main = css`
 	> div {
 		width: 100%;
 		padding: 40px 0px 15px;
+		align-items: center;
 	}
 	.content {
 		margin-right: 100px;
