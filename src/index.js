@@ -15,7 +15,7 @@ import { mediaKey } from './utils/media';
 injectGlobal`
 * {
 	box-sizing: border-box;
-	font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 body {
 	background-color: #fafafa !important;
