@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import Flex from '../../batteries/components/shared/Flex';
-import Logo from '../Logo';
+import ReactivesearchLogo from '../Logo/ReactivesearchLogo';
 import AppbaseUsers from '../AppbaseUsers';
 import { main, footer } from './styles';
 
@@ -10,11 +10,11 @@ const LoginContainer = ({ children }) => (
 	<React.Fragment>
 		<Flex css={main}>
 			<Flex className="content" flexDirection="column">
-				<Logo width={200} />
+				<ReactivesearchLogo width={250} />
 				<h2 className="title">
 					<mark>
-						Try <span className="highlight">appbase.io</span> for{' '}
-						<span className="highlight">free</span>!
+						Try <span className="highlight">reactivesearch.io</span>{' '}
+						for <span className="highlight">free</span>!
 					</mark>
 				</h2>
 				<div className="signup_description">
