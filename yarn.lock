@@ -1938,6 +1938,19 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@typeform/embed-react@^1.13.0":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@typeform/embed-react/-/embed-react-1.13.0.tgz#9b50f0b880f212480b95d4ec2f1390998b2d3561"
+  integrity sha512-LSN7DQ1Eg9U7IvbfSfn152SspkkSaWlsWytEAGsqmau/HtH99T2ra/FoQ/zPajAObmWWpdH3p/jQiUL96vytPw==
+  dependencies:
+    "@typeform/embed" "1.34.1"
+    fast-deep-equal "^3.1.3"
+
+"@typeform/embed@1.34.1":
+  version "1.34.1"
+  resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-1.34.1.tgz#53f1f0b6fee7af24aa2446cf2e258c042df2e48f"
+  integrity sha512-FdteCw0TKHcNiSmz0t0CfFfK4xL7pc6jce/FWZJ9MLPTKcMzwaAvdaQ0Byll2kSG1RtNv+dfcBtth7xjhCKs3Q==
+
 "@typeform/embed@^0.13.1":
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-0.13.1.tgz#b1038c6883a940d55ccabc98f6ead67301f98a50"
@@ -7048,6 +7061,11 @@ fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
+
+fast-deep-equal@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
+  integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
 fast-diff@^1.1.2:
   version "1.2.0"

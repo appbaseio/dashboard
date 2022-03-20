@@ -1,4 +1,5 @@
 import React from 'react';
+import { Widget } from '@typeform/embed-react';
 import { Modal, Input } from 'antd';
 
 class DeleteClusterModal extends React.Component {
@@ -45,6 +46,7 @@ class DeleteClusterModal extends React.Component {
 				title="Confirm Delete"
 				okText="Delete"
 				okButtonProps={{ type: 'danger', disabled }}
+				bodyStyle={{ height: 500, overflow: 'scroll' }}
 			>
 				<p>
 					Type the cluster name{' '}
@@ -56,6 +58,11 @@ class DeleteClusterModal extends React.Component {
 					onChange={this.handleInputChange}
 					value={deleteClusterName}
 					name="deleteClusterName"
+				/>
+				<Widget
+					id="QEktta"
+					style={{ width: '100%', height: '100%' }}
+					className="my-form"
 				/>
 			</Modal>
 		);
