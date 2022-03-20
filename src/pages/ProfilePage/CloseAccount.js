@@ -1,7 +1,19 @@
 import React from 'react';
+import { css } from 'react-emotion';
 import { Card, Alert, Button, Popconfirm, notification } from 'antd';
-
+import { Widget } from '@typeform/embed-react';
 import { ACC_API } from '../../constants/config';
+import credsBox from './styles';
+
+const closeAccCardStyles = css`
+	.close-account-footer {
+		position: absolute;
+		bottom: 0px;
+		width: 93%;
+		background: white;
+		height: 10%;
+	}
+`;
 
 const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
 
@@ -45,7 +57,11 @@ const deleteUser = async () => {
 };
 
 const CloseAccount = () => (
-	<Card title="Close Account">
+	<Card
+		title="Close Account"
+		bodyStyle={{ height: 500, overflow: 'scroll' }}
+		css={closeAccCardStyles}
+	>
 		<Alert
 			showIcon
 			message="Warning"
@@ -55,15 +71,22 @@ const CloseAccount = () => (
 				marginBottom: 20,
 			}}
 		/>
-		<Popconfirm
-			placement="bottom"
-			title="Are you sure you want to close your account?"
-			onConfirm={deleteUser}
-			okText="Yes"
-			cancelText="No"
-		>
-			<Button type="danger">Close Account</Button>
-		</Popconfirm>
+		<Widget
+			id="QEktta"
+			style={{ width: '100%', height: '100%', marginBottom: 20 }}
+			className="my-form"
+		/>
+		<div className="close-account-footer">
+			<Popconfirm
+				placement="bottom"
+				title="Are you sure you want to close your account?"
+				onConfirm={deleteUser}
+				okText="Yes"
+				cancelText="No"
+			>
+				<Button type="danger">Close Account</Button>
+			</Popconfirm>
+		</div>
 	</Card>
 );
 
