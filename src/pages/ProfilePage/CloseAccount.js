@@ -59,7 +59,7 @@ const deleteUser = async () => {
 const CloseAccount = () => (
 	<Card
 		title="Close Account"
-		bodyStyle={{ height: 500, overflow: 'scroll' }}
+		bodyStyle={{ height: 600, overflow: 'scroll' }}
 		css={closeAccCardStyles}
 	>
 		<Alert
@@ -73,7 +73,7 @@ const CloseAccount = () => (
 		/>
 		<Widget
 			id="QEktta"
-			style={{ width: '100%', height: '100%', marginBottom: 20 }}
+			style={{ width: '100%', height: '100%', marginBottom: 25 }}
 			className="my-form"
 		/>
 		<div className="close-account-footer">
