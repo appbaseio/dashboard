@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css } from 'react-emotion';
 import { Card, Alert, Button, Popconfirm, notification } from 'antd';
-import { Widget } from '@typeform/embed-react';
+import DeleteFeedbackForm from './DeleteFeedbackForm';
 import { ACC_API } from '../../constants/config';
 import credsBox from './styles';
 
@@ -56,38 +56,40 @@ const deleteUser = async () => {
 	}
 };
 
-const CloseAccount = () => (
-	<Card
-		title="Close Account"
-		bodyStyle={{ height: 600, overflow: 'scroll' }}
-		css={closeAccCardStyles}
-	>
-		<Alert
-			showIcon
-			message="Warning"
-			description="Closing your account is a permanent action and it cannot be undone!"
-			type="warning"
-			css={{
-				marginBottom: 20,
-			}}
-		/>
-		<Widget
-			id="QEktta"
-			style={{ width: '100%', height: '100%', marginBottom: 25 }}
-			className="my-form"
-		/>
-		<div className="close-account-footer">
-			<Popconfirm
-				placement="bottom"
-				title="Are you sure you want to close your account?"
-				onConfirm={deleteUser}
-				okText="Yes"
-				cancelText="No"
-			>
-				<Button type="danger">Close Account</Button>
-			</Popconfirm>
-		</div>
-	</Card>
-);
+const CloseAccount = () => {
+	const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
+
+	return (
+		<Card
+			title="Close Account"
+			style={{ height: 750 }}
+			bodyStyle={{ height: 550 }}
+			css={closeAccCardStyles}
+		>
+			<Alert
+				showIcon
+				message="Warning"
+				description="Closing your account is a permanent action and it cannot be undone!"
+				type="warning"
+			/>
+			<DeleteFeedbackForm
+				setIsFeedbackSubmitted={setIsFeedbackSubmitted}
+			/>
+			<div className="close-account-footer">
+				<Popconfirm
+					placement="bottom"
+					title="Are you sure you want to close your account?"
+					onConfirm={deleteUser}
+					okText="Yes"
+					cancelText="No"
+				>
+					<Button type="danger" disabled={!isFeedbackSubmitted}>
+						Close Account
+					</Button>
+				</Popconfirm>
+			</div>
+		</Card>
+	);
+};
 
 export default CloseAccount;

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Widget } from '@typeform/embed-react';
+import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import { Modal, Input } from 'antd';
 
 class DeleteClusterModal extends React.Component {
 	state = {
 		deleteClusterName: '',
+		isFeedbackSubmitted: false,
 	};
 
 	handleDelete = () => {
@@ -28,12 +29,12 @@ class DeleteClusterModal extends React.Component {
 
 	render() {
 		const {
-			isVisible, clusterId, clusterName, handleModal,
+			isVisible, clusterId, clusterName, handleModal, isFeedbackSubmitted
 		} = this.props; // prettier-ignore
 		const { deleteClusterName } = this.state;
 
 		let disabled = true;
-		if (deleteClusterName === clusterName) {
+		if (deleteClusterName === clusterName && isFeedbackSubmitted) {
 			disabled = false;
 		}
 
@@ -59,10 +60,12 @@ class DeleteClusterModal extends React.Component {
 					value={deleteClusterName}
 					name="deleteClusterName"
 				/>
-				<Widget
-					id="QEktta"
-					style={{ width: '100%', height: '100%' }}
-					className="my-form"
+				<DeleteFeedbackForm
+					setIsFeedbackSubmitted={() =>
+						this.setState({
+							setIsFeedbackSubmitted: true,
+						})
+					}
 				/>
 			</Modal>
 		);
