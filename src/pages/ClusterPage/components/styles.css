@@ -1,0 +1,6 @@
+.success-message-container {
+	display: flex;
+	justify-content: center;
+	padding: 15px;
+	font-weight: 500px !important;
+}

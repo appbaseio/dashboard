@@ -11,7 +11,13 @@ const closeAccCardStyles = css`
 		bottom: 0px;
 		width: 93%;
 		background: white;
-		height: 10%;
+		padding: 15px;
+	}
+	.success-message-container {
+		display: flex;
+		justify-content: center;
+		padding: 15px;
+		font-weight: 500px !important;
 	}
 `;
 
@@ -62,8 +68,8 @@ const CloseAccount = () => {
 	return (
 		<Card
 			title="Close Account"
-			style={{ height: 750 }}
-			bodyStyle={{ height: 550 }}
+			style={{ height: isFeedbackSubmitted ? 300 : 750 }}
+			bodyStyle={{ height: isFeedbackSubmitted ? 0 : 550 }}
 			css={closeAccCardStyles}
 		>
 			<Alert
@@ -72,9 +78,15 @@ const CloseAccount = () => {
 				description="Closing your account is a permanent action and it cannot be undone!"
 				type="warning"
 			/>
-			<DeleteFeedbackForm
-				setIsFeedbackSubmitted={setIsFeedbackSubmitted}
-			/>
+			{!isFeedbackSubmitted ? (
+				<DeleteFeedbackForm
+					setIsFeedbackSubmitted={setIsFeedbackSubmitted}
+				/>
+			) : (
+				<h3 className="success-message-container">
+					Thanks for filling this form!
+				</h3>
+			)}
 			<div className="close-account-footer">
 				<Popconfirm
 					placement="bottom"
