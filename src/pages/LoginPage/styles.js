@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 const container = css`
 	display: flex;
@@ -6,7 +7,8 @@ const container = css`
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
-	background-image: linear-gradient(120deg, #eef5ff 0%, #c2e9fb 100%);
+	background-image: url(${backgroundUrlImage});
+	filter: drop-shadow(0px 4px 60px rgba(0, 0, 0, 0.2));
 `;
 
 const card = css`

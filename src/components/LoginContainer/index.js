@@ -78,7 +78,7 @@ const LoginContainer = ({ children }) => (
 					height: '100vh',
 				}}
 			>
-				{children}
+				<div>{children}</div>
 				<div css={footer}>
 					<AppbaseUsers title="Powering hundreds of search experiences" />
 				</div>

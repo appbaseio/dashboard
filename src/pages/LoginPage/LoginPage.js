@@ -47,7 +47,6 @@ class LoginPage extends React.Component {
 		}
 		return (
 			<section className={container}>
-				<ReactivesearchLogo width={250} />
 				<Card className={card} bordered={false}>
 					<h2>Sign in to get started</h2>
 					{isEmailLogin || (
