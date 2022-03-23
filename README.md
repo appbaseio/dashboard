@@ -1,4 +1,4 @@
-## appbase.io dashboard
+## reactivesearch.io dashboard
 
 sugar, spice and everything nice
 

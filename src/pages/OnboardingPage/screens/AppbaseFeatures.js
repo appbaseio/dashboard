@@ -91,7 +91,7 @@ export default class AppbaseFeatures extends Component {
 					<div>
 						<img
 							src="/static/images/onboarding/Realtime.svg"
-							alt="realtime appbase.io"
+							alt="realtime reactivesearch.io"
 						/>
 					</div>
 					<div className="content">
@@ -99,7 +99,7 @@ export default class AppbaseFeatures extends Component {
 							<h2>Stream realtime updates</h2>
 						</header>
 						<p>
-							appbase.io has built-in support for streaming
+							reactivesearch.io has built-in support for streaming
 							realtime (aka live) updates on search queries
 						</p>
 					</div>

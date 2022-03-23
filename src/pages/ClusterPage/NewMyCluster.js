@@ -404,7 +404,8 @@ class NewMyCluster extends Component {
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
 							<h2>
-								Deploy appbase.io for your ElasticSearch Cluster
+								Deploy reactivesearch.io for your ElasticSearch
+								Cluster
 							</h2>
 							<Row>
 								<Col span={18}>
@@ -424,7 +425,7 @@ class NewMyCluster extends Component {
 								paddingBottom: 20,
 							}}
 						>
-							<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+							<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with reactivesearch.io.">
 								<Button
 									size="large"
 									type="primary"

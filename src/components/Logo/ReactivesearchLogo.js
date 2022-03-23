@@ -8,7 +8,7 @@ const ReactivesearchLogo = ({ type, width }) => {
 				<img
 					src="/static/images/reactivesearch_white.svg"
 					width={width}
-					alt="appbase.io"
+					alt="reactivesearch.io"
 				/>
 			);
 		case 'color':
@@ -16,7 +16,7 @@ const ReactivesearchLogo = ({ type, width }) => {
 				<img
 					src="/static/images/reactivesearch_color.svg"
 					width={width}
-					alt="appbase.io"
+					alt="reactivesearch.io"
 				/>
 			);
 		case 'black':
@@ -24,7 +24,7 @@ const ReactivesearchLogo = ({ type, width }) => {
 				<img
 					src="/static/images/reactivesearch_black.svg"
 					width={width}
-					alt="appbase.io"
+					alt="reactivesearch.io"
 				/>
 			);
 		default:
@@ -32,7 +32,7 @@ const ReactivesearchLogo = ({ type, width }) => {
 				<img
 					src="/static/images/reactivesearch_grey.svg"
 					width={width}
-					alt="appbase.io"
+					alt="reactivesearch.io"
 				/>
 			);
 	}
