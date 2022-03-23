@@ -1,4 +1,5 @@
 import React from 'react';
+import { css } from 'emotion';
 import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import { Modal, Input } from 'antd';
 import './styles.css';
@@ -47,10 +48,12 @@ class DeleteClusterModal extends React.Component {
 				title="Confirm Delete"
 				okText="Delete"
 				okButtonProps={{ type: 'danger', disabled }}
+				width={600}
 				bodyStyle={{
-					height: isFeedbackSubmitted ? 200 : 500,
+					height: isFeedbackSubmitted ? 200 : 650,
 					overflow: 'scroll',
 				}}
+				wrapClassName="modal-styles"
 			>
 				<p>
 					Type the cluster name{' '}

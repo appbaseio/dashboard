@@ -1,17 +1,18 @@
-import React from 'react';
-import { Widget } from '@typeform/embed-react';
+import React, { useEffect } from 'react';
+import { createWidget } from '@typeform/embed';
+import '@typeform/embed/build/css/widget.css';
 
-const DeleteFeedbackForm = ({ setIsFeedbackSubmitted }) => {
-	return (
-		<Widget
-			id="QEktta"
-			style={{ width: '100%', height: '100%' }}
-			className="my-form"
-			onSubmit={() => {
+function DeleteFeedbackForm({ setIsFeedbackSubmitted }) {
+	useEffect(() => {
+		createWidget('yVrwbYTw', {
+			container: document.querySelector('#typeform-embed-container'),
+			onSubmit: event => {
 				setIsFeedbackSubmitted(true);
-			}}
-		/>
-	);
-};
+			},
+		});
+	}, []);
+
+	return <div id="typeform-embed-container" style={{ height: 500 }}></div>;
+}
 
 export default DeleteFeedbackForm;

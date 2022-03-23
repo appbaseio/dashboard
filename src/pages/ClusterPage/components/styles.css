@@ -4,3 +4,7 @@
 	padding: 15px;
 	font-weight: 500px !important;
 }
+
+.modal-styles .ant-modal {
+	top: 50px !important;
+}
