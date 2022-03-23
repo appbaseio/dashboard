@@ -22,7 +22,6 @@ body {
 }
 h1, h2 {
 	margin: 0 0 8px;
-	font-weight: 700 !important;
 	line-height: 2.5rem;
 
 	${mediaKey.medium} {

@@ -16,10 +16,21 @@ const card = css`
 	flex-direction: column;
 	text-align: center;
 	border-radius: 4px;
-	margin-top: 25px;
 	padding: 20px;
+	background: none !important;
 	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
-
+	filter: drop-shadow(0px 4px 60px rgba(0, 0, 0, 0.2));
+	.ant-input {
+		border: none;
+		background: #f4f4f4;
+	}
+	.ant-card {
+		background: none !important;
+		padding: 0px;
+	}
+	.ant-card-body {
+		padding: 24px;
+	}
 	h2 {
 		font-weight: 400;
 		color: #424242;
