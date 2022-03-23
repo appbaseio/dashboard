@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { css } from 'react-emotion';
 import { Card, Alert, Button, Popconfirm, notification } from 'antd';
 import DeleteFeedbackForm from './DeleteFeedbackForm';
 import { ACC_API } from '../../constants/config';
+import { getClusters } from '../ClusterPage/utils';
 import credsBox from './styles';
 
 const closeAccCardStyles = css`
@@ -64,6 +65,21 @@ const deleteUser = async () => {
 
 const CloseAccount = () => {
 	const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
+	const [availableActiveClusters, setAvailableActiveClusters] = useState(
+		false,
+	);
+	useEffect(() => {
+		getClusters()
+			.then(clusters => {
+				const activeClusters = clusters.filter(
+					cluster => cluster.status === 'active',
+				);
+				if (activeClusters.length) setAvailableActiveClusters(true);
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}, []);
 
 	return (
 		<Card
@@ -75,7 +91,20 @@ const CloseAccount = () => {
 			<Alert
 				showIcon
 				message="Warning"
-				description="Closing your account is a permanent action and it cannot be undone!"
+				description={
+					<div>
+						<div>
+							Closing your account is a permanent action and it
+							cannot be undone!
+						</div>
+						{availableActiveClusters ? (
+							<div>
+								This action needs the active clusters to be
+								deleted.
+							</div>
+						) : null}
+					</div>
+				}
 				type="warning"
 			/>
 			{!isFeedbackSubmitted ? (
@@ -95,7 +124,12 @@ const CloseAccount = () => {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button type="danger" disabled={!isFeedbackSubmitted}>
+					<Button
+						type="danger"
+						disabled={
+							!isFeedbackSubmitted || availableActiveClusters
+						}
+					>
 						Close Account
 					</Button>
 				</Popconfirm>
