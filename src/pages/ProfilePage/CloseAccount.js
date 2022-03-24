@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { css } from 'react-emotion';
 import { Card, Alert, Button, Popconfirm, notification } from 'antd';
-
+// import DeleteFeedbackForm from './DeleteFeedbackForm';
 import { ACC_API } from '../../constants/config';
+import { getClusters } from '../ClusterPage/utils';
+import credsBox from './styles';
+
+const closeAccCardStyles = css`
+	.close-account-footer {
+		position: absolute;
+		bottom: 0px;
+		width: 93%;
+		background: white;
+		padding: 15px;
+	}
+	.success-message-container {
+		display: flex;
+		justify-content: center;
+		padding: 15px;
+		font-weight: 500px !important;
+	}
+`;
 
 const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
 
@@ -44,27 +63,64 @@ const deleteUser = async () => {
 	}
 };
 
-const CloseAccount = () => (
-	<Card title="Close Account">
-		<Alert
-			showIcon
-			message="Warning"
-			description="Closing your account is a permanent action and it cannot be undone!"
-			type="warning"
-			css={{
-				marginBottom: 20,
-			}}
-		/>
-		<Popconfirm
-			placement="bottom"
-			title="Are you sure you want to close your account?"
-			onConfirm={deleteUser}
-			okText="Yes"
-			cancelText="No"
+const CloseAccount = () => {
+	const [availableActiveClusters, setAvailableActiveClusters] = useState(
+		false,
+	);
+	useEffect(() => {
+		getClusters()
+			.then(clusters => {
+				console.log(clusters);
+				const activeClusters = clusters.filter(
+					cluster => cluster.status !== 'deleted',
+				);
+				if (activeClusters.length) setAvailableActiveClusters(true);
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}, []);
+
+	return (
+		<Card
+			title="Close Account"
+			style={{ height: 250 }}
+			css={closeAccCardStyles}
 		>
-			<Button type="danger">Close Account</Button>
-		</Popconfirm>
-	</Card>
-);
+			<Alert
+				showIcon
+				message="Warning"
+				description={
+					<div>
+						<div>
+							Closing your account is a permanent action and it
+							cannot be undone!
+						</div>
+						{availableActiveClusters ? (
+							<div>
+								This action needs the active clusters to be
+								deleted.
+							</div>
+						) : null}
+					</div>
+				}
+				type="warning"
+			/>
+			<div className="close-account-footer">
+				<Popconfirm
+					placement="bottom"
+					title="Are you sure you want to close your account?"
+					onConfirm={deleteUser}
+					okText="Yes"
+					cancelText="No"
+				>
+					<Button type="danger" disabled={availableActiveClusters}>
+						Close Account
+					</Button>
+				</Popconfirm>
+			</div>
+		</Card>
+	);
+};
 
 export default CloseAccount;
