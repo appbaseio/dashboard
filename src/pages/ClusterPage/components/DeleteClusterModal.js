@@ -76,7 +76,7 @@ class DeleteClusterModal extends React.Component {
 					/>
 				) : (
 					<h3 className="success-message-container">
-						Thanks for filling this form!
+						Thank you for providing this feedback 🙏
 					</h3>
 				)}
 			</Modal>
