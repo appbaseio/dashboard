@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { css } from 'react-emotion';
 import { Card, Alert, Button, Popconfirm, notification } from 'antd';
-import DeleteFeedbackForm from './DeleteFeedbackForm';
+// import DeleteFeedbackForm from './DeleteFeedbackForm';
 import { ACC_API } from '../../constants/config';
 import { getClusters } from '../ClusterPage/utils';
 import credsBox from './styles';
@@ -64,13 +64,13 @@ const deleteUser = async () => {
 };
 
 const CloseAccount = () => {
-	const [isFeedbackSubmitted, setIsFeedbackSubmitted] = useState(false);
 	const [availableActiveClusters, setAvailableActiveClusters] = useState(
 		false,
 	);
 	useEffect(() => {
 		getClusters()
 			.then(clusters => {
+				console.log(clusters);
 				const activeClusters = clusters.filter(
 					cluster => cluster.status === 'active',
 				);
@@ -84,8 +84,7 @@ const CloseAccount = () => {
 	return (
 		<Card
 			title="Close Account"
-			style={{ height: isFeedbackSubmitted ? 300 : 750 }}
-			bodyStyle={{ height: isFeedbackSubmitted ? 0 : 550 }}
+			style={{ height: 250 }}
 			css={closeAccCardStyles}
 		>
 			<Alert
@@ -107,15 +106,6 @@ const CloseAccount = () => {
 				}
 				type="warning"
 			/>
-			{!isFeedbackSubmitted ? (
-				<DeleteFeedbackForm
-					setIsFeedbackSubmitted={setIsFeedbackSubmitted}
-				/>
-			) : (
-				<h3 className="success-message-container">
-					Thanks for filling this form!
-				</h3>
-			)}
 			<div className="close-account-footer">
 				<Popconfirm
 					placement="bottom"
@@ -124,12 +114,7 @@ const CloseAccount = () => {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button
-						type="danger"
-						disabled={
-							!isFeedbackSubmitted || availableActiveClusters
-						}
-					>
+					<Button type="danger" disabled={availableActiveClusters}>
 						Close Account
 					</Button>
 				</Popconfirm>
