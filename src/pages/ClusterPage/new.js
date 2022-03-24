@@ -49,7 +49,7 @@ const SSH_KEY =
 
 const esVersions = ['8.1.0'];
 
-const openSearchVersions = ['1.2.4'];
+const openSearchVersions = ['1.3.0'];
 
 export const V7_ARC = '7.59.0-cluster';
 export const V6_ARC = '7.59.0-cluster';
