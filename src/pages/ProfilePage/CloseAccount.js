@@ -72,7 +72,7 @@ const CloseAccount = () => {
 			.then(clusters => {
 				console.log(clusters);
 				const activeClusters = clusters.filter(
-					cluster => cluster.status === 'active',
+					cluster => cluster.status !== 'deleted',
 				);
 				if (activeClusters.length) setAvailableActiveClusters(true);
 			})
