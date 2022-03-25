@@ -78,7 +78,13 @@ const LoginContainer = ({ children }) => (
 					height: '100vh',
 				}}
 			>
-				<div>{children}</div>
+				<Flex
+					flexDirection="column"
+					alignItems="center"
+					justifyContent="center"
+				>
+					{children}
+				</Flex>
 				<div css={footer}>
 					<AppbaseUsers title="Powering hundreds of search experiences" />
 				</div>

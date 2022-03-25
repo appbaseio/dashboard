@@ -92,7 +92,7 @@ const inputStyles = css`
 const githubBtn = css`
 	color: #fff;
 	background: rgb(22, 23, 26);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: #333;
@@ -104,7 +104,7 @@ const githubBtn = css`
 const googleBtn = css`
 	color: #fff;
 	background-color: rgb(234, 67, 53);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: rgb(245, 106, 94);
@@ -116,7 +116,7 @@ const googleBtn = css`
 const gitlabBtn = css`
 	color: #fff;
 	background-color: rgb(85, 68, 136);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: rgb(64, 51, 104);
