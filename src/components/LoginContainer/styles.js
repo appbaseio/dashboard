@@ -36,6 +36,9 @@ const main = css`
 			word-spacing: 0.03rem;
 			width: 100%;
 			text-align: center;
+			${mediaKey.xlarge} {
+				line-height: 1.4em;
+			}
 		}
 		.signup_description {
 			h4 {
