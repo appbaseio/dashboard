@@ -167,6 +167,7 @@ class SignupPage extends React.Component {
 								margin: '20px 0',
 								fontSize: 18,
 								letterSpacing: '0.02rem',
+								whiteSpace: 'inherit',
 							}}
 						>
 							Already have account? &nbsp; Login here
