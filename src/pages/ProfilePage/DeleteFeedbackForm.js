@@ -12,7 +12,7 @@ function DeleteFeedbackForm({ setIsFeedbackSubmitted }) {
 		});
 	}, []);
 
-	return <div id="typeform-embed-container" style={{ height: 500 }}></div>;
+	return <div id="typeform-embed-container" style={{ height: 580 }}></div>;
 }
 
 export default DeleteFeedbackForm;
