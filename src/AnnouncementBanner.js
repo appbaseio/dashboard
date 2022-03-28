@@ -3,15 +3,14 @@ import { css } from 'emotion';
 
 const bannerStyles = css`
 	.announcement-banner {
-		background: #23263b;
-		padding: 12px;
-		color: #fff;
+		padding: 5px;
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		font-size: 16px;
 		.link-container {
-			color: #fff;
-			text-decoration: underline;
+			color: inherit;
+			text-decoration: none;
 			&: hover {
 				color: #1890ff;
 			}
