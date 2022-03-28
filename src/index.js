@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { injectGlobal } from 'emotion';
 import { Layout } from 'antd';
 import { PersistGate } from 'redux-persist/integration/react';
-
+import AnnouncementBanner from './AnnouncementBanner';
 import configureStore from './store';
 import Dashboard from './Dashboard';
 
@@ -49,7 +49,10 @@ const App = () => (
 	<Content>
 		<PersistGate loading={null} persistor={persistor}>
 			<Provider store={store}>
-				<Dashboard />
+				<>
+					<AnnouncementBanner />
+					<Dashboard />
+				</>
 			</Provider>
 		</PersistGate>
 	</Content>
