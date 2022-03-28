@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { css } from 'emotion';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import get from 'lodash/get';
-import { setAnnouncementBanner } from './actions';
 
 const bannerStyles = css`
 	.announcement-banner {
