@@ -301,7 +301,7 @@ class ClusterScreen extends Component {
 			const isViewer = cluster.user_role === 'viewer';
 
 			if (name === 'arc') {
-				name = 'Appbase.io';
+				name = 'Reactivesearch.io';
 			}
 			if (name === 'elasticsearch') {
 				name = isOpenSearchFlavour ? 'OpenSearch' : 'Elasticsearch';
@@ -447,7 +447,7 @@ class ClusterScreen extends Component {
 
 				<li className={card}>
 					<div className="col light">
-						<h3>Appbase.io Server</h3>
+						<h3>Reactivesearch.io Server</h3>
 						<a
 							href="https://docs.appbase.io/docs/hosting/clusters/"
 							target="_blank"

@@ -756,10 +756,10 @@ class ClusterInfo extends Component {
 													color: 'rgba(0,0,0,0.65)',
 												}}
 											>
-												Use appbase.io’s GUI to explore
-												your cluster, manage indices,
-												build search visually, and get
-												search analytics.
+												Use reactivesearch.io’s GUI to
+												explore your cluster, manage
+												indices, build search visually,
+												and get search analytics.
 											</h4>
 										</div>
 										<div className="col vcenter">
@@ -797,7 +797,7 @@ class ClusterInfo extends Component {
 									) &&
 									!isViewer && (
 										<Alert
-											message="A new appbase.io version is available!"
+											message="A new reactivesearch.io version is available!"
 											description={
 												<div
 													style={{

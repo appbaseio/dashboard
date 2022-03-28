@@ -447,7 +447,7 @@ export async function verifyCluster(url) {
 			parseInt(data.version.number.split('.')[0], 10) < 6
 		) {
 			throw new Error(
-				'Appbase.io is only supported for ElasticSearch version >= 6',
+				'Reactivesearch.io is only supported for ElasticSearch version >= 6',
 			);
 		} else if (data.error) {
 			throw new Error(`${data.error.reason}`);
@@ -568,7 +568,7 @@ export const rotateAPICredentials = (type, clusterId) => {
 				es_password: password,
 			};
 			break;
-		case 'Appbase.io':
+		case 'Reactivesearch.io':
 			reqBody = {
 				arc_username: username,
 				arc_password: password,

@@ -29,9 +29,7 @@ const fieldWrapper = css`
 	margin-bottom: 20px;
 	input {
 		position: inherit;
-		font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-			'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue',
-			sans-serif;
+		font-family: 'Inter', sans-serif;
 		font-variant: tabular-nums;
 		box-sizing: border-box;
 		margin: 0;

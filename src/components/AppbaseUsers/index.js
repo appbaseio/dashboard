@@ -8,7 +8,6 @@ const styles = css`
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	margin-top: 20px;
 	img {
 		max-width: 35%;
 		margin: 20px;
@@ -25,7 +24,7 @@ const headingCls = css({
 	fontSize: '1.7em',
 	fontWeight: '100 !important',
 	maxWidth: '900px',
-	color: '#232E44',
+	color: '#323131',
 	[mediaKey.medium]: {
 		fontSize: '1.375rem',
 	},

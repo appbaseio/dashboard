@@ -47,7 +47,7 @@ class Billing extends Component {
 		return (
 			<React.Fragment>
 				<BannerHeader
-					title="Appbase.io Billing"
+					title="reactivesearch.io Billing"
 					component={
 						<Row>
 							<Col>

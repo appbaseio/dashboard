@@ -2,8 +2,8 @@ import React from 'react';
 
 export const hoverMessage = () => (
 	<div style={{ maxWidth: 220 }}>
-		All appbase.io paid plans offer setting ACLs, rate limits per IP and
-		advanced security permissions based on IP sources, HTTP Referers and
+		All reactivesearch.io paid plans offer setting ACLs, rate limits per IP
+		and advanced security permissions based on IP sources, HTTP Referers and
 		restricting what fields are accessible.
 	</div>
 );

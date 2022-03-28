@@ -6,7 +6,7 @@ import Flex from '../../../../batteries/components/shared/Flex';
 function getMessage(source) {
 	switch (source) {
 		case 'arc':
-			return "Deployment of appbase.io's GUI for cluster browsing is in progress. Please wait while we spin it up for you.";
+			return "Deployment of reactivesearch.io's GUI for cluster browsing is in progress. Please wait while we spin it up for you.";
 		default:
 			return `Deployment of ${source} is in progress. Hang tight!`;
 	}

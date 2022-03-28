@@ -5,7 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import EmailAuth from './EmailAuth';
-import Logo from '../../components/Logo';
+import ReactivesearchLogo from '../../components/Logo/ReactivesearchLogo';
 import { ACC_API } from '../../constants/config';
 import { container, card, githubBtn, googleBtn, gitlabBtn } from './styles';
 import { getUrlParams } from '../../utils/helper';
@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
 		}
 		return (
 			<section className={container}>
-				<Logo width={200} />
+				<ReactivesearchLogo width={250} />
 				<Card className={card} bordered={false}>
 					<h2>Sign in to get started</h2>
 					{isEmailLogin || (
@@ -99,9 +99,10 @@ class LoginPage extends React.Component {
 							margin: '20px 0',
 							fontSize: 18,
 							letterSpacing: '0.02rem',
+							whiteSpace: 'inherit',
 						}}
 					>
-						New to appbase.io? &nbsp; Signup here
+						New to reactivesearch.io? &nbsp; Signup here
 						<Icon type="arrow-right" />
 					</Button>
 				</Link>
