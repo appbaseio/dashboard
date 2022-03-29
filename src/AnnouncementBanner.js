@@ -35,13 +35,8 @@ const AnnouncementBanner = () => {
 		<div css={bannerStyles}>
 			{showBanner ? (
 				<div className="announcement-banner">
-					<a
-						className="link-container"
-						href="https://www.appbase.io/"
-					>
 						appbase.io
-					</a>
-					&nbsp; is now &nbsp;
+					 is now 
 					<a
 						className="link-container"
 						href="https://www.reactivesearch.io/"
