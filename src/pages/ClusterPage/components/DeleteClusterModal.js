@@ -35,7 +35,7 @@ class DeleteClusterModal extends React.Component {
 		const { deleteClusterName, isFeedbackSubmitted } = this.state;
 
 		let disabled = true;
-		if (deleteClusterName === clusterName && isFeedbackSubmitted) {
+		if (deleteClusterName === clusterName) {
 			disabled = false;
 		}
 
