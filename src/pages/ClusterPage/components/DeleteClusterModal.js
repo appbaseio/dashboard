@@ -1,9 +1,12 @@
 import React from 'react';
+import { css } from 'emotion';
+import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import { Modal, Input } from 'antd';
-
+import './styles.css';
 class DeleteClusterModal extends React.Component {
 	state = {
 		deleteClusterName: '',
+		isFeedbackSubmitted: false,
 	};
 
 	handleDelete = () => {
@@ -27,12 +30,12 @@ class DeleteClusterModal extends React.Component {
 
 	render() {
 		const {
-			isVisible, clusterId, clusterName, handleModal,
+			isVisible, clusterId, clusterName, handleModal
 		} = this.props; // prettier-ignore
-		const { deleteClusterName } = this.state;
+		const { deleteClusterName, isFeedbackSubmitted } = this.state;
 
 		let disabled = true;
-		if (deleteClusterName === clusterName) {
+		if (deleteClusterName === clusterName && isFeedbackSubmitted) {
 			disabled = false;
 		}
 
@@ -45,6 +48,12 @@ class DeleteClusterModal extends React.Component {
 				title="Confirm Delete"
 				okText="Delete"
 				okButtonProps={{ type: 'danger', disabled }}
+				width={600}
+				bodyStyle={{
+					height: isFeedbackSubmitted ? 200 : 650,
+					overflow: 'scroll',
+				}}
+				wrapClassName="modal-styles"
 			>
 				<p>
 					Type the cluster name{' '}
@@ -57,6 +66,19 @@ class DeleteClusterModal extends React.Component {
 					value={deleteClusterName}
 					name="deleteClusterName"
 				/>
+				{!isFeedbackSubmitted ? (
+					<DeleteFeedbackForm
+						setIsFeedbackSubmitted={() =>
+							this.setState({
+								isFeedbackSubmitted: true,
+							})
+						}
+					/>
+				) : (
+					<h3 className="success-message-container">
+						Thank you for providing this feedback 🙏
+					</h3>
+				)}
 			</Modal>
 		);
 	}
