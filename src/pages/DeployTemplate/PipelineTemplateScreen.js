@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Icon, Button, Tooltip } from 'antd';
-import { deployClusterStyles } from './styles';
+import { Input, Icon, Button, Tooltip, Alert, Popover } from 'antd';
+import JsonView from '../../components/JsonView';
+import { deployClusterStyles, popoverContent } from './styles';
+
+const overflow = {
+	whiteSpace: 'nowrap',
+	overflow: 'hidden',
+	textOverflow: 'ellipsis',
+	color: '#1890ff',
+};
 
 const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 	const [pipelineVariables, setPipelineVariables] = useState([]);
@@ -33,7 +41,16 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 		})
 			.then(res => {
 				if (res.ok) return res.json();
-				return Promise.reject(res);
+				console.log(res);
+				return Promise.reject({
+					status: res.status,
+					statusText: res.statusText,
+					url: res.url,
+					redirected: res.redirected,
+					body: res.body,
+					headers: res.headers,
+					type: res.type,
+				});
 			})
 			.then(res => {
 				const newPipelineVariables = pipelineVariables.map(obj => {
@@ -49,6 +66,7 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 					handleError(
 						pipelineObj,
 						`Expected status is ${validateObj.expected_status}, but received ${err.status}`,
+						err,
 					);
 				} else {
 					handleError(
@@ -60,11 +78,12 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 			});
 	};
 
-	const handleError = (pipelineObj, errorMsg) => {
+	const handleError = (pipelineObj, errorMsg, response = '') => {
 		const newPipelineVariables = pipelineVariables.map(obj => {
 			if (obj.key === pipelineObj.key) {
 				obj.error = true;
 				obj.errorMessage = errorMsg;
+				if (response) obj.response = response;
 			}
 			return obj;
 		});
@@ -75,7 +94,7 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 
 	return (
 		<div css={deployClusterStyles}>
-			{formData.map(data => (
+			{pipelineVariables.map(data => (
 				<div key={data.key} style={{ padding: 20 }}>
 					<div className="title-container">
 						{data.label}
@@ -98,8 +117,44 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 								validate
 							</Button>
 						) : null}
-						{/* error ? <div>Expected status is {data.validate.expected_status}, but received {response.status}</div> */}
 					</div>
+					{data.errorMessage ? (
+						<Alert
+							style={{ marginTop: 15, width: '70%' }}
+							message={
+								<div className="error-alert-container">
+									<div>{data.errorMessage}</div>
+									{data.response ? (
+										// <div style={{ color: '#1890ff' }}>
+										// 	View the whole response
+										// </div>
+										<Popover
+											content={
+												<div css={popoverContent}>
+													<JsonView
+														json={data.response}
+													/>
+												</div>
+											}
+											trigger="click"
+										>
+											<div
+												css={{
+													cursor: 'pointer',
+													margin: '0 7px',
+													maxWidth: '95%',
+													...overflow,
+												}}
+											>
+												View the whole response
+											</div>
+										</Popover>
+									) : null}
+								</div>
+							}
+							type="error"
+						/>
+					) : null}
 				</div>
 			))}
 			<Button

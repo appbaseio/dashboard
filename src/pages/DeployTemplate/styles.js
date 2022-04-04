@@ -24,4 +24,18 @@ export const deployClusterStyles = css`
 		width: 150px;
 		margin-left: 20px;
 	}
+
+	.error-alert-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+`;
+
+export const popoverContent = css`
+	overflow-y: auto;
+	overflow-x: auto;
+	word-wrap: break-word;
+	max-width: 300px;
+	max-height: 300px;
 `;
