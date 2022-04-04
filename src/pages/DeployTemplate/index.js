@@ -15,43 +15,18 @@ const DeployTemplate = ({ location }) => {
 	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState(false);
 
-	let res = `
-	---
-id: 'geo-search'
-description: 'This is a geo search template'
-global_vars:
-  -
-    description: <p><p>
-    key: ES_CREDS
-    label: "Elasticsearch Creds"
-    value: "https://demo-appbase.io"
-  -
-    description: "This is the Elasticsearch URL. Read more over here"
-    key: ES_URL
-    label: "Elasticsearch URL"
-    value: "sample"
-  -
-    key: KNOWLEDGE_GRAPH_API_KEY
-    label: "Knowledge Graph API Key"
-    validate:
-      -
-        expected_status: 204
-        headers: JSON
-        method: POST
-        url: "https://my-url/{ES_URL}/"
-
-	`;
-
 	useEffect(() => {
 		if (location.search) {
-			// const dataUrl = location.search.split('=')[1];
-			let dataUrl =
-				'https://raw.githubusercontent.com/appbaseio/pipelines-template/master/basic/pipeline.yaml';
+			const dataUrl = location.search.split('=')[1];
 			fetch(dataUrl)
 				.then(res => res.text())
 				.then(resp => {
-					let json = yaml.load(res);
-					setFormData(json);
+					let json = yaml.load(resp);
+					const transformedFormData = {
+						...json,
+						global_vars: [...ValidateObj(json?.global_vars || [])],
+					};
+					setFormData(transformedFormData);
 					setErr(false);
 				})
 				.catch(e => {
@@ -60,6 +35,74 @@ global_vars:
 				});
 		}
 	}, []);
+
+	const transformValidateObj = (
+		pipelineVariable,
+		regex,
+		varRegex,
+		pipelineVariables,
+		type = 'other',
+		...attrs
+	) => {
+		let newPipelineVariable = { ...pipelineVariable };
+		if (type === 'array') {
+			newPipelineVariable = { ...pipelineVariable[0] };
+		}
+
+		// object traversal to find ${variable}
+		for (const key in newPipelineVariable) {
+			if (typeof newPipelineVariable[key] === 'object') {
+				if (Array.isArray(newPipelineVariable[key])) {
+					newPipelineVariable[key] = transformValidateObj(
+						newPipelineVariable[key],
+						regex,
+						varRegex,
+						pipelineVariables,
+						'array',
+					);
+				} else {
+					newPipelineVariable[key] = transformValidateObj(
+						newPipelineVariable[key],
+						regex,
+						varRegex,
+						pipelineVariables,
+					);
+				}
+			} else if (
+				typeof newPipelineVariable[key] === 'string' &&
+				newPipelineVariable[key].match(regex)
+			) {
+				// Check if ${variable} pattern exists
+				// Extract variable from ${variable}
+				const keyVariable =
+					varRegex.exec(newPipelineVariable[key])[1] || '';
+				const reqObject = pipelineVariables.filter(
+					i => i.key === keyVariable,
+				);
+				newPipelineVariable[key] = newPipelineVariable[key].replace(
+					regex,
+					reqObject[0].value,
+				);
+			}
+		}
+		return newPipelineVariable;
+	};
+
+	const ValidateObj = pipelineVariables => {
+		const regex = /\${[a-zA-Z0-9_]*}/gm;
+		const varRegex = /(?<=\${)(.*?)(?=\})/;
+
+		const newArr = pipelineVariables.map(pipelineVariable => {
+			const newPipelineVariable = transformValidateObj(
+				pipelineVariable,
+				regex,
+				varRegex,
+				pipelineVariables,
+			);
+			return newPipelineVariable;
+		});
+		return newArr;
+	};
 
 	return err ? (
 		<ErrorPage />

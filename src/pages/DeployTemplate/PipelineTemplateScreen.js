@@ -8,7 +8,7 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 
 	useEffect(() => {
 		validateFormData();
-	}, []);
+	}, [formData]);
 
 	const validateFormData = () => {
 		const newPipelineVariables = formData.map(obj => {
@@ -22,24 +22,49 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 		setPipelineVariables(newPipelineVariables);
 	};
 
-	const validateInput = validateObj => {
-		// fetch call
-		// response set to state
-		if (1) {
-			//.then response
-			const newPipelineVariables = pipelineVariables.map(obj => {
-				if (obj.key === validateObj.key) {
-					obj.error = false;
+	const validateInput = pipelineObj => {
+		const validateObj = Array.isArray(pipelineObj.validate)
+			? pipelineObj.validate[0]
+			: pipelineObj.validate;
+
+		fetch(validateObj.url, {
+			method: validateObj.method,
+			headers: validateObj.headers,
+		})
+			.then(res => {
+				if (res.ok) return res.json();
+				return Promise.reject(res);
+			})
+			.then(res => {
+				const newPipelineVariables = pipelineVariables.map(obj => {
+					if (obj.key === pipelineObj.key) {
+						obj.error = false;
+					}
+					return obj;
+				});
+				setPipelineVariables(newPipelineVariables);
+			})
+			.catch(err => {
+				if (err.status && err.status !== validateObj.expected_status) {
+					handleError(
+						pipelineObj,
+						`Expected status is ${validateObj.expected_status}, but received ${err.status}`,
+					);
+				} else {
+					handleError(
+						pipelineObj,
+						'Cannot make the API request. Is your input valid?',
+					);
 				}
-				return obj;
+				console.error('Error in Validate api', err);
 			});
-			setPipelineVariables(newPipelineVariables);
-		}
-		// .catch error
+	};
+
+	const handleError = (pipelineObj, errorMsg) => {
 		const newPipelineVariables = pipelineVariables.map(obj => {
-			if (obj.key === validateObj.key) {
+			if (obj.key === pipelineObj.key) {
 				obj.error = true;
-				obj.errorMessage = 'some error msg';
+				obj.errorMessage = errorMsg;
 			}
 			return obj;
 		});
@@ -80,6 +105,7 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 			<Button
 				block
 				size="small"
+				type="primary"
 				className="deploy-button"
 				data-cy="signin-button"
 				disabled={errorArray.length}

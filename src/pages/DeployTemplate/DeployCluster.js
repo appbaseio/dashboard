@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import NewMyCluster from '../ClusterPage/new';
 
 const DeployCluster = ({ formData }) => {
+	console.log(formData);
 	return (
 		<div>
 			<NewMyCluster isDeployTemplate pipeline={formData.id} />
