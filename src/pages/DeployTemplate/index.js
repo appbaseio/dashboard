@@ -12,6 +12,7 @@ const { TabPane } = Tabs;
 const DeployTemplate = ({ location }) => {
 	const [response, setResponse] = useState('');
 	const [formData, setFormData] = useState({});
+	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState(false);
 
 	let res = `
@@ -63,11 +64,14 @@ global_vars:
 	return err ? (
 		<ErrorPage />
 	) : (
-		<Tabs defaultActiveKey="1">
+		<Tabs defaultActiveKey="1" activeKey={activeKey}>
 			<TabPane tab="Enter Pipeline Template variables" key="1">
-				<PipelineTemplateScreen formData={formData} />
+				<PipelineTemplateScreen
+					formData={formData.global_vars || []}
+					setActiveKey={setActiveKey}
+				/>
 			</TabPane>
-			<TabPane tab="Deploy Cluster" disabled={false} key="2">
+			<TabPane tab="Deploy Cluster" disabled={activeKey === '1'} key="2">
 				<DeployCluster formData={formData} />
 			</TabPane>
 		</Tabs>

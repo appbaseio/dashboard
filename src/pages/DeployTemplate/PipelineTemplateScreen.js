@@ -1,17 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Icon, Button, Tooltip } from 'antd';
 import { deployClusterStyles } from './styles';
 
-const PipelineTemplateScreen = ({ formData }) => {
+const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
+	const [pipelineVariables, setPipelineVariables] = useState([]);
+
+	useEffect(() => {
+		validateFormData();
+	}, []);
+
+	const validateFormData = () => {
+		const newPipelineVariables = formData.map(obj => {
+			const newObj = {
+				...obj,
+				error: obj.validate ? true : false,
+				errorMessage: '',
+			};
+			return newObj;
+		});
+		setPipelineVariables(newPipelineVariables);
+	};
+
 	const validateInput = validateObj => {
 		// fetch call
 		// response set to state
+		if (1) {
+			//.then response
+			const newPipelineVariables = pipelineVariables.map(obj => {
+				if (obj.key === validateObj.key) {
+					obj.error = false;
+				}
+				return obj;
+			});
+			setPipelineVariables(newPipelineVariables);
+		}
+		// .catch error
+		const newPipelineVariables = pipelineVariables.map(obj => {
+			if (obj.key === validateObj.key) {
+				obj.error = true;
+				obj.errorMessage = 'some error msg';
+			}
+			return obj;
+		});
+		setPipelineVariables(newPipelineVariables);
 	};
+
+	const errorArray = pipelineVariables.filter(i => i.error === true);
 
 	return (
 		<div css={deployClusterStyles}>
-			{formData?.global_vars?.map(data => (
+			{formData.map(data => (
 				<div key={data.key} style={{ padding: 20 }}>
 					<div className="title-container">
 						{data.label}
@@ -28,7 +67,7 @@ const PipelineTemplateScreen = ({ formData }) => {
 						{data.validate ? (
 							<Button
 								type="primary"
-								onClick={validateInput(data.validate)}
+								onClick={() => validateInput(data)}
 								className="validate-button"
 							>
 								validate
@@ -39,23 +78,27 @@ const PipelineTemplateScreen = ({ formData }) => {
 				</div>
 			))}
 			<Button
-				className="deploy-button"
-				size="small"
 				block
+				size="small"
+				className="deploy-button"
 				data-cy="signin-button"
+				disabled={errorArray.length}
+				onClick={() => {
+					setActiveKey('2');
+				}}
 			>
-				Deploy Cluster
+				Next
 			</Button>
 		</div>
 	);
 };
 
 PipelineTemplateScreen.defaultProps = {
-	formData: {},
+	formData: [],
 };
 
 PipelineTemplateScreen.propTypes = {
-	formData: PropTypes.object,
+	formData: PropTypes.array,
 };
 
 export default PipelineTemplateScreen;
