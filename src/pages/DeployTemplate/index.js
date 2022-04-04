@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Input, Icon, Button, Tooltip } from 'antd';
+import { Alert, Icon, Tabs } from 'antd';
 import { deployClusterStyles } from './styles';
-import { isArray } from 'lodash';
-const yaml = require('js-yaml');
+import DeployCluster from './DeployCluster';
+import PipelineTemplateScreen from './PipelineTemplateScreen';
+import ErrorPage from './ErrorPage';
 
-const obj = [
-	{
-		description: '<p><p>',
-		key: 'ES_CREDS',
-		label: 'Elasticsearch Creds',
-		value: 'https://demo-appbase.io',
-	},
-	{
-		description: 'This is the Elasticsearch URL. Read more over here',
-		key: 'ES_URL',
-		label: 'Elasticsearch URL',
-	},
-	{
-		key: 'KNOWLEDGE_GRAPH_API_KEY',
-		label: 'Knowledge Graph API Key',
-		validate: [
-			{
-				expected_status: 204,
-				headers: 'JSON',
-				method: 'POST',
-				url: 'https://my-url/${ES_URL}/',
-			},
-		],
-	},
-];
+const yaml = require('js-yaml');
+const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
 	const [response, setResponse] = useState('');
+	const [formData, setFormData] = useState({});
+	const [err, setErr] = useState(false);
+
+	let res = `
+	---
+id: 'geo-search'
+description: 'This is a geo search template'
+global_vars:
+  -
+    description: <p><p>
+    key: ES_CREDS
+    label: "Elasticsearch Creds"
+    value: "https://demo-appbase.io"
+  -
+    description: "This is the Elasticsearch URL. Read more over here"
+    key: ES_URL
+    label: "Elasticsearch URL"
+    value: "sample"
+  -
+    key: KNOWLEDGE_GRAPH_API_KEY
+    label: "Knowledge Graph API Key"
+    validate:
+      -
+        expected_status: 204
+        headers: JSON
+        method: POST
+        url: "https://my-url/{ES_URL}/"
+
+	`;
 
 	useEffect(() => {
 		if (location.search) {
@@ -42,82 +49,28 @@ const DeployTemplate = ({ location }) => {
 			fetch(dataUrl)
 				.then(res => res.text())
 				.then(resp => {
-					let res = `---
-                    global_vars:
-                      -
-                        description: <p><p>
-                        key: ES_CREDS
-                        label: "Elasticsearch Creds"
-                        value: "https://demo-appbase.io"
-                      -
-                        description: "This is the Elasticsearch URL. Read more over here"
-                        key: ES_URL
-                        label: "Elasticsearch URL"
-                      -
-                        key: KNOWLEDGE_GRAPH_API_KEY
-                        label: "Knowledge Graph API Key"
-                        validate:
-                          -
-                            expected_status: 204
-                            headers: JSON
-                            method: POST
-                            url: "https://my-url/{ES_URL}/"
-                    `;
 					let json = yaml.load(res);
-					for (const data in json) {
-						if (json.hasOwnProperty(data)) {
-							if (isArray(json[data])) {
-								console.log(json[data]);
-							}
-						}
-					}
+					setFormData(json);
+					setErr(false);
+				})
+				.catch(e => {
+					console.error(e);
+					setErr(true);
 				});
 		}
 	}, []);
 
-	const validateInput = validateObj => {
-		// fetch call
-		// response set to state
-	};
-
-	return (
-		<div css={deployClusterStyles}>
-			{obj.map(data => (
-				<div key={data.key} style={{ padding: 20 }}>
-					<div className="title-container">
-						{data.label}
-						{data.description ? (
-							<Tooltip title={data.description}>
-								<span style={{ marginLeft: 5 }}>
-									<Icon type="info-circle" />
-								</span>
-							</Tooltip>
-						) : null}
-					</div>
-					<div>
-						<Input value={data.value} className="input-container" />
-						{data.validate ? (
-							<Button
-								type="primary"
-								onClick={validateInput(data.validate)}
-								className="validate-button"
-							>
-								validate
-							</Button>
-						) : null}
-						{/* error ? <div>Expected status is {data.validate.expected_status}, but received {response.status}</div> */}
-					</div>
-				</div>
-			))}
-			<Button
-				className="deploy-button"
-				size="small"
-				block
-				data-cy="signin-button"
-			>
-				Deploy Cluster
-			</Button>
-		</div>
+	return err ? (
+		<ErrorPage />
+	) : (
+		<Tabs defaultActiveKey="1">
+			<TabPane tab="Enter Pipeline Template variables" key="1">
+				<PipelineTemplateScreen formData={formData} />
+			</TabPane>
+			<TabPane tab="Deploy Cluster" disabled={false} key="2">
+				<DeployCluster formData={formData} />
+			</TabPane>
+		</Tabs>
 	);
 };
 
