@@ -5,6 +5,7 @@ import { deployClusterStyles } from './styles';
 import DeployCluster from './DeployCluster';
 import PipelineTemplateScreen from './PipelineTemplateScreen';
 import ErrorPage from './ErrorPage';
+import Loader from '../../components/Loader';
 
 const yaml = require('js-yaml');
 const { TabPane } = Tabs;
@@ -15,6 +16,7 @@ const DeployTemplate = ({ location }) => {
 	const [formData, setFormData] = useState({});
 	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState('');
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		if (location.search) {
@@ -34,8 +36,10 @@ const DeployTemplate = ({ location }) => {
 					);
 					setFormData(transformedFormData);
 					setErr('');
+					setIsLoading(false);
 				})
 				.catch(e => {
+					setIsLoading(false);
 					console.error(e);
 					if (e.stack) {
 						setErr(e.message);
@@ -138,6 +142,8 @@ const DeployTemplate = ({ location }) => {
 		setFormData(transformedFormData);
 		localStorage.setItem('pipelineVariables', transformedFormData);
 	};
+
+	if (isLoading) return <Loader />;
 
 	return err ? (
 		<ErrorPage message={err} />
