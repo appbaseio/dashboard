@@ -39,22 +39,27 @@ const PipelineTemplateScreen = ({
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
-		let obj = {};
-
-		if (validateObj.method !== 'GET') {
-			obj = {
-				body: validateObj.body || '{}',
-			};
-		}
-
-		fetch(validateObj.url, {
+		let obj = {
 			method: validateObj.method,
 			headers: {
 				...validateObj.headers,
-				'Access-Control-Allow-Origin': '*',
 			},
-			...obj,
-		})
+		};
+
+		if (validateObj.method !== 'GET') {
+			obj.body = validateObj.body || '{}';
+		}
+
+		if (
+			validateObj.headers.Authorization &&
+			validateObj.headers.Authorization.includes('Basic') &&
+			validateObj.headers.Authorization.split(' ').length === 2
+		) {
+			let creds = btoa(validateObj.headers.Authorization.split(' ')[1]);
+			obj.headers.Authorization = `Basic ${creds}`;
+		}
+
+		fetch(validateObj.url, obj)
 			.then(res => {
 				if (res.ok) {
 					try {
@@ -116,6 +121,7 @@ const PipelineTemplateScreen = ({
 						handleError(
 							pipelineObj,
 							'Cannot make the API request. Is your input valid?',
+							err,
 						);
 					}
 				}
