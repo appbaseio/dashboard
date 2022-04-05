@@ -40,9 +40,17 @@ const PipelineTemplateScreen = ({
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
 
+		console.log({
+			method: validateObj.method,
+			headers: validateObj.headers,
+			body: validateObj.body || '{}',
+			credentials: 'include',
+		});
 		fetch(validateObj.url, {
 			method: validateObj.method,
 			headers: validateObj.headers,
+			body: validateObj.body || '{}',
+			credentials: 'include',
 		})
 			.then(res => {
 				if (res.ok) return res.json();

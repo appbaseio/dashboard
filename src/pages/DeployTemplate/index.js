@@ -78,17 +78,20 @@ const DeployTemplate = ({ location }) => {
 				typeof newPipelineVariable[key] === 'string' &&
 				newPipelineVariable[key].match(regex)
 			) {
-				// Check if ${variable} pattern exists
-				// Extract variable from ${variable}
-				const keyVariable =
-					varRegex.exec(newPipelineVariable[key])[1] || '';
-				const reqObject = pipelineVariables.filter(
-					i => i.key === keyVariable,
-				);
-				newPipelineVariable[key] = newPipelineVariable[key].replace(
-					regex,
-					reqObject[0].value,
-				);
+				// newPipelineVariable[key].match(regex) -> returns array of ${variable} available in the string
+				newPipelineVariable[key].match(regex).map(data => {
+					// Extract variable from ${variable}
+					const keyVariable = varRegex.exec(data)[1];
+					const reqObject = pipelineVariables.filter(
+						i => i.key === keyVariable,
+					);
+					const newRegex = `\${${keyVariable}}`;
+
+					newPipelineVariable[key] = newPipelineVariable[key].replace(
+						newRegex,
+						reqObject[0].value,
+					);
+				});
 			}
 		}
 		return newPipelineVariable;
@@ -115,6 +118,10 @@ const DeployTemplate = ({ location }) => {
 		newFormData?.global_vars.forEach(data => {
 			if (data.key === key) {
 				data.value = val;
+				data.validate = {
+					...data.validate,
+					body: JSON.stringify({ [key]: val }),
+				};
 			}
 		});
 		setInitialFormData(newFormData);
