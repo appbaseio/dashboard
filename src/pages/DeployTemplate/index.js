@@ -11,6 +11,7 @@ const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
 	const [response, setResponse] = useState('');
+	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
 	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState(false);
@@ -22,10 +23,15 @@ const DeployTemplate = ({ location }) => {
 				.then(res => res.text())
 				.then(resp => {
 					let json = yaml.load(resp);
+					setInitialFormData(json);
 					const transformedFormData = {
 						...json,
 						global_vars: [...ValidateObj(json?.global_vars || [])],
 					};
+					localStorage.setItem(
+						'pipelineVariables',
+						transformedFormData,
+					);
 					setFormData(transformedFormData);
 					setErr(false);
 				})
@@ -104,6 +110,22 @@ const DeployTemplate = ({ location }) => {
 		return newArr;
 	};
 
+	const handleFormChange = (key, val) => {
+		const newFormData = { ...initialFormData };
+		newFormData?.global_vars.forEach(data => {
+			if (data.key === key) {
+				data.value = val;
+			}
+		});
+		setInitialFormData(newFormData);
+		const transformedFormData = {
+			...formData,
+			global_vars: [...ValidateObj(newFormData?.global_vars || [])],
+		};
+		setFormData(transformedFormData);
+		localStorage.setItem('pipelineVariables', transformedFormData);
+	};
+
 	return err ? (
 		<ErrorPage />
 	) : (
@@ -112,6 +134,7 @@ const DeployTemplate = ({ location }) => {
 				<PipelineTemplateScreen
 					formData={formData.global_vars || []}
 					setActiveKey={setActiveKey}
+					handleFormChange={handleFormChange}
 				/>
 			</TabPane>
 			<TabPane tab="Deploy Cluster" disabled={activeKey === '1'} key="2">

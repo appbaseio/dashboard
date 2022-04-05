@@ -11,7 +11,11 @@ const overflow = {
 	color: '#1890ff',
 };
 
-const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
+const PipelineTemplateScreen = ({
+	formData,
+	setActiveKey,
+	handleFormChange,
+}) => {
 	const [pipelineVariables, setPipelineVariables] = useState([]);
 
 	useEffect(() => {
@@ -41,7 +45,6 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 		})
 			.then(res => {
 				if (res.ok) return res.json();
-				console.log(res);
 				return Promise.reject({
 					status: res.status,
 					statusText: res.statusText,
@@ -90,8 +93,19 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 		setPipelineVariables(newPipelineVariables);
 	};
 
-	const errorArray = pipelineVariables.filter(i => i.error === true);
+	const handleInputChange = (key, val) => {
+		// const newPipelineVariables = [...pipelineVariables];
+		// newPipelineVariables.forEach(data => {
+		// 	if (data.key === key) {
+		// 		data.value = val;
+		// 	}
+		// });
+		// setPipelineVariables(newPipelineVariables);
+		handleFormChange(key, val);
+	};
 
+	const errorArray = pipelineVariables.filter(i => i.error === true);
+	console.log(pipelineVariables);
 	return (
 		<div css={deployClusterStyles}>
 			{pipelineVariables.map(data => (
@@ -107,7 +121,13 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 						) : null}
 					</div>
 					<div>
-						<Input value={data.value} className="input-container" />
+						<Input
+							value={data.value}
+							className="input-container"
+							onChange={e => {
+								handleInputChange(data.key, e.target.value);
+							}}
+						/>
 						{data.validate ? (
 							<Button
 								type="primary"
@@ -125,9 +145,6 @@ const PipelineTemplateScreen = ({ formData, setActiveKey }) => {
 								<div className="error-alert-container">
 									<div>{data.errorMessage}</div>
 									{data.response ? (
-										// <div style={{ color: '#1890ff' }}>
-										// 	View the whole response
-										// </div>
 										<Popover
 											content={
 												<div css={popoverContent}>
