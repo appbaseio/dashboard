@@ -14,7 +14,7 @@ const DeployTemplate = ({ location }) => {
 	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
 	const [activeKey, setActiveKey] = useState('1');
-	const [err, setErr] = useState(false);
+	const [err, setErr] = useState('');
 
 	useEffect(() => {
 		if (location.search) {
@@ -33,11 +33,17 @@ const DeployTemplate = ({ location }) => {
 						transformedFormData,
 					);
 					setFormData(transformedFormData);
-					setErr(false);
+					setErr('');
 				})
 				.catch(e => {
 					console.error(e);
-					setErr(true);
+					if (e.stack) {
+						setErr(e.message);
+					} else {
+						setErr(
+							'This repository may not exist or is set to private.',
+						);
+					}
 				});
 		}
 	}, []);
@@ -134,7 +140,7 @@ const DeployTemplate = ({ location }) => {
 	};
 
 	return err ? (
-		<ErrorPage />
+		<ErrorPage message={err} />
 	) : (
 		<Tabs defaultActiveKey="1" activeKey={activeKey}>
 			<TabPane tab="Enter Pipeline Template variables" key="1">
