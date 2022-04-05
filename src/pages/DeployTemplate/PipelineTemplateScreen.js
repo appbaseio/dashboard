@@ -39,22 +39,42 @@ const PipelineTemplateScreen = ({
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
+		let obj = {};
 
-		console.log({
-			method: validateObj.method,
-			headers: validateObj.headers,
-			body: validateObj.body || '{}',
-			credentials: 'include',
-		});
+		if (validateObj.method !== 'GET') {
+			obj = {
+				body: validateObj.body || '{}',
+			};
+		}
+
 		fetch(validateObj.url, {
 			method: validateObj.method,
-			headers: validateObj.headers,
-			body: validateObj.body || '{}',
-			credentials: 'include',
+			headers: {
+				...validateObj.headers,
+				'Access-Control-Allow-Origin': '*',
+			},
+			...obj,
 		})
 			.then(res => {
-				if (res.ok) return res.json();
+				if (res.ok) {
+					try {
+						JSON.parse(res);
+						return res.json();
+					} catch (e) {
+						return Promise.reject({
+							ok: res.ok,
+							status: res.status,
+							statusText: res.statusText,
+							url: res.url,
+							redirected: res.redirected,
+							body: res.body,
+							headers: res.headers,
+							type: res.type,
+						});
+					}
+				}
 				return Promise.reject({
+					ok: res.ok,
 					status: res.status,
 					statusText: res.statusText,
 					url: res.url,
@@ -74,18 +94,32 @@ const PipelineTemplateScreen = ({
 				setPipelineVariables(newPipelineVariables);
 			})
 			.catch(err => {
-				if (err.status && err.status !== validateObj.expected_status) {
-					handleError(
-						pipelineObj,
-						`Expected status is ${validateObj.expected_status}, but received ${err.status}`,
-						err,
-					);
+				if (err.ok && err.status === validateObj.expected_status) {
+					const newPipelineVariables = pipelineVariables.map(obj => {
+						if (obj.key === pipelineObj.key) {
+							obj.error = false;
+						}
+						return obj;
+					});
+					setPipelineVariables(newPipelineVariables);
 				} else {
-					handleError(
-						pipelineObj,
-						'Cannot make the API request. Is your input valid?',
-					);
+					if (
+						err.status &&
+						err.status !== validateObj.expected_status
+					) {
+						handleError(
+							pipelineObj,
+							`Expected status is ${validateObj.expected_status}, but received ${err.status}`,
+							err,
+						);
+					} else {
+						handleError(
+							pipelineObj,
+							'Cannot make the API request. Is your input valid?',
+						);
+					}
 				}
+
 				console.error('Error in Validate api', err);
 			});
 	};
@@ -103,13 +137,6 @@ const PipelineTemplateScreen = ({
 	};
 
 	const handleInputChange = (key, val) => {
-		// const newPipelineVariables = [...pipelineVariables];
-		// newPipelineVariables.forEach(data => {
-		// 	if (data.key === key) {
-		// 		data.value = val;
-		// 	}
-		// });
-		// setPipelineVariables(newPipelineVariables);
 		handleFormChange(key, val);
 	};
 
