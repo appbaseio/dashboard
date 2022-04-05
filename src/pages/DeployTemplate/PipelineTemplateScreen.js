@@ -150,7 +150,16 @@ const PipelineTemplateScreen = ({
 						<div className="title-container">
 							{data.label}
 							{data.description ? (
-								<Tooltip title={data.description}>
+								<Tooltip
+									title={() => (
+										<div
+											// eslint-disable-next-line
+											dangerouslySetInnerHTML={{
+												__html: data.description,
+											}}
+										/>
+									)}
+								>
 									<span style={{ marginLeft: 5 }}>
 										<Icon type="info-circle" />
 									</span>
