@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Icon, Button, Tooltip, Alert, Popover } from 'antd';
 import JsonView from '../../components/JsonView';
+import ErrorPage from './ErrorPage';
 import { deployClusterStyles, popoverContent } from './styles';
 
 const overflow = {
@@ -105,75 +106,79 @@ const PipelineTemplateScreen = ({
 	};
 
 	const errorArray = pipelineVariables.filter(i => i.error === true);
-	console.log(pipelineVariables);
+
 	return (
 		<div css={deployClusterStyles}>
-			{pipelineVariables.map(data => (
-				<div key={data.key} style={{ padding: 20 }}>
-					<div className="title-container">
-						{data.label}
-						{data.description ? (
-							<Tooltip title={data.description}>
-								<span style={{ marginLeft: 5 }}>
-									<Icon type="info-circle" />
-								</span>
-							</Tooltip>
-						) : null}
-					</div>
-					<div>
-						<Input
-							value={data.value}
-							className="input-container"
-							onChange={e => {
-								handleInputChange(data.key, e.target.value);
-							}}
-						/>
-						{data.validate ? (
-							<Button
-								type="primary"
-								onClick={() => validateInput(data)}
-								className="validate-button"
-							>
-								validate
-							</Button>
-						) : null}
-					</div>
-					{data.errorMessage ? (
-						<Alert
-							style={{ marginTop: 15, width: '70%' }}
-							message={
-								<div className="error-alert-container">
-									<div>{data.errorMessage}</div>
-									{data.response ? (
-										<Popover
-											content={
-												<div css={popoverContent}>
-													<JsonView
-														json={data.response}
-													/>
-												</div>
-											}
-											trigger="click"
-										>
-											<div
-												css={{
-													cursor: 'pointer',
-													margin: '0 7px',
-													maxWidth: '95%',
-													...overflow,
-												}}
+			{pipelineVariables.length ? (
+				pipelineVariables.map(data => (
+					<div key={data.key} style={{ padding: 20 }}>
+						<div className="title-container">
+							{data.label}
+							{data.description ? (
+								<Tooltip title={data.description}>
+									<span style={{ marginLeft: 5 }}>
+										<Icon type="info-circle" />
+									</span>
+								</Tooltip>
+							) : null}
+						</div>
+						<div>
+							<Input
+								value={data.value}
+								className="input-container"
+								onChange={e => {
+									handleInputChange(data.key, e.target.value);
+								}}
+							/>
+							{data.validate ? (
+								<Button
+									type="primary"
+									onClick={() => validateInput(data)}
+									className="validate-button"
+								>
+									validate
+								</Button>
+							) : null}
+						</div>
+						{data.errorMessage ? (
+							<Alert
+								style={{ marginTop: 15, width: '70%' }}
+								message={
+									<div className="error-alert-container">
+										<div>{data.errorMessage}</div>
+										{data.response ? (
+											<Popover
+												content={
+													<div css={popoverContent}>
+														<JsonView
+															json={data.response}
+														/>
+													</div>
+												}
+												trigger="click"
 											>
-												View the whole response
-											</div>
-										</Popover>
-									) : null}
-								</div>
-							}
-							type="error"
-						/>
-					) : null}
-				</div>
-			))}
+												<div
+													css={{
+														cursor: 'pointer',
+														margin: '0 7px',
+														maxWidth: '95%',
+														...overflow,
+													}}
+												>
+													View the whole response
+												</div>
+											</Popover>
+										) : null}
+									</div>
+								}
+								type="error"
+							/>
+						) : null}
+					</div>
+				))
+			) : (
+				<ErrorPage message="This repository may not contain global_vars property." />
+			)}
 			<Button
 				block
 				size="small"

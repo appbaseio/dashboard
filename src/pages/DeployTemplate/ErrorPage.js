@@ -1,8 +1,9 @@
 import React from 'react';
-import { Alert, Icon } from 'antd';
+import PropTypes from 'prop-types';
+import { Alert, Icon, message } from 'antd';
 import { deployClusterStyles } from './styles';
 
-const ErrorPage = () => {
+const ErrorPage = ({ message }) => {
 	return (
 		<div css={deployClusterStyles}>
 			<Alert
@@ -23,15 +24,21 @@ const ErrorPage = () => {
 								{location.search.split('=')[1]}
 							</div>
 						</div>
-						<p>
-							This repository may not exist or is set to private.
-						</p>
+						<p>{message}</p>
 					</div>
 				}
 				type="error"
 			/>
 		</div>
 	);
+};
+
+ErrorPage.defaultProps = {
+	message: 'This repository may not exist or is set to private.',
+};
+
+ErrorPage.propTypes = {
+	formData: PropTypes.string,
 };
 
 export default ErrorPage;
