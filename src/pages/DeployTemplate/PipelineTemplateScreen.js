@@ -62,43 +62,24 @@ const PipelineTemplateScreen = ({
 		}
 
 		fetch(validateObj.url, obj)
-			.then(res => {
-				if (res.ok) {
-					try {
-						JSON.parse(res);
-						return res.json();
-					} catch (e) {
-						return Promise.reject({
-							ok: res.ok,
-							status: res.status,
-							statusText: res.statusText,
-							url: res.url,
-							redirected: res.redirected,
-							body: res.body,
-							headers: res.headers,
-							type: res.type,
-						});
-					}
-				}
-				return Promise.reject({
-					ok: res.ok,
-					status: res.status,
-					statusText: res.statusText,
-					url: res.url,
-					redirected: res.redirected,
-					body: res.body,
-					headers: res.headers,
-					type: res.type,
-				});
+			.then(async res => {
+				const data = await res.json();
+				return data;
 			})
 			.then(res => {
-				const newPipelineVariables = pipelineVariables.map(obj => {
-					if (obj.key === pipelineObj.key) {
-						obj.error = false;
-					}
-					return obj;
-				});
-				setPipelineVariables(newPipelineVariables);
+				if (res.error) {
+					setIconType('');
+					return Promise.reject(res.error);
+				} else {
+					setIconType('check-circle');
+					const newPipelineVariables = pipelineVariables.map(obj => {
+						if (obj.key === pipelineObj.key) {
+							obj.error = false;
+						}
+						return obj;
+					});
+					setPipelineVariables(newPipelineVariables);
+				}
 			})
 			.catch(err => {
 				if (err.ok && err.status === validateObj.expected_status) {
