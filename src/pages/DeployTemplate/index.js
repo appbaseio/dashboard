@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Alert, Icon, Tabs } from 'antd';
-import { deployClusterStyles } from './styles';
+import { Alert, Icon, Tabs, Row, Col, Link, Button } from 'antd';
+import { mainContainer } from './styles';
 import DeployCluster from './DeployCluster';
 import PipelineTemplateScreen from './PipelineTemplateScreen';
 import ErrorPage from './ErrorPage';
 import Loader from '../../components/Loader';
+import Header from '../../components/Header';
 
 const yaml = require('js-yaml');
 const { TabPane } = Tabs;
@@ -156,22 +157,67 @@ const DeployTemplate = ({ location }) => {
 
 	if (isLoading) return <Loader />;
 
-	console.log(formData);
-	return err ? (
-		<ErrorPage message={err} />
-	) : (
-		<Tabs defaultActiveKey="1" activeKey={activeKey}>
-			<TabPane tab="Enter Pipeline Template variables" key="1">
-				<PipelineTemplateScreen
-					formData={formData.global_vars || []}
-					setActiveKey={setActiveKey}
-					handleFormChange={handleFormChange}
-				/>
-			</TabPane>
-			<TabPane tab="Deploy Cluster" disabled={activeKey === '1'} key="2">
-				<DeployCluster formData={formData} />
-			</TabPane>
-		</Tabs>
+	return (
+		<div css={mainContainer}>
+			<Row type="flex" justify="space-between" gutter={16}>
+				<Col lg={18}>
+					<h2>Deploy Reactivesearch Cluster</h2>
+
+					<Row>
+						<Col lg={18}>
+							<p>
+								You're using the deploy template feature. Once
+								you fill the variables for this pipeline
+								template, your cluster will get deployed in just
+								2mins.
+							</p>
+						</Col>
+					</Row>
+				</Col>
+				<Col
+					lg={6}
+					css={{
+						display: 'flex',
+						flexDirection: 'column-reverse',
+						paddingBottom: 20,
+					}}
+				>
+					<Button
+						size="large"
+						type="primary"
+						block
+						style={{ width: 150 }}
+					>
+						<Icon type="book" /> Read more
+					</Button>
+				</Col>
+			</Row>
+			<div className="tab-container">
+				{err ? (
+					<ErrorPage message={err} />
+				) : (
+					<Tabs defaultActiveKey="1" activeKey={activeKey}>
+						<TabPane
+							tab="Enter Pipeline Template variables"
+							key="1"
+						>
+							<PipelineTemplateScreen
+								formData={formData.global_vars || []}
+								setActiveKey={setActiveKey}
+								handleFormChange={handleFormChange}
+							/>
+						</TabPane>
+						<TabPane
+							tab="Deploy Cluster"
+							disabled={activeKey === '1'}
+							key="2"
+						>
+							<DeployCluster formData={formData} />
+						</TabPane>
+					</Tabs>
+				)}
+			</div>
+		</div>
 	);
 };
 

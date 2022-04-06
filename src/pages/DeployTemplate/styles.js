@@ -1,11 +1,19 @@
 import { css } from 'emotion';
 const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
-export const deployClusterStyles = css`
+export const mainContainer = css`
 	padding: 20px;
 	background-image: url(${backgroundUrlImage});
 	height: 100vh;
+	background-repeat: no-repeat;
+	background-size: cover;
 
+	.tab-container {
+		padding: 20px;
+	}
+`;
+
+export const deployClusterStyles = css`
 	.title-container {
 		font-size: 15px;
 		margin-bottom: 5px;
