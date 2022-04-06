@@ -18,6 +18,7 @@ const PipelineTemplateScreen = ({
 	handleFormChange,
 }) => {
 	const [pipelineVariables, setPipelineVariables] = useState([]);
+	const [iconType, setIconType] = useState('');
 
 	useEffect(() => {
 		validateFormData();
@@ -36,6 +37,7 @@ const PipelineTemplateScreen = ({
 	};
 
 	const validateInput = pipelineObj => {
+		setIconType('loading');
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
@@ -100,6 +102,7 @@ const PipelineTemplateScreen = ({
 			})
 			.catch(err => {
 				if (err.ok && err.status === validateObj.expected_status) {
+					setIconType('check-circle');
 					const newPipelineVariables = pipelineVariables.map(obj => {
 						if (obj.key === pipelineObj.key) {
 							obj.error = false;
@@ -108,6 +111,7 @@ const PipelineTemplateScreen = ({
 					});
 					setPipelineVariables(newPipelineVariables);
 				} else {
+					setIconType('');
 					if (
 						err.status &&
 						err.status !== validateObj.expected_status
@@ -187,6 +191,12 @@ const PipelineTemplateScreen = ({
 									className="validate-button"
 								>
 									validate
+									{iconType ? (
+										<Icon
+											type={iconType}
+											style={{ color: 'green' }}
+										/>
+									) : null}
 								</Button>
 							) : null}
 						</div>
