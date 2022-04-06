@@ -30,11 +30,15 @@ const DeployTemplate = ({ location }) => {
 						...json,
 						global_vars: [...ValidateObj(json?.global_vars || [])],
 					};
-					localStorage.setItem(
-						'pipelineVariables',
-						transformedFormData,
-					);
-					setFormData(transformedFormData);
+					if (!localStorage.getItem(dataUrl)) {
+						setFormData(transformedFormData);
+						localStorage.setItem(
+							dataUrl,
+							JSON.stringify(transformedFormData),
+						);
+					} else {
+						setFormData(JSON.parse(localStorage.getItem(dataUrl)));
+					}
 					setErr('');
 					setIsLoading(false);
 				})
@@ -124,14 +128,21 @@ const DeployTemplate = ({ location }) => {
 	};
 
 	const handleFormChange = (key, val) => {
+		const dataUrl = location.search.split('=')[1];
 		const newFormData = { ...initialFormData };
 		newFormData?.global_vars.forEach(data => {
 			if (data.key === key) {
 				data.value = val;
-				data.validate = {
-					...data.validate,
-					body: JSON.stringify({ [key]: val }),
-				};
+				if (
+					data.validate &&
+					data.validate.method &&
+					data.validate.method !== 'GET'
+				) {
+					data.validate = {
+						...data.validate,
+						body: JSON.stringify({ [key]: val }),
+					};
+				}
 			}
 		});
 		setInitialFormData(newFormData);
@@ -140,11 +151,12 @@ const DeployTemplate = ({ location }) => {
 			global_vars: [...ValidateObj(newFormData?.global_vars || [])],
 		};
 		setFormData(transformedFormData);
-		localStorage.setItem('pipelineVariables', transformedFormData);
+		localStorage.setItem(dataUrl, JSON.stringify(transformedFormData));
 	};
 
 	if (isLoading) return <Loader />;
 
+	console.log(formData);
 	return err ? (
 		<ErrorPage message={err} />
 	) : (
