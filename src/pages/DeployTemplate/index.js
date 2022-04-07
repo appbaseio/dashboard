@@ -19,6 +19,10 @@ const DeployTemplate = ({ location }) => {
 	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
+	const [tabsValidated, setTabsValidated] = useState({
+		tab2: false,
+		tab3: false,
+	});
 
 	useEffect(() => {
 		if (location.search) {
@@ -201,7 +205,11 @@ const DeployTemplate = ({ location }) => {
 					{err ? (
 						<ErrorPage message={err} />
 					) : (
-						<Tabs defaultActiveKey="1" activeKey={activeKey}>
+						<Tabs
+							defaultActiveKey="1"
+							activeKey={activeKey}
+							onTabClick={e => setActiveKey(e)}
+						>
 							<TabPane
 								tab="Enter Pipeline Template variables"
 								key="1"
@@ -210,11 +218,17 @@ const DeployTemplate = ({ location }) => {
 									formData={formData.global_vars || []}
 									setActiveKey={setActiveKey}
 									handleFormChange={handleFormChange}
+									setTabsValidated={val =>
+										setTabsValidated({
+											...tabsValidated,
+											tab2: val,
+										})
+									}
 								/>
 							</TabPane>
 							<TabPane
 								tab="Deploy Cluster"
-								disabled={activeKey === '1'}
+								disabled={!tabsValidated.tab2}
 								key="2"
 							>
 								<DeployCluster formData={formData} />

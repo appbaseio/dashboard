@@ -16,6 +16,7 @@ const PipelineTemplateScreen = ({
 	formData,
 	setActiveKey,
 	handleFormChange,
+	setTabsValidated,
 }) => {
 	const [pipelineVariables, setPipelineVariables] = useState([]);
 	const [iconType, setIconType] = useState('');
@@ -229,6 +230,7 @@ const PipelineTemplateScreen = ({
 				disabled={errorArray.length}
 				onClick={() => {
 					setActiveKey('2');
+					setTabsValidated(true);
 				}}
 			>
 				Next
