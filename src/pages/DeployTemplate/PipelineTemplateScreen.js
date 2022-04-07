@@ -57,9 +57,13 @@ const PipelineTemplateScreen = ({
 		if (
 			validateObj.headers.Authorization &&
 			validateObj.headers.Authorization.includes('Basic') &&
-			validateObj.headers.Authorization.split(' ').length === 2
+			validateObj.headers.Authorization.includes('btoa')
 		) {
-			let creds = btoa(validateObj.headers.Authorization.split(' ')[1]);
+			const varRegex = /(?<=\${btoa\()(.*?)(?=\)})/;
+			const keyVariable = varRegex.exec(
+				validateObj.headers.Authorization,
+			)[1];
+			let creds = btoa(keyVariable);
 			obj.headers.Authorization = `Basic ${creds}`;
 		}
 
