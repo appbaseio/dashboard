@@ -203,6 +203,7 @@ class NewMyCluster extends Component {
 	};
 
 	createCluster = async (stripeData = {}) => {
+		const { isDeployTemplate, location } = this.props;
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -232,6 +233,13 @@ class NewMyCluster extends Component {
 				isLoading: true,
 			});
 
+			let obj = {};
+			if (isDeployTemplate) {
+				obj.pipeline_info = localStorage.getItem(
+					location.search.split('=')[1],
+				);
+			}
+
 			const body = {
 				elasticsearch_url: this.state.clusterURL,
 				cluster_name: this.state.clusterName,
@@ -239,6 +247,7 @@ class NewMyCluster extends Component {
 				location: this.state.region,
 				arc_image: ARC_BYOC,
 				is_multi_zone: false,
+				...obj,
 			};
 
 			if (stripeData.token) {
@@ -742,6 +751,7 @@ NewMyCluster.defaultProps = {
 NewMyCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 	isDeployTemplate: PropTypes.bool,
 	pipeline: PropTypes.string,
 };

@@ -6,7 +6,11 @@ import NewMyCluster from '../ClusterPage/NewMyCluster';
 const DeployCluster = ({ formData }) => {
 	return (
 		<div>
-			<NewMyCluster isDeployTemplate pipeline={formData.id} />
+			<NewMyCluster
+				isDeployTemplate
+				pipeline={formData.id}
+				location={location}
+			/>
 		</div>
 	);
 };
@@ -17,6 +21,7 @@ DeployCluster.defaultProps = {
 
 DeployCluster.propTypes = {
 	formData: PropTypes.object,
+	location: PropTypes.object.isRequired,
 };
 
 export default DeployCluster;

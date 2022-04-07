@@ -247,7 +247,10 @@ const DeployTemplate = ({ location }) => {
 								disabled={!tabsValidated.tab1}
 								key="2"
 							>
-								<DeployCluster formData={formData} />
+								<DeployCluster
+									formData={formData}
+									location={location}
+								/>
 							</TabPane>
 						</Tabs>
 					)}
