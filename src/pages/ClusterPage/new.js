@@ -14,6 +14,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import ip from 'ip';
 import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -259,6 +260,15 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
+		// const ipAddress = ip.address();
+		const ipAddress = '49.37.169.228';
+
+		fetch(`http://ip-api.com/json/${ipAddress}`)
+			.then(res => res.json())
+			.then(json => {
+				console.log(json);
+			});
+
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
@@ -643,6 +653,7 @@ class NewCluster extends Component {
 		);
 
 		const pricingPlanArr = pricing_plan.split('-').slice(1);
+
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
