@@ -47,7 +47,7 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['8.1.1', '7.16.2'];
+const esVersions = ['7.17.2', '8.1.2'];
 
 const openSearchVersions = ['1.3.0'];
 
@@ -629,7 +629,7 @@ class NewCluster extends Component {
 			changed,
 			pricing_plan,
 		} = this.state;
-		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
+		const { isUsingClusterTrial } = this.props;
 
 		if (isLoading) return <Loader />;
 		const versions =
@@ -645,63 +645,54 @@ class NewCluster extends Component {
 		const pricingPlanArr = pricing_plan.split('-').slice(1);
 		return (
 			<Fragment>
-				{!isDeployTemplate ? (
-					<>
-						<FullHeader clusters={activeClusters} isCluster />
-						<Header compact>
-							<Row
-								type="flex"
-								justify="space-between"
-								gutter={16}
-							>
-								<Col md={18}>
-									<h2> Create a New Cluster </h2>
-									<Row>
-										<Col span={18}>
-											<p>
-												Create a new ElasticSearch
-												Cluster with appbase.io.
-												<a
-													href="https://docs.appbase.io"
-													rel="noopener noreferrer"
-													target="_blank"
-												>
-													Learn More
-												</a>
-											</p>
-										</Col>
-									</Row>
-								</Col>
-								<Col
-									md={6}
-									css={{
-										display: 'flex',
-										flexDirection: 'column-reverse',
-										paddingBottom: 20,
-									}}
-								>
-									<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
-										<Button
-											size="large"
-											type="primary"
-											target="_blank"
+				<FullHeader clusters={activeClusters} isCluster />
+				<Header compact>
+					<Row type="flex" justify="space-between" gutter={16}>
+						<Col md={18}>
+							<h2> Create a New Cluster </h2>
+							<Row>
+								<Col span={18}>
+									<p>
+										Create a new ElasticSearch Cluster with
+										appbase.io.
+										<a
+											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
-											onClick={() =>
-												this.props.history.push(
-													'/clusters/new/my-cluster',
-												)
-											}
-											icon="question-circle"
+											target="_blank"
 										>
-											Already have a Cluster
-										</Button>
-									</Tooltip>
+											Learn More
+										</a>
+									</p>
 								</Col>
 							</Row>
-						</Header>
-					</>
-				) : null}
-
+						</Col>
+						<Col
+							md={6}
+							css={{
+								display: 'flex',
+								flexDirection: 'column-reverse',
+								paddingBottom: 20,
+							}}
+						>
+							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
+								<Button
+									size="large"
+									type="primary"
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() =>
+										this.props.history.push(
+											'/clusters/new/my-cluster',
+										)
+									}
+									icon="question-circle"
+								>
+									Already have a Cluster
+								</Button>
+							</Tooltip>
+						</Col>
+					</Row>
+				</Header>
 				<Container>
 					{this.state.isStripeCheckoutOpen && (
 						<StripeCheckout
@@ -1211,18 +1202,7 @@ class NewCluster extends Component {
 										}
 										onClick={this.handleStripeModal}
 									>
-										{isDeployTemplate ? (
-											<>
-												Deploy cluster with
-												pipeline&nbsp;
-												{pipeline}
-											</>
-										) : (
-											<>
-												Add payment info and create
-												cluster
-											</>
-										)}
+										Add payment info and create cluster
 										<Icon
 											type="arrow-right"
 											theme="outlined"
@@ -1234,15 +1214,7 @@ class NewCluster extends Component {
 										size="large"
 										onClick={this.createCluster}
 									>
-										{isDeployTemplate ? (
-											<>
-												Deploy cluster with pipeline
-												&nbsp;
-												{pipeline}
-											</>
-										) : (
-											<>Create Cluster</>
-										)}
+										Create Cluster
 										<Icon
 											type="arrow-right"
 											theme="outlined"
@@ -1262,18 +1234,9 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
-
-NewCluster.defaultProps = {
-	isDeployTemplate: false,
-	pipeline: '',
-};
-
 NewCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
 	clusterTrialEndDate: PropTypes.number,
-	isDeployTemplate: PropTypes.bool,
-	pipeline: PropTypes.string,
 };
-
 export default connect(mapStateToProps, null)(NewCluster);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import NewMyCluster from '../ClusterPage/new';
+import NewMyCluster from '../ClusterPage/NewMyCluster';
 
 const DeployCluster = ({ formData }) => {
 	console.log(formData);
