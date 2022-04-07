@@ -17,6 +17,7 @@ const PipelineTemplateScreen = ({
 	setActiveKey,
 	handleFormChange,
 	setTabsValidated,
+	tabsValidated,
 }) => {
 	const [pipelineVariables, setPipelineVariables] = useState([]);
 	const [iconType, setIconType] = useState('');
@@ -227,7 +228,7 @@ const PipelineTemplateScreen = ({
 				type="primary"
 				className="deploy-button"
 				data-cy="signin-button"
-				disabled={errorArray.length}
+				disabled={errorArray.length && tabsValidated.step1}
 				onClick={() => {
 					setActiveKey('2');
 					setTabsValidated(true);

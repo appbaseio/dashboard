@@ -16,13 +16,18 @@ const DeployTemplate = ({ location }) => {
 	const [response, setResponse] = useState('');
 	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
-	const [activeKey, setActiveKey] = useState('1');
+	const [activeKey, setActiveKey] = useState(
+		localStorage.getItem('currentStep') || '1',
+	);
 	const [err, setErr] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [tabsValidated, setTabsValidated] = useState({
-		tab2: false,
-		tab3: false,
-	});
+	const [tabsValidated, setTabsValidated] = useState(
+		JSON.parse(localStorage.getItem('validatedTabs')) || {
+			tab1: false,
+			tab2: false,
+			tab3: false,
+		},
+	);
 
 	useEffect(() => {
 		if (location.search) {
@@ -160,6 +165,11 @@ const DeployTemplate = ({ location }) => {
 		localStorage.setItem(dataUrl, JSON.stringify(transformedFormData));
 	};
 
+	const handleTabChange = tab => {
+		setActiveKey(tab);
+		localStorage.setItem('currentStep', tab);
+	};
+
 	if (isLoading) return <Loader />;
 
 	return (
@@ -208,27 +218,33 @@ const DeployTemplate = ({ location }) => {
 						<Tabs
 							defaultActiveKey="1"
 							activeKey={activeKey}
-							onTabClick={e => setActiveKey(e)}
+							onTabClick={e => handleTabChange(e)}
 						>
 							<TabPane
-								tab="Enter Pipeline Template variables"
+								tab="1 Enter Pipeline Template variables"
 								key="1"
 							>
 								<PipelineTemplateScreen
 									formData={formData.global_vars || []}
-									setActiveKey={setActiveKey}
+									setActiveKey={handleTabChange}
 									handleFormChange={handleFormChange}
-									setTabsValidated={val =>
-										setTabsValidated({
+									tabsValidated={tabsValidated}
+									setTabsValidated={val => {
+										const newTabsValidated = {
 											...tabsValidated,
-											tab2: val,
-										})
-									}
+											tab1: val,
+										};
+										setTabsValidated(newTabsValidated);
+										localStorage.setItem(
+											'validatedTabs',
+											JSON.stringify(newTabsValidated),
+										);
+									}}
 								/>
 							</TabPane>
 							<TabPane
-								tab="Deploy Cluster"
-								disabled={!tabsValidated.tab2}
+								tab="2 Deploy Cluster"
+								disabled={!tabsValidated.tab1}
 								key="2"
 							>
 								<DeployCluster formData={formData} />
