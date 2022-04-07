@@ -1,9 +1,7 @@
 import { css } from 'emotion';
-const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 export const mainContainer = css`
 	padding: 20px;
-	background-image: url(${backgroundUrlImage});
 	height: 100vh;
 	background-repeat: no-repeat;
 	background-size: cover;
