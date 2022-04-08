@@ -36,7 +36,12 @@ const AnnouncementBanner = () => {
 			{showBanner ? (
 				<div className="announcement-banner">
 					appbase.io is now reactivesearch.io.&nbsp;
-					<a href="#">Read the announcement</a>
+					<a
+						href="https://blog.reactivesearch.io/appbase-io-announcement"
+						target="_blank"
+					>
+						Read the announcement
+					</a>
 					<img
 						src="/static/images/close.svg"
 						width={20}
