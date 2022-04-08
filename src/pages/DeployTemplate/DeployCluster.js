@@ -38,15 +38,21 @@ const DeployCluster = ({ formData, location }) => {
 					Authorization: `Basic ${btoa(`${username}:${password}`)}`,
 				},
 				body: JSON.stringify({
-					pipeline: localStorage.getItem(dataUrl),
-					extension: 'json',
+					pipeline: {
+						content: localStorage.getItem(dataUrl),
+						extension: 'json',
+					},
 				}),
 			};
 			fetch(`${url}_pipeline`, obj)
 				.then(response => response.json())
 				.then(json => {
-					setIconType('check-circle');
 					console.log(json);
+					if (json.error) {
+						setIconType('close-circle');
+					} else {
+						setIconType('check-circle');
+					}
 				})
 				.catch(err => {
 					setIconType('');
@@ -125,7 +131,12 @@ const DeployCluster = ({ formData, location }) => {
 							{iconType ? (
 								<Icon
 									type={iconType}
-									style={{ color: 'green' }}
+									style={{
+										color:
+											iconType === 'close-circle'
+												? 'red'
+												: 'green',
+									}}
 								/>
 							) : null}
 						</Button>
