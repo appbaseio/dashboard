@@ -36,6 +36,7 @@ const DeployCluster = ({ formData, location }) => {
 				method: 'POST',
 				headers: {
 					Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+					'Content-Type': 'multipart/form-data',
 				},
 				body: JSON.stringify({
 					pipeline: {
