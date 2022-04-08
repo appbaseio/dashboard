@@ -90,7 +90,6 @@ const PipelineTemplateScreen = ({
 						}
 						return obj;
 					});
-					console.log(newPipelineVariables);
 					setPipelineVariables(newPipelineVariables);
 				}
 			})
@@ -145,7 +144,7 @@ const PipelineTemplateScreen = ({
 	};
 
 	const errorArray = pipelineVariables.filter(i => i.error === true);
-	console.log(errorArray, errorArray.length, !tabsValidated.tab1);
+
 	return (
 		<div css={deployClusterStyles}>
 			{pipelineVariables.length ? (
