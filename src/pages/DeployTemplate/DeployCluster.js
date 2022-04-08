@@ -8,7 +8,7 @@ import Loader from '../../components/Loader';
 
 const DeployCluster = ({ formData, location }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
-	const [selectedCluster, setSelectedCluster] = useState('');
+	const [selectedCluster, setSelectedCluster] = useState({});
 	const [nextPage, setNextPage] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [iconType, setIconType] = useState('');
@@ -28,7 +28,7 @@ const DeployCluster = ({ formData, location }) => {
 	}, []);
 
 	function createPipeline() {
-		getClusterData(selectedCluster).then(res => {
+		getClusterData(selectedCluster.id).then(res => {
 			const { url, username, password } =
 				res?.deployment?.addons[0] || '';
 			const dataUrl = location.search.split('=')[1];
@@ -77,15 +77,17 @@ const DeployCluster = ({ formData, location }) => {
 						<Select
 							allowClear
 							className="input-container"
-							value={selectedCluster}
-							onChange={(val, option) => {
-								setSelectedCluster(val);
-								// Check if value is empty
+							onChange={val => {
+								if (!val) setSelectedCluster({});
 							}}
 						>
 							{activeClusters.map(data => (
 								<Select.Option key={data.id}>
-									{data.name}
+									<div
+										onClick={() => setSelectedCluster(data)}
+									>
+										{data.name}
+									</div>
 								</Select.Option>
 							))}
 						</Select>
@@ -95,9 +97,10 @@ const DeployCluster = ({ formData, location }) => {
 							type="primary"
 							className="create-cluster-button"
 							style={{ display: 'block' }}
-							disabled={selectedCluster}
+							disabled={selectedCluster.id}
 							onClick={() => setNextPage(true)}
 						>
+							<Icon type="plus" />
 							Create a new Reactivesearch cluster
 						</Button>
 						<Button
@@ -106,17 +109,19 @@ const DeployCluster = ({ formData, location }) => {
 							type="primary"
 							className="deploy-button"
 							style={{
+								width: 'auto',
 								position: 'absolute',
 								right: 0,
 								bottom: 0,
 							}}
-							disabled={!selectedCluster}
+							disabled={!selectedCluster.id}
 							onClick={() => {
 								setIconType('loading');
 								createPipeline();
 							}}
 						>
-							Next
+							Deploy pipeline {formData.id} to&nbsp;
+							{selectedCluster.name} cluster
 							{iconType ? (
 								<Icon
 									type={iconType}

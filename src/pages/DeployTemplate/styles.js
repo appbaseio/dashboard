@@ -33,7 +33,7 @@ export const deployClusterStyles = css`
 
 	.create-cluster-button {
 		height: 40px;
-		width: 250px;
+		width: 270px;
 		margin: 20px 0px 0px 0px;
 	}
 
