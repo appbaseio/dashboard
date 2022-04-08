@@ -139,6 +139,7 @@ const PipelineTemplateScreen = ({
 
 	const errorArray = pipelineVariables.filter(i => i.error === true);
 
+	console.log(errorArray.length, tabsValidated.step1);
 	return (
 		<div css={deployClusterStyles}>
 			{pipelineVariables.length ? (
@@ -232,7 +233,7 @@ const PipelineTemplateScreen = ({
 				type="primary"
 				className="deploy-button"
 				data-cy="signin-button"
-				disabled={errorArray.length && tabsValidated.step1}
+				disabled={errorArray.length || tabsValidated.step1}
 				onClick={() => {
 					setActiveKey('2');
 					setTabsValidated(true);

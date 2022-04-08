@@ -31,6 +31,12 @@ export const deployClusterStyles = css`
 		margin: 20px 0px 0px 20px;
 	}
 
+	.create-cluster-button {
+		height: 40px;
+		width: 250px;
+		margin: 20px 0px 0px 0px;
+	}
+
 	.error-alert-container {
 		display: flex;
 		align-items: center;

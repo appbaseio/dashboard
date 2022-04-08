@@ -172,6 +172,7 @@ const DeployTemplate = ({ location }) => {
 
 	if (isLoading) return <Loader />;
 
+	console.log(tabsValidated);
 	return (
 		<div>
 			<FullHeader isCluster />
