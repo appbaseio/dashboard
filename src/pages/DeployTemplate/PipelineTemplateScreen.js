@@ -23,6 +23,12 @@ const PipelineTemplateScreen = ({
 	const [iconType, setIconType] = useState('');
 
 	useEffect(() => {
+		if (tabsValidated.tab1) {
+			setIconType('check-circle');
+		}
+	}, []);
+
+	useEffect(() => {
 		validateFormData();
 	}, [formData]);
 
@@ -84,6 +90,7 @@ const PipelineTemplateScreen = ({
 						}
 						return obj;
 					});
+					console.log(newPipelineVariables);
 					setPipelineVariables(newPipelineVariables);
 				}
 			})
@@ -138,8 +145,7 @@ const PipelineTemplateScreen = ({
 	};
 
 	const errorArray = pipelineVariables.filter(i => i.error === true);
-
-	console.log(errorArray.length, tabsValidated.step1);
+	console.log(errorArray, errorArray.length, !tabsValidated.tab1);
 	return (
 		<div css={deployClusterStyles}>
 			{pipelineVariables.length ? (
@@ -233,7 +239,7 @@ const PipelineTemplateScreen = ({
 				type="primary"
 				className="deploy-button"
 				data-cy="signin-button"
-				disabled={errorArray.length || tabsValidated.step1}
+				disabled={errorArray.length && !tabsValidated.tab1}
 				onClick={() => {
 					setActiveKey('2');
 					setTabsValidated(true);

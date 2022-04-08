@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Select } from 'antd';
+import { Button, Select, Icon } from 'antd';
 import NewMyCluster from '../ClusterPage/NewMyCluster';
-import { getClusters } from '../ClusterPage/utils';
+import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
+import Loader from '../../components/Loader';
 
-const DeployCluster = ({ formData }) => {
+const DeployCluster = ({ formData, location }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState('');
 	const [nextPage, setNextPage] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [iconType, setIconType] = useState('');
 
 	useEffect(() => {
 		getClusters()
@@ -17,11 +20,42 @@ const DeployCluster = ({ formData }) => {
 					cluster => cluster.status === 'active',
 				);
 				setActiveClusters(avaibleActiveClusters);
+				setIsLoading(false);
 			})
 			.catch(err => {
 				console.error(err);
 			});
 	}, []);
+
+	function createPipeline() {
+		getClusterData(selectedCluster).then(res => {
+			const { url, username, password } =
+				res?.deployment?.addons[0] || '';
+			const dataUrl = location.search.split('=')[1];
+			const obj = {
+				method: 'POST',
+				headers: {
+					Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+				},
+				body: JSON.stringify({
+					pipeline: localStorage.getItem(dataUrl),
+					extension: 'json',
+				}),
+			};
+			fetch(`${url}_pipeline`, obj)
+				.then(response => response.json())
+				.then(json => {
+					setIconType('check-circle');
+					console.log(json);
+				})
+				.catch(err => {
+					setIconType('');
+					console.error(err);
+				});
+		});
+	}
+
+	if (isLoading) return <Loader />;
 
 	return (
 		<div css={deployClusterStyles}>
@@ -44,8 +78,7 @@ const DeployCluster = ({ formData }) => {
 							allowClear
 							className="input-container"
 							value={selectedCluster}
-							onChange={val => {
-								console.log(val);
+							onChange={(val, option) => {
 								setSelectedCluster(val);
 								// Check if value is empty
 							}}
@@ -63,7 +96,7 @@ const DeployCluster = ({ formData }) => {
 							className="create-cluster-button"
 							style={{ display: 'block' }}
 							disabled={selectedCluster}
-							onClick={setNextPage(true)}
+							onClick={() => setNextPage(true)}
 						>
 							Create a new Reactivesearch cluster
 						</Button>
@@ -79,10 +112,17 @@ const DeployCluster = ({ formData }) => {
 							}}
 							disabled={!selectedCluster}
 							onClick={() => {
-								// deployment
+								setIconType('loading');
+								createPipeline();
 							}}
 						>
 							Next
+							{iconType ? (
+								<Icon
+									type={iconType}
+									style={{ color: 'green' }}
+								/>
+							) : null}
 						</Button>
 					</div>
 				</div>

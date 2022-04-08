@@ -94,6 +94,7 @@ class ClusterInfo extends Component {
 	init = () => {
 		return getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
+				console.log(res);
 				const { cluster, deployment } = res;
 				if (cluster && deployment) {
 					const arcData = getAddon('arc', deployment) || {};
