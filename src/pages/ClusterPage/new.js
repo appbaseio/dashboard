@@ -37,6 +37,7 @@ import {
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
+	getDistance,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -260,13 +261,34 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
+		const { provider } = this.state;
 		// const ipAddress = ip.address();
 		const ipAddress = '49.37.169.228';
 
 		fetch(`http://ip-api.com/json/${ipAddress}`)
 			.then(res => res.json())
 			.then(json => {
-				console.log(json);
+				//
+				const providerRegions = Object.values(regions[provider]);
+				let minDist = {
+					...providerRegions[0],
+					dist: Number.MAX_SAFE_INTEGER,
+				};
+				providerRegions.forEach(data => {
+					const distance = getDistance(
+						json.lat,
+						json.lon,
+						data.lat,
+						data.lon,
+					);
+					if (minDist.dist > distance) {
+						minDist = {
+							dist: distance,
+							name: data.name,
+						};
+					}
+				});
+				console.log(minDist);
 			});
 
 		const slug = generateSlug(2);
