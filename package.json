@@ -86,7 +86,7 @@
 		"hex-rgb": "^3.0.0",
 		"lodash": "^4.17.21",
 		"lzma": "^2.3.2",
-		"moment": "^2.24.0",
+		"moment": "^2.29.2",
 		"partial-json-parser": "^1.1.1",
 		"prop-types": "^15.6.2",
 		"random-word-slugs": "^0.0.5",
