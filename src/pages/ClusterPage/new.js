@@ -270,8 +270,9 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
+		const { region } = this.state;
 		this.getDefaultLocation();
-		this.getPingTime();
+		this.getPingTime(region);
 
 		const slug = generateSlug(2);
 		this.setState({
@@ -309,20 +310,26 @@ class NewCluster extends Component {
 			});
 	}
 
-	getPingTime = () => {
-		const { provider, region } = this.state;
+	getPingTime = region => {
+		const { provider } = this.state;
 		let url = '';
+		let pingTime = 0;
+
 		if (provider === 'gke') {
 			url = `https://${region}-5tkroniexa-lz.a.run.app/api/ping`;
 		} else {
 			url = `https://dynamodb.${region}.amazonaws.com/ping?x=1299vqyiz19c0`;
 		}
 
-		this.checkResponseTime(url).then(res => {
-			this.setState({
-				pingTime: res,
+		for (let i = 0; i < 3; i++) {
+			this.checkResponseTime(url).then(res => {
+				console.log(res);
+				pingTime += res;
+				if (i === 2) {
+					this.setConfig('pingTime', pingTime / 3);
+				}
 			});
-		});
+		}
 	};
 
 	checkResponseTime = async url => {
@@ -635,7 +642,11 @@ class NewCluster extends Component {
 							// eslint-disable-next-line
 							<li
 								key={region}
-								onClick={() => this.setConfig('region', region)}
+								onClick={() => {
+									this.setConfig('region', region);
+									this.setConfig('pingTime', '');
+									this.getPingTime(region);
+								}}
 								className={
 									// eslint-disable-next-line
 									isDisabled
@@ -887,9 +898,15 @@ class NewCluster extends Component {
 													? fadeOutStyles
 													: ''
 											}
-											onClick={() =>
-												this.handleProviderChange('gke')
-											}
+											onClick={() => {
+												this.handleProviderChange(
+													'gke',
+												);
+												this.setConfig('pingTime', '');
+												this.getPingTime(
+													this.state.region,
+												);
+											}}
 										>
 											<img
 												width="120"
@@ -916,9 +933,15 @@ class NewCluster extends Component {
 													? fadeOutStyles
 													: ''
 											}
-											onClick={() =>
-												this.handleProviderChange('aws')
-											}
+											onClick={() => {
+												this.handleProviderChange(
+													'aws',
+												);
+												this.setConfig('pingTime', '');
+												this.getPingTime(
+													this.state.region,
+												);
+											}}
 										>
 											<img
 												width="120"
