@@ -13,7 +13,7 @@
 		"glow": "glow --watch",
 		"format": "prettier --write --use-tabs 'src/!(batteries*)**/**/*.js'",
 		"lint": "eslint .",
-		"test": "jest --config ./jest.config.json"
+		"test": "jest --env node --config ./jest.config.json"
 	},
 	"husky": {
 		"hooks": {
@@ -87,7 +87,7 @@
 		"js-yaml": "^4.1.0",
 		"lodash": "^4.17.21",
 		"lzma": "^2.3.2",
-		"moment": "^2.24.0",
+		"moment": "^2.29.2",
 		"partial-json-parser": "^1.1.1",
 		"prop-types": "^15.6.2",
 		"random-word-slugs": "^0.0.5",
