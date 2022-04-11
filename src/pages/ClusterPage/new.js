@@ -264,14 +264,80 @@ class NewCluster extends Component {
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
 			activeKey: 'america',
+			pingTime: 0,
 			...pluginState,
 		};
 	}
 
 	componentDidMount() {
+		this.getDefaultLocation();
+		this.getPingTime();
+
+		const slug = generateSlug(2);
+		this.setState({
+			clusterName: slug,
+		});
+
+		getClusters()
+			.then(clusters => {
+				if (window.Intercom) {
+					window.Intercom('update', {
+						total_clusters: clusters.length,
+						trial_end_date: moment
+							.unix(this.props.clusterTrialEndDate)
+							.toDate(),
+						trial_end_at: this.props.clusterTrialEndDate,
+					});
+				}
+				const activeClusters = clusters.filter(
+					item =>
+						(item.status === 'active' ||
+							item.status === 'in progress') &&
+						item.role === 'admin',
+				);
+				this.setState({
+					clustersAvailable: !!clusters.length,
+					clusters: activeClusters,
+					isClusterLoading: false,
+				});
+			})
+			.catch(e => {
+				console.error(e);
+				this.setState({
+					isClusterLoading: false,
+				});
+			});
+	}
+
+	getPingTime = () => {
+		const { provider, region } = this.state;
+		let url = '';
+		if (provider === 'gke') {
+			url = `https://${region}-5tkroniexa-lz.a.run.app/api/ping`;
+		} else {
+			url = `https://dynamodb.${region}.amazonaws.com/ping?x=1299vqyiz19c0`;
+		}
+
+		this.checkResponseTime(url).then(res => {
+			this.setState({
+				pingTime: res,
+			});
+		});
+	};
+
+	checkResponseTime = async url => {
+		let time1 = performance.now();
+		await fetch(url, { method: 'GET', mode: 'no-cors' });
+		let time2 = performance.now();
+		return time2 - time1;
+	};
+
+	getDefaultLocation = () => {
 		const { provider } = this.state;
 		const ipAddress = ip.address();
-		// const ipAddress = '49.37.169.228';
+		// const ipAddress =
+		// '142.161.30.230';
+		// '49.37.169.228';
 		// '94.84.173.237';
 
 		fetch(`http://ip-api.com/json/${ipAddress}`)
@@ -313,42 +379,7 @@ class NewCluster extends Component {
 				}
 			})
 			.catch(err => console.error(err));
-
-		const slug = generateSlug(2);
-		this.setState({
-			clusterName: slug,
-		});
-
-		getClusters()
-			.then(clusters => {
-				if (window.Intercom) {
-					window.Intercom('update', {
-						total_clusters: clusters.length,
-						trial_end_date: moment
-							.unix(this.props.clusterTrialEndDate)
-							.toDate(),
-						trial_end_at: this.props.clusterTrialEndDate,
-					});
-				}
-				const activeClusters = clusters.filter(
-					item =>
-						(item.status === 'active' ||
-							item.status === 'in progress') &&
-						item.role === 'admin',
-				);
-				this.setState({
-					clustersAvailable: !!clusters.length,
-					clusters: activeClusters,
-					isClusterLoading: false,
-				});
-			})
-			.catch(e => {
-				console.error(e);
-				this.setState({
-					isClusterLoading: false,
-				});
-			});
-	}
+	};
 
 	handleProviderChange = provider => {
 		this.setState(currentState => {
@@ -571,7 +602,12 @@ class NewCluster extends Component {
 	);
 
 	renderRegions = () => {
-		const { provider, pricing_plan: pricingPlan, activeKey } = this.state;
+		const {
+			provider,
+			pricing_plan: pricingPlan,
+			activeKey,
+			pingTime,
+		} = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
 		const asiaRegions = Object.keys(regions[provider]).filter(
@@ -587,36 +623,48 @@ class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
-				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions
-					? !allowedRegions.includes(region)
-					: false;
-				return (
-					// eslint-disable-next-line
-					<li
-						key={region}
-						onClick={() => this.setConfig('region', region)}
-						className={
+		const regionsToRender = data => (
+			<>
+				<div className="region-list">
+					{data.map(region => {
+						const regionValue = regions[provider][region];
+						const isDisabled = allowedRegions
+							? !allowedRegions.includes(region)
+							: false;
+						return (
 							// eslint-disable-next-line
-							isDisabled
-								? 'disabled'
-								: this.state.region === region
-								? 'active'
-								: ''
-						}
-					>
-						{regionValue.flag && (
-							<img
-								src={`/static/images/flags/${regionValue.flag}`}
-								alt={regionValue.name}
-							/>
-						)}
-						<span> {regionValue.name} </span>
-					</li>
-				);
-			});
+							<li
+								key={region}
+								onClick={() => this.setConfig('region', region)}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span> {regionValue.name} </span>
+							</li>
+						);
+					})}
+				</div>
+				{pingTime ? (
+					<div className="ping-time-container">
+						Expected ping latency for{' '}
+						{regions[provider][this.state.region].name} (
+						{this.state.region}) is: {pingTime}ms
+					</div>
+				) : null}
+			</>
+		);
 
 		const style = {
 			width: '100%',
@@ -629,7 +677,6 @@ class NewCluster extends Component {
 			);
 		}
 
-		console.log(activeKey, this.state.region);
 		return (
 			<Tabs
 				size="large"
@@ -639,28 +686,28 @@ class NewCluster extends Component {
 			>
 				{usRegions.length > 0 && (
 					<TabPane tab="America" key="america">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(usRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{asiaRegions.length > 0 && (
 					<TabPane tab="Asia" key="asia">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(asiaRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{euRegions.length > 0 && (
 					<TabPane tab="Europe" key="europe">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(euRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{otherRegions.length > 0 && (
 					<TabPane tab="Other Regions" key="other">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(otherRegions)}
 						</ul>
 					</TabPane>
