@@ -32,18 +32,21 @@ const DeployCluster = ({ formData, location }) => {
 			const { url, username, password } =
 				res?.deployment?.addons[0] || '';
 			const dataUrl = location.search.split('=')[1];
+			const formData = new FormData();
+
+			formData.append(
+				'pipeline',
+				JSON.stringify({
+					content: localStorage.getItem(dataUrl) || '{}',
+					extension: 'json',
+				}),
+			);
 			const obj = {
 				method: 'POST',
 				headers: {
 					Authorization: `Basic ${btoa(`${username}:${password}`)}`,
-					'Content-Type': 'multipart/form-data',
 				},
-				body: JSON.stringify({
-					pipeline: {
-						content: localStorage.getItem(dataUrl),
-						extension: 'json',
-					},
-				}),
+				body: formData,
 			};
 			fetch(`${url}_pipeline`, obj)
 				.then(response => response.json())
