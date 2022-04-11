@@ -210,6 +210,13 @@ export const machineMarks = {
 	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
 };
 
+const regionsKeyMap = {
+	asia: 'asia',
+	eu: 'europe',
+	us: 'america',
+	other: 'other',
+};
+
 const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_3,
 	// CLUSTER_PLANS.PRODUCTION_2019_2,
@@ -256,45 +263,62 @@ class NewCluster extends Component {
 			provider,
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
+			activeKey: 'america',
 			...pluginState,
 		};
 	}
 
 	componentDidMount() {
 		const { provider } = this.state;
-		// const ipAddress = ip.address();
-		const ipAddress = '49.37.169.228';
+		const ipAddress = ip.address();
+		// const ipAddress = '49.37.169.228';
+		// '94.84.173.237';
 
 		fetch(`http://ip-api.com/json/${ipAddress}`)
 			.then(res => res.json())
 			.then(json => {
-				//
-				const providerRegions = Object.values(regions[provider]);
-				let minDist = {
-					...providerRegions[0],
-					dist: Number.MAX_SAFE_INTEGER,
-				};
-				providerRegions.forEach(data => {
-					const distance = getDistance(
-						json.lat,
-						json.lon,
-						data.lat,
-						data.lon,
-					);
-					if (minDist.dist > distance) {
-						minDist = {
-							dist: distance,
-							name: data.name,
-						};
+				if (json.status !== 'fail') {
+					const providerRegions = Object.values(regions[provider]);
+					let minDist = {
+						...providerRegions[0],
+						dist: Number.MAX_SAFE_INTEGER,
+					};
+
+					for (const [key, value] of Object.entries(
+						regions[provider],
+					)) {
+						const distance = getDistance(
+							json.lat,
+							json.lon,
+							value.lat,
+							value.lon,
+						);
+						if (minDist.dist > distance) {
+							minDist = {
+								dist: distance,
+								name: key,
+								activeKey: regionsKeyMap[value.continent],
+							};
+						}
 					}
-				});
-				console.log(minDist);
-			});
+					this.setState({
+						region: minDist.name,
+						activeKey: minDist.activeKey,
+					});
+				} else {
+					this.setState({
+						region: 'us-central1',
+						activeKey: 'america',
+					});
+				}
+			})
+			.catch(err => console.error(err));
 
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
 		});
+
 		getClusters()
 			.then(clusters => {
 				if (window.Intercom) {
@@ -388,6 +412,12 @@ class NewCluster extends Component {
 		this.createCluster(data);
 		this.setState({
 			isStripeCheckoutOpen: false,
+		});
+	};
+
+	setActiveKey = key => {
+		this.setState({
+			activeKey: key,
 		});
 	};
 
@@ -541,7 +571,7 @@ class NewCluster extends Component {
 	);
 
 	renderRegions = () => {
-		const { provider, pricing_plan: pricingPlan } = this.state;
+		const { provider, pricing_plan: pricingPlan, activeKey } = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
 		const asiaRegions = Object.keys(regions[provider]).filter(
@@ -599,8 +629,14 @@ class NewCluster extends Component {
 			);
 		}
 
+		console.log(activeKey, this.state.region);
 		return (
-			<Tabs size="large" style={style}>
+			<Tabs
+				size="large"
+				style={style}
+				activeKey={activeKey}
+				onChange={key => this.setActiveKey(key)}
+			>
 				{usRegions.length > 0 && (
 					<TabPane tab="America" key="america">
 						<ul className="region-list">
