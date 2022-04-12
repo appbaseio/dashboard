@@ -342,6 +342,7 @@ class NewCluster extends Component {
 	getDefaultLocation = () => {
 		const { provider } = this.state;
 		const ipAddress = ip.address();
+		console.log(ipAddress);
 
 		fetch(`http://ip-api.com/json/${ipAddress}`)
 			.then(res => res.json())
