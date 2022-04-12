@@ -340,52 +340,45 @@ class NewCluster extends Component {
 
 	getDefaultLocation = async () => {
 		const { provider } = this.state;
-		fetch('https://api.ipify.org/?format=json')
-			.then(resp => resp.json())
-			.then(data => {
-				fetch(`http://ip-api.com/json/${data.ip}`)
-					.then(res => res.json())
-					.then(json => {
-						if (json.status !== 'fail') {
-							const providerRegions = Object.values(
-								regions[provider],
-							);
-							let minDist = {
-								...providerRegions[0],
-								dist: Number.MAX_SAFE_INTEGER,
-							};
+		fetch(`http://ip-api.com/json`)
+			.then(res => res.json())
+			.then(json => {
+				if (json.status !== 'fail') {
+					const providerRegions = Object.values(regions[provider]);
+					let minDist = {
+						...providerRegions[0],
+						dist: Number.MAX_SAFE_INTEGER,
+					};
 
-							for (const [key, value] of Object.entries(
-								regions[provider],
-							)) {
-								const distance = getDistance(
-									json.lat,
-									json.lon,
-									value.lat,
-									value.lon,
-								);
-								if (minDist.dist > distance) {
-									minDist = {
-										dist: distance,
-										name: key,
-										activeKey:
-											regionsKeyMap[value.continent],
-									};
-								}
-							}
-							this.setState({
-								region: minDist.name,
-								activeKey: minDist.activeKey,
-							});
-						} else {
-							this.setState({
-								region: 'us-central1',
-								activeKey: 'america',
-							});
+					for (const [key, value] of Object.entries(
+						regions[provider],
+					)) {
+						const distance = getDistance(
+							json.lat,
+							json.lon,
+							value.lat,
+							value.lon,
+						);
+						if (minDist.dist > distance) {
+							minDist = {
+								dist: distance,
+								name: key,
+								activeKey: regionsKeyMap[value.continent],
+							};
 						}
-					})
-					.catch(err => console.error(err));
-			});
+					}
+					this.setState({
+						region: minDist.name,
+						activeKey: minDist.activeKey,
+					});
+				} else {
+					this.setState({
+						region: 'us-central1',
+						activeKey: 'america',
+					});
+				}
+			})
+			.catch(err => console.error(err));
 	};
 
 	handleProviderChange = provider => {
