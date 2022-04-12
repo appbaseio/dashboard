@@ -33,9 +33,20 @@ export const deployClusterStyles = css`
 		margin-top: 30px;
 	}
 
+	.success-alert {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
 	.choose-cluster {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.cluster-view-button {
+		cursor: pointer;
+		color: #18a0fb;
 	}
 
 	.validate-button {

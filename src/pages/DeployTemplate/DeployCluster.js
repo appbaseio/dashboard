@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Button, Select, Icon, Alert } from 'antd';
 import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
 
-const DeployCluster = ({ formData, location }) => {
+const DeployCluster = ({ formData, location, history }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState({});
 	const [nextPage, setNextPage] = useState(false);
@@ -170,9 +171,25 @@ const DeployCluster = ({ formData, location }) => {
 							<Alert
 								type="info"
 								message={
-									<div>
-										Pipeline is successfully deployed on the{' '}
-										{selectedCluster.name} cluster
+									<div className="success-alert">
+										<div>
+											Pipeline is successfully deployed on
+											the {selectedCluster.name} cluster
+										</div>
+										<Button
+											type="primary"
+											// size="small"
+											ghost
+											className="cluster-view-button"
+											onClick={() =>
+												history.push(
+													`/clusters/${selectedCluster.id}`,
+												)
+											}
+										>
+											Go to {selectedCluster.name}{' '}
+											cluster's view ↗
+										</Button>
 									</div>
 								}
 							/>
@@ -212,4 +229,4 @@ DeployCluster.propTypes = {
 	location: PropTypes.object.isRequired,
 };
 
-export default DeployCluster;
+export default withRouter(DeployCluster);
