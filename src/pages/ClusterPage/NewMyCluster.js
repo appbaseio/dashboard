@@ -203,7 +203,13 @@ class NewMyCluster extends Component {
 	};
 
 	createCluster = async (stripeData = {}) => {
-		const { isDeployTemplate, location } = this.props;
+		const {
+			isDeployTemplate,
+			location,
+			setClusterId,
+			setActiveKey,
+			setTabsValidated,
+		} = this.props;
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -255,6 +261,14 @@ class NewMyCluster extends Component {
 			}
 
 			const clusterRes = await deployMyCluster(body);
+			setClusterId(clusterRes.cluster.id);
+			if (isDeployTemplate && clusterRes.cluster.id) {
+				setActiveKey('3');
+				setTabsValidated(true);
+				this.setState({
+					isLoading: false,
+				});
+			}
 			if (stripeData.token) {
 				await createSubscription({
 					clusterId: clusterRes.cluster.id,
@@ -746,6 +760,9 @@ class NewMyCluster extends Component {
 NewMyCluster.defaultProps = {
 	isDeployTemplate: false,
 	pipeline: '',
+	setClusterId: () => {},
+	setActiveKey: () => {},
+	setTabsValidated: () => {},
 };
 
 NewMyCluster.propTypes = {
@@ -754,6 +771,9 @@ NewMyCluster.propTypes = {
 	location: PropTypes.object.isRequired,
 	isDeployTemplate: PropTypes.bool,
 	pipeline: PropTypes.string,
+	setClusterId: PropTypes.func,
+	setActiveKey: PropTypes.func,
+	setTabsValidated: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

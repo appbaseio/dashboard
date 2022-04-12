@@ -5,6 +5,7 @@ import { mainContainer } from './styles';
 import DeployCluster from './DeployCluster';
 import PipelineTemplateScreen from './PipelineTemplateScreen';
 import ErrorPage from './ErrorPage';
+import DeployLogs from './DeployLogs';
 import Loader from '../../components/Loader';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -28,6 +29,7 @@ const DeployTemplate = ({ location }) => {
 			tab3: false,
 		},
 	);
+	const [clusterId, setClusterId] = useState('');
 
 	useEffect(() => {
 		if (location.search) {
@@ -250,7 +252,27 @@ const DeployTemplate = ({ location }) => {
 								<DeployCluster
 									formData={formData}
 									location={location}
+									setClusterId={setClusterId}
+									setActiveKey={handleTabChange}
+									setTabsValidated={val => {
+										const newTabsValidated = {
+											...tabsValidated,
+											tab2: val,
+										};
+										setTabsValidated(newTabsValidated);
+										localStorage.setItem(
+											'validatedTabs',
+											JSON.stringify(newTabsValidated),
+										);
+									}}
 								/>
+							</TabPane>
+							<TabPane
+								tab="3 Deploy Logs"
+								// disabled={!tabsValidated.tab2}
+								key="3"
+							>
+								<DeployLogs clusterId={clusterId} />
 							</TabPane>
 						</Tabs>
 					)}

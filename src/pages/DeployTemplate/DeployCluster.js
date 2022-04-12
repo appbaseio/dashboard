@@ -6,7 +6,12 @@ import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
 
-const DeployCluster = ({ formData, location }) => {
+const DeployCluster = ({
+	formData,
+	location,
+	setActiveKey,
+	setTabsValidated,
+}) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState({});
 	const [nextPage, setNextPage] = useState(false);
@@ -74,6 +79,8 @@ const DeployCluster = ({ formData, location }) => {
 					isDeployTemplate
 					pipeline={formData.id}
 					location={location}
+					setActiveKey={setActiveKey}
+					setTabsValidated={setTabsValidated}
 				/>
 			) : (
 				<div style={{ padding: 20 }}>

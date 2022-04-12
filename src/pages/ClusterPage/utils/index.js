@@ -618,3 +618,22 @@ export const rotateAPICredentials = (type, clusterId) => {
 			});
 	});
 };
+
+export function getDeployedCluster(clusterId) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/x-ndjson',
+			},
+		})
+			.then(res => console.log(res, '==='))
+			// .then(data => {
+			// 	console.log(data, '===');
+			// })
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
