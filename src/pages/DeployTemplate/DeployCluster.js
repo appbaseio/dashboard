@@ -11,6 +11,7 @@ const DeployCluster = ({
 	location,
 	setActiveKey,
 	setTabsValidated,
+	setClusterId,
 }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState({});
@@ -81,6 +82,7 @@ const DeployCluster = ({
 					location={location}
 					setActiveKey={setActiveKey}
 					setTabsValidated={setTabsValidated}
+					setClusterId={setClusterId}
 				/>
 			) : (
 				<div style={{ padding: 20 }}>
@@ -160,11 +162,13 @@ const DeployCluster = ({
 
 DeployCluster.defaultProps = {
 	formData: {},
+	setClusterId: () => {},
 };
 
 DeployCluster.propTypes = {
 	formData: PropTypes.object,
 	location: PropTypes.object.isRequired,
+	setClusterId: PropTypes.func,
 };
 
 export default DeployCluster;

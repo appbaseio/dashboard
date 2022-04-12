@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react';
 import { getDeployedCluster } from '../ClusterPage/utils';
 
 const DeployLogs = ({ clusterId }) => {
-	console.log(clusterId);
+	console.log(clusterId, '===');
 	useEffect(() => {
 		getDeployedCluster(clusterId)
 			.then(res => console.log(res))
