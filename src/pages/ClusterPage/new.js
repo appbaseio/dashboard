@@ -325,7 +325,10 @@ class NewCluster extends Component {
 			this.checkResponseTime(url).then(res => {
 				pingTime += res;
 				if (i === 2) {
-					this.setConfig('pingTime', pingTime / 3);
+					this.setConfig(
+						'pingTime',
+						Math.round((pingTime / 3) * 10) / 10,
+					);
 				}
 			});
 		}
@@ -340,10 +343,10 @@ class NewCluster extends Component {
 
 	getDefaultLocation = async () => {
 		const { provider } = this.state;
-		fetch(`http://ip-api.com/json`)
+		fetch(`https://geolocation-db.com/json/`)
 			.then(res => res.json())
 			.then(json => {
-				if (json.status !== 'fail') {
+				if (json.latitude && json.longitude) {
 					const providerRegions = Object.values(regions[provider]);
 					let minDist = {
 						...providerRegions[0],
@@ -354,8 +357,8 @@ class NewCluster extends Component {
 						regions[provider],
 					)) {
 						const distance = getDistance(
-							json.lat,
-							json.lon,
+							json.latitude,
+							json.longitude,
 							value.lat,
 							value.lon,
 						);
