@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Select, Icon } from 'antd';
+import { Button, Select, Icon, Alert } from 'antd';
 import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
@@ -12,6 +12,7 @@ const DeployCluster = ({ formData, location }) => {
 	const [nextPage, setNextPage] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [iconType, setIconType] = useState('');
+	const [deploymentMessage, setDeploymentMessage] = useState('');
 
 	useEffect(() => {
 		getClusters()
@@ -28,41 +29,54 @@ const DeployCluster = ({ formData, location }) => {
 	}, []);
 
 	function createPipeline() {
-		getClusterData(selectedCluster.id).then(res => {
-			const { url, username, password } =
-				res?.deployment?.addons[0] || '';
-			const dataUrl = location.search.split('=')[1];
-			const formData = new FormData();
+		getClusterData(selectedCluster.id)
+			.then(res => {
+				const { url, username, password } =
+					res?.deployment?.addons[0] || '';
+				const dataUrl = location.search.split('=')[1];
+				const formData = new FormData();
 
-			formData.append(
-				'pipeline',
-				JSON.stringify({
-					content: localStorage.getItem(dataUrl) || '{}',
-					extension: 'json',
-				}),
-			);
-			const obj = {
-				method: 'POST',
-				headers: {
-					Authorization: `Basic ${btoa(`${username}:${password}`)}`,
-				},
-				body: formData,
-			};
-			fetch(`${url}_pipeline`, obj)
-				.then(response => response.json())
-				.then(json => {
-					console.log(json);
-					if (json.error) {
+				formData.append(
+					'pipeline',
+					JSON.stringify({
+						content: localStorage.getItem(dataUrl) || '{}',
+						extension: 'json',
+					}),
+				);
+				const obj = {
+					method: 'POST',
+					headers: {
+						Authorization: `Basic ${btoa(
+							`${username}:${password}`,
+						)}`,
+					},
+					body: formData,
+				};
+				fetch(`${url}_pipeline`, obj)
+					.then(response => console.log(response, '==='))
+					.then(json => {
+						console.log('Success', json);
+						if (json?.error) {
+							setIconType('close-circle');
+							if (!json.error?.message)
+								setDeploymentMessage(json.error);
+							else setDeploymentMessage(json.error);
+						} else {
+							setIconType('check-circle');
+							setDeploymentMessage('success');
+						}
+					})
+					.catch(err => {
 						setIconType('close-circle');
-					} else {
-						setIconType('check-circle');
-					}
-				})
-				.catch(err => {
-					setIconType('');
-					console.error(err);
-				});
-		});
+						console.error('Error in deploy api', err);
+						if (err?.message) setDeploymentMessage(err?.message);
+					});
+			})
+			.catch(err => {
+				setIconType('close-circle');
+				if (!err?.message) setDeploymentMessage(err);
+				else setDeploymentMessage(err.message);
+			});
 	}
 
 	if (isLoading) return <Loader />;
@@ -150,6 +164,24 @@ const DeployCluster = ({ formData, location }) => {
 							</Button>
 						</div>
 					</div>
+					{deploymentMessage ? (
+						deploymentMessage === 'success' ? (
+							<Alert
+								type="success"
+								message={
+									<div>
+										Pipeline is successfully deployed on the{' '}
+										{selectedCluster.name} cluster
+									</div>
+								}
+							/>
+						) : (
+							<Alert
+								type="error"
+								message={<div>{deploymentMessage}</div>}
+							/>
+						)
+					) : null}
 				</div>
 			)}
 		</div>
