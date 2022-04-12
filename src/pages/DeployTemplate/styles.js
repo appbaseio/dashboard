@@ -21,6 +21,23 @@ export const deployClusterStyles = css`
 		width: 60%;
 	}
 
+	.dropdown-container {
+		width: 400px;
+		margin-top: 10px;
+	}
+
+	.deploy-cluster-option-chooser {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 30px;
+	}
+
+	.choose-cluster {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.validate-button {
 		margin-left: 20px;
 	}
@@ -33,8 +50,7 @@ export const deployClusterStyles = css`
 
 	.create-cluster-button {
 		height: 40px;
-		width: 270px;
-		margin: 20px 0px 0px 0px;
+		width: 275px;
 	}
 
 	.error-alert-container {

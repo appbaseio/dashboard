@@ -83,67 +83,72 @@ const DeployCluster = ({ formData, location }) => {
 						create a new cluster.{' '}
 					</h3>
 					<div style={{ position: 'relative', height: 200 }}>
-						<div>Choose Cluster</div>
-						<Select
-							allowClear
-							className="input-container"
-							onChange={val => {
-								if (!val) setSelectedCluster({});
-							}}
-						>
-							{activeClusters.map(data => (
-								<Select.Option key={data.id}>
-									<div
-										onClick={() => setSelectedCluster(data)}
-									>
-										{data.name}
-									</div>
-								</Select.Option>
-							))}
-						</Select>
-						<Button
-							block
-							size="small"
-							type="primary"
-							className="create-cluster-button"
-							style={{ display: 'block' }}
-							disabled={selectedCluster.id}
-							onClick={() => setNextPage(true)}
-						>
-							<Icon type="plus" />
-							Create a new Reactivesearch cluster
-						</Button>
-						<Button
-							block
-							size="small"
-							type="primary"
-							className="deploy-button"
-							style={{
-								width: 'auto',
-								position: 'absolute',
-								right: 0,
-								bottom: 0,
-							}}
-							disabled={!selectedCluster.id}
-							onClick={() => {
-								setIconType('loading');
-								createPipeline();
-							}}
-						>
-							Deploy pipeline {formData.id} to&nbsp;
-							{selectedCluster.name} cluster
-							{iconType ? (
-								<Icon
-									type={iconType}
-									style={{
-										color:
-											iconType === 'close-circle'
-												? 'red'
-												: 'green',
+						<div className="deploy-cluster-option-chooser">
+							<div className="choose-cluster">
+								<div>Choose Cluster</div>
+								<Select
+									allowClear
+									className="dropdown-container"
+									onChange={val => {
+										if (!val) setSelectedCluster({});
 									}}
-								/>
-							) : null}
-						</Button>
+								>
+									{activeClusters.map(data => (
+										<Select.Option key={data.id}>
+											<div
+												onClick={() =>
+													setSelectedCluster(data)
+												}
+											>
+												{data.name}
+											</div>
+										</Select.Option>
+									))}
+								</Select>
+								<Button
+									block
+									size="small"
+									type="primary"
+									className="deploy-button"
+									style={{
+										width: 'auto',
+										margin: '20px 0px 0px 0px',
+									}}
+									disabled={!selectedCluster.id}
+									onClick={() => {
+										setIconType('loading');
+										createPipeline();
+									}}
+								>
+									Deploy pipeline {formData.id} to&nbsp;
+									{selectedCluster.name} cluster
+									{iconType ? (
+										<Icon
+											type={iconType}
+											style={{
+												color:
+													iconType === 'close-circle'
+														? 'red'
+														: 'green',
+											}}
+										/>
+									) : null}
+								</Button>
+							</div>
+							<div>OR</div>
+							<Button
+								block
+								size="small"
+								type="primary"
+								className="create-cluster-button"
+								style={{ display: 'block' }}
+								disabled={selectedCluster.id}
+								onClick={() => setNextPage(true)}
+							>
+								<Icon type="plus" />
+								Create a new Reactivesearch cluster
+							</Button>
+						</div>
 					</div>
 				</div>
 			)}
