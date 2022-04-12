@@ -53,7 +53,7 @@ const DeployCluster = ({ formData, location }) => {
 					body: formData,
 				};
 				fetch(`${url}_pipeline`, obj)
-					.then(response => console.log(response, '==='))
+					.then(response => response.json())
 					.then(json => {
 						console.log('Success', json);
 						if (json?.error) {
@@ -79,6 +79,7 @@ const DeployCluster = ({ formData, location }) => {
 			});
 	}
 
+	const getErrorMessage = error => {};
 	if (isLoading) return <Loader />;
 
 	return (
@@ -167,7 +168,7 @@ const DeployCluster = ({ formData, location }) => {
 					{deploymentMessage ? (
 						deploymentMessage === 'success' ? (
 							<Alert
-								type="success"
+								type="info"
 								message={
 									<div>
 										Pipeline is successfully deployed on the{' '}
@@ -178,7 +179,21 @@ const DeployCluster = ({ formData, location }) => {
 						) : (
 							<Alert
 								type="error"
-								message={<div>{deploymentMessage}</div>}
+								message={
+									<div>
+										{JSON.stringify(
+											deploymentMessage,
+											null,
+											4,
+										) !== '{}'
+											? JSON.stringify(
+													deploymentMessage,
+													null,
+													4,
+											  )
+											: `{ error: Failed to fetch }`}
+									</div>
+								}
 							/>
 						)
 					) : null}
