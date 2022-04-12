@@ -10,7 +10,13 @@ const DeployLogs = ({ clusterId }) => {
 			.catch(err => console.error(err));
 	}, []);
 
-	return <div>deploy logs</div>;
+	return (
+		<div>
+			deploy logs page
+			<div>Time Taken: ==time== View Cluster Details: link</div>
+			<div>==logs==</div>
+		</div>
+	);
 };
 
 export default DeployLogs;
