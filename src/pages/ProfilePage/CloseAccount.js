@@ -70,7 +70,6 @@ const CloseAccount = () => {
 	useEffect(() => {
 		getClusters()
 			.then(clusters => {
-				console.log(clusters);
 				const activeClusters = clusters.filter(
 					cluster => cluster.status !== 'deleted',
 				);
