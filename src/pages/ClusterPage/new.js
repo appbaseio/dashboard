@@ -325,10 +325,7 @@ class NewCluster extends Component {
 			this.checkResponseTime(url).then(res => {
 				pingTime += res;
 				if (i === 2) {
-					this.setConfig(
-						'pingTime',
-						Math.round((pingTime / 3) * 10) / 10,
-					);
+					this.setConfig('pingTime', Math.round(pingTime / 3));
 				}
 			});
 		}
