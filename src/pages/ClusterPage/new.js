@@ -321,10 +321,10 @@ class NewCluster extends Component {
 			url = `https://dynamodb.${region}.amazonaws.com/ping?x=1299vqyiz19c0`;
 		}
 
-		for (let i = 0; i < 3; i++) {
+		for (let i = 0; i < 6; i++) {
 			this.checkResponseTime(url).then(res => {
-				pingTime += res;
-				if (i === 2) {
+				if (i > 2) pingTime += res;
+				if (i === 5) {
 					this.setConfig('pingTime', Math.round(pingTime / 3));
 				}
 			});
