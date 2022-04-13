@@ -42,6 +42,12 @@ export const deployClusterStyles = css`
 		align-items: center;
 		justify-content: space-between;
 	}
+
+	.card-title-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
 `;
 
 export const popoverContent = css`

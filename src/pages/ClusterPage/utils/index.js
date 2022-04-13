@@ -626,14 +626,16 @@ export function getDeployedCluster(clusterId) {
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/x-ndjson',
+				Authorization:
+					'Basic YjdHTHJLeHNkOjA5NWUyZWFiLTM4MDAtNDkxYi1hYmY2LTZiMTVjZjhlZGY4Nw==',
 			},
 		})
-			.then(res => console.log(res, '==='))
-			// .then(data => {
-			// 	console.log(data, '===');
-			// })
+			.then(async res =>
+				console.log('fetch ====res===', await res.text()),
+			)
+			.then(res => console.log(res, '====='))
 			.catch(e => {
-				reject(e);
+				console.error('Failed to fetch deploy logs', e);
 			});
 	});
 }
