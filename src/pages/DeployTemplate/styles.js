@@ -75,6 +75,10 @@ export const deployClusterStyles = css`
 		align-items: center;
 		justify-content: space-between;
 	}
+
+	// .minimap {
+	// 	display: none;
+	// }
 `;
 
 export const popoverContent = css`
