@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { Button, Card } from 'antd';
 import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 
-const DeployLogs = ({ clusterId, history }) => {
+const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 	const monaco = useMonaco();
 
 	useEffect(() => {
@@ -18,17 +19,13 @@ const DeployLogs = ({ clusterId, history }) => {
 	useEffect(() => {
 		if (monaco) {
 			monaco.editor.defineTheme('customTheme', {
-				base: 'vs-dark',
+				base: 'vs',
 				inherit: false,
 				rules: [
 					{ token: 'WARNING', background: '#f6f5d2' },
-					{ token: 'ERROR', background: 'red' },
-					{ background: '000000' },
-					{ foreground: 'FFFFFF' },
+					{ token: 'ERROR', background: '#e51400' },
 				],
 				colors: {
-					'editor.foreground': '#FFFFFF',
-					'editor.background': '#000000',
 					'editor.lineHighlightBackground': '#C3DCFF',
 				},
 			});
@@ -56,14 +53,16 @@ const DeployLogs = ({ clusterId, history }) => {
 				title={
 					<div className="card-title-container">
 						<div>Time Taken: ==time== </div>
-						<div
-							className="cluster-view-button"
-							onClick={() =>
-								history.push(`/clusters/${clusterId}`)
-							}
-						>
-							View Cluster Details
-						</div>
+						{showClusterDetails ? (
+							<div
+								className="cluster-view-button"
+								onClick={() =>
+									history.push(`/clusters/${clusterId}`)
+								}
+							>
+								View Cluster Details
+							</div>
+						) : null}
 					</div>
 				}
 			>
@@ -84,6 +83,14 @@ const DeployLogs = ({ clusterId, history }) => {
 			</Card>
 		</div>
 	);
+};
+
+DeployLogs.defaultProps = {
+	showClusterDetails: true,
+};
+
+DeployLogs.propTypes = {
+	showClusterDetails: PropTypes.bool,
 };
 
 export default withRouter(DeployLogs);

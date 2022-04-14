@@ -15,8 +15,10 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 		defaultSelectedKeys = ['3'];
 	} else if (window.location.pathname.endsWith('/usage')) {
 		defaultSelectedKeys = ['4'];
-	} else {
+	} else if (window.location.pathname.endsWith('/monitoring')) {
 		defaultSelectedKeys = ['5'];
+	} else {
+		defaultSelectedKeys = ['6'];
 	}
 	return (
 		<Menu
@@ -51,6 +53,11 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 			<Menu.Item key="5">
 				<Link to={`${baseRoute}/monitoring`}>
 					<Icon type="line-chart" /> Cluster Monitoring
+				</Link>
+			</Menu.Item>
+			<Menu.Item key="6">
+				<Link to={`${baseRoute}/logs`}>
+					<Icon type="unordered-list" /> Deploy Logs
 				</Link>
 			</Menu.Item>
 		</Menu>
