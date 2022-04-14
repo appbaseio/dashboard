@@ -26,7 +26,12 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 					{ token: 'ERROR', background: '#e51400' },
 				],
 				colors: {
+					'editor.background': '#fafafa',
+					'editorCursor.foreground': '#8B0000',
 					'editor.lineHighlightBackground': '#C3DCFF',
+					'editor.selectionBackground': '#88000030',
+					'editor.inactiveSelectionBackground': '#88000015',
+					'editorWarning.background': '#0000FF20',
 				},
 			});
 		}
