@@ -318,6 +318,18 @@ const clustersList = css`
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	.header-container {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+	}
+	.view-logs-button {
+		cursor: pointer;
+		color: #18a0fb;
+		font-weight: lighter;
+		font-size: 15px;
+		margin-right: 5px;
+	}
 	.cluster-card {
 		padding: 30px 25px;
 		border-radius: 3px;
