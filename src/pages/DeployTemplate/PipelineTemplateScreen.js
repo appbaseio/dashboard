@@ -84,6 +84,7 @@ const PipelineTemplateScreen = ({
 					return Promise.reject(res.error);
 				} else {
 					setIconType('check-circle');
+					setTabsValidated(true);
 					const newPipelineVariables = pipelineVariables.map(obj => {
 						if (obj.key === pipelineObj.key) {
 							obj.error = false;
@@ -96,6 +97,7 @@ const PipelineTemplateScreen = ({
 			.catch(err => {
 				if (err.ok && err.status === validateObj.expected_status) {
 					setIconType('check-circle');
+					setTabsValidated(true);
 					const newPipelineVariables = pipelineVariables.map(obj => {
 						if (obj.key === pipelineObj.key) {
 							obj.error = false;
@@ -237,11 +239,10 @@ const PipelineTemplateScreen = ({
 				size="small"
 				type="primary"
 				className="deploy-button"
-				data-cy="signin-button"
+				data-cy="deploy-button"
 				disabled={errorArray.length && !tabsValidated.tab1}
 				onClick={() => {
 					setActiveKey('2');
-					setTabsValidated(true);
 				}}
 			>
 				Next

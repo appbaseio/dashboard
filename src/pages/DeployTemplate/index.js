@@ -198,16 +198,16 @@ const DeployTemplate = ({ location }) => {
 		);
 	};
 
-	const handleValidatedTabs = val => {
+	const handleValidatedTabs = (key, val) => {
 		const newTabsValidated = {
 			...tabsValidated,
-			tab1: val,
+			[key]: val,
 		};
 		setTabsValidated(newTabsValidated);
 		const newDeployTemplateData = {
 			...JSON.parse(localStorage.getItem(templateUrl)),
 		};
-		newDeployTemplateData.validatedTabs = validatedTabs;
+		newDeployTemplateData.validatedTabs = newTabsValidated;
 		localStorage.setItem(
 			templateUrl,
 			JSON.stringify(newDeployTemplateData),
@@ -269,12 +269,12 @@ const DeployTemplate = ({ location }) => {
 								key="1"
 							>
 								<PipelineTemplateScreen
-									formData={formData.global_vars || []}
+									formData={formData?.global_vars || []}
 									setActiveKey={handleTabChange}
 									handleFormChange={handleFormChange}
 									tabsValidated={tabsValidated}
 									setTabsValidated={val => {
-										handleValidatedTabs(val);
+										handleValidatedTabs('tab1', val);
 									}}
 								/>
 							</TabPane>
@@ -289,7 +289,7 @@ const DeployTemplate = ({ location }) => {
 									setClusterId={setClusterId}
 									setActiveKey={handleTabChange}
 									setTabsValidated={val => {
-										handleValidatedTabs(val);
+										handleValidatedTabs('tab2', val);
 									}}
 								/>
 							</TabPane>
