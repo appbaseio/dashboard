@@ -620,6 +620,7 @@ export const rotateAPICredentials = (type, clusterId) => {
 };
 
 export function getDeployedCluster(clusterId) {
+	let time1 = new Date().getTime();
 	return new Promise((resolve, reject) => {
 		fetch(`${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`, {
 			method: 'GET',
@@ -628,14 +629,18 @@ export function getDeployedCluster(clusterId) {
 				'Content-Type': 'application/x-ndjson',
 			},
 		})
-			.then(async res => await res.text())
 			.then(async res => {
-				const convertedData = String(res)
+				let time2 = new Date().getTime();
+				const data = await res.text();
+				return { data: data, time: time2 - time1 };
+			})
+			.then(async res => {
+				const convertedData = String(res.data)
 					.replace(/\n/gi, ',')
 					.slice(0, -1);
 
 				const jsonData = await JSON.parse(`[${convertedData}]`);
-				resolve(jsonData);
+				resolve({ data: jsonData, time: res.time });
 			})
 			.catch(e => {
 				console.error('Error: Failed to fetch deploy logs', e);

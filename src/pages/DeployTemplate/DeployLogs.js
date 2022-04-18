@@ -8,6 +8,7 @@ import { deployClusterStyles } from './styles';
 
 const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 	const [deployLogs, setDeployLogs] = useState('');
+	const [timeTaken, setTimeTaken] = useState(0);
 	const monaco = useMonaco();
 
 	useEffect(() => {
@@ -37,17 +38,17 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 
 	const getLogs = () => {
 		let str = '';
-		const time1 = performance.now();
 		getDeployedCluster('whining-businessperson-ipeehco')
 			.then(res => res)
 			.then(json => {
-				json.forEach((element, idx) => {
+				setTimeTaken(json.time);
+				json.data.forEach((element, idx) => {
 					str += `${new Date(
 						element.timestamp,
 					).toLocaleTimeString()}  ${element.level}  ${
 						element.text
 					} \n`;
-					if (idx === json.length - 1) {
+					if (idx === json.data.length - 1) {
 						setDeployLogs(str);
 					}
 				});
@@ -65,7 +66,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 			<Card
 				title={
 					<div className="card-title-container">
-						<div>Time Taken: ==time== </div>
+						<div>Time Taken: {timeTaken}ms </div>
 						{showClusterDetails ? (
 							<div
 								className="cluster-view-button"
@@ -91,7 +92,6 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 						lineHeight: 30,
 						readOnly: true,
 					}}
-					// defaultValue={deployLogs}
 					value={deployLogs}
 				/>
 			</Card>
