@@ -41,12 +41,15 @@ const DeployCluster = ({
 				const { url, username, password } =
 					res?.deployment?.addons[0] || '';
 				const dataUrl = location.search.split('=')[1];
+				const newDeployTemplateData = {
+					...JSON.parse(localStorage.getItem(dataUrl)),
+				};
 				const formData = new FormData();
 
 				formData.append(
 					'pipeline',
 					JSON.stringify({
-						content: localStorage.getItem(dataUrl) || '{}',
+						content: newDeployTemplateData.formData || '{}',
 						extension: 'json',
 					}),
 				);
