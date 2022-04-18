@@ -180,12 +180,19 @@ const DeployTemplate = ({ location }) => {
 			}
 		});
 		setInitialFormData(newFormData);
+		const newDeployTemplateData = {
+			...JSON.parse(localStorage.getItem(templateUrl)),
+		};
 		const transformedFormData = {
 			...formData,
 			global_vars: [...ValidateObj(newFormData?.global_vars || [])],
 		};
 		setFormData(transformedFormData);
-		localStorage.setItem(templateUrl, JSON.stringify(transformedFormData));
+		newDeployTemplateData.formData = transformedFormData;
+		localStorage.setItem(
+			templateUrl,
+			JSON.stringify(newDeployTemplateData),
+		);
 	};
 
 	const handleTabChange = tab => {
@@ -312,7 +319,10 @@ const DeployTemplate = ({ location }) => {
 								disabled={!tabsValidated.tab2}
 								key="3"
 							>
-								<DeployLogs clusterId={clusterId} />
+								<DeployLogs
+									clusterId={clusterId}
+									dataUrl={templateUrl}
+								/>
 							</TabPane>
 						</Tabs>
 					)}

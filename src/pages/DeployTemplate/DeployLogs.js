@@ -7,7 +7,7 @@ import Editor from './Editor';
 import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 
-const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
+const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 	const [deployLogs, setDeployLogs] = useState([]);
 	const [timeTaken, setTimeTaken] = useState(0);
 	const monaco = useMonaco();
@@ -39,7 +39,10 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 
 	const getLogs = () => {
 		let str = '';
-		getDeployedCluster('whining-businessperson-ipeehco')
+		const newDeployTemplateData = {
+			...JSON.parse(localStorage.getItem(dataUrl)),
+		};
+		getDeployedCluster(clusterId || newDeployTemplateData.clusterId)
 			.then(res => res)
 			.then(json => {
 				setTimeTaken(json.time);
