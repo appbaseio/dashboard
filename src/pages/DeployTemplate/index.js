@@ -62,6 +62,7 @@ const DeployTemplate = ({ location }) => {
 								tab2: false,
 								tab3: false,
 							},
+							clusterId: '',
 						}),
 					);
 				} else {
@@ -71,6 +72,7 @@ const DeployTemplate = ({ location }) => {
 					setFormData(deployTemplateData.formData);
 					setActiveKey(deployTemplateData.currentStep);
 					setTabsValidated(deployTemplateData.validatedTabs);
+					setClusterId(deployTemplateData.clusterId);
 					setIsLoading(false);
 				}
 				setErr('');
@@ -214,6 +216,18 @@ const DeployTemplate = ({ location }) => {
 		);
 	};
 
+	const handleClusterId = id => {
+		setClusterId(id);
+		const newDeployTemplateData = {
+			...JSON.parse(localStorage.getItem(templateUrl)),
+		};
+		newDeployTemplateData.clusterId = id;
+		localStorage.setItem(
+			templateUrl,
+			JSON.stringify(newDeployTemplateData),
+		);
+	};
+
 	if (isLoading) return <Loader />;
 
 	return (
@@ -286,7 +300,7 @@ const DeployTemplate = ({ location }) => {
 								<DeployCluster
 									formData={formData}
 									location={location}
-									setClusterId={setClusterId}
+									setClusterId={handleClusterId}
 									setActiveKey={handleTabChange}
 									setTabsValidated={val => {
 										handleValidatedTabs('tab2', val);
