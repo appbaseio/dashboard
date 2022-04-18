@@ -82,7 +82,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 					</div>
 				}
 			>
-				<Editor logsArr={deployLogs} />
+				<Editor logs={deployLogs} />
 				{/* <Editor
 					height="90vh"
 					theme="customTheme"
