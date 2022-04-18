@@ -16,10 +16,10 @@ const Editor = ({ logsArr }) => {
 				return (
 					<div className={`log-line ${bgClass}`}>
 						<div className="log-component width">
-							{new Date(log.timestamp).toLocaleTimeString()}&nbsp;
+							{log.level}&nbsp;
 						</div>
 						<div className="log-component width">
-							{log.level}&nbsp;
+							{new Date(log.timestamp).toLocaleTimeString()}&nbsp;
 						</div>
 						<div className="log-component">{log.text}</div>
 					</div>

@@ -92,7 +92,7 @@ export const popoverContent = css`
 
 export const editorContainer = css`
 	overflow: scroll;
-
+	margin-top: 10px;
 	.log-line {
 		display: flex;
 		line-height: 30px;
