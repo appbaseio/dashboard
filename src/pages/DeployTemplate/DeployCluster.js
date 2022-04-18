@@ -65,7 +65,6 @@ const DeployCluster = ({
 				fetch(`${url}_pipeline`, obj)
 					.then(response => response.json())
 					.then(json => {
-						console.log('Success', json);
 						if (json?.error) {
 							setIconType('close-circle');
 							if (!json.error?.message)
