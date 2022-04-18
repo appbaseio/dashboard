@@ -76,9 +76,10 @@ export const deployClusterStyles = css`
 		justify-content: space-between;
 	}
 
-	// .minimap {
-	// 	display: none;
-	// }
+	.ant-card-body {
+		background: #fafafa;
+		padding: 0px;
+	}
 `;
 
 export const popoverContent = css`
@@ -87,4 +88,38 @@ export const popoverContent = css`
 	word-wrap: break-word;
 	max-width: 300px;
 	max-height: 300px;
+`;
+
+export const editorContainer = css`
+	overflow: scroll;
+
+	.log-line {
+		display: flex;
+		line-height: 30px;
+		&: hover {
+			background-color: #eaeaea;
+		}
+	}
+
+	.log-component {
+		margin-left: 15px;
+	}
+
+	.width {
+		width: 70px;
+	}
+
+	.bg-warning {
+		background-color: #ffefcf;
+		&: hover {
+			background-color: #ffdf9e;
+		}
+	}
+
+	.bg-error {
+		background-color: #f7d4d6;
+		&: hover {
+			background-color: #efa9ac;
+		}
+	}
 `;

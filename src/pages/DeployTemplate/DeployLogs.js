@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Editor, { useMonaco } from '@monaco-editor/react';
+import { useMonaco } from '@monaco-editor/react';
 import { Button, Card } from 'antd';
+import Editor from './Editor';
 import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 
 const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
-	const [deployLogs, setDeployLogs] = useState('');
+	const [deployLogs, setDeployLogs] = useState([]);
 	const [timeTaken, setTimeTaken] = useState(0);
 	const monaco = useMonaco();
 
@@ -42,16 +43,17 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 			.then(res => res)
 			.then(json => {
 				setTimeTaken(json.time);
-				json.data.forEach((element, idx) => {
-					str += `${new Date(
-						element.timestamp,
-					).toLocaleTimeString()}  ${element.level}  ${
-						element.text
-					} \n`;
-					if (idx === json.data.length - 1) {
-						setDeployLogs(str);
-					}
-				});
+				setDeployLogs(json.data);
+				// json.data.forEach((element, idx) => {
+				// 	str += `${new Date(
+				// 		element.timestamp,
+				// 	).toLocaleTimeString()}  ${element.level}  ${
+				// 		element.text
+				// 	} \n`;
+				// 	if (idx === json.data.length - 1) {
+				// 		setDeployLogs(str);
+				// 	}
+				// });
 			})
 			.catch(err => {
 				console.error(err);
@@ -80,7 +82,8 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 					</div>
 				}
 			>
-				<Editor
+				<Editor logsArr={deployLogs} />
+				{/* <Editor
 					height="90vh"
 					theme="customTheme"
 					defaultLanguage="json"
@@ -93,7 +96,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 						readOnly: true,
 					}}
 					value={deployLogs}
-				/>
+				/> */}
 			</Card>
 		</div>
 	);
