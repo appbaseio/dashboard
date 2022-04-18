@@ -7,13 +7,11 @@ import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 
 const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
+	const [deployLogs, setDeployLogs] = useState('');
 	const monaco = useMonaco();
 
 	useEffect(() => {
-		getDeployedCluster('whining-businessperson-ipeehco')
-			.then(async res => await res.text())
-			.then(res => console.log(res))
-			.catch(err => console.error(err));
+		getLogs();
 	}, []);
 
 	useEffect(() => {
@@ -39,17 +37,27 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 
 	const getLogs = () => {
 		let str = '';
-		const convertedData = String(localStorage.getItem('logs'))
-			.replace(/\n/gi, ',')
-			.slice(0, -1);
-
-		const jsonData = JSON.parse(`[${convertedData}]`);
-		jsonData.forEach(element => {
-			str += `${new Date(element.timestamp).toLocaleTimeString()}  ${
-				element.level
-			}  ${element.text} \n`;
-		});
-		return str;
+		const time1 = performance.now();
+		getDeployedCluster('whining-businessperson-ipeehco')
+			.then(res => res)
+			.then(json => {
+				json.forEach((element, idx) => {
+					str += `${new Date(
+						element.timestamp,
+					).toLocaleTimeString()}  ${element.level}  ${
+						element.text
+					} \n`;
+					if (idx === json.length - 1) {
+						setDeployLogs(str);
+					}
+				});
+			})
+			.catch(err => {
+				console.error(err);
+				return JSON.stringify(err, null, 4) !== '{}'
+					? setDeployLogs(JSON.stringify(json, null, 4))
+					: setDeployLogs(`Error: Failed to fetch logs`);
+			});
 	};
 
 	return (
@@ -83,7 +91,8 @@ const DeployLogs = ({ clusterId, history, showClusterDetails }) => {
 						lineHeight: 30,
 						readOnly: true,
 					}}
-					defaultValue={getLogs()}
+					// defaultValue={deployLogs}
+					value={deployLogs}
 				/>
 			</Card>
 		</div>

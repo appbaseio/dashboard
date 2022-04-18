@@ -628,17 +628,18 @@ export function getDeployedCluster(clusterId) {
 				'Content-Type': 'application/x-ndjson',
 			},
 		})
+			.then(async res => await res.text())
 			.then(async res => {
-				localStorage.setItem('logs', await res.text());
-				console.log(
-					'fetch ====res1===',
-					await res.json(),
-					// JSON.parse(res),
-				);
+				const convertedData = String(res)
+					.replace(/\n/gi, ',')
+					.slice(0, -1);
+
+				const jsonData = await JSON.parse(`[${convertedData}]`);
+				resolve(jsonData);
 			})
-			.then(res => console.log(res, '====='))
 			.catch(e => {
-				console.error('Failed to fetch deploy logs', e);
+				console.error('Error: Failed to fetch deploy logs', e);
+				reject(e);
 			});
 	});
 }
