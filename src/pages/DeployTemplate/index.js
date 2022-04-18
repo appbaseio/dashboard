@@ -14,60 +14,80 @@ const yaml = require('js-yaml');
 const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
+	const [templateUrl, setTemplateUrl] = useState('');
 	const [response, setResponse] = useState('');
 	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
-	const [activeKey, setActiveKey] = useState(
-		localStorage.getItem('currentStep') || '1',
-	);
+	const [activeKey, setActiveKey] = useState('1');
 	const [err, setErr] = useState('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [tabsValidated, setTabsValidated] = useState(
-		JSON.parse(localStorage.getItem('validatedTabs')) || {
-			tab1: false,
-			tab2: false,
-			tab3: false,
-		},
-	);
+	const [tabsValidated, setTabsValidated] = useState({
+		tab1: false,
+		tab2: false,
+		tab3: false,
+	});
 	const [clusterId, setClusterId] = useState('');
 
 	useEffect(() => {
 		if (location.search) {
-			const dataUrl = location.search.split('=')[1];
-			fetch(dataUrl)
-				.then(res => res.text())
-				.then(resp => {
-					let json = yaml.load(resp);
-					setInitialFormData(json);
-					const transformedFormData = {
-						...json,
-						global_vars: [...ValidateObj(json?.global_vars || [])],
-					};
-					if (!localStorage.getItem(dataUrl)) {
-						setFormData(transformedFormData);
-						localStorage.setItem(
-							dataUrl,
-							JSON.stringify(transformedFormData),
-						);
-					} else {
-						setFormData(JSON.parse(localStorage.getItem(dataUrl)));
-					}
-					setErr('');
-					setIsLoading(false);
-				})
-				.catch(e => {
-					setIsLoading(false);
-					console.error(e);
-					if (e.stack) {
-						setErr(e.message);
-					} else {
-						setErr(
-							'This repository may not exist or is set to private.',
-						);
-					}
-				});
+			formInit();
 		}
-	}, []);
+	}, [location]);
+
+	const formInit = () => {
+		const dataUrl = location.search.split('=')[1];
+		setTemplateUrl(dataUrl);
+		getFormData(dataUrl);
+	};
+
+	const getFormData = dataUrl => {
+		fetch(dataUrl)
+			.then(res => res.text())
+			.then(resp => {
+				let json = yaml.load(resp);
+				setInitialFormData(json);
+				const transformedFormData = {
+					...json,
+					global_vars: [...ValidateObj(json?.global_vars || [])],
+				};
+				if (!localStorage.getItem(dataUrl)) {
+					setFormData(transformedFormData);
+					localStorage.setItem(
+						dataUrl,
+						JSON.stringify({
+							formData: transformedFormData,
+							currentStep: '1',
+							validatedTabs: {
+								tab1: false,
+								tab2: false,
+								tab3: false,
+							},
+						}),
+					);
+				} else {
+					const deployTemplateData = JSON.parse(
+						localStorage.getItem(dataUrl),
+					);
+					setFormData(deployTemplateData.formData);
+					setActiveKey(deployTemplateData.currentStep);
+					setTabsValidated(deployTemplateData.validatedTabs);
+					setIsLoading(false);
+				}
+				setErr('');
+				setIsLoading(false);
+			})
+			.catch(e => {
+				setIsLoading(false);
+				console.error(e);
+				if (e.stack) {
+					setErr(e.message);
+				} else {
+					setErr(
+						'This repository may not exist or is set to private.',
+					);
+				}
+			});
+	};
 
 	const transformValidateObj = (
 		pipelineVariable,
@@ -141,7 +161,6 @@ const DeployTemplate = ({ location }) => {
 	};
 
 	const handleFormChange = (key, val) => {
-		const dataUrl = location.search.split('=')[1];
 		const newFormData = { ...initialFormData };
 		newFormData?.global_vars.forEach(data => {
 			if (data.key === key) {
@@ -164,12 +183,35 @@ const DeployTemplate = ({ location }) => {
 			global_vars: [...ValidateObj(newFormData?.global_vars || [])],
 		};
 		setFormData(transformedFormData);
-		localStorage.setItem(dataUrl, JSON.stringify(transformedFormData));
+		localStorage.setItem(templateUrl, JSON.stringify(transformedFormData));
 	};
 
 	const handleTabChange = tab => {
 		setActiveKey(tab);
-		localStorage.setItem('currentStep', tab);
+		const newDeployTemplateData = {
+			...JSON.parse(localStorage.getItem(templateUrl)),
+		};
+		newDeployTemplateData.currentStep = tab;
+		localStorage.setItem(
+			templateUrl,
+			JSON.stringify(newDeployTemplateData),
+		);
+	};
+
+	const handleValidatedTabs = val => {
+		const newTabsValidated = {
+			...tabsValidated,
+			tab1: val,
+		};
+		setTabsValidated(newTabsValidated);
+		const newDeployTemplateData = {
+			...JSON.parse(localStorage.getItem(templateUrl)),
+		};
+		newDeployTemplateData.validatedTabs = validatedTabs;
+		localStorage.setItem(
+			templateUrl,
+			JSON.stringify(newDeployTemplateData),
+		);
 	};
 
 	if (isLoading) return <Loader />;
@@ -232,15 +274,7 @@ const DeployTemplate = ({ location }) => {
 									handleFormChange={handleFormChange}
 									tabsValidated={tabsValidated}
 									setTabsValidated={val => {
-										const newTabsValidated = {
-											...tabsValidated,
-											tab1: val,
-										};
-										setTabsValidated(newTabsValidated);
-										localStorage.setItem(
-											'validatedTabs',
-											JSON.stringify(newTabsValidated),
-										);
+										handleValidatedTabs(val);
 									}}
 								/>
 							</TabPane>
@@ -255,21 +289,13 @@ const DeployTemplate = ({ location }) => {
 									setClusterId={setClusterId}
 									setActiveKey={handleTabChange}
 									setTabsValidated={val => {
-										const newTabsValidated = {
-											...tabsValidated,
-											tab2: val,
-										};
-										setTabsValidated(newTabsValidated);
-										localStorage.setItem(
-											'validatedTabs',
-											JSON.stringify(newTabsValidated),
-										);
+										handleValidatedTabs(val);
 									}}
 								/>
 							</TabPane>
 							<TabPane
 								tab="Cluster Deploy Logs"
-								// disabled={!tabsValidated.tab2}
+								disabled={!tabsValidated.tab2}
 								key="3"
 							>
 								<DeployLogs clusterId={clusterId} />
