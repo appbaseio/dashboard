@@ -329,26 +329,12 @@ class NewCluster extends Component {
 			const pingTime = data.slice(-3).reduce((acc, val) => acc + val);
 			this.setConfig('pingTime', Math.round(pingTime / 3));
 		});
-
-		// for (let i = 0; i < 4; i++) {
-		// 	this.checkResponseTime(url).then(res => {
-		// 		if (i !== 0) {
-		// 			console.log(res, '===', i);
-		// 			pingTime += res;
-		// 		}
-		// 		if (i === 3) {
-		// 			console.log(pingTime, pingTime / 3);
-		// 			this.setConfig('pingTime', Math.round(pingTime / 3));
-		// 		}
-		// 	});
-		// }
 	};
 
 	checkResponseTime = async url => {
-		let time1 = performance.now();
+		const time1 = performance.now();
 		await fetch(url, { method: 'GET', mode: 'no-cors' });
-		let time2 = performance.now();
-		return time2 - time1;
+		return performance.now() - time1;
 	};
 
 	getDefaultLocation = async () => {
