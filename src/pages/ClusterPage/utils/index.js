@@ -632,7 +632,7 @@ export function getDeployedCluster(clusterId) {
 			.then(async res => {
 				let time2 = new Date().getTime();
 				const data = await res.text();
-				return { data: data, time: time2 - time1 };
+				return { data: data, time: (time2 - time1) / 1000 };
 			})
 			.then(async res => {
 				const convertedData = String(res.data)
