@@ -53,9 +53,9 @@ const esVersions = ['7.17.2', '8.1.2'];
 
 const openSearchVersions = ['1.3.0'];
 
-export const V7_ARC = '7.59.0-cluster';
-export const V6_ARC = '7.59.0-cluster';
-export const ARC_BYOC = '7.59.0-byoc';
+export const V7_ARC = '8.0.0-cluster';
+export const V6_ARC = '8.0.0-cluster';
+export const ARC_BYOC = '8.0.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
