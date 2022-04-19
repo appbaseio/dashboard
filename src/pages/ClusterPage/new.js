@@ -313,22 +313,35 @@ class NewCluster extends Component {
 	getPingTime = region => {
 		const { provider } = this.state;
 		let url = '';
-		let pingTime = 0;
-
 		if (provider === 'gke') {
-			url = `https://${region}-5tkroniexa-lz.a.run.app/api/ping`;
+			url = `https://${region}-ezn5kimndq-ts.a.run.app/ping`;
 		} else {
-			url = `https://dynamodb.${region}.amazonaws.com/ping?x=1299vqyiz19c0`;
+			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		for (let i = 0; i < 6; i++) {
-			this.checkResponseTime(url).then(res => {
-				if (i > 2) pingTime += res;
-				if (i === 5) {
-					this.setConfig('pingTime', Math.round(pingTime / 3));
-				}
-			});
-		}
+		const arr = [
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+		];
+		Promise.all(arr).then((data, idx) => {
+			const pingTime = data.slice(-3).reduce((acc, val) => acc + val);
+			this.setConfig('pingTime', Math.round(pingTime / 3));
+		});
+
+		// for (let i = 0; i < 4; i++) {
+		// 	this.checkResponseTime(url).then(res => {
+		// 		if (i !== 0) {
+		// 			console.log(res, '===', i);
+		// 			pingTime += res;
+		// 		}
+		// 		if (i === 3) {
+		// 			console.log(pingTime, pingTime / 3);
+		// 			this.setConfig('pingTime', Math.round(pingTime / 3));
+		// 		}
+		// 	});
+		// }
 	};
 
 	checkResponseTime = async url => {
