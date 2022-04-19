@@ -313,8 +313,8 @@ class ClusterPage extends Component {
 			: {};
 		return (
 			<li key={cluster.id} className="cluster-card compact">
-				<h3>
-					<div className="header-container">
+				<h3 className="header-container">
+					<div>
 						<div>
 							{cluster.name}
 							{cluster.status === 'failed' &&
@@ -356,14 +356,6 @@ class ClusterPage extends Component {
 								</Button>
 							) : null}
 						</div>
-						<div
-							className="view-logs-button"
-							onClick={() =>
-								history.push(`/clusters/${cluster.id}/logs`)
-							}
-						>
-							View deploy logs
-						</div>
 					</div>
 					{cluster.status === 'failed' &&
 						getHoursDiff(cluster.created_at) < 72 && (
@@ -400,6 +392,14 @@ class ClusterPage extends Component {
 							</span>
 						</Tooltip>
 					) : null}
+					<div
+						className="view-logs-button"
+						onClick={() =>
+							history.push(`/clusters/${cluster.id}/logs`)
+						}
+					>
+						View deploy logs
+					</div>
 				</h3>
 
 				<div className="info-row">

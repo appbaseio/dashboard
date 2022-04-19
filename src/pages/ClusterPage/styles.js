@@ -320,7 +320,6 @@ const clustersList = css`
 	list-style: none;
 	.header-container {
 		display: flex;
-		width: 100%;
 		justify-content: space-between;
 	}
 	.view-logs-button {
@@ -328,7 +327,7 @@ const clustersList = css`
 		color: #18a0fb;
 		font-weight: lighter;
 		font-size: 15px;
-		margin-right: 5px;
+		margin-left: 10px;
 	}
 	.cluster-card {
 		padding: 30px 25px;
