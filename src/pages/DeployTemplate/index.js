@@ -315,7 +315,7 @@ const DeployTemplate = ({ location }) => {
 								/>
 							</TabPane>
 							<TabPane
-								tab="Cluster Deploy Logs"
+								tab="3 Cluster Deploy Logs"
 								disabled={!tabsValidated.tab2}
 								key="3"
 							>
