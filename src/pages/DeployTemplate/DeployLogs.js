@@ -18,6 +18,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 
 	const getLogs = () => {
 		let str = '';
+		setDeployLogs([]);
 		const newDeployTemplateData = {
 			...JSON.parse(localStorage.getItem(dataUrl)),
 		};
