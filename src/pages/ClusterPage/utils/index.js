@@ -631,8 +631,15 @@ export function getDeployedCluster(clusterId) {
 		})
 			.then(async res => {
 				let time2 = new Date().getTime();
-				const data = await res.text();
-				return { data: data, time: (time2 - time1) / 1000 };
+				try {
+					const data = await res.text();
+					return { data: data, time: (time2 - time1) / 1000 };
+				} catch (err) {
+					if (res.status === 200 && err) {
+						reject({ retryApi: true });
+						// return { data: getDeployedCluster(clusterId), time: (time2 - time1) / 1000 };
+					}
+				}
 			})
 			.then(async res => {
 				const convertedData = String(res.data)

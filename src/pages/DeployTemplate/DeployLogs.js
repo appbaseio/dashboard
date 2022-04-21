@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Card } from 'antd';
+import { Button, Card, Skeleton } from 'antd';
 import Editor from './Editor';
 import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
@@ -10,10 +10,11 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 	const [deployLogs, setDeployLogs] = useState([]);
 	const [timeTaken, setTimeTaken] = useState(0);
 	const [isError, setIsError] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		getLogs();
-	}, []);
+	}, [clusterId]);
 
 	const getLogs = () => {
 		let str = '';
@@ -25,13 +26,19 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 			.then(json => {
 				setTimeTaken(json.time);
 				setDeployLogs(json.data);
+				setIsLoading(false);
 			})
 			.catch(err => {
-				console.error(err);
-				setIsError(true);
-				return JSON.stringify(err, null, 4) !== '{}'
-					? setDeployLogs(JSON.stringify(json, null, 4))
-					: setDeployLogs(`Error: Failed to fetch logs`);
+				if (err?.retryApi) {
+					setIsLoading(true);
+					return getLogs();
+				} else {
+					setIsError(true);
+					setIsLoading(false);
+					return JSON.stringify(err, null, 4) !== '{}'
+						? setDeployLogs(JSON.stringify(json, null, 4))
+						: setDeployLogs(`Error: Failed to fetch logs`);
+				}
 			});
 	};
 
@@ -58,7 +65,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 					</div>
 				}
 			>
-				<Editor logs={deployLogs} />
+				{isLoading ? <Skeleton active /> : <Editor logs={deployLogs} />}
 			</Card>
 		</div>
 	);
