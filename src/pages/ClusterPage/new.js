@@ -210,7 +210,7 @@ export const machineMarks = {
 	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
 };
 
-const regionsKeyMap = {
+export const regionsKeyMap = {
 	asia: 'asia',
 	eu: 'europe',
 	us: 'america',

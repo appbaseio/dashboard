@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
-
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
-
-import { clusterContainer, card } from './styles';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
+import { ARC_BYOC } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -22,9 +21,10 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 } from './utils';
+import { getDistance } from './utils';
+import { regionsKeyMap } from './new';
 import { regions, regionsByPlan } from './utils/regions';
-import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC } from './new';
+import { clusterContainer, card } from './styles';
 
 const { TabPane } = Tabs;
 
@@ -106,14 +106,21 @@ class NewMyCluster extends Component {
 			clusterVersion: '',
 			verifiedCluster: false,
 			isStripeCheckoutOpen: false,
+			activeKey: 'america',
+			pingTime: 0,
 		};
 	}
 
 	componentDidMount() {
+		const { region } = this.state;
+		this.getDefaultLocation();
+		this.getPingTime(region);
+
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
 		});
+
 		getClusters()
 			.then(clusters => {
 				const activeClusters = clusters.filter(
@@ -263,7 +270,7 @@ class NewMyCluster extends Component {
 	};
 
 	renderRegions = () => {
-		const { pricing_plan: pricingPlan } = this.state;
+		const { pricing_plan: pricingPlan, activeKey, pingTime } = this.state;
 		const provider = 'gke';
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
@@ -280,36 +287,52 @@ class NewMyCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
-				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions
-					? !allowedRegions.includes(region)
-					: false;
-				return (
-					// eslint-disable-next-line
-					<li
-						key={region}
-						onClick={() => this.setConfig('region', region)}
-						className={
+		const regionsToRender = data => (
+			<>
+				<div className="region-list">
+					{data.map(region => {
+						const regionValue = regions[provider][region];
+						const isDisabled = allowedRegions
+							? !allowedRegions.includes(region)
+							: false;
+						return (
 							// eslint-disable-next-line
-							isDisabled
-								? 'disabled'
-								: this.state.region === region
-								? 'active'
-								: ''
-						}
-					>
-						{regionValue.flag && (
-							<img
-								src={`/static/images/flags/${regionValue.flag}`}
-								alt={regionValue.name}
-							/>
-						)}
-						<span>{regionValue.name}</span>
-					</li>
-				);
-			});
+							<li
+								key={region}
+								onClick={() => {
+									this.setConfig('region', region);
+									this.setConfig('pingTime', '');
+									this.getPingTime(region);
+								}}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
+						);
+					})}
+				</div>
+				{pingTime ? (
+					<div className="ping-time-container">
+						Expected ping latency for{' '}
+						{regions[provider][this.state.region].name} (
+						{this.state.region}) is: {pingTime}ms
+					</div>
+				) : null}
+			</>
+		);
 
 		const style = { width: '100%' };
 		if (provider === 'azure') {
@@ -321,24 +344,29 @@ class NewMyCluster extends Component {
 		}
 
 		return (
-			<Tabs size="large" style={style}>
+			<Tabs
+				size="large"
+				style={style}
+				activeKey={activeKey}
+				onChange={key => this.setActiveKey(key)}
+			>
 				<TabPane tab="America" key="america">
-					<ul className="region-list">
+					<ul className="region-list-container">
 						{regionsToRender(usRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">
+					<ul className="region-list-container">
 						{regionsToRender(asiaRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">
+					<ul className="region-list-container">
 						{regionsToRender(euRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">
+					<ul className="region-list-container">
 						{regionsToRender(otherRegions)}
 					</ul>
 				</TabPane>
@@ -376,6 +404,81 @@ class NewMyCluster extends Component {
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
+	getPingTime = region => {
+		const provider = 'gke';
+		let url = '';
+		if (provider === 'gke') {
+			url = `https://${region}-ezn5kimndq-ts.a.run.app/ping`;
+		} else {
+			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
+		}
+
+		const arr = [
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+			this.checkResponseTime(url),
+		];
+		Promise.all(arr).then((data, idx) => {
+			const pingTime = data.slice(-3).reduce((acc, val) => acc + val);
+			this.setConfig('pingTime', Math.round(pingTime / 3));
+		});
+	};
+
+	checkResponseTime = async url => {
+		const time1 = performance.now();
+		await fetch(url, { method: 'GET', mode: 'no-cors' });
+		return performance.now() - time1;
+	};
+
+	getDefaultLocation = async () => {
+		const provider = 'gke';
+		fetch(`https://geolocation-db.com/json/`)
+			.then(res => res.json())
+			.then(json => {
+				if (json.latitude && json.longitude) {
+					const providerRegions = Object.values(regions[provider]);
+					let minDist = {
+						...providerRegions[0],
+						dist: Number.MAX_SAFE_INTEGER,
+					};
+					for (const [key, value] of Object.entries(
+						regions[provider],
+					)) {
+						const distance = getDistance(
+							json.latitude,
+							json.longitude,
+							value.lat,
+							value.lon,
+						);
+						if (minDist.dist > distance) {
+							minDist = {
+								dist: distance,
+								name: key,
+								activeKey: regionsKeyMap[value.continent],
+							};
+						}
+					}
+					this.setState({
+						region: minDist.name,
+						activeKey: minDist.activeKey,
+					});
+				} else {
+					this.setState({
+						region: 'us-central1',
+						activeKey: 'america',
+					});
+				}
+			})
+			.catch(err => console.error(err));
+	};
+
+	setActiveKey = key => {
+		this.setState({
+			activeKey: key,
+		});
+	};
+
 	render() {
 		const {
 			isLoading,
@@ -387,6 +490,7 @@ class NewMyCluster extends Component {
 			clusters,
 			changed,
 			clusterName,
+			activeKey,
 		} = this.state;
 		const { isUsingClusterTrial } = this.props;
 
