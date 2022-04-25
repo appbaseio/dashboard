@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 const DeployCluster = ({
 	formData,
 	location,
+	history,
 	setActiveKey,
 	setTabsValidated,
 	setClusterId,
@@ -49,7 +50,9 @@ const DeployCluster = ({
 				formData.append(
 					'pipeline',
 					JSON.stringify({
-						content: newDeployTemplateData.formData || '{}',
+						content:
+							JSON.stringify(newDeployTemplateData.formData) ||
+							'{}',
 						extension: 'json',
 					}),
 				);
@@ -238,6 +241,7 @@ DeployCluster.defaultProps = {
 DeployCluster.propTypes = {
 	formData: PropTypes.object,
 	location: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 	setClusterId: PropTypes.func,
 };
 
