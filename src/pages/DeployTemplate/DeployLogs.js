@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Card, Skeleton } from 'antd';
+import { Button, Card, Skeleton, Spin } from 'antd';
 import Editor from './Editor';
 import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
@@ -50,7 +50,17 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 					<div className="card-title-container">
 						{!isError ? (
 							<div>
-								Time Taken: {Math.round(timeTaken * 10) / 10}s{' '}
+								Time Taken:{' '}
+								{timeTaken
+									? Math.round(timeTaken * 10) / 10
+									: '- '}
+								s
+								{!timeTaken ? (
+									<Spin
+										size="small"
+										style={{ marginLeft: 10 }}
+									/>
+								) : null}
 							</div>
 						) : null}
 						{showClusterDetails ? (
