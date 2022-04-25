@@ -351,22 +351,22 @@ class NewMyCluster extends Component {
 				onChange={key => this.setActiveKey(key)}
 			>
 				<TabPane tab="America" key="america">
-					<ul className="region-list-container">
+					<ul className="regions-list-container">
 						{regionsToRender(usRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Asia" key="asia">
-					<ul className="region-list-container">
+					<ul className="regions-list-container">
 						{regionsToRender(asiaRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Europe" key="europe">
-					<ul className="region-list-container">
+					<ul className="regions-list-container">
 						{regionsToRender(euRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list-container">
+					<ul className="regions-list-container">
 						{regionsToRender(otherRegions)}
 					</ul>
 				</TabPane>
@@ -408,7 +408,7 @@ class NewMyCluster extends Component {
 		const provider = 'gke';
 		let url = '';
 		if (provider === 'gke') {
-			url = `https://${region}-ezn5kimndq-ts.a.run.app/ping`;
+			url = `https://${region}-ezn5kimndq-el.a.run.app/ping`;
 		} else {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
@@ -480,6 +480,7 @@ class NewMyCluster extends Component {
 	};
 
 	render() {
+		console.log('===');
 		const {
 			isLoading,
 			isInvalidURL,

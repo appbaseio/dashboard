@@ -69,6 +69,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '40.0620915',
 			lon: '-87.6392353',
+			code2: 'ew',
 		},
 		'europe-west2': {
 			name: 'London',
@@ -76,6 +77,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '51.5073219',
 			lon: '-0.1276474',
+			code2: 'nw',
 		},
 		'europe-west4': {
 			name: 'Netherlands',
@@ -83,6 +85,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '36.2993736',
 			lon: '-89.7510062',
+			code2: 'ez',
 		},
 		'europe-west6': {
 			name: 'Zurich',
@@ -90,6 +93,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '47.3744489',
 			lon: '8.5410422',
+			code2: 'oa',
 		},
 		'europe-west3': {
 			name: 'FrankFurt',
@@ -97,6 +101,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '50.1106444',
 			lon: '8.6820917',
+			code2: 'ey',
 		},
 		'europe-north1': {
 			name: 'Finland',
@@ -104,6 +109,7 @@ export const regions = {
 			continent: 'eu',
 			lat: '40.3843304',
 			lon: '-75.4203885',
+			code2: 'lz',
 		},
 		'us-central1': {
 			name: 'Iowa',
@@ -111,6 +117,7 @@ export const regions = {
 			continent: 'us',
 			lat: '30.2368772',
 			lon: '-93.0137569',
+			code2: 'uc',
 		},
 		'us-east1': {
 			name: 'South Carolina',
@@ -118,6 +125,7 @@ export const regions = {
 			continent: 'us',
 			lat: '18.3794415',
 			lon: '-65.957695',
+			code2: 'ue',
 		},
 
 		'us-east4': {
@@ -126,6 +134,7 @@ export const regions = {
 			continent: 'us',
 			lat: '36.8529841',
 			lon: '-75.9774183',
+			code2: 'uk',
 		},
 		'us-west1': {
 			name: 'Oregon',
@@ -133,6 +142,7 @@ export const regions = {
 			continent: 'us',
 			lat: '42.0147513',
 			lon: '-89.3323279',
+			code2: 'uw',
 		},
 		'northamerica-northeast1': {
 			name: 'Montreal',
@@ -140,12 +150,14 @@ export const regions = {
 			continent: 'us',
 			lat: '45.5031824',
 			lon: '-73.5698065',
+			code2: 'nn',
 		},
 		'australia-southeast1': {
 			name: 'Sydney',
 			flag: 'australia.png',
 			lat: '-33.768528',
 			lon: '150.9568559523945',
+			code2: 'ts',
 		},
 		'asia-southeast1': {
 			name: 'Singapore',
@@ -153,6 +165,7 @@ export const regions = {
 			continent: 'asia',
 			lat: '1.2904753',
 			lon: ' 103.8520359',
+			code2: 'km',
 		},
 		'asia-east1': {
 			name: 'Taiwan',
@@ -160,6 +173,7 @@ export const regions = {
 			continent: 'asia',
 			lat: '23.59829785',
 			lon: '120.83536313817521',
+			code2: 'de',
 		},
 		'asia-south1': {
 			name: 'Mumbai',
@@ -167,6 +181,7 @@ export const regions = {
 			continent: 'asia',
 			lat: '19.0759899',
 			lon: '72.8773928',
+			code2: 'el',
 		},
 		'asia-northeast1': {
 			name: 'Tokyo',
@@ -174,6 +189,7 @@ export const regions = {
 			continent: 'asia',
 			lat: '35.6828387',
 			lon: '139.7594549',
+			code2: 'an',
 		},
 	},
 	aws: {

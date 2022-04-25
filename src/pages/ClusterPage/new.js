@@ -272,7 +272,6 @@ class NewCluster extends Component {
 	componentDidMount() {
 		const { region } = this.state;
 		this.getDefaultLocation();
-		this.getPingTime(region);
 
 		const slug = generateSlug(2);
 		this.setState({
@@ -314,7 +313,7 @@ class NewCluster extends Component {
 		const { provider } = this.state;
 		let url = '';
 		if (provider === 'gke') {
-			url = `https://${region}-ezn5kimndq-ts.a.run.app/ping`;
+			url = `https://${region}-ezn5kimndq-${regions[provider][region].code2}.a.run.app/ping`;
 		} else {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
@@ -366,6 +365,8 @@ class NewCluster extends Component {
 							};
 						}
 					}
+					this.getPingTime(minDist.name);
+
 					this.setState({
 						region: minDist.name,
 						activeKey: minDist.activeKey,
