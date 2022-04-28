@@ -328,7 +328,7 @@ class NewMyCluster extends Component {
 					<div className="ping-time-container">
 						Expected ping latency for{' '}
 						{regions[provider][this.state.region].name} (
-						{this.state.region}) is: {pingTime}ms
+						{this.state.region}) from your location is: {pingTime}ms
 					</div>
 				) : null}
 			</>
