@@ -408,7 +408,7 @@ class NewMyCluster extends Component {
 		const provider = 'gke';
 		let url = '';
 		if (provider === 'gke') {
-			url = `https://${region}-ezn5kimndq-el.a.run.app/ping`;
+			url = `https://${region}-ezn5kimndq-${regions[provider][region].code2}.a.run.app/ping`;
 		} else {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
