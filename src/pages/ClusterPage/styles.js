@@ -59,6 +59,8 @@ const clusterContainer = css`
 	}
 	.ping-time-container {
 		margin-top: 30px;
+		display: flex;
+		align-items: center;
 	}
 	.region-list {
 		display: grid;

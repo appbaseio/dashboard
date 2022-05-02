@@ -318,16 +318,28 @@ class NewCluster extends Component {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		const arr = [
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-		];
-		Promise.all(arr).then((data, idx) => {
-			const pingTime = data.slice(-3).reduce((acc, val) => acc + val);
-			this.setConfig('pingTime', Math.round(pingTime / 3));
-		});
+		var counter = 1,
+			total = 0;
+		var interval = setInterval(() => {
+			if (counter > 15) {
+				this.setState({
+					pingTime: Math.round(total / 3),
+				});
+				clearInterval(interval);
+			} else {
+				this.checkResponseTime(url)
+					.then(res => {
+						if (counter > 12) {
+							total += res;
+						}
+						counter++;
+					})
+					.catch(err => {
+						counter++;
+						console.error(err);
+					});
+			}
+		}, 2000);
 	};
 
 	checkResponseTime = async url => {
@@ -660,13 +672,21 @@ class NewCluster extends Component {
 						);
 					})}
 				</div>
-				{pingTime ? (
-					<div className="ping-time-container">
-						Expected ping latency for{' '}
-						{regions[provider][this.state.region].name} (
-						{this.state.region}) is: {pingTime}ms
-					</div>
-				) : null}
+				<div className="ping-time-container">
+					Expected ping latency for{' '}
+					{regions[provider][this.state.region].name} (
+					{this.state.region}) is:&nbsp;
+					{pingTime ? (
+						<div>{pingTime}ms </div>
+					) : (
+						<img
+							src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
+							alt="hotspot_pulse-1.gif"
+							width="35"
+							height="35"
+						/>
+					)}
+				</div>
 			</>
 		);
 
