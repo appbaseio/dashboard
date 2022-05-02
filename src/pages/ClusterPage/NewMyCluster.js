@@ -328,7 +328,7 @@ class NewMyCluster extends Component {
 					<div className="ping-time-container">
 						Expected ping latency for{' '}
 						{regions[provider][this.state.region].name} (
-						{this.state.region}) is: {pingTime}ms
+						{this.state.region}) from your location is: {pingTime}ms
 					</div>
 				) : null}
 			</>
@@ -413,16 +413,28 @@ class NewMyCluster extends Component {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		const arr = [
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-			this.checkResponseTime(url),
-		];
-		Promise.all(arr).then((data, idx) => {
-			const pingTime = data.slice(-3).reduce((acc, val) => acc + val);
-			this.setConfig('pingTime', Math.round(pingTime / 3));
-		});
+		var counter = 1,
+			total = 0;
+		var interval = setInterval(() => {
+			if (counter > 15) {
+				this.setState({
+					pingTime: Math.round(total / 3),
+				});
+				clearInterval(interval);
+			} else {
+				this.checkResponseTime(url)
+					.then(res => {
+						if (counter > 12) {
+							total += res;
+						}
+						counter++;
+					})
+					.catch(err => {
+						counter++;
+						console.error(err);
+					});
+			}
+		}, 2000);
 	};
 
 	checkResponseTime = async url => {
