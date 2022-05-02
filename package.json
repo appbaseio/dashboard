@@ -79,6 +79,7 @@
 		"antd": "^3.9.2",
 		"appbase-js": "^4.0.1-beta",
 		"brace": "^0.11.1",
+		"can-ndjson-stream": "^1.0.2",
 		"codesandbox": "1.2.16",
 		"d3-scale": "^2.1.2",
 		"dompurify": "^2.3.6",

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Card, Skeleton, Spin } from 'antd';
+import ndjsonStream from 'can-ndjson-stream';
 import Editor from './Editor';
-import { getDeployedCluster } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
+import { ACC_API } from '../../batteries/utils';
 
 const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 	const [deployLogs, setDeployLogs] = useState([]);
@@ -16,31 +17,41 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 		getLogs();
 	}, [clusterId]);
 
-	const getLogs = () => {
-		let str = '';
+	const getLogs = async () => {
+		const url = `${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`;
+		let time1 = new Date().getTime();
 		setDeployLogs([]);
-		const newDeployTemplateData = {
-			...JSON.parse(localStorage.getItem(dataUrl)),
-		};
-		getDeployedCluster(clusterId || newDeployTemplateData.clusterId)
-			.then(res => res)
-			.then(json => {
-				setTimeTaken(json.time);
-				setDeployLogs(json.data);
-				setIsLoading(false);
-			})
-			.catch(err => {
-				if (err?.retryApi) {
-					setIsLoading(true);
-					return getLogs();
-				} else {
-					setIsError(true);
+		try {
+			const response = await fetch(
+				`${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`,
+				{
+					method: 'GET',
+					credentials: 'include',
+					headers: {
+						'Content-Type': 'application/x-ndjson',
+					},
+				},
+			);
+			const ndjson = ndjsonStream(response.body);
+			const reader = ndjson.getReader();
+			let result = [];
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) {
+					let time2 = new Date().getTime();
+					setTimeTaken((time2 - time1) / 1000);
 					setIsLoading(false);
-					return JSON.stringify(err, null, 4) !== '{}'
-						? setDeployLogs(JSON.stringify(json, null, 4))
-						: setDeployLogs(`Error: Failed to fetch logs`);
+					break;
 				}
-			});
+				setIsLoading(false);
+				result = [...result, { ...value }];
+				setDeployLogs(result);
+			}
+			reader.releaseLock();
+		} catch (err) {
+			setIsLoading(false);
+			setIsError(true);
+		}
 	};
 
 	return (
