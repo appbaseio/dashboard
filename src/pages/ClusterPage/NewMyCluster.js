@@ -324,13 +324,21 @@ class NewMyCluster extends Component {
 						);
 					})}
 				</div>
-				{pingTime ? (
-					<div className="ping-time-container">
-						Expected ping latency for{' '}
-						{regions[provider][this.state.region].name} (
-						{this.state.region}) from your location is: {pingTime}ms
-					</div>
-				) : null}
+				<div className="ping-time-container">
+					Expected ping latency for{' '}
+					{regions[provider][this.state.region].name} (
+					{this.state.region}) from your location is:&nbsp;
+					{pingTime ? (
+						<div>{pingTime}ms </div>
+					) : (
+						<img
+							src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
+							alt="hotspot_pulse-1.gif"
+							width="35"
+							height="35"
+						/>
+					)}
+				</div>
 			</>
 		);
 
