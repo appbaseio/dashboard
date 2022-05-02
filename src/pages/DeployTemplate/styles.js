@@ -107,6 +107,7 @@ export const editorContainer = css`
 
 	.width {
 		width: 70px;
+		min-width: 70px;
 	}
 
 	.bg-warning {
