@@ -19,7 +19,6 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 
 	const getLogs = async () => {
 		const url = `${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`;
-		let time1 = new Date().getTime();
 		setDeployLogs([]);
 		try {
 			const response = await fetch(
@@ -38,13 +37,23 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 			while (true) {
 				const { done, value } = await reader.read();
 				if (done) {
-					let time2 = new Date().getTime();
-					setTimeTaken((time2 - time1) / 1000);
+					const time =
+						(new Date(
+							result[result.length - 1].timestamp,
+						).getTime() -
+							new Date(result[0].timestamp).getTime()) /
+						(1000 * 60);
+					setTimeTaken(Math.round(time * 10) / 10);
 					setIsLoading(false);
 					break;
 				}
 				setIsLoading(false);
 				result = [...result, { ...value }];
+				const time =
+					(new Date(result[result.length - 1].timestamp).getTime() -
+						new Date(result[0].timestamp).getTime()) /
+					(1000 * 60);
+				setTimeTaken(Math.round(time * 10) / 10);
 				setDeployLogs(result);
 			}
 			reader.releaseLock();
