@@ -12,6 +12,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 	const [timeTaken, setTimeTaken] = useState(0);
 	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [showSpinner, setShowSpinner] = useState(true);
 
 	useEffect(() => {
 		getLogs();
@@ -45,6 +46,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 						(1000 * 60);
 					setTimeTaken(Math.round(time * 10) / 10);
 					setIsLoading(false);
+					setShowSpinner(false);
 					break;
 				}
 				setIsLoading(false);
@@ -75,7 +77,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 									? Math.round(timeTaken * 10) / 10
 									: '- '}
 								s
-								{!timeTaken ? (
+								{showSpinner ? (
 									<Spin
 										size="small"
 										style={{ marginLeft: 10 }}
