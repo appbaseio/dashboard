@@ -264,7 +264,10 @@ class NewCluster extends Component {
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
 			activeKey: 'america',
-			pingTime: 0,
+			pingTimeStatus: {
+				time: 0,
+				isLoading: true,
+			},
 			...pluginState,
 		};
 	}
@@ -323,12 +326,21 @@ class NewCluster extends Component {
 		var interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({
-					pingTime: Math.round(total / 3),
+					pingTimeStatus: {
+						time: Math.round(total / 3),
+						isLoading: false,
+					},
 				});
 				clearInterval(interval);
 			} else {
 				this.checkResponseTime(url)
 					.then(res => {
+						this.setState({
+							pingTimeStatus: {
+								time: Math.round(res),
+								isLoading: true,
+							},
+						});
 						if (counter > 12) {
 							total += res;
 						}
@@ -618,7 +630,7 @@ class NewCluster extends Component {
 			provider,
 			pricing_plan: pricingPlan,
 			activeKey,
-			pingTime,
+			pingTimeStatus,
 		} = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
@@ -649,7 +661,10 @@ class NewCluster extends Component {
 								key={region}
 								onClick={() => {
 									this.setConfig('region', region);
-									this.setConfig('pingTime', '');
+									this.setConfig('pingTimeStatus', {
+										time: 0,
+										isLoading: true,
+									});
 									this.getPingTime(region);
 								}}
 								className={
@@ -673,19 +688,22 @@ class NewCluster extends Component {
 					})}
 				</div>
 				<div className="ping-time-container">
-					Expected ping latency for{' '}
-					{regions[provider][this.state.region].name} (
-					{this.state.region}) from your location is:&nbsp;
-					{pingTime ? (
-						<div>{pingTime}ms </div>
-					) : (
-						<img
-							src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
-							alt="hotspot_pulse-1.gif"
-							width="35"
-							height="35"
-						/>
-					)}
+					{pingTimeStatus.time ? (
+						<>
+							Expected ping latency for{' '}
+							{regions[provider][this.state.region].name} (
+							{this.state.region}) from your location is:&nbsp;
+							<div>{pingTimeStatus.time}ms </div>
+							{pingTimeStatus.isLoading ? (
+								<img
+									src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
+									alt="hotspot_pulse-1.gif"
+									width="35"
+									height="35"
+								/>
+							) : null}
+						</>
+					) : null}
 				</div>
 			</>
 		);
@@ -915,7 +933,13 @@ class NewCluster extends Component {
 												this.handleProviderChange(
 													'gke',
 												);
-												this.setConfig('pingTime', '');
+												this.setConfig(
+													'pingTimeStatus',
+													{
+														time: 0,
+														isLoading: true,
+													},
+												);
 												this.getPingTime(
 													this.state.region,
 												);
@@ -950,7 +974,13 @@ class NewCluster extends Component {
 												this.handleProviderChange(
 													'aws',
 												);
-												this.setConfig('pingTime', '');
+												this.setConfig(
+													'pingTimeStatus',
+													{
+														time: 0,
+														isLoading: true,
+													},
+												);
 												this.getPingTime(
 													this.state.region,
 												);
