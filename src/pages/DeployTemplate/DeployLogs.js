@@ -76,7 +76,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 								{timeTaken
 									? Math.round(timeTaken * 10) / 10
 									: '- '}
-								s
+								m
 								{showSpinner ? (
 									<Spin
 										size="small"
