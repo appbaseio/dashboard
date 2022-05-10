@@ -580,9 +580,12 @@ class NewMyCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() =>
-										this.props.history.push('/clusters/new')
-									}
+									onClick={() => {
+										if (interval) clearInterval(interval);
+										this.props.history.push(
+											'/clusters/new',
+										);
+									}}
 									icon="question-circle"
 								>
 									Don&apos;t have a Cluster

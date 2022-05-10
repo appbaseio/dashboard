@@ -842,11 +842,12 @@ class NewCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() =>
+									onClick={() => {
+										if (interval) clearInterval(interval);
 										this.props.history.push(
 											'/clusters/new/my-cluster',
-										)
-									}
+										);
+									}}
 									icon="question-circle"
 								>
 									Already have a Cluster
