@@ -53,6 +53,8 @@ const esVersions = ['7.17.2', '8.1.2'];
 
 const openSearchVersions = ['1.3.0'];
 
+var interval;
+
 export const V7_ARC = '8.0.0-cluster';
 export const V6_ARC = '8.0.0-cluster';
 export const ARC_BYOC = '8.0.0-byoc';
@@ -323,7 +325,7 @@ class NewCluster extends Component {
 
 		var counter = 1,
 			total = 0;
-		var interval = setInterval(() => {
+		interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({
 					pingTimeStatus: {
@@ -389,6 +391,7 @@ class NewCluster extends Component {
 							};
 						}
 					}
+					if (interval) clearInterval(interval);
 					this.getPingTime(minDist.name);
 
 					this.setState({
@@ -665,6 +668,7 @@ class NewCluster extends Component {
 										time: 0,
 										isLoading: true,
 									});
+									if (interval) clearInterval(interval);
 									this.getPingTime(region);
 								}}
 								className={
@@ -940,6 +944,8 @@ class NewCluster extends Component {
 														isLoading: true,
 													},
 												);
+												if (interval)
+													clearInterval(interval);
 												this.getPingTime(
 													this.state.region,
 												);
@@ -981,6 +987,8 @@ class NewCluster extends Component {
 														isLoading: true,
 													},
 												);
+												if (interval)
+													clearInterval(interval);
 												this.getPingTime(
 													this.state.region,
 												);

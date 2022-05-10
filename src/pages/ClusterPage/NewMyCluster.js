@@ -26,6 +26,7 @@ import { regionsKeyMap } from './new';
 import { regions, regionsByPlan } from './utils/regions';
 import { clusterContainer, card } from './styles';
 
+var interval;
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -117,7 +118,6 @@ class NewMyCluster extends Component {
 	componentDidMount() {
 		const { region } = this.state;
 		this.getDefaultLocation();
-		this.getPingTime(region);
 
 		const slug = generateSlug(2);
 		this.setState({
@@ -312,6 +312,7 @@ class NewMyCluster extends Component {
 										time: 0,
 										isLoading: true,
 									});
+									if (interval) clearInterval(interval);
 									this.getPingTime(region);
 								}}
 								className={
@@ -436,7 +437,7 @@ class NewMyCluster extends Component {
 
 		var counter = 1,
 			total = 0;
-		var interval = setInterval(() => {
+		interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({
 					pingTimeStatus: {
@@ -501,6 +502,9 @@ class NewMyCluster extends Component {
 							};
 						}
 					}
+					if (interval) clearInterval(interval);
+					this.getPingTime(minDist.name);
+
 					this.setState({
 						region: minDist.name,
 						activeKey: minDist.activeKey,
@@ -522,7 +526,6 @@ class NewMyCluster extends Component {
 	};
 
 	render() {
-		console.log('===');
 		const {
 			isLoading,
 			isInvalidURL,
