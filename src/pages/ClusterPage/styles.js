@@ -54,6 +54,14 @@ const clusterContainer = css`
 			justify-content: space-around;
 		`)};
 	}
+	.regions-list-container {
+		padding-left: 0;
+	}
+	.ping-time-container {
+		margin-top: 30px;
+		display: flex;
+		align-items: center;
+	}
 	.region-list {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(270px, 300px));

@@ -14,6 +14,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import ip from 'ip';
 import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -36,6 +37,7 @@ import {
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
+	getDistance,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -50,6 +52,8 @@ const SSH_KEY =
 const esVersions = ['7.17.3', '8.2.0'];
 
 const openSearchVersions = ['1.3.2'];
+
+var interval;
 
 export const V7_ARC = '8.0.0-cluster';
 export const V6_ARC = '8.0.0-cluster';
@@ -208,6 +212,13 @@ export const machineMarks = {
 	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
 };
 
+export const regionsKeyMap = {
+	asia: 'asia',
+	eu: 'europe',
+	us: 'america',
+	other: 'other',
+};
+
 const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_3,
 	// CLUSTER_PLANS.PRODUCTION_2019_2,
@@ -254,15 +265,24 @@ class NewCluster extends Component {
 			provider,
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
+			activeKey: 'america',
+			pingTimeStatus: {
+				time: 0,
+				isLoading: true,
+			},
 			...pluginState,
 		};
 	}
 
 	componentDidMount() {
+		const { region } = this.state;
+		this.getDefaultLocation();
+
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
 		});
+
 		getClusters()
 			.then(clusters => {
 				if (window.Intercom) {
@@ -293,6 +313,100 @@ class NewCluster extends Component {
 				});
 			});
 	}
+
+	getPingTime = region => {
+		const { provider } = this.state;
+		let url = '';
+		if (provider === 'gke') {
+			url = `https://${region}-ezn5kimndq-${regions[provider][region].code2}.a.run.app/ping`;
+		} else {
+			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
+		}
+
+		var counter = 1,
+			total = 0;
+		interval = setInterval(() => {
+			if (counter > 15) {
+				this.setState({
+					pingTimeStatus: {
+						time: Math.round(total / 3),
+						isLoading: false,
+					},
+				});
+				clearInterval(interval);
+			} else {
+				this.checkResponseTime(url)
+					.then(res => {
+						this.setState({
+							pingTimeStatus: {
+								time: Math.round(res),
+								isLoading: true,
+							},
+						});
+						if (counter > 12) {
+							total += res;
+						}
+						counter++;
+					})
+					.catch(err => {
+						counter++;
+						console.error(err);
+					});
+			}
+		}, 2000);
+	};
+
+	checkResponseTime = async url => {
+		const time1 = performance.now();
+		await fetch(url, { method: 'GET', mode: 'no-cors' });
+		return performance.now() - time1;
+	};
+
+	getDefaultLocation = async () => {
+		const { provider } = this.state;
+		fetch(`https://geolocation-db.com/json/`)
+			.then(res => res.json())
+			.then(json => {
+				if (json.latitude && json.longitude) {
+					const providerRegions = Object.values(regions[provider]);
+					let minDist = {
+						...providerRegions[0],
+						dist: Number.MAX_SAFE_INTEGER,
+					};
+
+					for (const [key, value] of Object.entries(
+						regions[provider],
+					)) {
+						const distance = getDistance(
+							json.latitude,
+							json.longitude,
+							value.lat,
+							value.lon,
+						);
+						if (minDist.dist > distance) {
+							minDist = {
+								dist: distance,
+								name: key,
+								activeKey: regionsKeyMap[value.continent],
+							};
+						}
+					}
+					if (interval) clearInterval(interval);
+					this.getPingTime(minDist.name);
+
+					this.setState({
+						region: minDist.name,
+						activeKey: minDist.activeKey,
+					});
+				} else {
+					this.setState({
+						region: 'us-central1',
+						activeKey: 'america',
+					});
+				}
+			})
+			.catch(err => console.error(err));
+	};
 
 	handleProviderChange = provider => {
 		this.setState(currentState => {
@@ -356,6 +470,12 @@ class NewCluster extends Component {
 		this.createCluster(data);
 		this.setState({
 			isStripeCheckoutOpen: false,
+		});
+	};
+
+	setActiveKey = key => {
+		this.setState({
+			activeKey: key,
 		});
 	};
 
@@ -509,7 +629,12 @@ class NewCluster extends Component {
 	);
 
 	renderRegions = () => {
-		const { provider, pricing_plan: pricingPlan } = this.state;
+		const {
+			provider,
+			pricing_plan: pricingPlan,
+			activeKey,
+			pingTimeStatus,
+		} = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
 		const asiaRegions = Object.keys(regions[provider]).filter(
@@ -525,36 +650,67 @@ class NewCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
-				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions
-					? !allowedRegions.includes(region)
-					: false;
-				return (
-					// eslint-disable-next-line
-					<li
-						key={region}
-						onClick={() => this.setConfig('region', region)}
-						className={
+		const regionsToRender = data => (
+			<>
+				<div className="region-list">
+					{data.map(region => {
+						const regionValue = regions[provider][region];
+						const isDisabled = allowedRegions
+							? !allowedRegions.includes(region)
+							: false;
+						return (
 							// eslint-disable-next-line
-							isDisabled
-								? 'disabled'
-								: this.state.region === region
-								? 'active'
-								: ''
-						}
-					>
-						{regionValue.flag && (
-							<img
-								src={`/static/images/flags/${regionValue.flag}`}
-								alt={regionValue.name}
-							/>
-						)}
-						<span> {regionValue.name} </span>
-					</li>
-				);
-			});
+							<li
+								key={region}
+								onClick={() => {
+									this.setConfig('region', region);
+									this.setConfig('pingTimeStatus', {
+										time: 0,
+										isLoading: true,
+									});
+									if (interval) clearInterval(interval);
+									this.getPingTime(region);
+								}}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span> {regionValue.name} </span>
+							</li>
+						);
+					})}
+				</div>
+				<div className="ping-time-container">
+					{pingTimeStatus.time ? (
+						<>
+							Expected ping latency for{' '}
+							{regions[provider][this.state.region].name} (
+							{this.state.region}) from your location is:&nbsp;
+							<div>{pingTimeStatus.time}ms </div>
+							{pingTimeStatus.isLoading ? (
+								<img
+									src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
+									alt="hotspot_pulse-1.gif"
+									width="35"
+									height="35"
+								/>
+							) : null}
+						</>
+					) : null}
+				</div>
+			</>
+		);
 
 		const style = {
 			width: '100%',
@@ -568,31 +724,36 @@ class NewCluster extends Component {
 		}
 
 		return (
-			<Tabs size="large" style={style}>
+			<Tabs
+				size="large"
+				style={style}
+				activeKey={activeKey}
+				onChange={key => this.setActiveKey(key)}
+			>
 				{usRegions.length > 0 && (
 					<TabPane tab="America" key="america">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(usRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{asiaRegions.length > 0 && (
 					<TabPane tab="Asia" key="asia">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(asiaRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{euRegions.length > 0 && (
 					<TabPane tab="Europe" key="europe">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(euRegions)}
 						</ul>
 					</TabPane>
 				)}
 				{otherRegions.length > 0 && (
 					<TabPane tab="Other Regions" key="other">
-						<ul className="region-list">
+						<ul className="regions-list-container">
 							{regionsToRender(otherRegions)}
 						</ul>
 					</TabPane>
@@ -643,6 +804,7 @@ class NewCluster extends Component {
 		);
 
 		const pricingPlanArr = pricing_plan.split('-').slice(1);
+
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
@@ -680,11 +842,12 @@ class NewCluster extends Component {
 									type="primary"
 									target="_blank"
 									rel="noopener noreferrer"
-									onClick={() =>
+									onClick={() => {
+										if (interval) clearInterval(interval);
 										this.props.history.push(
 											'/clusters/new/my-cluster',
-										)
-									}
+										);
+									}}
 									icon="question-circle"
 								>
 									Already have a Cluster
@@ -771,9 +934,23 @@ class NewCluster extends Component {
 													? fadeOutStyles
 													: ''
 											}
-											onClick={() =>
-												this.handleProviderChange('gke')
-											}
+											onClick={() => {
+												this.handleProviderChange(
+													'gke',
+												);
+												this.setConfig(
+													'pingTimeStatus',
+													{
+														time: 0,
+														isLoading: true,
+													},
+												);
+												if (interval)
+													clearInterval(interval);
+												this.getPingTime(
+													this.state.region,
+												);
+											}}
 										>
 											<img
 												width="120"
@@ -800,9 +977,23 @@ class NewCluster extends Component {
 													? fadeOutStyles
 													: ''
 											}
-											onClick={() =>
-												this.handleProviderChange('aws')
-											}
+											onClick={() => {
+												this.handleProviderChange(
+													'aws',
+												);
+												this.setConfig(
+													'pingTimeStatus',
+													{
+														time: 0,
+														isLoading: true,
+													},
+												);
+												if (interval)
+													clearInterval(interval);
+												this.getPingTime(
+													this.state.region,
+												);
+											}}
 										>
 											<img
 												width="120"
