@@ -21,6 +21,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 	const getLogs = async () => {
 		const url = `${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`;
 		setDeployLogs([]);
+		setIsError(false);
 		try {
 			const response = await fetch(
 				`${ACC_API}/v2/_deploy/${clusterId}/deploy_logs`,
@@ -34,35 +35,73 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 			);
 			const ndjson = ndjsonStream(response.body);
 			const reader = ndjson.getReader();
-			let result = [];
-			while (true) {
-				const { done, value } = await reader.read();
-				if (done) {
-					const time =
-						(new Date(
-							result[result.length - 1].timestamp,
-						).getTime() -
-							new Date(result[0].timestamp).getTime()) /
-						(1000 * 60);
-					setTimeTaken(Math.round(time * 10) / 10);
-					setIsLoading(false);
-					setShowSpinner(false);
-					break;
-				}
-				setIsLoading(false);
-				result = [...result, { ...value }];
-				const time =
-					(new Date(result[result.length - 1].timestamp).getTime() -
-						new Date(result[0].timestamp).getTime()) /
-					(1000 * 60);
-				setTimeTaken(Math.round(time * 10) / 10);
-				setDeployLogs(result);
-			}
-			reader.releaseLock();
+			loopThroughNdJson(reader, []);
 		} catch (err) {
+			console.log('Error to fetch logs', err);
 			setIsLoading(false);
 			setIsError(true);
 		}
+	};
+
+	const asyncCallWithTimeout = async (asyncPromise, timeLimit) => {
+		let timeoutHandle;
+
+		const timeoutPromise = new Promise((_resolve, reject) => {
+			timeoutHandle = setTimeout(
+				() => reject(new Error('Async call timeout limit reached')),
+				timeLimit,
+			);
+		});
+
+		return Promise.race([asyncPromise, timeoutPromise]).then(result => {
+			clearTimeout(timeoutHandle);
+			return result;
+		});
+	};
+
+	const loopThroughNdJson = async (reader, result) => {
+		try {
+			const newLine = await asyncCallWithTimeout(reader.read(), 60000);
+
+			if (newLine.done && !newLine.value) {
+				let endTime;
+				if (
+					new Date(result[result.length - 1].timestamp).getTime() <
+						new Date(result[0].timestamp).getTime() &&
+					result[result.length - 2].timestamp
+				) {
+					endTime = new Date(
+						result[result.length - 2].timestamp,
+					).getTime();
+				} else {
+					endTime = new Date(
+						result[result.length - 1].timestamp,
+					).getTime();
+				}
+
+				const time =
+					(endTime - new Date(result[0].timestamp).getTime()) /
+					(1000 * 60);
+				setTimeTaken(Math.round(time * 10) / 10);
+				setIsLoading(false);
+				setShowSpinner(false);
+				reader.releaseLock();
+				return;
+			}
+			setIsLoading(false);
+			result = [...result, { ...newLine.value }];
+			const time =
+				(new Date(result[result.length - 1].timestamp).getTime() -
+					new Date(result[0].timestamp).getTime()) /
+				(1000 * 60);
+			setTimeTaken(Math.round(time * 10) / 10);
+			setDeployLogs(result);
+		} catch (err) {
+			console.log('Error in loop', err);
+			getLogs();
+			setIsLoading(false);
+		}
+		loopThroughNdJson(reader, result);
 	};
 
 	return (
