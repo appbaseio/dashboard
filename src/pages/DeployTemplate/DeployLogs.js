@@ -114,7 +114,7 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 								Time Taken:{' '}
 								{timeTaken
 									? Math.round(timeTaken * 10) / 10
-									: '- '}
+									: '0'}
 								m
 								{showSpinner ? (
 									<Spin
@@ -137,7 +137,11 @@ const DeployLogs = ({ clusterId, history, showClusterDetails, dataUrl }) => {
 					</div>
 				}
 			>
-				{isLoading ? <Skeleton active /> : <Editor logs={deployLogs} />}
+				{isLoading ? (
+					<Skeleton active />
+				) : (
+					<Editor logs={deployLogs} setIsError={setIsError} />
+				)}
 			</Card>
 		</div>
 	);
