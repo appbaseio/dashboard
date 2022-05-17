@@ -24,7 +24,7 @@ export default function DeploymentStatus({
 			<Flex
 				justifyContent="space-between"
 				alignItems="center"
-				style={{ marginBottom: 10 }}
+				style={{ margin: '20px 0px 20px 0px' }}
 			>
 				<div
 					style={{

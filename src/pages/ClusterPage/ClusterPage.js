@@ -1,4 +1,5 @@
 import { Button, Col, Divider, Icon, Row, Tooltip } from 'antd';
+import { withRouter } from 'react-router-dom';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
@@ -291,7 +292,7 @@ class ClusterPage extends Component {
 
 	renderClusterCard = cluster => {
 		if (!cluster) return null;
-		const { isUsingClusterTrial } = this.props;
+		const { isUsingClusterTrial, history } = this.props;
 		const { showStripeModal, currentCluster } = this.state;
 		const isExternalCluster = get(cluster, 'recipe') === 'byoc';
 		let allMarks = ansibleMachineMarks;
@@ -312,41 +313,50 @@ class ClusterPage extends Component {
 			: {};
 		return (
 			<li key={cluster.id} className="cluster-card compact">
-				<h3>
-					{cluster.name}
-					{cluster.status === 'failed' &&
-					getHoursDiff(cluster.created_at) <= 72 ? (
-						<span className="tag tag-issue">
-							<Icon
-								type="warning"
-								theme="twoTone"
-								twoToneColor="#ffae42"
-								style={{ fontSize: 18, paddingRight: '10px' }}
-							/>
-							{'  '}
-							<h4 className="tag-text">Issue</h4>
-						</span>
-					) : (
-						<span className="tag">
-							{cluster.status === 'delInProg'
-								? 'deletion in progress'
-								: cluster.status}
-						</span>
-					)}
-					{cluster.role === 'admin' &&
-					(cluster.status === 'active' ||
-						cluster.status === 'in progress' ||
-						cluster.status === 'deployments in progress' ||
-						cluster.status === 'failed') ? (
-						<Button
-							type="danger"
-							icon="delete"
-							className="showOnHover"
-							onClick={() => this.setDeleteCluster(cluster)}
-						>
-							Delete
-						</Button>
-					) : null}
+				<h3 className="header-container">
+					<div>
+						<div>
+							{cluster.name}
+							{cluster.status === 'failed' &&
+							getHoursDiff(cluster.created_at) <= 72 ? (
+								<span className="tag tag-issue">
+									<Icon
+										type="warning"
+										theme="twoTone"
+										twoToneColor="#ffae42"
+										style={{
+											fontSize: 18,
+											paddingRight: '10px',
+										}}
+									/>
+									{'  '}
+									<h4 className="tag-text">Issue</h4>
+								</span>
+							) : (
+								<span className="tag">
+									{cluster.status === 'delInProg'
+										? 'deletion in progress'
+										: cluster.status}
+								</span>
+							)}
+							{cluster.role === 'admin' &&
+							(cluster.status === 'active' ||
+								cluster.status === 'in progress' ||
+								cluster.status === 'deployments in progress' ||
+								cluster.status === 'failed') ? (
+								<Button
+									type="danger"
+									icon="delete"
+									className="showOnHover"
+									onClick={() =>
+										this.setDeleteCluster(cluster)
+									}
+								>
+									Delete
+								</Button>
+							) : null}
+						</div>
+					</div>
 					{cluster.status === 'failed' &&
 						getHoursDiff(cluster.created_at) < 72 && (
 							<span className="message-text">
@@ -382,6 +392,14 @@ class ClusterPage extends Component {
 							</span>
 						</Tooltip>
 					) : null}
+					<div
+						className="view-logs-button"
+						onClick={() =>
+							history.push(`/clusters/${cluster.id}/logs`)
+						}
+					>
+						View deploy logs
+					</div>
 				</h3>
 
 				<div className="info-row">
@@ -827,4 +845,4 @@ ClusterPage.propTypes = {
 	clusterTrialEndDate: PropTypes.number,
 	history: PropTypes.object.isRequired,
 };
-export default connect(mapStateToProps, null)(ClusterPage);
+export default connect(mapStateToProps, null)(withRouter(ClusterPage));

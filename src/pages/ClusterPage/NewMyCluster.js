@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
-
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
-
-import { clusterContainer, card } from './styles';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
+import { ARC_BYOC } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -22,10 +21,12 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 } from './utils';
+import { getDistance } from './utils';
+import { regionsKeyMap } from './new';
 import { regions, regionsByPlan } from './utils/regions';
-import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC } from './new';
+import { clusterContainer, card } from './styles';
 
+var interval;
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -106,14 +107,23 @@ class NewMyCluster extends Component {
 			clusterVersion: '',
 			verifiedCluster: false,
 			isStripeCheckoutOpen: false,
+			activeKey: 'america',
+			pingTimeStatus: {
+				time: 0,
+				isLoading: true,
+			},
 		};
 	}
 
 	componentDidMount() {
+		const { region } = this.state;
+		this.getDefaultLocation();
+
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
 		});
+
 		getClusters()
 			.then(clusters => {
 				const activeClusters = clusters.filter(
@@ -203,6 +213,13 @@ class NewMyCluster extends Component {
 	};
 
 	createCluster = async (stripeData = {}) => {
+		const {
+			isDeployTemplate,
+			location,
+			setClusterId,
+			setActiveKey,
+			setTabsValidated,
+		} = this.props;
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
@@ -232,6 +249,13 @@ class NewMyCluster extends Component {
 				isLoading: true,
 			});
 
+			let obj = {};
+			if (isDeployTemplate) {
+				obj.pipeline_info = localStorage.getItem(
+					location.search.split('=')[1],
+				);
+			}
+
 			const body = {
 				elasticsearch_url: this.state.clusterURL,
 				cluster_name: this.state.clusterName,
@@ -239,6 +263,7 @@ class NewMyCluster extends Component {
 				location: this.state.region,
 				arc_image: ARC_BYOC,
 				is_multi_zone: false,
+				...obj,
 			};
 
 			if (stripeData.token) {
@@ -246,6 +271,14 @@ class NewMyCluster extends Component {
 			}
 
 			const clusterRes = await deployMyCluster(body);
+			setClusterId(clusterRes.cluster.id);
+			if (isDeployTemplate && clusterRes.cluster.id) {
+				setActiveKey('3');
+				setTabsValidated(true);
+				this.setState({
+					isLoading: false,
+				});
+			}
 			if (stripeData.token) {
 				await createSubscription({
 					clusterId: clusterRes.cluster.id,
@@ -263,7 +296,11 @@ class NewMyCluster extends Component {
 	};
 
 	renderRegions = () => {
-		const { pricing_plan: pricingPlan } = this.state;
+		const {
+			pricing_plan: pricingPlan,
+			activeKey,
+			pingTimeStatus,
+		} = this.state;
 		const provider = 'gke';
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
@@ -280,36 +317,67 @@ class NewMyCluster extends Component {
 			item => !regions[provider][item].continent,
 		);
 
-		const regionsToRender = data =>
-			data.map(region => {
-				const regionValue = regions[provider][region];
-				const isDisabled = allowedRegions
-					? !allowedRegions.includes(region)
-					: false;
-				return (
-					// eslint-disable-next-line
-					<li
-						key={region}
-						onClick={() => this.setConfig('region', region)}
-						className={
+		const regionsToRender = data => (
+			<>
+				<div className="region-list">
+					{data.map(region => {
+						const regionValue = regions[provider][region];
+						const isDisabled = allowedRegions
+							? !allowedRegions.includes(region)
+							: false;
+						return (
 							// eslint-disable-next-line
-							isDisabled
-								? 'disabled'
-								: this.state.region === region
-								? 'active'
-								: ''
-						}
-					>
-						{regionValue.flag && (
-							<img
-								src={`/static/images/flags/${regionValue.flag}`}
-								alt={regionValue.name}
-							/>
-						)}
-						<span>{regionValue.name}</span>
-					</li>
-				);
-			});
+							<li
+								key={region}
+								onClick={() => {
+									this.setConfig('region', region);
+									this.setConfig('pingTimeStatus', {
+										time: 0,
+										isLoading: true,
+									});
+									if (interval) clearInterval(interval);
+									this.getPingTime(region);
+								}}
+								className={
+									// eslint-disable-next-line
+									isDisabled
+										? 'disabled'
+										: this.state.region === region
+										? 'active'
+										: ''
+								}
+							>
+								{regionValue.flag && (
+									<img
+										src={`/static/images/flags/${regionValue.flag}`}
+										alt={regionValue.name}
+									/>
+								)}
+								<span>{regionValue.name}</span>
+							</li>
+						);
+					})}
+				</div>
+				<div className="ping-time-container">
+					{pingTimeStatus.time ? (
+						<>
+							Expected ping latency for{' '}
+							{regions[provider][this.state.region].name} (
+							{this.state.region}) from your location is:&nbsp;
+							<div>{pingTimeStatus.time}ms </div>
+							{pingTimeStatus.isLoading ? (
+								<img
+									src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
+									alt="hotspot_pulse-1.gif"
+									width="35"
+									height="35"
+								/>
+							) : null}
+						</>
+					) : null}
+				</div>
+			</>
+		);
 
 		const style = { width: '100%' };
 		if (provider === 'azure') {
@@ -321,24 +389,29 @@ class NewMyCluster extends Component {
 		}
 
 		return (
-			<Tabs size="large" style={style}>
+			<Tabs
+				size="large"
+				style={style}
+				activeKey={activeKey}
+				onChange={key => this.setActiveKey(key)}
+			>
 				<TabPane tab="America" key="america">
-					<ul className="region-list">
+					<ul className="regions-list-container">
 						{regionsToRender(usRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Asia" key="asia">
-					<ul className="region-list">
+					<ul className="regions-list-container">
 						{regionsToRender(asiaRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Europe" key="europe">
-					<ul className="region-list">
+					<ul className="regions-list-container">
 						{regionsToRender(euRegions)}
 					</ul>
 				</TabPane>
 				<TabPane tab="Other Regions" key="other">
-					<ul className="region-list">
+					<ul className="regions-list-container">
 						{regionsToRender(otherRegions)}
 					</ul>
 				</TabPane>
@@ -376,6 +449,105 @@ class NewMyCluster extends Component {
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
+	getPingTime = region => {
+		const provider = 'gke';
+		let url = '';
+		if (provider === 'gke') {
+			url = `https://${region}-ezn5kimndq-${regions[provider][region].code2}.a.run.app/ping`;
+		} else {
+			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
+		}
+
+		var counter = 1,
+			total = 0;
+		interval = setInterval(() => {
+			if (counter > 15) {
+				this.setState({
+					pingTimeStatus: {
+						time: Math.round(total / 3),
+						isLoading: false,
+					},
+				});
+				clearInterval(interval);
+			} else {
+				this.checkResponseTime(url)
+					.then(res => {
+						this.setState({
+							pingTimeStatus: {
+								time: Math.round(res),
+								isLoading: true,
+							},
+						});
+						if (counter > 12) {
+							total += res;
+						}
+						counter++;
+					})
+					.catch(err => {
+						counter++;
+						console.error(err);
+					});
+			}
+		}, 2000);
+	};
+
+	checkResponseTime = async url => {
+		const time1 = performance.now();
+		await fetch(url, { method: 'GET', mode: 'no-cors' });
+		return performance.now() - time1;
+	};
+
+	getDefaultLocation = async () => {
+		const provider = 'gke';
+		fetch(`https://geolocation-db.com/json/`)
+			.then(res => res.json())
+			.then(json => {
+				if (json.latitude && json.longitude) {
+					const providerRegions = Object.values(regions[provider]);
+					let minDist = {
+						...providerRegions[0],
+						dist: Number.MAX_SAFE_INTEGER,
+					};
+					for (const [key, value] of Object.entries(
+						regions[provider],
+					)) {
+						const distance = getDistance(
+							json.latitude,
+							json.longitude,
+							value.lat,
+							value.lon,
+						);
+						if (minDist.dist > distance) {
+							minDist = {
+								dist: distance,
+								name: key,
+								activeKey: regionsKeyMap[value.continent],
+							};
+						}
+					}
+					if (interval) clearInterval(interval);
+					this.getPingTime(minDist.name);
+
+					this.setState({
+						region: minDist.name,
+						activeKey: minDist.activeKey,
+					});
+				} else {
+					this.setState({
+						region: 'us-central1',
+						activeKey: 'america',
+					});
+				}
+			})
+			.catch(err => console.error(err));
+	};
+
+	setActiveKey = key => {
+		this.setState({
+			activeKey: key,
+		});
+	};
+
 	render() {
 		const {
 			isLoading,
@@ -387,8 +559,9 @@ class NewMyCluster extends Component {
 			clusters,
 			changed,
 			clusterName,
+			activeKey,
 		} = this.state;
-		const { isUsingClusterTrial } = this.props;
+		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
 
 		const activeClusters = clusters.filter(
 			cluster => cluster.status === 'active',
@@ -399,49 +572,62 @@ class NewMyCluster extends Component {
 
 		return (
 			<Fragment>
-				<FullHeader clusters={activeClusters} isCluster />
-				<Header compact>
-					<Row type="flex" justify="space-between" gutter={16}>
-						<Col md={18}>
-							<h2>
-								Deploy reactivesearch.io for your ElasticSearch
-								Cluster
-							</h2>
-							<Row>
-								<Col span={18}>
-									<p>
-										Get a better security, analytics and
-										development experience with your own
-										ElasticSearch cluster.
-									</p>
+				{!isDeployTemplate ? (
+					<>
+						<FullHeader clusters={activeClusters} isCluster />
+						<Header compact>
+							<Row
+								type="flex"
+								justify="space-between"
+								gutter={16}
+							>
+								<Col md={18}>
+									<h2>
+										Deploy appbase.io for your ElasticSearch
+										Cluster
+									</h2>
+									<Row>
+										<Col span={18}>
+											<p>
+												Get a better security, analytics
+												and development experience with
+												your own ElasticSearch cluster.
+											</p>
+										</Col>
+									</Row>
+								</Col>
+								<Col
+									md={6}
+									css={{
+										display: 'flex',
+										flexDirection: 'column-reverse',
+										paddingBottom: 20,
+									}}
+								>
+									<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+										<Button
+											size="large"
+											type="primary"
+											target="_blank"
+											rel="noopener noreferrer"
+											onClick={() => {
+												if (interval)
+													clearInterval(interval);
+												this.props.history.push(
+													'/clusters/new',
+												);
+											}}
+											icon="question-circle"
+										>
+											Don&apos;t have a Cluster
+										</Button>
+									</Tooltip>
 								</Col>
 							</Row>
-						</Col>
-						<Col
-							md={6}
-							css={{
-								display: 'flex',
-								flexDirection: 'column-reverse',
-								paddingBottom: 20,
-							}}
-						>
-							<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with reactivesearch.io.">
-								<Button
-									size="large"
-									type="primary"
-									target="_blank"
-									rel="noopener noreferrer"
-									onClick={() =>
-										this.props.history.push('/clusters/new')
-									}
-									icon="question-circle"
-								>
-									Don&apos;t have a Cluster
-								</Button>
-							</Tooltip>
-						</Col>
-					</Row>
-				</Header>
+						</Header>
+					</>
+				) : null}
+
 				<Container>
 					{this.state.isStripeCheckoutOpen && (
 						<StripeCheckout
@@ -677,7 +863,18 @@ class NewMyCluster extends Component {
 										}
 										onClick={this.handleStripeModal}
 									>
-										Add payment info and create cluster
+										{isDeployTemplate ? (
+											<>
+												Add payment info and Deploy
+												cluster with pipeline&nbsp;
+												{pipeline}
+											</>
+										) : (
+											<>
+												Add payment info and create
+												cluster
+											</>
+										)}
 										<Icon
 											type="arrow-right"
 											theme="outlined"
@@ -689,7 +886,15 @@ class NewMyCluster extends Component {
 										size="large"
 										onClick={this.createCluster}
 									>
-										Create Cluster
+										{isDeployTemplate ? (
+											<>
+												Deploy cluster with pipeline
+												&nbsp;
+												{pipeline}
+											</>
+										) : (
+											<>Create Cluster</>
+										)}
 										<Icon
 											type="arrow-right"
 											theme="outlined"
@@ -704,14 +909,27 @@ class NewMyCluster extends Component {
 		);
 	}
 }
-
-const mapStateToProps = state => ({
-	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
-});
+NewMyCluster.defaultProps = {
+	isDeployTemplate: false,
+	pipeline: '',
+	setClusterId: () => {},
+	setActiveKey: () => {},
+	setTabsValidated: () => {},
+};
 
 NewMyCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
+	isDeployTemplate: PropTypes.bool,
+	pipeline: PropTypes.string,
+	setClusterId: PropTypes.func,
+	setActiveKey: PropTypes.func,
+	setTabsValidated: PropTypes.func,
 };
+
+const mapStateToProps = state => ({
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+});
 
 export default connect(mapStateToProps, null)(NewMyCluster);

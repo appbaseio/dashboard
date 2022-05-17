@@ -54,6 +54,14 @@ const clusterContainer = css`
 			justify-content: space-around;
 		`)};
 	}
+	.regions-list-container {
+		padding-left: 0;
+	}
+	.ping-time-container {
+		margin-top: 30px;
+		display: flex;
+		align-items: center;
+	}
 	.region-list {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(270px, 300px));
@@ -318,6 +326,17 @@ const clustersList = css`
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	.header-container {
+		display: flex;
+		justify-content: space-between;
+	}
+	.view-logs-button {
+		cursor: pointer;
+		color: #18a0fb;
+		font-weight: lighter;
+		font-size: 15px;
+		margin-left: 10px;
+	}
 	.cluster-card {
 		padding: 30px 25px;
 		border-radius: 3px;
