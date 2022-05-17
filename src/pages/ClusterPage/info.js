@@ -19,6 +19,7 @@ import InvoiceScreen from './screens/InvoiceScreen';
 import ScaleClusterScreen from './screens/ScaleClusterScreen';
 import ShareClusterScreen from './screens/ShareClusterScreen';
 import ClusterMonitoringScreen from './screens/ClusterMonitoring';
+import DeployLogs from '../DeployTemplate/DeployLogs';
 import { card, clusterContainer, clustersList } from './styles';
 import {
 	createSubscription,
@@ -741,7 +742,13 @@ class ClusterInfo extends Component {
 										this.state.statusFetchCount
 									}
 								/>
-
+								{this.state.cluster.status ===
+								'deployments in progress' ? (
+									<DeployLogs
+										clusterId={this.state.cluster.id}
+										showClusterDetails={false}
+									/>
+								) : null}
 								{this.state.arc ? (
 									<li
 										className={card}
@@ -964,6 +971,21 @@ class ClusterInfo extends Component {
 																this.state
 																	.cluster
 																	.trial
+															}
+														/>
+													)}
+												/>
+												<Route
+													exact
+													path="/clusters/:id/logs"
+													component={() => (
+														<DeployLogs
+															clusterId={get(
+																this,
+																'props.match.params.id',
+															)}
+															showClusterDetails={
+																false
 															}
 														/>
 													)}

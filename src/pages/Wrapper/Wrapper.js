@@ -63,6 +63,11 @@ const NewMyCluster = Loadable({
 	loading: Loader,
 });
 
+const DeployTemplate = Loadable({
+	loader: () => import('../DeployTemplate'),
+	loading: Loader,
+});
+
 function hasFilledDetails(user) {
 	if (user && user.data) {
 		const {
@@ -89,6 +94,7 @@ const Wrapper = ({ user }) =>
 			<Route path="/clusters/:id" component={ClusterInfoPage} />
 			<Route path="/profile" component={ProfilePage} />
 			<Route path="/app/:appName?/:route?" component={AppWrapper} />
+			<Route exact path="/deploy" component={DeployTemplate} />
 			<Route component={NoMatch} />
 		</Switch>
 	) : (
