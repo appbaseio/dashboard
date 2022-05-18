@@ -53,7 +53,7 @@ const esVersions = ['7.17.3', '8.2.0'];
 
 const openSearchVersions = ['1.3.2'];
 
-var interval;
+let interval;
 
 export const V7_ARC = '8.0.0-cluster';
 export const V6_ARC = '8.0.0-cluster';
@@ -225,7 +225,7 @@ const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
-const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
+const namingConvention = `Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
 class NewCluster extends Component {
 	constructor(props) {
@@ -323,8 +323,8 @@ class NewCluster extends Component {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		var counter = 1,
-			total = 0;
+		let counter = 1;
+		let total = 0;
 		interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({
@@ -483,7 +483,7 @@ class NewCluster extends Component {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
-				const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 				this.setState({
 					error: errorMessage,
 				});
