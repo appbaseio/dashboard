@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import { ACC_API } from '../constants/config';
 
 export async function getUser() {
