@@ -55,9 +55,9 @@ const openSearchVersions = ['1.3.2'];
 
 let interval;
 
-export const V7_ARC = '8.0.0-cluster';
-export const V6_ARC = '8.0.0-cluster';
-export const ARC_BYOC = '8.0.0-byoc';
+export const V7_ARC = '8.1.0-cluster';
+export const V6_ARC = '8.1.0-cluster';
+export const ARC_BYOC = '8.1.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
