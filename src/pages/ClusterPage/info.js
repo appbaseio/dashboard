@@ -463,7 +463,11 @@ class ClusterInfo extends Component {
 			{get(this, 'state.cluster.user_role') === 'admin' ? (
 				<Button
 					size="large"
-					onClick={this.deleteCluster}
+					onClick={() => {
+						this.setState({
+							deleteModal: true,
+						});
+					}}
 					type="danger"
 					css={{
 						marginLeft: 12,
