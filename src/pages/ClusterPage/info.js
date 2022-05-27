@@ -576,7 +576,7 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
-		console.log(this.state.deleteModal, '====');
+
 		return (
 			<Fragment>
 				<FullHeader
