@@ -355,12 +355,17 @@ class ClusterInfo extends Component {
 		const paymentRequired = errorCode === '402';
 		const isNotFound = errorCode === '404';
 		const clusterId = get(this, 'props.match.params.id');
+		const clusterName = clusterId
+			?.split('-')
+			?.slice(0, 2)
+			?.join('-');
 		let errorMsg = 'Some error occurred';
 		if (paymentRequired) {
 			errorMsg = 'Payment Required';
 		} else if (isNotFound) {
 			errorMsg = `No cluster found for ${clusterId}. Please make sure to use a valid cluster ID.`;
 		}
+
 		return (
 			<Fragment>
 				{this.state.isStripeCheckoutOpen && (
@@ -431,7 +436,11 @@ class ClusterInfo extends Component {
 
 								{isNotFound ? null : (
 									<Button
-										onClick={this.deleteCluster}
+										onClick={() => {
+											this.setState({
+												deleteModal: true,
+											});
+										}}
 										type="danger"
 										style={{
 											marginRight: 12,
@@ -446,6 +455,13 @@ class ClusterInfo extends Component {
 						</article>
 					</section>
 				</Container>
+				<DeleteClusterModal
+					clusterId={clusterId}
+					clusterName={clusterName}
+					onDelete={this.deleteCluster}
+					handleModal={this.handleDeleteModal}
+					isVisible={this.state.deleteModal}
+				/>
 			</Fragment>
 		);
 	};
@@ -560,7 +576,7 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
-
+		console.log(this.state.deleteModal, '====');
 		return (
 			<Fragment>
 				<FullHeader
