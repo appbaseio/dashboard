@@ -10,7 +10,7 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC } from './new';
+import { ARC_BYOC, regionsKeyMap } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -20,13 +20,12 @@ import {
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
+	getDistance,
 } from './utils';
-import { getDistance } from './utils';
-import { regionsKeyMap } from './new';
 import { regions, regionsByPlan } from './utils/regions';
 import { clusterContainer, card } from './styles';
 
-var interval;
+let interval;
 const { TabPane } = Tabs;
 
 export const machineMarks = {
@@ -82,9 +81,9 @@ export const priceSlider = {
 
 const namingConvention = {
 	azure:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 	gke:
-		'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
 class NewMyCluster extends Component {
@@ -223,7 +222,7 @@ class NewMyCluster extends Component {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
-				const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 				this.setState({
 					error: errorMessage,
 				});
@@ -249,7 +248,7 @@ class NewMyCluster extends Component {
 				isLoading: true,
 			});
 
-			let obj = {};
+			const obj = {};
 			if (isDeployTemplate) {
 				obj.pipeline_info = localStorage.getItem(
 					location.search.split('=')[1],
@@ -458,8 +457,8 @@ class NewMyCluster extends Component {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		var counter = 1,
-			total = 0;
+		let counter = 1;
+		let total = 0;
 		interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({

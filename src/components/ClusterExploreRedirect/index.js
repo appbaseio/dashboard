@@ -3,13 +3,16 @@ import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
+import { connect } from 'react-redux';
 
 const ClusterExploreRedirect = ({
 	urlParams,
 	arc,
 	clusterName,
 	customComponent,
+	cus_id,
 }) => {
+	console.log('cus_id', cus_id);
 	const exploreClusterInNewTab = () => {
 		let mainURL = 'http://dash.appbase.io';
 		let arcParams = '';
@@ -36,11 +39,13 @@ const ClusterExploreRedirect = ({
 		}
 
 		const { username, password, url: arcURL } = arc;
-		const url = `${mainURL}/?url=${arcURL.slice(
+		let url = `${mainURL}/?url=${arcURL.slice(
 			0,
 			-1,
 		)}&username=${username}&password=${password}&cluster=${clusterName}${arcParams}`;
-
+		if (cus_id) {
+			url += `&cus_id=${cus_id}`;
+		}
 		if (urlParams['auto-navigate'] === true) {
 			window.open(url, '_blank');
 		}
@@ -73,5 +78,10 @@ ClusterExploreRedirect.propTypes = {
 	arc: PropTypes.object.isRequired,
 	clusterName: PropTypes.string.isRequired,
 	customComponent: PropTypes.any,
+	cus_id: PropTypes.string,
 };
-export default ClusterExploreRedirect;
+
+const mapStateToProps = state => ({
+	cus_id: get(state, 'user.data.cus_id'),
+});
+export default connect(mapStateToProps)(ClusterExploreRedirect);

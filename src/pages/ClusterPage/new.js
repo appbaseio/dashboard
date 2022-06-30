@@ -49,15 +49,15 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['7.17.3', '8.2.0'];
+const esVersions = ['7.17.3', '8.2.2'];
 
-const openSearchVersions = ['1.3.2'];
+const openSearchVersions = ['2.0.0'];
 
-var interval;
+let interval;
 
-export const V7_ARC = '8.0.0-cluster';
-export const V6_ARC = '8.0.0-cluster';
-export const ARC_BYOC = '8.0.0-byoc';
+export const V7_ARC = '8.3.0-cluster';
+export const V6_ARC = '8.3.0-cluster';
+export const ARC_BYOC = '8.3.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
@@ -225,7 +225,7 @@ const validOpenFaasPlans = [
 	// CLUSTER_PLANS.PRODUCTION_2019_1,
 ];
 
-const namingConvention = `Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
+const namingConvention = `Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.`;
 
 class NewCluster extends Component {
 	constructor(props) {
@@ -323,8 +323,8 @@ class NewCluster extends Component {
 			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
 		}
 
-		var counter = 1,
-			total = 0;
+		let counter = 1;
+		let total = 0;
 		interval = setInterval(() => {
 			if (counter > 15) {
 				this.setState({
@@ -483,7 +483,7 @@ class NewCluster extends Component {
 		try {
 			if (!this.validateClusterName()) {
 				// prettier-ignore
-				const errorMessage = 'Name must start with a lowercase letter followed by upto 31 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
 				this.setState({
 					error: errorMessage,
 				});
