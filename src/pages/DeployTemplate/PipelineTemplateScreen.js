@@ -36,7 +36,7 @@ const PipelineTemplateScreen = ({
 		const newPipelineVariables = formData.map(obj => {
 			const newObj = {
 				...obj,
-				error: obj.validate ? true : false,
+				error: !!obj.validate,
 				errorMessage: '',
 			};
 			return newObj;
@@ -49,7 +49,7 @@ const PipelineTemplateScreen = ({
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
-		let obj = {
+		const obj = {
 			method: validateObj.method,
 			headers: {
 				...validateObj.headers,
@@ -69,7 +69,7 @@ const PipelineTemplateScreen = ({
 			const keyVariable = varRegex.exec(
 				validateObj.headers.Authorization,
 			)[1];
-			let creds = btoa(keyVariable);
+			const creds = btoa(keyVariable);
 			obj.headers.Authorization = `Basic ${creds}`;
 		}
 
@@ -82,17 +82,16 @@ const PipelineTemplateScreen = ({
 				if (res.error) {
 					setIconType('');
 					return Promise.reject(res.error);
-				} else {
-					setIconType('check-circle');
-					setTabsValidated(true);
-					const newPipelineVariables = pipelineVariables.map(obj => {
-						if (obj.key === pipelineObj.key) {
-							obj.error = false;
-						}
-						return obj;
-					});
-					setPipelineVariables(newPipelineVariables);
 				}
+				setIconType('check-circle');
+				setTabsValidated(true);
+				const newPipelineVariables = pipelineVariables.map(obj => {
+					if (obj.key === pipelineObj.key) {
+						obj.error = false;
+					}
+					return obj;
+				});
+				setPipelineVariables(newPipelineVariables);
 			})
 			.catch(err => {
 				if (err.ok && err.status === validateObj.expected_status) {
@@ -232,7 +231,7 @@ const PipelineTemplateScreen = ({
 					</div>
 				))
 			) : (
-				<ErrorPage message="This repository may not contain global_vars property." />
+				<ErrorPage message="This URL may not contain the global_envs property." />
 			)}
 			<Button
 				block
