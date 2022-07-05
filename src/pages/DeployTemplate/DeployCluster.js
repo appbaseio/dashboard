@@ -149,7 +149,7 @@ const DeployCluster = ({
 										createPipeline();
 									}}
 								>
-									Deploy pipeline {formData.id} to&nbsp;
+									Deploy pipeline {formData.id}&nbsp;to&nbsp;
 									{selectedCluster.name} cluster
 									{iconType ? (
 										<Icon
