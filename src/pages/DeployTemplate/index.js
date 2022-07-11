@@ -11,6 +11,7 @@ import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
 
 const yaml = require('js-yaml');
+
 const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
@@ -44,11 +45,11 @@ const DeployTemplate = ({ location }) => {
 		fetch(dataUrl)
 			.then(res => res.text())
 			.then(resp => {
-				let json = yaml.load(resp);
+				const json = yaml.load(resp);
 				setInitialFormData(json);
 				const transformedFormData = {
 					...json,
-					global_vars: [...ValidateObj(json?.global_vars || [])],
+					global_envs: [...ValidateObj(json?.global_envs || [])],
 				};
 				if (!localStorage.getItem(dataUrl)) {
 					setFormData(transformedFormData);
@@ -164,7 +165,7 @@ const DeployTemplate = ({ location }) => {
 
 	const handleFormChange = (key, val) => {
 		const newFormData = { ...initialFormData };
-		newFormData?.global_vars.forEach(data => {
+		newFormData?.global_envs.forEach(data => {
 			if (data.key === key) {
 				data.value = val;
 				if (
@@ -185,7 +186,7 @@ const DeployTemplate = ({ location }) => {
 		};
 		const transformedFormData = {
 			...formData,
-			global_vars: [...ValidateObj(newFormData?.global_vars || [])],
+			global_envs: [...ValidateObj(newFormData?.global_envs || [])],
 		};
 		setFormData(transformedFormData);
 		newDeployTemplateData.formData = transformedFormData;
@@ -286,11 +287,11 @@ const DeployTemplate = ({ location }) => {
 							onTabClick={e => handleTabChange(e)}
 						>
 							<TabPane
-								tab="1 Enter Pipeline Template variables"
+								tab="1 Enter Pipeline Template Environments"
 								key="1"
 							>
 								<PipelineTemplateScreen
-									formData={formData?.global_vars || []}
+									formData={formData?.global_envs || []}
 									setActiveKey={handleTabChange}
 									handleFormChange={handleFormChange}
 									tabsValidated={tabsValidated}
