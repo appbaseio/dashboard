@@ -90,7 +90,7 @@
 		"ip": "^1.1.5",
 		"lodash": "^4.17.21",
 		"lzma": "^2.3.2",
-		"moment": "^2.29.2",
+		"moment": "^2.29.4",
 		"partial-json-parser": "^1.1.1",
 		"prop-types": "^15.6.2",
 		"random-word-slugs": "^0.0.5",
