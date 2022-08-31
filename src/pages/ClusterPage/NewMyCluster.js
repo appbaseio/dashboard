@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { Fragment, Component } from 'react';
 import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
@@ -10,7 +11,7 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC, regionsKeyMap } from './new';
+import { ARC_BYOC_DEPLOYMENT, regionsKeyMap } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -115,7 +116,6 @@ class NewMyCluster extends Component {
 	}
 
 	componentDidMount() {
-		const { region } = this.state;
 		this.getDefaultLocation();
 
 		const slug = generateSlug(2);
@@ -260,7 +260,7 @@ class NewMyCluster extends Component {
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
 				location: this.state.region,
-				arc_image: ARC_BYOC,
+				arc_image: ARC_BYOC_DEPLOYMENT,
 				is_multi_zone: false,
 				...obj,
 			};
@@ -480,10 +480,10 @@ class NewMyCluster extends Component {
 						if (counter > 12) {
 							total += res;
 						}
-						counter++;
+						counter += 1;
 					})
 					.catch(err => {
-						counter++;
+						counter += 1;
 						console.error(err);
 					});
 			}
@@ -558,7 +558,6 @@ class NewMyCluster extends Component {
 			clusters,
 			changed,
 			clusterName,
-			activeKey,
 		} = this.state;
 		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
 
