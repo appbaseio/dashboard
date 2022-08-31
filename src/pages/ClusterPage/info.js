@@ -12,7 +12,11 @@ import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
 import Sidebar, { RightContainer } from './components/Sidebar';
 import ClusterExploreRedirect from '../../components/ClusterExploreRedirect';
-import { ansibleMachineMarks, ARC_BYOC, V7_ARC } from './new';
+import {
+	ansibleMachineMarks,
+	ARC_CLUSTER_LATEST,
+	ARC_BYOC_LATEST,
+} from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import ClusterScreen from './screens/ClusterScreen';
 import InvoiceScreen from './screens/InvoiceScreen';
@@ -42,14 +46,24 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
 
 	if (recipe === 'byoc') {
-		return version && version !== ARC_BYOC.split('-')[0];
+		return (
+			version &&
+			ARC_BYOC_LATEST.split('-')[0].localeCompare(version, undefined, {
+				numeric: true,
+			}) === 1
+		);
 	}
 
 	if (k8sVersion) {
-		return k8sVersion !== V7_ARC;
+		return k8sVersion !== ARC_CLUSTER_LATEST;
 	}
 
-	return version && version !== V7_ARC.split('-')[0];
+	return (
+		version &&
+		ARC_CLUSTER_LATEST.split('-')[0].localeCompare(version, undefined, {
+			numeric: true,
+		}) === 1
+	);
 };
 
 class ClusterInfo extends Component {
@@ -322,7 +336,10 @@ class ClusterInfo extends Component {
 			const url = `${ACC_API}/v2/_deploy/${id}`;
 			const body = {
 				arc: {
-					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+					version:
+						recipe === 'byoc'
+							? ARC_BYOC_LATEST
+							: ARC_CLUSTER_LATEST,
 					status: 'restarted',
 				},
 			};
@@ -541,7 +558,7 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn{"'"}t available yet
+						Cluster status isn't available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes
 						live.

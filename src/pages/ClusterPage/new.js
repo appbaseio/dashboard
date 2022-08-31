@@ -55,18 +55,19 @@ const openSearchVersions = ['2.2.0'];
 
 let interval;
 
-export const V7_ARC = '8.4.0-cluster';
-export const V6_ARC = '8.4.0-cluster';
-export const ARC_BYOC = '8.4.0-byoc';
+export const ARC_BYOC_LATEST = '8.6.1-byoc';
+export const ARC_CLUSTER_LATEST = '8.6.1-byoc';
+export const ARC_CLUSTER_DEPLOYMENT = '8.4.0-cluster';
+export const ARC_BYOC_DEPLOYMENT = '8.4.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
-	7: V7_ARC,
-	6: V6_ARC,
+	7: ARC_CLUSTER_DEPLOYMENT,
+	6: ARC_CLUSTER_DEPLOYMENT,
 	5: V5_ARC,
 	/* odfe versions start */
-	0: V6_ARC,
-	1: V7_ARC,
+	0: ARC_CLUSTER_DEPLOYMENT,
+	1: ARC_CLUSTER_DEPLOYMENT,
 	/* odfe versions end */
 };
 
