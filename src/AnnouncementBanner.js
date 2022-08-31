@@ -35,10 +35,11 @@ const AnnouncementBanner = () => {
 		<div css={bannerStyles}>
 			{showBanner ? (
 				<div className="announcement-banner">
-					appbase.io is now reactivesearch.io.&nbsp;
+					appbase.io is now ReactiveSearch &nbsp;&nbsp;
 					<a
 						href="https://blog.reactivesearch.io/appbaseio-is-reactivesearch"
 						target="_blank"
+						rel="noreferrer"
 					>
 						Read the announcement
 					</a>

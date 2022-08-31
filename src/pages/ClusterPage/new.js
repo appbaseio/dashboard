@@ -815,8 +815,8 @@ class NewCluster extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Create a new ElasticSearch Cluster with
-										reactivesearch.io.
+										Create a new ElasticSearch or OpenSearch
+										cluster{' '}
 										<a
 											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
@@ -1243,7 +1243,7 @@ class NewCluster extends Component {
 													);
 												}}
 											>
-												reactivesearch.io dashboard
+												Built-in dashboard
 											</Button>
 											<p>
 												Includes index management, dev

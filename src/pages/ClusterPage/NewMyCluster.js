@@ -582,15 +582,15 @@ class NewMyCluster extends Component {
 							>
 								<Col md={18}>
 									<h2>
-										Deploy appbase.io for your ElasticSearch
-										Cluster
+										Deploy ReactiveSearch for your
+										Elasticsearch or OpenSearch cluster
 									</h2>
 									<Row>
 										<Col span={18}>
 											<p>
-												Get a better security, analytics
-												and development experience with
-												your own ElasticSearch cluster.
+												Build and deploy search UIs with
+												point and click, out of the box
+												search analytics and insights
 											</p>
 										</Col>
 									</Row>
@@ -746,12 +746,10 @@ class NewMyCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>
-										Connect to your ElasticSearch Cluster
-									</h3>
+									<h3>Connect to Elasticsearch</h3>
 									<p>
-										Enter your Cluster credentials and
-										username
+										Enter your cluster credentials (needs
+										super admin access)
 									</p>
 								</div>
 								<div
@@ -776,7 +774,7 @@ class NewMyCluster extends Component {
 													? '1px solid red'
 													: '1px solid #e8e8e8',
 										}}
-										placeholder="Enter your Elastic URL"
+										placeholder="Enter your Elastic or OpenSearch URL"
 										value={this.state.clusterURL}
 										onChange={e =>
 											this.setConfig(
