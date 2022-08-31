@@ -497,7 +497,7 @@ class ClusterScreen extends Component {
 									this.setConfig('grafana', false);
 								}}
 							>
-								None
+								Built-in dashboard
 							</Button>
 						</div>
 						<div className={esContainer}>
