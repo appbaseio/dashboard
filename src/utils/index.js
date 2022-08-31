@@ -20,18 +20,18 @@ export async function getUser() {
 			email: user.email,
 		},
 	]);
-	let metrics = '';
-	try {
-		const metricsResponse = await fetch(`${ACC_API}/user/metrics`, {
-			credentials: 'include',
-		});
-		if (metricsResponse.status >= 400) {
-			throw new Error();
-		}
-		metrics = await metricsResponse.json();
-	} catch (e) {
-		console.error('Unable to fetch Metrics');
-	}
+	const metrics = null;
+	// try {
+	// 	const metricsResponse = await fetch(`${ACC_API}/user/metrics`, {
+	// 		credentials: 'include',
+	// 	});
+	// 	if (metricsResponse.status >= 400) {
+	// 		throw new Error();
+	// 	}
+	// 	metrics = await metricsResponse.json();
+	// } catch (e) {
+	// 	console.error('Unable to fetch Metrics');
+	// }
 
 	if (window.Intercom) {
 		window.Intercom('boot', {
