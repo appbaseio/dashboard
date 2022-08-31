@@ -37,7 +37,7 @@ const AnnouncementBanner = () => {
 				<div className="announcement-banner">
 					appbase.io is now reactivesearch.io.&nbsp;
 					<a
-						href="https://blog.reactivesearch.io/appbase-io-announcement"
+						href="https://blog.reactivesearch.io/appbaseio-is-reactivesearch"
 						target="_blank"
 					>
 						Read the announcement
