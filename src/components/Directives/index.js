@@ -176,7 +176,7 @@ class Directives extends React.Component {
 						<div className={modalTitle}>
 							While your cluster is getting deployed, you can read
 							more or watch the following videos to get
-							familiarized with the appbase.io platform.
+							familiarized with the reactivesearch.io platform.
 						</div>
 					</Row>
 					<Row gutter={16}>
@@ -184,7 +184,7 @@ class Directives extends React.Component {
 							<Card className={[cardWrapper, searchCard]}>
 								<Row className={cardHeading}>
 									Building your first search app powered by
-									appbase.io
+									reactivesearch.io
 								</Row>
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
@@ -219,7 +219,8 @@ class Directives extends React.Component {
 						<Col span={12}>
 							<Card className={[cardWrapper, relevancyCard]}>
 								<Row className={cardHeading}>
-									How relevant search works with appbase.io
+									How relevant search works with
+									reactivesearch.io
 								</Row>
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>
@@ -257,7 +258,7 @@ class Directives extends React.Component {
 							<Card className={[cardWrapper, analyticsCard]}>
 								<Row className={cardHeading}>
 									How search and click analytics works with
-									appbase.io
+									reactivesearch.io
 								</Row>
 								<Row gutter={4} className={cardActions}>
 									<Col span={12}>

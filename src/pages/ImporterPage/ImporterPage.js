@@ -84,7 +84,8 @@ class ImporterPage extends React.Component {
 								<Col lg={18}>
 									<p>
 										Bring your data from JSON or CSV files
-										into appbase.io via the Import GUI.
+										into reactivesearch.io via the Import
+										GUI.
 										<br />
 										<br />
 										Or use our CLI tool for importing data

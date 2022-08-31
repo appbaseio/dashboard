@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { injectGlobal } from 'emotion';
 import { Layout } from 'antd';
 import { PersistGate } from 'redux-persist/integration/react';
-
+import AnnouncementBanner from './AnnouncementBanner';
 import configureStore from './store';
 import Dashboard from './Dashboard';
 
@@ -15,14 +15,13 @@ import { mediaKey } from './utils/media';
 injectGlobal`
 * {
 	box-sizing: border-box;
-	font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 body {
 	background-color: #fafafa !important;
 }
 h1, h2 {
 	margin: 0 0 8px;
-	font-weight: 700 !important;
 	line-height: 2.5rem;
 
 	${mediaKey.medium} {
@@ -49,7 +48,10 @@ const App = () => (
 	<Content>
 		<PersistGate loading={null} persistor={persistor}>
 			<Provider store={store}>
-				<Dashboard />
+				<>
+					<AnnouncementBanner />
+					<Dashboard />
+				</>
 			</Provider>
 		</PersistGate>
 	</Content>

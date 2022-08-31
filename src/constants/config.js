@@ -8,7 +8,7 @@ export const IMPORTER_LINK = 'https://importer.appbase.io/';
 export const exampleConfig = [
 	{
 		title: 'Import Data',
-		description: 'Learn how to bring your data to appbase.io.',
+		description: 'Learn how to bring your data to reactivesearch.io.',
 		image: {
 			alt: 'Import Data',
 			src: '/static/images/explainer/import_data.png',

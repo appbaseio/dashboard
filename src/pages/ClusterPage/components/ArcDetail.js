@@ -160,7 +160,7 @@ class ArcDetail extends React.Component {
 			<Fragment>
 				<li className={card}>
 					<div className="col light">
-						<h3>Appbase.io Server</h3>{' '}
+						<h3>Reactivesearch.io Server</h3>{' '}
 						<a
 							href="https://docs.appbase.io/docs/hosting/byoc/#using-appbaseio"
 							rel="noopener noreferrer"
@@ -173,13 +173,13 @@ class ArcDetail extends React.Component {
 					<div className="col">
 						<div className={clusterEndpoint}>
 							<h4>
-								Appbase.io
+								Reactivesearch.io
 								<CopyToClipboard
 									text={`${protocol}://${username}:${password}@${url}`}
 									onCopy={() =>
 										notification.success({
 											message:
-												'Appbase.io URL copied successfully',
+												'Reactivesearch.io URL copied successfully',
 										})
 									}
 								>

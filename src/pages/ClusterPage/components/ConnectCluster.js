@@ -106,7 +106,7 @@ class ConnectCluster extends React.Component {
 					<div style={{ display: 'flex' }}>
 						<div>
 							Try this 2-mins tutorial to get an overview of how
-							Appbase.io works
+							reactivesearch.io works
 						</div>
 
 						<ClusterExploreRedirect
@@ -143,7 +143,7 @@ class ConnectCluster extends React.Component {
 								strong
 								copyable={{ text: getURL(arcInstance) }}
 							>
-								Appbase.io URL (with credentials)
+								Reactivesearch.io URL (with credentials)
 							</Paragraph>
 							<Paragraph>
 								It is the recommended way to use the cluster
@@ -196,7 +196,7 @@ class ConnectCluster extends React.Component {
 							/>
 							<DirectLink
 								href="https://arc-api.appbase.io"
-								title="Appbase.io API Reference"
+								title="Reactivesearch.io API Reference"
 							/>
 						</Collapse.Panel>
 						<Collapse.Panel

@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 const container = css`
 	display: flex;
@@ -6,7 +7,8 @@ const container = css`
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
-	background-image: linear-gradient(120deg, #eef5ff 0%, #c2e9fb 100%);
+	background-image: url(${backgroundUrlImage});
+	filter: drop-shadow(0px 4px 60px rgba(0, 0, 0, 0.2));
 `;
 
 const card = css`
@@ -16,10 +18,21 @@ const card = css`
 	flex-direction: column;
 	text-align: center;
 	border-radius: 4px;
-	margin-top: 25px;
 	padding: 20px;
+	background: none !important;
 	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);
-
+	filter: drop-shadow(0px 4px 60px rgba(0, 0, 0, 0.2));
+	.ant-input {
+		border: none;
+		background: #f4f4f4;
+	}
+	.ant-card {
+		background: none !important;
+		padding: 0px;
+	}
+	.ant-card-body {
+		padding: 24px;
+	}
 	h2 {
 		font-weight: 400;
 		color: #424242;
@@ -79,7 +92,7 @@ const inputStyles = css`
 const githubBtn = css`
 	color: #fff;
 	background: rgb(22, 23, 26);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: #333;
@@ -91,7 +104,7 @@ const githubBtn = css`
 const googleBtn = css`
 	color: #fff;
 	background-color: rgb(234, 67, 53);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: rgb(245, 106, 94);
@@ -103,7 +116,7 @@ const googleBtn = css`
 const gitlabBtn = css`
 	color: #fff;
 	background-color: rgb(85, 68, 136);
-
+	border: 0;
 	&:hover,
 	&:focus {
 		background-color: rgb(64, 51, 104);

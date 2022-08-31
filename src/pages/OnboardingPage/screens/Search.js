@@ -105,8 +105,8 @@ export default class Search extends Component {
 						<header>
 							<h2>Set searchable fields</h2>
 							<p>
-								All fields in appbase.io are indexed to allow
-								for a blazing fast querying performance.
+								All fields in reactivesearch.io are indexed to
+								allow for a blazing fast querying performance.
 							</p>
 							<p>
 								However, all fields aren

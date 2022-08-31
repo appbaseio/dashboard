@@ -2,23 +2,24 @@ import React from 'react';
 import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import Flex from '../../batteries/components/shared/Flex';
-import Logo from '../Logo';
+import ReactivesearchLogo from '../Logo/ReactivesearchLogo';
 import AppbaseUsers from '../AppbaseUsers';
 import { main, footer } from './styles';
+
+const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 const LoginContainer = ({ children }) => (
 	<React.Fragment>
 		<Flex css={main}>
-			<Flex className="content" flexDirection="column">
-				<Logo width={200} />
+			<Flex className="content left-container" flexDirection="column">
 				<h2 className="title">
-					<mark>
-						Try <span className="highlight">appbase.io</span> for{' '}
-						<span className="highlight">free</span>!
-					</mark>
+					Try <span className="highlight">reactivesearch.io</span> for{' '}
+					<span className="highlight">free!</span>
 				</h2>
 				<div className="signup_description">
-					<h4>What's included in the 14-day trial</h4>
+					<p style={{ fontSize: 24, textAlign: 'center' }}>
+						WHAT'S INCLUDED IN THE 14-DAY TRIAL
+					</p>
 					<ul className="signup_benefits">
 						<li>
 							<Icon type="check" className="icon" />
@@ -68,11 +69,27 @@ const LoginContainer = ({ children }) => (
 					</ul>
 				</div>
 			</Flex>
-			<Flex flexDirection="column">{children}</Flex>
+			<Flex
+				flexDirection="column"
+				style={{
+					backgroundImage: `url(${backgroundUrlImage})`,
+					justifyContent: 'space-around',
+					alignItems: 'center',
+					height: '100vh',
+				}}
+			>
+				<Flex
+					flexDirection="column"
+					alignItems="center"
+					justifyContent="center"
+				>
+					{children}
+				</Flex>
+				<div css={footer}>
+					<AppbaseUsers title="Powering hundreds of search experiences" />
+				</div>
+			</Flex>
 		</Flex>
-		<div css={footer}>
-			<AppbaseUsers title="Powering hundreds of search experiences" />
-		</div>
 	</React.Fragment>
 );
 

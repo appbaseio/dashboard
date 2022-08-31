@@ -816,7 +816,7 @@ class NewCluster extends Component {
 								<Col span={18}>
 									<p>
 										Create a new ElasticSearch Cluster with
-										appbase.io.
+										reactivesearch.io.
 										<a
 											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
@@ -836,7 +836,7 @@ class NewCluster extends Component {
 								paddingBottom: 20,
 							}}
 						>
-							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
+							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside reactivesearch.io and get a better security, analytics, and  development experience.">
 								<Button
 									size="large"
 									type="primary"
@@ -1243,7 +1243,7 @@ class NewCluster extends Component {
 													);
 												}}
 											>
-												appbase.io dashboard
+												reactivesearch.io dashboard
 											</Button>
 											<p>
 												Includes index management, dev
