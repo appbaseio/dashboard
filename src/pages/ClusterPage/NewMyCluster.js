@@ -821,7 +821,7 @@ class NewMyCluster extends Component {
 											css={{
 												width: '100%',
 												maxWidth: 400,
-												marginBottom: 10,
+												marginBottom: 33,
 												outline: 'none',
 												border:
 													isInvalidURL &&

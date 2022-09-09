@@ -334,7 +334,7 @@ class ArcDetail extends React.Component {
 								css={{
 									width: '100%',
 									maxWidth: 'none !important',
-									marginBottom: 10,
+									marginBottom: 33,
 									outline: 'none',
 									border:
 										isInvalidURL && clusterURL !== ''
