@@ -10,7 +10,7 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC, regionsKeyMap } from './new';
+import { ARC_BYOC, REACTIVESEARCH_BYOC, regionsKeyMap } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -118,7 +118,6 @@ class NewMyCluster extends Component {
 	}
 
 	componentDidMount() {
-		const { region } = this.state;
 		this.getDefaultLocation();
 
 		const slug = generateSlug(2);
@@ -261,7 +260,7 @@ class NewMyCluster extends Component {
 			const body = {
 				url: this.state.clusterURL,
 				backend: this.state.backend,
-				reactivesearch_image: '8.4.0-byoc',
+				reactivesearch_image: REACTIVESEARCH_BYOC,
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
 				location: this.state.region,
@@ -485,10 +484,10 @@ class NewMyCluster extends Component {
 						if (counter > 12) {
 							total += res;
 						}
-						counter++;
+						counter += 1;
 					})
 					.catch(err => {
-						counter++;
+						counter += 1;
 						console.error(err);
 					});
 			}
@@ -512,6 +511,7 @@ class NewMyCluster extends Component {
 						...providerRegions[0],
 						dist: Number.MAX_SAFE_INTEGER,
 					};
+					// eslint-disable-next-line no-restricted-syntax
 					for (const [key, value] of Object.entries(
 						regions[provider],
 					)) {
@@ -563,7 +563,6 @@ class NewMyCluster extends Component {
 			clusters,
 			changed,
 			clusterName,
-			activeKey,
 		} = this.state;
 		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
 
@@ -759,6 +758,7 @@ class NewMyCluster extends Component {
 										css={{
 											padding: 30,
 											flexWrap: 'wrap',
+											gap: '2rem',
 										}}
 									>
 										{Object.values(BACKENDS).map(
