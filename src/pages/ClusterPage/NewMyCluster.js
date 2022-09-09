@@ -26,6 +26,7 @@ import {
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
+import KeyValueAdder from '../../components/KeyValueAdder';
 
 let interval;
 const { TabPane } = Tabs;
@@ -114,6 +115,7 @@ class NewMyCluster extends Component {
 				isLoading: true,
 			},
 			backend: BACKENDS.ELASTICSEARCH.name,
+			verifyClusterHeaders: {},
 		};
 	}
 
@@ -180,14 +182,14 @@ class NewMyCluster extends Component {
 	};
 
 	handleVerify = async () => {
-		const { clusterURL, backend } = this.state;
+		const { clusterURL, backend, verifyClusterHeaders } = this.state;
 		if (clusterURL) {
 			this.setState({
 				verifyingURL: true,
 				verifiedCluster: false,
 				clusterVersion: '',
 			});
-			verifyCluster(clusterURL, backend)
+			verifyCluster(clusterURL, backend, verifyClusterHeaders)
 				.then(data => {
 					const version = get(data, 'version.number', '');
 					this.setState({
@@ -837,6 +839,14 @@ class NewMyCluster extends Component {
 													e.target.value,
 												)
 											}
+										/>{' '}
+										<KeyValueAdder
+											title="Headers (optional)"
+											onUpdateItems={headers => {
+												this.setState({
+													verifyClusterHeaders: headers,
+												});
+											}}
 										/>
 										<Button
 											onClick={this.handleVerify}
@@ -845,7 +855,6 @@ class NewMyCluster extends Component {
 										>
 											Verify Connection
 										</Button>
-
 										{verifiedCluster ? (
 											<Tag
 												style={{ marginTop: 10 }}
@@ -855,7 +864,6 @@ class NewMyCluster extends Component {
 												Detected: {clusterVersion}
 											</Tag>
 										) : null}
-
 										{isInvalidURL ? (
 											<p
 												style={{

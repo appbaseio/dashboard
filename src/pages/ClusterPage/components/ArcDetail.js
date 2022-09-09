@@ -18,6 +18,7 @@ import {
 	fadeOutStyles,
 } from '../styles';
 import EditableCredentials from './EditableCredentials';
+import KeyValueAdder from '../../../components/KeyValueAdder';
 
 class ArcDetail extends React.Component {
 	constructor(props) {
@@ -36,18 +37,19 @@ class ArcDetail extends React.Component {
 				  )}`
 				: '',
 			backend: BACKENDS.ELASTICSEARCH.name,
+			verifyClusterHeaders: {},
 		};
 	}
 
 	handleVerify = async () => {
-		const { clusterURL, backend } = this.state;
+		const { clusterURL, backend, verifyClusterHeaders } = this.state;
 		if (clusterURL) {
 			this.setState({
 				verifyingURL: true,
 				verifiedCluster: false,
 				clusterVersion: '',
 			});
-			verifyCluster(clusterURL, backend)
+			verifyCluster(clusterURL, backend, verifyClusterHeaders)
 				.then(data => {
 					const version = get(data, 'version.number', '');
 					this.setState({
@@ -345,6 +347,14 @@ class ArcDetail extends React.Component {
 								value={clusterURL}
 								name="clusterURL"
 								onChange={this.handleInput}
+							/>
+							<KeyValueAdder
+								title="Headers (optional)"
+								onUpdateItems={headers => {
+									this.setState({
+										verifyClusterHeaders: headers,
+									});
+								}}
 							/>
 							<Button
 								onClick={this.handleVerify}

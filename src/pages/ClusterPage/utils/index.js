@@ -418,7 +418,7 @@ export function deployMyCluster(body) {
 	});
 }
 
-export async function verifyCluster(url, backend) {
+export async function verifyCluster(url, backend, headers) {
 	try {
 		const res = await fetch(
 			`${ACC_API}/v2/_verify_search_engine_connection`,
@@ -427,6 +427,7 @@ export async function verifyCluster(url, backend) {
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json',
+					...headers,
 				},
 				body: JSON.stringify({
 					url,
