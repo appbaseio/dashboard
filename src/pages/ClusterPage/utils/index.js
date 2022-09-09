@@ -387,7 +387,7 @@ export function deleteSharedUser(id, email) {
 export function deployMyCluster(body) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		fetch(`${ACC_API}/v1/_deploy_recipe/arc`, {
+		fetch(`${ACC_API}/v2/_deploy_recipe/reactivesearch`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -420,17 +420,20 @@ export function deployMyCluster(body) {
 
 export async function verifyCluster(url, backend) {
 	try {
-		const res = await fetch(`${ACC_API}/v1/_verify_es_connection`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		const res = await fetch(
+			`${ACC_API}/v2/_verify_search_engine_connection`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					url,
+					backend,
+				}),
 			},
-			body: JSON.stringify({
-				url,
-				backend,
-			}),
-		});
+		);
 
 		if (res.status >= 400 && res.status < 500) {
 			const textData = await res.text();
