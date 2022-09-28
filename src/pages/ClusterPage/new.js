@@ -49,15 +49,15 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['8.3.2', '7.17.5'];
+const esVersions = ['8.4.1', '7.17.5'];
 
-const openSearchVersions = ['2.1.0'];
+const openSearchVersions = ['2.2.1'];
 
 let interval;
 
-export const V7_ARC = '8.4.0-cluster';
-export const V6_ARC = '8.4.0-cluster';
-export const ARC_BYOC = '8.4.0-byoc';
+export const V7_ARC = '8.6.1-cluster';
+export const V6_ARC = '8.6.1-cluster';
+export const ARC_BYOC = '8.6.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
