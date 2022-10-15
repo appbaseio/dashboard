@@ -263,6 +263,12 @@ export const regions = {
 			lat: '35.6828387',
 			lon: '139.7594549',
 		},
+		'af-south-1': {
+			name: 'South Africa',
+			flag: 'australia.png',
+			lat: '-33.768528',
+			lon: '150.9568559523945',
+		},
 	},
 };
 
