@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+
 const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 const container = css`
