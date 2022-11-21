@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import EmailAuth from '../LoginPage/EmailAuth';
 import LoginContainer from '../../components/LoginContainer';
 import { ACC_API } from '../../constants/config';
-
+import ReactivesearchLogo from '../../components/Logo/ReactivesearchLogo';
 import { card, githubBtn, googleBtn, gitlabBtn } from '../LoginPage/styles';
 import { checkbox } from './styles';
 
@@ -49,13 +49,8 @@ class SignupPage extends React.Component {
 		return (
 			<LoginContainer>
 				<React.Fragment>
-					<Card
-						className={card}
-						style={{
-							marginTop: 30,
-						}}
-						bordered={false}
-					>
+					<ReactivesearchLogo width={250} />
+					<Card className={card} bordered={false}>
 						<h2>Sign up to get started</h2>
 
 						<section style={{ marginBottom: 20 }}>
@@ -124,6 +119,7 @@ class SignupPage extends React.Component {
 									className={githubBtn}
 									disabled={!hasAgreedTOS}
 									size="small"
+									style={{ border: 0 }}
 								>
 									Sign up with GitHub
 								</Button>
@@ -134,6 +130,7 @@ class SignupPage extends React.Component {
 									disabled={!hasAgreedTOS}
 									className={googleBtn}
 									size="small"
+									style={{ border: 0 }}
 								>
 									Sign up with Google
 								</Button>
@@ -144,6 +141,7 @@ class SignupPage extends React.Component {
 									disabled={!hasAgreedTOS}
 									className={gitlabBtn}
 									size="small"
+									style={{ border: 0 }}
 								>
 									Sign up with Gitlab
 								</Button>
@@ -169,6 +167,7 @@ class SignupPage extends React.Component {
 								margin: '20px 0',
 								fontSize: 18,
 								letterSpacing: '0.02rem',
+								whiteSpace: 'inherit',
 							}}
 						>
 							Already have account? &nbsp; Login here

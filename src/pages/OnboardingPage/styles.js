@@ -10,7 +10,7 @@ const onboardingStyles = css`
 	height: 100vh;
 	position: relative;
 	color: #fff;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Inter', sans-serif;
 	a.dashed {
 		border-bottom: 1px dashed #337ab7;
 		&:hover,

@@ -10,7 +10,12 @@ const styles = css`
 
 const Loader = () => (
 	<div className={styles}>
-		<img src="/static/images/loader.svg" alt="loading" />
+		<object
+			data="/static/images/reactivesearch_loader.svg"
+			type="image/svg+xml"
+		>
+			<img src="/static/images/reactivesearch_loader.svg" alt="loading" />
+		</object>
 	</div>
 );
 

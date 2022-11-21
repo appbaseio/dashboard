@@ -5,8 +5,7 @@ import { object, string, bool, number, array } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
-
-import Logo from '../Logo';
+import ReactivesearchLogo from '../Logo/ReactivesearchLogo';
 import UserMenu from '../AppHeader/UserMenu';
 import MenuSlider from './MenuSlider';
 import headerStyles from './styles';
@@ -44,7 +43,7 @@ const FullHeader = ({
 	<Header className={headerStyles}>
 		<div className="row">
 			<Link to="/">
-				<Logo />
+				<ReactivesearchLogo width={170} />
 			</Link>
 			<Menu
 				mode="horizontal"

@@ -371,8 +371,8 @@ class ClusterPage extends Component {
 								<span>
 									Bring your own Cluster allows you to bring
 									an externally hosted ElasticSearch and take
-									advantage of appbase.io features such as
-									security, analytics, better developer
+									advantage of reactivesearch.io features such
+									as security, analytics, better developer
 									experience.{' '}
 									<a
 										href="docs.appbase.io"
@@ -705,8 +705,8 @@ class ClusterPage extends Component {
 									</div>
 									<div className="banner__text">
 										While your cluster is getting deployed,
-										get familiarized with the appbase.io
-										platform.
+										get familiarized with the
+										reactivesearch.io platform.
 									</div>
 								</div>
 
@@ -747,7 +747,7 @@ class ClusterPage extends Component {
 														14,
 												  )}...`
 										}" cluster is deployed,
-										let's get you started with the appbase.io platform.`}
+										let's get you started with the reactivesearch.io platform.`}
 									</div>
 								</div>
 

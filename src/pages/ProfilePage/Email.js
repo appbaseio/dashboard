@@ -11,7 +11,7 @@ const data = [
 		id: 'newsletters',
 		label: 'Newsletter',
 		description:
-			'Get a monthly digest on the latest appbase.io updates and blog posts.',
+			'Get a monthly digest on the latest reactivesearch.io updates and blog posts.',
 	},
 	{
 		id: 'product_updates',

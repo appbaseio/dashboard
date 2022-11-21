@@ -109,7 +109,7 @@ class Unsubscribe extends Component {
 					{typeFormStep === TYPE_FORM.SUBMITTED && (
 						<p>
 							Thanks for giving us feedback. We{"'"}ll keep in
-							mind to make appbase.io better.
+							mind to make reactivesearch.io better.
 						</p>
 					)}
 				</>

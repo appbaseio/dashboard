@@ -49,16 +49,15 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['8.4.1', '7.17.5'];
+const esVersions = ['8.5.0', '7.17.7'];
 
-const openSearchVersions = ['2.2.1'];
+const openSearchVersions = ['2.3.0'];
 
 let interval;
 
-export const ARC_BYOC_LATEST = '8.6.1-byoc';
-export const ARC_CLUSTER_LATEST = '8.6.1-byoc';
-export const ARC_CLUSTER_DEPLOYMENT = '8.4.0-cluster';
-export const ARC_BYOC_DEPLOYMENT = '8.4.0-byoc';
+export const V7_ARC = '8.8.1-cluster';
+export const V6_ARC = '8.8.1-cluster';
+export const ARC_BYOC = '8.8.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
 
 export const arcVersions = {
@@ -816,8 +815,8 @@ class NewCluster extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Create a new ElasticSearch Cluster with
-										appbase.io.
+										Create a new ElasticSearch or OpenSearch
+										cluster{' '}
 										<a
 											href="https://docs.appbase.io"
 											rel="noopener noreferrer"
@@ -837,7 +836,7 @@ class NewCluster extends Component {
 								paddingBottom: 20,
 							}}
 						>
-							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside appbase.io and get a better security, analytics, and  development experience.">
+							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside reactivesearch.io and get a better security, analytics, and  development experience.">
 								<Button
 									size="large"
 									type="primary"
@@ -1244,7 +1243,7 @@ class NewCluster extends Component {
 													);
 												}}
 											>
-												appbase.io dashboard
+												Built-in dashboard
 											</Button>
 											<p>
 												Includes index management, dev

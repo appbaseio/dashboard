@@ -181,10 +181,13 @@ class Introduction extends Component {
 					</div>
 					<div className="content">
 						<header>
-							<h2>Creating your first app with appbase.io</h2>
+							<h2>
+								Creating your first app with reactivesearch.io
+							</h2>
 							<p>
-								An app in appbase.io is equivalent to an index
-								in Elasticsearch (or like a database in SQL).
+								An app in reactivesearch.io is equivalent to an
+								index in Elasticsearch (or like a database in
+								SQL).
 							</p>
 						</header>
 						{this.renderAppInput()}

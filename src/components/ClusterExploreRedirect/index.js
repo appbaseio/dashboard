@@ -12,9 +12,8 @@ const ClusterExploreRedirect = ({
 	customComponent,
 	cus_id,
 }) => {
-	console.log('cus_id', cus_id);
 	const exploreClusterInNewTab = () => {
-		let mainURL = 'http://dash.appbase.io';
+		let mainURL = 'https://dash.reactivesearch.io';
 		let arcParams = '';
 
 		if (urlParams) {

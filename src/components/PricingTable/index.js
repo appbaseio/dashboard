@@ -396,7 +396,8 @@ class PricingTable extends Component {
 								</Price>
 								<Caption>
 									<a href="https://appbase.io/static/poweredby_logo_placement.zip">
-										Requires appbase.io logo placement
+										Requires reactivesearch.io logo
+										placement
 									</a>
 								</Caption>
 							</td>
@@ -739,7 +740,7 @@ class PricingTable extends Component {
 							<td />
 							<td>
 								<Stripe
-									name="Appbase.io Free Plan"
+									name="Reactivesearch.io Free Plan"
 									amount={0}
 									token={token =>
 										this.handleToken(token, 'free')
@@ -764,7 +765,7 @@ class PricingTable extends Component {
 							</td>
 							<td>
 								<Stripe
-									name="Appbase.io Bootstrap Plan"
+									name="Reactivesearch.io Bootstrap Plan"
 									amount={
 										this.plans.bootstrap.basePrice * 100
 									}
@@ -804,7 +805,7 @@ class PricingTable extends Component {
 							</td>
 							<td>
 								<Stripe
-									name="Appbase.io Growth Plan"
+									name="Reactivesearch.io Growth Plan"
 									disabled={isGrowthPlan}
 									amount={this.plans.growth.basePrice * 100}
 									token={token =>
@@ -860,7 +861,7 @@ class PricingTable extends Component {
 						isCurrentPlan={isFreePlan}
 						buttonText={isFreePlan ? 'Current Plan' : undefined}
 						price="$0"
-						stripeName="Appbase.io Free Plan"
+						stripeName="Reactivesearch.io Free Plan"
 						amount={0}
 						token={token => this.handleToken(token, 'free')}
 						stripeKey={this.stripeKey}
@@ -878,7 +879,7 @@ class PricingTable extends Component {
 						name="Bootstrap"
 						isCurrentPlan={isBootstrapPlan}
 						price={`$${this.plans.bootstrap.basePrice}`}
-						stripeName="Appbase.io Bootstrap Plan"
+						stripeName="Reactivesearch.io Bootstrap Plan"
 						amount={this.plans.bootstrap.basePrice * 100}
 						token={token =>
 							this.handleToken(token, 'bootstrap-monthly')
@@ -915,7 +916,7 @@ class PricingTable extends Component {
 						name="Growth"
 						isCurrentPlan={isGrowthPlan}
 						price={`$${this.plans.growth.basePrice}`}
-						stripeName="Appbase.io Growth Plan"
+						stripeName="Reactivesearch.io Growth Plan"
 						amount={this.plans.growth.basePrice * 100}
 						token={token =>
 							this.handleToken(token, 'growth-monthly')
