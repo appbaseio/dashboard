@@ -1,5 +1,19 @@
 import { ACC_API } from '../constants/config';
 
+export async function createUserIfNew(idToken) {
+	const response = await fetch(`${ACC_API}/user/signup-if-new-user`, {
+		body: JSON.stringify({
+			idToken,
+		}),
+		method: 'POST',
+	});
+
+	if (response.status === 200) {
+		return response;
+	}
+	console.log(response);
+	return response;
+}
 export async function getUser() {
 	const response = await fetch(`${ACC_API}/user`, { credentials: 'include' });
 	const data = await response.json();

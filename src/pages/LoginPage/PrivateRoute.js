@@ -6,7 +6,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import HelpChat from '../../components/HelpChat';
 import Loader from '../../components/Loader';
 import { injectAuthTokenHeaderIntoFetchGlobally } from '../../utils/helper';
-import { getUser } from '../../utils';
+import { createUserIfNew, getUser } from '../../utils';
 
 const PrivateRoute = ({
 	component: Component,
@@ -20,16 +20,24 @@ const PrivateRoute = ({
 		getAccessTokenSilently,
 		isLoading,
 		loginWithRedirect,
+		getIdTokenClaims,
 	} = useAuth0();
 
 	const getAuth0AccessToken = async () => {
 		try {
 			loadAppbaseUser();
 			const accessToken = await getAccessTokenSilently();
+
+			// https://github.com/auth0/auth0-spa-js/issues/693#issuecomment-757125378
+			const token_id = (await getIdTokenClaims()).__raw;
+
 			if (accessToken) {
 				window.localStorage.setItem('AUTH_0_ACCESS_TOKEN', accessToken);
-
 				injectAuthTokenHeaderIntoFetchGlobally();
+
+				// generic request to check whether user exists in appbasde DB,
+				// if not then we automatically sign him in based on auth0 token_id
+				await createUserIfNew(token_id);
 
 				const { user: userObj } = await getUser();
 
