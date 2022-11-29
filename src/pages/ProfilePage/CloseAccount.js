@@ -22,8 +22,6 @@ const closeAccCardStyles = css`
 	}
 `;
 
-const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
-
 function removeAllCookies() {
 	const cookiesString = document.cookie;
 	const cookies = cookiesString.split(';');
@@ -54,7 +52,7 @@ const deleteUser = async () => {
 		}
 		localStorage.clear();
 		removeAllCookies();
-		window.location.href = logoutURL;
+		window.location.href = window.location.origin;
 	} catch (err) {
 		notification.error({
 			message:
