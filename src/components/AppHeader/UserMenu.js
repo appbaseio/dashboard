@@ -4,15 +4,8 @@ import { object } from 'prop-types';
 import { Menu, Avatar, Dropdown, Icon } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
+import { useAuth0 } from '@auth0/auth0-react';
 import { media } from '../../utils/media';
-import { ACC_API } from '../../constants/config';
-
-const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
-
-const handleLogout = () => {
-	localStorage.setItem('hasVisitedTutorial', false);
-	window.location.href = logoutURL;
-};
 
 const userMenu = css`
 	${media.medium(css`
@@ -40,6 +33,15 @@ const userEmailDetail = css`
 `;
 
 const UserMenu = ({ user }) => {
+	const { logout } = useAuth0();
+	const handleLogout = () => {
+		localStorage.setItem('hasVisitedTutorial', false);
+		window.localStorage.removeItem('AUTH_0_ACCESS_TOKEN');
+
+		logout({
+			returnTo: window.location.origin,
+		});
+	};
 	const menu = (
 		<Menu style={{ width: 'auto' }}>
 			<Menu.Item className={userEmailDetail}>
