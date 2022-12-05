@@ -5,7 +5,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import { useGoogleOneTapLogin } from 'react-google-one-tap-login';
 import { Button } from 'antd';
-import { isError } from 'lodash';
 import { css } from 'emotion';
 import HelpChat from '../../components/HelpChat';
 import Loader from '../../components/Loader';
@@ -109,11 +108,12 @@ const PrivateRoute = ({
 	}, []);
 
 	useGoogleOneTapLogin({
-		disabled: !(
-			!isLoading &&
-			!isAuthenticatedState &&
-			(!user || !user.data)
-		),
+		disabled:
+			isAuthenticated ||
+			parseHash().access_token ||
+			isLoading ||
+			isAuthenticatedState ||
+			(user && user.data),
 		onError: () => loginWithRedirect(),
 		onSuccess: response => {
 			try {
@@ -156,7 +156,7 @@ const PrivateRoute = ({
 		return <Loader />;
 	}
 
-	if (isAuthenticatedState && (!user || !isError.data)) {
+	if (isAuthenticatedState && (!user || !user.data)) {
 		return <Loader />;
 	}
 	return (
