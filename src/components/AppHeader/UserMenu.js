@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { object } from 'prop-types';
+import { func, object } from 'prop-types';
 import { Menu, Avatar, Dropdown, Icon } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
 import { useAuth0 } from '@auth0/auth0-react';
 import { media } from '../../utils/media';
+import webAuth from '../../utils/WebAuthProxy';
 
 const userMenu = css`
 	${media.medium(css`
@@ -32,15 +33,27 @@ const userEmailDetail = css`
 	}
 `;
 
-const UserMenu = ({ user }) => {
-	const { logout } = useAuth0();
+const UserMenu = ({ user, resetAppbaseUser }) => {
+	const { logout, isAuthenticated } = useAuth0();
 	const handleLogout = () => {
 		localStorage.setItem('hasVisitedTutorial', false);
 		window.localStorage.removeItem('AUTH_0_ACCESS_TOKEN');
 
-		logout({
-			returnTo: window.location.origin,
-		});
+		try {
+			if (isAuthenticated) {
+				logout({
+					returnTo: window.location.origin,
+				});
+			} else {
+				webAuth.logout({
+					returnTo: window.location.origin,
+				});
+			}
+		} catch (error) {
+			console.log('Error logging out...', error);
+		} finally {
+			resetAppbaseUser();
+		}
 	};
 	const menu = (
 		<Menu style={{ width: 'auto' }}>
@@ -91,6 +104,7 @@ const UserMenu = ({ user }) => {
 
 UserMenu.propTypes = {
 	user: object.isRequired,
+	resetAppbaseUser: func.isRequired,
 };
 
 export default UserMenu;

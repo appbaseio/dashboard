@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Icon, Button, Row, Tag, Tooltip } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
-import { string, object, bool, number } from 'prop-types';
+import { string, object, bool, number, func } from 'prop-types';
 import { css } from 'react-emotion';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -14,6 +14,7 @@ import headerStyles from './styles';
 
 import { getAppInfoByName } from '../../batteries/modules/selectors';
 import { getAppInfo } from '../../batteries/modules/actions';
+import { resetUser } from '../../actions';
 
 const { Header } = Layout;
 const noBorder = css`
@@ -68,6 +69,7 @@ class AppHeader extends React.Component {
 			match,
 			appOwner,
 			esVersion,
+			resetAppbaseUser,
 		} = this.props;
 
 		return (
@@ -127,7 +129,7 @@ class AppHeader extends React.Component {
 					>
 						<Icon type="rocket" /> Docs
 					</a>
-					<UserMenu user={user} />
+					<UserMenu user={user} resetAppbaseUser={resetAppbaseUser} />
 				</Row>
 				<MenuSlider />
 			</Header>
@@ -141,6 +143,7 @@ AppHeader.propTypes = {
 	isUsingTrial: bool.isRequired,
 	daysLeft: number.isRequired,
 	big: bool.isRequired,
+	resetAppbaseUser: func.isRequired,
 };
 
 AppHeader.defaultProps = {
@@ -159,6 +162,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	fetchAppInfo: appName => dispatch(getAppInfo(appName)),
+	resetAppbaseUser: () => dispatch(resetUser()),
 });
 
 export default withRouter(

@@ -37,6 +37,13 @@ export default function userReducer(
 				error: action.error,
 			};
 		}
+		case USER.RESET: {
+			return {
+				isLoading: false,
+				data: null,
+				error: null,
+			};
+		}
 		default:
 			return state;
 	}
