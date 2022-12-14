@@ -43,6 +43,15 @@ const PrivateRoute = ({
 		isAuthenticated,
 	);
 
+	const authUsingEmail = emailParam => {
+		if (!emailParam) return;
+		webAuth.authorize({
+			connection: 'google-oauth2',
+			login_hint: emailParam,
+			responseType: 'token id_token',
+		});
+	};
+
 	const getAuth0AccessToken = async () => {
 		try {
 			loadAppbaseUser();
@@ -97,12 +106,16 @@ const PrivateRoute = ({
 
 	useEffect(() => {
 		if (window.location.hash) {
-			const { access_token } = parseHash(window.location.hash);
+			const { access_token, email } = parseHash(window.location.hash);
 
 			if (access_token) {
 				if (!isAuthenticatedState) {
 					setIsAuthenticatedState(true);
+					return;
 				}
+			}
+			if (email) {
+				authUsingEmail(email);
 			}
 		}
 	}, []);
@@ -113,16 +126,13 @@ const PrivateRoute = ({
 			parseHash().access_token ||
 			isLoading ||
 			isAuthenticatedState ||
-			(user && user.data),
+			(user && user.data) ||
+			parseHash().email,
 		onError: () => loginWithRedirect(),
 		onSuccess: response => {
 			try {
 				if (!isAuthenticatedState && (!user || !user.data)) {
-					webAuth.authorize({
-						connection: 'google-oauth2',
-						login_hint: response.email,
-						responseType: 'token id_token',
-					});
+					authUsingEmail(response.email);
 				}
 			} catch (error) {
 				console.log(error);
