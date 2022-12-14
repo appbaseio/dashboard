@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import { useGoogleOneTapLogin } from 'react-google-one-tap-login';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { css } from 'emotion';
 import HelpChat from '../../components/HelpChat';
 import Loader from '../../components/Loader';
@@ -38,6 +38,7 @@ const PrivateRoute = ({
 		loginWithRedirect,
 		getIdTokenClaims,
 	} = useAuth0();
+	const [loadingState, setLoadingState] = useState(false);
 
 	const [isAuthenticatedState, setIsAuthenticatedState] = useState(
 		isAuthenticated,
@@ -45,11 +46,18 @@ const PrivateRoute = ({
 
 	const authUsingEmail = emailParam => {
 		if (!emailParam) return;
-		webAuth.authorize({
-			connection: 'google-oauth2',
-			login_hint: emailParam,
-			responseType: 'token id_token',
-		});
+		try {
+			setLoadingState(true);
+			webAuth.authorize({
+				connection: 'google-oauth2',
+				login_hint: emailParam,
+				responseType: 'token id_token',
+			});
+		} catch (error) {
+			setLoadingState(false);
+			console.log(error);
+			message.error("Couldn't log you in!!!");
+		}
 	};
 
 	const getAuth0AccessToken = async () => {
@@ -100,6 +108,7 @@ const PrivateRoute = ({
 
 	useEffect(() => {
 		if (isAuthenticatedState && !user.data) {
+			setLoadingState(false);
 			getAuth0AccessToken();
 		}
 	}, [isAuthenticatedState]);
@@ -145,7 +154,7 @@ const PrivateRoute = ({
 	});
 
 	if (!isAuthenticatedState && (!user || !user.data)) {
-		if (!isLoading) {
+		if (!isLoading && !loadingState) {
 			return (
 				<Button
 					type="primary"
