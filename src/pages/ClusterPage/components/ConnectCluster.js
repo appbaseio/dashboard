@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import { getUrlParams } from '../../../utils/helper';
 import ClusterExploreRedirect from '../../../components/ClusterExploreRedirect';
 
-const getURL = ({ username, password, url: fullURL }) => {
+const getURL = ({ username = '', password = '', url: fullURL = '' }) => {
 	const [protocol, url] = fullURL.split('://');
 	return `${protocol}://${username}:${password}@${url}`.replace(/\/$/, '');
 };
@@ -84,7 +84,8 @@ class ConnectCluster extends React.Component {
 	render() {
 		const { visible } = this.state;
 		const { cluster, deployment } = this.props;
-		const arcInstance = deployment.addons.find(item => item.name === 'arc');
+		const arcInstance =
+			deployment?.addons?.find(item => item.name === 'arc') || {};
 		return (
 			<div>
 				<Button
@@ -164,9 +165,8 @@ class ConnectCluster extends React.Component {
 							</Paragraph>
 							<Paragraph>
 								You can also use the ElasticSearch URL directly,
-								although we don
-								{"'"}t recommend this to be used in a public
-								environment.
+								although we don 't recommend this to be used in
+								a public environment.
 							</Paragraph>
 							<Divider />
 							<Paragraph strong>API Usage Example</Paragraph>

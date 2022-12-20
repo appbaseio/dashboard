@@ -541,7 +541,7 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn{"'"}t available yet
+						Cluster status isn't available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes
 						live.
@@ -816,10 +816,12 @@ class ClusterInfo extends Component {
 								) : null}
 								{this.state.arc &&
 									(this.state.arcVersion ||
-										arcDeployment.image) &&
+										(arcDeployment &&
+											arcDeployment?.image)) &&
 									checkIfUpdateIsAvailable(
 										this.state.arcVersion ||
-											arcDeployment.image,
+											(arcDeployment &&
+												arcDeployment.image),
 										this.state.cluster.recipe,
 									) &&
 									!isViewer && (
