@@ -880,6 +880,10 @@ class ClusterInfo extends Component {
 										id={get(this, 'props.match.params.id')}
 										isViewer={isViewer}
 										isExternalCluster={isExternalCluster}
+										isActive={
+											this.state.cluster.status ===
+											'active'
+										}
 									/>
 									<RightContainer>
 										<Switch>
