@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Icon, message } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
+import { Alert, message } from 'antd';
 import { deployClusterStyles } from './styles';
 
 const ErrorPage = ({ message }) => {
@@ -16,7 +17,7 @@ const ErrorPage = ({ message }) => {
 								marginBottom: 10,
 							}}
 						>
-							<Icon type="info-circle" theme="filled" />
+							<InfoCircleFilled />
 							<div style={{ fontWeight: 'bold' }}>
 								&nbsp;Not found:&nbsp;
 							</div>

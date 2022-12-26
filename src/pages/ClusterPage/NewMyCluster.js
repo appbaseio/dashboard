@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Tabs, Tag, Tooltip, Row, Col } from 'antd';
+import { ArrowRightOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Modal, Button, Tabs, Tag, Tooltip, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
@@ -616,7 +617,7 @@ class NewMyCluster extends Component {
 													'/clusters/new',
 												);
 											}}
-											icon="question-circle"
+											icon={<QuestionCircleOutlined />}
 										>
 											Don&apos;t have a Cluster
 										</Button>
@@ -872,10 +873,7 @@ class NewMyCluster extends Component {
 												cluster
 											</>
 										)}
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								) : (
 									<Button
@@ -892,10 +890,7 @@ class NewMyCluster extends Component {
 										) : (
 											<>Create Cluster</>
 										)}
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								)}
 							</div>

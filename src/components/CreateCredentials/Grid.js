@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tooltip, Icon } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 import styles from './styles';
 import Flex from '../../batteries/components/shared/Flex';
 
@@ -28,7 +29,7 @@ const Grid = ({
 							placement="rightTop"
 							{...toolTipProps}
 						>
-							<Icon type="info-circle" theme="outlined" />
+							<InfoCircleOutlined />
 						</Tooltip>
 					)}
 				</span>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Icon, Button, Row, Tag, Tooltip } from 'antd';
+import { ArrowLeftOutlined, RocketOutlined } from '@ant-design/icons';
+import { Layout, Menu, Button, Row, Tag, Tooltip } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import { string, object, bool, number } from 'prop-types';
 import { css } from 'react-emotion';
@@ -84,7 +85,7 @@ class AppHeader extends React.Component {
 						style={{ padding: 0 }}
 					>
 						<Link to="/">
-							<Icon type="arrow-left" />
+							<ArrowLeftOutlined />
 						</Link>
 					</Menu.Item>
 					<Menu.Item key="1" className={noBorder}>
@@ -125,7 +126,7 @@ class AppHeader extends React.Component {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<Icon type="rocket" /> Docs
+						<RocketOutlined /> Docs
 					</a>
 					<UserMenu user={user} />
 				</Row>

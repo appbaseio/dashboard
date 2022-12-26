@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, Icon, notification } from 'antd';
+import { CopyOutlined, DeleteOutlined, ForkOutlined } from '@ant-design/icons';
+import { Row, Col, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -152,7 +153,7 @@ class ActionButtons extends React.Component {
 						className={columnSeparator}
 						onClick={this.handleClone}
 					>
-						<Icon className={actionIcon} type="fork" />
+						<ForkOutlined className={actionIcon} />
 						Clone
 					</Col>
 
@@ -162,7 +163,7 @@ class ActionButtons extends React.Component {
 							onCopy={this.copyWriteKey}
 						>
 							<Col span={6} className={columnSeparator}>
-								<Icon className={actionIcon} type="copy" />
+								<CopyOutlined className={actionIcon} />
 								Write Key
 							</Col>
 						</CopyToClipboard>
@@ -177,7 +178,7 @@ class ActionButtons extends React.Component {
 								span={shared ? 12 : 6}
 								className={columnSeparator}
 							>
-								<Icon className={actionIcon} type="copy" />
+								<CopyOutlined className={actionIcon} />
 								Read Key
 							</Col>
 						</CopyToClipboard>
@@ -192,7 +193,7 @@ class ActionButtons extends React.Component {
 								span={shared ? 12 : 6}
 								className={columnSeparator}
 							>
-								<Icon className={actionIcon} type="copy" />
+								<CopyOutlined className={actionIcon} />
 								Shared Key
 							</Col>
 						</CopyToClipboard>
@@ -202,7 +203,7 @@ class ActionButtons extends React.Component {
 							onClick={this.handleDeleteModal}
 							className={deleteButton}
 						>
-							<Icon className={actionIcon} type="delete" />
+							<DeleteOutlined className={actionIcon} />
 							Delete App
 						</Col>
 					)}

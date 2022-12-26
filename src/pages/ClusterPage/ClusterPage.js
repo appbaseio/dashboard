@@ -1,10 +1,17 @@
-import { Button, Col, Divider, Icon, Row, Tooltip } from 'antd';
-import { withRouter } from 'react-router-dom';
+import Icon, {
+	CheckCircleTwoTone,
+	DeleteOutlined,
+	InfoCircleTwoTone,
+	PlusOutlined,
+	RedoOutlined,
+	WarningTwoTone,
+} from '@ant-design/icons';
+import { Button, Col, Divider, Row, Tooltip } from 'antd';
+import { withRouter, Link } from 'react-router-dom';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
@@ -320,9 +327,7 @@ class ClusterPage extends Component {
 							{cluster.status === 'failed' &&
 							getHoursDiff(cluster.created_at) <= 72 ? (
 								<span className="tag tag-issue">
-									<Icon
-										type="warning"
-										theme="twoTone"
+									<WarningTwoTone
 										twoToneColor="#ffae42"
 										style={{
 											fontSize: 18,
@@ -346,7 +351,7 @@ class ClusterPage extends Component {
 								cluster.status === 'failed') ? (
 								<Button
 									type="danger"
-									icon="delete"
+									icon={<DeleteOutlined />}
 									className="showOnHover"
 									onClick={() =>
 										this.setDeleteCluster(cluster)
@@ -684,7 +689,7 @@ class ClusterPage extends Component {
 						>
 							<Link to="/clusters/new">
 								<Button size="large" type="primary" block>
-									<Icon type="plus" /> Create a New Cluster
+									<PlusOutlined /> Create a New Cluster
 								</Button>
 							</Link>
 						</Col>
@@ -696,9 +701,7 @@ class ClusterPage extends Component {
 							<article className="banner banner-bg banner-border">
 								<div className="banner__content-wraper">
 									<div className="banner__logo-wrapper">
-										<Icon
-											type="info-circle"
-											theme="twoTone"
+										<InfoCircleTwoTone
 											twoToneColor="#fbe137"
 											style={{ fontSize: 50 }}
 										/>
@@ -716,7 +719,7 @@ class ClusterPage extends Component {
 										onClick={this.refetchStatus}
 										loading={this.state.isFetchingStatus}
 										disabled={this.state.isFetchingStatus}
-										icon="redo"
+										icon={<RedoOutlined />}
 									>
 										Refetch Deployment Status
 									</Button>
@@ -729,9 +732,7 @@ class ClusterPage extends Component {
 							<article className="banner banner-bg banner-border">
 								<div className="banner__content-wraper">
 									<div className="banner__logo-wrapper">
-										<Icon
-											type="check-circle"
-											theme="twoTone"
+										<CheckCircleTwoTone
 											twoToneColor="#72e538"
 											style={{ fontSize: 50 }}
 										/>

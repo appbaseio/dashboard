@@ -1,5 +1,15 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
+
+import {
+	BarChartOutlined,
+	ClusterOutlined,
+	DatabaseOutlined,
+	LineChartOutlined,
+	ShareAltOutlined,
+	UnorderedListOutlined,
+} from '@ant-design/icons';
+
+import { Menu } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
@@ -28,36 +38,36 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 		>
 			<Menu.Item key="1">
 				<Link to={baseRoute}>
-					<Icon type="cluster" /> Cluster
+					<ClusterOutlined /> Cluster
 				</Link>
 			</Menu.Item>
 			{isViewer || isExternalCluster || (
 				<Menu.Item key="2">
 					<Link to={`${baseRoute}/scale`}>
-						<Icon type="database" /> Scale Cluster
+						<DatabaseOutlined /> Scale Cluster
 					</Link>
 				</Menu.Item>
 			)}
 			{isViewer || (
 				<Menu.Item key="3">
 					<Link to={`${baseRoute}/share`}>
-						<Icon type="share-alt" /> Share Settings
+						<ShareAltOutlined /> Share Settings
 					</Link>
 				</Menu.Item>
 			)}
 			<Menu.Item key="4">
 				<Link to={`${baseRoute}/usage`}>
-					<Icon type="bar-chart" /> View Usage
+					<BarChartOutlined /> View Usage
 				</Link>
 			</Menu.Item>
 			<Menu.Item key="5">
 				<Link to={`${baseRoute}/monitoring`}>
-					<Icon type="line-chart" /> Cluster Monitoring
+					<LineChartOutlined /> Cluster Monitoring
 				</Link>
 			</Menu.Item>
 			<Menu.Item key="6">
 				<Link to={`${baseRoute}/logs`}>
-					<Icon type="unordered-list" /> Deploy Logs
+					<UnorderedListOutlined /> Deploy Logs
 				</Link>
 			</Menu.Item>
 		</Menu>

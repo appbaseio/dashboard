@@ -1,3 +1,4 @@
+import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, message, notification, Select } from 'antd';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
@@ -609,7 +610,7 @@ class ClusterScreen extends Component {
 							onClick={handleDeleteModal}
 							type="danger"
 							size="large"
-							icon="delete"
+							icon={<DeleteOutlined />}
 							className="delete"
 						>
 							Delete Cluster
@@ -633,7 +634,7 @@ class ClusterScreen extends Component {
 							) : null}
 							<Button
 								size="large"
-								icon="save"
+								icon={<SaveOutlined />}
 								type="primary"
 								onClick={this.saveClusterSettings}
 							>

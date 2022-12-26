@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Button, Icon } from 'antd';
+import {
+	ArrowRightOutlined,
+	GithubOutlined,
+	GitlabOutlined,
+	GoogleOutlined,
+} from '@ant-design/icons';
+import { Card, Button } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -54,7 +60,7 @@ class LoginPage extends React.Component {
 						<React.Fragment>
 							<Button
 								href={getLoginURL('github', returnURL)}
-								icon="github"
+								icon={<GithubOutlined />}
 								className={githubBtn}
 								size="large"
 								block
@@ -63,7 +69,7 @@ class LoginPage extends React.Component {
 							</Button>
 							<Button
 								href={getLoginURL('google', returnURL)}
-								icon="google"
+								icon={<GoogleOutlined />}
 								className={googleBtn}
 								size="large"
 								block
@@ -72,7 +78,7 @@ class LoginPage extends React.Component {
 							</Button>
 							<Button
 								href={getLoginURL('gitlab', returnURL)}
-								icon="gitlab"
+								icon={<GitlabOutlined />}
 								className={gitlabBtn}
 								size="small"
 								block
@@ -103,7 +109,7 @@ class LoginPage extends React.Component {
 						}}
 					>
 						New to reactivesearch.io? &nbsp; Signup here
-						<Icon type="arrow-right" />
+						<ArrowRightOutlined />
 					</Button>
 				</Link>
 			</section>

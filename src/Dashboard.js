@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { HomeOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import * as Sentry from '@sentry/browser';
 
 import Loader from './components/Loader';
@@ -57,7 +58,7 @@ class Dashboard extends Component {
 
 		if (error) {
 			return (
-				<section
+                <section
 					css={{
 						justifyContent: 'center',
 						alignItems: 'center',
@@ -75,7 +76,7 @@ class Dashboard extends Component {
 						}}
 					>
 						<Button href="/" size="large" type="primary">
-							<Icon type="home" />
+							<HomeOutlined />
 							Back to Dashboard
 						</Button>
 						<Button
@@ -85,12 +86,12 @@ class Dashboard extends Component {
 							type="danger"
 							css={{ marginLeft: '8' }}
 						>
-							<Icon type="info-circle" />
+							<InfoCircleOutlined />
 							Report Bug
 						</Button>
 					</section>
 				</section>
-			);
+            );
 		}
 
 		return (

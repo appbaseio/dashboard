@@ -1,6 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
-import { Button, notification, Tag, Tooltip, Icon } from 'antd';
+import {
+	DeleteOutlined,
+	InfoCircleOutlined,
+	SaveOutlined,
+} from '@ant-design/icons';
+import { Button, notification, Tag, Tooltip } from 'antd';
 import { get } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
@@ -237,7 +242,7 @@ class ArcDetail extends React.Component {
 							>
 								<h4 style={{ cursor: 'pointer' }}>
 									<span>
-										IP Address <Icon type="info-circle" />
+										IP Address <InfoCircleOutlined />
 									</span>
 								</h4>
 							</Tooltip>
@@ -309,7 +314,7 @@ class ArcDetail extends React.Component {
 						onClick={handleDeleteModal}
 						type="danger"
 						size="large"
-						icon="delete"
+						icon={<DeleteOutlined />}
 						className="delete"
 					>
 						Delete Cluster
@@ -318,7 +323,7 @@ class ArcDetail extends React.Component {
 						disabled={isButtonDisable}
 						size="large"
 						loading={loading}
-						icon="save"
+						icon={<SaveOutlined />}
 						type="primary"
 						onClick={this.handleUpdate}
 					>

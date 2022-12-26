@@ -1,6 +1,7 @@
 import React from 'react';
 import { css } from 'react-emotion';
-import { Modal, Button, Icon, Row, Col, Card } from 'antd';
+import Icon, { PlayCircleOutlined } from '@ant-design/icons';
+import { Modal, Button, Row, Col, Card } from 'antd';
 
 const loadButton = css`
 	width: 200px;
@@ -209,8 +210,7 @@ class Directives extends React.Component {
 											}
 											className={button}
 										>
-											<Icon type="play-circle" /> Watch
-											series
+											<PlayCircleOutlined /> Watch series
 										</Button>
 									</Col>
 								</Row>
@@ -245,8 +245,7 @@ class Directives extends React.Component {
 											}
 											className={button}
 										>
-											<Icon type="play-circle" /> Watch
-											series
+											<PlayCircleOutlined /> Watch series
 										</Button>
 									</Col>
 								</Row>
@@ -283,8 +282,7 @@ class Directives extends React.Component {
 											}
 											className={button}
 										>
-											<Icon type="play-circle" /> Watch
-											series
+											<PlayCircleOutlined /> Watch series
 										</Button>
 									</Col>
 								</Row>
@@ -318,8 +316,7 @@ class Directives extends React.Component {
 											}
 											className={button}
 										>
-											<Icon type="play-circle" /> Watch
-											series
+											<PlayCircleOutlined /> Watch series
 										</Button>
 									</Col>
 								</Row>

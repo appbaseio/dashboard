@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { object } from 'prop-types';
-import { Menu, Avatar, Dropdown, Icon } from 'antd';
+import {
+	DownOutlined,
+	PoweroffOutlined,
+	SettingOutlined,
+} from '@ant-design/icons';
+import { Menu, Avatar, Dropdown } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
 import { media } from '../../utils/media';
@@ -49,17 +54,13 @@ const UserMenu = ({ user }) => {
 			<Menu.Divider />
 			<Menu.Item>
 				<Link to="/profile">
-					<Icon
-						style={{ marginRight: 8 }}
-						type="setting"
-						theme="outlined"
-					/>
+					<SettingOutlined style={{ marginRight: 8 }} />
 					Account Settings
 				</Link>
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item onClick={handleLogout}>
-				<Icon type="poweroff" theme="outlined" />
+				<PoweroffOutlined />
 				Logout
 			</Menu.Item>
 		</Menu>
@@ -81,7 +82,7 @@ const UserMenu = ({ user }) => {
 					{get(user, 'name', 'Loading...')}
 				</span>
 				&nbsp;&nbsp;
-				<Icon type="down" />
+				<DownOutlined />
 			</span>
 		</Dropdown>
 	);

@@ -1,5 +1,11 @@
 import React from 'react';
-import { Button, Icon } from 'antd';
+import {
+	FrownOutlined,
+	HomeOutlined,
+	InfoCircleOutlined,
+	LeftOutlined,
+} from '@ant-design/icons';
+import { Button } from 'antd';
 import { connect } from 'react-redux';
 import * as Sentry from '@sentry/browser';
 import get from 'lodash/get';
@@ -48,11 +54,7 @@ class ErrorPage extends React.Component {
 					height: '80vh',
 				}}
 			>
-				<Icon
-					type="frown"
-					theme="outlined"
-					style={{ fontSize: 55, marginBottom: 10 }}
-				/>
+				<FrownOutlined style={{ fontSize: 55, marginBottom: 10 }} />
 				<h2>Something went wrong!</h2>
 				<p>Our team has been notified about this.</p>
 				<section
@@ -65,7 +67,7 @@ class ErrorPage extends React.Component {
 						size="large"
 						type="primary"
 					>
-						<Icon type={user ? 'home' : 'left'} />
+						{user ? <HomeOutlined /> : <LeftOutlined />}
 						Back to {user ? 'Home' : 'Login'}
 					</Button>
 					<Button
@@ -75,7 +77,7 @@ class ErrorPage extends React.Component {
 						type="danger"
 						css={{ marginLeft: '8' }}
 					>
-						<Icon type="info-circle" />
+						<InfoCircleOutlined />
 						Report Bug
 					</Button>
 				</section>

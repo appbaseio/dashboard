@@ -1,20 +1,14 @@
 import {
-	Button,
-	Col,
-	Icon,
-	Modal,
-	Row,
-	Select,
-	Tabs,
-	Tooltip,
-	Alert,
-} from 'antd';
+	ArrowRightOutlined,
+	InfoCircleTwoTone,
+	QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import ip from 'ip';
 import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -848,7 +842,7 @@ class NewCluster extends Component {
 											'/clusters/new/my-cluster',
 										);
 									}}
-									icon="question-circle"
+									icon={<QuestionCircleOutlined />}
 								>
 									Already have a Cluster
 								</Button>
@@ -1319,9 +1313,7 @@ class NewCluster extends Component {
 												alignItems: 'center',
 											}}
 										>
-											<Icon
-												type="info-circle"
-												theme="twoTone"
+											<InfoCircleTwoTone
 												twoToneColor="#fbe137"
 												style={{
 													marginRight: 5,
@@ -1394,10 +1386,7 @@ class NewCluster extends Component {
 										onClick={this.handleStripeModal}
 									>
 										Add payment info and create cluster
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								) : (
 									<Button
@@ -1406,10 +1395,7 @@ class NewCluster extends Component {
 										onClick={this.createCluster}
 									>
 										Create Cluster
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								)}
 							</div>

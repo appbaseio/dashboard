@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, message, Input } from 'antd';
+import { CopyOutlined } from '@ant-design/icons';
+import { message, Input } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { credsBox } from '../styles';
 
@@ -62,7 +63,7 @@ export default class EditableCredentials extends Component {
 						onCopy={() => this.copySuccess(name)}
 					>
 						<a data-clipboard-text={text}>
-							<Icon type="copy" theme="outlined" />
+							<CopyOutlined />
 							<span className="cred-button-text">Copy</span>
 						</a>
 					</CopyToClipboard>

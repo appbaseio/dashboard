@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import { Modal, Spin, Icon } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Modal, Spin } from 'antd';
 
 import StripeForm from './StripeForm';
 import PaymentMethods from './PaymentMethods';
@@ -90,11 +91,7 @@ const StripeCheckout = ({
 				>
 					<Spin
 						indicator={
-							<Icon
-								type="loading"
-								style={{ fontSize: 24 }}
-								spin
-							/>
+							<LoadingOutlined style={{ fontSize: 24 }} spin />
 						}
 					/>
 				</div>

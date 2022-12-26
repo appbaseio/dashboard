@@ -1,16 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'emotion';
-import {
-	Icon,
-	Modal,
-	Input,
-	Checkbox,
-	Radio,
-	Tooltip,
-	Button,
-	Select,
-} from 'antd';
+import { LockOutlined } from '@ant-design/icons';
+import { Modal, Input, Checkbox, Radio, Tooltip, Button, Select } from 'antd';
 import {
 	FormBuilder,
 	Validators,
@@ -349,10 +341,7 @@ class CreateCredentials extends React.Component {
 												<div
 													style={{ marginBottom: 20 }}
 												>
-													<Icon
-														type="lock"
-														css="font-size: 40px"
-													/>
+													<LockOutlined css="font-size: 40px" />
 												</div>
 												Upgrade to a paid plan to add
 												advanced security permissions.

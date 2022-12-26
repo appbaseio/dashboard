@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MailOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, message, notification } from 'antd';
 import { css } from 'emotion';
 import get from 'lodash/get';
@@ -61,7 +62,7 @@ class HelpButton extends React.Component {
 				</p>
 				<Button
 					href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
-					icon="mail"
+					icon={<MailOutlined />}
 					size="large"
 					type="primary"
 				>
@@ -204,7 +205,7 @@ class HelpButton extends React.Component {
 						type="primary"
 						size="large"
 						shape="circle"
-						icon="question"
+						icon={<QuestionOutlined />}
 					/>
 				</Dropdown>
 			</React.Fragment>

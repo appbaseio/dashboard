@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import {
 	Button,
 	Card,
@@ -7,7 +8,6 @@ import {
 	Input,
 	notification,
 	Menu,
-	Icon,
 	Dropdown,
 } from 'antd';
 import { css } from 'emotion';
@@ -148,7 +148,7 @@ class ShareClusterScreen extends Component {
 	render() {
 		const ShareBtn = (
 			<Button
-				icon="plus"
+				icon={<PlusOutlined />}
 				onClick={this.showModal}
 				size="large"
 				type="primary"
@@ -244,7 +244,7 @@ class ShareClusterScreen extends Component {
 					/>
 					<Dropdown overlay={menu}>
 						<Button size="large" className={dropdownButtonStyles}>
-							{role} <Icon type="down" />
+							{role} <DownOutlined />
 						</Button>
 					</Dropdown>
 				</Modal>

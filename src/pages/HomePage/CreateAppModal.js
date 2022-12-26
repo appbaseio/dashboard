@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+	InfoCircleFilled,
+	InfoCircleOutlined,
+	WarningOutlined,
+} from '@ant-design/icons';
+import {
 	Row,
 	Col,
-	Icon,
 	Modal,
 	Input,
 	Radio,
@@ -189,7 +193,7 @@ class CreateAppModal extends Component {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<Icon type="info-circle" />
+					<InfoCircleOutlined />
 				</a>
 			</Col>
 		</Row>
@@ -247,7 +251,7 @@ class CreateAppModal extends Component {
 								color="red"
 								style={{ marginLeft: 20, cursor: 'pointer' }}
 							>
-								<Icon type="warning" /> Deprecated
+								<WarningOutlined /> Deprecated
 							</Tag>
 						</Tooltip>
 					</div>
@@ -257,13 +261,11 @@ class CreateAppModal extends Component {
 			>
 				<section className={clusterInfo}>
 					<div>
-						<Icon
-							type="info-circle"
+						<InfoCircleFilled
 							css={{
 								color: 'rgb(24,144,255) !important',
 								marginRight: 8,
 							}}
-							theme="filled"
 						/>
 						<span>You should create cluster instead.</span>
 					</div>
@@ -286,8 +288,7 @@ class CreateAppModal extends Component {
 							trigger="click"
 							visible={validationPopOver}
 						>
-							<Icon
-								type="info-circle"
+							<InfoCircleOutlined
 								onClick={this.handleValidationPopOver}
 							/>
 						</Popover>
