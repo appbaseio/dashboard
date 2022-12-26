@@ -483,7 +483,7 @@ class ClusterScreen extends Component {
 										: 'default'
 								}
 								size="large"
-								css={{
+								style={{
 									height: 160,
 									width: '100%',
 									color: '#000',
@@ -509,7 +509,7 @@ class ClusterScreen extends Component {
 										? 'primary'
 										: 'default'
 								}
-								css={{
+								style={{
 									height: 160,
 									width: '100%',
 									backgroundColor:

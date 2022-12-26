@@ -124,7 +124,7 @@ class SignupPage extends React.Component {
 									icon={<GithubOutlined />}
 									className={githubBtn}
 									disabled={!hasAgreedTOS}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with GitHub
@@ -135,7 +135,7 @@ class SignupPage extends React.Component {
 									icon={<GoogleOutlined />}
 									disabled={!hasAgreedTOS}
 									className={googleBtn}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with Google
@@ -146,7 +146,7 @@ class SignupPage extends React.Component {
 									icon={<GitlabOutlined />}
 									disabled={!hasAgreedTOS}
 									className={gitlabBtn}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with Gitlab
@@ -166,7 +166,7 @@ class SignupPage extends React.Component {
 						<Button
 							size="large"
 							ghost
-							css={{
+							style={{
 								border: 0,
 								boxShadow: 'none',
 								color: '#424242',

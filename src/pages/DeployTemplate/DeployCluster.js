@@ -136,13 +136,14 @@ const DeployCluster = ({
 									}}
 								>
 									{activeClusters.map(data => (
-										<Select.Option
-											key={data.id}
-											onClick={() =>
-												setSelectedCluster(data)
-											}
-										>
-											<div>{data.name}</div>
+										<Select.Option key={data.id}>
+											<div
+												onClick={() =>
+													setSelectedCluster(data)
+												}
+											>
+												{data.name}
+											</div>
 										</Select.Option>
 									))}
 								</Select>

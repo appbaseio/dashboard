@@ -915,7 +915,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											size="large"
-											css={{
+											style={{
 												height: 160,
 												marginRight: 20,
 												backgroundColor:
@@ -959,7 +959,7 @@ class NewCluster extends Component {
 													? 'primary'
 													: 'default'
 											}
-											css={{
+											style={{
 												height: 160,
 												backgroundColor:
 													provider === 'aws'
@@ -1074,7 +1074,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											size="large"
-											css={{
+											style={{
 												height: 160,
 												marginRight: 20,
 												backgroundColor:
@@ -1115,7 +1115,7 @@ class NewCluster extends Component {
 													? 'primary'
 													: 'default'
 											}
-											css={{
+											style={{
 												height: 160,
 												backgroundColor:
 													this.state.esFlavor ===
@@ -1212,7 +1212,7 @@ class NewCluster extends Component {
 														: 'default'
 												}
 												size="large"
-												css={{
+												style={{
 													height: 160,
 													width: '100%',
 													color: '#000',
@@ -1256,7 +1256,7 @@ class NewCluster extends Component {
 														? 'primary'
 														: 'default'
 												}
-												css={{
+												style={{
 													height: 160,
 													width: '100%',
 													backgroundColor:

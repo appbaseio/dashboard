@@ -80,7 +80,7 @@ class LoginPage extends React.Component {
 								href={getLoginURL('gitlab', returnURL)}
 								icon={<GitlabOutlined />}
 								className={gitlabBtn}
-								size="small"
+								size="large"
 								block
 							>
 								Sign in via Gitlab
@@ -98,7 +98,7 @@ class LoginPage extends React.Component {
 					<Button
 						size="large"
 						ghost
-						css={{
+						style={{
 							border: 0,
 							boxShadow: 'none',
 							color: '#424242',
