@@ -247,7 +247,7 @@ class RoleBaseAccess extends React.Component {
 									>
 										<Input.TextArea
 											name="publicKey"
-											autosize={{ minRows: 3 }}
+											autoSize={{ minRows: 3 }}
 											value={publicKey}
 											placeholder="Enter Public Key"
 											onChange={this.handleChange}
