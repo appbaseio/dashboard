@@ -387,7 +387,7 @@ export function deleteSharedUser(id, email) {
 export function deployMyCluster(body) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		fetch(`${ACC_API}/v1/_deploy_recipe/arc`, {
+		fetch(`${ACC_API}/v2/_deploy_recipe/reactivesearch`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -418,18 +418,23 @@ export function deployMyCluster(body) {
 	});
 }
 
-export async function verifyCluster(url) {
+export async function verifyCluster(url, backend, headers) {
 	try {
-		const res = await fetch(`${ACC_API}/v1/_verify_es_connection`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		const res = await fetch(
+			`${ACC_API}/v2/_verify_search_engine_connection`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					...headers,
+				},
+				body: JSON.stringify({
+					url,
+					backend,
+				}),
 			},
-			body: JSON.stringify({
-				elasticsearch_url: url,
-			}),
-		});
+		);
 
 		if (res.status >= 400 && res.status < 500) {
 			const textData = await res.text();
@@ -622,21 +627,50 @@ export const rotateAPICredentials = (type, clusterId) => {
 export const getDistance = (lat1, lon1, lat2, lon2) => {
 	if (lat1 == lat2 && lon1 == lon2) {
 		return 0;
-	} else {
-		var radlat1 = (Math.PI * lat1) / 180;
-		var radlat2 = (Math.PI * lat2) / 180;
-		var theta = lon1 - lon2;
-		var radtheta = (Math.PI * theta) / 180;
-		var dist =
-			Math.sin(radlat1) * Math.sin(radlat2) +
-			Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-		if (dist > 1) {
-			dist = 1;
-		}
-		dist = Math.acos(dist);
-		dist = (dist * 180) / Math.PI;
-		dist = dist * 60 * 1.1515;
-
-		return dist;
 	}
+	const radlat1 = (Math.PI * lat1) / 180;
+	const radlat2 = (Math.PI * lat2) / 180;
+	const theta = lon1 - lon2;
+	const radtheta = (Math.PI * theta) / 180;
+	let dist =
+		Math.sin(radlat1) * Math.sin(radlat2) +
+		Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	if (dist > 1) {
+		dist = 1;
+	}
+	dist = Math.acos(dist);
+	dist = (dist * 180) / Math.PI;
+	dist = dist * 60 * 1.1515;
+
+	return dist;
+};
+
+export const BACKENDS = {
+	ELASTICSEARCH: {
+		name: 'elasticsearch',
+		logo:
+			'https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg',
+	},
+	OPENSEARCH: {
+		name: 'opensearch',
+		logo:
+			'https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg',
+	},
+	SOLR: {
+		name: 'solr',
+		logo: 'https://www.drupal.org/files/project-images/Solr.png',
+	},
+	MONGODB: {
+		name: 'mongodb',
+		logo:
+			'https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress',
+	},
+};
+
+export const capitalizeWord = str => {
+	if (!str || typeof str !== 'string') {
+		return '';
+	}
+
+	return str.charAt(0).toUpperCase() + str.substring(1);
 };

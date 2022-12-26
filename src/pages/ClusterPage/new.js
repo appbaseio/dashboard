@@ -59,6 +59,7 @@ export const V7_ARC = '8.8.1-cluster';
 export const V6_ARC = '8.8.1-cluster';
 export const ARC_BYOC = '8.8.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
+export const REACTIVESEARCH_BYOC = '8.4.0-byoc';
 
 export const arcVersions = {
 	7: V7_ARC,

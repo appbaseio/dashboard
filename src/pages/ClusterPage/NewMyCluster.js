@@ -10,7 +10,7 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC, regionsKeyMap } from './new';
+import { ARC_BYOC, REACTIVESEARCH_BYOC, regionsKeyMap } from './new';
 import {
 	deployMyCluster,
 	getClusters,
@@ -21,9 +21,12 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	getDistance,
+	BACKENDS,
+	capitalizeWord,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
-import { clusterContainer, card } from './styles';
+import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
+import KeyValueAdder from '../../components/KeyValueAdder';
 
 let interval;
 const { TabPane } = Tabs;
@@ -111,11 +114,12 @@ class NewMyCluster extends Component {
 				time: 0,
 				isLoading: true,
 			},
+			backend: BACKENDS.ELASTICSEARCH.name,
+			verifyClusterHeaders: {},
 		};
 	}
 
 	componentDidMount() {
-		const { region } = this.state;
 		this.getDefaultLocation();
 
 		const slug = generateSlug(2);
@@ -178,14 +182,14 @@ class NewMyCluster extends Component {
 	};
 
 	handleVerify = async () => {
-		const { clusterURL } = this.state;
+		const { clusterURL, backend, verifyClusterHeaders } = this.state;
 		if (clusterURL) {
 			this.setState({
 				verifyingURL: true,
 				verifiedCluster: false,
 				clusterVersion: '',
 			});
-			verifyCluster(clusterURL)
+			verifyCluster(clusterURL, backend, verifyClusterHeaders)
 				.then(data => {
 					const version = get(data, 'version.number', '');
 					this.setState({
@@ -256,7 +260,9 @@ class NewMyCluster extends Component {
 			}
 
 			const body = {
-				elasticsearch_url: this.state.clusterURL,
+				url: this.state.clusterURL,
+				backend: this.state.backend,
+				reactivesearch_image: REACTIVESEARCH_BYOC,
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
 				location: this.state.region,
@@ -480,10 +486,10 @@ class NewMyCluster extends Component {
 						if (counter > 12) {
 							total += res;
 						}
-						counter++;
+						counter += 1;
 					})
 					.catch(err => {
-						counter++;
+						counter += 1;
 						console.error(err);
 					});
 			}
@@ -507,6 +513,7 @@ class NewMyCluster extends Component {
 						...providerRegions[0],
 						dist: Number.MAX_SAFE_INTEGER,
 					};
+					// eslint-disable-next-line no-restricted-syntax
 					for (const [key, value] of Object.entries(
 						regions[provider],
 					)) {
@@ -558,7 +565,6 @@ class NewMyCluster extends Component {
 			clusters,
 			changed,
 			clusterName,
-			activeKey,
 		} = this.state;
 		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
 
@@ -746,92 +752,150 @@ class NewMyCluster extends Component {
 
 							<div className={card}>
 								<div className="col light">
-									<h3>Connect to Elasticsearch</h3>
-									<p>
-										Enter your cluster credentials (needs
-										super admin access)
-									</p>
+									<h3> Choose search engine </h3>
 								</div>
-								<div
-									className="col grow vcenter"
-									css={{
-										flexDirection: 'column',
-										alignItems: 'flex-start !important',
-										justifyContent: 'center',
-									}}
-								>
-									<input
-										id="elastic-url"
-										type="name"
+								<div>
+									<div
+										className={settingsItem}
 										css={{
-											width: '100%',
-											maxWidth: 400,
-											marginBottom: 10,
-											outline: 'none',
-											border:
-												isInvalidURL &&
-												this.state.clusterURL !== ''
-													? '1px solid red'
-													: '1px solid #e8e8e8',
+											padding: 30,
+											flexWrap: 'wrap',
+											gap: '2rem',
 										}}
-										placeholder="Enter your Elastic or OpenSearch URL"
-										value={this.state.clusterURL}
-										onChange={e =>
-											this.setConfig(
-												'clusterURL',
-												e.target.value,
-											)
-										}
-									/>
-									<Button
-										onClick={this.handleVerify}
-										disabled={!this.state.clusterURL}
-										loading={verifyingURL}
 									>
-										Verify Connection
-									</Button>
-
-									{verifiedCluster ? (
-										<Tag
-											style={{ marginTop: 10 }}
-											color="green"
-										>
-											Verified Connection. Version
-											Detected: {clusterVersion}
-										</Tag>
-									) : null}
-
-									{isInvalidURL ? (
-										<p
-											style={{
-												color: 'red',
-											}}
-										>
-											{urlErrorMessage ===
-											'Auth Error' ? (
-												<React.Fragment>
-													We received a authentication
-													error. Does your
-													ElasticSearch require
-													additional authentication?
-													Read more{' '}
-													<a
-														target="_blank"
-														rel="noopener noreferrer"
-														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+										{Object.values(BACKENDS).map(
+											({ name: backend, logo }) => {
+												return (
+													<Button
+														key={backend}
+														type={
+															backend ===
+															this.state.backend
+																? 'primary'
+																: 'default'
+														}
+														size="large"
+														css={{
+															height: 160,
+															marginRight: 20,
+															backgroundColor:
+																backend ===
+																this.state
+																	.backend
+																	? '#eaf5ff'
+																	: '#fff',
+														}}
+														className={
+															backend ===
+															this.state.backend
+																? fadeOutStyles
+																: ''
+														}
+														onClick={() => {
+															this.setState({
+																backend,
+															});
+														}}
 													>
-														here
-													</a>
-													.
-												</React.Fragment>
-											) : (
-												urlErrorMessage
-											)}
-										</p>
-									) : null}
+														<img
+															width="120"
+															src={logo}
+															alt={`${backend} logo`}
+														/>
+													</Button>
+												);
+											},
+										)}
+									</div>
+									<div
+										className="col grow vcenter"
+										css={{
+											flexDirection: 'column',
+											alignItems: 'flex-start !important',
+											justifyContent: 'center',
+										}}
+									>
+										<input
+											id="elastic-url"
+											type="name"
+											css={{
+												width: '100%',
+												maxWidth: 400,
+												marginBottom: 33,
+												outline: 'none',
+												border:
+													isInvalidURL &&
+													this.state.clusterURL !== ''
+														? '1px solid red'
+														: '1px solid #e8e8e8',
+											}}
+											placeholder={`Enter your ${capitalizeWord(
+												this.state.backend,
+											)} URL`}
+											value={this.state.clusterURL}
+											onChange={e =>
+												this.setConfig(
+													'clusterURL',
+													e.target.value,
+												)
+											}
+										/>{' '}
+										<KeyValueAdder
+											title="Headers (optional)"
+											onUpdateItems={headers => {
+												this.setState({
+													verifyClusterHeaders: headers,
+												});
+											}}
+										/>
+										<Button
+											onClick={this.handleVerify}
+											disabled={!this.state.clusterURL}
+											loading={verifyingURL}
+										>
+											Verify Connection
+										</Button>
+										{verifiedCluster ? (
+											<Tag
+												style={{ marginTop: 10 }}
+												color="green"
+											>
+												Verified Connection. Version
+												Detected: {clusterVersion}
+											</Tag>
+										) : null}
+										{isInvalidURL ? (
+											<p
+												style={{
+													color: 'red',
+												}}
+											>
+												{urlErrorMessage ===
+												'Auth Error' ? (
+													<React.Fragment>
+														We received a
+														authentication error.
+														Does your ElasticSearch
+														require additional
+														authentication? Read
+														more{' '}
+														<a
+															target="_blank"
+															rel="noopener noreferrer"
+															href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+														>
+															here
+														</a>
+														.
+													</React.Fragment>
+												) : (
+													urlErrorMessage
+												)}
+											</p>
+										) : null}
+									</div>
 								</div>
 							</div>
-
 							<div
 								style={{ textAlign: 'right', marginBottom: 40 }}
 							>
