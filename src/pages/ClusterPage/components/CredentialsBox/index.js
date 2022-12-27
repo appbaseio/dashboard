@@ -159,23 +159,29 @@ export default class CredentialsBox extends Component {
 				)}
 
 				<span className="cred-button">
-					{isEditable ? null : (
-						<a onClick={this.toggleHidden}>
-							{hidden ? <EyeOutlined /> : <CloseCircleOutlined />}
-							<span className="cred-button-text">
-								{hidden ? 'Show' : 'Hide'}
-							</span>
-						</a>
-					)}
-					<CopyToClipboard
-						text={text}
-						onCopy={() => this.copySuccess(name)}
-					>
-						<a data-clipboard-text={text}>
-							<CopyOutlined />
-							<span className="cred-button-text">Copy</span>
-						</a>
-					</CopyToClipboard>
+					<span>
+						{isEditable ? null : (
+							<a onClick={this.toggleHidden}>
+								{hidden ? (
+									<EyeOutlined />
+								) : (
+									<CloseCircleOutlined />
+								)}
+								<span className="cred-button-text">
+									{hidden ? 'Show' : 'Hide'}
+								</span>
+							</a>
+						)}
+						<CopyToClipboard
+							text={text}
+							onCopy={() => this.copySuccess(name)}
+						>
+							<a data-clipboard-text={text}>
+								<CopyOutlined />
+								<span className="cred-button-text">Copy</span>
+							</a>
+						</CopyToClipboard>
+					</span>
 					<span>
 						{this.renderConfirmationBox(
 							name,
