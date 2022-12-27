@@ -3,6 +3,7 @@ import { Slider, Tooltip, Icon } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 import get from 'lodash/get';
 
+import { bool, object } from 'prop-types';
 import { clusterInfo } from '../../styles';
 
 export default class PricingSlider extends Component {
@@ -70,7 +71,7 @@ export default class PricingSlider extends Component {
 	render() {
 		const { marks, active, value } = this.state;
 		const mark = get(marks, active, {});
-		const { sliderProps } = this.props;
+		const { sliderProps, showPPH, showNodesSupported } = this.props;
 
 		return (
 			<Fragment>
@@ -87,34 +88,38 @@ export default class PricingSlider extends Component {
 				</div>
 				<div className="col grey">
 					<div className={clusterInfo}>
-						<div className="cluster-info__item">
-							<div>
-								$
-								<AnimatedNumber
-									value={mark.pph}
-									duration={100}
-									stepPrecision={0}
-								/>
-							</div>
-							<div>Price per hour</div>
-						</div>
-						<div className="cluster-info__item">
-							<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
+						{showPPH ? (
+							<div className="cluster-info__item">
 								<div>
+									$
 									<AnimatedNumber
-										value={mark.nodes}
+										value={mark.pph}
 										duration={100}
 										stepPrecision={0}
-									/>{' '}
-									{mark.nodes === 1 ? 'Node' : 'Nodes'}
-									<Icon
-										type="question-circle"
-										style={{ size: 14, marginLeft: 5 }}
 									/>
 								</div>
-							</Tooltip>
-							<div>Supported</div>
-						</div>
+								<div>Price per hour</div>
+							</div>
+						) : null}
+						{showNodesSupported ? (
+							<div className="cluster-info__item">
+								<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
+									<div>
+										<AnimatedNumber
+											value={mark.nodes}
+											duration={100}
+											stepPrecision={0}
+										/>{' '}
+										{mark.nodes === 1 ? 'Node' : 'Nodes'}
+										<Icon
+											type="question-circle"
+											style={{ size: 14, marginLeft: 5 }}
+										/>
+									</div>
+								</Tooltip>
+								<div>Supported</div>
+							</div>
+						) : null}
 					</div>
 					<div className={clusterInfo}>
 						<div>
@@ -140,3 +145,17 @@ export default class PricingSlider extends Component {
 		);
 	}
 }
+
+PricingSlider.defaultProps = {
+	showPPH: true,
+	showNodesSupported: true,
+	showNoCardNeeded: false,
+	sliderProps: {},
+};
+
+PricingSlider.propTypes = {
+	sliderProps: object,
+	showPPH: bool,
+	showNodesSupported: bool,
+	showNoCardNeeded: bool,
+};

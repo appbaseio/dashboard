@@ -14,7 +14,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import ip from 'ip';
 import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -846,7 +845,7 @@ class NewCluster extends Component {
 									onClick={() => {
 										if (interval) clearInterval(interval);
 										this.props.history.push(
-											'/clusters/new/my-cluster',
+											'/new/serverless-search',
 										);
 									}}
 									icon="question-circle"

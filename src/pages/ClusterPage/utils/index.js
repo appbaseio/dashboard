@@ -16,6 +16,10 @@ export const CLUSTER_PLANS = {
 	PRODUCTION_2021_1: '2021-production-1',
 	PRODUCTION_2021_2: '2021-production-2',
 	PRODUCTION_2021_3: '2021-production-3',
+	//
+	CLUSTER_SLS_HOBBY: 'reactivesearch-cloud-hobby',
+	CLUSTER_SLS_PRODUCTION: 'reactivesearch-cloud-production',
+	CLUSTER_SLS_ENTERPRISE: 'reactivesearch-cloud-enterprise',
 };
 
 export const ARC_PLANS = {
@@ -60,6 +64,9 @@ export const EFFECTIVE_PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 4.44,
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 0.137,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 1.11,
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 1.11,
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 2.22,
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 4.44,
 };
 
 export const PRICE_BY_PLANS = {
@@ -85,6 +92,9 @@ export const PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 3199,
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 99,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 799,
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 999,
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 1999,
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 3199,
 };
 
 export const PLAN_LABEL = {
@@ -107,6 +117,9 @@ export const PLAN_LABEL = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 'Production 3',
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 'Standard',
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 'Enterprise',
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 'Hobby',
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 'Production',
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 'Enterprise',
 };
 
 export function getClusters() {
@@ -417,8 +430,41 @@ export function deployMyCluster(body) {
 			});
 	});
 }
+export function deployMySlsCluster(body) {
+	return new Promise((resolve, reject) => {
+		let hasError = false;
+		fetch(`${ACC_API}/v2/_deploy_recipe/multi-tenant-reactivesearch`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
+			.then(data => {
+				if (hasError) {
+					reject(get(data, 'status.message'));
+				}
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve(data);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
 
-export async function verifyCluster(url, backend, headers) {
+export async function verifyCluster(url, backend, headers = {}) {
 	try {
 		const res = await fetch(
 			`${ACC_API}/v2/_verify_search_engine_connection`,
@@ -660,10 +706,10 @@ export const BACKENDS = {
 		name: 'solr',
 		logo: 'https://www.drupal.org/files/project-images/Solr.png',
 	},
-	MONGODB: {
-		name: 'mongodb',
-		logo:
-			'https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress',
+	System: {
+		name: 'system',
+		logo: '',
+		text: 'System',
 	},
 };
 

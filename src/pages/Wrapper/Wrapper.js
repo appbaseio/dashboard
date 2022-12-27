@@ -1,3 +1,4 @@
+import { object } from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
 import { Route, Switch } from 'react-router-dom';
@@ -25,6 +26,11 @@ const MarketPlacePage = Loadable({
 
 const NewClusterPage = Loadable({
 	loader: () => import('../ClusterPage/new'),
+	loading: Loader,
+});
+
+const NewServerlessSearch = Loadable({
+	loader: () => import('../ClusterPage/NewMyServerlessSearch'),
 	loading: Loader,
 });
 
@@ -95,6 +101,10 @@ const Wrapper = ({ user }) =>
 			<Route path="/profile" component={ProfilePage} />
 			<Route path="/app/:appName?/:route?" component={AppWrapper} />
 			<Route exact path="/deploy" component={DeployTemplate} />
+			<Route
+				path="/new/serverless-search"
+				component={NewServerlessSearch}
+			/>
 			<Route component={NoMatch} />
 		</Switch>
 	) : (
@@ -102,3 +112,7 @@ const Wrapper = ({ user }) =>
 	);
 
 export default Wrapper;
+
+Wrapper.propTypes = {
+	user: object,
+};

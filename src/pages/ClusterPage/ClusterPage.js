@@ -1,10 +1,9 @@
 import { Button, Col, Divider, Icon, Row, Tooltip } from 'antd';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Container from '../../components/Container';
 import FullHeader from '../../components/FullHeader';
@@ -632,15 +631,13 @@ class ClusterPage extends Component {
 					<div style={vcenter}>
 						<i className="fas fa-gift" style={{ fontSize: 36 }} />
 						<h2 style={{ marginTop: 24, fontSize: 22 }}>
-							You
-							{"'"}
-							ve unlocked 14 days free trial
+							You ' ve unlocked 14 days free trial
 						</h2>
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today
 						</p>
 						<div style={{ textAlign: 'center' }}>
-							<Link to="/clusters/new">
+							<Link to="/new/serverless-search">
 								<Button type="primary">
 									<i className="fas fa-plus" />
 									&nbsp; Create a New Cluster
@@ -682,7 +679,7 @@ class ClusterPage extends Component {
 								},
 							}}
 						>
-							<Link to="/clusters/new">
+							<Link to="/new/serverless-search">
 								<Button size="large" type="primary" block>
 									<Icon type="plus" /> Create a New Cluster
 								</Button>

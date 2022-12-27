@@ -1,0 +1,749 @@
+/* eslint-disable no-plusplus */
+import React, { Fragment, Component } from 'react';
+import { Modal, Button, Icon, Tag, Tooltip, Row, Col } from 'antd';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
+import { connect } from 'react-redux';
+import { generateSlug } from 'random-word-slugs';
+import FullHeader from '../../components/FullHeader';
+import Container from '../../components/Container';
+import Loader from '../../components/Loader';
+import PricingSlider from './components/PricingSlider/MyClusterSlider';
+import StripeCheckout from '../../components/StripeCheckout';
+import Header from '../../batteries/components/shared/UpgradePlan/Header';
+
+import {
+	deployMySlsCluster,
+	getClusters,
+	verifyCluster,
+	createSubscription,
+	ARC_PLANS,
+	PLAN_LABEL,
+	EFFECTIVE_PRICE_BY_PLANS,
+	PRICE_BY_PLANS,
+	BACKENDS,
+	capitalizeWord,
+	CLUSTER_PLANS,
+} from './utils';
+import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
+
+let interval;
+
+export const machineMarks = {
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
+	},
+};
+
+export const priceSlider = {
+	0: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+	50: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+	100: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+};
+
+const namingConvention = {
+	azure:
+		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+	gke:
+		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
+};
+
+class NewMyCluster extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLoading: false,
+			clusterName: '',
+			changed: false,
+			clusterURL: '',
+			pricing_plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+			verifyingURL: false,
+			error: '',
+			isInvalidURL: false,
+			clusters: [],
+			deploymentError: '',
+			showError: false,
+			isClusterLoading: true,
+			clusterVersion: '',
+			verifiedCluster: false,
+			isStripeCheckoutOpen: false,
+			activeKey: 'america',
+			backend: BACKENDS.ELASTICSEARCH.name,
+		};
+	}
+
+	componentDidMount() {
+		const slug = generateSlug(2);
+		this.setState({
+			clusterName: slug,
+		});
+
+		getClusters()
+			.then(clusters => {
+				const activeClusters = clusters.filter(
+					item =>
+						(item.status === 'active' ||
+							item.status === 'in progress') &&
+						item.role === 'admin',
+				);
+				this.setState({
+					clustersAvailable: !!clusters.length,
+					clusters: activeClusters,
+					isClusterLoading: false,
+				});
+			})
+			.catch(e => {
+				console.error(e);
+				this.setState({
+					isClusterLoading: false,
+				});
+			});
+	}
+
+	setConfig = (type, value) => {
+		this.setState({
+			[type]: value,
+		});
+	};
+
+	setPricing = plan => {
+		this.setState({
+			pricing_plan: plan.plan,
+		});
+	};
+
+	toggleConfig = type => {
+		this.setState(state => ({
+			...state,
+			[type]: !state[type],
+		}));
+	};
+
+	validateClusterName = () => {
+		const { clusterName } = this.state;
+		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
+		return pattern.test(clusterName);
+	};
+
+	hideErrorModal = () => {
+		this.setState({
+			showError: false,
+			deploymentError: '',
+		});
+	};
+
+	handleVerify = async () => {
+		const { clusterURL, backend } = this.state;
+		if (clusterURL) {
+			this.setState({
+				verifyingURL: true,
+				verifiedCluster: false,
+				clusterVersion: '',
+			});
+			verifyCluster(clusterURL, backend)
+				.then(data => {
+					const version = get(data, 'version.number', '');
+					this.setState({
+						verifyingURL: false,
+						clusterVersion: version || 'N/A',
+						isInvalidURL: false,
+						verifiedCluster: true,
+					});
+				})
+				.catch(e => {
+					this.setState({
+						verifyingURL: false,
+						isInvalidURL: true,
+						verifiedCluster: false,
+						urlErrorMessage: e.toString(),
+					});
+				});
+		} else {
+			this.setState({
+				isInvalidURL: true,
+				urlErrorMessage: 'Please enter a valid URL to verify',
+			});
+		}
+	};
+
+	createCluster = async (stripeData = {}) => {
+		const {
+			isDeployTemplate,
+			location,
+			setClusterId,
+			setActiveKey,
+			setTabsValidated,
+		} = this.props;
+		try {
+			if (!this.validateClusterName()) {
+				// prettier-ignore
+				const errorMessage = 'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.';
+				this.setState({
+					error: errorMessage,
+				});
+				document.getElementById('cluster-name').focus();
+			}
+
+			if (
+				this.state.backend !== BACKENDS.System.name &&
+				!this.state.clusterURL
+			) {
+				this.setState({
+					error: 'Please enter URL',
+				});
+			}
+
+			this.setState({
+				isLoading: true,
+			});
+
+			const obj = {};
+			if (isDeployTemplate) {
+				obj.pipeline_info = localStorage.getItem(
+					location.search.split('=')[1],
+				);
+			}
+
+			const body = {
+				backend: this.state.backend,
+				cluster_name: this.state.clusterName,
+				pricing_plan: this.state.pricing_plan,
+				...(this.state.backend !== BACKENDS.System.name
+					? { backend_url: this.state.clusterURL }
+					: {}),
+				...obj,
+			};
+
+			if (stripeData.token) {
+				body.enable_monitoring = true;
+			}
+
+			const clusterRes = await deployMySlsCluster(body);
+			setClusterId(clusterRes.cluster.id);
+			if (isDeployTemplate && clusterRes.cluster.id) {
+				setActiveKey('3');
+				setTabsValidated(true);
+				this.setState({
+					isLoading: false,
+				});
+			}
+			if (stripeData.token) {
+				await createSubscription({
+					clusterId: clusterRes.cluster.id,
+					...stripeData,
+				});
+				this.props.history.push('/');
+			}
+		} catch (e) {
+			this.setState({
+				isLoading: false,
+				deploymentError: e,
+				showError: true,
+			});
+		}
+	};
+
+	handleError = () => {
+		const that = this;
+		Modal.error({
+			title: 'Error',
+			content: this.state.deploymentError,
+			onOk() {
+				that.setState({
+					showError: false,
+				});
+			},
+		});
+	};
+
+	handleCluster = value => {
+		this.setState({
+			restore_from: value,
+		});
+	};
+
+	handleStripeModal = () => {
+		this.setState(currentState => ({
+			isStripeCheckoutOpen: !currentState.isStripeCheckoutOpen,
+		}));
+	};
+
+	handleStripeSubmit = data => {
+		this.createCluster(data);
+		this.setState({ isStripeCheckoutOpen: false });
+	};
+
+	checkResponseTime = async url => {
+		const time1 = performance.now();
+		await fetch(url, { method: 'GET', mode: 'no-cors' });
+		return performance.now() - time1;
+	};
+
+	setActiveKey = key => {
+		this.setState({
+			activeKey: key,
+		});
+	};
+
+	render() {
+		const {
+			isLoading,
+			isInvalidURL,
+			urlErrorMessage,
+			verifiedCluster,
+			clusterVersion,
+			verifyingURL,
+			clusters,
+			changed,
+			clusterName,
+		} = this.state;
+		const { isUsingClusterTrial, isDeployTemplate, pipeline } = this.props;
+
+		const activeClusters = clusters.filter(
+			cluster => cluster.status === 'active',
+		);
+
+		const isInvalid = !this.validateClusterName();
+		if (isLoading) return <Loader />;
+
+		return (
+			<Fragment>
+				{!isDeployTemplate ? (
+					<>
+						<FullHeader clusters={activeClusters} isCluster />
+						<Header compact>
+							<Row
+								type="flex"
+								justify="space-between"
+								gutter={16}
+							>
+								<Col md={18}>
+									<h2>
+										Deploy ReactiveSearch for your
+										Elasticsearch or OpenSearch cluster
+									</h2>
+									<Row>
+										<Col span={18}>
+											<p>
+												Build and deploy search UIs with
+												point and click, out of the box
+												search analytics and insights
+											</p>
+										</Col>
+									</Row>
+								</Col>
+								<Col
+									md={6}
+									css={{
+										display: 'flex',
+										flexDirection: 'column-reverse',
+										paddingBottom: 20,
+									}}
+								>
+									<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+										<Button
+											size="large"
+											type="primary"
+											target="_blank"
+											rel="noopener noreferrer"
+											onClick={() => {
+												if (interval)
+													clearInterval(interval);
+												this.props.history.push(
+													'/clusters/new',
+												);
+											}}
+											icon="question-circle"
+										>
+											Don&apos;t have a Cluster
+										</Button>
+									</Tooltip>
+								</Col>
+							</Row>
+						</Header>
+					</>
+				) : null}
+
+				<Container>
+					{this.state.isStripeCheckoutOpen && (
+						<StripeCheckout
+							visible={this.state.isStripeCheckoutOpen}
+							plan={PLAN_LABEL[this.state.pricing_plan]}
+							price={EFFECTIVE_PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							monthlyPrice={PRICE_BY_PLANS[
+								this.state.pricing_plan
+							].toString()}
+							onCancel={this.handleStripeModal}
+							onSubmit={this.handleStripeSubmit}
+						/>
+					)}
+					<section className={clusterContainer}>
+						{this.state.showError ? this.handleError() : null}
+						<article>
+							<div className={card}>
+								<div className="col light">
+									<h3>Pick the pricing plan</h3>
+									<p>Scale as you go</p>
+									{isUsingClusterTrial ? (
+										<p>
+											<b>Note: </b>You can only create{' '}
+											{
+												machineMarks[
+													this.state.pricing_plan
+												].label
+											}{' '}
+											Cluster while on trial.
+										</p>
+									) : null}
+								</div>
+
+								<PricingSlider
+									sliderProps={{
+										disabled: isUsingClusterTrial,
+									}}
+									marks={priceSlider}
+									onChange={this.setPricing}
+									showNoCardNeeded={
+										isUsingClusterTrial &&
+										this.state.clusters.length < 1
+									}
+									showPPH={false}
+									showNodesSupported={false}
+								/>
+							</div>
+
+							<div className={card}>
+								<div className="col light">
+									<h3>Choose a cluster name</h3>
+									<p>
+										Name your cluster. A name is permanent.
+									</p>
+								</div>
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
+									<input
+										id="cluster-name"
+										type="name"
+										css={{
+											width: '100%',
+											maxWidth: 400,
+											marginBottom: 10,
+											outline: 'none',
+											border:
+												isInvalid && clusterName !== ''
+													? '1px solid red'
+													: '1px solid #40a9ff',
+										}}
+										placeholder="Enter your cluster name"
+										value={clusterName}
+										onChange={e => {
+											this.setState({
+												changed: true,
+											});
+											this.setConfig(
+												'clusterName',
+												e.target.value,
+											);
+										}}
+									/>
+									{!changed && (
+										<p style={{ color: 'orange' }}>
+											This is an auto-generated cluster
+											name. You can edit this.
+										</p>
+									)}
+									<p
+										style={{
+											color:
+												isInvalid && clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
+										{namingConvention.gke}
+									</p>
+								</div>
+							</div>
+
+							<div className={card}>
+								<div className="col light">
+									<h3> Choose search engine </h3>
+								</div>
+								<div>
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+											flexWrap: 'wrap',
+											gap: '2rem',
+										}}
+									>
+										{Object.values(BACKENDS).map(
+											({ name: backend, logo, text }) => {
+												return (
+													<Button
+														key={backend}
+														type={
+															backend ===
+															this.state.backend
+																? 'primary'
+																: 'default'
+														}
+														size="large"
+														css={{
+															height: 160,
+															marginRight: 20,
+															backgroundColor:
+																backend ===
+																this.state
+																	.backend
+																	? '#eaf5ff'
+																	: '#fff',
+															minWidth: '152px',
+														}}
+														className={
+															backend ===
+															this.state.backend
+																? fadeOutStyles
+																: ''
+														}
+														onClick={() => {
+															this.setState({
+																backend,
+															});
+														}}
+													>
+														{logo ? (
+															<img
+																width="120"
+																src={logo}
+																alt={`${backend} logo`}
+															/>
+														) : (
+															<span
+																css={`
+																	font-size: 1.4rem;
+																	font-weight: 400;
+																	color: black;
+																`}
+															>
+																{text}
+															</span>
+														)}
+													</Button>
+												);
+											},
+										)}
+									</div>
+									{this.state.backend !==
+										BACKENDS.System.name && (
+										<div
+											className="col grow vcenter"
+											css={{
+												flexDirection: 'column',
+												alignItems:
+													'flex-start !important',
+												justifyContent: 'center',
+											}}
+										>
+											<input
+												id="elastic-url"
+												type="name"
+												css={{
+													width: '100%',
+													maxWidth: 400,
+													marginBottom: 10,
+													outline: 'none',
+													border:
+														isInvalidURL &&
+														this.state
+															.clusterURL !== ''
+															? '1px solid red'
+															: '1px solid #e8e8e8',
+												}}
+												placeholder={`Enter your ${capitalizeWord(
+													this.state.backend,
+												)} URL`}
+												value={this.state.clusterURL}
+												onChange={e =>
+													this.setConfig(
+														'clusterURL',
+														e.target.value,
+													)
+												}
+											/>
+											<Button
+												onClick={this.handleVerify}
+												disabled={
+													!this.state.clusterURL
+												}
+												loading={verifyingURL}
+											>
+												Verify Connection
+											</Button>
+
+											{verifiedCluster ? (
+												<Tag
+													style={{ marginTop: 10 }}
+													color="green"
+												>
+													Verified Connection. Version
+													Detected: {clusterVersion}
+												</Tag>
+											) : null}
+
+											{isInvalidURL ? (
+												<p
+													style={{
+														color: 'red',
+													}}
+												>
+													{urlErrorMessage ===
+													'Auth Error' ? (
+														<React.Fragment>
+															We received a
+															authentication
+															error. Does your
+															ElasticSearch
+															require additional
+															authentication? Read
+															more{' '}
+															<a
+																target="_blank"
+																rel="noopener noreferrer"
+																href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+															>
+																here
+															</a>
+															.
+														</React.Fragment>
+													) : (
+														urlErrorMessage
+													)}
+												</p>
+											) : null}
+										</div>
+									)}
+								</div>
+							</div>
+
+							<div
+								style={{ textAlign: 'right', marginBottom: 40 }}
+							>
+								{this.state.error ? (
+									<p
+										style={{
+											color: 'tomato',
+											margin: '20px 0',
+										}}
+									>
+										{this.state.error}
+									</p>
+								) : null}
+								{(isUsingClusterTrial &&
+									this.state.pricing_plan !==
+										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
+								clusters.length > 0 ? (
+									<Button
+										type="primary"
+										size="large"
+										disabled={
+											!this.validateClusterName() ||
+											(this.state.backend !==
+											BACKENDS.System.name
+												? !this.state.clusterURL ||
+												  !this.state.verifiedCluster
+												: false)
+										}
+										onClick={this.handleStripeModal}
+									>
+										{isDeployTemplate ? (
+											<>
+												Add payment info and Deploy
+												cluster with pipeline&nbsp;
+												{pipeline}
+											</>
+										) : (
+											<>
+												Add payment info and create
+												cluster
+											</>
+										)}
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
+								) : (
+									<Button
+										type="primary"
+										size="large"
+										onClick={this.createCluster}
+									>
+										{isDeployTemplate ? (
+											<>
+												Deploy cluster with pipeline
+												&nbsp;
+												{pipeline}
+											</>
+										) : (
+											<>Create Cluster</>
+										)}
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
+									</Button>
+								)}
+							</div>
+						</article>
+					</section>
+				</Container>
+			</Fragment>
+		);
+	}
+}
+NewMyCluster.defaultProps = {
+	isDeployTemplate: false,
+	pipeline: '',
+	setClusterId: () => {},
+	setActiveKey: () => {},
+	setTabsValidated: () => {},
+};
+
+NewMyCluster.propTypes = {
+	isUsingClusterTrial: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
+	isDeployTemplate: PropTypes.bool,
+	pipeline: PropTypes.string,
+	setClusterId: PropTypes.func,
+	setActiveKey: PropTypes.func,
+	setTabsValidated: PropTypes.func,
+};
+
+const mapStateToProps = state => ({
+	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
+});
+
+export default connect(mapStateToProps, null)(NewMyCluster);
