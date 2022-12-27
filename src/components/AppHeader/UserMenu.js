@@ -20,12 +20,14 @@ const handleLogout = () => {
 };
 
 const userMenu = css`
+	font-size: 0.8rem;
 	${media.medium(css`
 		display: none;
 	`)};
 `;
 
 const userName = css`
+	white-space: nowrap;
 	${media.large(css`
 		display: none;
 	`)};
@@ -67,7 +69,7 @@ const UserMenu = ({ user }) => {
 
 	return (
 		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
-			<span style={{ cursor: 'pointer' }}>
+			<span style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
 				<Avatar
 					src={get(user, 'picture')}
 					css={{ backgroundColor: '#1890ff' }}

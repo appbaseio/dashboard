@@ -119,7 +119,11 @@ class AppHeader extends React.Component {
 						</Button>
 					</Tooltip>
 				)}
-				<Row>
+				<Row
+					justify="space-between"
+					align="middle"
+					style={{ flexWrap: 'nowrap' }}
+				>
 					<Col>
 						<a
 							href="https://docs.appbase.io/"

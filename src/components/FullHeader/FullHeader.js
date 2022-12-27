@@ -76,7 +76,11 @@ const FullHeader = ({
 				</Menu.Item>
 			</Menu>
 		</div>
-		<Row justify="space-between" align="middle">
+		<Row
+			justify="space-between"
+			align="middle"
+			style={{ flexWrap: 'nowrap' }}
+		>
 			{(isCluster ? isUsingClusterTrial : isUsingTrial) && (
 				<TrialButton
 					showButton={isCluster}
