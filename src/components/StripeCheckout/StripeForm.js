@@ -7,7 +7,8 @@ import {
 	CardExpiryElement,
 } from '@stripe/react-stripe-js';
 import PropTypes from 'prop-types';
-import { Button, Alert, Icon } from 'antd';
+import { TagOutlined, TagsOutlined } from '@ant-design/icons';
+import { Button, Alert } from 'antd';
 import styled from 'react-emotion';
 import { getCoupon } from '../../pages/ClusterPage/utils';
 
@@ -195,7 +196,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 					<Button
 						disabled={!couponCode.trim() || isLoadingCoupon}
 						loading={isLoadingCoupon}
-						icon="tag"
+						icon={<TagOutlined />}
 						onClick={handleApplyCoupon}
 						htmlType="button"
 						size="large"
@@ -216,7 +217,7 @@ const StripeForm = ({ onSubmit, showBack, onBack }) => {
 						<Alert
 							type="success"
 							showIcon
-							icon={<Icon type="tags" />}
+							icon={<TagsOutlined />}
 							message={`Coupon has been applied successfully. You will receive ${
 								couponData.amount_off
 									? `${couponData.amount_off}`

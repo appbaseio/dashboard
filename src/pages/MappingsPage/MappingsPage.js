@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Button, Icon } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Row, Col, Button } from 'antd';
 import { string, bool, number } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -55,7 +56,7 @@ const MappingsPage = ({
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Icon type="info-circle" />
+								<InfoCircleOutlined />
 								Upgrade Now
 							</Button>
 							<p
@@ -89,7 +90,7 @@ const MappingsPage = ({
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<Icon type="info-circle" />
+							<InfoCircleOutlined />
 							Requires A Paid Plan
 						</Button>
 					</Col>

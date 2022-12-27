@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, notification } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 import parser from 'url-parser-lite';
 
 import Footer from '../components/Footer';
@@ -219,7 +220,7 @@ export default class Introduction extends Component {
 				<div className="left-column" />
 				<div className="right-column">
 					<a className="button has-icon" onClick={this.nextLayout}>
-						Next &nbsp; <Icon type="right" theme="outlined" />
+						Next &nbsp; <RightOutlined />
 					</a>
 				</div>
 			</footer>

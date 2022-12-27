@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import Flex from '../../batteries/components/shared/Flex';
 import ReactivesearchLogo from '../Logo/ReactivesearchLogo';
@@ -22,14 +22,14 @@ const LoginContainer = ({ children }) => (
 					</p>
 					<ul className="signup_benefits">
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Develop</strong>: Import data, test
 								search relevance visually, view API logs
 							</span>
 						</li>
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Search Relevance</strong>: Configure
 								language, search, aggregations, synonyms, query
@@ -37,7 +37,7 @@ const LoginContainer = ({ children }) => (
 							</span>
 						</li>
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Actionable Analytics</strong>: Record
 								and view search and click analytics, popular
@@ -45,14 +45,14 @@ const LoginContainer = ({ children }) => (
 							</span>
 						</li>
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Search UI</strong>: Build search and
 								recommendations UIs with no code
 							</span>
 						</li>
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Access Control</strong>: Granular
 								read/write permissions, RBAC, and user
@@ -60,7 +60,7 @@ const LoginContainer = ({ children }) => (
 							</span>
 						</li>
 						<li>
-							<Icon type="check" className="icon" />
+							<CheckOutlined className="icon" />
 							<span>
 								<strong>Support</strong>: Available via in-app
 								chat and e-mail

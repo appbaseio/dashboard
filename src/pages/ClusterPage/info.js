@@ -1,4 +1,9 @@
-import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	WarningOutlined,
+} from '@ant-design/icons';
+import { Alert, Button, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -394,7 +399,7 @@ class ClusterInfo extends Component {
 						style={{ textAlign: 'center', paddingTop: 40 }}
 					>
 						<article>
-							<Icon css={{ fontSize: 42 }} type="warning" />
+							<WarningOutlined css={{ fontSize: 42 }} />
 							<h2
 								style={{
 									maxWidth: 400,
@@ -412,7 +417,7 @@ class ClusterInfo extends Component {
 								<Link to="/">
 									<Button
 										size="large"
-										icon="arrow-left"
+										icon={<ArrowLeftOutlined />}
 										css={{
 											marginRight: 12,
 										}}
@@ -441,12 +446,12 @@ class ClusterInfo extends Component {
 												deleteModal: true,
 											});
 										}}
-										type="danger"
+										danger
 										style={{
 											marginRight: 12,
 										}}
 										size="large"
-										icon="delete"
+										icon={<DeleteOutlined />}
 									>
 										Delete Cluster
 									</Button>
@@ -471,7 +476,7 @@ class ClusterInfo extends Component {
 			<Button
 				size="large"
 				onClick={() => this.props.history.push('/')}
-				icon="arrow-left"
+				icon={<ArrowLeftOutlined />}
 			>
 				Go Back
 			</Button>
@@ -484,11 +489,11 @@ class ClusterInfo extends Component {
 							deleteModal: true,
 						});
 					}}
-					type="danger"
+					danger
 					css={{
 						marginLeft: 12,
 					}}
-					icon="delete"
+					icon={<DeleteOutlined />}
 				>
 					Delete Cluster
 				</Button>
@@ -541,7 +546,7 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn{"'"}t available yet
+						Cluster status isn't available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes
 						live.
@@ -608,7 +613,7 @@ class ClusterInfo extends Component {
 					<section className={clusterContainer}>
 						<Modal
 							title="Error"
-							visible={this.state.showError}
+							open={this.state.showError}
 							onOk={this.hideErrorModal}
 						>
 							<p>{this.state.deploymentError}</p>

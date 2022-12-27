@@ -10,6 +10,8 @@ import Dashboard from './Dashboard';
 
 import { mediaKey } from './utils/media';
 
+import 'antd/dist/reset.css';
+
 // global styles
 // eslint-disable-next-line
 injectGlobal`
