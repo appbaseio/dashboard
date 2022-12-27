@@ -312,7 +312,7 @@ class ArcDetail extends React.Component {
 				<div className={clusterButtons}>
 					<Button
 						onClick={handleDeleteModal}
-						type="danger"
+						danger
 						size="large"
 						icon={<DeleteOutlined />}
 						className="delete"

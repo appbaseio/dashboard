@@ -446,7 +446,7 @@ class ClusterInfo extends Component {
 												deleteModal: true,
 											});
 										}}
-										type="danger"
+										danger
 										style={{
 											marginRight: 12,
 										}}
@@ -489,7 +489,7 @@ class ClusterInfo extends Component {
 							deleteModal: true,
 						});
 					}}
-					type="danger"
+					danger
 					css={{
 						marginLeft: 12,
 					}}

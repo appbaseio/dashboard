@@ -84,7 +84,7 @@ export default class CredentialsBox extends Component {
 						<div className="buttons-wrapper">
 							<div>
 								<Button
-									type="danger"
+									danger
 									ghost
 									size="small"
 									className="cancel-button"

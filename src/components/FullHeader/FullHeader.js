@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClusterOutlined, RocketOutlined } from '@ant-design/icons';
-import { Layout, Menu, Tag, Row } from 'antd';
+import { Layout, Menu, Tag, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool, number, array } from 'prop-types';
 import { connect } from 'react-redux';
@@ -91,15 +91,19 @@ const FullHeader = ({
 					trialMessage={trialMessage}
 				/>
 			)}
-			<a
-				href="https://docs.appbase.io/"
-				className={link}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<RocketOutlined /> Docs
-			</a>
-			<UserMenu user={user} />
+			<Col>
+				<a
+					href="https://docs.appbase.io/"
+					className={link}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<RocketOutlined /> Docs
+				</a>
+			</Col>
+			<Col>
+				<UserMenu user={user} />
+			</Col>
 		</Row>
 		<MenuSlider
 			isHomepage

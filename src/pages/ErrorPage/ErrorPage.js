@@ -74,7 +74,7 @@ class ErrorPage extends React.Component {
 						href="mailto:support@appbase.io"
 						target="_blank"
 						size="large"
-						type="danger"
+						danger
 						css={{ marginLeft: '8' }}
 					>
 						<InfoCircleOutlined />

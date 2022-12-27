@@ -94,7 +94,7 @@ const columns = [
 				okText="Yes"
 				cancelText="No"
 			>
-				<Button type="danger" size="default">
+				<Button danger size="default">
 					<DeleteIcon size={16} />
 				</Button>
 			</Popconfirm>

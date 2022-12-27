@@ -350,7 +350,7 @@ class ClusterPage extends Component {
 								cluster.status === 'deployments in progress' ||
 								cluster.status === 'failed') ? (
 								<Button
-									type="danger"
+									danger
 									icon={<DeleteOutlined />}
 									className="showOnHover"
 									onClick={() =>
@@ -637,9 +637,7 @@ class ClusterPage extends Component {
 					<div style={vcenter}>
 						<i className="fas fa-gift" style={{ fontSize: 36 }} />
 						<h2 style={{ marginTop: 24, fontSize: 22 }}>
-							You
-							{"'"}
-							ve unlocked 14 days free trial
+							You ' ve unlocked 14 days free trial
 						</h2>
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today

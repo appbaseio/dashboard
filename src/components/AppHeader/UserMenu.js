@@ -60,8 +60,7 @@ const UserMenu = ({ user }) => {
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item onClick={handleLogout}>
-				<PoweroffOutlined />
-				Logout
+				<PoweroffOutlined style={{ marginRight: 8 }} /> Logout
 			</Menu.Item>
 		</Menu>
 	);

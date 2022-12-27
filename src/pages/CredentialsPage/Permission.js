@@ -156,7 +156,7 @@ class Permission extends React.Component {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button type="danger">
+					<Button danger>
 						<DeleteIcon size={16} />
 					</Button>
 				</Popconfirm>

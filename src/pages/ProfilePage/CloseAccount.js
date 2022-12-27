@@ -113,7 +113,7 @@ const CloseAccount = () => {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button type="danger" disabled={availableActiveClusters}>
+					<Button danger disabled={availableActiveClusters}>
 						Close Account
 					</Button>
 				</Popconfirm>

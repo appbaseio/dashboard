@@ -608,7 +608,7 @@ class ClusterScreen extends Component {
 					<div className={clusterButtons}>
 						<Button
 							onClick={handleDeleteModal}
-							type="danger"
+							danger
 							size="large"
 							icon={<DeleteOutlined />}
 							className="delete"

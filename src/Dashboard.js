@@ -58,7 +58,7 @@ class Dashboard extends Component {
 
 		if (error) {
 			return (
-                <section
+				<section
 					css={{
 						justifyContent: 'center',
 						alignItems: 'center',
@@ -83,7 +83,7 @@ class Dashboard extends Component {
 							href="mailto:support@appbase.io"
 							target="_blank"
 							size="large"
-							type="danger"
+							danger
 							css={{ marginLeft: '8' }}
 						>
 							<InfoCircleOutlined />
@@ -91,7 +91,7 @@ class Dashboard extends Component {
 						</Button>
 					</section>
 				</section>
-            );
+			);
 		}
 
 		return (
