@@ -168,7 +168,7 @@ class Directives extends React.Component {
 					Learn More
 				</Button>
 				<Modal
-					visible={visible}
+					open={visible}
 					onCancel={this.handleCancel}
 					footer={null}
 					width={750}

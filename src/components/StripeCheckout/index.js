@@ -56,7 +56,7 @@ const StripeCheckout = ({
 	}, []);
 	return (
 		<Modal
-			visible={visible}
+			open={visible}
 			footer={null}
 			title={
 				<div>

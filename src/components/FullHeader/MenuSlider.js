@@ -77,7 +77,7 @@ class MenuSlider extends React.Component {
 					width="100%"
 					className={menuDrawer}
 					onClose={this.handleDrawer}
-					visible={visible}
+					open={visible}
 				>
 					<Menu
 						mode="inline"

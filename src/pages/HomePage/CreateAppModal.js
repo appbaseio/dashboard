@@ -214,7 +214,7 @@ class CreateAppModal extends Component {
 		}
 		return (
 			<Modal
-				visible={showModal}
+				open={showModal}
 				onOk={this.handleOk}
 				destroyOnClose
 				okButtonProps={{ loading: createdApp.isLoading }}
@@ -286,7 +286,7 @@ class CreateAppModal extends Component {
 							)} // prettier-ignore
 							title="App name validations"
 							trigger="click"
-							visible={validationPopOver}
+							open={validationPopOver}
 						>
 							<InfoCircleOutlined
 								onClick={this.handleValidationPopOver}

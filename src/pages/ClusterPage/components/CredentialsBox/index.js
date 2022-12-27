@@ -117,8 +117,8 @@ export default class CredentialsBox extends Component {
 					</div>
 				}
 				trigger="click"
-				visible={this.state.confirmationBoxVisible}
-				onVisibleChange={this.handleVisibleChange}
+				open={this.state.confirmationBoxVisible}
+				onOpenChange={this.handleVisibleChange}
 			>
 				<SyncOutlined style={{ color: '#ff0000' }} />
 			</Popover>

@@ -230,7 +230,7 @@ class CreateCredentials extends React.Component {
 										</Button>,
 								  ]
 						}
-						visible={show}
+						open={show}
 						onCancel={handleCancel}
 					>
 						{isLoadingMappings ? (
@@ -647,8 +647,7 @@ class CreateCredentials extends React.Component {
 														) && (
 															<span css="color: red;margin-left: 10px">
 																Field value can
-																{"'"}t be
-																negative.
+																't be negative.
 															</span>
 														)}
 													</Flex>
@@ -677,8 +676,7 @@ class CreateCredentials extends React.Component {
 														) && (
 															<span css="color: red;margin-left: 10px">
 																Field value can
-																{"'"}t be
-																negative.
+																't be negative.
 															</span>
 														)}
 													</Flex>

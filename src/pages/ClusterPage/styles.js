@@ -154,6 +154,7 @@ const card = css`
 	.col {
 		padding: 30px 25px;
 		min-width: 270px;
+		overflow: auto;
 		${media.ipadPro(css`
 			width: 100%;
 		`)};

@@ -613,7 +613,7 @@ class ClusterInfo extends Component {
 					<section className={clusterContainer}>
 						<Modal
 							title="Error"
-							visible={this.state.showError}
+							open={this.state.showError}
 							onOk={this.hideErrorModal}
 						>
 							<p>{this.state.deploymentError}</p>

@@ -101,7 +101,7 @@ class ConnectCluster extends React.Component {
 					Connect
 				</Button>
 				<Modal
-					visible={visible}
+					open={visible}
 					title="Connect your Cluster"
 					onOk={this.handleToggle}
 					onCancel={this.handleToggle}

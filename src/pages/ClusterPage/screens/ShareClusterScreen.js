@@ -222,7 +222,7 @@ class ShareClusterScreen extends Component {
 
 				<Modal
 					title="Share this cluster"
-					visible={showModal}
+					open={showModal}
 					onCancel={this.handleCancel}
 					footer={[
 						<Button
