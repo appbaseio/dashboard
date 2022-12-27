@@ -802,7 +802,7 @@ class NewCluster extends Component {
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
-				<Header compact>
+				<Header compact style={{ padding: '0 50px' }}>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
 							<h2> Create a New Cluster </h2>

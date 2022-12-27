@@ -575,7 +575,7 @@ class NewMyCluster extends Component {
 				{!isDeployTemplate ? (
 					<>
 						<FullHeader clusters={activeClusters} isCluster />
-						<Header compact>
+						<Header compact style={{ padding: '0 50px' }}>
 							<Row
 								type="flex"
 								justify="space-between"
