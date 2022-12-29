@@ -142,6 +142,7 @@ const clusterInfo = css`
 `;
 
 const card = css`
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	width: 100%;
