@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
+import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -25,7 +26,13 @@ import {
 	capitalizeWord,
 	CLUSTER_PLANS,
 } from './utils';
-import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
+import {
+	clusterContainer,
+	card,
+	fadeOutStyles,
+	settingsItem,
+	clusterInfo,
+} from './styles';
 
 let interval;
 
@@ -36,16 +43,28 @@ export const machineMarks = {
 		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
 		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+		bandWidth: 1,
+		postBandWidthConsumption: 3,
+		dataStorage: 1,
+		searchIndices: 2,
 	},
 	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
 		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
 		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
+		bandWidth: 10,
+		postBandWidthConsumption: 3,
+		dataStorage: 1,
+		searchIndices: 4,
 	},
 	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
 		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
 		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
+		bandWidth: 100,
+		postBandWidthConsumption: 3,
+		dataStorage: null,
+		searchIndices: 10,
 	},
 };
 
@@ -299,6 +318,91 @@ class NewMyCluster extends Component {
 		});
 	};
 
+	renderCustomPriceCard = mark => {
+		return (
+			<div className="col grey">
+				<div className={clusterInfo}>
+					<div>
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							{mark.cost ? (
+								<>
+									<span>$</span>
+									<AnimatedNumber
+										value={mark.cost}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									/mo
+								</>
+							) : (
+								'Contact Us'
+							)}
+						</div>
+						<span>
+							{mark.cost
+								? 'Estimated Cost'
+								: 'Annual billing available'}
+						</span>
+					</div>
+				</div>
+				<div className={clusterInfo}>
+					<div>
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							<span>$</span>
+							<AnimatedNumber
+								value={mark.bandWidth}
+								duration={100}
+								stepPrecision={0}
+							/>{' '}
+							GB data bandwidth included
+						</div>
+						<span>
+							${mark.postBandWidthConsumption}/GB thereafter based
+							on usage
+						</span>
+					</div>
+				</div>
+				<div className={clusterInfo}>
+					<div>
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							{mark.dataStorage ? (
+								<>
+									<span>$</span>
+									<AnimatedNumber
+										value={mark.dataStorage}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									GB data storage
+								</>
+							) : (
+								'Unlimited Data Storage'
+							)}
+						</div>
+						<span>
+							{mark.searchIndices} search indexes included
+						</span>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	render() {
 		const {
 			isLoading,
@@ -425,6 +529,7 @@ class NewMyCluster extends Component {
 									}
 									showPPH={false}
 									showNodesSupported={false}
+									customCardNode={this.renderCustomPriceCard}
 								/>
 							</div>
 
@@ -686,7 +791,10 @@ class NewMyCluster extends Component {
 								</div>
 							) : (
 								<Alert
-									message={`Serverless Search provides you with $\{} geo-distributed search indexes on Elasticsearch out of the box.`}
+									message={`Serverless Search provides you with ${
+										machineMarks[this.state.pricing_plan]
+											.searchIndices
+									} geo-distributed search indexes on Elasticsearch out of the box.`}
 									description={
 										<div
 											css={`

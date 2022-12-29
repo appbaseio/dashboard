@@ -92,9 +92,9 @@ export const PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 3199,
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 99,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 799,
-	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 999,
-	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 1999,
-	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 3199,
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 29,
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 149,
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: null, // contact us
 };
 
 export const PLAN_LABEL = {
@@ -671,7 +671,7 @@ export const rotateAPICredentials = (type, clusterId) => {
 };
 
 export const getDistance = (lat1, lon1, lat2, lon2) => {
-	if (lat1 == lat2 && lon1 == lon2) {
+	if (lat1 === lat2 && lon1 === lon2) {
 		return 0;
 	}
 	const radlat1 = (Math.PI * lat1) / 180;

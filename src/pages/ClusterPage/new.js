@@ -275,7 +275,6 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
-		const { region } = this.state;
 		this.getDefaultLocation();
 
 		const slug = generateSlug(2);
@@ -346,11 +345,12 @@ class NewCluster extends Component {
 						if (counter > 12) {
 							total += res;
 						}
-						counter++;
 					})
 					.catch(err => {
-						counter++;
 						console.error(err);
+					})
+					.finally(() => {
+						counter += 1;
 					});
 			}
 		}, 2000);
@@ -374,6 +374,7 @@ class NewCluster extends Component {
 						dist: Number.MAX_SAFE_INTEGER,
 					};
 
+					// eslint-disable-next-line no-restricted-syntax
 					for (const [key, value] of Object.entries(
 						regions[provider],
 					)) {
