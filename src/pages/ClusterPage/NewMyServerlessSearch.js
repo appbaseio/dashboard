@@ -238,7 +238,9 @@ class NewMyCluster extends Component {
 			const body = {
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
-				backend: this.state.backend || 'system',
+				backend: this.state.setSearchEngine
+					? this.state.backend
+					: 'system',
 				...(this.state.setSearchEngine
 					? {
 							backend_url: this.state.clusterURL,
