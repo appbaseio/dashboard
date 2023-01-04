@@ -2,7 +2,8 @@
 
 import React, { Component, Fragment } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import { Menu, Dropdown, Button, Icon } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { Menu, Dropdown, Button } from 'antd';
 
 import Account from './Account';
 import Email from './Email';
@@ -98,7 +99,7 @@ class Profile extends Component<Props> {
 									}}
 								>
 									{[pathParts[2] || 'account']}{' '}
-									<Icon type="down" />
+									<DownOutlined />
 								</Button>
 							</Dropdown>
 						) : (

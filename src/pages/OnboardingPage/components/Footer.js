@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const Footer = ({ previousScreen, disabled, app, label, nextScreen }) => (
 	<footer>
@@ -10,7 +10,7 @@ const Footer = ({ previousScreen, disabled, app, label, nextScreen }) => (
 					style={{ padding: '0 24px 0 16px' }}
 					onClick={previousScreen}
 				>
-					<Icon type="left" theme="outlined" /> &nbsp; Previous
+					<LeftOutlined /> &nbsp; Previous
 				</a>
 			) : null}
 		</div>
@@ -20,7 +20,7 @@ const Footer = ({ previousScreen, disabled, app, label, nextScreen }) => (
 					className={`button has-icon ${disabled ? 'disabled' : ''}`}
 					href={`/tutorial/finish?app=${app}`}
 				>
-					Finish &nbsp; <Icon type="right" theme="outlined" />
+					Finish &nbsp; <RightOutlined />
 				</a>
 			) : (
 				<a
@@ -29,8 +29,7 @@ const Footer = ({ previousScreen, disabled, app, label, nextScreen }) => (
 						!disabled && nextScreen();
 					}}
 				>
-					{label || 'Next'} &nbsp;{' '}
-					<Icon type="right" theme="outlined" />
+					{label || 'Next'} &nbsp; <RightOutlined />
 				</a>
 			)}
 		</div>

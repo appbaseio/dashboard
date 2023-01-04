@@ -114,7 +114,7 @@ class Permission extends React.Component {
 						>
 							<Button
 								onClick={this.handleViewClick}
-								type="normal"
+								type="default"
 							>
 								{viewKey ? (
 									<EyeOffIcon size={16} />
@@ -131,7 +131,10 @@ class Permission extends React.Component {
 								placement="topLeft"
 								title="Copy To Clipboard"
 							>
-								<Button type="normal" className={tutorialClass}>
+								<Button
+									type="default"
+									className={tutorialClass}
+								>
 									<CopyIcon size={16} />
 								</Button>
 							</Tooltip>
@@ -140,7 +143,7 @@ class Permission extends React.Component {
 							<Button
 								onClick={this.handleEditCred}
 								className="credentials-tutorial-2"
-								type="normal"
+								type="default"
 							>
 								<EditIcon size={16} />
 							</Button>
@@ -153,7 +156,7 @@ class Permission extends React.Component {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button type="danger">
+					<Button danger>
 						<DeleteIcon size={16} />
 					</Button>
 				</Popconfirm>

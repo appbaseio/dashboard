@@ -42,7 +42,7 @@ class TransferOwnership extends Component {
 		const { allowInput } = this.state;
 		const { isLoading } = this.props;
 		const ownershipButton = (
-			<Button type="danger" onClick={this.toggleOwnership}>
+			<Button danger onClick={this.toggleOwnership}>
 				Transfer App Ownership
 			</Button>
 		);
@@ -86,7 +86,7 @@ class TransferOwnership extends Component {
 											margin: '0px 10px 10px 10px',
 											float: 'right',
 										}}
-										type="danger"
+										danger
 										loading={isLoading}
 									>
 										Transfer App

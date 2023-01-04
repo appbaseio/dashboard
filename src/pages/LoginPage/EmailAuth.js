@@ -1,4 +1,5 @@
 import React from 'react';
+import { CheckCircleOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Input, message } from 'antd';
 import get from 'lodash/get';
 
@@ -148,7 +149,7 @@ class EmailAuth extends React.Component {
 						/>
 						<Button
 							onClick={this.verifyOtp}
-							icon="check-circle"
+							icon={<CheckCircleOutlined />}
 							size="large"
 							loading={isLoading}
 							className={emailBtn}
@@ -164,7 +165,7 @@ class EmailAuth extends React.Component {
 								? this.handleEmailSubmission
 								: toggleEmailAuth
 						}
-						icon={isEmailAuth ? '' : 'mail'}
+						icon={isEmailAuth ? null : <MailOutlined />}
 						size="large"
 						disabled={disabled}
 						loading={isLoading}

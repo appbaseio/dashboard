@@ -58,7 +58,7 @@ class DeleteAppModal extends React.Component {
 
 		return (
 			<Modal
-				visible={deleteModal}
+				open={deleteModal}
 				onOk={this.handleDelete}
 				onCancel={handleDeleteModal}
 				destroyOnClose

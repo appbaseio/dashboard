@@ -1,20 +1,14 @@
 import {
-	Button,
-	Col,
-	Icon,
-	Modal,
-	Row,
-	Select,
-	Tabs,
-	Tooltip,
-	Alert,
-} from 'antd';
+	ArrowRightOutlined,
+	InfoCircleTwoTone,
+	QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import ip from 'ip';
 import { generateSlug } from 'random-word-slugs';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
 import Container from '../../components/Container';
@@ -808,7 +802,7 @@ class NewCluster extends Component {
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
-				<Header compact>
+				<Header compact style={{ padding: '0 50px' }}>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
 							<h2> Create a New Cluster </h2>
@@ -848,7 +842,7 @@ class NewCluster extends Component {
 											'/clusters/new/my-cluster',
 										);
 									}}
-									icon="question-circle"
+									icon={<QuestionCircleOutlined />}
 								>
 									Already have a Cluster
 								</Button>
@@ -921,7 +915,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											size="large"
-											css={{
+											style={{
 												height: 160,
 												marginRight: 20,
 												backgroundColor:
@@ -965,7 +959,7 @@ class NewCluster extends Component {
 													? 'primary'
 													: 'default'
 											}
-											css={{
+											style={{
 												height: 160,
 												backgroundColor:
 													provider === 'aws'
@@ -1080,7 +1074,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											size="large"
-											css={{
+											style={{
 												height: 160,
 												marginRight: 20,
 												backgroundColor:
@@ -1121,7 +1115,7 @@ class NewCluster extends Component {
 													? 'primary'
 													: 'default'
 											}
-											css={{
+											style={{
 												height: 160,
 												backgroundColor:
 													this.state.esFlavor ===
@@ -1218,7 +1212,7 @@ class NewCluster extends Component {
 														: 'default'
 												}
 												size="large"
-												css={{
+												style={{
 													height: 160,
 													width: '100%',
 													color: '#000',
@@ -1262,7 +1256,7 @@ class NewCluster extends Component {
 														? 'primary'
 														: 'default'
 												}
-												css={{
+												style={{
 													height: 160,
 													width: '100%',
 													backgroundColor:
@@ -1319,9 +1313,7 @@ class NewCluster extends Component {
 												alignItems: 'center',
 											}}
 										>
-											<Icon
-												type="info-circle"
-												theme="twoTone"
+											<InfoCircleTwoTone
 												twoToneColor="#fbe137"
 												style={{
 													marginRight: 5,
@@ -1394,10 +1386,7 @@ class NewCluster extends Component {
 										onClick={this.handleStripeModal}
 									>
 										Add payment info and create cluster
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								) : (
 									<Button
@@ -1406,10 +1395,7 @@ class NewCluster extends Component {
 										onClick={this.createCluster}
 									>
 										Create Cluster
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
 								)}
 							</div>

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Icon, Button, Tooltip, Alert, Popover } from 'antd';
+import {
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	InfoCircleOutlined,
+	LoadingOutlined,
+} from '@ant-design/icons';
+import { Input, Button, Tooltip, Alert, Popover } from 'antd';
 import JsonView from '../../components/JsonView';
 import ErrorPage from './ErrorPage';
 import { deployClusterStyles, popoverContent } from './styles';
@@ -10,6 +16,12 @@ const overflow = {
 	overflow: 'hidden',
 	textOverflow: 'ellipsis',
 	color: '#1890ff',
+};
+
+const iconMap = {
+	'close-circle': <CloseCircleOutlined style={{ color: 'green' }} />,
+	'check-circle': <CheckCircleOutlined style={{ color: 'green' }} />,
+	loading: <LoadingOutlined />,
 };
 
 const PipelineTemplateScreen = ({
@@ -165,7 +177,7 @@ const PipelineTemplateScreen = ({
 									)}
 								>
 									<span style={{ marginLeft: 5 }}>
-										<Icon type="info-circle" />
+										<InfoCircleOutlined />
 									</span>
 								</Tooltip>
 							) : null}
@@ -185,12 +197,7 @@ const PipelineTemplateScreen = ({
 									className="validate-button"
 								>
 									validate
-									{iconType ? (
-										<Icon
-											type={iconType}
-											style={{ color: 'green' }}
-										/>
-									) : null}
+									{iconType ? iconMap[iconType] : null}
 								</Button>
 							) : null}
 						</div>

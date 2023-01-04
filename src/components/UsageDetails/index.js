@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Button, Icon } from 'antd';
+import { ToTopOutlined } from '@ant-design/icons';
+import { Card, Button } from 'antd';
 import { css } from 'emotion';
 import { connect } from 'react-redux';
 import { Circle } from 'rc-progress';
@@ -128,7 +129,7 @@ const UsageDetails = ({ plan, computedMetrics }) => {
 						size="large"
 						type={showUpgrade.danger ? 'danger' : 'primary'}
 					>
-						<Icon type="to-top" />
+						<ToTopOutlined />
 						Upgrade your Plan
 					</Button>
 				)}
