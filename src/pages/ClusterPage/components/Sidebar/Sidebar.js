@@ -13,7 +13,7 @@ import { Menu } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ id, isViewer, isExternalCluster }) {
+export default function Sidebar({ id, isViewer, isExternalCluster, isActive }) {
 	const baseRoute = `/clusters/${id}`;
 	let defaultSelectedKeys;
 
@@ -30,41 +30,51 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 	} else {
 		defaultSelectedKeys = ['6'];
 	}
+
 	return (
 		<Menu
 			css={{ width: 220, backgroundColor: 'transparent', border: 0 }}
 			defaultSelectedKeys={defaultSelectedKeys}
 			theme="light"
 		>
-			<Menu.Item key="1">
-				<Link to={baseRoute}>
+			{!isActive || (
+				<Menu.Item key="1">
+					<Link to={baseRoute}>
 					<ClusterOutlined /> Cluster
-				</Link>
-			</Menu.Item>
-			{isViewer || isExternalCluster || (
+					</Link>
+				</Menu.Item>
+			)}
+
+			{isViewer || isExternalCluster || !isActive || (
 				<Menu.Item key="2">
 					<Link to={`${baseRoute}/scale`}>
 						<DatabaseOutlined /> Scale Cluster
 					</Link>
 				</Menu.Item>
 			)}
-			{isViewer || (
+			{isViewer || !isActive || (
 				<Menu.Item key="3">
 					<Link to={`${baseRoute}/share`}>
 						<ShareAltOutlined /> Share Settings
 					</Link>
 				</Menu.Item>
 			)}
-			<Menu.Item key="4">
-				<Link to={`${baseRoute}/usage`}>
+			{!isActive || (
+				<Menu.Item key="4">
+					<Link to={`${baseRoute}/usage`}>
 					<BarChartOutlined /> View Usage
-				</Link>
-			</Menu.Item>
-			<Menu.Item key="5">
-				<Link to={`${baseRoute}/monitoring`}>
+					</Link>
+				</Menu.Item>
+			)}
+
+			{!isActive || (
+				<Menu.Item key="5">
+					<Link to={`${baseRoute}/monitoring`}>
 					<LineChartOutlined /> Cluster Monitoring
-				</Link>
-			</Menu.Item>
+					</Link>
+				</Menu.Item>
+			)}
+
 			<Menu.Item key="6">
 				<Link to={`${baseRoute}/logs`}>
 					<UnorderedListOutlined /> Deploy Logs
