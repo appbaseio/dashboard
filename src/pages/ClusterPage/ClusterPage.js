@@ -411,14 +411,16 @@ class ClusterPage extends Component {
 							</span>
 						</Tooltip>
 					) : null}
-					<div
-						className="view-logs-button"
-						onClick={() =>
-							history.push(`/clusters/${cluster.id}/logs`)
-						}
-					>
-						View deploy logs
-					</div>
+					{!isSLSCluster ? (
+						<div
+							className="view-logs-button"
+							onClick={() =>
+								history.push(`/clusters/${cluster.id}/logs`)
+							}
+						>
+							View deploy logs
+						</div>
+					) : null}
 				</h3>
 
 				<div className="info-row">

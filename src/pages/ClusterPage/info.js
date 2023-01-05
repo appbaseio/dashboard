@@ -92,6 +92,17 @@ class ClusterInfo extends Component {
 		clearTimeout(this.statusTimer);
 	}
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	init = () => {
 		return getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
@@ -237,10 +248,12 @@ class ClusterInfo extends Component {
 	};
 
 	deleteCluster = (id = get(this, 'props.match.params.id')) => {
+		const { cluster } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.props.history.push('/');
 			})
@@ -541,7 +554,7 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn{"'"}t available yet
+						Cluster status isn&apos;t available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes
 						live.
@@ -576,6 +589,7 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
+		const isSLSCluster = this.isValidSlsCluster(cluster);
 
 		return (
 			<Fragment>
@@ -633,7 +647,8 @@ class ClusterInfo extends Component {
 										<div>
 											<h4>Region</h4>
 											{this.renderClusterRegion(
-												this.state.cluster.region,
+												this.state.cluster.region ||
+													'us-central1-a',
 												this.state.cluster.provider,
 											)}
 										</div>
@@ -665,15 +680,42 @@ class ClusterInfo extends Component {
 												) : null}
 											</div>
 										</div>
-
-										<div>
-											<h4>ES Version</h4>
+										{isSLSCluster ? (
+											<>
+												<div>
+													<h4>Domain</h4>
+													<div>
+														{
+															this.state.cluster
+																.domain
+														}
+													</div>
+												</div>
+												<div>
+													<h4>Tenancy Type</h4>
+													<div>
+														{
+															this.state.cluster
+																.tenancy_type
+														}
+													</div>
+												</div>
+											</>
+										) : null}
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.es_version}
+												<h4>ES Version</h4>
+												<div>
+													{
+														this.state.cluster
+															.es_version
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
-										{isExternalCluster ? null : (
+										{isExternalCluster ||
+										isSLSCluster ? null : (
 											<div>
 												<h4>Memory / Per Node</h4>
 												<div>
@@ -701,12 +743,17 @@ class ClusterInfo extends Component {
 											</div>
 										)}
 
-										<div>
-											<h4>Nodes</h4>
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.total_nodes}
+												<h4>Nodes</h4>
+												<div>
+													{
+														this.state.cluster
+															.total_nodes
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
 										{this.state.cluster.trial ? (
 											<div>
