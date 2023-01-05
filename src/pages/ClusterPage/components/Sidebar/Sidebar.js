@@ -3,7 +3,12 @@ import { Menu, Icon } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ id, isViewer, isExternalCluster }) {
+export default function Sidebar({
+	id,
+	isViewer,
+	isExternalCluster,
+	isSLSCluster,
+}) {
 	const baseRoute = `/clusters/${id}`;
 	let defaultSelectedKeys;
 
@@ -55,11 +60,13 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 					<Icon type="line-chart" /> Cluster Monitoring
 				</Link>
 			</Menu.Item>
-			<Menu.Item key="6">
-				<Link to={`${baseRoute}/logs`}>
-					<Icon type="unordered-list" /> Deploy Logs
-				</Link>
-			</Menu.Item>
+			{!isSLSCluster ? (
+				<Menu.Item key="6">
+					<Link to={`${baseRoute}/logs`}>
+						<Icon type="unordered-list" /> Deploy Logs
+					</Link>
+				</Menu.Item>
+			) : null}
 		</Menu>
 	);
 }

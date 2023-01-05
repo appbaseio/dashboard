@@ -931,6 +931,7 @@ class ClusterInfo extends Component {
 											isExternalCluster={
 												isExternalCluster
 											}
+											isSLSCluster={isSLSCluster}
 										/>
 										<RightContainer>
 											<Switch>
