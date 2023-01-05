@@ -68,6 +68,17 @@ class ClusterPage extends Component {
 		clearTimeout(this.timer);
 	}
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	paramsValue = () => {
 		const id = getParam('id', window.location.search) || undefined;
 		const subscription =
@@ -79,10 +90,14 @@ class ClusterPage extends Component {
 	};
 
 	deleteCluster = id => {
+		const { clusters } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(
+			clusters.filter(i => i.id)[0] || {},
+		);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.initClusters();
 			})
@@ -310,6 +325,8 @@ class ClusterPage extends Component {
 					},
 			  }
 			: {};
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3 className="header-container">
@@ -416,42 +433,56 @@ class ClusterPage extends Component {
 							{get(planDetails, 'label') || cluster.pricing_plan}
 						</div>
 					</div>
-
-					<div>
-						<h4>ES Version</h4>
-						<div>{cluster.es_version}</div>
-					</div>
-
-					{isExternalCluster ? null : (
-						<div>
-							<h4>Memory</h4>
+					{isSLSCluster ? (
+						<>
 							<div>
-								{this.getFromPricing(
-									cluster.pricing_plan,
-									'memory',
-								)}{' '}
-								GB
+								<h4>Domain</h4>
+								<div>{cluster.domain}</div>
 							</div>
-						</div>
-					)}
-
-					{isExternalCluster ? null : (
-						<div>
-							<h4>Disk Size</h4>
 							<div>
-								{this.getFromPricing(
-									cluster.pricing_plan,
-									'storage',
-								)}{' '}
-								GB
+								<h4>Tenancy Type</h4>
+								<div>{cluster.tenancy_type}</div>
 							</div>
-						</div>
-					)}
+						</>
+					) : (
+						<>
+							<div>
+								<h4>ES Version</h4>
+								<div>{cluster.es_version}</div>
+							</div>
 
-					<div>
-						<h4>Nodes</h4>
-						<div>{cluster.total_nodes}</div>
-					</div>
+							{isExternalCluster ? null : (
+								<div>
+									<h4>Memory</h4>
+									<div>
+										{this.getFromPricing(
+											cluster.pricing_plan,
+											'memory',
+										)}{' '}
+										GB
+									</div>
+								</div>
+							)}
+
+							{isExternalCluster ? null : (
+								<div>
+									<h4>Disk Size</h4>
+									<div>
+										{this.getFromPricing(
+											cluster.pricing_plan,
+											'storage',
+										)}{' '}
+										GB
+									</div>
+								</div>
+							)}
+
+							<div>
+								<h4>Nodes</h4>
+								<div>{cluster.total_nodes}</div>
+							</div>
+						</>
+					)}
 
 					{cluster.status === 'active' ||
 					cluster.status === 'deployments in progress' ? (
@@ -469,74 +500,83 @@ class ClusterPage extends Component {
 									<Button type="primary">View Details</Button>
 								</Link>
 							) : (
-								<div css={paymentStyles}>
-									<p
-										css={{
-											fontSize: 12,
-											lineHeight: '18px',
-											color: '#999',
-											margin: '-10px 0 12px 0',
-										}}
-									>
-										Your regular payment is due for this
-										cluster.
-									</p>
+								<Link
+									to={`/clusters/${cluster.id}`}
+									style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+									}}
+								>
+									<Button type="primary">View Details</Button>
+								</Link>
+								// <div css={paymentStyles}>
+								// 	<p
+								// 		css={{
+								// 			fontSize: 12,
+								// 			lineHeight: '18px',
+								// 			color: '#999',
+								// 			margin: '-10px 0 12px 0',
+								// 		}}
+								// 	>
+								// 		Your regular payment is due for this
+								// 		cluster.
+								// 	</p>
 
-									<Button
-										onClick={() =>
-											this.openStripeModal(cluster)
-										}
-									>
-										Subscribe to access
-									</Button>
-									<p
-										css={{
-											fontSize: 12,
-											lineHeight: '18px',
-											color: '#999',
-											margin: '10px 0 12px 0',
-										}}
-									>
-										Need a trial extension?{' '}
-										<span
-											style={{
-												color: 'dodgerblue',
-												cursor: 'pointer',
-											}}
-											onClick={() => {
-												if (window.Intercom) {
-													window.Intercom('show');
-												}
-											}}
-										>
-											Chat with us
-										</span>
-									</p>
-									{showStripeModal &&
-										currentCluster.id === cluster.id && (
-											<StripeCheckout
-												visible={showStripeModal}
-												onCancel={this.hideStripeModal}
-												plan={
-													PLAN_LABEL[
-														cluster.pricing_plan
-													]
-												}
-												price={EFFECTIVE_PRICE_BY_PLANS[
-													cluster.pricing_plan
-												].toString()}
-												monthlyPrice={PRICE_BY_PLANS[
-													cluster.pricing_plan
-												].toString()}
-												onSubmit={data =>
-													this.handleToken({
-														clusterId: cluster.id,
-														...data,
-													})
-												}
-											/>
-										)}
-								</div>
+								// 	<Button
+								// 		onClick={() =>
+								// 			this.openStripeModal(cluster)
+								// 		}
+								// 	>
+								// 		Subscribe to access
+								// 	</Button>
+								// 	<p
+								// 		css={{
+								// 			fontSize: 12,
+								// 			lineHeight: '18px',
+								// 			color: '#999',
+								// 			margin: '10px 0 12px 0',
+								// 		}}
+								// 	>
+								// 		Need a trial extension?{' '}
+								// 		<span
+								// 			style={{
+								// 				color: 'dodgerblue',
+								// 				cursor: 'pointer',
+								// 			}}
+								// 			onClick={() => {
+								// 				if (window.Intercom) {
+								// 					window.Intercom('show');
+								// 				}
+								// 			}}
+								// 		>
+								// 			Chat with us
+								// 		</span>
+								// 	</p>
+								// 	{showStripeModal &&
+								// 		currentCluster.id === cluster.id && (
+								// 			<StripeCheckout
+								// 				visible={showStripeModal}
+								// 				onCancel={this.hideStripeModal}
+								// 				plan={
+								// 					PLAN_LABEL[
+								// 						cluster.pricing_plan
+								// 					]
+								// 				}
+								// 				price={EFFECTIVE_PRICE_BY_PLANS[
+								// 					cluster.pricing_plan
+								// 				].toString()}
+								// 				monthlyPrice={PRICE_BY_PLANS[
+								// 					cluster.pricing_plan
+								// 				].toString()}
+								// 				onSubmit={data =>
+								// 					this.handleToken({
+								// 						clusterId: cluster.id,
+								// 						...data,
+								// 					})
+								// 				}
+								// 			/>
+								// 		)}
+								// </div>
 							)}
 						</div>
 					) : (
