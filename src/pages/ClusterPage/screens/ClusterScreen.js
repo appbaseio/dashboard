@@ -362,6 +362,7 @@ class ClusterScreen extends Component {
 		const {
 			clusterId,
 			isPaid,
+			isSLSCluster,
 			handleDeleteModal,
 			isExternalCluster,
 		} = this.props;
@@ -423,27 +424,29 @@ class ClusterScreen extends Component {
 
 		return (
 			<Fragment>
-				<li className={card}>
-					<div className="col light">
-						<h3>
-							{isOpenSearchFlavour
-								? 'OpenSearch'
-								: 'Elasticsearch'}
-						</h3>
-						<p>Live cluster endpoint</p>
-					</div>
+				{!isSLSCluster ? (
+					<li className={card}>
+						<div className="col light">
+							<h3>
+								{isOpenSearchFlavour
+									? 'OpenSearch'
+									: 'Elasticsearch'}
+							</h3>
+							<p>Live cluster endpoint</p>
+						</div>
 
-					<div className="col">
-						{Object.keys(deployment)
-							.filter(item => item !== 'addons')
-							.map(key =>
-								this.renderClusterEndpoint(
-									deployment[key],
-									isOpenSearchFlavour,
-								),
-							)}
-					</div>
-				</li>
+						<div className="col">
+							{Object.keys(deployment)
+								.filter(item => item !== 'addons')
+								.map(key =>
+									this.renderClusterEndpoint(
+										deployment[key],
+										isOpenSearchFlavour,
+									),
+								)}
+						</div>
+					</li>
+				) : null}
 
 				<li className={card}>
 					<div className="col light">
@@ -462,85 +465,91 @@ class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				<li className={card}>
-					<div className="col light">
-						<h3>Choose Visualization Tool</h3>
-					</div>
+				{!isSLSCluster ? (
+					<li className={card}>
+						<div className="col light">
+							<h3>Choose Visualization Tool</h3>
+						</div>
 
-					<div
-						className={settingsItem}
-						css={{
-							padding: 30,
-							alignItems: 'baseline',
-						}}
-					>
-						<div className={esContainer}>
-							<Button
-								type={
-									this.state.visualization === 'none'
-										? 'primary'
-										: 'default'
-								}
-								size="large"
-								css={{
-									height: 160,
-									width: '100%',
-									color: '#000',
-									backgroundColor:
+						<div
+							className={settingsItem}
+							css={{
+								padding: 30,
+								alignItems: 'baseline',
+							}}
+						>
+							<div className={esContainer}>
+								<Button
+									type={
 										this.state.visualization === 'none'
-											? '#eaf5ff'
-											: '#fff',
-								}}
-								onClick={() => {
-									this.setConfig('visualization', 'none');
-									this.setConfig('kibana', false);
-									this.setConfig('grafana', false);
-								}}
-							>
-								Built-in dashboard
-							</Button>
-						</div>
-						<div className={esContainer}>
-							<Button
-								size="large"
-								type={
-									this.state.visualization === 'kibana'
-										? 'primary'
-										: 'default'
-								}
-								css={{
-									height: 160,
-									width: '100%',
-									backgroundColor:
-										this.state.visualization === 'kibana'
-											? '#eaf5ff'
-											: '#fff',
-								}}
-								onClick={() => {
-									this.setConfig('visualization', 'kibana');
-									this.setConfig('kibana', true);
-									this.setConfig('grafana', false);
-								}}
-							>
-								<img
-									width={150}
-									src={
-										isOpenSearchFlavour
-											? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
-											: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+											? 'primary'
+											: 'default'
 									}
-									alt="Kibana"
-								/>
-							</Button>
-							<p>
-								The default visualization dashboard for
-								ElasticSearch.
-							</p>
+									size="large"
+									css={{
+										height: 160,
+										width: '100%',
+										color: '#000',
+										backgroundColor:
+											this.state.visualization === 'none'
+												? '#eaf5ff'
+												: '#fff',
+									}}
+									onClick={() => {
+										this.setConfig('visualization', 'none');
+										this.setConfig('kibana', false);
+										this.setConfig('grafana', false);
+									}}
+								>
+									Built-in dashboard
+								</Button>
+							</div>
+							<div className={esContainer}>
+								<Button
+									size="large"
+									type={
+										this.state.visualization === 'kibana'
+											? 'primary'
+											: 'default'
+									}
+									css={{
+										height: 160,
+										width: '100%',
+										backgroundColor:
+											this.state.visualization ===
+											'kibana'
+												? '#eaf5ff'
+												: '#fff',
+									}}
+									onClick={() => {
+										this.setConfig(
+											'visualization',
+											'kibana',
+										);
+										this.setConfig('kibana', true);
+										this.setConfig('grafana', false);
+									}}
+								>
+									<img
+										width={150}
+										src={
+											isOpenSearchFlavour
+												? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+												: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+										}
+										alt="Kibana"
+									/>
+								</Button>
+								<p>
+									The default visualization dashboard for
+									ElasticSearch.
+								</p>
+							</div>
 						</div>
-					</div>
-				</li>
+					</li>
+				) : null}
 
-				{isViewer || (
+				{isViewer || !isSLSCluster ? (
 					<li className={card}>
 						<div className="col light">
 							<h3>Restore From Snapshot</h3>
@@ -602,7 +611,7 @@ class ClusterScreen extends Component {
 							)}
 						</div>
 					</li>
-				)}
+				) : null}
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button
@@ -647,6 +656,10 @@ class ClusterScreen extends Component {
 	}
 }
 
+ClusterScreen.defaultProps = {
+	isSLSCluster: false,
+};
+
 ClusterScreen.propTypes = {
 	clusterId: PropTypes.string.isRequired,
 	cluster: PropTypes.object.isRequired,
@@ -661,6 +674,7 @@ ClusterScreen.propTypes = {
 	elasticsearchHQ: PropTypes.bool.isRequired,
 	arc: PropTypes.bool.isRequired,
 	streams: PropTypes.bool.isRequired,
+	isSLSCluster: PropTypes.bool,
 };
 
 export default ClusterScreen;
