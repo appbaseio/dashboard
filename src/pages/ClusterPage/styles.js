@@ -338,6 +338,9 @@ const clustersList = css`
 		font-size: 15px;
 		margin-left: 10px;
 	}
+	.multi-region {
+		margin-bottom: 10px;
+	}
 	.cluster-card {
 		padding: 30px 25px;
 		border-radius: 3px;

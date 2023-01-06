@@ -427,18 +427,26 @@ class ClusterPage extends Component {
 					{isSLSCluster ? (
 						<div>
 							<h4>Region</h4>
-							{this.renderClusterRegion(
-								'us-central1-a',
-								cluster.provider,
-							)}
-							{this.renderClusterRegion(
-								'europe-west2-a',
-								cluster.provider,
-							)}
-							{this.renderClusterRegion(
-								'asia-southeast1-a',
-								cluster.provider,
-							)}
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'us-central1-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'europe-west2-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'asia-southeast1-a',
+									cluster.provider,
+								)}
+							</div>
 						</div>
 					) : (
 						<div>
