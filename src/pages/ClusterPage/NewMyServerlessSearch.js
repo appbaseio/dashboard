@@ -324,7 +324,7 @@ class NewMyCluster extends Component {
 		return (
 			<div className="col grey">
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
@@ -353,14 +353,13 @@ class NewMyCluster extends Component {
 					</div>
 				</div>
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
 								font-size: 20px !important;
 							`}
 						>
-							<span>$</span>
 							<AnimatedNumber
 								value={mark.bandWidth}
 								duration={100}
@@ -375,7 +374,7 @@ class NewMyCluster extends Component {
 					</div>
 				</div>
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
@@ -384,7 +383,6 @@ class NewMyCluster extends Component {
 						>
 							{mark.dataStorage ? (
 								<>
-									<span>$</span>
 									<AnimatedNumber
 										value={mark.dataStorage}
 										duration={100}

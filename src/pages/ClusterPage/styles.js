@@ -129,6 +129,9 @@ const clusterInfo = css`
 			}
 		}
 	}
+	.mb-10 {
+		margin-bottom: 10px;
+	}
 	h3 {
 		font-size: 16px;
 		font-weight: 600;
