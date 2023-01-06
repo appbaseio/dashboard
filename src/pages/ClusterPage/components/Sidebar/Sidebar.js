@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, Icon } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import { bool, string } from 'prop-types';
 
 export default function Sidebar({
 	id,
@@ -70,6 +71,19 @@ export default function Sidebar({
 		</Menu>
 	);
 }
+
+Sidebar.defaultProps = {
+	isViewer: false,
+	isExternalCluster: false,
+	isSLSCluster: false,
+};
+
+Sidebar.propTypes = {
+	id: string.isRequired,
+	isViewer: bool,
+	isExternalCluster: bool,
+	isSLSCluster: bool,
+};
 
 export const RightContainer = styled('section')`
 	width: calc(100% - 240px);
