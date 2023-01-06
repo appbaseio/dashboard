@@ -424,13 +424,31 @@ class ClusterPage extends Component {
 				</h3>
 
 				<div className="info-row">
-					<div>
-						<h4>Region</h4>
-						{this.renderClusterRegion(
-							cluster.region || 'us-central1-a',
-							cluster.provider,
-						)}
-					</div>
+					{isSLSCluster ? (
+						<div>
+							<h4>Region</h4>
+							{this.renderClusterRegion(
+								'us-central1-a',
+								cluster.provider,
+							)}
+							{this.renderClusterRegion(
+								'europe-west2-a',
+								cluster.provider,
+							)}
+							{this.renderClusterRegion(
+								'asia-southeast1-a',
+								cluster.provider,
+							)}
+						</div>
+					) : (
+						<div>
+							<h4>Region</h4>
+							{this.renderClusterRegion(
+								cluster.region,
+								cluster.provider,
+							)}
+						</div>
+					)}
 
 					<div>
 						<h4>Pricing Plan</h4>
@@ -438,18 +456,7 @@ class ClusterPage extends Component {
 							{get(planDetails, 'label') || cluster.pricing_plan}
 						</div>
 					</div>
-					{isSLSCluster ? (
-						<>
-							<div>
-								<h4>Domain</h4>
-								<div>{cluster.domain}</div>
-							</div>
-							<div>
-								<h4>Tenancy Type</h4>
-								<div>{cluster.tenancy_type}</div>
-							</div>
-						</>
-					) : null}
+
 					{!isSLSCluster ? (
 						<div>
 							<h4>ES Version</h4>
@@ -668,7 +675,7 @@ class ClusterPage extends Component {
 					<div style={vcenter}>
 						<i className="fas fa-gift" style={{ fontSize: 36 }} />
 						<h2 style={{ marginTop: 24, fontSize: 22 }}>
-							You ' ve unlocked 14 days free trial
+							You&apos;ve unlocked 14 days free trial
 						</h2>
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today
