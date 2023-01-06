@@ -644,14 +644,43 @@ class ClusterInfo extends Component {
 									className="cluster-card compact"
 								>
 									<div className="info-row">
-										<div>
-											<h4>Region</h4>
-											{this.renderClusterRegion(
-												this.state.cluster.region ||
-													'us-central1-a',
-												this.state.cluster.provider,
-											)}
-										</div>
+										{isSLSCluster ? (
+											<div>
+												<h4>Region</h4>
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'us-central1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'europe-west2-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'asia-southeast1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+											</div>
+										) : (
+											<div>
+												<h4>Region</h4>
+												{this.renderClusterRegion(
+													this.state.cluster.region ||
+														this.state.cluster
+															.provider,
+												)}
+											</div>
+										)}
 
 										<div>
 											<h4>Pricing Plan</h4>
@@ -680,28 +709,7 @@ class ClusterInfo extends Component {
 												) : null}
 											</div>
 										</div>
-										{isSLSCluster ? (
-											<>
-												<div>
-													<h4>Domain</h4>
-													<div>
-														{
-															this.state.cluster
-																.domain
-														}
-													</div>
-												</div>
-												<div>
-													<h4>Tenancy Type</h4>
-													<div>
-														{
-															this.state.cluster
-																.tenancy_type
-														}
-													</div>
-												</div>
-											</>
-										) : null}
+
 										{!isSLSCluster ? (
 											<div>
 												<h4>ES Version</h4>
@@ -869,7 +877,8 @@ class ClusterInfo extends Component {
 											arcDeployment.image,
 										this.state.cluster.recipe,
 									) &&
-									!isViewer && (
+									!isViewer &&
+									!isSLSCluster && (
 										<Alert
 											message="A new reactivesearch.io version is available!"
 											description={
@@ -1003,6 +1012,9 @@ class ClusterInfo extends Component {
 																this.handleToken
 															}
 															isPaid={isPaid}
+															isSLSCluster={
+																isSLSCluster
+															}
 														/>
 													)}
 												/>
