@@ -348,7 +348,7 @@ class ClusterScreen extends Component {
 			const { cluster } = this.state;
 			const isViewer = cluster.user_role === 'viewer';
 
-			if (name === 'arc') {
+			if (name === 'arc' || name === 'sls') {
 				name = 'Reactivesearch.io';
 			}
 			if (name === 'elasticsearch') {
@@ -429,7 +429,7 @@ class ClusterScreen extends Component {
 
 		let addons = deployment.addons || [];
 
-		addons = addons.filter(i => i.name === 'arc');
+		addons = addons.filter(i => (i.name === isSLSCluster ? 'sls' : 'arc'));
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&

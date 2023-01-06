@@ -290,7 +290,14 @@ class ClusterInfo extends Component {
 		});
 	};
 
-	renderClusterRegion = (region, provider = 'azure') => {
+	renderClusterRegion = (region, regionProvider = 'azure') => {
+		let provider = regionProvider;
+		if (
+			regionProvider === 'GCP' ||
+			regionProvider === 'gcp' ||
+			!regionProvider
+		)
+			provider = 'gke';
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -739,11 +746,20 @@ class ClusterInfo extends Component {
 
 										{isExternalCluster ? null : (
 											<div>
-												<h4>Disk Size / Per Node</h4>
+												<h4>
+													Disk Size{' '}
+													{isSLSCluster ? (
+														<></>
+													) : (
+														<>/ Per Node</>
+													)}
+												</h4>
 												<div>
 													{get(
 														ansibleMachineMarks,
-														`${this.state.cluster.pricing_plan}.storagePerNode`,
+														isSLSCluster
+															? `${this.state.cluster.pricing_plan}.storage`
+															: `${this.state.cluster.pricing_plan}.storagePerNode`,
 														'',
 													)}
 													GB
