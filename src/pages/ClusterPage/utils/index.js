@@ -281,7 +281,9 @@ export function deployCluster(cluster, id) {
 export function deleteCluster(id, isSLSCluster = false) {
 	return new Promise((resolve, reject) => {
 		fetch(
-			`${ACC_API}/v1/${isSLSCluster ? '_delete_mtrs' : '_delete'}/${id}`,
+			`${ACC_API}/${
+				isSLSCluster ? 'v2/_delete_mtrs' : 'v1/_delete'
+			}/${id}`,
 			{
 				method: 'DELETE',
 				credentials: 'include',
