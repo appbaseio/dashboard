@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal, Button, Collapse, Icon, Typography, Divider } from 'antd';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { css } from 'emotion';
+import { bool, object, string } from 'prop-types';
 import { getUrlParams } from '../../../utils/helper';
 import ClusterExploreRedirect from '../../../components/ClusterExploreRedirect';
 
@@ -51,6 +52,11 @@ const PanelHeader = ({ icon, text, title }) => (
 		</div>
 	</div>
 );
+PanelHeader.propTypes = {
+	icon: string.isRequired,
+	text: string.isRequired,
+	title: string.isRequired,
+};
 
 const DirectLink = ({ title, href }) => (
 	<a href={href} rel="noopener noreferrer" target="_blank">
@@ -59,6 +65,10 @@ const DirectLink = ({ title, href }) => (
 		</Paragraph>
 	</a>
 );
+DirectLink.propTypes = {
+	href: string.isRequired,
+	title: string.isRequired,
+};
 
 class ConnectCluster extends React.Component {
 	state = { visible: false };
@@ -83,8 +93,11 @@ class ConnectCluster extends React.Component {
 
 	render() {
 		const { visible } = this.state;
-		const { cluster, deployment } = this.props;
-		const arcInstance = deployment.addons.find(item => item.name === 'arc');
+		const { cluster, deployment, isSLSCluster } = this.props;
+		const arcInstance = isSLSCluster
+			? deployment.addons.find(item => item.name === 'sls')
+			: deployment.addons.find(item => item.name === 'arc');
+
 		return (
 			<div>
 				<Button
@@ -152,21 +165,23 @@ class ConnectCluster extends React.Component {
 								analytics and the credentials can be configured
 								with additional security.
 							</Paragraph>
-							<Paragraph
-								copyable={{
-									text:
-										cluster.elasticsearch_url ||
-										getURL(deployment.elasticsearch),
-								}}
-								strong
-							>
-								ElasticSearch URL (with credentials)
-							</Paragraph>
+							{!isSLSCluster ? (
+								<Paragraph
+									copyable={{
+										text:
+											cluster.elasticsearch_url ||
+											getURL(deployment.elasticsearch),
+									}}
+									strong
+								>
+									ElasticSearch URL (with credentials)
+								</Paragraph>
+							) : null}
+
 							<Paragraph>
 								You can also use the ElasticSearch URL directly,
-								although we don
-								{"'"}t recommend this to be used in a public
-								environment.
+								although we don &apos;t recommend this to be
+								used in a public environment.
 							</Paragraph>
 							<Divider />
 							<Paragraph strong>API Usage Example</Paragraph>
@@ -319,5 +334,17 @@ class ConnectCluster extends React.Component {
 		);
 	}
 }
+
+ConnectCluster.defaultProps = {
+	isSLSCluster: false,
+	cluster: {},
+	deployment: {},
+};
+
+ConnectCluster.propTypes = {
+	isSLSCluster: bool,
+	cluster: object,
+	deployment: object,
+};
 
 export default withRouter(ConnectCluster);

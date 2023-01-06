@@ -850,10 +850,13 @@ class ClusterInfo extends Component {
 												deployment={
 													this.state.deployment
 												}
+												isSLSCluster={isSLSCluster}
 											/>
 											<ClusterExploreRedirect
 												arc={getAddon(
-													'arc',
+													isSLSCluster
+														? 'sls'
+														: 'arc',
 													this.state.deployment,
 												)}
 												clusterName={get(
@@ -871,10 +874,12 @@ class ClusterInfo extends Component {
 								) : null}
 								{this.state.arc &&
 									(this.state.arcVersion ||
-										arcDeployment.image) &&
+										(arcDeployment &&
+											arcDeployment.image)) &&
 									checkIfUpdateIsAvailable(
 										this.state.arcVersion ||
-											arcDeployment.image,
+											(arcDeployment &&
+												arcDeployment.image),
 										this.state.cluster.recipe,
 									) &&
 									!isViewer &&

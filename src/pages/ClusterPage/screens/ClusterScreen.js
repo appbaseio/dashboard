@@ -672,225 +672,235 @@ class ClusterScreen extends Component {
 					</li>
 				) : null}
 
-				{/* {isSLSCluster ? ( */}
-				<>
-					{setSearchEngine ? (
-						<div className={card}>
-							<Button
-								size="small"
-								onClick={() =>
-									this.setState({
-										setSearchEngine: false,
-										backend: '',
-										clusterURL: '',
-									})
-								}
-								css={`
-									width: max-content;
-									position: absolute;
-									right: 0;
-									border: none;
-								`}
-							>
-								╳
-							</Button>
-							<div className="col light">
-								<h3> Choose search engine </h3>
-							</div>
-							<div>
-								<div
-									className={settingsItem}
-									css={{
-										padding: 30,
-										flexWrap: 'wrap',
-										gap: '2rem',
-									}}
+				{isSLSCluster ? (
+					<>
+						{setSearchEngine ? (
+							<div className={card}>
+								<Button
+									size="small"
+									onClick={() =>
+										this.setState({
+											setSearchEngine: false,
+											backend: '',
+											clusterURL: '',
+										})
+									}
+									css={`
+										width: max-content;
+										position: absolute;
+										right: 0;
+										border: none;
+									`}
 								>
-									{Object.values(BACKENDS)
-										.filter(
-											backendObj =>
-												!BLACK_LISTED_BACKENDS.includes(
-													backendObj.name,
-												),
-										)
-										.map(
-											({ name: backend, logo, text }) => {
-												return (
-													<Button
-														key={backend}
-														type={
-															backend ===
-															this.state.backend
-																? 'primary'
-																: 'default'
-														}
-														size="large"
-														css={{
-															height: 160,
-															marginRight: 20,
-															backgroundColor:
+									╳
+								</Button>
+								<div className="col light">
+									<h3> Choose search engine </h3>
+								</div>
+								<div>
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+											flexWrap: 'wrap',
+											gap: '2rem',
+										}}
+									>
+										{Object.values(BACKENDS)
+											.filter(
+												backendObj =>
+													!BLACK_LISTED_BACKENDS.includes(
+														backendObj.name,
+													),
+											)
+											.map(
+												({
+													name: backend,
+													logo,
+													text,
+												}) => {
+													return (
+														<Button
+															key={backend}
+															type={
 																backend ===
 																this.state
 																	.backend
-																	? '#eaf5ff'
-																	: '#fff',
-															minWidth: '152px',
-														}}
-														className={
-															backend ===
-															this.state.backend
-																? fadeOutStyles
-																: ''
-														}
-														onClick={() => {
-															this.setState({
-																backend,
-															});
-														}}
-													>
-														{logo ? (
-															<img
-																width="120"
-																src={logo}
-																alt={`${backend} logo`}
-															/>
-														) : (
-															<span
-																css={`
-																	font-size: 1.4rem;
-																	font-weight: 400;
-																	color: black;
-																`}
-															>
-																{text}
-															</span>
-														)}
-													</Button>
-												);
-											},
-										)}
-								</div>
-
-								<div
-									className="col grow vcenter"
-									css={{
-										flexDirection: 'column',
-										alignItems: 'flex-start !important',
-										justifyContent: 'center',
-									}}
-								>
-									<input
-										id="elastic-url"
-										type="name"
-										css={{
-											width: '100%',
-											maxWidth: 400,
-											marginBottom: 10,
-											outline: 'none',
-											border:
-												isInvalidURL &&
-												clusterURL !== ''
-													? '1px solid red'
-													: '1px solid #e8e8e8',
-										}}
-										placeholder={`Enter your ${capitalizeWord(
-											this.state.backend,
-										)} URL`}
-										value={clusterURL}
-										onChange={e =>
-											this.setConfig(
-												'clusterURL',
-												e.target.value,
-											)
-										}
-									/>
-									<Button
-										onClick={this.handleVerify}
-										disabled={!clusterURL}
-										loading={verifyingURL}
-									>
-										Verify Connection
-									</Button>
-
-									{verifiedCluster ? (
-										<Tag
-											style={{ marginTop: 10 }}
-											color="green"
-										>
-											Verified Connection. Version
-											Detected: {clusterVersion}
-										</Tag>
-									) : null}
-
-									{isInvalidURL ? (
-										<p
-											style={{
-												color: 'red',
-											}}
-										>
-											{urlErrorMessage ===
-											'Auth Error' ? (
-												<React.Fragment>
-													We received a authentication
-													error. Does your
-													ElasticSearch require
-													additional authentication?
-													Read more{' '}
-													<a
-														target="_blank"
-														rel="noopener noreferrer"
-														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
-													>
-														here
-													</a>
-													.
-												</React.Fragment>
-											) : (
-												urlErrorMessage
+																	? 'primary'
+																	: 'default'
+															}
+															size="large"
+															css={{
+																height: 160,
+																marginRight: 20,
+																backgroundColor:
+																	backend ===
+																	this.state
+																		.backend
+																		? '#eaf5ff'
+																		: '#fff',
+																minWidth:
+																	'152px',
+															}}
+															className={
+																backend ===
+																this.state
+																	.backend
+																	? fadeOutStyles
+																	: ''
+															}
+															onClick={() => {
+																this.setState({
+																	backend,
+																});
+															}}
+														>
+															{logo ? (
+																<img
+																	width="120"
+																	src={logo}
+																	alt={`${backend} logo`}
+																/>
+															) : (
+																<span
+																	css={`
+																		font-size: 1.4rem;
+																		font-weight: 400;
+																		color: black;
+																	`}
+																>
+																	{text}
+																</span>
+															)}
+														</Button>
+													);
+												},
 											)}
-										</p>
-									) : null}
+									</div>
+
+									<div
+										className="col grow vcenter"
+										css={{
+											flexDirection: 'column',
+											alignItems: 'flex-start !important',
+											justifyContent: 'center',
+										}}
+									>
+										<input
+											id="elastic-url"
+											type="name"
+											css={{
+												width: '100%',
+												maxWidth: 400,
+												marginBottom: 10,
+												outline: 'none',
+												border:
+													isInvalidURL &&
+													clusterURL !== ''
+														? '1px solid red'
+														: '1px solid #e8e8e8',
+											}}
+											placeholder={`Enter your ${capitalizeWord(
+												this.state.backend,
+											)} URL`}
+											value={clusterURL}
+											onChange={e =>
+												this.setConfig(
+													'clusterURL',
+													e.target.value,
+												)
+											}
+										/>
+										<Button
+											onClick={this.handleVerify}
+											disabled={!clusterURL}
+											loading={verifyingURL}
+										>
+											Verify Connection
+										</Button>
+
+										{verifiedCluster ? (
+											<Tag
+												style={{ marginTop: 10 }}
+												color="green"
+											>
+												Verified Connection. Version
+												Detected: {clusterVersion}
+											</Tag>
+										) : null}
+
+										{isInvalidURL ? (
+											<p
+												style={{
+													color: 'red',
+												}}
+											>
+												{urlErrorMessage ===
+												'Auth Error' ? (
+													<React.Fragment>
+														We received a
+														authentication error.
+														Does your ElasticSearch
+														require additional
+														authentication? Read
+														more{' '}
+														<a
+															target="_blank"
+															rel="noopener noreferrer"
+															href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+														>
+															here
+														</a>
+														.
+													</React.Fragment>
+												) : (
+													urlErrorMessage
+												)}
+											</p>
+										) : null}
+									</div>
 								</div>
 							</div>
-						</div>
-					) : (
-						<Alert
-							message={`Serverless Search provides you with ${
-								machineMarks[cluster.pricing_plan].searchIndices
-							} geo-distributed search indexes on Elasticsearch out of the box.`}
-							description={
-								<div
-									css={`
-										width: 100%;
-										display: flex;
-										align-items: center;
-										justify-content: space-between;
-										gap: 1rem;
-									`}
-								>
-									<span>
-										You can optionally configure your own
-										search engine instead for dedicated
-										access. This can also be done later.
-									</span>
-									<Button
-										size="small"
-										onClick={() =>
-											this.setState({
-												setSearchEngine: true,
-											})
-										}
+						) : (
+							<Alert
+								message={`Serverless Search provides you with ${
+									machineMarks[cluster.pricing_plan]
+										.searchIndices
+								} geo-distributed search indexes on Elasticsearch out of the box.`}
+								description={
+									<div
+										css={`
+											width: 100%;
+											display: flex;
+											align-items: center;
+											justify-content: space-between;
+											gap: 1rem;
+										`}
 									>
-										Configure Search Engine
-									</Button>
-								</div>
-							}
-							style={{ marginBottom: '1rem' }}
-							type="info"
-						/>
-					)}
-				</>
-				{/* ) : null} */}
+										<span>
+											You can optionally configure your
+											own search engine instead for
+											dedicated access. This can also be
+											done later.
+										</span>
+										<Button
+											size="small"
+											onClick={() =>
+												this.setState({
+													setSearchEngine: true,
+												})
+											}
+										>
+											Configure Search Engine
+										</Button>
+									</div>
+								}
+								style={{ marginBottom: '1rem' }}
+								type="info"
+							/>
+						)}
+					</>
+				) : null}
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button
