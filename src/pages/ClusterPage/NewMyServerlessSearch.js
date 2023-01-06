@@ -254,7 +254,9 @@ class NewMyCluster extends Component {
 			}
 
 			const clusterRes = await deployMySlsCluster(body);
-			setClusterId(clusterRes.cluster.id);
+			if (clusterRes.cluster && clusterRes.cluster.id) {
+				setClusterId(clusterRes.cluster.id);
+			}
 			if (isDeployTemplate && clusterRes.cluster.id) {
 				setActiveKey('3');
 				setTabsValidated(true);
@@ -268,6 +270,8 @@ class NewMyCluster extends Component {
 					...stripeData,
 				});
 				this.props.history.push('/');
+			} else {
+				this.props.history.push('/');
 			}
 		} catch (e) {
 			this.setState({
@@ -275,6 +279,7 @@ class NewMyCluster extends Component {
 				deploymentError: e,
 				showError: true,
 			});
+			console.error('Error to create cluster', e);
 		}
 	};
 
@@ -841,7 +846,24 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{(isUsingClusterTrial &&
+
+								<Button
+									type="primary"
+									size="large"
+									onClick={this.createCluster}
+								>
+									{isDeployTemplate ? (
+										<>
+											Deploy cluster with pipeline &nbsp;
+											{pipeline}
+										</>
+									) : (
+										<>Create Cluster</>
+									)}
+									<Icon type="arrow-right" theme="outlined" />
+								</Button>
+
+								{/* {(isUsingClusterTrial &&
 									this.state.pricing_plan !==
 										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
 								clusters.length > 0 ? (
@@ -894,7 +916,7 @@ class NewMyCluster extends Component {
 											theme="outlined"
 										/>
 									</Button>
-								)}
+								)} */}
 							</div>
 						</article>
 					</section>
