@@ -1,4 +1,4 @@
-import { Button, message, notification, Select } from 'antd';
+import { Alert, Button, message, notification, Select, Tag } from 'antd';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -12,6 +12,7 @@ import {
 	clusterButtons,
 	clusterEndpoint,
 	esContainer,
+	fadeOutStyles,
 	settingsItem,
 } from '../styles';
 import {
@@ -23,9 +24,14 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	rotateAPICredentials,
+	BACKENDS,
+	capitalizeWord,
+	verifyCluster,
 } from '../utils';
+import { machineMarks } from '../NewMyServerlessSearch';
 
 const { Option } = Select;
+const BLACK_LISTED_BACKENDS = [BACKENDS.MONGODB.name];
 
 class ClusterScreen extends Component {
 	constructor(props) {
@@ -60,6 +66,14 @@ class ClusterScreen extends Component {
 			isRestoring: false,
 			visualization,
 			isStripeCheckoutOpen: false,
+			setSearchEngine: false,
+			backend: BACKENDS.ELASTICSEARCH.name,
+			verifiedCluster: false,
+			clusterVersion: '',
+			verifyingURL: false,
+			clusterURL: '',
+			isInvalidURL: false,
+			urlErrorMessage: '',
 		};
 
 		this.paymentButton = React.createRef();
@@ -275,6 +289,40 @@ class ClusterScreen extends Component {
 		this.props.handleToken(data);
 	};
 
+	handleVerify = async () => {
+		const { clusterURL, backend } = this.state;
+		if (clusterURL) {
+			this.setState({
+				verifyingURL: true,
+				verifiedCluster: false,
+				clusterVersion: '',
+			});
+			verifyCluster(clusterURL, backend)
+				.then(data => {
+					const version = get(data, 'version.number', '');
+					this.setState({
+						verifyingURL: false,
+						clusterVersion: version || 'N/A',
+						isInvalidURL: false,
+						verifiedCluster: true,
+					});
+				})
+				.catch(e => {
+					this.setState({
+						verifyingURL: false,
+						isInvalidURL: true,
+						verifiedCluster: false,
+						urlErrorMessage: e.toString(),
+					});
+				});
+		} else {
+			this.setState({
+				isInvalidURL: true,
+				urlErrorMessage: 'Please enter a valid URL to verify',
+			});
+		}
+	};
+
 	renderClusterEndpoint = (source, isOpenSearchFlavour) => {
 		if (
 			Object.keys(source).length &&
@@ -356,7 +404,18 @@ class ClusterScreen extends Component {
 	};
 
 	render() {
-		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
+		const {
+			cluster,
+			deployment,
+			isStripeCheckoutOpen,
+			verifiedCluster,
+			clusterVersion,
+			setSearchEngine,
+			isInvalidURL,
+			clusterURL,
+			verifyingURL,
+			urlErrorMessage,
+		} = this.state;
 		const isOpenSearchFlavour =
 			Number(this.state.cluster.es_version.split('.')[0]) < 7;
 		const {
@@ -612,6 +671,226 @@ class ClusterScreen extends Component {
 						</div>
 					</li>
 				) : null}
+
+				{/* {isSLSCluster ? ( */}
+				<>
+					{setSearchEngine ? (
+						<div className={card}>
+							<Button
+								size="small"
+								onClick={() =>
+									this.setState({
+										setSearchEngine: false,
+										backend: '',
+										clusterURL: '',
+									})
+								}
+								css={`
+									width: max-content;
+									position: absolute;
+									right: 0;
+									border: none;
+								`}
+							>
+								╳
+							</Button>
+							<div className="col light">
+								<h3> Choose search engine </h3>
+							</div>
+							<div>
+								<div
+									className={settingsItem}
+									css={{
+										padding: 30,
+										flexWrap: 'wrap',
+										gap: '2rem',
+									}}
+								>
+									{Object.values(BACKENDS)
+										.filter(
+											backendObj =>
+												!BLACK_LISTED_BACKENDS.includes(
+													backendObj.name,
+												),
+										)
+										.map(
+											({ name: backend, logo, text }) => {
+												return (
+													<Button
+														key={backend}
+														type={
+															backend ===
+															this.state.backend
+																? 'primary'
+																: 'default'
+														}
+														size="large"
+														css={{
+															height: 160,
+															marginRight: 20,
+															backgroundColor:
+																backend ===
+																this.state
+																	.backend
+																	? '#eaf5ff'
+																	: '#fff',
+															minWidth: '152px',
+														}}
+														className={
+															backend ===
+															this.state.backend
+																? fadeOutStyles
+																: ''
+														}
+														onClick={() => {
+															this.setState({
+																backend,
+															});
+														}}
+													>
+														{logo ? (
+															<img
+																width="120"
+																src={logo}
+																alt={`${backend} logo`}
+															/>
+														) : (
+															<span
+																css={`
+																	font-size: 1.4rem;
+																	font-weight: 400;
+																	color: black;
+																`}
+															>
+																{text}
+															</span>
+														)}
+													</Button>
+												);
+											},
+										)}
+								</div>
+
+								<div
+									className="col grow vcenter"
+									css={{
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
+									}}
+								>
+									<input
+										id="elastic-url"
+										type="name"
+										css={{
+											width: '100%',
+											maxWidth: 400,
+											marginBottom: 10,
+											outline: 'none',
+											border:
+												isInvalidURL &&
+												clusterURL !== ''
+													? '1px solid red'
+													: '1px solid #e8e8e8',
+										}}
+										placeholder={`Enter your ${capitalizeWord(
+											this.state.backend,
+										)} URL`}
+										value={clusterURL}
+										onChange={e =>
+											this.setConfig(
+												'clusterURL',
+												e.target.value,
+											)
+										}
+									/>
+									<Button
+										onClick={this.handleVerify}
+										disabled={!clusterURL}
+										loading={verifyingURL}
+									>
+										Verify Connection
+									</Button>
+
+									{verifiedCluster ? (
+										<Tag
+											style={{ marginTop: 10 }}
+											color="green"
+										>
+											Verified Connection. Version
+											Detected: {clusterVersion}
+										</Tag>
+									) : null}
+
+									{isInvalidURL ? (
+										<p
+											style={{
+												color: 'red',
+											}}
+										>
+											{urlErrorMessage ===
+											'Auth Error' ? (
+												<React.Fragment>
+													We received a authentication
+													error. Does your
+													ElasticSearch require
+													additional authentication?
+													Read more{' '}
+													<a
+														target="_blank"
+														rel="noopener noreferrer"
+														href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+													>
+														here
+													</a>
+													.
+												</React.Fragment>
+											) : (
+												urlErrorMessage
+											)}
+										</p>
+									) : null}
+								</div>
+							</div>
+						</div>
+					) : (
+						<Alert
+							message={`Serverless Search provides you with ${
+								machineMarks[cluster.pricing_plan].searchIndices
+							} geo-distributed search indexes on Elasticsearch out of the box.`}
+							description={
+								<div
+									css={`
+										width: 100%;
+										display: flex;
+										align-items: center;
+										justify-content: space-between;
+										gap: 1rem;
+									`}
+								>
+									<span>
+										You can optionally configure your own
+										search engine instead for dedicated
+										access. This can also be done later.
+									</span>
+									<Button
+										size="small"
+										onClick={() =>
+											this.setState({
+												setSearchEngine: true,
+											})
+										}
+									>
+										Configure Search Engine
+									</Button>
+								</div>
+							}
+							style={{ marginBottom: '1rem' }}
+							type="info"
+						/>
+					)}
+				</>
+				{/* ) : null} */}
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button

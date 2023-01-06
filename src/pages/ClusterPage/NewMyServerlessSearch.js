@@ -54,7 +54,7 @@ export const machineMarks = {
 		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
 		bandWidth: 10,
 		postBandWidthConsumption: 3,
-		dataStorage: 1,
+		dataStorage: 10,
 		searchIndices: 4,
 	},
 	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
