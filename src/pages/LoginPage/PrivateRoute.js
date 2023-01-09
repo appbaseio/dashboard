@@ -3,7 +3,8 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import { Button, message } from 'antd';
+import { message } from 'antd';
+
 import { css } from 'emotion';
 import HelpChat from '../../components/HelpChat';
 import Loader from '../../components/Loader';
@@ -28,6 +29,7 @@ const PrivateRoute = ({
 	user,
 	loadAppbaseUser,
 	setAppbaseUser,
+	setAppbaseUserError,
 	...rest
 }) => {
 	const {
@@ -38,7 +40,6 @@ const PrivateRoute = ({
 		getIdTokenClaims,
 	} = useAuth0();
 	const [loadingState, setLoadingState] = useState(false);
-
 	const [isAuthenticatedState, setIsAuthenticatedState] = useState(
 		isAuthenticated,
 	);
@@ -56,6 +57,9 @@ const PrivateRoute = ({
 			setLoadingState(false);
 			console.log(error);
 			message.error("Couldn't log you in!!!");
+			setTimeout(() => {
+				loginWithRedirect();
+			}, 2000);
 		}
 	};
 
@@ -77,7 +81,9 @@ const PrivateRoute = ({
 			}
 
 			if (!accessToken) {
-				accessToken = await getAccessTokenSilently(); // https://github.com/auth0/auth0-spa-js/issues/693#issuecomment-757125378
+				accessToken = await getAccessTokenSilently({
+					ignoreCache: true,
+				}); // https://github.com/auth0/auth0-spa-js/issues/693#issuecomment-757125378
 			}
 
 			if (!token_id) {
@@ -92,8 +98,18 @@ const PrivateRoute = ({
 				// if not then we automatically sign him in based on auth0 token_id
 				await createUserIfNew(token_id);
 
-				const { user: userObj } = await getUser();
+				const res = await getUser();
+				if (res?.action?.email_verification) {
+					setTimeout(() => {
+						getAuth0AccessToken();
+					}, 5000);
+					if (res?.error) {
+						setAppbaseUserError(res);
+					}
+					return;
+				}
 
+				const { user: userObj } = res;
 				setAppbaseUser(userObj);
 			}
 		} catch (error) {
@@ -102,11 +118,16 @@ const PrivateRoute = ({
 	};
 
 	useEffect(() => {
-		if (isAuthenticated) setIsAuthenticatedState(isAuthenticated);
+		if (isAuthenticated && !isAuthenticatedState)
+			setIsAuthenticatedState(isAuthenticated);
 	}, [isAuthenticated]);
 
 	useEffect(() => {
-		if (isAuthenticatedState && !user.data) {
+		if (
+			isAuthenticatedState &&
+			!user.data &&
+			!user.error?.actual?.action?.email_verification
+		) {
 			setLoadingState(false);
 			getAuth0AccessToken();
 		}
@@ -124,34 +145,36 @@ const PrivateRoute = ({
 			}
 			if (email) {
 				authUsingEmail(email);
+			} else if (!isLoading && !loadingState) {
+				loginWithRedirect();
 			}
+			return;
 		}
+		loginWithRedirect();
 	}, []);
 
 	if (!isAuthenticatedState && (!user || !user.data)) {
-		if (!isLoading && !loadingState) {
-			return (
-				<Button
-					type="primary"
-					onClick={loginWithRedirect}
-					css={css`
-						position: fixed;
-						top: 50%;
-						/* margin: auto; */
-						left: 50%;
-						transform: translate(-50%, -50%);
-					`}
-					icon="login"
-				>
-					Other Login options
-				</Button>
-			);
-		}
 		return <Loader />;
 	}
-
+	console.log({ user });
 	if (isAuthenticatedState && (!user || !user.data)) {
-		return <Loader />;
+		return (
+			<>
+				<Loader />
+				{user.error?.actual?.action?.email_verification && (
+					<h2
+						css={css`
+							position: fixed;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, 27px);
+						`}
+					>
+						{user.error?.actual?.error?.message}
+					</h2>
+				)}
+			</>
+		);
 	}
 	return (
 		<Route
@@ -173,6 +196,7 @@ PrivateRoute.propTypes = {
 	component: PropTypes.node,
 	loadAppbaseUser: PropTypes.func.isRequired,
 	setAppbaseUser: PropTypes.func.isRequired,
+	setAppbaseUserError: PropTypes.func.isRequired,
 };
 
 export default PrivateRoute;
