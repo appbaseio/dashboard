@@ -145,12 +145,14 @@ const PrivateRoute = ({
 			}
 			if (email) {
 				authUsingEmail(email);
-			} else if (!isLoading && !loadingState) {
+			} else if (!isLoading && !loadingState && !isAuthenticatedState) {
 				loginWithRedirect();
 			}
 			return;
 		}
-		loginWithRedirect();
+		if (!isLoading && !loadingState && !isAuthenticatedState) {
+			loginWithRedirect();
+		}
 	}, []);
 
 	if (!isAuthenticatedState && (!user || !user.data)) {
