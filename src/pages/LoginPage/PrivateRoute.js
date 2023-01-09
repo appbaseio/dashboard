@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import { useGoogleOneTapLogin } from 'react-google-one-tap-login';
 import { Button, message } from 'antd';
 import { css } from 'emotion';
 import HelpChat from '../../components/HelpChat';
@@ -128,30 +127,6 @@ const PrivateRoute = ({
 			}
 		}
 	}, []);
-
-	useGoogleOneTapLogin({
-		disabled:
-			isAuthenticated ||
-			parseHash().access_token ||
-			isLoading ||
-			isAuthenticatedState ||
-			(user && user.data) ||
-			parseHash().email,
-		onError: () => loginWithRedirect(),
-		onSuccess: response => {
-			try {
-				if (!isAuthenticatedState && (!user || !user.data)) {
-					authUsingEmail(response.email);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		googleAccountConfigs: {
-			client_id:
-				'860445814108-6g70dudhq6l3mu0pr5juvv1ufl1ab445.apps.googleusercontent.com',
-		},
-	});
 
 	if (!isAuthenticatedState && (!user || !user.data)) {
 		if (!isLoading && !loadingState) {
