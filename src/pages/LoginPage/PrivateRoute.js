@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth0 } from '@auth0/auth0-react';
 
-import { message } from 'antd';
+import { Alert, Button, message } from 'antd';
 
 import { css } from 'emotion';
 import HelpChat from '../../components/HelpChat';
@@ -23,6 +23,21 @@ const parseHash = (hashParam = window.location.hash) => {
 	});
 	return params;
 };
+function parseJwt(token) {
+	const base64Url = token.split('.')[1];
+	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+	const jsonPayload = decodeURIComponent(
+		window
+			.atob(base64)
+			.split('')
+			.map(c => {
+				return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
+			})
+			.join(''),
+	);
+
+	return JSON.parse(jsonPayload);
+}
 
 const PrivateRoute = ({
 	component: Component,
@@ -102,7 +117,7 @@ const PrivateRoute = ({
 				if (res?.action?.email_verification) {
 					setTimeout(() => {
 						getAuth0AccessToken();
-					}, 5000);
+					}, 10000);
 					if (res?.error) {
 						setAppbaseUserError(res);
 					}
@@ -155,27 +170,58 @@ const PrivateRoute = ({
 		}
 	}, []);
 
+	const renderEmailVerificationMessage = () => {
+		if (!user.error?.actual?.action?.email_verification) return null;
+		return (
+			<Alert
+				message={
+					<>
+						An e-mail has been sent to &nbsp;
+						<b>
+							{
+								parseJwt(
+									window.localStorage.getItem(
+										'AUTH_0_ACCESS_TOKEN',
+									),
+								)['https://reactivesearch.io-email']
+							}
+						</b>
+						&nbsp; address for verification!
+					</>
+				}
+				description={
+					<>
+						Once you&apos;ve verified, this page should auto-refresh
+						within 30s 
+						<Button
+							css={`
+								padding-left: 0;
+							`}
+							onClick={() => window.Intercom('show')}
+							type="link"
+						>
+							Contact Support{' '}
+						</Button>
+					</>
+				}
+				css={css`
+					position: fixed;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				`}
+			/>
+		);
+	};
+
 	if (!isAuthenticatedState && (!user || !user.data)) {
 		return <Loader />;
 	}
-	console.log({ user });
 	if (isAuthenticatedState && (!user || !user.data)) {
-		return (
-			<>
-				<Loader />
-				{user.error?.actual?.action?.email_verification && (
-					<h2
-						css={css`
-							position: fixed;
-							top: 50%;
-							left: 50%;
-							transform: translate(-50%, 27px);
-						`}
-					>
-						{user.error?.actual?.error?.message}
-					</h2>
-				)}
-			</>
+		return !user.error?.actual?.action?.email_verification ? (
+			<Loader />
+		) : (
+			renderEmailVerificationMessage()
 		);
 	}
 	return (
