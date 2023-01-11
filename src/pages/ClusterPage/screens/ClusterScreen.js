@@ -27,6 +27,7 @@ import {
 	BACKENDS,
 	capitalizeWord,
 	verifyCluster,
+	updateBackend,
 } from '../utils';
 import { machineMarks } from '../NewMyServerlessSearch';
 
@@ -208,72 +209,129 @@ class ClusterScreen extends Component {
 			elasticsearchHQ // prettier-ignore
 		} = this.state;
 
-		const { clusterId, onDeploy } = this.props;
+		const { clusterId, onDeploy, isSLSCluster } = this.props;
 
-		if (kibana && !this.includedInOriginal('kibana')) {
-			body.kibana = {
-				create_node: false,
-				version: cluster.es_version,
-			};
-		} else if (!kibana && this.includedInOriginal('kibana')) {
-			body.remove_deployments = [...body.remove_deployments, 'kibana'];
+		if (!isSLSCluster) {
+			if (kibana && !this.includedInOriginal('kibana')) {
+				body.kibana = {
+					create_node: false,
+					version: cluster.es_version,
+				};
+			} else if (!kibana && this.includedInOriginal('kibana')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'kibana',
+				];
+			}
+
+			if (grafana && !this.includedInOriginal('grafana')) {
+				body.grafana = true;
+			} else if (!grafana && this.includedInOriginal('grafana')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'grafana',
+				];
+			}
+
+			if (streams && !this.includedInOriginal('streams')) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'streams',
+						image: 'appbaseio/streams:6',
+						exposed_port: 80,
+					},
+				];
+			} else if (!streams && this.includedInOriginal('streams')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'streams',
+				];
+			}
+
+			if (arc && !this.includedInOriginal('arc')) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'arc',
+						image: `siddharthlatest/arc:${V7_ARC}`,
+						exposed_port: 8000,
+					},
+				];
+			} else if (!arc && this.includedInOriginal('arc')) {
+				body.remove_deployments = [...body.remove_deployments, 'arc'];
+			}
+
+			if (
+				elasticsearchHQ &&
+				!this.includedInOriginal('elasticsearch-hq')
+			) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'elasticsearch-hq',
+						image: 'elastichq/elasticsearch-hq:release-v3.5.0',
+						exposed_port: 5000,
+					},
+				];
+			} else if (
+				!elasticsearchHQ &&
+				this.includedInOriginal('elasticsearch-hq')
+			) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'elasticsearch-hq',
+				];
+			}
+			onDeploy(body, clusterId);
+		} else {
+			console.log('dsfads');
+			const {
+				protocol,
+				username: backendUrlUsername,
+				password: backendUrlPassword,
+				host,
+			} = new URL(this.state.clusterURL);
+
+			if (!this.state.backend) {
+				message.error('Choose a backend');
+				return;
+			}
+			if (!this.state.verifiedCluster) {
+				message.error('Cluster URL not verified');
+				return;
+			}
+			updateBackend(clusterId, {
+				backend: this.state.backend,
+				host,
+				protocol: protocol.substr(0, protocol.length - 1),
+				basic_auth: `${backendUrlUsername}:${backendUrlPassword}`,
+			})
+				.then(() => {
+					notification.success({
+						message: 'Backend updated successfully',
+					});
+
+					this.setState({
+						loading: false,
+					});
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(e => {
+					notification.error({
+						title: 'Error while updating backend',
+						description: e.message,
+					});
+					this.setState({
+						loading: false,
+					});
+				});
 		}
-
-		if (grafana && !this.includedInOriginal('grafana')) {
-			body.grafana = true;
-		} else if (!grafana && this.includedInOriginal('grafana')) {
-			body.remove_deployments = [...body.remove_deployments, 'grafana'];
-		}
-
-		if (streams && !this.includedInOriginal('streams')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'streams',
-					image: 'appbaseio/streams:6',
-					exposed_port: 80,
-				},
-			];
-		} else if (!streams && this.includedInOriginal('streams')) {
-			body.remove_deployments = [...body.remove_deployments, 'streams'];
-		}
-
-		if (arc && !this.includedInOriginal('arc')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'arc',
-					image: `siddharthlatest/arc:${V7_ARC}`,
-					exposed_port: 8000,
-				},
-			];
-		} else if (!arc && this.includedInOriginal('arc')) {
-			body.remove_deployments = [...body.remove_deployments, 'arc'];
-		}
-
-		if (elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
-					exposed_port: 5000,
-				},
-			];
-		} else if (
-			!elasticsearchHQ &&
-			this.includedInOriginal('elasticsearch-hq')
-		) {
-			body.remove_deployments = [
-				...body.remove_deployments,
-				'elasticsearch-hq',
-			];
-		}
-
-		onDeploy(body, clusterId);
 	};
 
 	handleStripeModal = () => {

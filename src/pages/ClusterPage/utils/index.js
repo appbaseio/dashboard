@@ -725,3 +725,28 @@ export const capitalizeWord = str => {
 
 	return str.charAt(0).toUpperCase() + str.substring(1);
 };
+
+export function updateBackend(id, body) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v2/_update_mtrs_backend_connection/${id}`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve();
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}

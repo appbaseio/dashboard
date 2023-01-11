@@ -18,7 +18,6 @@ import {
 	getClusters,
 	verifyCluster,
 	createSubscription,
-	ARC_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
-import { Button, notification, Tag, Tooltip, Icon } from 'antd';
+import { Button, notification, Tag, Tooltip, Icon, message } from 'antd';
 import { get } from 'lodash';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PropTypes from 'prop-types';
@@ -8,6 +8,7 @@ import {
 	BACKENDS,
 	capitalizeWord,
 	updateArcDetails,
+	updateBackend,
 	verifyCluster,
 } from '../utils';
 import {
@@ -29,6 +30,7 @@ class ArcDetail extends React.Component {
 			password: get(props, 'arc.password', ''),
 			clusterURL: get(props, 'cluster.elasticsearch_url', ''),
 			showCred: false,
+			// eslint-disable-next-line react/no-unused-state
 			updatedArcCred: props.arc
 				? `${get(props, 'arc.username', '')}:${get(
 						props,
@@ -93,6 +95,17 @@ class ArcDetail extends React.Component {
 		});
 	};
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	handleUpdate = () => {
 		const { clusterURL, updatedArcCred } = this.state;
 		const [username, password] = updatedArcCred.split(':');
@@ -104,30 +117,73 @@ class ArcDetail extends React.Component {
 			loading: true,
 		});
 
-		updateArcDetails(id, {
-			username,
-			password,
-			elasticsearch_url: clusterURL,
-		})
-			.then(() => {
-				notification.success({
-					title: 'Updated Details Successfully.',
-				});
+		if (this.isValidSlsCluster(this.props.cluster)) {
+			const {
+				protocol,
+				username: backendUrlUsername,
+				password: backendUrlPassword,
+				host,
+			} = new URL(clusterURL);
 
-				this.setState({
-					loading: false,
-				});
-				window.location.reload();
+			if (!this.state.backend) {
+				message.error('Choose a backend');
+				return;
+			}
+			if (!this.state.verifiedCluster) {
+				message.error('Cluster URL not verified');
+				return;
+			}
+			updateBackend(id, {
+				backend: this.state.backend,
+				host,
+				protocol: protocol.substr(0, protocol.length - 1),
+				basic_auth: `${backendUrlUsername}:${backendUrlPassword}`,
 			})
-			.catch(e => {
-				notification.error({
-					title: 'Error while updating Details',
-					description: e.message,
+				.then(() => {
+					notification.success({
+						title: 'Updated Details Successfully.',
+					});
+
+					this.setState({
+						loading: false,
+					});
+					window.location.reload();
+				})
+				.catch(e => {
+					notification.error({
+						title: 'Error while updating Details',
+						description: e.message,
+					});
+					this.setState({
+						loading: false,
+					});
 				});
-				this.setState({
-					loading: false,
+		} else {
+			updateArcDetails(id, {
+				username,
+				password,
+				elasticsearch_url: clusterURL,
+			})
+				.then(() => {
+					notification.success({
+						title: 'Updated Details Successfully.',
+					});
+
+					this.setState({
+						loading: false,
+					});
+					window.location.reload();
+				})
+				.catch(e => {
+					notification.error({
+						title: 'Error while updating Details',
+						description: e.message,
+					});
+					this.setState({
+						loading: false,
+					});
 				});
-			});
+		}
 	};
 
 	isButtonDisable = () => {};
@@ -140,6 +196,7 @@ class ArcDetail extends React.Component {
 
 	updateArcCred = value => {
 		this.setState({
+			// eslint-disable-next-line react/no-unused-state
 			updatedArcCred: value,
 		});
 	};
@@ -266,124 +323,133 @@ class ArcDetail extends React.Component {
 						</div>
 					</div>
 				</li>
-				<li className={card}>
-					<div className="col light">
-						<h3> Choose search engine </h3>
-					</div>
-					<div>
-						<div
-							className={settingsItem}
-							css={{
-								padding: 30,
-								flexWrap: 'wrap',
-								gap: '2rem',
-							}}
-						>
-							{Object.values(BACKENDS).map(
-								({ name: backend, logo }) => {
-									return (
-										<Button
-											key={backend}
-											type={
-												backend === this.state.backend
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											css={{
-												height: 160,
-												marginRight: 20,
-												backgroundColor:
+				{this.isValidSlsCluster(this.props.cluster) && (
+					<li className={card}>
+						<div className="col light">
+							<h3> Choose search engine </h3>
+						</div>
+						<div>
+							<div
+								className={settingsItem}
+								css={{
+									padding: 30,
+									flexWrap: 'wrap',
+									gap: '2rem',
+								}}
+							>
+								{Object.values(BACKENDS).map(
+									({ name: backend, logo }) => {
+										return (
+											<Button
+												key={backend}
+												type={
 													backend ===
 													this.state.backend
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											className={
-												backend === this.state.backend
-													? fadeOutStyles
-													: ''
-											}
-											onClick={() => {
-												this.setState({
-													backend,
-												});
-											}}
-										>
-											<img
-												width="120"
-												src={logo}
-												alt={`${backend} logo`}
-											/>
-										</Button>
-									);
-								},
-							)}
-						</div>
-						<div
-							className="col grow vcenter"
-							css={{
-								flexDirection: 'column',
-								alignItems: 'flex-start !important',
-								justifyContent: 'center',
-							}}
-						>
-							<input
-								id="elastic-url"
-								type="name"
+														? 'primary'
+														: 'default'
+												}
+												size="large"
+												css={{
+													height: 160,
+													marginRight: 20,
+													backgroundColor:
+														backend ===
+														this.state.backend
+															? '#eaf5ff'
+															: '#fff',
+												}}
+												className={
+													backend ===
+													this.state.backend
+														? fadeOutStyles
+														: ''
+												}
+												onClick={() => {
+													this.setState({
+														backend,
+													});
+												}}
+											>
+												<img
+													width="120"
+													src={logo}
+													alt={`${backend} logo`}
+												/>
+											</Button>
+										);
+									},
+								)}
+							</div>
+							<div
+								className="col grow vcenter"
 								css={{
-									width: '100%',
-									maxWidth: 'none !important',
-									marginBottom: 33,
-									outline: 'none',
-									border:
-										isInvalidURL && clusterURL !== ''
-											? '1px solid red'
-											: '1px solid #e8e8e8',
+									flexDirection: 'column',
+									alignItems: 'flex-start !important',
+									justifyContent: 'center',
 								}}
-								placeholder={`Enter your ${capitalizeWord(
-									this.state.backend,
-								)} URL`}
-								value={clusterURL}
-								name="clusterURL"
-								onChange={this.handleInput}
-							/>
-							<KeyValueAdder
-								title="Headers (optional)"
-								onUpdateItems={headers => {
-									this.setState({
-										verifyClusterHeaders: headers,
-									});
-								}}
-							/>
-							<Button
-								onClick={this.handleVerify}
-								disabled={!clusterURL}
-								type={isButtonDisable ? 'primary' : 'default'}
-								loading={verifyingURL}
 							>
-								Verify Connection
-							</Button>
-
-							{verifiedCluster ? (
-								<Tag style={{ margin: '10px' }} color="green">
-									Verified Connection. Version Detected:{' '}
-									{clusterVersion}
-								</Tag>
-							) : null}
-
-							{isInvalidURL ? (
-								<p
-									style={{
-										color: 'red',
+								<input
+									id="elastic-url"
+									type="name"
+									css={{
+										width: '100%',
+										maxWidth: 'none !important',
+										marginBottom: 33,
+										outline: 'none',
+										border:
+											isInvalidURL && clusterURL !== ''
+												? '1px solid red'
+												: '1px solid #e8e8e8',
 									}}
+									placeholder={`Enter your ${capitalizeWord(
+										this.state.backend,
+									)} URL`}
+									value={clusterURL}
+									name="clusterURL"
+									onChange={this.handleInput}
+								/>
+								<KeyValueAdder
+									title="Headers (optional)"
+									onUpdateItems={headers => {
+										this.setState({
+											verifyClusterHeaders: headers,
+										});
+									}}
+								/>
+								<Button
+									onClick={this.handleVerify}
+									disabled={!clusterURL}
+									type={
+										isButtonDisable ? 'primary' : 'default'
+									}
+									loading={verifyingURL}
 								>
-									{urlErrorMessage}
-								</p>
-							) : null}
+									Verify Connection
+								</Button>
+
+								{verifiedCluster ? (
+									<Tag
+										style={{ margin: '10px' }}
+										color="green"
+									>
+										Verified Connection. Version Detected:{' '}
+										{clusterVersion}
+									</Tag>
+								) : null}
+
+								{isInvalidURL ? (
+									<p
+										style={{
+											color: 'red',
+										}}
+									>
+										{urlErrorMessage}
+									</p>
+								) : null}
+							</div>
 						</div>
-					</div>
-				</li>
+					</li>
+				)}
 				<div className={clusterButtons}>
 					<Button
 						onClick={handleDeleteModal}
