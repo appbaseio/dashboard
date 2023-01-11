@@ -37,13 +37,16 @@ export default function Sidebar({
 					<Icon type="cluster" /> Cluster
 				</Link>
 			</Menu.Item>
-			{isViewer || isExternalCluster || (
-				<Menu.Item key="2">
-					<Link to={`${baseRoute}/scale`}>
-						<Icon type="database" /> Scale Cluster
-					</Link>
-				</Menu.Item>
-			)}
+			{!isSLSCluster
+				? isViewer ||
+				  isExternalCluster || (
+						<Menu.Item key="2">
+							<Link to={`${baseRoute}/scale`}>
+								<Icon type="database" /> Scale Cluster
+							</Link>
+						</Menu.Item>
+				  )
+				: null}
 			{isViewer || (
 				<Menu.Item key="3">
 					<Link to={`${baseRoute}/share`}>
