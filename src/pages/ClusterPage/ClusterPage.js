@@ -95,7 +95,7 @@ class ClusterPage extends Component {
 			isLoading: true,
 		});
 		const isSLSCluster = this.isValidSlsCluster(
-			clusters.filter(i => i.id)[0] || {},
+			clusters.find(i => i.id === id) || {},
 		);
 		deleteCluster(id, isSLSCluster)
 			.then(() => {
