@@ -129,6 +129,9 @@ const clusterInfo = css`
 			}
 		}
 	}
+	.mb-10 {
+		margin-bottom: 10px;
+	}
 	h3 {
 		font-size: 16px;
 		font-weight: 600;
@@ -337,6 +340,9 @@ const clustersList = css`
 		font-weight: lighter;
 		font-size: 15px;
 		margin-left: 10px;
+	}
+	.multi-region {
+		margin-bottom: 10px;
 	}
 	.cluster-card {
 		padding: 30px 25px;

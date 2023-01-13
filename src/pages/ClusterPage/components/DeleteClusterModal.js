@@ -1,8 +1,9 @@
 import React from 'react';
-import { css } from 'emotion';
-import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import { Modal, Input } from 'antd';
+import { bool, string, func } from 'prop-types';
+import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import './styles.css';
+
 class DeleteClusterModal extends React.Component {
 	state = {
 		deleteClusterName: '',
@@ -10,12 +11,7 @@ class DeleteClusterModal extends React.Component {
 	};
 
 	handleDelete = () => {
-		const {
-			// prettier-ignore
-			clusterId,
-			onDelete,
-			handleModal,
-		} = this.props;
+		const { clusterId, onDelete, handleModal } = this.props;
 
 		onDelete(clusterId);
 		handleModal();
@@ -30,7 +26,7 @@ class DeleteClusterModal extends React.Component {
 
 	render() {
 		const {
-			isVisible, clusterId, clusterName, handleModal
+			isVisible, clusterName, handleModal
 		} = this.props; // prettier-ignore
 		const { deleteClusterName, isFeedbackSubmitted } = this.state;
 
@@ -76,12 +72,23 @@ class DeleteClusterModal extends React.Component {
 					/>
 				) : (
 					<h3 className="success-message-container">
-						Thank you for providing this feedback 🙏
+						Thank you for providing this feedback{' '}
+						<span role="img" aria-label="feedback">
+							🙏
+						</span>
 					</h3>
 				)}
 			</Modal>
 		);
 	}
 }
+
+DeleteClusterModal.propTypes = {
+	isVisible: bool,
+	clusterName: string,
+	handleModal: func,
+	clusterId: string,
+	onDelete: func,
+};
 
 export default DeleteClusterModal;

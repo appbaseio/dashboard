@@ -2,8 +2,14 @@ import React from 'react';
 import { Menu, Icon } from 'antd';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import { bool, string } from 'prop-types';
 
-export default function Sidebar({ id, isViewer, isExternalCluster }) {
+export default function Sidebar({
+	id,
+	isViewer,
+	isExternalCluster,
+	isSLSCluster,
+}) {
 	const baseRoute = `/clusters/${id}`;
 	let defaultSelectedKeys;
 
@@ -31,13 +37,16 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 					<Icon type="cluster" /> Cluster
 				</Link>
 			</Menu.Item>
-			{isViewer || isExternalCluster || (
-				<Menu.Item key="2">
-					<Link to={`${baseRoute}/scale`}>
-						<Icon type="database" /> Scale Cluster
-					</Link>
-				</Menu.Item>
-			)}
+			{!isSLSCluster
+				? isViewer ||
+				  isExternalCluster || (
+						<Menu.Item key="2">
+							<Link to={`${baseRoute}/scale`}>
+								<Icon type="database" /> Scale Cluster
+							</Link>
+						</Menu.Item>
+				  )
+				: null}
 			{isViewer || (
 				<Menu.Item key="3">
 					<Link to={`${baseRoute}/share`}>
@@ -55,14 +64,29 @@ export default function Sidebar({ id, isViewer, isExternalCluster }) {
 					<Icon type="line-chart" /> Cluster Monitoring
 				</Link>
 			</Menu.Item>
-			<Menu.Item key="6">
-				<Link to={`${baseRoute}/logs`}>
-					<Icon type="unordered-list" /> Deploy Logs
-				</Link>
-			</Menu.Item>
+			{!isSLSCluster ? (
+				<Menu.Item key="6">
+					<Link to={`${baseRoute}/logs`}>
+						<Icon type="unordered-list" /> Deploy Logs
+					</Link>
+				</Menu.Item>
+			) : null}
 		</Menu>
 	);
 }
+
+Sidebar.defaultProps = {
+	isViewer: false,
+	isExternalCluster: false,
+	isSLSCluster: false,
+};
+
+Sidebar.propTypes = {
+	id: string.isRequired,
+	isViewer: bool,
+	isExternalCluster: bool,
+	isSLSCluster: bool,
+};
 
 export const RightContainer = styled('section')`
 	width: calc(100% - 240px);

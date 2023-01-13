@@ -2,6 +2,35 @@ import get from 'lodash/get';
 import { v4 as uuidv4 } from 'uuid';
 import { ACC_API } from '../../../constants/config';
 
+export const BACKENDS = {
+	ELASTICSEARCH: {
+		name: 'elasticsearch',
+		logo:
+			'https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg',
+	},
+	OPENSEARCH: {
+		name: 'opensearch',
+		logo:
+			'https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg',
+	},
+	SOLR: {
+		name: 'solr',
+		logo: 'https://www.drupal.org/files/project-images/Solr.png',
+	},
+	MONGODB: {
+		name: 'mongodb',
+		logo:
+			'https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress',
+	},
+};
+
+export const capitalizeWord = str => {
+	if (!str || typeof str !== 'string') {
+		return '';
+	}
+
+	return str.charAt(0).toUpperCase() + str.substring(1);
+};
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
 	HOBBY_2019: '2019-hobby',
@@ -278,12 +307,17 @@ export function deployCluster(cluster, id) {
 	});
 }
 
-export function deleteCluster(id) {
+export function deleteCluster(id, isSLSCluster = false) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/_delete/${id}`, {
-			method: 'DELETE',
-			credentials: 'include',
-		})
+		fetch(
+			`${ACC_API}/${
+				isSLSCluster ? 'v2/_delete_mtrs' : 'v1/_delete'
+			}/${id}`,
+			{
+				method: 'DELETE',
+				credentials: 'include',
+			},
+		)
 			.then(res => res.json())
 			.then(data => {
 				if (data.error) {
@@ -494,6 +528,7 @@ export async function verifyCluster(url, backend, headers = {}) {
 
 		const data = await res.json();
 		if (
+			backend === BACKENDS.ELASTICSEARCH.name &&
 			data.version &&
 			parseInt(data.version.number.split('.')[0], 10) < 6
 		) {
@@ -691,32 +726,27 @@ export const getDistance = (lat1, lon1, lat2, lon2) => {
 	return dist;
 };
 
-export const BACKENDS = {
-	ELASTICSEARCH: {
-		name: 'elasticsearch',
-		logo:
-			'https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg',
-	},
-	OPENSEARCH: {
-		name: 'opensearch',
-		logo:
-			'https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg',
-	},
-	SOLR: {
-		name: 'solr',
-		logo: 'https://www.drupal.org/files/project-images/Solr.png',
-	},
-	MONGODB: {
-		name: 'mongodb',
-		logo:
-			'https://webimages.mongodb.com/_com_assets/cms/kuyjf3vea2hg34taa-horizontal_default_slate_blue.svg?auto=format%252Ccompress',
-	},
-};
-
-export const capitalizeWord = str => {
-	if (!str || typeof str !== 'string') {
-		return '';
-	}
-
-	return str.charAt(0).toUpperCase() + str.substring(1);
-};
+export function updateBackend(id, body) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v2/_update_mtrs_backend_connection/${id}`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve();
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}

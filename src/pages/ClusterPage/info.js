@@ -92,6 +92,17 @@ class ClusterInfo extends Component {
 		clearTimeout(this.statusTimer);
 	}
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	init = () => {
 		return getClusterData(get(this, 'props.match.params.id'))
 			.then(async res => {
@@ -237,10 +248,12 @@ class ClusterInfo extends Component {
 	};
 
 	deleteCluster = (id = get(this, 'props.match.params.id')) => {
+		const { cluster } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.props.history.push('/');
 			})
@@ -277,7 +290,14 @@ class ClusterInfo extends Component {
 		});
 	};
 
-	renderClusterRegion = (region, provider = 'azure') => {
+	renderClusterRegion = (region, regionProvider = 'azure') => {
+		let provider = regionProvider;
+		if (
+			regionProvider === 'GCP' ||
+			regionProvider === 'gcp' ||
+			!regionProvider
+		)
+			provider = 'gke';
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -541,7 +561,7 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn{"'"}t available yet
+						Cluster status isn&apos;t available yet
 						<br />
 						It typically takes 15-30 minutes before a cluster comes
 						live.
@@ -576,6 +596,7 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
+		const isSLSCluster = this.isValidSlsCluster(cluster);
 
 		return (
 			<Fragment>
@@ -630,13 +651,43 @@ class ClusterInfo extends Component {
 									className="cluster-card compact"
 								>
 									<div className="info-row">
-										<div>
-											<h4>Region</h4>
-											{this.renderClusterRegion(
-												this.state.cluster.region,
-												this.state.cluster.provider,
-											)}
-										</div>
+										{isSLSCluster ? (
+											<div>
+												<h4>Region</h4>
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'us-central1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'europe-west2-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'asia-southeast1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+											</div>
+										) : (
+											<div>
+												<h4>Region</h4>
+												{this.renderClusterRegion(
+													this.state.cluster.region ||
+														this.state.cluster
+															.provider,
+												)}
+											</div>
+										)}
 
 										<div>
 											<h4>Pricing Plan</h4>
@@ -666,14 +717,20 @@ class ClusterInfo extends Component {
 											</div>
 										</div>
 
-										<div>
-											<h4>ES Version</h4>
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.es_version}
+												<h4>ES Version</h4>
+												<div>
+													{
+														this.state.cluster
+															.es_version
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
-										{isExternalCluster ? null : (
+										{isExternalCluster ||
+										isSLSCluster ? null : (
 											<div>
 												<h4>Memory / Per Node</h4>
 												<div>
@@ -689,11 +746,20 @@ class ClusterInfo extends Component {
 
 										{isExternalCluster ? null : (
 											<div>
-												<h4>Disk Size / Per Node</h4>
+												<h4>
+													Disk Size{' '}
+													{isSLSCluster ? (
+														<></>
+													) : (
+														<>/ Per Node</>
+													)}
+												</h4>
 												<div>
 													{get(
 														ansibleMachineMarks,
-														`${this.state.cluster.pricing_plan}.storagePerNode`,
+														isSLSCluster
+															? `${this.state.cluster.pricing_plan}.storage`
+															: `${this.state.cluster.pricing_plan}.storagePerNode`,
 														'',
 													)}
 													GB
@@ -701,12 +767,17 @@ class ClusterInfo extends Component {
 											</div>
 										)}
 
-										<div>
-											<h4>Nodes</h4>
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.total_nodes}
+												<h4>Nodes</h4>
+												<div>
+													{
+														this.state.cluster
+															.total_nodes
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
 										{this.state.cluster.trial ? (
 											<div>
@@ -795,10 +866,13 @@ class ClusterInfo extends Component {
 												deployment={
 													this.state.deployment
 												}
+												isSLSCluster={isSLSCluster}
 											/>
 											<ClusterExploreRedirect
 												arc={getAddon(
-													'arc',
+													isSLSCluster
+														? 'sls'
+														: 'arc',
 													this.state.deployment,
 												)}
 												clusterName={get(
@@ -816,13 +890,16 @@ class ClusterInfo extends Component {
 								) : null}
 								{this.state.arc &&
 									(this.state.arcVersion ||
-										arcDeployment.image) &&
+										(arcDeployment &&
+											arcDeployment.image)) &&
 									checkIfUpdateIsAvailable(
 										this.state.arcVersion ||
-											arcDeployment.image,
+											(arcDeployment &&
+												arcDeployment.image),
 										this.state.cluster.recipe,
 									) &&
-									!isViewer && (
+									!isViewer &&
+									!isSLSCluster && (
 										<Alert
 											message="A new reactivesearch.io version is available!"
 											description={
@@ -884,6 +961,7 @@ class ClusterInfo extends Component {
 											isExternalCluster={
 												isExternalCluster
 											}
+											isSLSCluster={isSLSCluster}
 										/>
 										<RightContainer>
 											<Switch>
@@ -955,6 +1033,9 @@ class ClusterInfo extends Component {
 																this.handleToken
 															}
 															isPaid={isPaid}
+															isSLSCluster={
+																isSLSCluster
+															}
 														/>
 													)}
 												/>

@@ -68,6 +68,17 @@ class ClusterPage extends Component {
 		clearTimeout(this.timer);
 	}
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	paramsValue = () => {
 		const id = getParam('id', window.location.search) || undefined;
 		const subscription =
@@ -79,10 +90,14 @@ class ClusterPage extends Component {
 	};
 
 	deleteCluster = id => {
+		const { clusters } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(
+			clusters.find(i => i.id === id) || {},
+		);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.initClusters();
 			})
@@ -246,7 +261,10 @@ class ClusterPage extends Component {
 		}
 	};
 
-	renderClusterRegion = (region, provider = 'gke') => {
+	renderClusterRegion = (region, regionProvider = 'gke') => {
+		let provider = regionProvider;
+		if (regionProvider === 'GCP' || regionProvider === 'gcp')
+			provider = 'gke';
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -310,6 +328,8 @@ class ClusterPage extends Component {
 					},
 			  }
 			: {};
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3 className="header-container">
@@ -391,24 +411,52 @@ class ClusterPage extends Component {
 							</span>
 						</Tooltip>
 					) : null}
-					<div
-						className="view-logs-button"
-						onClick={() =>
-							history.push(`/clusters/${cluster.id}/logs`)
-						}
-					>
-						View deploy logs
-					</div>
+					{!isSLSCluster ? (
+						<div
+							className="view-logs-button"
+							onClick={() =>
+								history.push(`/clusters/${cluster.id}/logs`)
+							}
+						>
+							View deploy logs
+						</div>
+					) : null}
 				</h3>
 
 				<div className="info-row">
-					<div>
-						<h4>Region</h4>
-						{this.renderClusterRegion(
-							cluster.region,
-							cluster.provider,
-						)}
-					</div>
+					{isSLSCluster ? (
+						<div>
+							<h4>Region</h4>
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'us-central1-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'europe-west2-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'asia-southeast1-a',
+									cluster.provider,
+								)}
+							</div>
+						</div>
+					) : (
+						<div>
+							<h4>Region</h4>
+							{this.renderClusterRegion(
+								cluster.region,
+								cluster.provider,
+							)}
+						</div>
+					)}
 
 					<div>
 						<h4>Pricing Plan</h4>
@@ -417,12 +465,14 @@ class ClusterPage extends Component {
 						</div>
 					</div>
 
-					<div>
-						<h4>ES Version</h4>
-						<div>{cluster.es_version}</div>
-					</div>
+					{!isSLSCluster ? (
+						<div>
+							<h4>ES Version</h4>
+							<div>{cluster.es_version}</div>
+						</div>
+					) : null}
 
-					{isExternalCluster ? null : (
+					{isExternalCluster || isSLSCluster ? null : (
 						<div>
 							<h4>Memory</h4>
 							<div>
@@ -448,10 +498,12 @@ class ClusterPage extends Component {
 						</div>
 					)}
 
-					<div>
-						<h4>Nodes</h4>
-						<div>{cluster.total_nodes}</div>
-					</div>
+					{!isSLSCluster ? (
+						<div>
+							<h4>Nodes</h4>
+							<div>{cluster.total_nodes}</div>
+						</div>
+					) : null}
 
 					{cluster.status === 'active' ||
 					cluster.status === 'deployments in progress' ? (
@@ -631,7 +683,7 @@ class ClusterPage extends Component {
 					<div style={vcenter}>
 						<i className="fas fa-gift" style={{ fontSize: 36 }} />
 						<h2 style={{ marginTop: 24, fontSize: 22 }}>
-							You ' ve unlocked 14 days free trial
+							You&apos;ve unlocked 14 days free trial
 						</h2>
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today

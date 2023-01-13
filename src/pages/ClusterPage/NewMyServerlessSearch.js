@@ -18,7 +18,6 @@ import {
 	getClusters,
 	verifyCluster,
 	createSubscription,
-	ARC_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
@@ -54,7 +53,7 @@ export const machineMarks = {
 		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
 		bandWidth: 10,
 		postBandWidthConsumption: 3,
-		dataStorage: 1,
+		dataStorage: 10,
 		searchIndices: 4,
 	},
 	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
@@ -254,7 +253,9 @@ class NewMyCluster extends Component {
 			}
 
 			const clusterRes = await deployMySlsCluster(body);
-			setClusterId(clusterRes.cluster.id);
+			if (clusterRes.cluster && clusterRes.cluster.id) {
+				setClusterId(clusterRes.cluster.id);
+			}
 			if (isDeployTemplate && clusterRes.cluster.id) {
 				setActiveKey('3');
 				setTabsValidated(true);
@@ -268,6 +269,8 @@ class NewMyCluster extends Component {
 					...stripeData,
 				});
 				this.props.history.push('/');
+			} else {
+				this.props.history.push('/');
 			}
 		} catch (e) {
 			this.setState({
@@ -275,6 +278,7 @@ class NewMyCluster extends Component {
 				deploymentError: e,
 				showError: true,
 			});
+			console.error('Error to create cluster', e);
 		}
 	};
 
@@ -324,7 +328,7 @@ class NewMyCluster extends Component {
 		return (
 			<div className="col grey">
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
@@ -353,14 +357,13 @@ class NewMyCluster extends Component {
 					</div>
 				</div>
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
 								font-size: 20px !important;
 							`}
 						>
-							<span>$</span>
 							<AnimatedNumber
 								value={mark.bandWidth}
 								duration={100}
@@ -375,7 +378,7 @@ class NewMyCluster extends Component {
 					</div>
 				</div>
 				<div className={clusterInfo}>
-					<div>
+					<div className="mb-10">
 						<div
 							className="price"
 							css={`
@@ -384,7 +387,6 @@ class NewMyCluster extends Component {
 						>
 							{mark.dataStorage ? (
 								<>
-									<span>$</span>
 									<AnimatedNumber
 										value={mark.dataStorage}
 										duration={100}
@@ -843,7 +845,24 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{(isUsingClusterTrial &&
+
+								<Button
+									type="primary"
+									size="large"
+									onClick={this.createCluster}
+								>
+									{isDeployTemplate ? (
+										<>
+											Deploy cluster with pipeline &nbsp;
+											{pipeline}
+										</>
+									) : (
+										<>Create Cluster</>
+									)}
+									<Icon type="arrow-right" theme="outlined" />
+								</Button>
+
+								{/* {(isUsingClusterTrial &&
 									this.state.pricing_plan !==
 										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
 								clusters.length > 0 ? (
@@ -896,7 +915,7 @@ class NewMyCluster extends Component {
 											theme="outlined"
 										/>
 									</Button>
-								)}
+								)} */}
 							</div>
 						</article>
 					</section>
