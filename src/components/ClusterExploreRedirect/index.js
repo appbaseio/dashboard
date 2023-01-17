@@ -38,10 +38,7 @@ const ClusterExploreRedirect = ({
 		}
 
 		const { username, password, url: arcURL } = arc;
-		let url = `${mainURL}/?url=${arcURL.slice(
-			0,
-			-1,
-		)}&username=${username}&password=${password}&cluster=${clusterName}${arcParams}`;
+		let url = `${mainURL}/?url=${arcURL}&username=${username}&password=${password}&cluster=${clusterName}${arcParams}`;
 		if (cus_id) {
 			url += `&cus_id=${cus_id}`;
 		}
