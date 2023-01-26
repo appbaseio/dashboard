@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Input, Select } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { Input, Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './styles';
 import Grid from './Grid';
@@ -112,11 +113,10 @@ class WhiteList extends React.Component {
 								</div>
 								{enabled && (
 									<div css="cursor:pointer">
-										<Icon
+										<CloseCircleOutlined
 											onClick={() =>
 												this.removeItem(item)
 											}
-											type="close-circle-o"
 										/>
 									</div>
 								)}

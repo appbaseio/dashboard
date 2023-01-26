@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Tag, Icon, Row } from 'antd';
+import { ClusterOutlined, RocketOutlined } from '@ant-design/icons';
+import { Layout, Menu, Tag, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool, number, array, func } from 'prop-types';
 import { connect } from 'react-redux';
@@ -59,7 +60,7 @@ const FullHeader = ({
 				{cluster ? (
 					<Menu.Item key={`/clusters/${cluster}`}>
 						<Link to={`/clusters/${cluster}`}>
-							<Icon type="cluster" /> {cluster}
+							<ClusterOutlined /> {cluster}
 						</Link>
 					</Menu.Item>
 				) : null}
@@ -77,7 +78,11 @@ const FullHeader = ({
 				</Menu.Item>
 			</Menu>
 		</div>
-		<Row justify="space-between" align="middle">
+		<Row
+			justify="space-between"
+			align="middle"
+			style={{ flexWrap: 'nowrap' }}
+		>
 			{(isCluster ? isUsingClusterTrial : isUsingTrial) && (
 				<TrialButton
 					showButton={isCluster}
@@ -92,15 +97,19 @@ const FullHeader = ({
 					trialMessage={trialMessage}
 				/>
 			)}
-			<a
-				href="https://docs.appbase.io/"
-				className={link}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<Icon type="rocket" /> Docs
-			</a>
-			<UserMenu user={user} resetAppbaseUser={resetAppbaseUser} />
+			<Col>
+				<a
+					href="https://docs.appbase.io/"
+					className={link}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<RocketOutlined /> Docs
+				</a>
+			</Col>
+			<Col>
+				<UserMenu user={user} resetAppbaseUser={resetAppbaseUser} />
+			</Col>
 		</Row>
 		<MenuSlider
 			isHomepage

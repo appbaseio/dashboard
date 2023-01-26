@@ -66,7 +66,8 @@
 		"webpack-dev-server": "^3.1.5"
 	},
 	"dependencies": {
-		"@appbaseio/dejavu-browser": "^3.4.5",
+		"@ant-design/icons": "^4.8.0",
+		"@appbaseio/dejavu-browser": "^3.8.1",
 		"@appbaseio/designkit": "^0.9.1",
 		"@appbaseio/reactivecore": "^8.2.6",
 		"@appbaseio/reactivesearch": "^3.24.1",
@@ -77,7 +78,7 @@
 		"@stripe/react-stripe-js": "^1.1.2",
 		"@stripe/stripe-js": "^1.9.0",
 		"@typeform/embed-react": "^1.13.0",
-		"antd": "^3.9.2",
+		"antd": "^5.0.0",
 		"appbase-js": "^4.0.1-beta",
 		"auth0-js": "^9.19.2",
 		"brace": "^0.11.1",

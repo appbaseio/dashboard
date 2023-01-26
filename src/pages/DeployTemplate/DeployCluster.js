@@ -1,11 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Button, Select, Icon, Alert } from 'antd';
+import {
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	LoadingOutlined,
+	PlusOutlined,
+} from '@ant-design/icons';
+import { Button, Select, Alert } from 'antd';
 import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
+
+const iconMap = {
+	'close-circle': <CloseCircleOutlined style={{ color: 'red' }} />,
+	'check-circle': <CheckCircleOutlined style={{ color: 'green' }} />,
+	loading: <LoadingOutlined />,
+};
 
 const DeployCluster = ({
 	formData,
@@ -124,13 +136,14 @@ const DeployCluster = ({
 									}}
 								>
 									{activeClusters.map(data => (
-										<Select.Option
-											key={data.id}
-											onClick={() =>
-												setSelectedCluster(data)
-											}
-										>
-											<div>{data.name}</div>
+										<Select.Option key={data.id}>
+											<div
+												onClick={() =>
+													setSelectedCluster(data)
+												}
+											>
+												{data.name}
+											</div>
 										</Select.Option>
 									))}
 								</Select>
@@ -151,17 +164,7 @@ const DeployCluster = ({
 								>
 									Deploy pipeline {formData.id}&nbsp;to&nbsp;
 									{selectedCluster.name} cluster
-									{iconType ? (
-										<Icon
-											type={iconType}
-											style={{
-												color:
-													iconType === 'close-circle'
-														? 'red'
-														: 'green',
-											}}
-										/>
-									) : null}
+									{iconType ? iconMap[iconType] : null}
 								</Button>
 							</div>
 							<div>OR</div>
@@ -174,7 +177,7 @@ const DeployCluster = ({
 								disabled={selectedCluster.id}
 								onClick={() => setNextPage(true)}
 							>
-								<Icon type="plus" />
+								<PlusOutlined />
 								Create a new Reactivesearch cluster
 							</Button>
 						</div>

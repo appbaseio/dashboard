@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
+import { SaveOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -135,7 +136,7 @@ class ScaleClusterScreen extends Component {
 					{isUsingClusterTrial ? null : (
 						<Button
 							size="large"
-							icon="save"
+							icon={<SaveOutlined />}
 							type="primary"
 							disabled={!isDirty}
 							onClick={this.scaleCluster}

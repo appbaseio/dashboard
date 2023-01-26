@@ -1,15 +1,21 @@
 import React from 'react';
 import get from 'lodash/get';
 import {
+	EyeInvisibleOutlined,
+	EyeOutlined,
+	LoadingOutlined,
+	QuestionCircleOutlined,
+	SaveOutlined,
+} from '@ant-design/icons';
+import {
 	Card,
 	Input,
-	Form,
 	Button,
-	Icon,
 	Table,
 	Skeleton,
 	notification,
 	Popover,
+	Form,
 } from 'antd';
 import { connect } from 'react-redux';
 
@@ -241,7 +247,7 @@ class RoleBaseAccess extends React.Component {
 									>
 										<Input.TextArea
 											name="publicKey"
-											autosize={{ minRows: 3 }}
+											autoSize={{ minRows: 3 }}
 											value={publicKey}
 											placeholder="Enter Public Key"
 											onChange={this.handleChange}
@@ -275,7 +281,7 @@ class RoleBaseAccess extends React.Component {
 												}
 											>
 												Role Claim{' '}
-												<Icon type="question-circle" />
+												<QuestionCircleOutlined />
 											</Popover>
 										}
 										style={labelMargin}
@@ -296,13 +302,11 @@ class RoleBaseAccess extends React.Component {
 											type="primary"
 											onClick={this.handleSave}
 										>
-											<Icon
-												type={
-													updatingKeyes
-														? 'loading'
-														: 'save'
-												}
-											/>
+											{updatingKeyes ? (
+												<LoadingOutlined />
+											) : (
+												<SaveOutlined />
+											)}
 											Save
 										</Button>
 									</Form.Item>
@@ -345,22 +349,20 @@ class RoleBaseAccess extends React.Component {
 														background:
 															'transparent',
 													}}
-													type="normal"
+													type="default"
 													onClick={() =>
 														this.showKey(
 															value.username,
 														)
 													}
 												>
-													<Icon
-														type={
-															visibleKey[
-																`${value.username}`
-															]
-																? 'eye-invisible'
-																: 'eye'
-														}
-													/>
+													{visibleKey[
+														`${value.username}`
+													] ? (
+														<EyeInvisibleOutlined />
+													) : (
+														<EyeOutlined />
+													)}
 												</Button>
 											</div>
 										)}
@@ -399,16 +401,12 @@ class RoleBaseAccess extends React.Component {
 												}
 												type="primary"
 											>
-												<Icon
-													type={
-														loadingKey &&
-														loadingKey[
-															value.username
-														]
-															? 'loading'
-															: 'save'
-													}
-												/>
+												{loadingKey &&
+												loadingKey[value.username] ? (
+													<LoadingOutlined />
+												) : (
+													<SaveOutlined />
+												)}
 												Save
 											</Button>
 										)}

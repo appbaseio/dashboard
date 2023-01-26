@@ -1,7 +1,8 @@
 import React from 'react';
 import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { Icon, Button } from 'antd';
+import { LockOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import { media } from '../../utils/media';
 
 const overlay = css`
@@ -54,7 +55,7 @@ const Overlay = ({
 				className={lockSectionClassName}
 			>
 				<div>
-					<Icon type="lock" css={icon} style={iconStyle} />
+					<LockOutlined css={icon} style={iconStyle} />
 				</div>
 				<Button
 					type="primary"

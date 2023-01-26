@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout, Icon } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { string } from 'prop-types';
@@ -166,7 +167,7 @@ class EndScreen extends React.PureComponent {
 									placeholder="Search for integrations.."
 								/>
 								<button type="submit">
-									<Icon type="search" />
+									<SearchOutlined />
 								</button>
 							</div>
 

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Button, Icon } from 'antd';
+import { FormOutlined } from '@ant-design/icons';
+import { Row, Col, Button } from 'antd';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -118,7 +119,7 @@ class ImporterPage extends React.Component {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Icon type="form" />
+								<FormOutlined />
 								Contact Us
 							</Button>
 							<p

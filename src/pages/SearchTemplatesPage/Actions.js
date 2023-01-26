@@ -19,7 +19,7 @@ const Actions = ({ handleEdit, handleRender, handleDelete }) => (
 			okText="Yes"
 			cancelText="No"
 		>
-			<Button type="danger" css={btnCss}>
+			<Button danger css={btnCss}>
 				Delete
 			</Button>
 		</Popconfirm>

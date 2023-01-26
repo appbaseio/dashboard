@@ -4,11 +4,9 @@ import { Card, Alert, Button, Popconfirm, notification } from 'antd';
 // import DeleteFeedbackForm from './DeleteFeedbackForm';
 import { ACC_API } from '../../constants/config';
 import { getClusters } from '../ClusterPage/utils';
-import credsBox from './styles';
 
 const closeAccCardStyles = css`
 	.close-account-footer {
-		position: absolute;
 		bottom: 0px;
 		width: 93%;
 		background: white;
@@ -79,11 +77,7 @@ const CloseAccount = () => {
 	}, []);
 
 	return (
-		<Card
-			title="Close Account"
-			style={{ height: 250 }}
-			css={closeAccCardStyles}
-		>
+		<Card title="Close Account" css={closeAccCardStyles}>
 			<Alert
 				showIcon
 				message="Warning"
@@ -111,7 +105,7 @@ const CloseAccount = () => {
 					okText="Yes"
 					cancelText="No"
 				>
-					<Button type="danger" disabled={availableActiveClusters}>
+					<Button danger disabled={availableActiveClusters}>
 						Close Account
 					</Button>
 				</Popconfirm>

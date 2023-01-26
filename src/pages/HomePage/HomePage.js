@@ -1,7 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
-import { Row, Col, Icon, Button, Tooltip, Dropdown, Menu, Tag } from 'antd';
+
+import {
+	BookOutlined,
+	CodeOutlined,
+	DatabaseOutlined,
+	DownOutlined,
+	ExclamationCircleOutlined,
+	PlusOutlined,
+	ShareAltOutlined,
+} from '@ant-design/icons';
+
+import { Row, Col, Button, Tooltip, Dropdown, Menu, Tag } from 'antd';
 import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -99,7 +110,7 @@ class HomePage extends Component {
 		return (
 			<Dropdown overlay={menu} trigger={['click']}>
 				<Button>
-					{`Sort by ${selectedOption.label}`} <Icon type="down" />
+					{`Sort by ${selectedOption.label}`} <DownOutlined />
 				</Button>
 			</Dropdown>
 		);
@@ -170,7 +181,7 @@ class HomePage extends Component {
 							</Row>
 
 							<Link to="/tutorial" className={link}>
-								<Icon type="book" /> Interactive Tutorial
+								<BookOutlined /> Interactive Tutorial
 							</Link>
 							<a
 								href="https://docs.appbase.io/docs/data/Import"
@@ -178,7 +189,7 @@ class HomePage extends Component {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Icon type="database" /> Importing Data
+								<DatabaseOutlined /> Importing Data
 							</a>
 							<a
 								href="https://docs.appbase.io/integrations/"
@@ -186,7 +197,7 @@ class HomePage extends Component {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<Icon type="code-o" /> APIs and Integrations
+								<CodeOutlined /> APIs and Integrations
 							</a>
 						</Col>
 						<Col
@@ -207,7 +218,7 @@ class HomePage extends Component {
 								block
 								onClick={this.handleChange}
 							>
-								<Icon type="plus" /> Create a new app
+								<PlusOutlined /> Create a new app
 							</Button>
 						</Col>
 					</Row>
@@ -247,9 +258,7 @@ class HomePage extends Component {
 									paddingTop: '80px',
 								}}
 							>
-								<Icon
-									type="exclamation-circle"
-									theme="outlined"
+								<ExclamationCircleOutlined
 									style={{ fontSize: 34, marginBottom: 10 }}
 								/>
 								<h2>No apps found</h2>
@@ -295,7 +304,7 @@ class HomePage extends Component {
 										>
 											<Button
 												shape="circle"
-												icon="share-alt"
+												icon={<ShareAltOutlined />}
 											/>
 										</Tooltip>
 									) : null}
