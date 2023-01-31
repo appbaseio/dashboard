@@ -21,7 +21,10 @@ export async function getUser() {
 		window.location.href = `${ACC_API}/logout?next=https://dashboard.appbase.io/login`;
 		throw new Error(data);
 	}
-	if (response.status === 401 && data.action?.email_verification) {
+	if (
+		(response.status === 401 || response.status === 403) &&
+		data.action?.email_verification
+	) {
 		return data;
 	}
 	const user = {
