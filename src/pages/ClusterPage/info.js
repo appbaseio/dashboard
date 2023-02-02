@@ -45,7 +45,6 @@ import StripeCheckout from '../../components/StripeCheckout';
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
-
 	if (recipe === 'byoc') {
 		return version && version !== ARC_BYOC.split('-')[0];
 	}

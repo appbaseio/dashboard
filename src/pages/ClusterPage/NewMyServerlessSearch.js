@@ -1,10 +1,11 @@
 /* eslint-disable no-plusplus */
 import React, { Fragment, Component } from 'react';
-import { Modal, Button, Icon, Tag, Tooltip, Row, Col, Alert } from 'antd';
+import { Modal, Button, Tag, Tooltip, Row, Col, Alert } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
+import { ArrowRightOutlined, QuestionOutlined } from '@ant-design/icons';
 import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -475,7 +476,7 @@ class NewMyCluster extends Component {
 													'/clusters/new',
 												);
 											}}
-											icon="question-circle"
+											icon={<QuestionOutlined />}
 										>
 											Don&apos;t have a Cluster
 										</Button>
@@ -859,7 +860,7 @@ class NewMyCluster extends Component {
 									) : (
 										<>Create Cluster</>
 									)}
-									<Icon type="arrow-right" theme="outlined" />
+									<ArrowRightOutlined />
 								</Button>
 
 								{/* {(isUsingClusterTrial &&

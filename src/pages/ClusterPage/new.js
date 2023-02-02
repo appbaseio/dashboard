@@ -1345,8 +1345,8 @@ class NewCluster extends Component {
 												}}
 											/>
 											<div>
-												We don't recommend adding Kibana
-												on Sandbox instances.
+												We don&apos;t recommend adding
+												Kibana on Sandbox instances.
 											</div>
 										</div>
 									)}
