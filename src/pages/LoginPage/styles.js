@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+
 const backgroundUrlImage = require('../../../static/images/Herobg.png');
 
 const container = css`
@@ -95,9 +96,9 @@ const githubBtn = css`
 	border: 0;
 	&:hover,
 	&:focus {
-		background-color: #333;
-		color: #fff;
-		border-color: #666;
+		background-color: #333 !important;
+		color: #fff !important;
+		border-color: #666 !important;
 	}
 `;
 
@@ -107,9 +108,9 @@ const googleBtn = css`
 	border: 0;
 	&:hover,
 	&:focus {
-		background-color: rgb(245, 106, 94);
-		color: #fff;
-		border-color: #f7d2cf;
+		background-color: rgb(245, 106, 94) !important;
+		color: #fff !important;
+		border-color: #f7d2cf !important;
 	}
 `;
 
@@ -119,9 +120,9 @@ const gitlabBtn = css`
 	border: 0;
 	&:hover,
 	&:focus {
-		background-color: rgb(64, 51, 104);
-		color: #fff;
-		border-color: #473281;
+		background-color: rgb(64, 51, 104) !important;
+		color: #fff !important;
+		border-color: #473281 !important;
 	}
 `;
 

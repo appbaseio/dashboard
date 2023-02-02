@@ -1,4 +1,5 @@
 import React from 'react';
+import { RedoOutlined } from '@ant-design/icons';
 import { Alert, Button } from 'antd';
 import { object, func, bool, number } from 'prop-types';
 import Flex from '../../../../batteries/components/shared/Flex';
@@ -51,7 +52,7 @@ export default function DeploymentStatus({
 				</div>
 				{statusFetchCount >= 5 && (
 					<Button
-						icon="redo"
+						icon={<RedoOutlined />}
 						loading={isFetchingStatus}
 						disabled={isFetchingStatus}
 						onClick={refetchDeploymentStatus}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Icon, Button, Row, Tag, Tooltip } from 'antd';
+import { ArrowLeftOutlined, RocketOutlined } from '@ant-design/icons';
+import { Layout, Menu, Button, Row, Tag, Tooltip, Col } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import { string, object, bool, number } from 'prop-types';
 import { css } from 'react-emotion';
@@ -84,7 +85,7 @@ class AppHeader extends React.Component {
 						style={{ padding: 0 }}
 					>
 						<Link to="/">
-							<Icon type="arrow-left" />
+							<ArrowLeftOutlined />
 						</Link>
 					</Menu.Item>
 					<Menu.Item key="1" className={noBorder}>
@@ -107,7 +108,7 @@ class AppHeader extends React.Component {
 				</Menu>
 				{isUsingTrial && (
 					<Tooltip title="You are currently on a trial which unlocks all the Growth monthly features. You can upgrade to a paid plan anytime till the trial expires. Post trial expiration, you will be subscribed to the free plan.">
-						<Button css={trialBtn} type="danger" href="billing">
+						<Button css={trialBtn} danger href="billing">
 							<span css={trialText}>
 								{daysLeft > 0
 									? `Trial expires in ${daysLeft} ${
@@ -118,16 +119,24 @@ class AppHeader extends React.Component {
 						</Button>
 					</Tooltip>
 				)}
-				<Row justify="space-between" align="middle">
-					<a
-						href="https://docs.appbase.io/"
-						className={link}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Icon type="rocket" /> Docs
-					</a>
-					<UserMenu user={user} />
+				<Row
+					justify="space-between"
+					align="middle"
+					style={{ flexWrap: 'nowrap' }}
+				>
+					<Col>
+						<a
+							href="https://docs.appbase.io/"
+							className={link}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<RocketOutlined /> Docs
+						</a>
+					</Col>
+					<Col>
+						<UserMenu user={user} />
+					</Col>
 				</Row>
 				<MenuSlider />
 			</Header>

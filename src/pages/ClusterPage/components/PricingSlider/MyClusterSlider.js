@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Slider, Tooltip, Icon } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Slider, Tooltip } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 import get from 'lodash/get';
 
@@ -121,8 +122,7 @@ export default class PricingSlider extends Component {
 											{mark.nodes === 1
 												? 'Node'
 												: 'Nodes'}
-											<Icon
-												type="question-circle"
+											<QuestionCircleOutlined
 												style={{
 													size: 14,
 													marginLeft: 5,
@@ -143,7 +143,10 @@ export default class PricingSlider extends Component {
 										duration={100}
 										stepPrecision={0}
 									/>{' '}
-									/mo
+									{mark.nodes === 1 ? 'Node' : 'Nodes'}
+									<QuestionCircleOutlined
+										style={{ size: 14, marginLeft: 5 }}
+									/>
 								</div>
 								<h3>Estimated Cost</h3>
 							</div>

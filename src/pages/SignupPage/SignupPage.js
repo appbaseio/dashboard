@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card, Button, Icon, Checkbox } from 'antd';
+import {
+	ArrowRightOutlined,
+	GithubOutlined,
+	GitlabOutlined,
+	GoogleOutlined,
+} from '@ant-design/icons';
+import { Card, Button, Checkbox } from 'antd';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import EmailAuth from '../LoginPage/EmailAuth';
@@ -115,10 +121,10 @@ class SignupPage extends React.Component {
 							<React.Fragment>
 								<Button
 									href={getSignupURL('github', search)}
-									icon="github"
+									icon={<GithubOutlined />}
 									className={githubBtn}
 									disabled={!hasAgreedTOS}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with GitHub
@@ -126,10 +132,10 @@ class SignupPage extends React.Component {
 
 								<Button
 									href={getSignupURL('google', search)}
-									icon="google"
+									icon={<GoogleOutlined />}
 									disabled={!hasAgreedTOS}
 									className={googleBtn}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with Google
@@ -137,10 +143,10 @@ class SignupPage extends React.Component {
 
 								<Button
 									href={getSignupURL('gitlab', search)}
-									icon="gitlab"
+									icon={<GitlabOutlined />}
 									disabled={!hasAgreedTOS}
 									className={gitlabBtn}
-									size="small"
+									size="large"
 									style={{ border: 0 }}
 								>
 									Sign up with Gitlab
@@ -160,7 +166,7 @@ class SignupPage extends React.Component {
 						<Button
 							size="large"
 							ghost
-							css={{
+							style={{
 								border: 0,
 								boxShadow: 'none',
 								color: '#424242',
@@ -171,7 +177,7 @@ class SignupPage extends React.Component {
 							}}
 						>
 							Already have account? &nbsp; Login here
-							<Icon type="arrow-right" />
+							<ArrowRightOutlined />
 						</Button>
 					</Link>
 				</React.Fragment>

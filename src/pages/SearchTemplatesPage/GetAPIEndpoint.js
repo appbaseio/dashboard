@@ -104,7 +104,7 @@ ${getString(query)}
 				render={({ invalid }) => (
 					<Modal
 						title="API Endpoint"
-						visible={visible}
+						open={visible}
 						okText="Copy as cURL"
 						okButtonProps={{
 							disabled: invalid,

@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import {
+	CloseCircleOutlined,
+	CopyOutlined,
+	EyeOutlined,
+	ReloadOutlined,
+} from '@ant-design/icons';
 import { Card, Button, notification, Popconfirm, Spin, Row, Alert } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -111,7 +117,13 @@ class Credentials extends Component {
 							<Button
 								css={{ border: 0 }}
 								onClick={this.handleViewClick}
-								icon={isHidden ? 'eye' : 'close-circle'}
+								icon={
+									isHidden ? (
+										<EyeOutlined />
+									) : (
+										<CloseCircleOutlined />
+									)
+								}
 								data-clipboard-text={key}
 								theme="outlined"
 							/>
@@ -121,7 +133,7 @@ class Credentials extends Component {
 							>
 								<Button
 									css={{ border: 0 }}
-									icon="copy"
+									icon={<CopyOutlined />}
 									data-clipboard-text={key}
 								/>
 							</CopyToClipboard>
@@ -134,7 +146,7 @@ class Credentials extends Component {
 								<Button
 									disabled={isReseting}
 									css={{ border: 0 }}
-									icon="reload"
+									icon={<ReloadOutlined />}
 								/>
 							</Popconfirm>
 						</span>

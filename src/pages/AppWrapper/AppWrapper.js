@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, Menu, Icon, Tag } from 'antd';
+import { Layout, Menu, Tag } from 'antd';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import AppLayout from '../../components/AppLayout';
@@ -10,6 +10,7 @@ import Logo from '../../components/Logo';
 
 import { getParam } from '../../utils';
 import { breakpoints } from '../../utils/media';
+import iconMap from '../../components/iconMap';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -212,9 +213,8 @@ class AppWrapper extends Component {
 							if (routes[route].menu) {
 								const Title = (
 									<span>
-										<Icon
-											type={get(routes, `${route}.icon`)}
-										/>
+										{iconMap[routes[route].icon]}
+
 										<span>{route}</span>
 									</span>
 								);
@@ -253,9 +253,7 @@ class AppWrapper extends Component {
 											`${route}.link`,
 										)}`}
 									>
-										<Icon
-											type={get(routes, `${route}.icon`)}
-										/>
+										{iconMap[routes[route].icon]}
 										<span>{route}</span>
 									</Link>
 								</Menu.Item>

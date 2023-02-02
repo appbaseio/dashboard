@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, Skeleton, Icon } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons';
+import { Card, Skeleton } from 'antd';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
@@ -44,7 +45,7 @@ const AppCard = ({ title, data, appName, appId, permissions, shared }) => (
 				width: 'calc(100% - 48px)',
 			}}
 		>
-			<Icon type="ellipsis" theme="outlined" />
+			<EllipsisOutlined />
 		</div>
 
 		<ActionButtons

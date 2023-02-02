@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Icon, message, Popover, Button } from 'antd';
+
+import {
+	CloseCircleOutlined,
+	CopyOutlined,
+	EyeOutlined,
+	SyncOutlined,
+	WarningOutlined,
+} from '@ant-design/icons';
+
+import { message, Popover, Button } from 'antd';
 import { string, func, bool } from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { credsBox, confirmationBox } from '../../styles';
@@ -61,11 +70,7 @@ export default class CredentialsBox extends Component {
 					<div className={confirmationBox}>
 						<div className="confirmation-header">
 							<span className="icon-wrapper">
-								<Icon
-									type="warning"
-									theme="outlined"
-									className="icon"
-								/>
+								<WarningOutlined className="icon" />
 							</span>
 							Warning
 						</div>
@@ -79,7 +84,7 @@ export default class CredentialsBox extends Component {
 						<div className="buttons-wrapper">
 							<div>
 								<Button
-									type="danger"
+									danger
 									ghost
 									size="small"
 									className="cancel-button"
@@ -112,14 +117,10 @@ export default class CredentialsBox extends Component {
 					</div>
 				}
 				trigger="click"
-				visible={this.state.confirmationBoxVisible}
-				onVisibleChange={this.handleVisibleChange}
+				open={this.state.confirmationBoxVisible}
+				onOpenChange={this.handleVisibleChange}
 			>
-				<Icon
-					type="sync"
-					theme="outlined"
-					style={{ color: '#ff0000' }}
-				/>
+				<SyncOutlined style={{ color: '#ff0000' }} />
 			</Popover>
 		);
 	};
@@ -158,27 +159,29 @@ export default class CredentialsBox extends Component {
 				)}
 
 				<span className="cred-button">
-					{isEditable ? null : (
-						<a onClick={this.toggleHidden}>
-							{hidden ? (
-								<Icon type="eye" theme="outlined" />
-							) : (
-								<Icon type="close-circle" theme="outlined" />
-							)}
-							<span className="cred-button-text">
-								{hidden ? 'Show' : 'Hide'}
-							</span>
-						</a>
-					)}
-					<CopyToClipboard
-						text={text}
-						onCopy={() => this.copySuccess(name)}
-					>
-						<a data-clipboard-text={text}>
-							<Icon type="copy" theme="outlined" />
-							<span className="cred-button-text">Copy</span>
-						</a>
-					</CopyToClipboard>
+					<span>
+						{isEditable ? null : (
+							<a onClick={this.toggleHidden}>
+								{hidden ? (
+									<EyeOutlined />
+								) : (
+									<CloseCircleOutlined />
+								)}
+								<span className="cred-button-text">
+									{hidden ? 'Show' : 'Hide'}
+								</span>
+							</a>
+						)}
+						<CopyToClipboard
+							text={text}
+							onCopy={() => this.copySuccess(name)}
+						>
+							<a data-clipboard-text={text}>
+								<CopyOutlined />
+								<span className="cred-button-text">Copy</span>
+							</a>
+						</CopyToClipboard>
+					</span>
 					<span>
 						{this.renderConfirmationBox(
 							name,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dropdown, Menu, Button, Icon, Tooltip } from 'antd';
+import { DownOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Button, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
 
@@ -45,7 +46,7 @@ const AppSwitcher = ({
 			<Dropdown trigger={['click']} overlay={menu}>
 				<Button style={{ border: 0, boxShadow: 'none', padding: 0 }}>
 					<span>{currentApp || 'Loading...'}</span>
-					<Icon type="down" />
+					<DownOutlined />
 				</Button>
 			</Dropdown>
 			{appOwner &&
@@ -59,7 +60,7 @@ const AppSwitcher = ({
 							className={ownerButton}
 							size="small"
 							shape="circle"
-							icon="share-alt"
+							icon={<ShareAltOutlined />}
 						/>
 					</Tooltip>
 				) : null)}

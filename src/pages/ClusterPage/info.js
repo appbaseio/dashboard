@@ -1,4 +1,9 @@
-import { Alert, Button, Icon, message, Modal, Tag, Tooltip } from 'antd';
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	WarningOutlined,
+} from '@ant-design/icons';
+import { Alert, Button, message, Modal, Tag, Tooltip } from 'antd';
 import React, { Component, Fragment } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -414,7 +419,7 @@ class ClusterInfo extends Component {
 						style={{ textAlign: 'center', paddingTop: 40 }}
 					>
 						<article>
-							<Icon css={{ fontSize: 42 }} type="warning" />
+							<WarningOutlined css={{ fontSize: 42 }} />
 							<h2
 								style={{
 									maxWidth: 400,
@@ -432,7 +437,7 @@ class ClusterInfo extends Component {
 								<Link to="/">
 									<Button
 										size="large"
-										icon="arrow-left"
+										icon={<ArrowLeftOutlined />}
 										css={{
 											marginRight: 12,
 										}}
@@ -461,12 +466,12 @@ class ClusterInfo extends Component {
 												deleteModal: true,
 											});
 										}}
-										type="danger"
+										danger
 										style={{
 											marginRight: 12,
 										}}
 										size="large"
-										icon="delete"
+										icon={<DeleteOutlined />}
 									>
 										Delete Cluster
 									</Button>
@@ -491,7 +496,7 @@ class ClusterInfo extends Component {
 			<Button
 				size="large"
 				onClick={() => this.props.history.push('/')}
-				icon="arrow-left"
+				icon={<ArrowLeftOutlined />}
 			>
 				Go Back
 			</Button>
@@ -504,11 +509,11 @@ class ClusterInfo extends Component {
 							deleteModal: true,
 						});
 					}}
-					type="danger"
+					danger
 					css={{
 						marginLeft: 12,
 					}}
-					icon="delete"
+					icon={<DeleteOutlined />}
 				>
 					Delete Cluster
 				</Button>
@@ -629,7 +634,7 @@ class ClusterInfo extends Component {
 					<section className={clusterContainer}>
 						<Modal
 							title="Error"
-							visible={this.state.showError}
+							open={this.state.showError}
 							onOk={this.hideErrorModal}
 						>
 							<p>{this.state.deploymentError}</p>
@@ -891,7 +896,7 @@ class ClusterInfo extends Component {
 								{this.state.arc &&
 									(this.state.arcVersion ||
 										(arcDeployment &&
-											arcDeployment.image)) &&
+											arcDeployment?.image)) &&
 									checkIfUpdateIsAvailable(
 										this.state.arcVersion ||
 											(arcDeployment &&
@@ -944,202 +949,185 @@ class ClusterInfo extends Component {
 										/>
 									)}
 
-								{this.state.cluster.status === 'active' ? (
-									<div
-										css={{
-											display: 'flex',
-											flexDirection: 'row',
-											justifyContent: 'space-between',
-										}}
-									>
-										<Sidebar
-											id={get(
-												this,
-												'props.match.params.id',
-											)}
-											isViewer={isViewer}
-											isExternalCluster={
-												isExternalCluster
-											}
-											isSLSCluster={isSLSCluster}
-										/>
-										<RightContainer>
-											<Switch>
-												<Route
-													exact
-													path="/clusters/:id"
-													component={() => (
-														<ClusterScreen
-															clusterId={get(
-																this,
-																'props.match.params.id',
-															)}
-															cluster={
-																this.state
-																	.cluster
-															}
-															isExternalCluster={
-																isExternalCluster
-															}
-															deployment={
-																this.state
-																	.deployment
-															}
-															arc={this.state.arc}
-															streams={
-																this.state
-																	.streams
-															}
-															kibana={
-																this.state
-																	.kibana
-															}
-															grafana={
-																this.state
-																	.grafana
-															}
-															mirage={
-																this.state
-																	.mirage
-															}
-															dejavu={
-																this.state
-																	.dejavu
-															}
-															handleDeleteModal={
-																this
-																	.handleDeleteModal
-															}
-															elasticsearchHQ={
-																this.state
-																	.elasticsearchHQ
-															}
-															// cluster deployment
-															onDeploy={
-																this
-																	.deployCluster
-															}
-															onDelete={
-																this
-																	.deleteCluster
-															}
-															// payments handling
-															planRate={
-																this.state
-																	.planRate ||
-																0
-															}
-															handleToken={
-																this.handleToken
-															}
-															isPaid={isPaid}
-															isSLSCluster={
-																isSLSCluster
-															}
-														/>
-													)}
-												/>
-												<Route
-													exact
-													path="/clusters/:id/monitoring"
-													component={() => (
-														<ClusterMonitoringScreen
-															clusterId={get(
-																this,
-																'props.match.params.id',
-															)}
-															deployments={
-																this.state
-																	.deployment
-															}
-															plan={get(
-																this.state,
-																'cluster.pricing_plan',
-															)}
-														/>
-													)}
-												/>
-												<Route
-													exact
-													path="/clusters/:id/usage"
-													component={() => (
-														<InvoiceScreen
-															clusterId={get(
-																this,
-																'props.match.params.id',
-															)}
-															isTrial={
-																this.state
-																	.cluster
-																	.trial
-															}
-														/>
-													)}
-												/>
-												<Route
-													exact
-													path="/clusters/:id/logs"
-													component={() => (
-														<DeployLogs
-															clusterId={get(
-																this,
-																'props.match.params.id',
-															)}
-															showClusterDetails={
-																false
-															}
-														/>
-													)}
-												/>
-												{isViewer || (
-													<React.Fragment>
-														{isExternalCluster ? null : (
-															<Route
-																exact
-																path="/clusters/:id/scale"
-																component={() => (
-																	<ScaleClusterScreen
-																		clusterId={get(
-																			this,
-																			'props.match.params.id',
-																		)}
-																		nodes={
-																			this
-																				.state
-																				.cluster
-																				.total_nodes
-																		}
-																		cluster={
-																			this
-																				.state
-																				.cluster
-																		}
-																		handleStripeSubmit={
-																			this
-																				.handleToken
-																		}
-																	/>
-																)}
-															/>
+								<div
+									css={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+									}}
+								>
+									<Sidebar
+										id={get(this, 'props.match.params.id')}
+										isViewer={isViewer}
+										isExternalCluster={isExternalCluster}
+										isActive={
+											this.state.cluster.status ===
+											'active'
+										}
+									/>
+									<RightContainer>
+										<Switch>
+											<Route
+												exact
+												path="/clusters/:id"
+												component={() => (
+													<ClusterScreen
+														clusterId={get(
+															this,
+															'props.match.params.id',
 														)}
+														cluster={
+															this.state.cluster
+														}
+														isExternalCluster={
+															isExternalCluster
+														}
+														deployment={
+															this.state
+																.deployment
+														}
+														arc={this.state.arc}
+														streams={
+															this.state.streams
+														}
+														kibana={
+															this.state.kibana
+														}
+														grafana={
+															this.state.grafana
+														}
+														mirage={
+															this.state.mirage
+														}
+														dejavu={
+															this.state.dejavu
+														}
+														handleDeleteModal={
+															this
+																.handleDeleteModal
+														}
+														elasticsearchHQ={
+															this.state
+																.elasticsearchHQ
+														}
+														// cluster deployment
+														onDeploy={
+															this.deployCluster
+														}
+														onDelete={
+															this.deleteCluster
+														}
+														// payments handling
+														planRate={
+															this.state
+																.planRate || 0
+														}
+														handleToken={
+															this.handleToken
+														}
+														isPaid={isPaid}
+													/>
+												)}
+											/>
+											<Route
+												exact
+												path="/clusters/:id/monitoring"
+												component={() => (
+													<ClusterMonitoringScreen
+														clusterId={get(
+															this,
+															'props.match.params.id',
+														)}
+														deployments={
+															this.state
+																.deployment
+														}
+														plan={get(
+															this.state,
+															'cluster.pricing_plan',
+														)}
+													/>
+												)}
+											/>
+											<Route
+												exact
+												path="/clusters/:id/usage"
+												component={() => (
+													<InvoiceScreen
+														clusterId={get(
+															this,
+															'props.match.params.id',
+														)}
+														isTrial={
+															this.state.cluster
+																.trial
+														}
+													/>
+												)}
+											/>
+											<Route
+												exact
+												path="/clusters/:id/logs"
+												component={() => (
+													<DeployLogs
+														clusterId={get(
+															this,
+															'props.match.params.id',
+														)}
+														showClusterDetails={
+															false
+														}
+													/>
+												)}
+											/>
+											{isViewer || (
+												<React.Fragment>
+													{isExternalCluster ? null : (
 														<Route
 															exact
-															path="/clusters/:id/share"
+															path="/clusters/:id/scale"
 															component={() => (
-																<ShareClusterScreen
+																<ScaleClusterScreen
 																	clusterId={get(
 																		this,
 																		'props.match.params.id',
 																	)}
+																	nodes={
+																		this
+																			.state
+																			.cluster
+																			.total_nodes
+																	}
+																	cluster={
+																		this
+																			.state
+																			.cluster
+																	}
+																	handleStripeSubmit={
+																		this
+																			.handleToken
+																	}
 																/>
 															)}
 														/>
-													</React.Fragment>
-												)}
-											</Switch>
-										</RightContainer>
-									</div>
-								) : null}
+													)}
+													<Route
+														exact
+														path="/clusters/:id/share"
+														component={() => (
+															<ShareClusterScreen
+																clusterId={get(
+																	this,
+																	'props.match.params.id',
+																)}
+															/>
+														)}
+													/>
+												</React.Fragment>
+											)}
+										</Switch>
+									</RightContainer>
+								</div>
 							</ul>
 						</article>
 					</section>

@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/alt-text */
+import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
 import { Alert, Button, message, notification, Select, Tag } from 'antd';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
@@ -603,7 +606,7 @@ class ClusterScreen extends Component {
 											: 'default'
 									}
 									size="large"
-									css={{
+									style={{
 										height: 160,
 										width: '100%',
 										color: '#000',
@@ -618,6 +621,62 @@ class ClusterScreen extends Component {
 										this.setConfig('grafana', false);
 									}}
 								>
+									Built-in dashboard
+								</Button>
+							</div>
+							<div className={esContainer}>
+								<Button
+									size="large"
+									type={
+										this.state.visualization === 'kibana'
+											? 'primary'
+											: 'default'
+									}
+									style={{
+										height: 160,
+										width: '100%',
+										backgroundColor:
+											this.state.visualization ===
+											'kibana'
+												? '#eaf5ff'
+												: '#fff',
+									}}
+									onClick={() => {
+										this.setConfig(
+											'visualization',
+											'kibana',
+										);
+										this.setConfig('kibana', true);
+										this.setConfig('grafana', false);
+									}}
+								>
+									<img
+										width={150}
+										src={
+											isOpenSearchFlavour
+												? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+												: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+										}
+										size="large"
+										css={{
+											height: 160,
+											width: '100%',
+											color: '#000',
+											backgroundColor:
+												this.state.visualization ===
+												'none'
+													? '#eaf5ff'
+													: '#fff',
+										}}
+										onClick={() => {
+											this.setConfig(
+												'visualization',
+												'none',
+											);
+											this.setConfig('kibana', false);
+											this.setConfig('grafana', false);
+										}}
+									/>
 									Built-in dashboard
 								</Button>
 							</div>
@@ -963,9 +1022,9 @@ class ClusterScreen extends Component {
 					<div className={clusterButtons}>
 						<Button
 							onClick={handleDeleteModal}
-							type="danger"
+							danger
 							size="large"
-							icon="delete"
+							icon={<DeleteOutlined />}
 							className="delete"
 						>
 							Delete Cluster
@@ -989,7 +1048,7 @@ class ClusterScreen extends Component {
 							) : null}
 							<Button
 								size="large"
-								icon="save"
+								icon={<SaveOutlined />}
 								type="primary"
 								onClick={this.saveClusterSettings}
 							>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, Input } from 'antd';
 import { bool, string, func } from 'prop-types';
+import { Modal, Input } from 'antd';
 import DeleteFeedbackForm from '../../ProfilePage/DeleteFeedbackForm';
 import './styles.css';
 
@@ -37,7 +37,7 @@ class DeleteClusterModal extends React.Component {
 
 		return (
 			<Modal
-				visible={isVisible}
+				open={isVisible}
 				onOk={this.handleDelete}
 				onCancel={handleModal}
 				destroyOnClose

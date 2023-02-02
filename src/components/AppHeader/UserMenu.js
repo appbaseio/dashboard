@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { object } from 'prop-types';
-import { Menu, Avatar, Dropdown, Icon } from 'antd';
+import {
+	DownOutlined,
+	PoweroffOutlined,
+	SettingOutlined,
+} from '@ant-design/icons';
+import { Menu, Avatar, Dropdown } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
 import { media } from '../../utils/media';
@@ -15,12 +20,14 @@ const handleLogout = () => {
 };
 
 const userMenu = css`
+	font-size: 0.8rem;
 	${media.medium(css`
 		display: none;
 	`)};
 `;
 
 const userName = css`
+	white-space: nowrap;
 	${media.large(css`
 		display: none;
 	`)};
@@ -49,25 +56,20 @@ const UserMenu = ({ user }) => {
 			<Menu.Divider />
 			<Menu.Item>
 				<Link to="/profile">
-					<Icon
-						style={{ marginRight: 8 }}
-						type="setting"
-						theme="outlined"
-					/>
+					<SettingOutlined style={{ marginRight: 8 }} />
 					Account Settings
 				</Link>
 			</Menu.Item>
 			<Menu.Divider />
 			<Menu.Item onClick={handleLogout}>
-				<Icon type="poweroff" theme="outlined" />
-				Logout
+				<PoweroffOutlined style={{ marginRight: 8 }} /> Logout
 			</Menu.Item>
 		</Menu>
 	);
 
 	return (
 		<Dropdown overlay={menu} className={userMenu} trigger={['click']}>
-			<span style={{ cursor: 'pointer' }}>
+			<span style={{ cursor: 'pointer', whiteSpace: 'nowrap' }}>
 				<Avatar
 					src={get(user, 'picture')}
 					css={{ backgroundColor: '#1890ff' }}
@@ -81,7 +83,7 @@ const UserMenu = ({ user }) => {
 					{get(user, 'name', 'Loading...')}
 				</span>
 				&nbsp;&nbsp;
-				<Icon type="down" />
+				<DownOutlined />
 			</span>
 		</Dropdown>
 	);

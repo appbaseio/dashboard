@@ -158,6 +158,7 @@ const card = css`
 	.col {
 		padding: 30px 25px;
 		min-width: 270px;
+		overflow: auto;
 		${media.ipadPro(css`
 			width: 100%;
 		`)};
@@ -478,6 +479,14 @@ const credsBox = css`
 			overflow-x: scroll;
 		`)};
 	}
+	.cred-button > span {
+		border-left: 1px solid #d9d8e4;
+		box-sizing: border-box;
+		height: 100%;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+	}
 	.cred-button a {
 		${media.small(css`
 			width: 50%;
@@ -515,7 +524,6 @@ const credsBox = css`
 		}
 		&:last-child {
 			padding: 0;
-			border-left: 1px solid #d9d8e4;
 			${media.small(css`
 				border: 0;
 			`)};
@@ -524,7 +532,6 @@ const credsBox = css`
 			padding: 6px 12px;
 		}
 		span {
-			border-left: 1px solid #d9d8e4;
 			padding: 6px 12px;
 		}
 	}

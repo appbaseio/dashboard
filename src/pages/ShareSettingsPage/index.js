@@ -1,4 +1,5 @@
 import React from 'react';
+import { SettingOutlined } from '@ant-design/icons';
 import { Table, Card, Button, Popconfirm, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { css } from 'react-emotion';
@@ -73,7 +74,7 @@ const columns = [
 			<Button
 				onClick={() => handleEdit(settingInfo)}
 				style={{ border: 'none' }}
-				icon="setting"
+				icon={<SettingOutlined />}
 			/>
 		),
 		key: `edit${updateIndex()}`,
@@ -93,7 +94,7 @@ const columns = [
 				okText="Yes"
 				cancelText="No"
 			>
-				<Button type="danger" size="default">
+				<Button danger size="default">
 					<DeleteIcon size={16} />
 				</Button>
 			</Popconfirm>

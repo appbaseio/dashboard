@@ -1,12 +1,18 @@
 import React from 'react';
-import { Modal, Button, Collapse, Icon, Typography, Divider } from 'antd';
+import {
+	ApiOutlined,
+	DashboardOutlined,
+	ImportOutlined,
+	LinkOutlined,
+} from '@ant-design/icons';
+import { Modal, Button, Collapse, Typography, Divider } from 'antd';
 import { withRouter } from 'react-router-dom';
 import { css } from 'emotion';
 import { bool, object, string } from 'prop-types';
 import { getUrlParams } from '../../../utils/helper';
 import ClusterExploreRedirect from '../../../components/ClusterExploreRedirect';
 
-const getURL = ({ username, password, url: fullURL }) => {
+const getURL = ({ username = '', password = '', url: fullURL = '' }) => {
 	const [protocol, url] = fullURL.split('://');
 	return `${protocol}://${username}:${password}@${url}`.replace(/\/$/, '');
 };
@@ -47,9 +53,7 @@ const PanelHeader = ({ icon, text, title }) => (
 			<br />
 			{text && <Text type="secondary">{text}</Text>}
 		</div>
-		<div className="icon">
-			<Icon type={icon} />
-		</div>
+		<div className="icon">{icon}</div>
 	</div>
 );
 PanelHeader.propTypes = {
@@ -61,7 +65,7 @@ PanelHeader.propTypes = {
 const DirectLink = ({ title, href }) => (
 	<a href={href} rel="noopener noreferrer" target="_blank">
 		<Paragraph className={linkTitle} strong>
-			{title} <Icon type="link" />
+			{title} <LinkOutlined />
 		</Paragraph>
 	</a>
 );
@@ -110,7 +114,7 @@ class ConnectCluster extends React.Component {
 					Connect
 				</Button>
 				<Modal
-					visible={visible}
+					open={visible}
 					title="Connect your Cluster"
 					onOk={this.handleToggle}
 					onCancel={this.handleToggle}
@@ -145,7 +149,7 @@ class ConnectCluster extends React.Component {
 							header={
 								<PanelHeader
 									title="Connect via API"
-									icon="api"
+									icon={<ApiOutlined />}
 									text="Use REST API to connect to your cluster."
 								/>
 							}
@@ -218,7 +222,7 @@ class ConnectCluster extends React.Component {
 							header={
 								<PanelHeader
 									title="Connect via GUI Dashboard"
-									icon="dashboard"
+									icon={<DashboardOutlined />}
 									text="Browse your indices, create a new index, view search analytics and set security permissions."
 								/>
 							}
@@ -253,7 +257,7 @@ class ConnectCluster extends React.Component {
 								}}
 								customComponent={
 									<Paragraph className={linkTitle} strong>
-										User Management <Icon type="link" />
+										User Management <LinkOutlined />
 									</Paragraph>
 								}
 							/>
@@ -267,8 +271,7 @@ class ConnectCluster extends React.Component {
 								}}
 								customComponent={
 									<Paragraph className={linkTitle} strong>
-										Security Credentials{' '}
-										<Icon type="link" />
+										Security Credentials <LinkOutlined />
 									</Paragraph>
 								}
 							/>
@@ -282,7 +285,7 @@ class ConnectCluster extends React.Component {
 								}}
 								customComponent={
 									<Paragraph className={linkTitle} strong>
-										Browse Data <Icon type="link" />
+										Browse Data <LinkOutlined />
 									</Paragraph>
 								}
 							/>
@@ -292,7 +295,7 @@ class ConnectCluster extends React.Component {
 							header={
 								<PanelHeader
 									title="Import Data"
-									icon="import"
+									icon={<ImportOutlined />}
 									text="Bring your data from JSON, CSV, SQL or ElasticSearch sources."
 								/>
 							}

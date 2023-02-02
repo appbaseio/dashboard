@@ -1,8 +1,8 @@
 import React from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
 import {
 	Input,
 	Select,
-	Icon,
 	notification,
 	Button,
 	Card,
@@ -372,8 +372,7 @@ class ProfilePage extends React.Component {
 								disabled={invalid || pristine}
 							>
 								{isSubmitting && (
-									<Icon
-										type="loading"
+									<LoadingOutlined
 										style={{
 											marginRight: '10px',
 										}}

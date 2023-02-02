@@ -26,7 +26,7 @@ class PricingSlider extends Component {
 	}
 
 	onChange = active => {
-		const { marks } = this.state;
+		const { onChange, marks } = this.props;
 		const keys = Object.keys(marks).map(number => Number(number));
 
 		let firstKey;
@@ -56,13 +56,7 @@ class PricingSlider extends Component {
 			active: keys[finalKey],
 			value: active,
 		});
-	};
-
-	onAfterChange = () => {
-		const { active } = this.state;
-		const { onChange, marks } = this.props;
 		// snap to nearest value
-		this.setState({ value: active });
 		onChange(marks[active], active);
 	};
 
@@ -81,7 +75,6 @@ class PricingSlider extends Component {
 					<Slider
 						marks={marks}
 						onChange={this.onChange}
-						onAfterChange={this.onAfterChange}
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}

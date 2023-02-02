@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Alert, Icon, Tabs, Row, Col, Link, Button } from 'antd';
+import { BookOutlined } from '@ant-design/icons';
+import { Alert, Tabs, Row, Col, Link, Button } from 'antd';
 import { mainContainer } from './styles';
 import DeployCluster from './DeployCluster';
 import PipelineTemplateScreen from './PipelineTemplateScreen';
@@ -272,7 +273,7 @@ const DeployTemplate = ({ location }) => {
 								block
 								style={{ width: 150 }}
 							>
-								<Icon type="book" /> Read more
+								<BookOutlined /> Read more
 							</Button>
 						</Col>
 					</Row>
