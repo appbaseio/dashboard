@@ -1005,67 +1005,66 @@ class ClusterInfo extends Component {
 											}}
 										/>
 									)}
-								{console.log('this.state.cluster', this.state)}
-								{((this.state.cluster.es_version &&
+								{this.state.cluster.es_version &&
 									checkIfESUpdateIsAvailable(
 										this.state.cluster.es_version,
 									) &&
 									!isViewer &&
 									!isSLSCluster &&
-									!isExternalCluster) ||
-									true) && (
-									<Alert
-										message={`A new ${
-											this.state.cluster.elasticsearch_url
-												? 'Elasticsearch'
-												: 'Opensearch'
-										} version is available!`}
-										description={
-											<div
-												style={{
-													display: 'flex',
-													justifyContent:
-														'space-between',
-													alignItems: 'center',
-												}}
-											>
-												<div>
-													A new version{' '}
-													{checkIfESUpdateIsAvailable(
-														this.state.cluster
-															.es_version,
-													)}{' '}
-													is available now.
-													You&apos;re currently on{' '}
-													{
-														this.state.cluster
-															.es_version
-													}
-													. See what&apos;s new in{' '}
-													<a href="https://github.com/appbaseio/reactivesearch-api/releases">
-														this release
-													</a>
-													.
-												</div>
-												<Button
-													type="primary"
-													ghost
-													onClick={
-														this.handleESUpgrade
-													}
+									!isExternalCluster && (
+										<Alert
+											message={`A new ${
+												this.state.cluster
+													.elasticsearch_url
+													? 'Elasticsearch'
+													: 'Opensearch'
+											} version is available!`}
+											description={
+												<div
+													style={{
+														display: 'flex',
+														justifyContent:
+															'space-between',
+														alignItems: 'center',
+													}}
 												>
-													{' '}
-													Update Now
-												</Button>
-											</div>
-										}
-										type="info"
-										showIcon
-										style={{
-											marginBottom: 25,
-										}}
-									/>
-								)}
+													<div>
+														A new version{' '}
+														{checkIfESUpdateIsAvailable(
+															this.state.cluster
+																.es_version,
+														)}{' '}
+														is available now.
+														You&apos;re currently on{' '}
+														{
+															this.state.cluster
+																.es_version
+														}
+														. See what&apos;s new in{' '}
+														<a href="https://github.com/appbaseio/reactivesearch-api/releases">
+															this release
+														</a>
+														.
+													</div>
+													<Button
+														type="primary"
+														ghost
+														onClick={
+															this.handleESUpgrade
+														}
+													>
+														{' '}
+														Update Now
+													</Button>
+												</div>
+											}
+											type="info"
+											showIcon
+											style={{
+												marginBottom: 25,
+											}}
+										/>
+									)}
 
 								<div
 									css={{
