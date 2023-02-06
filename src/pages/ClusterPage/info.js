@@ -404,9 +404,7 @@ class ClusterInfo extends Component {
 
 			const url = `${ACC_API}/v2/_es_upgrade/${id}`;
 			const body = {
-				cluster_id: id,
 				target_version: checkIfESUpdateIsAvailable(es_version),
-				message: '',
 			};
 
 			const response = await fetch(url, {
