@@ -57,7 +57,7 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 	return version && version !== V7_ARC.split('-')[0];
 };
 
-const NEW_ES_VERSIONS = { '7': '7.17.8', '8': '8.6.0', '2': '2.4.1' };
+const NEW_ES_VERSIONS = { '7': '7.17.8', '8': '8.6.0', '2': '2.5.0' };
 
 const checkIfESUpdateIsAvailable = version => {
 	const [majorVersion, minorVersion] = version.split('.');
