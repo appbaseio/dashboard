@@ -592,6 +592,7 @@ class ClusterPage extends Component {
 														...data,
 													})
 												}
+												isSLSCluster={isSLSCluster}
 											/>
 										)}
 								</div>
