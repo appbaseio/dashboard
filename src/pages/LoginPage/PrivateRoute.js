@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import { injectAuthTokenHeaderIntoFetchGlobally } from '../../utils/helper';
 import { createUserIfNew, getUser } from '../../utils';
 import webAuth from '../../utils/WebAuthProxy';
+import Flex from '../../batteries/components/shared/Flex';
 
 const parseHash = (hashParam = window.location.hash) => {
 	const hash = hashParam.substring(1);
@@ -53,12 +54,29 @@ const PrivateRoute = ({
 		isLoading,
 		loginWithRedirect,
 		getIdTokenClaims,
+		logout,
 	} = useAuth0();
 	const [loadingState, setLoadingState] = useState(false);
 	const [isAuthenticatedState, setIsAuthenticatedState] = useState(
 		isAuthenticated,
 	);
+	const handleLogout = () => {
+		window.localStorage.removeItem('AUTH_0_ACCESS_TOKEN');
 
+		try {
+			if (isAuthenticated) {
+				logout({
+					returnTo: window.location.origin,
+				});
+			} else {
+				webAuth.logout({
+					returnTo: window.location.origin,
+				});
+			}
+		} catch (error) {
+			console.log('Error logging out...', error);
+		}
+	};
 	const authUsingEmail = emailParam => {
 		if (!emailParam) return;
 		try {
@@ -193,15 +211,28 @@ const PrivateRoute = ({
 					<>
 						Once you&apos;ve verified, this page should auto-refresh
 						within 30s 
-						<Button
-							css={`
-								padding-left: 0;
-							`}
-							onClick={() => window.Intercom('show')}
-							type="link"
-						>
-							Contact Support{' '}
-						</Button>
+						<Flex justifyContent="space-between">
+							<Button
+								css={`
+									padding-left: 0;
+								`}
+								onClick={() => window.Intercom('show')}
+								type="link"
+							>
+								Contact Support{' '}
+							</Button>
+							<Button
+								css={`
+									padding-left: 0;
+								`}
+								onClick={() => {
+									handleLogout();
+								}}
+								type="link"
+							>
+								Go back to sign-up screen
+							</Button>
+						</Flex>
 					</>
 				}
 				css={css`
