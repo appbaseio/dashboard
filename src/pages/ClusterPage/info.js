@@ -98,7 +98,6 @@ class ClusterInfo extends Component {
 
 	isValidSlsCluster = cluster => {
 		if (cluster && cluster.recipe === 'mtrs') return true;
-
 		return false;
 	};
 
@@ -551,7 +550,13 @@ class ClusterInfo extends Component {
 			textAlign: 'center',
 			lineHeight: '36px',
 		};
-
+		const {
+			isPaid,
+			deployment,
+			cluster,
+			isStripeCheckoutOpen,
+		} = this.state;
+		const isSLSCluster = this.isValidSlsCluster(cluster);
 		if (this.state.error) {
 			return this.renderErrorScreen();
 		}
@@ -562,8 +567,9 @@ class ClusterInfo extends Component {
 					<div style={vcenter}>
 						Cluster status isn&apos;t available yet
 						<br />
-						It typically takes 15-30 minutes before a cluster comes
-						live.
+						{isSLSCluster
+							? 'It typically takes 1-2 minutes before a cluster comes live.'
+							: 'It typically takes 15-30 minutes before a cluster comes live.'}
 						{this.renderClusterAbsentActionButtons()}
 					</div>
 				);
@@ -572,13 +578,6 @@ class ClusterInfo extends Component {
 		}
 
 		if (this.state.isLoading) return <Loader />;
-
-		const {
-			isPaid,
-			deployment,
-			cluster,
-			isStripeCheckoutOpen,
-		} = this.state;
 
 		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
 		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
@@ -595,7 +594,6 @@ class ClusterInfo extends Component {
 			deployment &&
 			deployment.addons &&
 			deployment.addons.find(addon => addon.name === 'arc');
-		const isSLSCluster = this.isValidSlsCluster(cluster);
 
 		return (
 			<Fragment>
