@@ -2,7 +2,7 @@ import React from 'react';
 import { ClusterOutlined, RocketOutlined } from '@ant-design/icons';
 import { Layout, Menu, Tag, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
-import { object, string, bool, number, array } from 'prop-types';
+import { object, string, bool, number, array, func } from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
@@ -13,6 +13,7 @@ import headerStyles from './styles';
 import { media } from '../../utils/media';
 import { getUserPlan } from '../../batteries/modules/actions/account';
 import TrialButton from './TrialButton';
+import { resetUser } from '../../actions';
 
 const { Header } = Layout;
 
@@ -40,6 +41,7 @@ const FullHeader = ({
 	trialMessage,
 	clusters,
 	clusterPlan,
+	resetAppbaseUser,
 }) => (
 	<Header className={headerStyles}>
 		<div className="row">
@@ -106,7 +108,7 @@ const FullHeader = ({
 				</a>
 			</Col>
 			<Col>
-				<UserMenu user={user} />
+				<UserMenu user={user} resetAppbaseUser={resetAppbaseUser} />
 			</Col>
 		</Row>
 		<MenuSlider
@@ -140,6 +142,7 @@ FullHeader.propTypes = {
 	daysLeft: number,
 	clusterDaysLeft: number,
 	clusterPlan: string,
+	resetAppbaseUser: func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -162,6 +165,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
 	getPlan: () => dispatch(() => getUserPlan()),
+	resetAppbaseUser: () => dispatch(resetUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FullHeader);

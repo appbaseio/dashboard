@@ -189,3 +189,25 @@ export function getUrlParams(url) {
 		{},
 	);
 }
+
+export const injectAuthTokenHeaderIntoFetchGlobally = () => {
+	const { fetch: originalFetch } = window;
+
+	window.fetch = async (...args) => {
+		const [resource, config = {}] = args;
+		const accessToken = window.localStorage.getItem('AUTH_0_ACCESS_TOKEN');
+
+		if (accessToken) {
+			if (!config.headers) {
+				config.headers = {};
+			}
+			if (!config.headers.Authorization) {
+				config.headers.Authorization = `Bearer ${accessToken}`;
+			}
+		}
+		// request interceptor here
+		const response = await originalFetch(resource, config);
+		// response interceptor here
+		return response;
+	};
+};

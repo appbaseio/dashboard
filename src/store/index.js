@@ -30,7 +30,10 @@ const configureStore = () => {
 			: middlewares,
 	);
 	const persistor = persistStore(store);
-	sagaMiddleware.run(rootSaga);
+	const runRootSaga = () => {
+		sagaMiddleware.run(rootSaga);
+	};
+	runRootSaga();
 	return { store, persistor };
 };
 

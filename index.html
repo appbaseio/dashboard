@@ -42,7 +42,8 @@
 						const s = d.createElement('script');
 						s.type = 'text/javascript';
 						s.async = true;
-						s.src = 'https://widget.intercom.io/widget/' + 'f9514ssx';
+						s.src =
+							'https://widget.intercom.io/widget/' + 'f9514ssx';
 						const x = d.getElementsByTagName('script')[0];
 						x.parentNode.insertBefore(s, x);
 					};
@@ -60,13 +61,26 @@
 				hide_default_launcher: true,
 			};
 		</script>
+		<script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+		<script type="text/javascript">
+			var webAuth = new auth0.WebAuth({
+				domain: 'reactivesearch-cloud.us.auth0.com',
+				clientID: 'Qn5Kf234JXQ6rzvagKXtKv2uJ0LKEGHW',
+				redirectUri: window.location.origin,
+				audience: 'https://reactivesearch-cloud.us.auth0.com/api/v2/',
+				scope: 'read:current_user update:current_user_metadata',
+			});
+		</script>
 	</head>
 
 	<body>
 		<div id="root"></div>
 		<div id="help"></div>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-54082612-12"></script>
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=UA-54082612-12"
+		></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 
@@ -94,7 +108,12 @@
 				r.async = 1;
 				r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
 				a.appendChild(r);
-			})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+			})(
+				window,
+				document,
+				'https://static.hotjar.com/c/hotjar-',
+				'.js?sv=',
+			);
 		</script>
 		<!-- Start of HubSpot Embed Code -->
 		<script

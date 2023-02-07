@@ -14,6 +14,10 @@ export function setUserError(error: Object): Object {
 	return createAction(USER.LOAD_FAIL, null, error, null);
 }
 
+export function resetUser(): Object {
+	return createAction(USER.RESET, null, null, null);
+}
+
 export function loadApps(apps: Object): Object {
 	return createAction(APPS.LOAD, apps, null, null);
 }
