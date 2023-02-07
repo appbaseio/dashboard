@@ -97,12 +97,7 @@ class ClusterInfo extends Component {
 	}
 
 	isValidSlsCluster = cluster => {
-		if (
-			cluster &&
-			cluster.tenancy_type === 'multi' &&
-			cluster.recipe === 'mtrs'
-		)
-			return true;
+		if (cluster && cluster.recipe === 'mtrs') return true;
 
 		return false;
 	};
