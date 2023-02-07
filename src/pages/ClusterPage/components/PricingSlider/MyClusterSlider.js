@@ -59,6 +59,7 @@ export default class PricingSlider extends Component {
 			active: keys[finalKey],
 			value: active,
 		});
+		this.props.onChange(marks[active]);
 	};
 
 	onAfterChange = () => {
@@ -85,7 +86,7 @@ export default class PricingSlider extends Component {
 					<Slider
 						marks={marks}
 						onChange={this.onChange}
-						onAfterChange={this.onAfterChange}
+						//	onAfterChange={this.onAfterChange}
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}
