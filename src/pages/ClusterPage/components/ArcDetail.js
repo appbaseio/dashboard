@@ -355,7 +355,7 @@ class ArcDetail extends React.Component {
 												}
 												size="large"
 												css={{
-													height: 160,
+													height: '160px !important',
 													marginRight: 20,
 													backgroundColor:
 														backend ===

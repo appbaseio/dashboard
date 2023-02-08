@@ -940,7 +940,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: 160,
+												height: '160px !important',
 												marginRight: 20,
 												backgroundColor:
 													provider === 'gke'
@@ -984,7 +984,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: 160,
+												height: '160px !important',
 												backgroundColor:
 													provider === 'aws'
 														? '#eaf5ff'
@@ -1099,7 +1099,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: 160,
+												height: '160px !important',
 												marginRight: 20,
 												backgroundColor:
 													this.state.esFlavor === 'es'
@@ -1140,7 +1140,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: 160,
+												height: '160px !important',
 												backgroundColor:
 													this.state.esFlavor ===
 													'opensearch'
@@ -1237,7 +1237,7 @@ class NewCluster extends Component {
 												}
 												size="large"
 												style={{
-													height: 160,
+													height: '160px !important',
 													width: '100%',
 													color: '#000',
 													border: '1px solid #1890ff',
@@ -1281,7 +1281,7 @@ class NewCluster extends Component {
 														: 'default'
 												}
 												style={{
-													height: 160,
+													height: '160px !important',
 													width: '100%',
 													backgroundColor:
 														this.state

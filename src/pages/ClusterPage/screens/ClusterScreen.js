@@ -607,7 +607,7 @@ class ClusterScreen extends Component {
 									}
 									size="large"
 									style={{
-										height: 160,
+										height: '160px !important',
 										width: '100%',
 										color: '#000',
 										backgroundColor:
@@ -793,7 +793,8 @@ class ClusterScreen extends Component {
 															}
 															size="large"
 															css={{
-																height: 160,
+																height:
+																	'160px !important',
 																marginRight: 20,
 																backgroundColor:
 																	backend ===
