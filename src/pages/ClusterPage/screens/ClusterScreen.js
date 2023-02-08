@@ -624,62 +624,7 @@ class ClusterScreen extends Component {
 									Built-in dashboard
 								</Button>
 							</div>
-							<div className={esContainer}>
-								<Button
-									size="large"
-									type={
-										this.state.visualization === 'kibana'
-											? 'primary'
-											: 'default'
-									}
-									style={{
-										height: 160,
-										width: '100%',
-										backgroundColor:
-											this.state.visualization ===
-											'kibana'
-												? '#eaf5ff'
-												: '#fff',
-									}}
-									onClick={() => {
-										this.setConfig(
-											'visualization',
-											'kibana',
-										);
-										this.setConfig('kibana', true);
-										this.setConfig('grafana', false);
-									}}
-								>
-									<img
-										width={150}
-										src={
-											isOpenSearchFlavour
-												? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
-												: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
-										}
-										size="large"
-										css={{
-											height: 160,
-											width: '100%',
-											color: '#000',
-											backgroundColor:
-												this.state.visualization ===
-												'none'
-													? '#eaf5ff'
-													: '#fff',
-										}}
-										onClick={() => {
-											this.setConfig(
-												'visualization',
-												'none',
-											);
-											this.setConfig('kibana', false);
-											this.setConfig('grafana', false);
-										}}
-									/>
-									Built-in dashboard
-								</Button>
-							</div>
+
 							<div className={esContainer}>
 								<Button
 									size="large"
@@ -689,7 +634,7 @@ class ClusterScreen extends Component {
 											: 'default'
 									}
 									css={{
-										height: 160,
+										height: '160px !important',
 										width: '100%',
 										backgroundColor:
 											this.state.visualization ===
