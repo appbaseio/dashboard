@@ -954,6 +954,7 @@ class ClusterInfo extends Component {
 											this.state.cluster.status ===
 											'active'
 										}
+										isSLSCluster={isSLSCluster}
 									/>
 									<RightContainer>
 										<Switch>
@@ -1016,6 +1017,9 @@ class ClusterInfo extends Component {
 															this.handleToken
 														}
 														isPaid={isPaid}
+														isSLSCluster={
+															isSLSCluster
+														}
 													/>
 												)}
 											/>

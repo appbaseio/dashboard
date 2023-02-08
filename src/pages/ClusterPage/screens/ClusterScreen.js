@@ -670,7 +670,7 @@ class ClusterScreen extends Component {
 					</li>
 				) : null}
 
-				{isViewer || !isSLSCluster ? (
+				{!isSLSCluster ? (
 					<li className={card}>
 						<div className="col light">
 							<h3>Restore From Snapshot</h3>

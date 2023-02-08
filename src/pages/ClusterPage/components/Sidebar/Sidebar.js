@@ -85,11 +85,13 @@ export default function Sidebar({
 				</Menu.Item>
 			)}
 
-			<Menu.Item key="6">
-				<Link to={`${baseRoute}/logs`}>
-					<UnorderedListOutlined /> Deploy Logs
-				</Link>
-			</Menu.Item>
+			{!isSLSCluster && (
+				<Menu.Item key="6">
+					<Link to={`${baseRoute}/logs`}>
+						<UnorderedListOutlined /> Deploy Logs
+					</Link>
+				</Menu.Item>
+			)}
 		</Menu>
 	);
 }
