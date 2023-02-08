@@ -306,7 +306,6 @@ class ClusterInfo extends Component {
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
 			: { name: 'region', flag: `${selectedRegion}.png` };
-
 		return (
 			<div className="region-info">
 				<img src={`/static/images/flags/${flag}`} alt="US" />
@@ -679,9 +678,8 @@ class ClusterInfo extends Component {
 											<div>
 												<h4>Region</h4>
 												{this.renderClusterRegion(
-													this.state.cluster.region ||
-														this.state.cluster
-															.provider,
+													this.state.cluster.region,
+													this.state.cluster.provider,
 												)}
 											</div>
 										)}
