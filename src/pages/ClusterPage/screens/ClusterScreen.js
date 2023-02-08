@@ -35,7 +35,7 @@ import {
 import { machineMarks } from '../NewMyServerlessSearch';
 
 const { Option } = Select;
-const BLACK_LISTED_BACKENDS = [BACKENDS.MONGODB.name];
+const BLACK_LISTED_BACKENDS = [];
 
 class ClusterScreen extends Component {
 	constructor(props) {

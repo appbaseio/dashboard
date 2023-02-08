@@ -36,7 +36,7 @@ import {
 
 let interval;
 
-const BLACK_LISTED_BACKENDS = [BACKENDS.MONGODB.name];
+const BLACK_LISTED_BACKENDS = [];
 
 export const machineMarks = {
 	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
