@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { object } from 'prop-types';
+import { func, object } from 'prop-types';
 import {
 	DownOutlined,
 	PoweroffOutlined,
@@ -9,15 +9,9 @@ import {
 import { Menu, Avatar, Dropdown } from 'antd';
 import get from 'lodash/get';
 import { css } from 'react-emotion';
+import { useAuth0 } from '@auth0/auth0-react';
 import { media } from '../../utils/media';
-import { ACC_API } from '../../constants/config';
-
-const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
-
-const handleLogout = () => {
-	localStorage.setItem('hasVisitedTutorial', false);
-	window.location.href = logoutURL;
-};
+import webAuth from '../../utils/WebAuthProxy';
 
 const userMenu = css`
 	font-size: 0.8rem;
@@ -46,7 +40,28 @@ const userEmailDetail = css`
 	}
 `;
 
-const UserMenu = ({ user }) => {
+const UserMenu = ({ user, resetAppbaseUser }) => {
+	const { logout, isAuthenticated } = useAuth0();
+	const handleLogout = () => {
+		localStorage.setItem('hasVisitedTutorial', false);
+		window.localStorage.removeItem('AUTH_0_ACCESS_TOKEN');
+
+		try {
+			if (isAuthenticated) {
+				logout({
+					returnTo: window.location.origin,
+				});
+			} else {
+				webAuth.logout({
+					returnTo: window.location.origin,
+				});
+			}
+		} catch (error) {
+			console.log('Error logging out...', error);
+		} finally {
+			resetAppbaseUser();
+		}
+	};
 	const menu = (
 		<Menu style={{ width: 'auto' }}>
 			<Menu.Item className={userEmailDetail}>
@@ -91,6 +106,7 @@ const UserMenu = ({ user }) => {
 
 UserMenu.propTypes = {
 	user: object.isRequired,
+	resetAppbaseUser: func.isRequired,
 };
 
 export default UserMenu;

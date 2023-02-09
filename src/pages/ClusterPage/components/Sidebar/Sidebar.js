@@ -40,7 +40,7 @@ export default function Sidebar({ id, isViewer, isExternalCluster, isActive }) {
 			{!isActive || (
 				<Menu.Item key="1">
 					<Link to={baseRoute}>
-					<ClusterOutlined /> Cluster
+						<ClusterOutlined /> Cluster
 					</Link>
 				</Menu.Item>
 			)}
@@ -62,7 +62,7 @@ export default function Sidebar({ id, isViewer, isExternalCluster, isActive }) {
 			{!isActive || (
 				<Menu.Item key="4">
 					<Link to={`${baseRoute}/usage`}>
-					<BarChartOutlined /> View Usage
+						<BarChartOutlined /> View Usage
 					</Link>
 				</Menu.Item>
 			)}
@@ -70,7 +70,7 @@ export default function Sidebar({ id, isViewer, isExternalCluster, isActive }) {
 			{!isActive || (
 				<Menu.Item key="5">
 					<Link to={`${baseRoute}/monitoring`}>
-					<LineChartOutlined /> Cluster Monitoring
+						<LineChartOutlined /> Cluster Monitoring
 					</Link>
 				</Menu.Item>
 			)}

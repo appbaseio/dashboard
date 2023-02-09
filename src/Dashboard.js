@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { HomeOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
@@ -11,21 +10,10 @@ import Loader from './components/Loader';
 import Logo from './components/Logo';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
 import Wrapper from './pages/Wrapper';
-import { loadUser } from './actions';
+import { loadUser, setUser, setUserError } from './actions';
 
 Sentry.init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
-});
-
-// routes
-const LoginPage = Loadable({
-	loader: () => import('./pages/LoginPage'),
-	loading: Loader,
-});
-
-const SignupPage = Loadable({
-	loader: () => import('./pages/SignupPage'),
-	loading: Loader,
 });
 
 class Dashboard extends Component {
@@ -49,7 +37,12 @@ class Dashboard extends Component {
 	}
 
 	render() {
-		const { user } = this.props;
+		const {
+			user,
+			setAppbaseUser,
+			loadAppbaseUser,
+			setAppbaseUserError,
+		} = this.props;
 		const { error } = this.state;
 
 		if (user.isLoading) {
@@ -97,11 +90,12 @@ class Dashboard extends Component {
 		return (
 			<Router>
 				<Fragment>
-					<Route exact path="/login" component={LoginPage} />
-					<Route exact path="/signup" component={SignupPage} />
 					<PrivateRoute
 						user={user}
+						setAppbaseUser={setAppbaseUser}
+						loadAppbaseUser={loadAppbaseUser}
 						component={() => <Wrapper user={user} />}
+						setAppbaseUserError={setAppbaseUserError}
 					/>
 				</Fragment>
 			</Router>
@@ -112,6 +106,8 @@ class Dashboard extends Component {
 Dashboard.propTypes = {
 	user: PropTypes.object.isRequired,
 	loadAppbaseUser: PropTypes.func.isRequired,
+	setAppbaseUser: PropTypes.func.isRequired,
+	setAppbaseUserError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({
@@ -120,6 +116,8 @@ const mapStateToProps = ({ user }) => ({
 
 const mapDispatchToProps = dispatch => ({
 	loadAppbaseUser: () => dispatch(loadUser()),
+	setAppbaseUser: userObj => dispatch(setUser(userObj)),
+	setAppbaseUserError: errorObj => dispatch(setUserError(errorObj)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

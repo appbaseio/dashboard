@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { injectGlobal } from 'emotion';
 import { Layout } from 'antd';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Auth0Provider } from '@auth0/auth0-react';
 import AnnouncementBanner from './AnnouncementBanner';
 import configureStore from './store';
 import Dashboard from './Dashboard';
@@ -46,17 +47,30 @@ p {
 const { Content } = Layout;
 const { store, persistor } = configureStore();
 
-const App = () => (
-	<Content>
-		<PersistGate loading={null} persistor={persistor}>
-			<Provider store={store}>
-				<>
-					<AnnouncementBanner />
-					<Dashboard />
-				</>
-			</Provider>
-		</PersistGate>
-	</Content>
-);
+const App = () => {
+	return (
+		<Content>
+			<PersistGate loading={null} persistor={persistor}>
+				<Provider store={store}>
+					<>
+						<AnnouncementBanner />
+						<Dashboard />
+					</>
+				</Provider>
+			</PersistGate>
+		</Content>
+	);
+};
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+	<Auth0Provider
+		domain="reactivesearch-cloud.us.auth0.com"
+		clientId="Qn5Kf234JXQ6rzvagKXtKv2uJ0LKEGHW"
+		redirectUri={window.location.origin}
+		audience="https://reactivesearch-cloud.us.auth0.com/api/v2/"
+		scope="read:current_user update:current_user_metadata"
+	>
+		<App />
+	</Auth0Provider>,
+	document.getElementById('root'),
+);
