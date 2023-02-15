@@ -765,7 +765,7 @@ class NewMyCluster extends Component {
 										}}
 									>
 										{Object.values(BACKENDS).map(
-											({ name: backend, logo }) => {
+											({ name: backend, logo, text }) => {
 												return (
 													<Button
 														key={backend}
@@ -786,6 +786,7 @@ class NewMyCluster extends Component {
 																	.backend
 																	? '#eaf5ff'
 																	: '#fff',
+															minWidth: '152px',
 														}}
 														className={
 															backend ===
@@ -799,11 +800,23 @@ class NewMyCluster extends Component {
 															});
 														}}
 													>
-														<img
-															width="120"
-															src={logo}
-															alt={`${backend} logo`}
-														/>
+														{logo ? (
+															<img
+																width="120"
+																src={logo}
+																alt={`${backend} logo`}
+															/>
+														) : (
+															<span
+																css={`
+																	font-size: 1.4rem;
+																	font-weight: 400;
+																	color: black;
+																`}
+															>
+																{text}
+															</span>
+														)}
 													</Button>
 												);
 											},

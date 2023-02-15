@@ -342,8 +342,14 @@ class ArcDetail extends React.Component {
 									gap: '2rem',
 								}}
 							>
-								{Object.values(BACKENDS).map(
-									({ name: backend, logo }) => {
+								{Object.values(BACKENDS)
+									.filter(item =>
+										this.isValidSlsCluster(cluster)
+											? true
+											: item.name !==
+											  BACKENDS.System.name,
+									)
+									.map(({ name: backend, logo, text }) => {
 										return (
 											<Button
 												key={backend}
@@ -362,6 +368,7 @@ class ArcDetail extends React.Component {
 														this.state.backend
 															? '#eaf5ff'
 															: '#fff',
+													minWidth: '152px',
 												}}
 												className={
 													backend ===
@@ -375,15 +382,26 @@ class ArcDetail extends React.Component {
 													});
 												}}
 											>
-												<img
-													width="120"
-													src={logo}
-													alt={`${backend} logo`}
-												/>
+												{logo ? (
+													<img
+														width="120"
+														src={logo}
+														alt={`${backend} logo`}
+													/>
+												) : (
+													<span
+														css={`
+															font-size: 1.4rem;
+															font-weight: 400;
+															color: black;
+														`}
+													>
+														{text}
+													</span>
+												)}
 											</Button>
 										);
-									},
-								)}
+									})}
 							</div>
 							<div
 								className="col grow vcenter"
