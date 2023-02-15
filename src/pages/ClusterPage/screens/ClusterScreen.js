@@ -841,87 +841,92 @@ class ClusterScreen extends Component {
 											)}
 									</div>
 
-									<div
-										className="col grow vcenter"
-										css={{
-											flexDirection: 'column',
-											alignItems: 'flex-start !important',
-											justifyContent: 'center',
-										}}
-									>
-										<input
-											id="elastic-url"
-											type="name"
+									{this.state.backend !==
+										BACKENDS.System.name && (
+										<div
+											className="col grow vcenter"
 											css={{
-												width: '100%',
-												maxWidth: 400,
-												marginBottom: 10,
-												outline: 'none',
-												border:
-													isInvalidURL &&
-													clusterURL !== ''
-														? '1px solid red'
-														: '1px solid #e8e8e8',
+												flexDirection: 'column',
+												alignItems:
+													'flex-start !important',
+												justifyContent: 'center',
 											}}
-											placeholder={`Enter your ${capitalizeWord(
-												this.state.backend,
-											)} URL`}
-											value={clusterURL}
-											onChange={e =>
-												this.setConfig(
-													'clusterURL',
-													e.target.value,
-												)
-											}
-										/>
-										<Button
-											onClick={this.handleVerify}
-											disabled={!clusterURL}
-											loading={verifyingURL}
 										>
-											Verify Connection
-										</Button>
-
-										{verifiedCluster ? (
-											<Tag
-												style={{ marginTop: 10 }}
-												color="green"
-											>
-												Verified Connection. Version
-												Detected: {clusterVersion}
-											</Tag>
-										) : null}
-
-										{isInvalidURL ? (
-											<p
-												style={{
-													color: 'red',
+											<input
+												id="elastic-url"
+												type="name"
+												css={{
+													width: '100%',
+													maxWidth: 400,
+													marginBottom: 10,
+													outline: 'none',
+													border:
+														isInvalidURL &&
+														clusterURL !== ''
+															? '1px solid red'
+															: '1px solid #e8e8e8',
 												}}
+												placeholder={`Enter your ${capitalizeWord(
+													this.state.backend,
+												)} URL`}
+												value={clusterURL}
+												onChange={e =>
+													this.setConfig(
+														'clusterURL',
+														e.target.value,
+													)
+												}
+											/>
+											<Button
+												onClick={this.handleVerify}
+												disabled={!clusterURL}
+												loading={verifyingURL}
 											>
-												{urlErrorMessage ===
-												'Auth Error' ? (
-													<React.Fragment>
-														We received a
-														authentication error.
-														Does your ElasticSearch
-														require additional
-														authentication? Read
-														more{' '}
-														<a
-															target="_blank"
-															rel="noopener noreferrer"
-															href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
-														>
-															here
-														</a>
-														.
-													</React.Fragment>
-												) : (
-													urlErrorMessage
-												)}
-											</p>
-										) : null}
-									</div>
+												Verify Connection
+											</Button>
+
+											{verifiedCluster ? (
+												<Tag
+													style={{ marginTop: 10 }}
+													color="green"
+												>
+													Verified Connection. Version
+													Detected: {clusterVersion}
+												</Tag>
+											) : null}
+
+											{isInvalidURL ? (
+												<p
+													style={{
+														color: 'red',
+													}}
+												>
+													{urlErrorMessage ===
+													'Auth Error' ? (
+														<React.Fragment>
+															We received a
+															authentication
+															error. Does your
+															ElasticSearch
+															require additional
+															authentication? Read
+															more{' '}
+															<a
+																target="_blank"
+																rel="noopener noreferrer"
+																href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+															>
+																here
+															</a>
+															.
+														</React.Fragment>
+													) : (
+														urlErrorMessage
+													)}
+												</p>
+											) : null}
+										</div>
+									)}
 								</div>
 							</div>
 						) : (

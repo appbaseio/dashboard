@@ -403,73 +403,78 @@ class ArcDetail extends React.Component {
 										);
 									})}
 							</div>
-							<div
-								className="col grow vcenter"
-								css={{
-									flexDirection: 'column',
-									alignItems: 'flex-start !important',
-									justifyContent: 'center',
-								}}
-							>
-								<input
-									id="elastic-url"
-									type="name"
+							{this.state.backend !== BACKENDS.System.name && (
+								<div
+									className="col grow vcenter"
 									css={{
-										width: '100%',
-										maxWidth: 'none !important',
-										marginBottom: 33,
-										outline: 'none',
-										border:
-											isInvalidURL && clusterURL !== ''
-												? '1px solid red'
-												: '1px solid #e8e8e8',
+										flexDirection: 'column',
+										alignItems: 'flex-start !important',
+										justifyContent: 'center',
 									}}
-									placeholder={`Enter your ${capitalizeWord(
-										this.state.backend,
-									)} URL`}
-									value={clusterURL}
-									name="clusterURL"
-									onChange={this.handleInput}
-								/>
-								<KeyValueAdder
-									title="Headers (optional)"
-									onUpdateItems={headers => {
-										this.setState({
-											verifyClusterHeaders: headers,
-										});
-									}}
-								/>
-								<Button
-									onClick={this.handleVerify}
-									disabled={!clusterURL}
-									type={
-										isButtonDisable ? 'primary' : 'default'
-									}
-									loading={verifyingURL}
 								>
-									Verify Connection
-								</Button>
-
-								{verifiedCluster ? (
-									<Tag
-										style={{ margin: '10px' }}
-										color="green"
-									>
-										Verified Connection. Version Detected:{' '}
-										{clusterVersion}
-									</Tag>
-								) : null}
-
-								{isInvalidURL ? (
-									<p
-										style={{
-											color: 'red',
+									<input
+										id="elastic-url"
+										type="name"
+										css={{
+											width: '100%',
+											maxWidth: 'none !important',
+											marginBottom: 33,
+											outline: 'none',
+											border:
+												isInvalidURL &&
+												clusterURL !== ''
+													? '1px solid red'
+													: '1px solid #e8e8e8',
 										}}
+										placeholder={`Enter your ${capitalizeWord(
+											this.state.backend,
+										)} URL`}
+										value={clusterURL}
+										name="clusterURL"
+										onChange={this.handleInput}
+									/>
+									<KeyValueAdder
+										title="Headers (optional)"
+										onUpdateItems={headers => {
+											this.setState({
+												verifyClusterHeaders: headers,
+											});
+										}}
+									/>
+									<Button
+										onClick={this.handleVerify}
+										disabled={!clusterURL}
+										type={
+											isButtonDisable
+												? 'primary'
+												: 'default'
+										}
+										loading={verifyingURL}
 									>
-										{urlErrorMessage}
-									</p>
-								) : null}
-							</div>
+										Verify Connection
+									</Button>
+
+									{verifiedCluster ? (
+										<Tag
+											style={{ margin: '10px' }}
+											color="green"
+										>
+											Verified Connection. Version
+											Detected: {clusterVersion}
+										</Tag>
+									) : null}
+
+									{isInvalidURL ? (
+										<p
+											style={{
+												color: 'red',
+											}}
+										>
+											{urlErrorMessage}
+										</p>
+									) : null}
+								</div>
+							)}
 						</div>
 					</li>
 				)}
