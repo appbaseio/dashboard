@@ -3,6 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { ACC_API } from '../../../constants/config';
 
 export const BACKENDS = {
+	System: {
+		name: 'system',
+		logo: '',
+		text: 'System',
+	},
 	ELASTICSEARCH: {
 		name: 'elasticsearch',
 		logo: '/static/images/logos/elasticsearch.svg',
