@@ -123,27 +123,32 @@ class ArcDetail extends React.Component {
 		});
 
 		if (this.isValidSlsCluster(this.props.cluster)) {
-			const {
-				protocol,
-				username: backendUrlUsername,
-				password: backendUrlPassword,
-				host,
-			} = new URL(clusterURL);
-
 			if (!this.state.backend) {
 				message.error('Choose a backend');
 				return;
 			}
-			if (!this.state.verifiedCluster) {
-				message.error('Cluster URL not verified');
-				return;
+			let updateBackendPayload = { backend: this.state.backend };
+			if (this.state.backend !== BACKENDS.System.name) {
+				const {
+					protocol,
+					username: backendUrlUsername,
+					password: backendUrlPassword,
+					host,
+				} = new URL(this.state.clusterURL);
+
+				if (!this.state.verifiedCluster) {
+					message.error('Cluster URL not verified');
+					return;
+				}
+
+				updateBackendPayload = {
+					...updateBackendPayload,
+					host,
+					protocol: protocol.substr(0, protocol.length - 1),
+					basic_auth: `${backendUrlUsername}:${backendUrlPassword}`,
+				};
 			}
-			updateBackend(id, {
-				backend: this.state.backend,
-				host,
-				protocol: protocol.substr(0, protocol.length - 1),
-				basic_auth: `${backendUrlUsername}:${backendUrlPassword}`,
-			})
+			updateBackend(id, updateBackendPayload)
 				.then(() => {
 					notification.success({
 						title: 'Updated Details Successfully.',
