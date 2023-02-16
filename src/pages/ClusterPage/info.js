@@ -45,6 +45,7 @@ import StripeCheckout from '../../components/StripeCheckout';
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
+
 	if (recipe === 'byoc') {
 		return version && version !== ARC_BYOC.split('-')[0];
 	}
@@ -54,6 +55,23 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 	}
 
 	return version && version !== V7_ARC.split('-')[0];
+};
+
+const NEW_ES_VERSIONS = { '7': '7.17.8', '8': '8.6.0', '2': '2.5.0' };
+
+const checkIfESUpdateIsAvailable = version => {
+	const [majorVersion, minorVersion] = version.split('.');
+
+	if (NEW_ES_VERSIONS[majorVersion]) {
+		if (
+			Number(minorVersion) <
+			Number(NEW_ES_VERSIONS[majorVersion].split('.')[1])
+		) {
+			return NEW_ES_VERSIONS[majorVersion];
+		}
+	}
+
+	return false;
 };
 
 class ClusterInfo extends Component {
@@ -342,6 +360,44 @@ class ClusterInfo extends Component {
 					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
 					status: 'restarted',
 				},
+			};
+
+			const response = await fetch(url, {
+				method: 'PUT',
+				credentials: 'include',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			const data = await response.json();
+			if (response.status >= 400) {
+				throw new Error(data);
+			}
+			this.init();
+		} catch (err) {
+			message.error('Something went wrong please try again');
+			this.setState({
+				isLoading: false,
+			});
+			console.error(err);
+		}
+	};
+
+	handleESUpgrade = async () => {
+		try {
+			const {
+				cluster: { id, es_version },
+			} = this.state;
+			this.setState({
+				statusFetchCount: 0,
+				isLoading: true,
+			});
+
+			const url = `${ACC_API}/v2/_es_upgrade/${id}`;
+			const body = {
+				target_version: checkIfESUpdateIsAvailable(es_version),
 			};
 
 			const response = await fetch(url, {
@@ -924,6 +980,66 @@ class ClusterInfo extends Component {
 														onClick={
 															this
 																.handleArcUpgrade
+														}
+													>
+														{' '}
+														Update Now
+													</Button>
+												</div>
+											}
+											type="info"
+											showIcon
+											style={{
+												marginBottom: 25,
+											}}
+										/>
+									)}
+								{this.state.cluster.es_version &&
+									checkIfESUpdateIsAvailable(
+										this.state.cluster.es_version,
+									) &&
+									!isViewer &&
+									!isSLSCluster &&
+									!isExternalCluster && (
+										<Alert
+											message={`A new ${
+												this.state.cluster
+													.elasticsearch_url
+													? 'Elasticsearch'
+													: 'Opensearch'
+											} version is available!`}
+											description={
+												<div
+													style={{
+														display: 'flex',
+														justifyContent:
+															'space-between',
+														alignItems: 'center',
+													}}
+												>
+													<div>
+														A new version{' '}
+														{checkIfESUpdateIsAvailable(
+															this.state.cluster
+																.es_version,
+														)}{' '}
+														is available now.
+														You&apos;re currently on{' '}
+														{
+															this.state.cluster
+																.es_version
+														}
+														. See what&apos;s new in{' '}
+														<a href="https://github.com/appbaseio/reactivesearch-api/releases">
+															this release
+														</a>
+														.
+													</div>
+													<Button
+														type="primary"
+														ghost
+														onClick={
+															this.handleESUpgrade
 														}
 													>
 														{' '}
