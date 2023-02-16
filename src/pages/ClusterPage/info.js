@@ -827,14 +827,7 @@ class ClusterInfo extends Component {
 									statusFetchCount={
 										this.state.statusFetchCount
 									}
-								/>
-								{this.state.cluster.status ===
-								'deployments in progress' ? (
-									<DeployLogs
-										clusterId={this.state.cluster.id}
-										showClusterDetails={false}
-									/>
-								) : null}
+								/>								
 								{this.state.arc ? (
 									<li
 										className={card}
