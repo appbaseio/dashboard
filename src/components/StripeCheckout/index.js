@@ -73,7 +73,9 @@ const StripeCheckout = ({
 					<p style={{ marginTop: 15, color: 'rgba(0, 0, 0, 0.65)' }}>
 						{isSLSCluster
 							? `Billed at $${monthlyPrice}/mo at the start of the subscription cycle`
-							: `Billed at <b>${price}/hr</b> (or ${monthlyPrice}/mo) at the end of the subscription cycle based on actual usage`}
+							: `Billed at ${(
+									<b>+`${price}/hr`+</b>
+							  )} (or ${monthlyPrice}/mo) at the end of the subscription cycle based on actual usage`}
 					</p>
 				</div>
 			}
