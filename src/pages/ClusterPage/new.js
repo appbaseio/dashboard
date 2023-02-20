@@ -1237,7 +1237,7 @@ class NewCluster extends Component {
 												}
 												size="large"
 												style={{
-													height: '160px !important',
+													height: '160px',
 													width: '100%',
 													color: '#000',
 													border: '1px solid #1890ff',
@@ -1281,7 +1281,7 @@ class NewCluster extends Component {
 														: 'default'
 												}
 												style={{
-													height: '160px !important',
+													height: '160px',
 													width: '100%',
 													backgroundColor:
 														this.state
