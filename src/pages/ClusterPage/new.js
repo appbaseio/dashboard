@@ -255,7 +255,7 @@ class NewCluster extends Component {
 			restore_from: null,
 			showError: false,
 			isClusterLoading: true,
-			esFlavor: 'es',
+			esFlavor: 'opensearch',
 			provider,
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
@@ -1057,7 +1057,7 @@ class NewCluster extends Component {
 							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Choose Elasticsearch Flavor </h3>
+									<h3> Choose Search Engine </h3>
 								</div>
 								<div
 									className={settingsItem}
@@ -1066,46 +1066,6 @@ class NewCluster extends Component {
 										alignItems: 'baseline',
 									}}
 								>
-									<div className={esContainer}>
-										<Button
-											type={
-												this.state.esFlavor === 'es'
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											style={{
-												height: 160,
-												marginRight: 20,
-												backgroundColor:
-													this.state.esFlavor === 'es'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											className={
-												this.state.esFlavor === 'es'
-													? fadeOutStyles
-													: ''
-											}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'es',
-												);
-												this.setConfig(
-													'clusterVersion',
-													esVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
-												alt="Elastic"
-											/>
-										</Button>
-										<p>Elasticsearch by Elastic</p>
-									</div>
 									<div className={esContainer}>
 										<Button
 											size="large"
@@ -1146,7 +1106,47 @@ class NewCluster extends Component {
 												alt="Open Search"
 											/>
 										</Button>
-										<p>OpenSearch by Amazon</p>
+										<p>OpenSearch</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.esFlavor === 'es'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											style={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													this.state.esFlavor === 'es'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											className={
+												this.state.esFlavor === 'es'
+													? fadeOutStyles
+													: ''
+											}
+											onClick={() => {
+												this.setConfig(
+													'esFlavor',
+													'es',
+												);
+												this.setConfig(
+													'clusterVersion',
+													esVersions[0],
+												);
+											}}
+										>
+											<img
+												width="150"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>Elasticsearch</p>
 									</div>
 								</div>
 							</div>
@@ -1297,10 +1297,10 @@ class NewCluster extends Component {
 												/>
 											</Button>
 											<p>
-												Add Kibana - A BI tool for
-												visualizing Elasticsearch data
-												and navigating the Elastic
-												stack.
+												{this.state.esFlavor ===
+												'opensearch'
+													? 'Add OpenSearch Dashboards - A BI tool for visualizing Elasticsearch data and navigating OpenSearch'
+													: 'Add Kibana - A BI tool for visualizing Elasticsearch data and navigating the Elastic stack.'}
 											</p>
 										</div>
 									</div>
