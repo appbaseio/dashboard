@@ -857,7 +857,7 @@ class NewCluster extends Component {
 							<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
 								<Button
 									size="large"
-									type="primary"
+									type="default"
 									target="_blank"
 									rel="noopener noreferrer"
 									onClick={() => {
@@ -1476,9 +1476,11 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
+
 NewCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
 	clusterTrialEndDate: PropTypes.number,
 };
+
 export default connect(mapStateToProps, null)(NewCluster);

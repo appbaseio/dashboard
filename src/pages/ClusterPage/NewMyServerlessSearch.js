@@ -464,7 +464,7 @@ class NewMyCluster extends Component {
 									<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
 										<Button
 											size="large"
-											type="primary"
+											type="default"
 											target="_blank"
 											rel="noopener noreferrer"
 											onClick={() => {
