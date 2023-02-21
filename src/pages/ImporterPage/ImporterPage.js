@@ -115,7 +115,7 @@ class ImporterPage extends React.Component {
 							<Button
 								size="large"
 								type="primary"
-								href="https://appbase.io/contact/"
+								href="https://reactivesearch.io/contact/"
 								target="_blank"
 								rel="noopener noreferrer"
 							>

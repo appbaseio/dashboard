@@ -322,7 +322,7 @@ class ConnectCluster extends React.Component {
 								You can also import via CLI, REST API and using
 								Zapier. Read more{' '}
 								<a
-									href="https://docs.appbase.io/docs/data/Import/"
+									href="https://docs.reactivesearch.io/docs/data/Import/"
 									target="_blank"
 									rel="noopener noreferrer"
 								>

@@ -243,7 +243,7 @@ class ArcDetail extends React.Component {
 					<div className="col light">
 						<h3>Reactivesearch.io Server</h3>{' '}
 						<a
-							href="https://docs.appbase.io/docs/hosting/byoc/#using-appbaseio"
+							href="https://docs.reactivesearch.io/docs/hosting/byoc/#using-appbaseio"
 							rel="noopener noreferrer"
 							target="_blank"
 						>
@@ -310,7 +310,7 @@ class ArcDetail extends React.Component {
 									<span>
 										You can add access whitelist for this IP
 										address to your ElasticSearch cluster.{' '}
-										<a href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch">
+										<a href="https://docs.reactivesearch.io/docs/hosting/BYOC/ConnectToYourElasticSearch">
 											IP Address
 										</a>
 									</span>

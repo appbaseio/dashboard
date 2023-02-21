@@ -18,7 +18,7 @@ const integrations = [
 		description:
 			'React UI components for building data-driven search experiences',
 		url:
-			'https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/',
+			'https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/quickstart/',
 	},
 	{
 		name: 'Vue',
@@ -27,7 +27,7 @@ const integrations = [
 		description:
 			'Vue UI components for building data-driven search experiences',
 		url:
-			'https://docs.appbase.io/docs/reactivesearch/vue/overview/QuickStart/',
+			'https://docs.reactivesearch.io/docs/reactivesearch/vue/overview/QuickStart/',
 	},
 	{
 		name: 'React Native',
@@ -35,14 +35,14 @@ const integrations = [
 		image2x: '/static/images/onboarding/finish-screen/ReactNative@2x.png',
 		description: 'Build data-driven search experiences for iOS and Android',
 		url:
-			'https://docs.appbase.io/docs/reactivesearch/native/overview/QuickStart/',
+			'https://docs.reactivesearch.io/docs/reactivesearch/native/overview/QuickStart/',
 	},
 	{
 		name: 'REST APIs',
 		image1x: '/static/images/onboarding/finish-screen/REST@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/REST@2x.png',
 		description: 'API for working with elasticsearch / appbase apps',
-		url: 'https://docs.appbase.io/api/rest/quickstart/',
+		url: 'https://docs.reactivesearch.io/api/rest/quickstart/',
 	},
 	{
 		name: 'Javascript Library',
@@ -50,7 +50,7 @@ const integrations = [
 		image2x: '/static/images/onboarding/finish-screen/JS@2x.png',
 		description:
 			'Javascript client library for working with elasticseach / appbase apps',
-		url: 'https://docs.appbase.io/api/javascript/quickstart/',
+		url: 'https://docs.reactivesearch.io/api/javascript/quickstart/',
 	},
 	{
 		name: 'Clusters',

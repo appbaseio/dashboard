@@ -54,14 +54,14 @@ class HelpButton extends React.Component {
 					There was an error in sending the issue, but we have saved
 					your issue details. Click below to send a tracked e-mail to{' '}
 					<a
-						href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
+						href={`mailto:support@reactivesearch.io?Subject=${issue}&body=${details}`}
 					>
-						support@appbase.io
+						support@reactivesearch.io
 					</a>
 					.
 				</p>
 				<Button
-					href={`mailto:support@appbase.io?Subject=${issue}&body=${details}`}
+					href={`mailto:support@reactivesearch.io?Subject=${issue}&body=${details}`}
 					icon={<MailOutlined />}
 					size="large"
 					type="primary"
@@ -138,16 +138,19 @@ class HelpButton extends React.Component {
 				break;
 			}
 			case 'support':
-				window.open('https://appbase.io/pricing/#support', '_blank');
+				window.open(
+					'https://reactivesearch.io/pricing/#support',
+					'_blank',
+				);
 				break;
 			case 'twitter':
 				window.open('https://twitter.com/appbaseio', '_blank');
 				break;
 			case 'updates':
-				window.open('https://appbase.io/', '_blank');
+				window.open('https://reactivesearch.io/', '_blank');
 				break;
 			case 'privacy':
-				window.open('https://appbase.io/privacy/', '_blank');
+				window.open('https://reactivesearch.io/privacy/', '_blank');
 				break;
 
 			case 'whats_new':

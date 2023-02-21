@@ -576,7 +576,7 @@ class ClusterScreen extends Component {
 					<div className="col light">
 						<h3>Reactivesearch.io Server</h3>
 						<a
-							href="https://docs.appbase.io/docs/hosting/clusters/"
+							href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -918,7 +918,7 @@ class ClusterScreen extends Component {
 															<a
 																target="_blank"
 																rel="noopener noreferrer"
-																href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+																href="https://docs.reactivesearch.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
 															>
 																here
 															</a>

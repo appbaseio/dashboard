@@ -80,7 +80,7 @@ class SearchTemplates extends React.Component {
 				showGoBack: true,
 				goBackText: 'Go back to templates',
 				onClickGoBack: () => this.toggleCreateMode(),
-				href: 'https://docs.appbase.io/docs/security/Template/',
+				href: 'https://docs.reactivesearch.io/docs/security/Template/',
 			},
 			edit: {
 				title: 'Edit Template',
@@ -88,7 +88,7 @@ class SearchTemplates extends React.Component {
 				showGoBack: true,
 				goBackText: 'Go back to templates',
 				onClickGoBack: () => this.toggleEditMode(),
-				href: 'https://docs.appbase.io/docs/security/Template/',
+				href: 'https://docs.reactivesearch.io/docs/security/Template/',
 			},
 		};
 	}

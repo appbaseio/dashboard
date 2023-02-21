@@ -42,7 +42,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.appbase.io/docs/reactivesearch/v3/overview/quickstart/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
@@ -59,7 +59,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.appbase.io/docs/reactivesearch/native/overview/quickstart/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/native/overview/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
@@ -76,7 +76,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.appbase.io/docs/reactivesearch/v3/overview/reactivemaps/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/reactivemaps/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>

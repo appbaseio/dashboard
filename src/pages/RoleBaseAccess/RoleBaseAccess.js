@@ -59,13 +59,13 @@ const bannerMessagesCred = {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/security/Role/',
+		href: 'https://docs.reactivesearch.io/docs/security/Role/',
 	},
 	growth: {
 		title: 'Role Based Access',
 		description: 'Setup Role Based Access Control to secure your app.',
 		buttonText: 'Read Docs',
-		href: 'https://docs.appbase.io/docs/security/Role/',
+		href: 'https://docs.reactivesearch.io/docs/security/Role/',
 	},
 };
 
@@ -263,7 +263,7 @@ class RoleBaseAccess extends React.Component {
 														<br /> in asserting the
 														role information.{' '}
 														<a
-															href="https://docs.appbase.io/docs/security/Role/"
+															href="https://docs.reactivesearch.io/docs/security/Role/"
 															target="_blank"
 															rel="noopener noreferrer"
 														>

@@ -833,10 +833,10 @@ class NewCluster extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Create a new ElasticSearch or OpenSearch
+										Create a new Elasticsearch or OpenSearch
 										cluster{' '}
 										<a
-											href="https://docs.appbase.io"
+											href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 											rel="noopener noreferrer"
 											target="_blank"
 										>

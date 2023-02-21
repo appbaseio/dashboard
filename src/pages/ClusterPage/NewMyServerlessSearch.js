@@ -779,7 +779,7 @@ class NewMyCluster extends Component {
 															<a
 																target="_blank"
 																rel="noopener noreferrer"
-																href="https://docs.appbase.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+																href="https://docs.reactivesearch.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
 															>
 																here
 															</a>

@@ -189,7 +189,7 @@ class CreateAppModal extends Component {
 			</Col>
 			<Col className={planInfo}>
 				<a
-					href="https://appbase.io/pricing/"
+					href="https://reactivesearch.io/pricing/"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
@@ -239,7 +239,7 @@ class CreateAppModal extends Component {
 									<a
 										target="_blank"
 										rel="noopener noreferrer"
-										href="https://appbase.io/migrate-to-clusters"
+										href="https://reactivesearch.io/migrate-to-clusters"
 									>
 										here
 									</a>
@@ -300,7 +300,7 @@ class CreateAppModal extends Component {
 							lineHeight: '20px',
 						}}
 					>
-						App names are unique across appbase.io and should be
+						App names are unique across ReactiveSearch and should be
 						lowercase. Click
 						<span
 							style={{ color: '#1890ff' }}
