@@ -28,7 +28,7 @@ const MappingsPage = ({
 								View mappings, edit use-case and data types, add
 								or delete fields -{' '}
 								<a
-									href="https://docs.appbase.io/docs/search/relevancy/#schema"
+									href="https://docs.reactivesearch.io/docs/search/relevancy/#schema"
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -52,7 +52,7 @@ const MappingsPage = ({
 							<Button
 								size="large"
 								type="primary"
-								href="https://appbase.io/pricing"
+								href="https://reactivesearch.io/pricing"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
@@ -86,7 +86,7 @@ const MappingsPage = ({
 						<Button
 							size="large"
 							type="primary"
-							href="https://appbase.io/pricing#features"
+							href="https://reactivesearch.io/pricing#features"
 							target="_blank"
 							rel="noopener noreferrer"
 						>

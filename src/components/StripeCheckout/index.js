@@ -25,13 +25,13 @@ const StripeCheckout = ({
 	monthlyPrice,
 	onCancel,
 	onSubmit,
+	isSLSCluster,
 }) => {
 	const [paymentMethods, setPaymentMethods] = useState({
 		loading: true,
 		methods: [],
 	});
 	const [view, setView] = useState(VIEWS.CARD);
-
 	useEffect(() => {
 		let isCancelled = false;
 
@@ -71,8 +71,11 @@ const StripeCheckout = ({
 						Subscribe for {plan} cluster
 					</div>
 					<p style={{ marginTop: 15, color: 'rgba(0, 0, 0, 0.65)' }}>
-						Billed at <b>${price}/hr</b> (or ${monthlyPrice}/mo) at
-						the end of the subscription cycle based on actual usage
+						{isSLSCluster
+							? `Billed at $${monthlyPrice}/mo at the start of the subscription cycle`
+							: `Billed at ${(
+									<b>+`${price}/hr`+</b>
+							  )} (or ${monthlyPrice}/mo) at the end of the subscription cycle based on actual usage`}
 					</p>
 				</div>
 			}
@@ -125,6 +128,7 @@ StripeCheckout.propTypes = {
 	monthlyPrice: PropTypes.string.isRequired,
 	onCancel: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
+	isSLSCluster: PropTypes.bool,
 };
 
 export default StripeCheckout;

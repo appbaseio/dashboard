@@ -71,7 +71,7 @@ class ErrorPage extends React.Component {
 						Back to {user ? 'Home' : 'Login'}
 					</Button>
 					<Button
-						href="mailto:support@appbase.io"
+						href="mailto:support@reactivesearch.io"
 						target="_blank"
 						size="large"
 						danger

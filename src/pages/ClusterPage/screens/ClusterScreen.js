@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/alt-text */
 import { DeleteOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, message, notification, Select } from 'antd';
+import { Alert, Button, message, notification, Select, Tag } from 'antd';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -13,6 +15,7 @@ import {
 	clusterButtons,
 	clusterEndpoint,
 	esContainer,
+	fadeOutStyles,
 	settingsItem,
 } from '../styles';
 import {
@@ -24,9 +27,15 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	rotateAPICredentials,
+	BACKENDS,
+	capitalizeWord,
+	verifyCluster,
+	updateBackend,
 } from '../utils';
+import { machineMarks } from '../NewMyServerlessSearch';
 
 const { Option } = Select;
+const BLACK_LISTED_BACKENDS = [];
 
 class ClusterScreen extends Component {
 	constructor(props) {
@@ -61,6 +70,14 @@ class ClusterScreen extends Component {
 			isRestoring: false,
 			visualization,
 			isStripeCheckoutOpen: false,
+			setSearchEngine: false,
+			backend: BACKENDS.ELASTICSEARCH.name,
+			verifiedCluster: false,
+			clusterVersion: '',
+			verifyingURL: false,
+			clusterURL: '',
+			isInvalidURL: false,
+			urlErrorMessage: '',
 		};
 
 		this.paymentButton = React.createRef();
@@ -195,72 +212,133 @@ class ClusterScreen extends Component {
 			elasticsearchHQ // prettier-ignore
 		} = this.state;
 
-		const { clusterId, onDeploy } = this.props;
+		const { clusterId, onDeploy, isSLSCluster } = this.props;
 
-		if (kibana && !this.includedInOriginal('kibana')) {
-			body.kibana = {
-				create_node: false,
-				version: cluster.es_version,
-			};
-		} else if (!kibana && this.includedInOriginal('kibana')) {
-			body.remove_deployments = [...body.remove_deployments, 'kibana'];
+		if (!isSLSCluster) {
+			if (kibana && !this.includedInOriginal('kibana')) {
+				body.kibana = {
+					create_node: false,
+					version: cluster.es_version,
+				};
+			} else if (!kibana && this.includedInOriginal('kibana')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'kibana',
+				];
+			}
+
+			if (grafana && !this.includedInOriginal('grafana')) {
+				body.grafana = true;
+			} else if (!grafana && this.includedInOriginal('grafana')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'grafana',
+				];
+			}
+
+			if (streams && !this.includedInOriginal('streams')) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'streams',
+						image: 'appbaseio/streams:6',
+						exposed_port: 80,
+					},
+				];
+			} else if (!streams && this.includedInOriginal('streams')) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'streams',
+				];
+			}
+
+			if (arc && !this.includedInOriginal('arc')) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'arc',
+						image: `siddharthlatest/arc:${V7_ARC}`,
+						exposed_port: 8000,
+					},
+				];
+			} else if (!arc && this.includedInOriginal('arc')) {
+				body.remove_deployments = [...body.remove_deployments, 'arc'];
+			}
+
+			if (
+				elasticsearchHQ &&
+				!this.includedInOriginal('elasticsearch-hq')
+			) {
+				body.addons = body.addons || [];
+				body.addons = [
+					...body.addons,
+					{
+						name: 'elasticsearch-hq',
+						image: 'elastichq/elasticsearch-hq:release-v3.5.0',
+						exposed_port: 5000,
+					},
+				];
+			} else if (
+				!elasticsearchHQ &&
+				this.includedInOriginal('elasticsearch-hq')
+			) {
+				body.remove_deployments = [
+					...body.remove_deployments,
+					'elasticsearch-hq',
+				];
+			}
+			onDeploy(body, clusterId);
+		} else {
+			if (!this.state.backend) {
+				message.error('Choose a backend');
+				return;
+			}
+			let updateBackendPayload = { backend: this.state.backend };
+			if (this.state.backend !== BACKENDS.System.name) {
+				const {
+					protocol,
+					username: backendUrlUsername,
+					password: backendUrlPassword,
+					host,
+				} = new URL(this.state.clusterURL);
+
+				if (!this.state.verifiedCluster) {
+					message.error('Cluster URL not verified');
+					return;
+				}
+
+				updateBackendPayload = {
+					...updateBackendPayload,
+					host,
+					protocol: protocol.substr(0, protocol.length - 1),
+					basic_auth: `${backendUrlUsername}:${backendUrlPassword}`,
+				};
+			}
+			updateBackend(clusterId, updateBackendPayload)
+				.then(() => {
+					notification.success({
+						message: 'Backend updated successfully',
+					});
+
+					this.setState({
+						loading: false,
+					});
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(e => {
+					notification.error({
+						title: 'Error while updating backend',
+						description: e.message,
+					});
+					this.setState({
+						loading: false,
+					});
+				});
 		}
-
-		if (grafana && !this.includedInOriginal('grafana')) {
-			body.grafana = true;
-		} else if (!grafana && this.includedInOriginal('grafana')) {
-			body.remove_deployments = [...body.remove_deployments, 'grafana'];
-		}
-
-		if (streams && !this.includedInOriginal('streams')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'streams',
-					image: 'appbaseio/streams:6',
-					exposed_port: 80,
-				},
-			];
-		} else if (!streams && this.includedInOriginal('streams')) {
-			body.remove_deployments = [...body.remove_deployments, 'streams'];
-		}
-
-		if (arc && !this.includedInOriginal('arc')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'arc',
-					image: `siddharthlatest/arc:${V7_ARC}`,
-					exposed_port: 8000,
-				},
-			];
-		} else if (!arc && this.includedInOriginal('arc')) {
-			body.remove_deployments = [...body.remove_deployments, 'arc'];
-		}
-
-		if (elasticsearchHQ && !this.includedInOriginal('elasticsearch-hq')) {
-			body.addons = body.addons || [];
-			body.addons = [
-				...body.addons,
-				{
-					name: 'elasticsearch-hq',
-					image: 'elastichq/elasticsearch-hq:release-v3.5.0',
-					exposed_port: 5000,
-				},
-			];
-		} else if (
-			!elasticsearchHQ &&
-			this.includedInOriginal('elasticsearch-hq')
-		) {
-			body.remove_deployments = [
-				...body.remove_deployments,
-				'elasticsearch-hq',
-			];
-		}
-
-		onDeploy(body, clusterId);
 	};
 
 	handleStripeModal = () => {
@@ -274,6 +352,40 @@ class ClusterScreen extends Component {
 			isStripeCheckoutOpen: false,
 		});
 		this.props.handleToken(data);
+	};
+
+	handleVerify = async () => {
+		const { clusterURL, backend } = this.state;
+		if (clusterURL) {
+			this.setState({
+				verifyingURL: true,
+				verifiedCluster: false,
+				clusterVersion: '',
+			});
+			verifyCluster(clusterURL, backend)
+				.then(data => {
+					const version = get(data, 'version.number', '');
+					this.setState({
+						verifyingURL: false,
+						clusterVersion: version || 'N/A',
+						isInvalidURL: false,
+						verifiedCluster: true,
+					});
+				})
+				.catch(e => {
+					this.setState({
+						verifyingURL: false,
+						isInvalidURL: true,
+						verifiedCluster: false,
+						urlErrorMessage: e.toString(),
+					});
+				});
+		} else {
+			this.setState({
+				isInvalidURL: true,
+				urlErrorMessage: 'Please enter a valid URL to verify',
+			});
+		}
 	};
 
 	renderClusterEndpoint = (source, isOpenSearchFlavour) => {
@@ -301,7 +413,7 @@ class ClusterScreen extends Component {
 			const { cluster } = this.state;
 			const isViewer = cluster.user_role === 'viewer';
 
-			if (name === 'arc') {
+			if (name === 'arc' || name === 'sls') {
 				name = 'Reactivesearch.io';
 			}
 			if (name === 'elasticsearch') {
@@ -357,12 +469,24 @@ class ClusterScreen extends Component {
 	};
 
 	render() {
-		const { cluster, deployment, isStripeCheckoutOpen } = this.state;
+		const {
+			cluster,
+			deployment,
+			isStripeCheckoutOpen,
+			verifiedCluster,
+			clusterVersion,
+			setSearchEngine,
+			isInvalidURL,
+			clusterURL,
+			verifyingURL,
+			urlErrorMessage,
+		} = this.state;
 		const isOpenSearchFlavour =
 			Number(this.state.cluster.es_version.split('.')[0]) < 7;
 		const {
 			clusterId,
 			isPaid,
+			isSLSCluster,
 			handleDeleteModal,
 			isExternalCluster,
 		} = this.props;
@@ -370,7 +494,7 @@ class ClusterScreen extends Component {
 
 		let addons = deployment.addons || [];
 
-		addons = addons.filter(i => i.name === 'arc');
+		addons = addons.filter(i => (i.name === isSLSCluster ? 'sls' : 'arc'));
 		if (isExternalCluster) {
 			const arcDeployment =
 				deployment &&
@@ -424,33 +548,35 @@ class ClusterScreen extends Component {
 
 		return (
 			<Fragment>
-				<li className={card}>
-					<div className="col light">
-						<h3>
-							{isOpenSearchFlavour
-								? 'OpenSearch'
-								: 'Elasticsearch'}
-						</h3>
-						<p>Live cluster endpoint</p>
-					</div>
+				{!isSLSCluster ? (
+					<li className={card}>
+						<div className="col light">
+							<h3>
+								{isOpenSearchFlavour
+									? 'OpenSearch'
+									: 'Elasticsearch'}
+							</h3>
+							<p>Live cluster endpoint</p>
+						</div>
 
-					<div className="col">
-						{Object.keys(deployment)
-							.filter(item => item !== 'addons')
-							.map(key =>
-								this.renderClusterEndpoint(
-									deployment[key],
-									isOpenSearchFlavour,
-								),
-							)}
-					</div>
-				</li>
+						<div className="col">
+							{Object.keys(deployment)
+								.filter(item => item !== 'addons')
+								.map(key =>
+									this.renderClusterEndpoint(
+										deployment[key],
+										isOpenSearchFlavour,
+									),
+								)}
+						</div>
+					</li>
+				) : null}
 
 				<li className={card}>
 					<div className="col light">
 						<h3>Reactivesearch.io Server</h3>
 						<a
-							href="https://docs.appbase.io/docs/hosting/clusters/"
+							href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -463,85 +589,92 @@ class ClusterScreen extends Component {
 					</div>
 				</li>
 
-				<li className={card}>
-					<div className="col light">
-						<h3>Choose Visualization Tool</h3>
-					</div>
+				{!isSLSCluster ? (
+					<li className={card}>
+						<div className="col light">
+							<h3>Choose Visualization Tool</h3>
+						</div>
 
-					<div
-						className={settingsItem}
-						css={{
-							padding: 30,
-							alignItems: 'baseline',
-						}}
-					>
-						<div className={esContainer}>
-							<Button
-								type={
-									this.state.visualization === 'none'
-										? 'primary'
-										: 'default'
-								}
-								size="large"
-								style={{
-									height: 160,
-									width: '100%',
-									color: '#000',
-									backgroundColor:
+						<div
+							className={settingsItem}
+							css={{
+								padding: 30,
+								alignItems: 'baseline',
+							}}
+						>
+							<div className={esContainer}>
+								<Button
+									type={
 										this.state.visualization === 'none'
-											? '#eaf5ff'
-											: '#fff',
-								}}
-								onClick={() => {
-									this.setConfig('visualization', 'none');
-									this.setConfig('kibana', false);
-									this.setConfig('grafana', false);
-								}}
-							>
-								Built-in dashboard
-							</Button>
-						</div>
-						<div className={esContainer}>
-							<Button
-								size="large"
-								type={
-									this.state.visualization === 'kibana'
-										? 'primary'
-										: 'default'
-								}
-								style={{
-									height: 160,
-									width: '100%',
-									backgroundColor:
-										this.state.visualization === 'kibana'
-											? '#eaf5ff'
-											: '#fff',
-								}}
-								onClick={() => {
-									this.setConfig('visualization', 'kibana');
-									this.setConfig('kibana', true);
-									this.setConfig('grafana', false);
-								}}
-							>
-								<img
-									width={150}
-									src={
-										isOpenSearchFlavour
-											? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
-											: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+											? 'primary'
+											: 'default'
 									}
-									alt="Kibana"
-								/>
-							</Button>
-							<p>
-								The default visualization dashboard for
-								ElasticSearch.
-							</p>
-						</div>
-					</div>
-				</li>
+									size="large"
+									style={{
+										height: '160px !important',
+										width: '100%',
+										color: '#000',
+										backgroundColor:
+											this.state.visualization === 'none'
+												? '#eaf5ff'
+												: '#fff',
+									}}
+									onClick={() => {
+										this.setConfig('visualization', 'none');
+										this.setConfig('kibana', false);
+										this.setConfig('grafana', false);
+									}}
+								>
+									Built-in dashboard
+								</Button>
+							</div>
 
-				{isViewer || (
+							<div className={esContainer}>
+								<Button
+									size="large"
+									type={
+										this.state.visualization === 'kibana'
+											? 'primary'
+											: 'default'
+									}
+									css={{
+										height: '160px !important',
+										width: '100%',
+										backgroundColor:
+											this.state.visualization ===
+											'kibana'
+												? '#eaf5ff'
+												: '#fff',
+									}}
+									onClick={() => {
+										this.setConfig(
+											'visualization',
+											'kibana',
+										);
+										this.setConfig('kibana', true);
+										this.setConfig('grafana', false);
+									}}
+								>
+									<img
+										width={150}
+										src={
+											isOpenSearchFlavour
+												? `https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg`
+												: `https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt8781708f8f37ed16/5c11ec2edf09df047814db23/logo-elastic-kibana-lt.svg`
+										}
+										alt="Kibana"
+									/>
+								</Button>
+								<p>
+									The default visualization dashboard for
+									ElasticSearch.
+								</p>
+							</div>
+						</div>
+					</li>
+				) : null}
+
+				{!isSLSCluster ? (
 					<li className={card}>
 						<div className="col light">
 							<h3>Restore From Snapshot</h3>
@@ -603,7 +736,243 @@ class ClusterScreen extends Component {
 							)}
 						</div>
 					</li>
-				)}
+				) : null}
+
+				{isSLSCluster ? (
+					<>
+						{setSearchEngine ? (
+							<div className={card}>
+								<Button
+									size="small"
+									onClick={() =>
+										this.setState({
+											setSearchEngine: false,
+											backend: '',
+											clusterURL: '',
+										})
+									}
+									css={`
+										width: max-content;
+										position: absolute;
+										right: 0;
+										border: none;
+									`}
+								>
+									╳
+								</Button>
+								<div className="col light">
+									<h3> Choose search engine </h3>
+								</div>
+								<div>
+									<div
+										className={settingsItem}
+										css={{
+											padding: 30,
+											flexWrap: 'wrap',
+											gap: '2rem',
+										}}
+									>
+										{Object.values(BACKENDS)
+											.filter(
+												backendObj =>
+													!BLACK_LISTED_BACKENDS.includes(
+														backendObj.name,
+													),
+											)
+											.map(
+												({
+													name: backend,
+													logo,
+													text,
+												}) => {
+													return (
+														<Button
+															key={backend}
+															type={
+																backend ===
+																this.state
+																	.backend
+																	? 'primary'
+																	: 'default'
+															}
+															size="large"
+															css={{
+																height:
+																	'160px !important',
+																marginRight: 20,
+																backgroundColor:
+																	backend ===
+																	this.state
+																		.backend
+																		? '#eaf5ff'
+																		: '#fff',
+																minWidth:
+																	'152px',
+															}}
+															className={
+																backend ===
+																this.state
+																	.backend
+																	? fadeOutStyles
+																	: ''
+															}
+															onClick={() => {
+																this.setState({
+																	backend,
+																});
+															}}
+														>
+															{logo ? (
+																<img
+																	width="120"
+																	src={logo}
+																	alt={`${backend} logo`}
+																/>
+															) : (
+																<span
+																	css={`
+																		font-size: 1.4rem;
+																		font-weight: 400;
+																		color: black;
+																	`}
+																>
+																	{text}
+																</span>
+															)}
+														</Button>
+													);
+												},
+											)}
+									</div>
+
+									{this.state.backend !==
+										BACKENDS.System.name && (
+										<div
+											className="col grow vcenter"
+											css={{
+												flexDirection: 'column',
+												alignItems:
+													'flex-start !important',
+												justifyContent: 'center',
+											}}
+										>
+											<input
+												id="elastic-url"
+												type="name"
+												css={{
+													width: '100%',
+													maxWidth: 400,
+													marginBottom: 10,
+													outline: 'none',
+													border:
+														isInvalidURL &&
+														clusterURL !== ''
+															? '1px solid red'
+															: '1px solid #e8e8e8',
+												}}
+												placeholder={`Enter your ${capitalizeWord(
+													this.state.backend,
+												)} URL`}
+												value={clusterURL}
+												onChange={e =>
+													this.setConfig(
+														'clusterURL',
+														e.target.value,
+													)
+												}
+											/>
+											<Button
+												onClick={this.handleVerify}
+												disabled={!clusterURL}
+												loading={verifyingURL}
+											>
+												Verify Connection
+											</Button>
+
+											{verifiedCluster ? (
+												<Tag
+													style={{ marginTop: 10 }}
+													color="green"
+												>
+													Verified Connection. Version
+													Detected: {clusterVersion}
+												</Tag>
+											) : null}
+
+											{isInvalidURL ? (
+												<p
+													style={{
+														color: 'red',
+													}}
+												>
+													{urlErrorMessage ===
+													'Auth Error' ? (
+														<React.Fragment>
+															We received a
+															authentication
+															error. Does your
+															ElasticSearch
+															require additional
+															authentication? Read
+															more{' '}
+															<a
+																target="_blank"
+																rel="noopener noreferrer"
+																href="https://docs.reactivesearch.io/docs/hosting/BYOC/ConnectToYourElasticSearch"
+															>
+																here
+															</a>
+															.
+														</React.Fragment>
+													) : (
+														urlErrorMessage
+													)}
+												</p>
+											) : null}
+										</div>
+									)}
+								</div>
+							</div>
+						) : (
+							<Alert
+								message={`Serverless Search provides you with ${
+									machineMarks[cluster.pricing_plan]
+										.searchIndices
+								} geo-distributed search indexes on Elasticsearch out of the box.`}
+								description={
+									<div
+										css={`
+											width: 100%;
+											display: flex;
+											align-items: center;
+											justify-content: space-between;
+											gap: 1rem;
+										`}
+									>
+										<span>
+											You can optionally configure your
+											own search engine instead for
+											dedicated access. This can also be
+											done later.
+										</span>
+										<Button
+											size="small"
+											onClick={() =>
+												this.setState({
+													setSearchEngine: true,
+												})
+											}
+										>
+											Configure Search Engine
+										</Button>
+									</div>
+								}
+								style={{ marginBottom: '1rem' }}
+								type="info"
+							/>
+						)}
+					</>
+				) : null}
 				{isViewer || (
 					<div className={clusterButtons}>
 						<Button
@@ -648,6 +1017,10 @@ class ClusterScreen extends Component {
 	}
 }
 
+ClusterScreen.defaultProps = {
+	isSLSCluster: false,
+};
+
 ClusterScreen.propTypes = {
 	clusterId: PropTypes.string.isRequired,
 	cluster: PropTypes.object.isRequired,
@@ -662,6 +1035,7 @@ ClusterScreen.propTypes = {
 	elasticsearchHQ: PropTypes.bool.isRequired,
 	arc: PropTypes.bool.isRequired,
 	streams: PropTypes.bool.isRequired,
+	isSLSCluster: PropTypes.bool,
 };
 
 export default ClusterScreen;

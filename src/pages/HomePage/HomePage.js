@@ -184,7 +184,7 @@ class HomePage extends Component {
 								<BookOutlined /> Interactive Tutorial
 							</Link>
 							<a
-								href="https://docs.appbase.io/docs/data/Import"
+								href="https://docs.reactivesearch.io/docs/data/Import"
 								className={link}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -192,7 +192,7 @@ class HomePage extends Component {
 								<DatabaseOutlined /> Importing Data
 							</a>
 							<a
-								href="https://docs.appbase.io/integrations/"
+								href="https://docs.reactivesearch.io/integrations/"
 								className={link}
 								target="_blank"
 								rel="noopener noreferrer"

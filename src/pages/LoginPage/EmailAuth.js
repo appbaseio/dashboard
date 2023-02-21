@@ -48,7 +48,7 @@ class EmailAuth extends React.Component {
 			) {
 				this.toggleLoading();
 				message.error(
-					'Please use a valid e-mail address. We do not allow disposable addresses or email subaddressing (+ sign use). Reach out to us at support@appbase.io if you believe this is an error.',
+					'Please use a valid e-mail address. We do not allow disposable addresses or email subaddressing (+ sign use). Reach out to us at support@reactivesearch.io if you believe this is an error.',
 				);
 				return;
 			}

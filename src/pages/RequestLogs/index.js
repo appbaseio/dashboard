@@ -22,7 +22,7 @@ const bannerMessagesAnalytics = {
 			"View the last 1,000 request logs to glean insights into your app's behaviors.",
 		buttonText: 'Read More',
 		href:
-			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+			'https://docs.reactivesearch.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 	growth: {
 		title: 'Request Logs',
@@ -30,7 +30,7 @@ const bannerMessagesAnalytics = {
 			"View the last 1,000 request logs to glean insights into your app's behavior.",
 		buttonText: 'Read More',
 		href:
-			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+			'https://docs.reactivesearch.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 

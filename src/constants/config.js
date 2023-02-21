@@ -13,7 +13,7 @@ export const exampleConfig = [
 			alt: 'Import Data',
 			src: '/static/images/explainer/import_data.png',
 		},
-		href: 'https://docs.appbase.io/docs/data/import/',
+		href: 'https://docs.reactivesearch.io/docs/data/import/',
 	},
 	{
 		title: 'Manage Mappings',
@@ -23,7 +23,7 @@ export const exampleConfig = [
 			alt: 'Manage Mappings',
 			src: '/static/images/explainer/manage_mappings.png',
 		},
-		href: 'https://docs.appbase.io/docs/data/mappings/',
+		href: 'https://docs.reactivesearch.io/docs/data/mappings/',
 	},
 	{
 		title: 'Browse Data',
@@ -32,7 +32,7 @@ export const exampleConfig = [
 			alt: 'Browse Data',
 			src: '/static/images/explainer/browse_data.png',
 		},
-		href: 'https://docs.appbase.io/docs/data/Browser/',
+		href: 'https://docs.reactivesearch.io/docs/data/Browser/',
 	},
 	{
 		title: 'Search Preview',
@@ -42,7 +42,7 @@ export const exampleConfig = [
 			src: '/static/images/explainer/search_preview.png',
 		},
 		href:
-			'https://docs.appbase.io/docs/search/relevancy/#test-search-relevancy',
+			'https://docs.reactivesearch.io/docs/search/relevancy/#test-search-relevancy',
 	},
 	{
 		title: 'Understand your Search ROI',
@@ -52,7 +52,7 @@ export const exampleConfig = [
 			alt: 'Analytics',
 			src: '/static/images/explainer/search_ROI.png',
 		},
-		href: 'https://docs.appbase.io/docs/analytics/Overview/',
+		href: 'https://docs.reactivesearch.io/docs/analytics/Overview/',
 	},
 	{
 		title: 'Setup Analytics',
@@ -62,7 +62,7 @@ export const exampleConfig = [
 			alt: 'Setup Analytics',
 			src: '/static/images/explainer/setup_analytics.png',
 		},
-		href: 'https://docs.appbase.io/docs/analytics/Implement/',
+		href: 'https://docs.reactivesearch.io/docs/analytics/Implement/',
 	},
 	{
 		title: 'Access Analytics via APIs',
@@ -71,7 +71,7 @@ export const exampleConfig = [
 			alt: 'Analytics via APIs',
 			src: '/static/images/explainer/analytics_API.png',
 		},
-		href: 'https://docs.appbase.io/docs/analytics/Implement/',
+		href: 'https://docs.reactivesearch.io/docs/analytics/Implement/',
 	},
 	{
 		title: 'Secure your Search App',
@@ -81,6 +81,6 @@ export const exampleConfig = [
 			alt: 'Analytics via APIs',
 			src: '/static/images/explainer/security.png',
 		},
-		href: 'https://docs.appbase.io/docs/security/Credentials/',
+		href: 'https://docs.reactivesearch.io/docs/security/Credentials/',
 	},
 ];

@@ -27,7 +27,6 @@ import {
 	PRICE_BY_PLANS,
 	getClusters,
 	PLAN_LABEL,
-	isSandBoxPlan,
 	CLUSTER_PLANS,
 	ARC_PLANS,
 } from './utils';
@@ -39,6 +38,7 @@ import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList, bannerContainer } from './styles';
 
 import { regions } from './utils/regions';
+import Flex from '../../batteries/components/shared/Flex';
 
 function getHoursDiff(time) {
 	const duration = moment().diff(time, 'hours');
@@ -76,6 +76,17 @@ class ClusterPage extends Component {
 		clearTimeout(this.timer);
 	}
 
+	isValidSlsCluster = cluster => {
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
+
+		return false;
+	};
+
 	paramsValue = () => {
 		const id = getParam('id', window.location.search) || undefined;
 		const subscription =
@@ -87,10 +98,14 @@ class ClusterPage extends Component {
 	};
 
 	deleteCluster = id => {
+		const { clusters } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(
+			clusters.find(i => i.id === id) || {},
+		);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.initClusters();
 			})
@@ -254,7 +269,10 @@ class ClusterPage extends Component {
 		}
 	};
 
-	renderClusterRegion = (region, provider = 'gke') => {
+	renderClusterRegion = (region, regionProvider = 'gke') => {
+		let provider = regionProvider;
+		if (regionProvider === 'GCP' || regionProvider === 'gcp')
+			provider = 'gke';
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -318,6 +336,8 @@ class ClusterPage extends Component {
 					},
 			  }
 			: {};
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+
 		return (
 			<li key={cluster.id} className="cluster-card compact">
 				<h3 className="header-container">
@@ -380,7 +400,7 @@ class ClusterPage extends Component {
 									as security, analytics, better developer
 									experience.{' '}
 									<a
-										href="docs.appbase.io"
+										href="docs.reactivesearch.io"
 										target="_blank"
 										rel="noopener norefferer"
 									>
@@ -397,24 +417,52 @@ class ClusterPage extends Component {
 							</span>
 						</Tooltip>
 					) : null}
-					<div
-						className="view-logs-button"
-						onClick={() =>
-							history.push(`/clusters/${cluster.id}/logs`)
-						}
-					>
-						View deploy logs
-					</div>
+					{!isSLSCluster ? (
+						<div
+							className="view-logs-button"
+							onClick={() =>
+								history.push(`/clusters/${cluster.id}/logs`)
+							}
+						>
+							View deploy logs
+						</div>
+					) : null}
 				</h3>
 
 				<div className="info-row">
-					<div>
-						<h4>Region</h4>
-						{this.renderClusterRegion(
-							cluster.region,
-							cluster.provider,
-						)}
-					</div>
+					{isSLSCluster ? (
+						<div>
+							<h4>Region</h4>
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'us-central1-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'europe-west2-a',
+									cluster.provider,
+								)}
+							</div>
+
+							<div className="multi-region">
+								{this.renderClusterRegion(
+									'asia-southeast1-a',
+									cluster.provider,
+								)}
+							</div>
+						</div>
+					) : (
+						<div>
+							<h4>Region</h4>
+							{this.renderClusterRegion(
+								cluster.region,
+								cluster.provider,
+							)}
+						</div>
+					)}
 
 					<div>
 						<h4>Pricing Plan</h4>
@@ -423,12 +471,14 @@ class ClusterPage extends Component {
 						</div>
 					</div>
 
-					<div>
-						<h4>ES Version</h4>
-						<div>{cluster.es_version}</div>
-					</div>
+					{!isSLSCluster ? (
+						<div>
+							<h4>ES Version</h4>
+							<div>{cluster.es_version}</div>
+						</div>
+					) : null}
 
-					{isExternalCluster ? null : (
+					{isExternalCluster || isSLSCluster ? null : (
 						<div>
 							<h4>Memory</h4>
 							<div>
@@ -454,10 +504,12 @@ class ClusterPage extends Component {
 						</div>
 					)}
 
-					<div>
-						<h4>Nodes</h4>
-						<div>{cluster.total_nodes}</div>
-					</div>
+					{!isSLSCluster ? (
+						<div>
+							<h4>Nodes</h4>
+							<div>{cluster.total_nodes}</div>
+						</div>
+					) : null}
 
 					{cluster.status === 'active' ||
 					cluster.status === 'deployments in progress' ? (
@@ -538,6 +590,7 @@ class ClusterPage extends Component {
 														...data,
 													})
 												}
+												isSLSCluster={isSLSCluster}
 											/>
 										)}
 								</div>
@@ -635,19 +688,36 @@ class ClusterPage extends Component {
 					<div style={vcenter}>
 						<i className="fas fa-gift" style={{ fontSize: 36 }} />
 						<h2 style={{ marginTop: 24, fontSize: 22 }}>
-							You ' ve unlocked 14 days free trial
+							You&apos;ve unlocked 14 days free trial
 						</h2>
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today
 						</p>
-						<div style={{ textAlign: 'center' }}>
-							<Link to="/clusters/new">
-								<Button type="primary">
-									<i className="fas fa-plus" />
-									&nbsp; Create a New Cluster
-								</Button>
+						<Flex
+							alignItems="center"
+							style={{
+								textAlign: 'center',
+								gap: '1rem',
+								flexWrap: 'wrap',
+							}}
+						>
+							<Link to="/new/serverless-search">
+								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
+									<Button type="primary">
+										<i className="fas fa-plus" />
+										&nbsp; Serverless Search
+									</Button>
+								</Tooltip>
 							</Link>
-						</div>
+							<Link to="/clusters/new">
+								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
+									<Button type="default">
+										<i className="fas fa-plus" />
+										&nbsp;Elasticsearch cluster
+									</Button>
+								</Tooltip>
+							</Link>
+						</Flex>
 					</div>
 				</Fragment>
 			);
@@ -658,8 +728,8 @@ class ClusterPage extends Component {
 				<FullHeader clusters={activeClusters} isCluster />
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
-						<Col lg={18}>
-							<h2>Welcome to Appbase Clusters</h2>
+						<Col lg={14}>
+							<h2>Welcome to ReactiveSearch Clusters</h2>
 
 							<Row>
 								<Col lg={18}>
@@ -672,21 +742,33 @@ class ClusterPage extends Component {
 							</Row>
 						</Col>
 						<Col
-							lg={6}
+							lg={10}
 							css={{
 								display: 'flex',
-								flexDirection: 'column-reverse',
+								flexWrap: 'wrap',
+								flexDirection: 'row-reverse',
 								paddingBottom: 20,
-
+								gap: '1rem',
 								[mediaKey.small]: {
 									paddingTop: 20,
 								},
 							}}
 						>
 							<Link to="/clusters/new">
-								<Button size="large" type="primary" block>
-									<PlusOutlined /> Create a New Cluster
-								</Button>
+								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
+									{' '}
+									<Button size="large" type="default" block>
+										<PlusOutlined /> Elasticsearch cluster
+									</Button>
+								</Tooltip>
+							</Link>
+							<Link to="/new/serverless-search">
+								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
+									{' '}
+									<Button size="large" type="primary" block>
+										<PlusOutlined /> Serverless Search
+									</Button>
+								</Tooltip>
 							</Link>
 						</Col>
 					</Row>
@@ -783,7 +865,7 @@ class ClusterPage extends Component {
 							<h2>My Clusters</h2>
 
 							{this.renderClusterHeading(
-								'Active Appbase Clusters',
+								'Active ReactiveSearch Clusters',
 								activeClusters.length,
 							)}
 							{activeClusters.length ? (

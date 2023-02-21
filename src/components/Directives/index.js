@@ -102,19 +102,20 @@ class Directives extends React.Component {
 		switch (name) {
 			case PLAY_LISTS.SEARCH_APP:
 				url =
-					'https://docs.appbase.io/docs/reactivesearch/gettingstarted/';
+					'https://docs.reactivesearch.io/docs/reactivesearch/gettingstarted/';
 				break;
 			case PLAY_LISTS.RELEVANT_SEARCH:
-				url = 'https://docs.appbase.io/docs/search/relevancy/';
+				url = 'https://docs.reactivesearch.io/docs/search/relevancy/';
 				break;
 			case PLAY_LISTS.SEARCH_ANALYTICS:
-				url = 'https://docs.appbase.io/docs/analytics/overview/';
+				url = 'https://docs.reactivesearch.io/docs/analytics/overview/';
 				break;
 			case PLAY_LISTS.ACCESS_CONTROL:
-				url = 'https://docs.appbase.io/docs/security/credentials/';
+				url =
+					'https://docs.reactivesearch.io/docs/security/credentials/';
 				break;
 			default:
-				url = 'https://docs.appbase.io/';
+				url = 'https://docs.reactivesearch.io/';
 				break;
 		}
 		window.open(url, '_blank');

@@ -30,7 +30,7 @@ const bannerMessagesAnalytics = {
 			'Understand where you search traffic is coming from. Learn how to make the most of geo distribution insights.',
 		buttonText: 'Read Docs',
 		href:
-			'https://docs.appbase.io/docs/analytics/overview/#geography-visualization',
+			'https://docs.reactivesearch.io/docs/analytics/overview/#geography-visualization',
 	},
 };
 

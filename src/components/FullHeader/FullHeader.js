@@ -99,7 +99,7 @@ const FullHeader = ({
 			)}
 			<Col>
 				<a
-					href="https://docs.appbase.io/"
+					href="https://docs.reactivesearch.io/"
 					className={link}
 					target="_blank"
 					rel="noopener noreferrer"

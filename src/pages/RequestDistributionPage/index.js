@@ -29,7 +29,7 @@ const bannerMessagesAnalytics = {
 			'Understand the status of your requests, Learn how to make the most of request distribution insights.',
 		buttonText: 'Read Docs',
 		href:
-			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+			'https://docs.reactivesearch.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 

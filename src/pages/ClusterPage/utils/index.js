@@ -2,6 +2,37 @@ import get from 'lodash/get';
 import { v4 as uuidv4 } from 'uuid';
 import { ACC_API } from '../../../constants/config';
 
+export const BACKENDS = {
+	System: {
+		name: 'system',
+		logo: '',
+		text: 'System',
+	},
+	ELASTICSEARCH: {
+		name: 'elasticsearch',
+		logo: '/static/images/logos/elasticsearch.svg',
+	},
+	OPENSEARCH: {
+		name: 'opensearch',
+		logo: '/static/images/logos/opensearch.svg',
+	},
+	SOLR: {
+		name: 'solr',
+		logo: '/static/images/logos/fusion.png',
+	},
+	MONGODB: {
+		name: 'mongodb',
+		logo: '/static/images/logos/mongodb.svg',
+	},
+};
+
+export const capitalizeWord = str => {
+	if (!str || typeof str !== 'string') {
+		return '';
+	}
+
+	return str.charAt(0).toUpperCase() + str.substring(1);
+};
 export const CLUSTER_PLANS = {
 	SANDBOX_2019: '2019-sandbox',
 	HOBBY_2019: '2019-hobby',
@@ -16,6 +47,10 @@ export const CLUSTER_PLANS = {
 	PRODUCTION_2021_1: '2021-production-1',
 	PRODUCTION_2021_2: '2021-production-2',
 	PRODUCTION_2021_3: '2021-production-3',
+	//
+	CLUSTER_SLS_HOBBY: 'reactivesearch-cloud-hobby',
+	CLUSTER_SLS_PRODUCTION: 'reactivesearch-cloud-production',
+	CLUSTER_SLS_ENTERPRISE: 'reactivesearch-cloud-enterprise',
 };
 
 export const ARC_PLANS = {
@@ -60,6 +95,9 @@ export const EFFECTIVE_PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 4.44,
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 0.137,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 1.11,
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 1.11,
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 2.22,
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 4.44,
 };
 
 export const PRICE_BY_PLANS = {
@@ -85,6 +123,9 @@ export const PRICE_BY_PLANS = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 3199,
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 99,
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 799,
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 29,
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 149,
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 2500, // contact us
 };
 
 export const PLAN_LABEL = {
@@ -107,6 +148,9 @@ export const PLAN_LABEL = {
 	[CLUSTER_PLANS.PRODUCTION_2021_3]: 'Production 3',
 	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: 'Standard',
 	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: 'Enterprise',
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: 'Hobby',
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: 'Production',
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: 'Enterprise',
 };
 
 export function getClusters() {
@@ -265,12 +309,17 @@ export function deployCluster(cluster, id) {
 	});
 }
 
-export function deleteCluster(id) {
+export function deleteCluster(id, isSLSCluster = false) {
 	return new Promise((resolve, reject) => {
-		fetch(`${ACC_API}/v1/_delete/${id}`, {
-			method: 'DELETE',
-			credentials: 'include',
-		})
+		fetch(
+			`${ACC_API}/${
+				isSLSCluster ? 'v2/_delete_mtrs' : 'v1/_delete'
+			}/${id}`,
+			{
+				method: 'DELETE',
+				credentials: 'include',
+			},
+		)
 			.then(res => res.json())
 			.then(data => {
 				if (data.error) {
@@ -387,7 +436,40 @@ export function deleteSharedUser(id, email) {
 export function deployMyCluster(body) {
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		fetch(`${ACC_API}/v1/_deploy_recipe/arc`, {
+		fetch(`${ACC_API}/v2/_deploy_recipe/reactivesearch`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => {
+				if (res.status > 300) {
+					hasError = true;
+				}
+				return res.json();
+			})
+			.then(data => {
+				if (hasError) {
+					reject(get(data, 'status.message'));
+				}
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve(data);
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}
+export function deployMySlsCluster(body) {
+	return new Promise((resolve, reject) => {
+		let hasError = false;
+		fetch(`${ACC_API}/v2/_deploy_recipe/multi-tenant-reactivesearch`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -418,18 +500,23 @@ export function deployMyCluster(body) {
 	});
 }
 
-export async function verifyCluster(url) {
+export async function verifyCluster(url, backend, headers = {}) {
 	try {
-		const res = await fetch(`${ACC_API}/v1/_verify_es_connection`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
+		const res = await fetch(
+			`${ACC_API}/v2/_verify_search_engine_connection`,
+			{
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+					...headers,
+				},
+				body: JSON.stringify({
+					url,
+					backend,
+				}),
 			},
-			body: JSON.stringify({
-				elasticsearch_url: url,
-			}),
-		});
+		);
 
 		if (res.status >= 400 && res.status < 500) {
 			const textData = await res.text();
@@ -443,6 +530,7 @@ export async function verifyCluster(url) {
 
 		const data = await res.json();
 		if (
+			backend === BACKENDS.ELASTICSEARCH.name &&
 			data.version &&
 			parseInt(data.version.number.split('.')[0], 10) < 6
 		) {
@@ -620,23 +708,47 @@ export const rotateAPICredentials = (type, clusterId) => {
 };
 
 export const getDistance = (lat1, lon1, lat2, lon2) => {
-	if (lat1 == lat2 && lon1 == lon2) {
+	if (lat1 === lat2 && lon1 === lon2) {
 		return 0;
-	} else {
-		var radlat1 = (Math.PI * lat1) / 180;
-		var radlat2 = (Math.PI * lat2) / 180;
-		var theta = lon1 - lon2;
-		var radtheta = (Math.PI * theta) / 180;
-		var dist =
-			Math.sin(radlat1) * Math.sin(radlat2) +
-			Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-		if (dist > 1) {
-			dist = 1;
-		}
-		dist = Math.acos(dist);
-		dist = (dist * 180) / Math.PI;
-		dist = dist * 60 * 1.1515;
-
-		return dist;
 	}
+	const radlat1 = (Math.PI * lat1) / 180;
+	const radlat2 = (Math.PI * lat2) / 180;
+	const theta = lon1 - lon2;
+	const radtheta = (Math.PI * theta) / 180;
+	let dist =
+		Math.sin(radlat1) * Math.sin(radlat2) +
+		Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	if (dist > 1) {
+		dist = 1;
+	}
+	dist = Math.acos(dist);
+	dist = (dist * 180) / Math.PI;
+	dist = dist * 60 * 1.1515;
+
+	return dist;
 };
+
+export function updateBackend(id, body) {
+	return new Promise((resolve, reject) => {
+		fetch(`${ACC_API}/v2/_update_mtrs_backend_connection/${id}`, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				...body,
+			}),
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.error) {
+					reject(data.error);
+				}
+				resolve();
+			})
+			.catch(e => {
+				reject(e);
+			});
+	});
+}

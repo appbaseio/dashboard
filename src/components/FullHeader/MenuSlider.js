@@ -8,7 +8,7 @@ import { array, bool } from 'prop-types';
 import { media } from '../../utils/media';
 import { ACC_API } from '../../constants/config';
 
-const logoutURL = `${ACC_API}/logout?next=https://appbase.io`;
+const logoutURL = `${ACC_API}/logout?next=https://reactivesearch.io`;
 
 const menuBtn = css`
 	border: 0;
@@ -109,7 +109,7 @@ class MenuSlider extends React.Component {
 						{window.innerWidth < 576 ? (
 							<Menu.Item key="/docs">
 								<a
-									href="https://docs.appbase.io/"
+									href="https://docs.reactivesearch.io/"
 									className={link}
 									target="_blank"
 									rel="noopener noreferrer"

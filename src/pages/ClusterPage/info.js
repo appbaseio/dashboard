@@ -57,6 +57,23 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 	return version && version !== V7_ARC.split('-')[0];
 };
 
+const NEW_ES_VERSIONS = { '7': '7.17.8', '8': '8.6.0', '2': '2.5.0' };
+
+const checkIfESUpdateIsAvailable = version => {
+	const [majorVersion, minorVersion] = version.split('.');
+
+	if (NEW_ES_VERSIONS[majorVersion]) {
+		if (
+			Number(minorVersion) <
+			Number(NEW_ES_VERSIONS[majorVersion].split('.')[1])
+		) {
+			return NEW_ES_VERSIONS[majorVersion];
+		}
+	}
+
+	return false;
+};
+
 class ClusterInfo extends Component {
 	constructor(props) {
 		super(props);
@@ -96,6 +113,11 @@ class ClusterInfo extends Component {
 		clearTimeout(this.timer);
 		clearTimeout(this.statusTimer);
 	}
+
+	isValidSlsCluster = cluster => {
+		if (cluster && cluster.recipe === 'mtrs') return true;
+		return false;
+	};
 
 	init = () => {
 		return getClusterData(get(this, 'props.match.params.id'))
@@ -242,10 +264,12 @@ class ClusterInfo extends Component {
 	};
 
 	deleteCluster = (id = get(this, 'props.match.params.id')) => {
+		const { cluster } = this.state;
 		this.setState({
 			isLoading: true,
 		});
-		deleteCluster(id)
+		const isSLSCluster = this.isValidSlsCluster(cluster);
+		deleteCluster(id, isSLSCluster)
 			.then(() => {
 				this.props.history.push('/');
 			})
@@ -282,7 +306,14 @@ class ClusterInfo extends Component {
 		});
 	};
 
-	renderClusterRegion = (region, provider = 'azure') => {
+	renderClusterRegion = (region, regionProvider = 'azure') => {
+		let provider = regionProvider;
+		if (
+			regionProvider === 'GCP' ||
+			regionProvider === 'gcp' ||
+			!regionProvider
+		)
+			provider = 'gke';
 		if (!region) return null;
 		if (!regions[provider]) return null;
 		const selectedRegion =
@@ -293,7 +324,6 @@ class ClusterInfo extends Component {
 		const { name, flag } = regions[provider][selectedRegion]
 			? regions[provider][selectedRegion]
 			: { name: 'region', flag: `${selectedRegion}.png` };
-
 		return (
 			<div className="region-info">
 				<img src={`/static/images/flags/${flag}`} alt="US" />
@@ -330,6 +360,44 @@ class ClusterInfo extends Component {
 					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
 					status: 'restarted',
 				},
+			};
+
+			const response = await fetch(url, {
+				method: 'PUT',
+				credentials: 'include',
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			const data = await response.json();
+			if (response.status >= 400) {
+				throw new Error(data);
+			}
+			this.init();
+		} catch (err) {
+			message.error('Something went wrong please try again');
+			this.setState({
+				isLoading: false,
+			});
+			console.error(err);
+		}
+	};
+
+	handleESUpgrade = async () => {
+		try {
+			const {
+				cluster: { id, es_version },
+			} = this.state;
+			this.setState({
+				statusFetchCount: 0,
+				isLoading: true,
+			});
+
+			const url = `${ACC_API}/v2/_es_upgrade/${id}`;
+			const body = {
+				target_version: checkIfESUpdateIsAvailable(es_version),
 			};
 
 			const response = await fetch(url, {
@@ -537,7 +605,13 @@ class ClusterInfo extends Component {
 			textAlign: 'center',
 			lineHeight: '36px',
 		};
-
+		const {
+			isPaid,
+			deployment,
+			cluster,
+			isStripeCheckoutOpen,
+		} = this.state;
+		const isSLSCluster = this.isValidSlsCluster(cluster);
 		if (this.state.error) {
 			return this.renderErrorScreen();
 		}
@@ -546,10 +620,11 @@ class ClusterInfo extends Component {
 			if (this.state.loadingError) {
 				return (
 					<div style={vcenter}>
-						Cluster status isn't available yet
+						Cluster status isn&apos;t available yet
 						<br />
-						It typically takes 15-30 minutes before a cluster comes
-						live.
+						{isSLSCluster
+							? 'It typically takes 1-2 minutes before a cluster comes live.'
+							: 'It typically takes 15-30 minutes before a cluster comes live.'}
 						{this.renderClusterAbsentActionButtons()}
 					</div>
 				);
@@ -558,13 +633,6 @@ class ClusterInfo extends Component {
 		}
 
 		if (this.state.isLoading) return <Loader />;
-
-		const {
-			isPaid,
-			deployment,
-			cluster,
-			isStripeCheckoutOpen,
-		} = this.state;
 
 		const isViewer = get(this, 'state.cluster.user_role') === 'viewer';
 		const isExternalCluster = get(this, 'state.cluster.recipe') === 'byoc';
@@ -635,13 +703,42 @@ class ClusterInfo extends Component {
 									className="cluster-card compact"
 								>
 									<div className="info-row">
-										<div>
-											<h4>Region</h4>
-											{this.renderClusterRegion(
-												this.state.cluster.region,
-												this.state.cluster.provider,
-											)}
-										</div>
+										{isSLSCluster ? (
+											<div>
+												<h4>Region</h4>
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'us-central1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'europe-west2-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+
+												<div className="multi-region">
+													{this.renderClusterRegion(
+														'asia-southeast1-a',
+														this.state.cluster
+															.provider,
+													)}
+												</div>
+											</div>
+										) : (
+											<div>
+												<h4>Region</h4>
+												{this.renderClusterRegion(
+													this.state.cluster.region,
+													this.state.cluster.provider,
+												)}
+											</div>
+										)}
 
 										<div>
 											<h4>Pricing Plan</h4>
@@ -671,14 +768,20 @@ class ClusterInfo extends Component {
 											</div>
 										</div>
 
-										<div>
-											<h4>ES Version</h4>
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.es_version}
+												<h4>ES Version</h4>
+												<div>
+													{
+														this.state.cluster
+															.es_version
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
-										{isExternalCluster ? null : (
+										{isExternalCluster ||
+										isSLSCluster ? null : (
 											<div>
 												<h4>Memory / Per Node</h4>
 												<div>
@@ -694,11 +797,20 @@ class ClusterInfo extends Component {
 
 										{isExternalCluster ? null : (
 											<div>
-												<h4>Disk Size / Per Node</h4>
+												<h4>
+													Disk Size{' '}
+													{isSLSCluster ? (
+														<></>
+													) : (
+														<>/ Per Node</>
+													)}
+												</h4>
 												<div>
 													{get(
 														ansibleMachineMarks,
-														`${this.state.cluster.pricing_plan}.storagePerNode`,
+														isSLSCluster
+															? `${this.state.cluster.pricing_plan}.storage`
+															: `${this.state.cluster.pricing_plan}.storagePerNode`,
 														'',
 													)}
 													GB
@@ -706,12 +818,17 @@ class ClusterInfo extends Component {
 											</div>
 										)}
 
-										<div>
-											<h4>Nodes</h4>
+										{!isSLSCluster ? (
 											<div>
-												{this.state.cluster.total_nodes}
+												<h4>Nodes</h4>
+												<div>
+													{
+														this.state.cluster
+															.total_nodes
+													}
+												</div>
 											</div>
-										</div>
+										) : null}
 
 										{this.state.cluster.trial ? (
 											<div>
@@ -793,10 +910,13 @@ class ClusterInfo extends Component {
 												deployment={
 													this.state.deployment
 												}
+												isSLSCluster={isSLSCluster}
 											/>
 											<ClusterExploreRedirect
 												arc={getAddon(
-													'arc',
+													isSLSCluster
+														? 'sls'
+														: 'arc',
 													this.state.deployment,
 												)}
 												clusterName={get(
@@ -822,7 +942,8 @@ class ClusterInfo extends Component {
 												arcDeployment.image),
 										this.state.cluster.recipe,
 									) &&
-									!isViewer && (
+									!isViewer &&
+									!isSLSCluster && (
 										<Alert
 											message="A new reactivesearch.io version is available!"
 											description={
@@ -866,6 +987,66 @@ class ClusterInfo extends Component {
 											}}
 										/>
 									)}
+								{this.state.cluster.es_version &&
+									checkIfESUpdateIsAvailable(
+										this.state.cluster.es_version,
+									) &&
+									!isViewer &&
+									!isSLSCluster &&
+									!isExternalCluster && (
+										<Alert
+											message={`A new ${
+												this.state.cluster
+													.elasticsearch_url
+													? 'Elasticsearch'
+													: 'Opensearch'
+											} version is available!`}
+											description={
+												<div
+													style={{
+														display: 'flex',
+														justifyContent:
+															'space-between',
+														alignItems: 'center',
+													}}
+												>
+													<div>
+														A new version{' '}
+														{checkIfESUpdateIsAvailable(
+															this.state.cluster
+																.es_version,
+														)}{' '}
+														is available now.
+														You&apos;re currently on{' '}
+														{
+															this.state.cluster
+																.es_version
+														}
+														. See what&apos;s new in{' '}
+														<a href="https://github.com/appbaseio/reactivesearch-api/releases">
+															this release
+														</a>
+														.
+													</div>
+													<Button
+														type="primary"
+														ghost
+														onClick={
+															this.handleESUpgrade
+														}
+													>
+														{' '}
+														Update Now
+													</Button>
+												</div>
+											}
+											type="info"
+											showIcon
+											style={{
+												marginBottom: 25,
+											}}
+										/>
+									)}
 
 								<div
 									css={{
@@ -882,6 +1063,7 @@ class ClusterInfo extends Component {
 											this.state.cluster.status ===
 											'active'
 										}
+										isSLSCluster={isSLSCluster}
 									/>
 									<RightContainer>
 										<Switch>
@@ -944,6 +1126,9 @@ class ClusterInfo extends Component {
 															this.handleToken
 														}
 														isPaid={isPaid}
+														isSLSCluster={
+															isSLSCluster
+														}
 													/>
 												)}
 											/>

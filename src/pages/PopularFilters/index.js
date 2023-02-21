@@ -29,7 +29,7 @@ const bannerMessagesAnalytics = {
 			'Understand how to make the most of the popular filters analytics.',
 		buttonText: 'Read Docs',
 		href:
-			'https://docs.appbase.io/docs/analytics/Overview#getting-insights-from-analytics',
+			'https://docs.reactivesearch.io/docs/analytics/Overview#getting-insights-from-analytics',
 	},
 };
 

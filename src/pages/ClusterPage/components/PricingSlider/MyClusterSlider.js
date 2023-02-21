@@ -4,6 +4,7 @@ import { Slider, Tooltip } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 import get from 'lodash/get';
 
+import { array, bool, func, object } from 'prop-types';
 import { clusterInfo } from '../../styles';
 
 export default class PricingSlider extends Component {
@@ -58,6 +59,7 @@ export default class PricingSlider extends Component {
 			active: keys[finalKey],
 			value: active,
 		});
+		this.props.onChange(marks[active]);
 	};
 
 	onAfterChange = () => {
@@ -71,7 +73,12 @@ export default class PricingSlider extends Component {
 	render() {
 		const { marks, active, value } = this.state;
 		const mark = get(marks, active, {});
-		const { sliderProps } = this.props;
+		const {
+			sliderProps,
+			showPPH,
+			showNodesSupported,
+			customCardNode,
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -79,31 +86,61 @@ export default class PricingSlider extends Component {
 					<Slider
 						marks={marks}
 						onChange={this.onChange}
-						onAfterChange={this.onAfterChange}
+						//	onAfterChange={this.onAfterChange}
 						defaultValue={value}
 						step={null}
 						tooltipVisible={false}
 						{...sliderProps}
 					/>
 				</div>
-				<div className="col grey">
-					<div className={clusterInfo}>
-						<div className="cluster-info__item">
-							<div>
-								$
-								<AnimatedNumber
-									value={mark.pph}
-									duration={100}
-									stepPrecision={0}
-								/>
-							</div>
-							<div>Price per hour</div>
+				{customCardNode ? (
+					customCardNode(mark)
+				) : (
+					<div className="col grey">
+						<div className={clusterInfo}>
+							{showPPH ? (
+								<div className="cluster-info__item">
+									<div>
+										$
+										<AnimatedNumber
+											value={mark.pph}
+											duration={100}
+											stepPrecision={0}
+										/>
+									</div>
+									<div>Price per hour</div>
+								</div>
+							) : null}
+							{showNodesSupported ? (
+								<div className="cluster-info__item">
+									<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
+										<div>
+											<AnimatedNumber
+												value={mark.nodes}
+												duration={100}
+												stepPrecision={0}
+											/>{' '}
+											{mark.nodes === 1
+												? 'Node'
+												: 'Nodes'}
+											<QuestionCircleOutlined
+												style={{
+													size: 14,
+													marginLeft: 5,
+												}}
+											/>
+										</div>
+									</Tooltip>
+									<div>Supported</div>
+								</div>
+							) : null}
 						</div>
-						<div className="cluster-info__item">
-							<Tooltip title="Node refers to the total ElasticSearch nodes. As your underlying node count changes, the pricing plan updates dynamically. Learn More">
-								<div>
+						<div className={clusterInfo}>
+							<div>
+								<div className="price">
+									<span>$</span>
 									<AnimatedNumber
-										value={mark.nodes}
+										value={mark.cost}
 										duration={100}
 										stepPrecision={0}
 									/>{' '}
@@ -112,31 +149,34 @@ export default class PricingSlider extends Component {
 										style={{ size: 14, marginLeft: 5 }}
 									/>
 								</div>
-							</Tooltip>
-							<div>Supported</div>
-						</div>
-					</div>
-					<div className={clusterInfo}>
-						<div>
-							<div className="price">
-								<span>$</span>
-								<AnimatedNumber
-									value={mark.cost}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								/mo
+								<h3>Estimated Cost</h3>
 							</div>
-							<h3>Estimated Cost</h3>
+						</div>
+						<div style={{ marginTop: '20px' }}>
+							{this.props.showNoCardNeeded && (
+								<code>No card needed for the trial</code>
+							)}
 						</div>
 					</div>
-					<div style={{ marginTop: '20px' }}>
-						{this.props.showNoCardNeeded && (
-							<code>No card needed for the trial</code>
-						)}
-					</div>
-				</div>
+				)}
 			</Fragment>
 		);
 	}
 }
+
+PricingSlider.defaultProps = {
+	showPPH: true,
+	showNodesSupported: true,
+	showNoCardNeeded: false,
+	sliderProps: {},
+};
+
+PricingSlider.propTypes = {
+	sliderProps: object,
+	showPPH: bool,
+	showNodesSupported: bool,
+	showNoCardNeeded: bool,
+	customCardNode: func,
+	onChange: func,
+	marks: array,
+};

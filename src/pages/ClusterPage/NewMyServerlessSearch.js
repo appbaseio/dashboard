@@ -1,86 +1,77 @@
+/* eslint-disable no-plusplus */
 import React, { Fragment, Component } from 'react';
-import { ArrowRightOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Modal, Button, Tabs, Tag, Tooltip, Row, Col } from 'antd';
+import { Modal, Button, Tag, Tooltip, Row, Col, Alert } from 'antd';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
+import { ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC, REACTIVESEARCH_BYOC, regionsKeyMap } from './new';
+
 import {
-	deployMyCluster,
+	deployMySlsCluster,
 	getClusters,
 	verifyCluster,
 	createSubscription,
-	ARC_PLANS,
 	PLAN_LABEL,
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
-	getDistance,
 	BACKENDS,
 	capitalizeWord,
+	CLUSTER_PLANS,
 } from './utils';
-import { regions, regionsByPlan } from './utils/regions';
-import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
-import KeyValueAdder from '../../components/KeyValueAdder';
+import {
+	clusterContainer,
+	card,
+	fadeOutStyles,
+	settingsItem,
+	clusterInfo,
+} from './styles';
 
 let interval;
-const { TabPane } = Tabs;
+
+const BLACK_LISTED_BACKENDS = [];
 
 export const machineMarks = {
-	[ARC_PLANS.HOSTED_ARC_BASIC]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_BASIC],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC],
-		plan: ARC_PLANS.HOSTED_ARC_BASIC,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC],
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+		bandWidth: 1,
+		postBandWidthConsumption: 3,
+		dataStorage: 1,
+		searchIndices: 2,
 	},
-	[ARC_PLANS.HOSTED_ARC_BASIC_V2]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_BASIC_V2],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC_V2],
-		plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_BASIC_V2],
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
+		bandWidth: 10,
+		postBandWidthConsumption: 3,
+		dataStorage: 10,
+		searchIndices: 4,
 	},
-	[ARC_PLANS.HOSTED_ARC_STANDARD]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_STANDARD],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD],
-		plan: ARC_PLANS.HOSTED_ARC_STANDARD,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD],
-	},
-	[ARC_PLANS.HOSTED_ARC_ENTERPRISE]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
-		plan: ARC_PLANS.HOSTED_ARC_ENTERPRISE,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE],
-	},
-	[ARC_PLANS.HOSTED_ARC_STANDARD_2021]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
-		plan: ARC_PLANS.HOSTED_ARC_STANDARD_2021,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
-	},
-	[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021]: {
-		label: PLAN_LABEL[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
-		nodes: 1,
-		cost: PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
-		plan: ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021,
-		pph: EFFECTIVE_PRICE_BY_PLANS[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
+		bandWidth: 100,
+		postBandWidthConsumption: 3,
+		dataStorage: null,
+		searchIndices: 10,
 	},
 };
 
 export const priceSlider = {
-	0: machineMarks[ARC_PLANS.HOSTED_ARC_BASIC_V2],
-	50: machineMarks[ARC_PLANS.HOSTED_ARC_STANDARD_2021],
-	100: machineMarks[ARC_PLANS.HOSTED_ARC_ENTERPRISE_2021],
+	0: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+	50: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+	100: machineMarks[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
 };
 
 const namingConvention = {
@@ -98,8 +89,7 @@ class NewMyCluster extends Component {
 			clusterName: '',
 			changed: false,
 			clusterURL: '',
-			pricing_plan: ARC_PLANS.HOSTED_ARC_BASIC_V2,
-			region: 'us-central1',
+			pricing_plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
 			verifyingURL: false,
 			error: '',
 			isInvalidURL: false,
@@ -111,18 +101,12 @@ class NewMyCluster extends Component {
 			verifiedCluster: false,
 			isStripeCheckoutOpen: false,
 			activeKey: 'america',
-			pingTimeStatus: {
-				time: 0,
-				isLoading: true,
-			},
 			backend: BACKENDS.ELASTICSEARCH.name,
-			verifyClusterHeaders: {},
+			setSearchEngine: false,
 		};
 	}
 
 	componentDidMount() {
-		this.getDefaultLocation();
-
 		const slug = generateSlug(2);
 		this.setState({
 			clusterName: slug,
@@ -183,14 +167,14 @@ class NewMyCluster extends Component {
 	};
 
 	handleVerify = async () => {
-		const { clusterURL, backend, verifyClusterHeaders } = this.state;
+		const { clusterURL, backend } = this.state;
 		if (clusterURL) {
 			this.setState({
 				verifyingURL: true,
 				verifiedCluster: false,
 				clusterVersion: '',
 			});
-			verifyCluster(clusterURL, backend, verifyClusterHeaders)
+			verifyCluster(clusterURL, backend)
 				.then(data => {
 					const version = get(data, 'version.number', '');
 					this.setState({
@@ -232,21 +216,12 @@ class NewMyCluster extends Component {
 					error: errorMessage,
 				});
 				document.getElementById('cluster-name').focus();
-				return;
 			}
 
-			if (!this.state.region) {
-				this.setState({
-					error: 'Please select a region to deploy your cluster',
-				});
-				return;
-			}
-
-			if (!this.state.clusterURL) {
+			if (this.state.setSearchEngine && !this.state.clusterURL) {
 				this.setState({
 					error: 'Please enter URL',
 				});
-				return;
 			}
 
 			this.setState({
@@ -261,14 +236,16 @@ class NewMyCluster extends Component {
 			}
 
 			const body = {
-				url: this.state.clusterURL,
-				backend: this.state.backend,
-				reactivesearch_image: REACTIVESEARCH_BYOC,
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
-				location: this.state.region,
-				arc_image: ARC_BYOC,
-				is_multi_zone: false,
+				backend: this.state.setSearchEngine
+					? this.state.backend
+					: 'system',
+				...(this.state.setSearchEngine
+					? {
+							backend_url: this.state.clusterURL,
+					  }
+					: {}),
 				...obj,
 			};
 
@@ -276,8 +253,10 @@ class NewMyCluster extends Component {
 				body.enable_monitoring = true;
 			}
 
-			const clusterRes = await deployMyCluster(body);
-			setClusterId(clusterRes.cluster.id);
+			const clusterRes = await deployMySlsCluster(body);
+			if (clusterRes.cluster && clusterRes.cluster.id) {
+				setClusterId(clusterRes.cluster.id);
+			}
 			if (isDeployTemplate && clusterRes.cluster.id) {
 				setActiveKey('3');
 				setTabsValidated(true);
@@ -291,6 +270,8 @@ class NewMyCluster extends Component {
 					...stripeData,
 				});
 				this.props.history.push('/');
+			} else {
+				this.props.history.push('/');
 			}
 		} catch (e) {
 			this.setState({
@@ -298,131 +279,8 @@ class NewMyCluster extends Component {
 				deploymentError: e,
 				showError: true,
 			});
+			console.error('Error to create cluster', e);
 		}
-	};
-
-	renderRegions = () => {
-		const {
-			pricing_plan: pricingPlan,
-			activeKey,
-			pingTimeStatus,
-		} = this.state;
-		const provider = 'gke';
-		const allowedRegions = regionsByPlan[provider][pricingPlan];
-
-		const asiaRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'asia',
-		);
-		const euRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'eu',
-		);
-		const usRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'us',
-		);
-		const otherRegions = Object.keys(regions[provider]).filter(
-			item => !regions[provider][item].continent,
-		);
-
-		const regionsToRender = data => (
-			<>
-				<div className="region-list">
-					{data.map(region => {
-						const regionValue = regions[provider][region];
-						const isDisabled = allowedRegions
-							? !allowedRegions.includes(region)
-							: false;
-						return (
-							// eslint-disable-next-line
-							<li
-								key={region}
-								onClick={() => {
-									this.setConfig('region', region);
-									this.setConfig('pingTimeStatus', {
-										time: 0,
-										isLoading: true,
-									});
-									if (interval) clearInterval(interval);
-									this.getPingTime(region);
-								}}
-								className={
-									// eslint-disable-next-line
-									isDisabled
-										? 'disabled'
-										: this.state.region === region
-										? 'active'
-										: ''
-								}
-							>
-								{regionValue.flag && (
-									<img
-										src={`/static/images/flags/${regionValue.flag}`}
-										alt={regionValue.name}
-									/>
-								)}
-								<span>{regionValue.name}</span>
-							</li>
-						);
-					})}
-				</div>
-				<div className="ping-time-container">
-					{pingTimeStatus.time ? (
-						<>
-							Expected ping latency for{' '}
-							{regions[provider][this.state.region].name} (
-							{this.state.region}) from your location is:&nbsp;
-							<div>{pingTimeStatus.time}ms </div>
-							{pingTimeStatus.isLoading ? (
-								<img
-									src="https://cloud.headwayapp.co/changelogs_images/images/big/000/016/393-90c8090df0a63e76991bc6aae7b46c87d8cdb51e.gif"
-									alt="hotspot_pulse-1.gif"
-									width="35"
-									height="35"
-								/>
-							) : null}
-						</>
-					) : null}
-				</div>
-			</>
-		);
-
-		const style = { width: '100%' };
-		if (provider === 'azure') {
-			return (
-				<ul style={style} className="region-list">
-					{regionsToRender(Object.keys(regions[provider]))}
-				</ul>
-			);
-		}
-
-		return (
-			<Tabs
-				size="large"
-				style={style}
-				activeKey={activeKey}
-				onChange={key => this.setActiveKey(key)}
-			>
-				<TabPane tab="America" key="america">
-					<ul className="regions-list-container">
-						{regionsToRender(usRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Asia" key="asia">
-					<ul className="regions-list-container">
-						{regionsToRender(asiaRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Europe" key="europe">
-					<ul className="regions-list-container">
-						{regionsToRender(euRegions)}
-					</ul>
-				</TabPane>
-				<TabPane tab="Other Regions" key="other">
-					<ul className="regions-list-container">
-						{regionsToRender(otherRegions)}
-					</ul>
-				</TabPane>
-			</Tabs>
-		);
 	};
 
 	handleError = () => {
@@ -455,104 +313,99 @@ class NewMyCluster extends Component {
 		this.setState({ isStripeCheckoutOpen: false });
 	};
 
-	getPingTime = region => {
-		const provider = 'gke';
-		let url = '';
-		if (provider === 'gke') {
-			url = `https://${region}-ezn5kimndq-${regions[provider][region].code2}.a.run.app/ping`;
-		} else {
-			url = `https://ec2.${region}.amazonaws.com/ping?cache_buster=${Date.now()}`;
-		}
-
-		let counter = 1;
-		let total = 0;
-		interval = setInterval(() => {
-			if (counter > 15) {
-				this.setState({
-					pingTimeStatus: {
-						time: Math.round(total / 3),
-						isLoading: false,
-					},
-				});
-				clearInterval(interval);
-			} else {
-				this.checkResponseTime(url)
-					.then(res => {
-						this.setState({
-							pingTimeStatus: {
-								time: Math.round(res),
-								isLoading: true,
-							},
-						});
-						if (counter > 12) {
-							total += res;
-						}
-						counter += 1;
-					})
-					.catch(err => {
-						counter += 1;
-						console.error(err);
-					});
-			}
-		}, 2000);
-	};
-
 	checkResponseTime = async url => {
 		const time1 = performance.now();
 		await fetch(url, { method: 'GET', mode: 'no-cors' });
 		return performance.now() - time1;
 	};
 
-	getDefaultLocation = async () => {
-		const provider = 'gke';
-		fetch(`https://geolocation-db.com/json/`)
-			.then(res => res.json())
-			.then(json => {
-				if (json.latitude && json.longitude) {
-					const providerRegions = Object.values(regions[provider]);
-					let minDist = {
-						...providerRegions[0],
-						dist: Number.MAX_SAFE_INTEGER,
-					};
-					// eslint-disable-next-line no-restricted-syntax
-					for (const [key, value] of Object.entries(
-						regions[provider],
-					)) {
-						const distance = getDistance(
-							json.latitude,
-							json.longitude,
-							value.lat,
-							value.lon,
-						);
-						if (minDist.dist > distance) {
-							minDist = {
-								dist: distance,
-								name: key,
-								activeKey: regionsKeyMap[value.continent],
-							};
-						}
-					}
-					if (interval) clearInterval(interval);
-					this.getPingTime(minDist.name);
-
-					this.setState({
-						region: minDist.name,
-						activeKey: minDist.activeKey,
-					});
-				} else {
-					this.setState({
-						region: 'us-central1',
-						activeKey: 'america',
-					});
-				}
-			})
-			.catch(err => console.error(err));
-	};
-
 	setActiveKey = key => {
 		this.setState({
 			activeKey: key,
 		});
+	};
+
+	renderCustomPriceCard = mark => {
+		return (
+			<div className="col grey">
+				<div className={clusterInfo}>
+					<div className="mb-10">
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							{mark.cost ? (
+								<>
+									<span>$</span>
+									<AnimatedNumber
+										value={mark.cost}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									/mo
+								</>
+							) : (
+								'Contact Us'
+							)}
+						</div>
+						<span>
+							{mark.cost
+								? 'Estimated Cost'
+								: 'Annual billing available'}
+						</span>
+					</div>
+				</div>
+				<div className={clusterInfo}>
+					<div className="mb-10">
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							<AnimatedNumber
+								value={mark.bandWidth}
+								duration={100}
+								stepPrecision={0}
+							/>{' '}
+							GB data bandwidth included
+						</div>
+						<span>
+							${mark.postBandWidthConsumption}/GB thereafter based
+							on usage
+						</span>
+					</div>
+				</div>
+				<div className={clusterInfo}>
+					<div className="mb-10">
+						<div
+							className="price"
+							css={`
+								font-size: 20px !important;
+							`}
+						>
+							{mark.dataStorage ? (
+								<>
+									<AnimatedNumber
+										value={mark.dataStorage}
+										duration={100}
+										stepPrecision={0}
+									/>{' '}
+									GB data storage
+								</>
+							) : (
+								'Unlimited Data Storage'
+							)}
+						</div>
+						<span>
+							{mark.searchIndices} search indexes included
+						</span>
+					</div>
+				</div>
+			</div>
+		);
 	};
 
 	render() {
@@ -581,17 +434,15 @@ class NewMyCluster extends Component {
 				{!isDeployTemplate ? (
 					<>
 						<FullHeader clusters={activeClusters} isCluster />
-						<Header compact style={{ padding: '0 50px' }}>
+						<Header compact>
 							<Row
 								type="flex"
 								justify="space-between"
 								gutter={16}
+								style={{ padding: '2rem' }}
 							>
 								<Col md={18}>
-									<h2>
-										Deploy ReactiveSearch for your
-										Elasticsearch or OpenSearch cluster
-									</h2>
+									<h2>Create a Serverless Search Instance</h2>
 									<Row>
 										<Col span={18}>
 											<p>
@@ -610,10 +461,10 @@ class NewMyCluster extends Component {
 										paddingBottom: 20,
 									}}
 								>
-									<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+									<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
 										<Button
 											size="large"
-											type="primary"
+											type="default"
 											target="_blank"
 											rel="noopener noreferrer"
 											onClick={() => {
@@ -623,9 +474,9 @@ class NewMyCluster extends Component {
 													'/clusters/new',
 												);
 											}}
-											icon={<QuestionCircleOutlined />}
+											icon={<InfoCircleOutlined />}
 										>
-											Don&apos;t have a Cluster
+											Setup Elasticsearch instead
 										</Button>
 									</Tooltip>
 								</Col>
@@ -679,17 +530,10 @@ class NewMyCluster extends Component {
 										isUsingClusterTrial &&
 										this.state.clusters.length < 1
 									}
+									showPPH={false}
+									showNodesSupported={false}
+									customCardNode={this.renderCustomPriceCard}
 								/>
-							</div>
-
-							<div className={card}>
-								<div className="col light">
-									<h3>Pick a region</h3>
-									<p>All around the globe</p>
-								</div>
-								<div className="col grow region-container">
-									{this.renderRegions()}
-								</div>
 							</div>
 
 							<div className={card}>
@@ -751,79 +595,116 @@ class NewMyCluster extends Component {
 								</div>
 							</div>
 
-							<div className={card}>
-								<div className="col light">
-									<h3> Choose search engine </h3>
-								</div>
-								<div>
-									<div
-										className={settingsItem}
-										css={{
-											padding: 30,
-											flexWrap: 'wrap',
-											gap: '2rem',
-										}}
+							{this.state.setSearchEngine ? (
+								<div className={card}>
+									<Button
+										size="small"
+										onClick={() =>
+											this.setState({
+												setSearchEngine: false,
+												backend: '',
+												clusterURL: '',
+											})
+										}
+										css={`
+											width: max-content;
+											position: absolute;
+											right: 0;
+											border: none;
+										`}
 									>
-										{Object.values(BACKENDS).map(
-											({ name: backend, logo, text }) => {
-												return (
-													<Button
-														key={backend}
-														type={
-															backend ===
-															this.state.backend
-																? 'primary'
-																: 'default'
-														}
-														size="large"
-														css={{
-															height:
-																'160px !important',
-															marginRight: 20,
-															backgroundColor:
-																backend ===
-																this.state
-																	.backend
-																	? '#eaf5ff'
-																	: '#fff',
-															minWidth: '152px',
-														}}
-														className={
-															backend ===
-															this.state.backend
-																? fadeOutStyles
-																: ''
-														}
-														onClick={() => {
-															this.setState({
-																backend,
-															});
-														}}
-													>
-														{logo ? (
-															<img
-																width="120"
-																src={logo}
-																alt={`${backend} logo`}
-															/>
-														) : (
-															<span
-																css={`
-																	font-size: 1.4rem;
-																	font-weight: 400;
-																	color: black;
-																`}
-															>
-																{text}
-															</span>
-														)}
-													</Button>
-												);
-											},
-										)}
+										╳
+									</Button>
+									<div className="col light">
+										<h3> Choose search engine </h3>
 									</div>
-									{this.state.backend !==
-										BACKENDS.System.name && (
+									<div>
+										<div
+											className={settingsItem}
+											css={{
+												padding: 30,
+												flexWrap: 'wrap',
+												gap: '2rem',
+											}}
+										>
+											{Object.values(BACKENDS)
+												.filter(
+													backendObj =>
+														!BLACK_LISTED_BACKENDS.includes(
+															backendObj.name,
+														),
+												)
+												.map(
+													({
+														name: backend,
+														logo,
+														text,
+													}) => {
+														return (
+															<Button
+																key={backend}
+																type={
+																	backend ===
+																	this.state
+																		.backend
+																		? 'primary'
+																		: 'default'
+																}
+																size="large"
+																css={{
+																	height:
+																		'160px !important',
+																	marginRight: 20,
+																	backgroundColor:
+																		backend ===
+																		this
+																			.state
+																			.backend
+																			? '#eaf5ff'
+																			: '#fff',
+																	minWidth:
+																		'152px',
+																}}
+																className={
+																	backend ===
+																	this.state
+																		.backend
+																		? fadeOutStyles
+																		: ''
+																}
+																onClick={() => {
+																	this.setState(
+																		{
+																			backend,
+																		},
+																	);
+																}}
+															>
+																{logo ? (
+																	<img
+																		width="120"
+																		src={
+																			logo
+																		}
+																		alt={`${backend} logo`}
+																	/>
+																) : (
+																	<span
+																		css={`
+																			font-size: 1.4rem;
+																			font-weight: 400;
+																			color: black;
+																		`}
+																	>
+																		{text}
+																	</span>
+																)}
+															</Button>
+														);
+													},
+												)}
+										</div>
+
 										<div
 											className="col grow vcenter"
 											css={{
@@ -839,7 +720,7 @@ class NewMyCluster extends Component {
 												css={{
 													width: '100%',
 													maxWidth: 400,
-													marginBottom: 33,
+													marginBottom: 10,
 													outline: 'none',
 													border:
 														isInvalidURL &&
@@ -858,14 +739,6 @@ class NewMyCluster extends Component {
 														e.target.value,
 													)
 												}
-											/>{' '}
-											<KeyValueAdder
-												title="Headers (optional)"
-												onUpdateItems={headers => {
-													this.setState({
-														verifyClusterHeaders: headers,
-													});
-												}}
 											/>
 											<Button
 												onClick={this.handleVerify}
@@ -876,6 +749,7 @@ class NewMyCluster extends Component {
 											>
 												Verify Connection
 											</Button>
+
 											{verifiedCluster ? (
 												<Tag
 													style={{ marginTop: 10 }}
@@ -885,6 +759,7 @@ class NewMyCluster extends Component {
 													Detected: {clusterVersion}
 												</Tag>
 											) : null}
+
 											{isInvalidURL ? (
 												<p
 													style={{
@@ -916,9 +791,47 @@ class NewMyCluster extends Component {
 												</p>
 											) : null}
 										</div>
-									)}
+									</div>
 								</div>
-							</div>
+							) : (
+								<Alert
+									message={`Serverless Search provides you with ${
+										machineMarks[this.state.pricing_plan]
+											.searchIndices
+									} geo-distributed search indexes on Elasticsearch out of the box.`}
+									description={
+										<div
+											css={`
+												width: 100%;
+												display: flex;
+												align-items: center;
+												justify-content: space-between;
+												gap: 1rem;
+											`}
+										>
+											<span>
+												You can optionally configure
+												your own search engine instead
+												for dedicated access. This can
+												also be done later.
+											</span>
+											<Button
+												size="small"
+												onClick={() =>
+													this.setState({
+														setSearchEngine: true,
+													})
+												}
+											>
+												Configure Search Engine
+											</Button>
+										</div>
+									}
+									style={{ marginBottom: '1rem' }}
+									type="info"
+								/>
+							)}
+
 							<div
 								style={{ textAlign: 'right', marginBottom: 40 }}
 							>
@@ -932,7 +845,24 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{(isUsingClusterTrial &&
+
+								<Button
+									type="primary"
+									size="large"
+									onClick={this.createCluster}
+								>
+									{isDeployTemplate ? (
+										<>
+											Deploy cluster with pipeline &nbsp;
+											{pipeline}
+										</>
+									) : (
+										<>Create Cluster</>
+									)}
+									<ArrowRightOutlined />
+								</Button>
+
+								{/* {(isUsingClusterTrial &&
 									this.state.pricing_plan !==
 										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
 								clusters.length > 0 ? (
@@ -941,9 +871,10 @@ class NewMyCluster extends Component {
 										size="large"
 										disabled={
 											!this.validateClusterName() ||
-											!this.state.region ||
-											!this.state.clusterURL ||
-											!this.state.verifiedCluster
+											(this.state.setSearchEngine
+												? !this.state.clusterURL ||
+												  !this.state.verifiedCluster
+												: false)
 										}
 										onClick={this.handleStripeModal}
 									>
@@ -959,7 +890,10 @@ class NewMyCluster extends Component {
 												cluster
 											</>
 										)}
-										<ArrowRightOutlined />
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
 									</Button>
 								) : (
 									<Button
@@ -976,9 +910,12 @@ class NewMyCluster extends Component {
 										) : (
 											<>Create Cluster</>
 										)}
-										<ArrowRightOutlined />
+										<Icon
+											type="arrow-right"
+											theme="outlined"
+										/>
 									</Button>
-								)}
+								)} */}
 							</div>
 						</article>
 					</section>

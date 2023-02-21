@@ -124,7 +124,6 @@ const PrivateRoute = ({
 			if (!token_id) {
 				token_id = (await getIdTokenClaims()).__raw;
 			}
-			console.log('accessToken', accessToken);
 			if (accessToken) {
 				window.localStorage.setItem('AUTH_0_ACCESS_TOKEN', accessToken);
 				injectAuthTokenHeaderIntoFetchGlobally();
@@ -254,7 +253,6 @@ const PrivateRoute = ({
 		return <Loader />;
 	}
 	if (isAuthenticatedState && (!user || !user.data)) {
-		console.log('user', user);
 		return !user.error?.actual?.action?.email_verification ? (
 			<Loader />
 		) : (

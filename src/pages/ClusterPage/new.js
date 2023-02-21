@@ -1,7 +1,7 @@
 import {
 	ArrowRightOutlined,
+	InfoCircleOutlined,
 	InfoCircleTwoTone,
-	QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
 import { get } from 'lodash';
@@ -53,6 +53,7 @@ export const V7_ARC = '8.10.0-cluster';
 export const V6_ARC = '8.10.0-cluster';
 export const ARC_BYOC = '8.10.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
+export const REACTIVESEARCH_BYOC = '8.4.0-byoc';
 
 export const arcVersions = {
 	7: V7_ARC,
@@ -195,6 +196,28 @@ export const ansibleMachineMarks = {
 		storagePerNode: 999,
 		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
 	},
+
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+		storage: 1,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
+		storage: 10,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
+		storage: 10,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+	},
 };
 
 export const machineMarks = {
@@ -269,7 +292,6 @@ class NewCluster extends Component {
 	}
 
 	componentDidMount() {
-		const { region } = this.state;
 		this.getDefaultLocation();
 
 		const slug = generateSlug(2);
@@ -340,11 +362,12 @@ class NewCluster extends Component {
 						if (counter > 12) {
 							total += res;
 						}
-						counter++;
 					})
 					.catch(err => {
-						counter++;
 						console.error(err);
+					})
+					.finally(() => {
+						counter += 1;
 					});
 			}
 		}, 2000);
@@ -368,6 +391,7 @@ class NewCluster extends Component {
 						dist: Number.MAX_SAFE_INTEGER,
 					};
 
+					// eslint-disable-next-line no-restricted-syntax
 					for (const [key, value] of Object.entries(
 						regions[provider],
 					)) {
@@ -809,10 +833,10 @@ class NewCluster extends Component {
 							<Row>
 								<Col span={18}>
 									<p>
-										Create a new ElasticSearch or OpenSearch
+										Create a new Elasticsearch or OpenSearch
 										cluster{' '}
 										<a
-											href="https://docs.appbase.io"
+											href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 											rel="noopener noreferrer"
 											target="_blank"
 										>
@@ -830,21 +854,21 @@ class NewCluster extends Component {
 								paddingBottom: 20,
 							}}
 						>
-							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside reactivesearch.io and get a better security, analytics, and  development experience.">
+							<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
 								<Button
 									size="large"
-									type="primary"
+									type="default"
 									target="_blank"
 									rel="noopener noreferrer"
 									onClick={() => {
 										if (interval) clearInterval(interval);
 										this.props.history.push(
-											'/clusters/new/my-cluster',
+											'/new/serverless-search',
 										);
 									}}
-									icon={<QuestionCircleOutlined />}
+									icon={<InfoCircleOutlined />}
 								>
-									Already have a Cluster
+									Go to Serverless Search instead
 								</Button>
 							</Tooltip>
 						</Col>
@@ -916,7 +940,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: 160,
+												height: '160px',
 												marginRight: 20,
 												backgroundColor:
 													provider === 'gke'
@@ -960,7 +984,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: 160,
+												height: '160px',
 												backgroundColor:
 													provider === 'aws'
 														? '#eaf5ff'
@@ -1026,6 +1050,7 @@ class NewCluster extends Component {
 										id="cluster-name"
 										type="name"
 										css={{
+											height: '160px',
 											width: '100%',
 											maxWidth: 400,
 											marginBottom: 10,
@@ -1068,6 +1093,46 @@ class NewCluster extends Component {
 								>
 									<div className={esContainer}>
 										<Button
+											type={
+												this.state.esFlavor === 'es'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											style={{
+												height: '160px',
+												marginRight: 20,
+												backgroundColor:
+													this.state.esFlavor === 'es'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											className={
+												this.state.esFlavor === 'es'
+													? fadeOutStyles
+													: ''
+											}
+											onClick={() => {
+												this.setConfig(
+													'esFlavor',
+													'es',
+												);
+												this.setConfig(
+													'clusterVersion',
+													esVersions[0],
+												);
+											}}
+										>
+											<img
+												width="150"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>Elasticsearch by Elastic</p>
+									</div>
+									<div className={esContainer}>
+										<Button
 											size="large"
 											type={
 												this.state.esFlavor ===
@@ -1076,7 +1141,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: 160,
+												height: '160px',
 												backgroundColor:
 													this.state.esFlavor ===
 													'opensearch'
@@ -1213,7 +1278,7 @@ class NewCluster extends Component {
 												}
 												size="large"
 												style={{
-													height: 160,
+													height: '160px',
 													width: '100%',
 													color: '#000',
 													border: '1px solid #1890ff',
@@ -1257,7 +1322,7 @@ class NewCluster extends Component {
 														: 'default'
 												}
 												style={{
-													height: 160,
+													height: '160px',
 													width: '100%',
 													backgroundColor:
 														this.state
@@ -1321,8 +1386,8 @@ class NewCluster extends Component {
 												}}
 											/>
 											<div>
-												We don't recommend adding Kibana
-												on Sandbox instances.
+												We don&apos;t recommend adding
+												Kibana on Sandbox instances.
 											</div>
 										</div>
 									)}
@@ -1411,9 +1476,11 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 	clusterTrialEndDate: get(state, '$getUserPlan.cluster_tier_validity') || 0,
 });
+
 NewCluster.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
 	clusterTrialEndDate: PropTypes.number,
 };
+
 export default connect(mapStateToProps, null)(NewCluster);
