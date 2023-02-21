@@ -400,7 +400,7 @@ class ClusterPage extends Component {
 									as security, analytics, better developer
 									experience.{' '}
 									<a
-										href="docs.appbase.io"
+										href="docs.reactivesearch.io"
 										target="_blank"
 										rel="noopener norefferer"
 									>
@@ -712,7 +712,7 @@ class ClusterPage extends Component {
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Welcome to Appbase Clusters</h2>
+							<h2>Welcome to ReactiveSearch Clusters</h2>
 
 							<Row>
 								<Col lg={18}>
@@ -836,7 +836,7 @@ class ClusterPage extends Component {
 							<h2>My Clusters</h2>
 
 							{this.renderClusterHeading(
-								'Active Appbase Clusters',
+								'Active ReactiveSearch Clusters',
 								activeClusters.length,
 							)}
 							{activeClusters.length ? (
