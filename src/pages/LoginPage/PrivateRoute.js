@@ -46,6 +46,8 @@ const PrivateRoute = ({
 	loadAppbaseUser,
 	setAppbaseUser,
 	setAppbaseUserError,
+	fetchUserPlan,
+	setApps,
 	...rest
 }) => {
 	const {
@@ -142,8 +144,10 @@ const PrivateRoute = ({
 					return;
 				}
 
-				const { user: userObj } = res;
+				const { user: userObj, apps } = res;
 				setAppbaseUser(userObj);
+				setApps(apps);
+				fetchUserPlan();
 			}
 		} catch (error) {
 			console.error('🚀 Error getting user from ACCAPI', error);
@@ -278,6 +282,8 @@ PrivateRoute.propTypes = {
 	loadAppbaseUser: PropTypes.func.isRequired,
 	setAppbaseUser: PropTypes.func.isRequired,
 	setAppbaseUserError: PropTypes.func.isRequired,
+	fetchUserPlan: PropTypes.func.isRequired,
+	setApps: PropTypes.func.isRequired,
 };
 
 export default PrivateRoute;

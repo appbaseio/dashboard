@@ -10,7 +10,8 @@ import Loader from './components/Loader';
 import Logo from './components/Logo';
 import PrivateRoute from './pages/LoginPage/PrivateRoute';
 import Wrapper from './pages/Wrapper';
-import { loadUser, setUser, setUserError } from './actions';
+import { loadApps, loadUser, setUser, setUserError } from './actions';
+import { getUserPlan } from './batteries/modules/actions';
 
 Sentry.init({
 	dsn: 'https://8e07fb23ba8f46d8a730e65496bb7f00@sentry.io/58038',
@@ -42,6 +43,8 @@ class Dashboard extends Component {
 			setAppbaseUser,
 			loadAppbaseUser,
 			setAppbaseUserError,
+			fetchUserPlan,
+			setApps,
 		} = this.props;
 		const { error } = this.state;
 
@@ -96,6 +99,8 @@ class Dashboard extends Component {
 						loadAppbaseUser={loadAppbaseUser}
 						component={() => <Wrapper user={user} />}
 						setAppbaseUserError={setAppbaseUserError}
+						fetchUserPlan={fetchUserPlan}
+						setApps={setApps}
 					/>
 				</Fragment>
 			</Router>
@@ -108,6 +113,8 @@ Dashboard.propTypes = {
 	loadAppbaseUser: PropTypes.func.isRequired,
 	setAppbaseUser: PropTypes.func.isRequired,
 	setAppbaseUserError: PropTypes.func.isRequired,
+	fetchUserPlan: PropTypes.func.isRequired,
+	setApps: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({
@@ -118,6 +125,8 @@ const mapDispatchToProps = dispatch => ({
 	loadAppbaseUser: () => dispatch(loadUser()),
 	setAppbaseUser: userObj => dispatch(setUser(userObj)),
 	setAppbaseUserError: errorObj => dispatch(setUserError(errorObj)),
+	fetchUserPlan: () => dispatch(getUserPlan()),
+	setApps: apps => dispatch(loadApps(apps)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
