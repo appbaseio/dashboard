@@ -43,15 +43,15 @@ const { TabPane } = Tabs;
 const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-const esVersions = ['8.5.0', '7.17.7'];
+const esVersions = ['8.6.1', '7.17.8'];
 
-const openSearchVersions = ['2.3.0'];
+const openSearchVersions = ['2.5.0'];
 
 let interval;
 
-export const V7_ARC = '8.9.0-cluster';
-export const V6_ARC = '8.9.0-cluster';
-export const ARC_BYOC = '8.9.0-byoc';
+export const V7_ARC = '8.10.0-cluster';
+export const V6_ARC = '8.10.0-cluster';
+export const ARC_BYOC = '8.10.0-byoc';
 export const V5_ARC = 'v5-0.0.1';
 export const REACTIVESEARCH_BYOC = '8.4.0-byoc';
 
@@ -278,7 +278,7 @@ class NewCluster extends Component {
 			restore_from: null,
 			showError: false,
 			isClusterLoading: true,
-			esFlavor: 'es',
+			esFlavor: 'opensearch',
 			provider,
 			visualization: 'none',
 			isStripeCheckoutOpen: false,
@@ -1081,7 +1081,7 @@ class NewCluster extends Component {
 							</div>
 							<div className={card}>
 								<div className="col light">
-									<h3> Choose Elasticsearch Flavor </h3>
+									<h3> Choose Search Engine </h3>
 								</div>
 								<div
 									className={settingsItem}
@@ -1170,7 +1170,47 @@ class NewCluster extends Component {
 												alt="Open Search"
 											/>
 										</Button>
-										<p>OpenSearch by Amazon</p>
+										<p>OpenSearch</p>
+									</div>
+									<div className={esContainer}>
+										<Button
+											type={
+												this.state.esFlavor === 'es'
+													? 'primary'
+													: 'default'
+											}
+											size="large"
+											style={{
+												height: 160,
+												marginRight: 20,
+												backgroundColor:
+													this.state.esFlavor === 'es'
+														? '#eaf5ff'
+														: '#fff',
+											}}
+											className={
+												this.state.esFlavor === 'es'
+													? fadeOutStyles
+													: ''
+											}
+											onClick={() => {
+												this.setConfig(
+													'esFlavor',
+													'es',
+												);
+												this.setConfig(
+													'clusterVersion',
+													esVersions[0],
+												);
+											}}
+										>
+											<img
+												width="150"
+												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
+												alt="Elastic"
+											/>
+										</Button>
+										<p>Elasticsearch</p>
 									</div>
 								</div>
 							</div>
@@ -1321,10 +1361,10 @@ class NewCluster extends Component {
 												/>
 											</Button>
 											<p>
-												Add Kibana - A BI tool for
-												visualizing Elasticsearch data
-												and navigating the Elastic
-												stack.
+												{this.state.esFlavor ===
+												'opensearch'
+													? 'Add OpenSearch Dashboards - A BI tool for visualizing Elasticsearch data and navigating OpenSearch'
+													: 'Add Kibana - A BI tool for visualizing Elasticsearch data and navigating the Elastic stack.'}
 											</p>
 										</div>
 									</div>

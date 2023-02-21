@@ -90,6 +90,8 @@ const Wrapper = ({ user }) =>
 	hasFilledDetails(user) ? (
 		<Switch>
 			<Route exact path="/" component={ClusterPage} />
+			<Route exact path="/login" component={ClusterPage} />
+			<Route exact path="/signup" component={ClusterPage} />
 			<Route exact path="/tutorial" component={OnboardingPage} />
 			<Route exact path="/tutorial/finish" component={EndPage} />
 			<Route exact path="/marketplace" component={MarketPlacePage} />

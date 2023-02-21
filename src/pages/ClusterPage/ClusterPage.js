@@ -514,9 +514,7 @@ class ClusterPage extends Component {
 					{cluster.status === 'active' ||
 					cluster.status === 'deployments in progress' ? (
 						<div>
-							{(isUsingClusterTrial &&
-								isSandBoxPlan(cluster.pricing_plan)) ||
-							cluster.subscription_id ? (
+							{isUsingClusterTrial || cluster.subscription_id ? (
 								<Link
 									to={`/clusters/${cluster.id}`}
 									style={{

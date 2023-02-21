@@ -223,6 +223,7 @@ const PrivateRoute = ({
 							<Button
 								css={`
 									padding-left: 0;
+									padding-right: 0;
 								`}
 								onClick={() => {
 									handleLogout();

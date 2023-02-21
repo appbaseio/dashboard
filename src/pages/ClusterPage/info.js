@@ -883,7 +883,7 @@ class ClusterInfo extends Component {
 									statusFetchCount={
 										this.state.statusFetchCount
 									}
-								/>								
+								/>
 								{this.state.arc ? (
 									<li
 										className={card}
