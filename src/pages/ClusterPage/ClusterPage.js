@@ -757,7 +757,7 @@ class ClusterPage extends Component {
 							<Link to="/new/serverless-search">
 								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
 									{' '}
-									<Button size="large" type="primary" block>
+									<Button size="large" type="default" block>
 										<PlusOutlined /> Elasticsearch cluster
 									</Button>
 								</Tooltip>
