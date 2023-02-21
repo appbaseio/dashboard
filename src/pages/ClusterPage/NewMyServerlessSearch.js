@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
-import { ArrowRightOutlined, QuestionOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
@@ -439,12 +439,10 @@ class NewMyCluster extends Component {
 								type="flex"
 								justify="space-between"
 								gutter={16}
+								style={{ padding: '2rem' }}
 							>
 								<Col md={18}>
-									<h2>
-										Deploy ReactiveSearch for your
-										Elasticsearch or OpenSearch cluster
-									</h2>
+									<h2>Create a Serverless Search Instance</h2>
 									<Row>
 										<Col span={18}>
 											<p>
@@ -463,7 +461,7 @@ class NewMyCluster extends Component {
 										paddingBottom: 20,
 									}}
 								>
-									<Tooltip title="Don't already have an ElasticSearch Cluster? Get a hosted ElasticSearch cluster with appbase.io.">
+									<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
 										<Button
 											size="large"
 											type="primary"
@@ -476,9 +474,9 @@ class NewMyCluster extends Component {
 													'/clusters/new',
 												);
 											}}
-											icon={<QuestionOutlined />}
+											icon={<InfoCircleOutlined />}
 										>
-											Don&apos;t have a Cluster
+											Setup Elasticsearch instead
 										</Button>
 									</Tooltip>
 								</Col>

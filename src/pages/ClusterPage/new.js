@@ -1,7 +1,7 @@
 import {
 	ArrowRightOutlined,
+	InfoCircleOutlined,
 	InfoCircleTwoTone,
-	QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
 import { get } from 'lodash';
@@ -854,7 +854,7 @@ class NewCluster extends Component {
 								paddingBottom: 20,
 							}}
 						>
-							<Tooltip title="Do you already have an externally hosted ElasticSearch Cluster? You can use it alongside reactivesearch.io and get a better security, analytics, and  development experience.">
+							<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
 								<Button
 									size="large"
 									type="primary"
@@ -866,9 +866,9 @@ class NewCluster extends Component {
 											'/new/serverless-search',
 										);
 									}}
-									icon={<QuestionCircleOutlined />}
+									icon={<InfoCircleOutlined />}
 								>
-									Already have a Cluster
+									Go to Serverless Search instead
 								</Button>
 							</Tooltip>
 						</Col>
@@ -940,7 +940,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: '160px !important',
+												height: '160px',
 												marginRight: 20,
 												backgroundColor:
 													provider === 'gke'
@@ -984,7 +984,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: '160px !important',
+												height: '160px',
 												backgroundColor:
 													provider === 'aws'
 														? '#eaf5ff'
@@ -1050,6 +1050,7 @@ class NewCluster extends Component {
 										id="cluster-name"
 										type="name"
 										css={{
+											height: '160px',
 											width: '100%',
 											maxWidth: 400,
 											marginBottom: 10,
@@ -1099,7 +1100,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: '160px !important',
+												height: '160px',
 												marginRight: 20,
 												backgroundColor:
 													this.state.esFlavor === 'es'
@@ -1140,7 +1141,7 @@ class NewCluster extends Component {
 													: 'default'
 											}
 											style={{
-												height: '160px !important',
+												height: '160px',
 												backgroundColor:
 													this.state.esFlavor ===
 													'opensearch'
