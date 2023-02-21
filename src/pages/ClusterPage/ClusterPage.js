@@ -27,7 +27,6 @@ import {
 	PRICE_BY_PLANS,
 	getClusters,
 	PLAN_LABEL,
-	isSandBoxPlan,
 	CLUSTER_PLANS,
 	ARC_PLANS,
 } from './utils';
@@ -39,6 +38,7 @@ import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList, bannerContainer } from './styles';
 
 import { regions } from './utils/regions';
+import Flex from '../../batteries/components/shared/Flex';
 
 function getHoursDiff(time) {
 	const duration = moment().diff(time, 'hours');
@@ -693,14 +693,31 @@ class ClusterPage extends Component {
 						<p style={{ margin: '15px 0 20px', fontSize: 16 }}>
 							Get started with clusters today
 						</p>
-						<div style={{ textAlign: 'center' }}>
+						<Flex
+							alignItems="center"
+							style={{
+								textAlign: 'center',
+								gap: '1rem',
+								flexWrap: 'wrap',
+							}}
+						>
 							<Link to="/new/serverless-search">
-								<Button type="primary">
-									<i className="fas fa-plus" />
-									&nbsp; Create a New Cluster
-								</Button>
+								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
+									<Button type="primary">
+										<i className="fas fa-plus" />
+										&nbsp; Serverless Search
+									</Button>
+								</Tooltip>
 							</Link>
-						</div>
+							<Link to="/clusters/new">
+								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
+									<Button type="default">
+										<i className="fas fa-plus" />
+										&nbsp;Elasticsearch cluster
+									</Button>
+								</Tooltip>
+							</Link>
+						</Flex>
 					</div>
 				</Fragment>
 			);
@@ -711,7 +728,7 @@ class ClusterPage extends Component {
 				<FullHeader clusters={activeClusters} isCluster />
 				<Header>
 					<Row type="flex" justify="space-between" gutter={16}>
-						<Col lg={18}>
+						<Col lg={14}>
 							<h2>Welcome to Appbase Clusters</h2>
 
 							<Row>
@@ -725,21 +742,33 @@ class ClusterPage extends Component {
 							</Row>
 						</Col>
 						<Col
-							lg={6}
+							lg={10}
 							css={{
 								display: 'flex',
-								flexDirection: 'column-reverse',
+								flexWrap: 'wrap',
+								flexDirection: 'row-reverse',
 								paddingBottom: 20,
-
+								gap: '1rem',
 								[mediaKey.small]: {
 									paddingTop: 20,
 								},
 							}}
 						>
 							<Link to="/new/serverless-search">
-								<Button size="large" type="primary" block>
-									<PlusOutlined /> Create a New Cluster
-								</Button>
+								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
+									{' '}
+									<Button size="large" type="primary" block>
+										<PlusOutlined /> Elasticsearch cluster
+									</Button>
+								</Tooltip>
+							</Link>
+							<Link to="/new/serverless-search">
+								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
+									{' '}
+									<Button size="large" type="primary" block>
+										<PlusOutlined /> Serverless Search
+									</Button>
+								</Tooltip>
 							</Link>
 						</Col>
 					</Row>
