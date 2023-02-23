@@ -260,7 +260,7 @@ class NewCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			changed: false,
-			clusterVersion: esVersions[0],
+			clusterVersion: openSearchVersions[0],
 			pricing_plan,
 			vm_size: get(
 				ansibleMachineMarks[pricing_plan],
@@ -1093,46 +1093,6 @@ class NewCluster extends Component {
 								>
 									<div className={esContainer}>
 										<Button
-											type={
-												this.state.esFlavor === 'es'
-													? 'primary'
-													: 'default'
-											}
-											size="large"
-											style={{
-												height: '160px',
-												marginRight: 20,
-												backgroundColor:
-													this.state.esFlavor === 'es'
-														? '#eaf5ff'
-														: '#fff',
-											}}
-											className={
-												this.state.esFlavor === 'es'
-													? fadeOutStyles
-													: ''
-											}
-											onClick={() => {
-												this.setConfig(
-													'esFlavor',
-													'es',
-												);
-												this.setConfig(
-													'clusterVersion',
-													esVersions[0],
-												);
-											}}
-										>
-											<img
-												width="150"
-												src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elastic-elasticsearch-lt.svg"
-												alt="Elastic"
-											/>
-										</Button>
-										<p>Elasticsearch by Elastic</p>
-									</div>
-									<div className={esContainer}>
-										<Button
 											size="large"
 											type={
 												this.state.esFlavor ===
@@ -1182,7 +1142,7 @@ class NewCluster extends Component {
 											}
 											size="large"
 											style={{
-												height: 160,
+												height: '160px',
 												marginRight: 20,
 												backgroundColor:
 													this.state.esFlavor === 'es'
@@ -1211,7 +1171,7 @@ class NewCluster extends Component {
 												alt="Elastic"
 											/>
 										</Button>
-										<p>Elasticsearch</p>
+										<p>Elasticsearch by Elastic</p>
 									</div>
 								</div>
 							</div>
