@@ -11,6 +11,7 @@ const ClusterExploreRedirect = ({
 	clusterName,
 	customComponent,
 	cus_id,
+	userMail,
 }) => {
 	const exploreClusterInNewTab = () => {
 		let mainURL = 'https://dash.reactivesearch.io';
@@ -42,6 +43,10 @@ const ClusterExploreRedirect = ({
 
 		if (cus_id) {
 			url += `&cus_id=${cus_id}`;
+		}
+
+		if (userMail) {
+			url += `&email=${userMail}`;
 		}
 		if (urlParams['auto-navigate'] === true) {
 			window.open(url, '_blank');
@@ -76,9 +81,11 @@ ClusterExploreRedirect.propTypes = {
 	clusterName: PropTypes.string.isRequired,
 	customComponent: PropTypes.any,
 	cus_id: PropTypes.string,
+	userMail: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
 	cus_id: get(state, 'user.data.cus_id'),
+	userMail: get(state, 'user.data.email'),
 });
 export default connect(mapStateToProps)(ClusterExploreRedirect);
