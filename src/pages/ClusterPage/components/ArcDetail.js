@@ -266,6 +266,10 @@ class ArcDetail extends React.Component {
 								>
 									<a
 										data-clipboard-text={`${protocol}://${username}:${password}@${url}`}
+										style={{
+											color: 'dodgerblue',
+											cursor: 'pointer',
+										}}
 									>
 										Copy URL
 									</a>
