@@ -13,6 +13,7 @@ import FullHeader from '../../components/FullHeader';
 import Flex from '../../batteries/components/shared/Flex';
 
 import { mediaKey, breakpoints } from '../../utils/media';
+import Billing from './Billing';
 
 const { Item } = Menu;
 
@@ -61,6 +62,7 @@ class Profile extends Component<Props> {
 			>
 				<Item key="account">Account</Item>
 				<Item key="email">Email</Item>
+				<Item key="billing">Billing</Item>
 				<Item key="credentials">Credentials</Item>
 				<Item key="close">Close Account</Item>
 			</Menu>
@@ -120,6 +122,10 @@ class Profile extends Component<Props> {
 								component={Account}
 							/>
 							<Route path="/profile/email" component={Email} />
+							<Route
+								path="/profile/billing"
+								component={Billing}
+							/>
 							<Route
 								path="/profile/credentials"
 								component={Credentials}
