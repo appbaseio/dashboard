@@ -849,7 +849,7 @@ class NewCluster extends Component {
 						<Col
 							md={6}
 							css={{
-								display: 'flex',
+								display: 'none',
 								flexDirection: 'column-reverse',
 								paddingBottom: 20,
 							}}
