@@ -401,7 +401,7 @@ class ClusterInfo extends Component {
 			};
 
 			const response = await fetch(url, {
-				method: 'PUT',
+				method: 'POST',
 				credentials: 'include',
 				body: JSON.stringify(body),
 				headers: {
