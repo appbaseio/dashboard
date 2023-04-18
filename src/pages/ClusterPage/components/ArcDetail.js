@@ -151,7 +151,7 @@ class ArcDetail extends React.Component {
 			updateBackend(id, updateBackendPayload)
 				.then(() => {
 					notification.success({
-						title: 'Updated Details Successfully.',
+						message: 'Updated Details Successfully.',
 					});
 
 					this.setState({
@@ -176,13 +176,15 @@ class ArcDetail extends React.Component {
 			})
 				.then(() => {
 					notification.success({
-						title: 'Updated Details Successfully.',
+						message: 'Updated Details Successfully.',
 					});
 
 					this.setState({
 						loading: false,
 					});
-					window.location.reload();
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
 				})
 				.catch(e => {
 					notification.error({
@@ -337,7 +339,7 @@ class ArcDetail extends React.Component {
 						</div>
 					</div>
 				</li>
-				{this.isValidSlsCluster(this.props.cluster) && (
+				{this.isValidSlsCluster(this.props.cluster) ? (
 					<li className={card}>
 						<div className="col light">
 							<h3> Choose search engine </h3>
@@ -484,6 +486,59 @@ class ArcDetail extends React.Component {
 									) : null}
 								</div>
 							)}
+						</div>
+					</li>
+				) : (
+					<li className={card}>
+						<div className="col light">
+							<h3>Upstream URL</h3>
+							<p>Bring your Elasticsearch URL</p>
+						</div>
+
+						<div className="col full">
+							<input
+								id="elastic-url"
+								type="name"
+								css={{
+									width: '100%',
+									maxWidth: 'none !important',
+									marginBottom: 10,
+									outline: 'none',
+									border:
+										isInvalidURL && clusterURL !== ''
+											? '1px solid red'
+											: '1px solid #e8e8e8',
+								}}
+								placeholder="Enter your Elastic URL"
+								value={clusterURL}
+								name="clusterURL"
+								onChange={this.handleInput}
+							/>
+							<Button
+								onClick={this.handleVerify}
+								disabled={!clusterURL}
+								type={isButtonDisable ? 'primary' : 'default'}
+								loading={verifyingURL}
+							>
+								Verify Connection
+							</Button>
+
+							{verifiedCluster ? (
+								<Tag style={{ margin: '10px' }} color="green">
+									Verified Connection. Version Detected:{' '}
+									{clusterVersion}
+								</Tag>
+							) : null}
+
+							{isInvalidURL ? (
+								<p
+									style={{
+										color: 'red',
+									}}
+								>
+									{urlErrorMessage}
+								</p>
+							) : null}
 						</div>
 					</li>
 				)}
