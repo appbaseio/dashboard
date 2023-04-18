@@ -762,14 +762,14 @@ class ClusterPage extends Component {
 									</Button>
 								</Tooltip>
 							</Link>
-							{/* <Link to="/new/serverless-search">
+							<Link to="/new/serverless-search">
 								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
 									{' '}
 									<Button size="large" type="primary" block>
 										<PlusOutlined /> Serverless Search
 									</Button>
 								</Tooltip>
-							</Link> */}
+							</Link>
 						</Col>
 					</Row>
 				</Header>
