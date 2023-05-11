@@ -16,16 +16,16 @@ const integrations = [
 		image1x: '/static/images/onboarding/finish-screen/React@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/React@2x.png',
 		description:
-			'React UI components for building data-driven search experiences',
+			'React UI components for building relevant and AI search + discovery experiences',
 		url:
-			'https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/quickstart/',
+			'https://docs.reactivesearch.io/docs/reactivesearch/overview/quickstart/',
 	},
 	{
 		name: 'Vue',
 		image1x: '/static/images/onboarding/finish-screen/vue@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/vue@2x.png',
 		description:
-			'Vue UI components for building data-driven search experiences',
+			'Vue UI components for building relevant and AI search + discovery experiences',
 		url:
 			'https://docs.reactivesearch.io/docs/reactivesearch/vue/overview/QuickStart/',
 	},
@@ -41,23 +41,25 @@ const integrations = [
 		name: 'REST APIs',
 		image1x: '/static/images/onboarding/finish-screen/REST@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/REST@2x.png',
-		description: 'API for working with elasticsearch / appbase apps',
-		url: 'https://docs.reactivesearch.io/api/rest/quickstart/',
+		description:
+			'ReactiveSearch API for building with Elasticsearch, OpenSearch, Solr, MongoDB and OpenAI',
+		url: 'https://docs.reactivesearch.io/api/rest/overview/',
 	},
 	{
 		name: 'Javascript Library',
 		image1x: '/static/images/onboarding/finish-screen/JS@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/JS@2x.png',
 		description:
-			'Javascript client library for working with elasticseach / appbase apps',
+			'Javascript client library for working with ReactiveSearch, Elasticsearch, OpenSearch',
 		url: 'https://docs.reactivesearch.io/api/javascript/quickstart/',
 	},
 	{
 		name: 'Clusters',
 		image1x: '/static/images/onboarding/finish-screen/Clusters@1x.png',
 		image2x: '/static/images/onboarding/finish-screen/Clusters@2x.png',
-		description: 'ElasticSearch clusters powered by appbase.io',
-		url: 'https://dashboard.appbase.io',
+		description:
+			'Search clusters and serverless search with ReactiveSearch',
+		url: 'https://dashboard.reactivesearch.io',
 	},
 ];
 
