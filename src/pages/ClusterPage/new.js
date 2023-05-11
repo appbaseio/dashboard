@@ -666,12 +666,21 @@ class NewCluster extends Component {
 				<Header compact style={{ padding: '0 50px' }}>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
-							<h2> Create a New Cluster </h2>
+							<h2>
+								{' '}
+								Create a New{' '}
+								{this.isLegacyPage()
+									? 'Legacy '
+									: ''}Cluster{' '}
+							</h2>
 							<Row>
 								<Col span={18}>
 									<p>
 										Create a new Elasticsearch or OpenSearch
-										cluster{' '}
+										cluster
+										{this.isLegacyPage()
+											? ' '
+											: ', includes AI search and pipelines '}
 										<a
 											href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 											rel="noopener noreferrer"
@@ -728,32 +737,32 @@ class NewCluster extends Component {
 										Search Cluster
 									</Button>
 								</Tooltip>
-							) : (
-								<Tooltip title="Create a Legacy Search Cluster">
-									<Button
-										size="large"
-										type="link"
-										target="_blank"
-										rel="noopener noreferrer"
-										onClick={() => {
-											if (interval)
-												clearInterval(interval);
-											this.props.history.push(
-												'/clusters/legacy-new',
-											);
-											this.forceUpdate();
-										}}
-									>
-										<span
-											style={{
-												textDecoration: 'underline',
-											}}
-										>
-											Legacy Cluster
-										</span>
-									</Button>
-								</Tooltip>
-							)}
+							) : null
+							// <Tooltip title="Create a Legacy Search Cluster">
+							// 	<Button
+							// 		size="large"
+							// 		type="link"
+							// 		target="_blank"
+							// 		rel="noopener noreferrer"
+							// 		onClick={() => {
+							// 			if (interval)
+							// 				clearInterval(interval);
+							// 			this.props.history.push(
+							// 				'/clusters/legacy-new',
+							// 			);
+							// 			this.forceUpdate();
+							// 		}}
+							// 	>
+							// 		<span
+							// 			style={{
+							// 				textDecoration: 'underline',
+							// 			}}
+							// 		>
+							// 			Legacy Cluster
+							// 		</span>
+							// 	</Button>
+							// </Tooltip>
+							}
 						</Col>
 					</Row>
 				</Header>

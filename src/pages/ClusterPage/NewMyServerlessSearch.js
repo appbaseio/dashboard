@@ -476,7 +476,7 @@ class NewMyCluster extends Component {
 											}}
 											icon={<InfoCircleOutlined />}
 										>
-											Setup Elasticsearch instead
+											Setup Search Cluster instead
 										</Button>
 									</Tooltip>
 								</Col>

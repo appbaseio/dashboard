@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClusterOutlined, RocketOutlined } from '@ant-design/icons';
-import { Layout, Menu, Tag, Row, Col } from 'antd';
+import { Layout, Menu, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { object, string, bool, number, array, func } from 'prop-types';
 import { connect } from 'react-redux';
@@ -72,9 +72,7 @@ const FullHeader = ({
 				)}
 
 				<Menu.Item key="/marketplace">
-					<Link to="/marketplace">
-						MarketPlace <Tag>New</Tag>
-					</Link>
+					<Link to="/marketplace">MarketPlace</Link>
 				</Menu.Item>
 			</Menu>
 		</div>
