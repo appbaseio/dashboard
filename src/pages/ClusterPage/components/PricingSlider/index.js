@@ -84,7 +84,10 @@ class PricingSlider extends Component {
 				</div>
 				<div className="col grey">
 					<div className={clusterInfo}>
-						<div className="cluster-info__item">
+						<div
+							className="cluster-info__item"
+							style={{ width: '100%' }}
+						>
 							<div>
 								<AnimatedNumber
 									value={mark.nodes}
