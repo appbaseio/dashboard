@@ -747,6 +747,7 @@ class ClusterPage extends Component {
 								display: 'flex',
 								flexWrap: 'wrap',
 								paddingBottom: 20,
+								justifyContent: 'flex-end',
 								gap: '1rem',
 								[mediaKey.small]: {
 									paddingTop: 20,
