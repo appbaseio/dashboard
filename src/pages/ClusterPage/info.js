@@ -17,7 +17,6 @@ import DeleteClusterModal from './components/DeleteClusterModal';
 import DeploymentStatus from './components/DeploymentStatus';
 import Sidebar, { RightContainer } from './components/Sidebar';
 import ClusterExploreRedirect from '../../components/ClusterExploreRedirect';
-import { ansibleMachineMarks, ARC_BYOC, V7_ARC } from './new';
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import ClusterScreen from './screens/ClusterScreen';
 import InvoiceScreen from './screens/InvoiceScreen';
@@ -38,6 +37,9 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	isSandBoxPlan,
+	ansibleMachineMarks,
+	V7_ARC,
+	ARC_BYOC,
 } from './utils';
 import { regions } from './utils/regions';
 import { getUrlParams } from '../../utils/helper';

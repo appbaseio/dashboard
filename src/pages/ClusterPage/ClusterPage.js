@@ -29,11 +29,12 @@ import {
 	PLAN_LABEL,
 	CLUSTER_PLANS,
 	ARC_PLANS,
+	ansibleMachineMarks,
 } from './utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import StripeCheckout from '../../components/StripeCheckout';
-import { ansibleMachineMarks } from './new';
+
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList, bannerContainer } from './styles';
 

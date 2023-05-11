@@ -11,7 +11,7 @@ import Loader from '../../components/Loader';
 import PricingSlider from './components/PricingSlider/MyClusterSlider';
 import StripeCheckout from '../../components/StripeCheckout';
 import Header from '../../batteries/components/shared/UpgradePlan/Header';
-import { ARC_BYOC, REACTIVESEARCH_BYOC, regionsKeyMap } from './new';
+
 import {
 	deployMyCluster,
 	getClusters,
@@ -24,6 +24,9 @@ import {
 	getDistance,
 	BACKENDS,
 	capitalizeWord,
+	regionsKeyMap,
+	REACTIVESEARCH_BYOC,
+	ARC_BYOC,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';

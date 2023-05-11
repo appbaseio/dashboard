@@ -9,7 +9,6 @@ import get from 'lodash/get';
 import ArcDetail from '../components/ArcDetail';
 import CredentialsBox from '../components/CredentialsBox';
 import StripeCheckout from '../../../components/StripeCheckout';
-import { V7_ARC } from '../new';
 import {
 	card,
 	clusterButtons,
@@ -31,6 +30,7 @@ import {
 	capitalizeWord,
 	verifyCluster,
 	updateBackend,
+	V7_ARC,
 } from '../utils';
 import { machineMarks } from '../NewMyServerlessSearch';
 

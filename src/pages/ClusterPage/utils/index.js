@@ -752,3 +752,187 @@ export function updateBackend(id, body) {
 			});
 	});
 }
+
+export const SSH_KEY =
+	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
+
+export const esVersions = ['8.6.2', '7.17.8'];
+
+export const openSearchVersions = ['2.6.0'];
+export const ansibleMachineMarks = {
+	[CLUSTER_PLANS.SANDBOX_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.SANDBOX_2020],
+		plan: CLUSTER_PLANS.SANDBOX_2020,
+		storage: 30,
+		memory: 4,
+		nodes: 1,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
+		gkeMachine: 'e2-medium',
+		awsMachine: 't3.medium',
+		storagePerNode: 30,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
+	},
+	[CLUSTER_PLANS.HOBBY_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.HOBBY_2020],
+		plan: CLUSTER_PLANS.HOBBY_2020,
+		storage: 60,
+		memory: 4,
+		nodes: 2,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
+		gkeMachine: 'e2-medium',
+		awsMachine: 't3.medium',
+		storagePerNode: 30,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
+	},
+	[CLUSTER_PLANS.STARTER_2020]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2020],
+		plan: CLUSTER_PLANS.STARTER_2020,
+		storage: 120,
+		memory: 4,
+		nodes: 3,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
+		gkeMachine: 'e2-medium',
+		awsMachine: 't3.medium',
+		storagePerNode: 40,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_1]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_1],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_1,
+		storage: 480,
+		memory: 16,
+		nodes: 3,
+		cpu: 4,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
+		gkeMachine: 'e2-standard-4',
+		awsMachine: 't3.xlarge',
+		storagePerNode: 160,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_2]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_2],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_2,
+		storage: 999,
+		memory: 32,
+		nodes: 3,
+		cpu: 8,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
+		gkeMachine: 'e2-standard-8',
+		awsMachine: 't3.2xlarge',
+		storagePerNode: 333,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2019_3]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_3],
+		plan: CLUSTER_PLANS.PRODUCTION_2019_3,
+		storage: 2997,
+		memory: 64,
+		nodes: 3,
+		cpu: 16,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
+		gkeMachine: 'e2-standard-16',
+		awsMachine: 'm5a.4xlarge',
+		storagePerNode: 999,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
+	},
+	[CLUSTER_PLANS.STARTER_2021]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2021],
+		plan: CLUSTER_PLANS.STARTER_2021,
+		storage: 240,
+		memory: 8,
+		nodes: 3,
+		cpu: 2,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
+		gkeMachine: 'e2-standard-2',
+		awsMachine: 't3.large',
+		storagePerNode: 80,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_1]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_1],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_1,
+		storage: 480,
+		memory: 16,
+		nodes: 3,
+		cpu: 4,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
+		gkeMachine: 'e2-standard-4',
+		awsMachine: 't3.xlarge',
+		storagePerNode: 160,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_2]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_2],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_2,
+		storage: 999,
+		memory: 32,
+		nodes: 3,
+		cpu: 8,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
+		gkeMachine: 'e2-standard-8',
+		awsMachine: 't3.2xlarge',
+		storagePerNode: 333,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
+	},
+	[CLUSTER_PLANS.PRODUCTION_2021_3]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_3],
+		plan: CLUSTER_PLANS.PRODUCTION_2021_3,
+		storage: 2997,
+		memory: 64,
+		nodes: 3,
+		cpu: 16,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
+		gkeMachine: 'e2-standard-16',
+		awsMachine: 'm5a.4xlarge',
+		storagePerNode: 999,
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
+	},
+
+	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
+		storage: 1,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
+		storage: 10,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
+	},
+	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
+		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
+		storage: 10,
+		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
+	},
+};
+
+export const regionsKeyMap = {
+	asia: 'asia',
+	eu: 'europe',
+	us: 'america',
+	other: 'other',
+};
+
+export const V7_ARC = '8.12.1-cluster';
+export const V6_ARC = '8.12.1-cluster';
+export const ARC_BYOC = '8.12.1-byoc';
+export const V5_ARC = 'v5-0.0.1';
+export const REACTIVESEARCH_BYOC = '8.12.1-byoc';
+
+export const arcVersions = {
+	7: V7_ARC,
+	6: V6_ARC,
+	5: V5_ARC,
+	/* odfe versions start */
+	0: V6_ARC,
+	1: V7_ARC,
+	/* odfe versions end */
+};
