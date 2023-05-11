@@ -25,7 +25,7 @@ const FreeUserOverview = () => (
 		<Header compact>
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col md={18}>
-					<h2>Welcome to your app{"'"}s dashboard view</h2>
+					<h2>Welcome to your app's dashboard view</h2>
 					<Row>
 						<Col span={18}>
 							<p>
@@ -42,7 +42,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/quickstart/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/overview/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
@@ -59,7 +59,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.reactivesearch.io/docs/reactivesearch/native/overview/quickstart/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/flutter-searchbox/quickstart/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
@@ -76,7 +76,7 @@ const FreeUserOverview = () => (
 					<div>
 						<Button
 							css={appLink}
-							href="https://docs.reactivesearch.io/docs/reactivesearch/v3/overview/reactivemaps/"
+							href="https://docs.reactivesearch.io/docs/reactivesearch/react/overview/reactivemaps/"
 							target="_blank"
 							rel="noreferrer noopener"
 						>
