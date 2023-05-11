@@ -1,8 +1,4 @@
-import {
-	ArrowRightOutlined,
-	InfoCircleOutlined,
-	InfoCircleTwoTone,
-} from '@ant-design/icons';
+import { ArrowRightOutlined, InfoCircleTwoTone } from '@ant-design/icons';
 import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
 import { get } from 'lodash';
 import React, { Component, Fragment } from 'react';
@@ -48,13 +44,20 @@ const { TabPane } = Tabs;
 
 let interval;
 
-export const machineMarks = {
+const legacyMachineMarks = {
 	0: ansibleMachineMarks[CLUSTER_PLANS.SANDBOX_2020],
 	20: ansibleMachineMarks[CLUSTER_PLANS.HOBBY_2020],
 	40: ansibleMachineMarks[CLUSTER_PLANS.STARTER_2021],
 	60: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_1],
 	80: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_2],
 	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
+};
+
+//
+export const machineMarks = {
+	0: ansibleMachineMarks[CLUSTER_PLANS.SANDBOX_2023],
+	50: ansibleMachineMarks[CLUSTER_PLANS.STARTER_2023],
+	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2023_1],
 };
 
 const validOpenFaasPlans = [
@@ -271,6 +274,9 @@ class NewCluster extends Component {
 	};
 
 	setPricing = (plan, machine) => {
+		if (!plan || !machine) {
+			return;
+		}
 		const { provider } = this.state;
 		this.setState({
 			vm_size: get(plan, `${provider}Machine`),
@@ -620,6 +626,16 @@ class NewCluster extends Component {
 		});
 	};
 
+	isLegacyPage = () => {
+		const { history } = this.props;
+
+		return history?.location?.pathname?.includes('legacy');
+	};
+
+	getMachineMarks = () => {
+		return this.isLegacyPage() ? legacyMachineMarks : machineMarks;
+	};
+
 	render() {
 		const {
 			provider,
@@ -670,9 +686,11 @@ class NewCluster extends Component {
 						<Col
 							md={6}
 							css={{
-								display: 'none',
-								flexDirection: 'column-reverse',
+								display: 'flex',
+								flexDirection: 'row',
 								paddingBottom: 20,
+								flexWrap: 'wrap',
+								gap: '10px',
 							}}
 						>
 							<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
@@ -687,11 +705,55 @@ class NewCluster extends Component {
 											'/new/serverless-search',
 										);
 									}}
-									icon={<InfoCircleOutlined />}
 								>
 									Go to Serverless Search instead
 								</Button>
 							</Tooltip>
+							{this.isLegacyPage() ? (
+								<Tooltip title="Create a Search Cluster">
+									<Button
+										size="large"
+										type="primary"
+										target="_blank"
+										rel="noopener noreferrer"
+										onClick={() => {
+											if (interval)
+												clearInterval(interval);
+											this.props.history.push(
+												'/clusters/new',
+											);
+											this.forceUpdate();
+										}}
+									>
+										Search Cluster
+									</Button>
+								</Tooltip>
+							) : (
+								<Tooltip title="Create a Legacy Search Cluster">
+									<Button
+										size="large"
+										type="link"
+										target="_blank"
+										rel="noopener noreferrer"
+										onClick={() => {
+											if (interval)
+												clearInterval(interval);
+											this.props.history.push(
+												'/clusters/legacy-new',
+											);
+											this.forceUpdate();
+										}}
+									>
+										<span
+											style={{
+												textDecoration: 'underline',
+											}}
+										>
+											Legacy Cluster
+										</span>
+									</Button>
+								</Tooltip>
+							)}
 						</Col>
 					</Row>
 				</Header>
@@ -732,8 +794,11 @@ class NewCluster extends Component {
 									<p> Scale as you go </p>
 								</div>
 								<PricingSlider
-									key={this.state.provider}
-									marks={machineMarks}
+									key={
+										this.state.provider +
+										String(this.isLegacyPage())
+									}
+									marks={this.getMachineMarks()}
 									onChange={this.setPricing}
 									showNoCardNeeded={
 										isUsingClusterTrial &&
