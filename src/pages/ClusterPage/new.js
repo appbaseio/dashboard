@@ -294,7 +294,7 @@ class NewCluster extends Component {
 
 	validateClusterName = () => {
 		const { clusterName } = this.state;
-		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
+		const pattern = /^[a-z][a-z0-9-]{0,19}[a-z0-9]$/;
 		return pattern.test(clusterName);
 	};
 
@@ -955,12 +955,13 @@ class NewCluster extends Component {
 										placeholder="Enter your cluster name"
 										value={clusterName}
 										onChange={e => {
+											const targetValue = e.target.value;
 											this.setState({
 												changed: true,
 											});
 											this.setConfig(
 												'clusterName',
-												e.target.value,
+												targetValue,
 											);
 										}}
 									/>
