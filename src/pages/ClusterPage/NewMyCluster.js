@@ -578,7 +578,6 @@ class NewMyCluster extends Component {
 
 		const isInvalid = !this.validateClusterName();
 		if (isLoading) return <Loader />;
-
 		return (
 			<Fragment>
 				{!isDeployTemplate ? (
@@ -713,7 +712,7 @@ class NewMyCluster extends Component {
 									<input
 										id="cluster-name"
 										type="name"
-										css={{
+										style={{
 											width: '100%',
 											maxWidth: 400,
 											marginBottom: 10,

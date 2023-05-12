@@ -659,7 +659,7 @@ class NewCluster extends Component {
 		);
 
 		const pricingPlanArr = pricing_plan.split('-').slice(1);
-
+		const isInvalid = !this.validateClusterName();
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
@@ -950,7 +950,10 @@ class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: '1px solid #40a9ff',
+											border:
+												isInvalid && clusterName !== ''
+													? '1px solid red'
+													: '1px solid #40a9ff',
 										}}
 										placeholder="Enter your cluster name"
 										value={clusterName}
@@ -971,7 +974,14 @@ class NewCluster extends Component {
 											name. You can edit this.
 										</p>
 									)}
-									<p style={{ color: 'inherit' }}>
+									<p
+										style={{
+											color:
+												isInvalid && clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
 										{namingConvention}
 									</p>
 								</div>
