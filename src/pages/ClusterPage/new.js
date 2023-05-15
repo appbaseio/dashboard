@@ -87,7 +87,7 @@ class NewCluster extends Component {
 			clusterVersion: openSearchVersions[0],
 			pricing_plan,
 			vm_size: get(
-				ansibleMachineMarks[pricing_plan],
+				this.getMachineMarks()[pricing_plan],
 				`${provider}Machine`,
 			),
 			region: 'us-central1',
@@ -256,7 +256,7 @@ class NewCluster extends Component {
 				return {
 					provider,
 					vm_size: get(
-						ansibleMachineMarks[currentState.pricing_plan],
+						this.getMachineMarks()[currentState.pricing_plan],
 						`${provider}Machine`,
 					),
 					region: provider === 'gke' ? 'us-central1' : 'us-east-1',
@@ -343,8 +343,9 @@ class NewCluster extends Component {
 				return;
 			}
 
-			const selectedMachine =
-				ansibleMachineMarks[this.state.pricing_plan];
+			const selectedMachine = this.getMachineMarks()[
+				this.state.pricing_plan
+			];
 
 			const arcTag =
 				arcVersions[this.state.clusterVersion.split('.')[0]] ||
