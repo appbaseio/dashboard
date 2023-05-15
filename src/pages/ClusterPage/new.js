@@ -609,13 +609,18 @@ class NewCluster extends Component {
 
 	handleError = () => {
 		const that = this;
-		Modal.error({
+		if (that.errorModalInstance) {
+			that.errorModalInstance.destroy();
+		}
+
+		that.errorModalInstance = Modal.error({
 			title: 'Error',
 			content: this.state.deploymentError,
 			onOk() {
 				that.setState({
 					showError: false,
 				});
+				that.errorModalInstance = null;
 			},
 		});
 	};
