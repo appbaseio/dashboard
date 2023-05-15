@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, InfoCircleTwoTone } from '@ant-design/icons';
 import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
-import { get } from 'lodash';
+import { get, isNaN } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -274,7 +274,7 @@ class NewCluster extends Component {
 	};
 
 	setPricing = (plan, machine) => {
-		if (!plan || !machine) {
+		if (!plan || isNaN(machine)) {
 			return;
 		}
 		const { provider } = this.state;
