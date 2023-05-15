@@ -1,10 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { Slider } from 'antd';
 import AnimatedNumber from 'react-animated-number';
+import PropTypes from 'prop-types';
 
 import { clusterInfo } from '../../styles';
 
 class PricingSlider extends Component {
+	static propTypes = {
+		marks: PropTypes.arrayOf(PropTypes.number.isRequired),
+		onChange: PropTypes.func.isRequired,
+		currValue: PropTypes.number.isRequired,
+		showNoCardNeeded: PropTypes.bool,
+		sliderProps: PropTypes.object,
+	};
+
 	constructor(props) {
 		super(props);
 
