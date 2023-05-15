@@ -78,7 +78,9 @@ class NewCluster extends Component {
 		});
 
 		const provider = 'gke';
-		const pricing_plan = CLUSTER_PLANS.SANDBOX_2020;
+		const pricing_plan = this.isLegacyPage()
+			? CLUSTER_PLANS.SANDBOX_2020
+			: CLUSTER_PLANS.SANDBOX_2023;
 
 		this.state = {
 			isLoading: false,
@@ -87,7 +89,7 @@ class NewCluster extends Component {
 			clusterVersion: openSearchVersions[0],
 			pricing_plan,
 			vm_size: get(
-				this.getMachineMarks()[pricing_plan],
+				ansibleMachineMarks[pricing_plan],
 				`${provider}Machine`,
 			),
 			region: 'us-central1',
@@ -256,7 +258,7 @@ class NewCluster extends Component {
 				return {
 					provider,
 					vm_size: get(
-						this.getMachineMarks()[currentState.pricing_plan],
+						ansibleMachineMarks[currentState.pricing_plan],
 						`${provider}Machine`,
 					),
 					region: provider === 'gke' ? 'us-central1' : 'us-east-1',
@@ -343,9 +345,8 @@ class NewCluster extends Component {
 				return;
 			}
 
-			const selectedMachine = this.getMachineMarks()[
-				this.state.pricing_plan
-			];
+			const selectedMachine =
+				ansibleMachineMarks[this.state.pricing_plan];
 
 			const arcTag =
 				arcVersions[this.state.clusterVersion.split('.')[0]] ||
