@@ -1312,7 +1312,7 @@ class NewCluster extends Component {
 								) : null}
 								{(isUsingClusterTrial &&
 									this.state.pricing_plan !==
-										CLUSTER_PLANS.SANDBOX_2020) ||
+										CLUSTER_PLANS.SANDBOX_2023) ||
 								clusters.length > 0 ? (
 									<Button
 										type="primary"
