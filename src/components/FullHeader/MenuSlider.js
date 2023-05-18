@@ -101,9 +101,7 @@ class MenuSlider extends React.Component {
 						</Menu.Item>
 
 						<Menu.Item key="/marketplace">
-							<Link to="/marketplace">
-								MarketPlace <Tag>New</Tag>
-							</Link>
+							<Link to="/marketplace">MarketPlace</Link>
 						</Menu.Item>
 
 						{window.innerWidth < 576 ? (

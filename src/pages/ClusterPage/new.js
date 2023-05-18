@@ -1,10 +1,6 @@
-import {
-	ArrowRightOutlined,
-	InfoCircleOutlined,
-	InfoCircleTwoTone,
-} from '@ant-design/icons';
+import { ArrowRightOutlined, InfoCircleTwoTone } from '@ant-design/icons';
 import { Button, Col, Modal, Row, Select, Tabs, Tooltip, Alert } from 'antd';
-import { get } from 'lodash';
+import { get, isNaN } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -32,6 +28,12 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	getDistance,
+	openSearchVersions,
+	esVersions,
+	SSH_KEY,
+	ansibleMachineMarks,
+	regionsKeyMap,
+	arcVersions,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -40,187 +42,9 @@ const { Option } = Select;
 
 const { TabPane } = Tabs;
 
-const SSH_KEY =
-	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
-
-const esVersions = ['8.6.2', '7.17.8'];
-
-const openSearchVersions = ['2.6.0'];
-
 let interval;
 
-export const V7_ARC = '8.12.1-cluster';
-export const V6_ARC = '8.12.1-cluster';
-export const ARC_BYOC = '8.12.1-byoc';
-export const V5_ARC = 'v5-0.0.1';
-export const REACTIVESEARCH_BYOC = '8.12.1-byoc';
-
-export const arcVersions = {
-	7: V7_ARC,
-	6: V6_ARC,
-	5: V5_ARC,
-	/* odfe versions start */
-	0: V6_ARC,
-	1: V7_ARC,
-	/* odfe versions end */
-};
-
-export const ansibleMachineMarks = {
-	[CLUSTER_PLANS.SANDBOX_2020]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.SANDBOX_2020],
-		plan: CLUSTER_PLANS.SANDBOX_2020,
-		storage: 30,
-		memory: 4,
-		nodes: 1,
-		cpu: 2,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
-		gkeMachine: 'e2-medium',
-		awsMachine: 't3.medium',
-		storagePerNode: 30,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2020],
-	},
-	[CLUSTER_PLANS.HOBBY_2020]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.HOBBY_2020],
-		plan: CLUSTER_PLANS.HOBBY_2020,
-		storage: 60,
-		memory: 4,
-		nodes: 2,
-		cpu: 2,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
-		gkeMachine: 'e2-medium',
-		awsMachine: 't3.medium',
-		storagePerNode: 30,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.HOBBY_2020],
-	},
-	[CLUSTER_PLANS.STARTER_2020]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2020],
-		plan: CLUSTER_PLANS.STARTER_2020,
-		storage: 120,
-		memory: 4,
-		nodes: 3,
-		cpu: 2,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
-		gkeMachine: 'e2-medium',
-		awsMachine: 't3.medium',
-		storagePerNode: 40,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2020],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2019_1]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_1],
-		plan: CLUSTER_PLANS.PRODUCTION_2019_1,
-		storage: 480,
-		memory: 16,
-		nodes: 3,
-		cpu: 4,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
-		gkeMachine: 'e2-standard-4',
-		awsMachine: 't3.xlarge',
-		storagePerNode: 160,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_1],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2019_2]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_2],
-		plan: CLUSTER_PLANS.PRODUCTION_2019_2,
-		storage: 999,
-		memory: 32,
-		nodes: 3,
-		cpu: 8,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
-		gkeMachine: 'e2-standard-8',
-		awsMachine: 't3.2xlarge',
-		storagePerNode: 333,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_2],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2019_3]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2019_3],
-		plan: CLUSTER_PLANS.PRODUCTION_2019_3,
-		storage: 2997,
-		memory: 64,
-		nodes: 3,
-		cpu: 16,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
-		gkeMachine: 'e2-standard-16',
-		awsMachine: 'm5a.4xlarge',
-		storagePerNode: 999,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2019_3],
-	},
-	[CLUSTER_PLANS.STARTER_2021]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.STARTER_2021],
-		plan: CLUSTER_PLANS.STARTER_2021,
-		storage: 240,
-		memory: 8,
-		nodes: 3,
-		cpu: 2,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
-		gkeMachine: 'e2-standard-2',
-		awsMachine: 't3.large',
-		storagePerNode: 80,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.STARTER_2021],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2021_1]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_1],
-		plan: CLUSTER_PLANS.PRODUCTION_2021_1,
-		storage: 480,
-		memory: 16,
-		nodes: 3,
-		cpu: 4,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
-		gkeMachine: 'e2-standard-4',
-		awsMachine: 't3.xlarge',
-		storagePerNode: 160,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_1],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2021_2]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_2],
-		plan: CLUSTER_PLANS.PRODUCTION_2021_2,
-		storage: 999,
-		memory: 32,
-		nodes: 3,
-		cpu: 8,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
-		gkeMachine: 'e2-standard-8',
-		awsMachine: 't3.2xlarge',
-		storagePerNode: 333,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_2],
-	},
-	[CLUSTER_PLANS.PRODUCTION_2021_3]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2021_3],
-		plan: CLUSTER_PLANS.PRODUCTION_2021_3,
-		storage: 2997,
-		memory: 64,
-		nodes: 3,
-		cpu: 16,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
-		gkeMachine: 'e2-standard-16',
-		awsMachine: 'm5a.4xlarge',
-		storagePerNode: 999,
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.PRODUCTION_2021_3],
-	},
-
-	[CLUSTER_PLANS.CLUSTER_SLS_HOBBY]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
-		plan: CLUSTER_PLANS.CLUSTER_SLS_HOBBY,
-		storage: 1,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_HOBBY],
-	},
-	[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
-		plan: CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION,
-		storage: 10,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_PRODUCTION],
-	},
-	[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE]: {
-		label: PLAN_LABEL[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
-		plan: CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE,
-		storage: 10,
-		cost: PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
-		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.CLUSTER_SLS_ENTERPRISE],
-	},
-};
-
-export const machineMarks = {
+const legacyMachineMarks = {
 	0: ansibleMachineMarks[CLUSTER_PLANS.SANDBOX_2020],
 	20: ansibleMachineMarks[CLUSTER_PLANS.HOBBY_2020],
 	40: ansibleMachineMarks[CLUSTER_PLANS.STARTER_2021],
@@ -229,11 +53,11 @@ export const machineMarks = {
 	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2021_3],
 };
 
-export const regionsKeyMap = {
-	asia: 'asia',
-	eu: 'europe',
-	us: 'america',
-	other: 'other',
+//
+export const machineMarks = {
+	0: ansibleMachineMarks[CLUSTER_PLANS.SANDBOX_2023],
+	50: ansibleMachineMarks[CLUSTER_PLANS.STARTER_2023],
+	100: ansibleMachineMarks[CLUSTER_PLANS.PRODUCTION_2023_1],
 };
 
 const validOpenFaasPlans = [
@@ -254,7 +78,9 @@ class NewCluster extends Component {
 		});
 
 		const provider = 'gke';
-		const pricing_plan = CLUSTER_PLANS.SANDBOX_2020;
+		const pricing_plan = this.isLegacyPage()
+			? CLUSTER_PLANS.SANDBOX_2020
+			: CLUSTER_PLANS.SANDBOX_2023;
 
 		this.state = {
 			isLoading: false,
@@ -450,6 +276,9 @@ class NewCluster extends Component {
 	};
 
 	setPricing = (plan, machine) => {
+		if (!plan || isNaN(machine)) {
+			return;
+		}
 		const { provider } = this.state;
 		this.setState({
 			vm_size: get(plan, `${provider}Machine`),
@@ -467,7 +296,7 @@ class NewCluster extends Component {
 
 	validateClusterName = () => {
 		const { clusterName } = this.state;
-		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
+		const pattern = /^[a-z][a-z0-9-]{0,20}[a-z0-9]$/;
 		return pattern.test(clusterName);
 	};
 
@@ -782,13 +611,18 @@ class NewCluster extends Component {
 
 	handleError = () => {
 		const that = this;
-		Modal.error({
+		if (that.errorModalInstance) {
+			that.errorModalInstance.destroy();
+		}
+
+		that.errorModalInstance = Modal.error({
 			title: 'Error',
 			content: this.state.deploymentError,
 			onOk() {
 				that.setState({
 					showError: false,
 				});
+				that.errorModalInstance = null;
 			},
 		});
 	};
@@ -797,6 +631,16 @@ class NewCluster extends Component {
 		this.setState({
 			restore_from: value,
 		});
+	};
+
+	isLegacyPage = () => {
+		const { history } = this.props;
+
+		return history?.location?.pathname?.includes('legacy');
+	};
+
+	getMachineMarks = () => {
+		return this.isLegacyPage() ? legacyMachineMarks : machineMarks;
 	};
 
 	render() {
@@ -822,19 +666,28 @@ class NewCluster extends Component {
 		);
 
 		const pricingPlanArr = pricing_plan.split('-').slice(1);
-
+		const isInvalid = !this.validateClusterName();
 		return (
 			<Fragment>
 				<FullHeader clusters={activeClusters} isCluster />
 				<Header compact style={{ padding: '0 50px' }}>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col md={18}>
-							<h2> Create a New Cluster </h2>
+							<h2>
+								{' '}
+								Create a New{' '}
+								{this.isLegacyPage()
+									? 'Legacy '
+									: ''}Cluster{' '}
+							</h2>
 							<Row>
 								<Col span={18}>
 									<p>
 										Create a new Elasticsearch or OpenSearch
-										cluster{' '}
+										cluster
+										{this.isLegacyPage()
+											? ' '
+											: ', includes AI search and pipelines '}
 										<a
 											href="https://docs.reactivesearch.io/docs/hosting/clusters/"
 											rel="noopener noreferrer"
@@ -849,9 +702,11 @@ class NewCluster extends Component {
 						<Col
 							md={6}
 							css={{
-								display: 'none',
-								flexDirection: 'column-reverse',
+								display: 'flex',
+								flexDirection: 'row',
 								paddingBottom: 20,
+								flexWrap: 'wrap',
+								gap: '10px',
 							}}
 						>
 							<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
@@ -866,11 +721,55 @@ class NewCluster extends Component {
 											'/new/serverless-search',
 										);
 									}}
-									icon={<InfoCircleOutlined />}
 								>
 									Go to Serverless Search instead
 								</Button>
 							</Tooltip>
+							{this.isLegacyPage() ? (
+								<Tooltip title="Create a Search Cluster">
+									<Button
+										size="large"
+										type="primary"
+										target="_blank"
+										rel="noopener noreferrer"
+										onClick={() => {
+											if (interval)
+												clearInterval(interval);
+											this.props.history.push(
+												'/clusters/new',
+											);
+											this.forceUpdate();
+										}}
+									>
+										Search Cluster
+									</Button>
+								</Tooltip>
+							) : null
+							// <Tooltip title="Create a Legacy Search Cluster">
+							// 	<Button
+							// 		size="large"
+							// 		type="link"
+							// 		target="_blank"
+							// 		rel="noopener noreferrer"
+							// 		onClick={() => {
+							// 			if (interval)
+							// 				clearInterval(interval);
+							// 			this.props.history.push(
+							// 				'/clusters/legacy-new',
+							// 			);
+							// 			this.forceUpdate();
+							// 		}}
+							// 	>
+							// 		<span
+							// 			style={{
+							// 				textDecoration: 'underline',
+							// 			}}
+							// 		>
+							// 			Legacy Cluster
+							// 		</span>
+							// 	</Button>
+							// </Tooltip>
+							}
 						</Col>
 					</Row>
 				</Header>
@@ -911,8 +810,11 @@ class NewCluster extends Component {
 									<p> Scale as you go </p>
 								</div>
 								<PricingSlider
-									key={this.state.provider}
-									marks={machineMarks}
+									key={
+										this.state.provider +
+										String(this.isLegacyPage())
+									}
+									marks={this.getMachineMarks()}
 									onChange={this.setPricing}
 									showNoCardNeeded={
 										isUsingClusterTrial &&
@@ -1055,17 +957,21 @@ class NewCluster extends Component {
 											maxWidth: 400,
 											marginBottom: 10,
 											outline: 'none',
-											border: '1px solid #40a9ff',
+											border:
+												isInvalid && clusterName !== ''
+													? '1px solid red'
+													: '1px solid #40a9ff',
 										}}
 										placeholder="Enter your cluster name"
 										value={clusterName}
 										onChange={e => {
+											const targetValue = e.target.value;
 											this.setState({
 												changed: true,
 											});
 											this.setConfig(
 												'clusterName',
-												e.target.value,
+												targetValue,
 											);
 										}}
 									/>
@@ -1075,7 +981,14 @@ class NewCluster extends Component {
 											name. You can edit this.
 										</p>
 									)}
-									<p style={{ color: 'inherit' }}>
+									<p
+										style={{
+											color:
+												isInvalid && clusterName !== ''
+													? 'red'
+													: 'inherit',
+										}}
+									>
 										{namingConvention}
 									</p>
 								</div>

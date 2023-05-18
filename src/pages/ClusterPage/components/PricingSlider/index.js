@@ -1,10 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { Slider } from 'antd';
 import AnimatedNumber from 'react-animated-number';
+import PropTypes from 'prop-types';
 
 import { clusterInfo } from '../../styles';
 
 class PricingSlider extends Component {
+	static propTypes = {
+		marks: PropTypes.arrayOf(PropTypes.number.isRequired),
+		onChange: PropTypes.func.isRequired,
+		currValue: PropTypes.number.isRequired,
+		showNoCardNeeded: PropTypes.bool,
+		sliderProps: PropTypes.object,
+	};
+
 	constructor(props) {
 		super(props);
 
@@ -84,10 +93,24 @@ class PricingSlider extends Component {
 				</div>
 				<div className="col grey">
 					<div className={clusterInfo}>
+						<div
+							className="cluster-info__item"
+							style={{ width: '100%' }}
+						>
+							<div>
+								<AnimatedNumber
+									value={mark.nodes}
+									duration={100}
+									stepPrecision={0}
+								/>{' '}
+								{mark.nodes === 1 ? 'Node' : 'Nodes'}
+							</div>
+							<div>{mark.nodes >= 3 ? 'HA' : ''}</div>
+						</div>
 						<div className="cluster-info__item">
 							<div>
 								<AnimatedNumber
-									value={mark.memory}
+									value={mark.memory * mark.nodes}
 									duration={100}
 									stepPrecision={0}
 								/>{' '}
@@ -98,7 +121,7 @@ class PricingSlider extends Component {
 						<div className="cluster-info__item">
 							<div>
 								<AnimatedNumber
-									value={mark.cpu}
+									value={mark.cpu * mark.nodes}
 									duration={100}
 									stepPrecision={0}
 								/>{' '}
@@ -126,17 +149,6 @@ class PricingSlider extends Component {
 								/>
 							</div>
 							<div>Price per hour</div>
-						</div>
-						<div className="cluster-info__item">
-							<div>
-								<AnimatedNumber
-									value={mark.nodes}
-									duration={100}
-									stepPrecision={0}
-								/>{' '}
-								{mark.nodes === 1 ? 'Node' : 'Nodes'}
-							</div>
-							<div>{mark.nodes >= 3 ? 'HA' : ''}</div>
 						</div>
 					</div>
 					<div className={clusterInfo}>

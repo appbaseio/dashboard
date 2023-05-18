@@ -155,7 +155,7 @@ class NewMyCluster extends Component {
 
 	validateClusterName = () => {
 		const { clusterName } = this.state;
-		const pattern = /^[a-z]+[-a-z0-9]*[a-z0-9]$/;
+		const pattern = /^[a-z][a-z0-9-]{0,20}[a-z0-9]$/;
 		return pattern.test(clusterName);
 	};
 
@@ -476,7 +476,7 @@ class NewMyCluster extends Component {
 											}}
 											icon={<InfoCircleOutlined />}
 										>
-											Setup Elasticsearch instead
+											Setup Search Cluster instead
 										</Button>
 									</Tooltip>
 								</Col>

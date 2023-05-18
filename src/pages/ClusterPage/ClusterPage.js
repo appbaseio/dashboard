@@ -29,11 +29,12 @@ import {
 	PLAN_LABEL,
 	CLUSTER_PLANS,
 	ARC_PLANS,
+	ansibleMachineMarks,
 } from './utils';
 import { mediaKey } from '../../utils/media';
 import DeleteClusterModal from './components/DeleteClusterModal';
 import StripeCheckout from '../../components/StripeCheckout';
-import { ansibleMachineMarks } from './new';
+
 import { machineMarks as arcMachineMarks } from './NewMyCluster';
 import { clusterContainer, clustersList, bannerContainer } from './styles';
 
@@ -746,8 +747,8 @@ class ClusterPage extends Component {
 							css={{
 								display: 'flex',
 								flexWrap: 'wrap',
-								flexDirection: 'row-reverse',
 								paddingBottom: 20,
+								justifyContent: 'flex-end',
 								gap: '1rem',
 								[mediaKey.small]: {
 									paddingTop: 20,
@@ -757,19 +758,19 @@ class ClusterPage extends Component {
 							<Link to="/clusters/new">
 								<Tooltip title="Setup Elasticsearch or OpenSearch with ReactiveSearch in a cloud region of your choice.">
 									{' '}
-									<Button size="large" type="default" block>
-										<PlusOutlined /> Elasticsearch cluster
+									<Button size="large" type="primary" block>
+										<PlusOutlined /> Search cluster
 									</Button>
 								</Tooltip>
 							</Link>
-							{/* <Link to="/new/serverless-search">
+							<Link to="/new/serverless-search">
 								<Tooltip title="Serverless search is a geo-distributed search index, takes 1 min to get up and running">
 									{' '}
-									<Button size="large" type="primary" block>
+									<Button size="large" type="default" block>
 										<PlusOutlined /> Serverless Search
 									</Button>
 								</Tooltip>
-							</Link> */}
+							</Link>
 						</Col>
 					</Row>
 				</Header>

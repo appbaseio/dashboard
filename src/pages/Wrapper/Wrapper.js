@@ -99,6 +99,11 @@ const Wrapper = ({ user }) =>
 			<Route path="/clusters/new/hosted" component={NewClusterPage} />
 			<Route path="/clusters/new/my-cluster" component={NewMyCluster} />
 			<Route path="/clusters/new" component={NewClusterPage} />
+			<Route
+				path="/clusters/legacy-new"
+				exact
+				component={NewClusterPage}
+			/>
 			<Route path="/clusters/:id" component={ClusterInfoPage} />
 			<Route path="/profile" component={ProfilePage} />
 			<Route path="/app/:appName?/:route?" component={AppWrapper} />
