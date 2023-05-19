@@ -964,11 +964,11 @@ export const regionsKeyMap = {
 	other: 'other',
 };
 
-export const V7_ARC = '8.13.0-cluster';
-export const V6_ARC = '8.13.0-cluster';
-export const ARC_BYOC = '8.13.0-byoc';
+export const V7_ARC = '8.13.1-cluster';
+export const V6_ARC = '8.13.1-cluster';
+export const ARC_BYOC = '8.13.1-byoc';
 export const V5_ARC = 'v5-0.0.1';
-export const REACTIVESEARCH_BYOC = '8.13.0-byoc';
+export const REACTIVESEARCH_BYOC = '8.13.1-byoc';
 
 export const arcVersions = {
 	7: V7_ARC,
