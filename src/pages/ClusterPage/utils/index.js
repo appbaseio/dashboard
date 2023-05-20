@@ -72,6 +72,7 @@ export const ARC_PLANS = {
 export const isSandBoxPlan = plan =>
 	plan === CLUSTER_PLANS.SANDBOX_2019 ||
 	plan === CLUSTER_PLANS.SANDBOX_2020 ||
+	plan === CLUSTER_PLANS.SANDBOX_2023 ||
 	plan === ARC_PLANS.ARC_BASIC ||
 	plan === ARC_PLANS.HOSTED_ARC_BASIC ||
 	plan === ARC_PLANS.HOSTED_ARC_BASIC_V2;
