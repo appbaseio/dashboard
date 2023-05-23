@@ -933,6 +933,7 @@ export const ansibleMachineMarks = {
 		memory: 8,
 		nodes: 1,
 		cpu: 2,
+		storagePerNode: 40,
 		cost: PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2023],
 		pph: EFFECTIVE_PRICE_BY_PLANS[CLUSTER_PLANS.SANDBOX_2023],
 	},
@@ -945,6 +946,7 @@ export const ansibleMachineMarks = {
 		memory: 8,
 		nodes: 3,
 		cpu: 2,
+		storagePerNode: 80,
 	},
 	[CLUSTER_PLANS.PRODUCTION_2023_1]: {
 		label: PLAN_LABEL[CLUSTER_PLANS.PRODUCTION_2023_1],
@@ -955,6 +957,7 @@ export const ansibleMachineMarks = {
 		memory: 16,
 		nodes: 3,
 		cpu: 4,
+		storagePerNode: 160,
 	},
 };
 
