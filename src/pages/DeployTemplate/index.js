@@ -43,7 +43,12 @@ const DeployTemplate = ({ location }) => {
 	};
 
 	const getFormData = dataUrl => {
-		fetch(dataUrl)
+		console.log('data url: ', dataUrl);
+		fetch(dataUrl, {
+			headers: {
+				Authorization: undefined,
+			},
+		})
 			.then(res => res.text())
 			.then(resp => {
 				const json = yaml.load(resp);
