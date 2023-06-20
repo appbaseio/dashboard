@@ -87,6 +87,9 @@ class ClusterScreen extends Component {
 	componentDidMount() {
 		this.triggerPayment();
 		this.initClusters();
+		this.setState({
+			backend: this.props.cluster?.backend,
+		});
 	}
 
 	initClusters = () => {
@@ -95,10 +98,16 @@ class ClusterScreen extends Component {
 				const activeClusters = clusters.filter(
 					item => item.status === 'active' && item.role === 'admin',
 				);
+
+				const backendVal = clusters.find(
+					_ => _.id === this.props.clusterId,
+				).backend;
+
 				this.setState({
 					clustersAvailable: !!clusters.length,
 					clusters: activeClusters,
 					isClusterLoading: false,
+					...(backendVal ? { backend: backendVal } : {}),
 				});
 			})
 			.catch(e => {
@@ -819,6 +828,9 @@ class ClusterScreen extends Component {
 															onClick={() => {
 																this.setState({
 																	backend,
+																	clusterURL:
+																		'',
+																	verifiedCluster: false,
 																});
 															}}
 														>
@@ -1006,6 +1018,12 @@ class ClusterScreen extends Component {
 								icon={<SaveOutlined />}
 								type="primary"
 								onClick={this.saveClusterSettings}
+								disabled={
+									this.state.setSearchEngine &&
+									this.state.backend !==
+										BACKENDS.System.name &&
+									!this.state.verifiedCluster
+								}
 							>
 								Save Cluster Settings
 							</Button>
