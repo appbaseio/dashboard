@@ -947,10 +947,19 @@ class ClusterScreen extends Component {
 							</div>
 						) : (
 							<Alert
-								message={`Serverless Search provides you with ${
-									machineMarks[cluster.pricing_plan]
-										.searchIndices
-								} geo-distributed search indexes on Elasticsearch out of the box.`}
+								message={
+									this.state.backend === BACKENDS.System.name
+										? `System backend provides you with ${
+												machineMarks[
+													cluster.pricing_plan
+												].searchIndices
+										  } geo-distributed search indexes on OpenSearch out of the box.`
+										: `Serverless Search provides you with ${
+												machineMarks[
+													cluster.pricing_plan
+												].searchIndices
+										  } geo-distributed search indexes on Elasticsearch out of the box.`
+								}
 								description={
 									<div
 										css={`
