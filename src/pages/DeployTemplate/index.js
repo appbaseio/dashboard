@@ -10,6 +10,7 @@ import DeployLogs from './DeployLogs';
 import Loader from '../../components/Loader';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
+import { ACC_API } from '../../batteries/utils';
 
 const yaml = require('js-yaml');
 
@@ -43,6 +44,13 @@ const DeployTemplate = ({ location }) => {
 	};
 
 	const getFormData = dataUrl => {
+		// Build the URL to hit AccAPI to get the template
+		// details
+		dataUrl = `${ACC_API}/v2/raw-github?path=${dataUrl.replace(
+			'https://raw.githubusercontent.com/',
+			'',
+		)}`;
+
 		fetch(dataUrl)
 			.then(res => res.text())
 			.then(resp => {
