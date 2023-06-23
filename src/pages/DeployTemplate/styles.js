@@ -56,7 +56,7 @@ export const deployClusterStyles = css`
 	.deploy-button {
 		height: 40px;
 		width: 150px;
-		margin: 20px 0px 0px 20px;
+		margin: 20px 0px 0px 0px;
 	}
 
 	.create-cluster-button {
