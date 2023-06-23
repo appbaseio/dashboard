@@ -77,7 +77,13 @@ const DeployCluster = ({
 					},
 					body: formData,
 				};
-				fetch(`${url}_pipeline`, obj)
+
+				// If the `url` doesn't end with a `/`, add it.
+				const urlToHit = `${url}${
+					url.endsWith('/') ? '' : '/'
+				}_pipeline`;
+
+				fetch(urlToHit, obj)
 					.then(response => response.json())
 					.then(json => {
 						if (json?.error) {
