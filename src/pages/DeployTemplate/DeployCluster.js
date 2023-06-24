@@ -12,6 +12,7 @@ import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
+import NewMyServerlessSearch from '../ClusterPage/NewMyServerlessSearch';
 
 const iconMap = {
 	'close-circle': <CloseCircleOutlined style={{ color: 'red' }} />,
@@ -77,7 +78,7 @@ const DeployCluster = ({
 					},
 					body: formData,
 				};
-				fetch(`${url}_pipeline`, obj)
+				fetch(`${url}/_pipeline`, obj)
 					.then(response => response.json())
 					.then(json => {
 						if (json?.error) {
@@ -103,18 +104,20 @@ const DeployCluster = ({
 			});
 	}
 
-	const getErrorMessage = error => {};
 	if (isLoading) return <Loader />;
 
 	return (
 		<div css={deployClusterStyles}>
 			{!activeClusters.length || nextPage ? (
-				<NewMyCluster
+				<NewMyServerlessSearch
 					isDeployTemplate
 					pipeline={formData.id}
 					location={location}
 					setActiveKey={setActiveKey}
-					setTabsValidated={setTabsValidated}
+					setTabsValidated={() => {
+						setDeploymentMessage('success');
+						setTabsValidated(true);
+					}}
 					setClusterId={setClusterId}
 				/>
 			) : (

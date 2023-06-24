@@ -81,7 +81,7 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
-class NewMyCluster extends Component {
+class NewMyServerlessSearch extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -261,9 +261,11 @@ class NewMyCluster extends Component {
 			if (clusterRes.cluster && clusterRes.cluster.id) {
 				setClusterId(clusterRes.cluster.id);
 			}
+			console.log('isDeployTemplate', isDeployTemplate, clusterRes);
+
 			if (isDeployTemplate && clusterRes.cluster.id) {
 				setActiveKey('3');
-				setTabsValidated(true);
+				setTabsValidated(clusterRes.cluster.id);
 				this.setState({
 					isLoading: false,
 				});
@@ -957,7 +959,7 @@ class NewMyCluster extends Component {
 		);
 	}
 }
-NewMyCluster.defaultProps = {
+NewMyServerlessSearch.defaultProps = {
 	isDeployTemplate: false,
 	pipeline: '',
 	setClusterId: () => {},
@@ -965,7 +967,7 @@ NewMyCluster.defaultProps = {
 	setTabsValidated: () => {},
 };
 
-NewMyCluster.propTypes = {
+NewMyServerlessSearch.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
@@ -980,4 +982,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(mapStateToProps, null)(NewMyCluster);
+export default connect(mapStateToProps, null)(NewMyServerlessSearch);
