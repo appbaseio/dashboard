@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -8,7 +9,6 @@ import {
 	PlusOutlined,
 } from '@ant-design/icons';
 import { Button, Select, Alert } from 'antd';
-import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
@@ -23,7 +23,6 @@ const iconMap = {
 const DeployCluster = ({
 	formData,
 	location,
-	history,
 	setActiveKey,
 	setTabsValidated,
 	setClusterId,
@@ -58,9 +57,9 @@ const DeployCluster = ({
 				const newDeployTemplateData = {
 					...JSON.parse(localStorage.getItem(dataUrl)),
 				};
-				const formData = new FormData();
+				const formDataVar = new FormData();
 
-				formData.append(
+				formDataVar.append(
 					'pipeline',
 					JSON.stringify({
 						content:
@@ -76,7 +75,7 @@ const DeployCluster = ({
 							`${username}:${password}`,
 						)}`,
 					},
-					body: formData,
+					body: formDataVar,
 				};
 				fetch(`${url}/_pipeline`, obj)
 					.then(response => response.json())
@@ -201,13 +200,14 @@ const DeployCluster = ({
 											ghost
 											className="cluster-view-button"
 											onClick={() =>
-												history.push(
-													`/clusters/${selectedCluster.id}`,
+												window.open(
+													`${window.location.origin}/clusters/${selectedCluster.id}`,
+													'_blank',
 												)
 											}
 										>
 											Go to {selectedCluster.name}{' '}
-											cluster's view ↗
+											cluster&apos;s view ↗
 										</Button>
 									</div>
 								}
@@ -247,8 +247,9 @@ DeployCluster.defaultProps = {
 DeployCluster.propTypes = {
 	formData: PropTypes.object,
 	location: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	setClusterId: PropTypes.func,
+	setActiveKey: PropTypes.func,
+	setTabsValidated: PropTypes.func,
 };
 
 export default withRouter(DeployCluster);
