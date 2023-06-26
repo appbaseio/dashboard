@@ -20,13 +20,7 @@ const iconMap = {
 	loading: <LoadingOutlined />,
 };
 
-const DeployCluster = ({
-	formData,
-	location,
-	setActiveKey,
-	setTabsValidated,
-	setClusterId,
-}) => {
+const DeployCluster = ({ formData, location, setActiveKey, setClusterId }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState({});
 	const [nextPage, setNextPage] = useState(false);
@@ -47,7 +41,17 @@ const DeployCluster = ({
 				console.error(err);
 			});
 	}, []);
+	const isValidSlsCluster = cluster => {
+		console.log('cluster', cluster);
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
 
+		return false;
+	};
 	function createPipeline() {
 		getClusterData(selectedCluster.id)
 			.then(res => {
@@ -60,7 +64,9 @@ const DeployCluster = ({
 				const formDataVar = new FormData();
 
 				formDataVar.append(
-					'pipeline',
+					isValidSlsCluster(selectedCluster)
+						? 'pipeline_info'
+						: 'pipeline',
 					JSON.stringify({
 						content:
 							JSON.stringify(newDeployTemplateData.formData) ||
@@ -108,17 +114,48 @@ const DeployCluster = ({
 	return (
 		<div css={deployClusterStyles}>
 			{!activeClusters.length || nextPage ? (
-				<NewMyServerlessSearch
-					isDeployTemplate
-					pipeline={formData.id}
-					location={location}
-					setActiveKey={setActiveKey}
-					setTabsValidated={() => {
-						setDeploymentMessage('success');
-						setTabsValidated(true);
-					}}
-					setClusterId={setClusterId}
-				/>
+				deploymentMessage ? (
+					deploymentMessage === 'success' ? (
+						<Alert
+							type="info"
+							message={
+								<div className="success-alert">
+									<div>
+										Pipeline is successfully deployed on the{' '}
+										{selectedCluster.clusterName} cluster
+									</div>
+									<Button
+										type="primary"
+										// size="small"
+										ghost
+										className="cluster-view-button"
+										onClick={() =>
+											window.open(
+												`${window.location.origin}/clusters/${selectedCluster.clusterId}`,
+												'_blank',
+											)
+										}
+									>
+										Go to {selectedCluster.clusterName}{' '}
+										cluster&apos;s view ↗
+									</Button>
+								</div>
+							}
+						/>
+					) : null
+				) : (
+					<NewMyServerlessSearch
+						isDeployTemplate
+						pipeline={formData.id}
+						location={location}
+						setActiveKey={setActiveKey}
+						setTabsValidated={clusterInfo => {
+							setDeploymentMessage('success');
+							setSelectedCluster(clusterInfo);
+						}}
+						setClusterId={setClusterId}
+					/>
+				)
 			) : (
 				<div style={{ padding: 20 }}>
 					<h3>
@@ -249,7 +286,6 @@ DeployCluster.propTypes = {
 	location: PropTypes.object.isRequired,
 	setClusterId: PropTypes.func,
 	setActiveKey: PropTypes.func,
-	setTabsValidated: PropTypes.func,
 };
 
 export default withRouter(DeployCluster);

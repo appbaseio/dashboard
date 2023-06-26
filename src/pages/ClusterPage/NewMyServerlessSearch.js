@@ -235,8 +235,10 @@ class NewMyServerlessSearch extends Component {
 
 			const obj = {};
 			if (isDeployTemplate) {
-				obj.pipeline_info = localStorage.getItem(
-					location.search.split('=')[1],
+				obj.pipeline_info = JSON.stringify(
+					JSON.parse(
+						localStorage.getItem(location.search.split('=')[1]),
+					)?.formData ?? {},
 				);
 			}
 
@@ -259,21 +261,22 @@ class NewMyServerlessSearch extends Component {
 			}
 
 			const clusterRes = await deployMySlsCluster(body);
-			if (clusterRes.cluster && clusterRes.cluster.id) {
-				setClusterId(clusterRes.cluster.id);
+			if (clusterRes.cluster && clusterRes.cluster.cluster_id) {
+				setClusterId(clusterRes.cluster.cluster_id);
 			}
-			console.log('isDeployTemplate', isDeployTemplate, clusterRes);
 
-			if (isDeployTemplate && clusterRes.cluster.id) {
-				setActiveKey('3');
-				setTabsValidated(clusterRes.cluster.id);
+			if (isDeployTemplate && clusterRes.cluster.cluster_id) {
+				setTabsValidated({
+					clusterId: clusterRes.cluster.cluster_id,
+					clusterName: this.state.clusterName,
+				});
 				this.setState({
 					isLoading: false,
 				});
 			}
 			if (stripeData.token) {
 				await createSubscription({
-					clusterId: clusterRes.cluster.id,
+					clusterId: clusterRes.cluster.cluster_id,
 					...stripeData,
 				});
 				this.props.history.push('/');
