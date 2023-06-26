@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
 import { ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
+import Icon from '@ant-design/icons/lib/components/Icon';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -874,33 +875,7 @@ class NewMyServerlessSearch extends Component {
 									</p>
 								) : null}
 
-								<Button
-									type="primary"
-									size="large"
-									onClick={this.createCluster}
-									disabled={
-										(this.state.setSearchEngine &&
-											this.state.backend !==
-												BACKENDS.System.name &&
-											!this.state.verifiedCluster) ||
-										!this.validateClusterName()
-									}
-								>
-									{isDeployTemplate ? (
-										<>
-											Deploy cluster with pipeline &nbsp;
-											{pipeline}
-										</>
-									) : (
-										<>Create Cluster</>
-									)}
-									<ArrowRightOutlined />
-								</Button>
-
-								{/* {(isUsingClusterTrial &&
-									this.state.pricing_plan !==
-										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
-								clusters.length > 0 ? (
+								{clusters.length > 0 ? (
 									<Button
 										type="primary"
 										size="large"
@@ -945,12 +920,9 @@ class NewMyServerlessSearch extends Component {
 										) : (
 											<>Create Cluster</>
 										)}
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
-								)} */}
+								)}
 							</div>
 						</article>
 					</section>
