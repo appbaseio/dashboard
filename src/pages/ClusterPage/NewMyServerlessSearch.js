@@ -206,7 +206,6 @@ class NewMyServerlessSearch extends Component {
 			isDeployTemplate,
 			location,
 			setClusterId,
-			setActiveKey,
 			setTabsValidated,
 		} = this.props;
 		try {
@@ -508,6 +507,7 @@ class NewMyServerlessSearch extends Component {
 							].toString()}
 							onCancel={this.handleStripeModal}
 							onSubmit={this.handleStripeSubmit}
+							isSLSCluster
 						/>
 					)}
 					<section className={clusterContainer}>
