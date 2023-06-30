@@ -238,7 +238,10 @@ const PipelineTemplateScreen = ({
 					</div>
 				))
 			) : (
-				<ErrorPage message="This URL may not contain the global_envs property." />
+				<ErrorPage
+					message="This URL may not contain the global_envs property."
+					type="warning"
+				/>
 			)}
 			<Button
 				block

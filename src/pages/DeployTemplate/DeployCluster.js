@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -8,10 +9,10 @@ import {
 	PlusOutlined,
 } from '@ant-design/icons';
 import { Button, Select, Alert } from 'antd';
-import NewMyCluster from '../ClusterPage/NewMyCluster';
 import { getClusters, getClusterData } from '../ClusterPage/utils';
 import { deployClusterStyles } from './styles';
 import Loader from '../../components/Loader';
+import NewMyServerlessSearch from '../ClusterPage/NewMyServerlessSearch';
 
 const iconMap = {
 	'close-circle': <CloseCircleOutlined style={{ color: 'red' }} />,
@@ -19,14 +20,7 @@ const iconMap = {
 	loading: <LoadingOutlined />,
 };
 
-const DeployCluster = ({
-	formData,
-	location,
-	history,
-	setActiveKey,
-	setTabsValidated,
-	setClusterId,
-}) => {
+const DeployCluster = ({ formData, location, setActiveKey, setClusterId }) => {
 	const [activeClusters, setActiveClusters] = useState([]);
 	const [selectedCluster, setSelectedCluster] = useState({});
 	const [nextPage, setNextPage] = useState(false);
@@ -47,7 +41,17 @@ const DeployCluster = ({
 				console.error(err);
 			});
 	}, []);
+	const isValidSlsCluster = cluster => {
+		console.log('cluster', cluster);
+		if (
+			cluster &&
+			cluster.tenancy_type === 'multi' &&
+			cluster.recipe === 'mtrs'
+		)
+			return true;
 
+		return false;
+	};
 	function createPipeline() {
 		getClusterData(selectedCluster.id)
 			.then(res => {
@@ -57,10 +61,12 @@ const DeployCluster = ({
 				const newDeployTemplateData = {
 					...JSON.parse(localStorage.getItem(dataUrl)),
 				};
-				const formData = new FormData();
+				const formDataVar = new FormData();
 
-				formData.append(
-					'pipeline',
+				formDataVar.append(
+					isValidSlsCluster(selectedCluster)
+						? 'pipeline_info'
+						: 'pipeline',
 					JSON.stringify({
 						content:
 							JSON.stringify(newDeployTemplateData.formData) ||
@@ -75,9 +81,9 @@ const DeployCluster = ({
 							`${username}:${password}`,
 						)}`,
 					},
-					body: formData,
+					body: formDataVar,
 				};
-				fetch(`${url}_pipeline`, obj)
+				fetch(`${url}/_pipeline`, obj)
 					.then(response => response.json())
 					.then(json => {
 						if (json?.error) {
@@ -103,20 +109,53 @@ const DeployCluster = ({
 			});
 	}
 
-	const getErrorMessage = error => {};
 	if (isLoading) return <Loader />;
 
 	return (
 		<div css={deployClusterStyles}>
 			{!activeClusters.length || nextPage ? (
-				<NewMyCluster
-					isDeployTemplate
-					pipeline={formData.id}
-					location={location}
-					setActiveKey={setActiveKey}
-					setTabsValidated={setTabsValidated}
-					setClusterId={setClusterId}
-				/>
+				deploymentMessage ? (
+					deploymentMessage === 'success' ? (
+						<Alert
+							type="info"
+							message={
+								<div className="success-alert">
+									<div>
+										Pipeline is successfully deployed on the{' '}
+										{selectedCluster.clusterName} cluster
+									</div>
+									<Button
+										type="primary"
+										// size="small"
+										ghost
+										className="cluster-view-button"
+										onClick={() =>
+											window.open(
+												`${window.location.origin}/clusters/${selectedCluster.clusterId}`,
+												'_blank',
+											)
+										}
+									>
+										Go to {selectedCluster.clusterName}{' '}
+										cluster&apos;s view ↗
+									</Button>
+								</div>
+							}
+						/>
+					) : null
+				) : (
+					<NewMyServerlessSearch
+						isDeployTemplate
+						pipeline={formData.id}
+						location={location}
+						setActiveKey={setActiveKey}
+						setTabsValidated={clusterInfo => {
+							setDeploymentMessage('success');
+							setSelectedCluster(clusterInfo);
+						}}
+						setClusterId={setClusterId}
+					/>
+				)
 			) : (
 				<div style={{ padding: 20 }}>
 					<h3>
@@ -198,13 +237,14 @@ const DeployCluster = ({
 											ghost
 											className="cluster-view-button"
 											onClick={() =>
-												history.push(
-													`/clusters/${selectedCluster.id}`,
+												window.open(
+													`${window.location.origin}/clusters/${selectedCluster.id}`,
+													'_blank',
 												)
 											}
 										>
 											Go to {selectedCluster.name}{' '}
-											cluster's view ↗
+											cluster&apos;s view ↗
 										</Button>
 									</div>
 								}
@@ -244,8 +284,8 @@ DeployCluster.defaultProps = {
 DeployCluster.propTypes = {
 	formData: PropTypes.object,
 	location: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	setClusterId: PropTypes.func,
+	setActiveKey: PropTypes.func,
 };
 
 export default withRouter(DeployCluster);

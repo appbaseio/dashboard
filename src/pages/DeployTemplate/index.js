@@ -10,6 +10,7 @@ import DeployLogs from './DeployLogs';
 import Loader from '../../components/Loader';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
+import { ACC_API } from '../../batteries/utils';
 
 const yaml = require('js-yaml');
 
@@ -30,32 +31,36 @@ const DeployTemplate = ({ location }) => {
 	});
 	const [clusterId, setClusterId] = useState('');
 
-	useEffect(() => {
-		if (location.search) {
-			formInit();
-		}
-	}, [location]);
+	const ValidateObj = pipelineVariables => {
+		const regex = /\${[a-zA-Z0-9_]*}/gm;
+		const varRegex = /(?<=\${)(.*?)(?=\})/;
 
-	const formInit = () => {
-		const dataUrl = location.search.split('=')[1];
-		setTemplateUrl(dataUrl);
-		getFormData(dataUrl);
+		const newArr = pipelineVariables.map(pipelineVariable => {
+			const newPipelineVariable = transformValidateObj(
+				pipelineVariable,
+				regex,
+				varRegex,
+				pipelineVariables,
+			);
+			return newPipelineVariable;
+		});
+		return newArr;
 	};
-
 	const getFormData = dataUrl => {
 		fetch(dataUrl)
 			.then(res => res.text())
 			.then(resp => {
 				const json = yaml.load(resp);
 				setInitialFormData(json);
+				console.log('json', json, dataUrl.split('=')[1]);
 				const transformedFormData = {
 					...json,
 					global_envs: [...ValidateObj(json?.global_envs || [])],
 				};
-				if (!localStorage.getItem(dataUrl)) {
+				if (!localStorage.getItem(dataUrl.split('=')[1])) {
 					setFormData(transformedFormData);
 					localStorage.setItem(
-						dataUrl,
+						dataUrl.split('=')[1],
 						JSON.stringify({
 							formData: transformedFormData,
 							currentStep: '1',
@@ -69,7 +74,7 @@ const DeployTemplate = ({ location }) => {
 					);
 				} else {
 					const deployTemplateData = JSON.parse(
-						localStorage.getItem(dataUrl),
+						localStorage.getItem(dataUrl.split('=')[1]),
 					);
 					setFormData(deployTemplateData.formData);
 					setActiveKey(deployTemplateData.currentStep);
@@ -92,7 +97,18 @@ const DeployTemplate = ({ location }) => {
 				}
 			});
 	};
-
+	const formInit = () => {
+		const dataUrl = `${ACC_API}/v2/raw-github?path=${window.location.search
+			.split('=')[1]
+			.replace('https://raw.githubusercontent.com/', '')}`;
+		setTemplateUrl(dataUrl.split('=')[1]);
+		getFormData(dataUrl);
+	};
+	useEffect(() => {
+		if (location.search) {
+			formInit();
+		}
+	}, [location]);
 	const transformValidateObj = (
 		pipelineVariable,
 		regex,
@@ -148,22 +164,6 @@ const DeployTemplate = ({ location }) => {
 		return newPipelineVariable;
 	};
 
-	const ValidateObj = pipelineVariables => {
-		const regex = /\${[a-zA-Z0-9_]*}/gm;
-		const varRegex = /(?<=\${)(.*?)(?=\})/;
-
-		const newArr = pipelineVariables.map(pipelineVariable => {
-			const newPipelineVariable = transformValidateObj(
-				pipelineVariable,
-				regex,
-				varRegex,
-				pipelineVariables,
-			);
-			return newPipelineVariable;
-		});
-		return newArr;
-	};
-
 	const handleFormChange = (key, val) => {
 		const newFormData = { ...initialFormData };
 		newFormData?.global_envs.forEach(data => {
@@ -203,6 +203,7 @@ const DeployTemplate = ({ location }) => {
 			...JSON.parse(localStorage.getItem(templateUrl)),
 		};
 		newDeployTemplateData.currentStep = tab;
+		console.log('templateUrl', templateUrl);
 		localStorage.setItem(
 			templateUrl,
 			JSON.stringify(newDeployTemplateData),
@@ -246,15 +247,15 @@ const DeployTemplate = ({ location }) => {
 				<Header compact>
 					<Row type="flex" justify="space-between" gutter={16}>
 						<Col lg={18}>
-							<h2>Deploy Reactivesearch Cluster</h2>
+							<h2>Deploy Pipeline with ReactiveSearch</h2>
 
 							<Row>
 								<Col lg={18}>
 									<p>
-										You're using the deploy template
-										feature. Once you fill the variables for
-										this pipeline template, your cluster
-										will get deployed in just 2mins.
+										You&lsquo;re using the deploy template
+										feature. Once you fill in the variables
+										for this pipeline template, your cluster
+										will get deployed in &lt; 2 mins.
 									</p>
 								</Col>
 							</Row>
@@ -278,6 +279,11 @@ const DeployTemplate = ({ location }) => {
 						</Col>
 					</Row>
 				</Header>
+				{formData?.description && (
+					<h3 style={{ margin: '2rem 0' }}>
+						Deploying: &quot;{formData?.description}&quot;
+					</h3>
+				)}
 				<div className="tab-container">
 					{err ? (
 						<ErrorPage message={err} />
@@ -316,7 +322,8 @@ const DeployTemplate = ({ location }) => {
 									}}
 								/>
 							</TabPane>
-							<TabPane
+
+							{/* <TabPane
 								tab="3 Cluster Deploy Logs"
 								disabled={!tabsValidated.tab2}
 								key="3"
@@ -325,7 +332,7 @@ const DeployTemplate = ({ location }) => {
 									clusterId={clusterId}
 									dataUrl={templateUrl}
 								/>
-							</TabPane>
+							</TabPane> */}
 						</Tabs>
 					)}
 				</div>

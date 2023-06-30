@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfoCircleFilled } from '@ant-design/icons';
-import { Alert, message } from 'antd';
+import { Alert } from 'antd';
 import { deployClusterStyles } from './styles';
 
-const ErrorPage = ({ message }) => {
+const ErrorPage = ({ message, type = 'error' }) => {
 	return (
 		<div css={deployClusterStyles}>
 			<Alert
 				message={
-					<div style={{ color: '#8d0c30' }}>
+					<div style={{ color: '#ec8805' }}>
 						<div
 							style={{
 								display: 'flex',
@@ -22,13 +22,13 @@ const ErrorPage = ({ message }) => {
 								&nbsp;Not found:&nbsp;
 							</div>
 							<div style={{ color: '#000' }}>
-								{location.search.split('=')[1]}
+								{window.location.search.split('=')[1]}
 							</div>
 						</div>
 						<p>{message}</p>
 					</div>
 				}
-				type="error"
+				type={type}
 			/>
 		</div>
 	);
@@ -36,10 +36,12 @@ const ErrorPage = ({ message }) => {
 
 ErrorPage.defaultProps = {
 	message: 'This repository may not exist or is set to private.',
+	type: 'error',
 };
 
 ErrorPage.propTypes = {
-	formData: PropTypes.string,
+	message: PropTypes.string,
+	type: PropTypes.string,
 };
 
 export default ErrorPage;
