@@ -233,12 +233,14 @@ class NewMyServerlessSearch extends Component {
 			});
 
 			const obj = {};
+
 			if (isDeployTemplate) {
-				obj.pipeline_info = JSON.stringify(
-					JSON.parse(
-						localStorage.getItem(location.search.split('=')[1]),
-					)?.formData ?? {},
-				);
+				obj.pipeline_info = JSON.stringify({
+					content:
+						localStorage.getItem(location.search.split('=')[1]) ||
+						'{}',
+					extension: 'json',
+				});
 			}
 
 			const body = {
