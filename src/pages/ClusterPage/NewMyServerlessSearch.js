@@ -236,9 +236,11 @@ class NewMyServerlessSearch extends Component {
 
 			if (isDeployTemplate) {
 				obj.pipeline_info = JSON.stringify({
-					content:
-						localStorage.getItem(location.search.split('=')[1]) ||
-						'{}',
+					content: JSON.stringify(
+						JSON.parse(
+							localStorage.getItem(location.search.split('=')[1]),
+						)?.formData ?? {},
+					),
 					extension: 'json',
 				});
 			}
@@ -940,7 +942,6 @@ NewMyServerlessSearch.defaultProps = {
 	isDeployTemplate: false,
 	pipeline: '',
 	setClusterId: () => {},
-	setActiveKey: () => {},
 	setTabsValidated: () => {},
 };
 
@@ -951,7 +952,6 @@ NewMyServerlessSearch.propTypes = {
 	isDeployTemplate: PropTypes.bool,
 	pipeline: PropTypes.string,
 	setClusterId: PropTypes.func,
-	setActiveKey: PropTypes.func,
 	setTabsValidated: PropTypes.func,
 };
 
