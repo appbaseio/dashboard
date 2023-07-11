@@ -233,12 +233,16 @@ class NewMyServerlessSearch extends Component {
 			});
 
 			const obj = {};
+
 			if (isDeployTemplate) {
-				obj.pipeline_info = JSON.stringify(
-					JSON.parse(
-						localStorage.getItem(location.search.split('=')[1]),
-					)?.formData ?? {},
-				);
+				obj.pipeline_info = JSON.stringify({
+					content: JSON.stringify(
+						JSON.parse(
+							localStorage.getItem(location.search.split('=')[1]),
+						)?.formData ?? {},
+					),
+					extension: 'json',
+				});
 			}
 
 			const body = {
@@ -938,7 +942,6 @@ NewMyServerlessSearch.defaultProps = {
 	isDeployTemplate: false,
 	pipeline: '',
 	setClusterId: () => {},
-	setActiveKey: () => {},
 	setTabsValidated: () => {},
 };
 
@@ -949,7 +952,6 @@ NewMyServerlessSearch.propTypes = {
 	isDeployTemplate: PropTypes.bool,
 	pipeline: PropTypes.string,
 	setClusterId: PropTypes.func,
-	setActiveKey: PropTypes.func,
 	setTabsValidated: PropTypes.func,
 };
 
