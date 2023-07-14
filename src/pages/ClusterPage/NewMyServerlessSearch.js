@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { generateSlug } from 'random-word-slugs';
 import { ArrowRightOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import AnimatedNumber from 'react-animated-number/build/AnimatedNumber';
+import Icon from '@ant-design/icons/lib/components/Icon';
 import FullHeader from '../../components/FullHeader';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
@@ -81,7 +82,7 @@ const namingConvention = {
 		'Name must start with a lowercase letter followed by upto 21 lowercase letters, numbers or hyphens and cannot end with a hyphen.',
 };
 
-class NewMyCluster extends Component {
+class NewMyServerlessSearch extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -205,7 +206,6 @@ class NewMyCluster extends Component {
 			isDeployTemplate,
 			location,
 			setClusterId,
-			setActiveKey,
 			setTabsValidated,
 		} = this.props;
 		try {
@@ -233,10 +233,16 @@ class NewMyCluster extends Component {
 			});
 
 			const obj = {};
+
 			if (isDeployTemplate) {
-				obj.pipeline_info = localStorage.getItem(
-					location.search.split('=')[1],
-				);
+				obj.pipeline_info = JSON.stringify({
+					content: JSON.stringify(
+						JSON.parse(
+							localStorage.getItem(location.search.split('=')[1]),
+						)?.formData ?? {},
+					),
+					extension: 'json',
+				});
 			}
 
 			const body = {
@@ -258,19 +264,22 @@ class NewMyCluster extends Component {
 			}
 
 			const clusterRes = await deployMySlsCluster(body);
-			if (clusterRes.cluster && clusterRes.cluster.id) {
-				setClusterId(clusterRes.cluster.id);
+			if (clusterRes.cluster && clusterRes.cluster.cluster_id) {
+				setClusterId(clusterRes.cluster.cluster_id);
 			}
-			if (isDeployTemplate && clusterRes.cluster.id) {
-				setActiveKey('3');
-				setTabsValidated(true);
+
+			if (isDeployTemplate && clusterRes.cluster.cluster_id) {
+				setTabsValidated({
+					clusterId: clusterRes.cluster.cluster_id,
+					clusterName: this.state.clusterName,
+				});
 				this.setState({
 					isLoading: false,
 				});
 			}
 			if (stripeData.token) {
 				await createSubscription({
-					clusterId: clusterRes.cluster.id,
+					clusterId: clusterRes.cluster.cluster_id,
 					...stripeData,
 				});
 				this.props.history.push('/');
@@ -502,6 +511,7 @@ class NewMyCluster extends Component {
 							].toString()}
 							onCancel={this.handleStripeModal}
 							onSubmit={this.handleStripeSubmit}
+							isSLSCluster
 						/>
 					)}
 					<section className={clusterContainer}>
@@ -872,33 +882,7 @@ class NewMyCluster extends Component {
 									</p>
 								) : null}
 
-								<Button
-									type="primary"
-									size="large"
-									onClick={this.createCluster}
-									disabled={
-										(this.state.setSearchEngine &&
-											this.state.backend !==
-												BACKENDS.System.name &&
-											!this.state.verifiedCluster) ||
-										!this.validateClusterName()
-									}
-								>
-									{isDeployTemplate ? (
-										<>
-											Deploy cluster with pipeline &nbsp;
-											{pipeline}
-										</>
-									) : (
-										<>Create Cluster</>
-									)}
-									<ArrowRightOutlined />
-								</Button>
-
-								{/* {(isUsingClusterTrial &&
-									this.state.pricing_plan !==
-										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
-								clusters.length > 0 ? (
+								{clusters.length > 0 ? (
 									<Button
 										type="primary"
 										size="large"
@@ -943,12 +927,9 @@ class NewMyCluster extends Component {
 										) : (
 											<>Create Cluster</>
 										)}
-										<Icon
-											type="arrow-right"
-											theme="outlined"
-										/>
+										<ArrowRightOutlined />
 									</Button>
-								)} */}
+								)}
 							</div>
 						</article>
 					</section>
@@ -957,22 +938,20 @@ class NewMyCluster extends Component {
 		);
 	}
 }
-NewMyCluster.defaultProps = {
+NewMyServerlessSearch.defaultProps = {
 	isDeployTemplate: false,
 	pipeline: '',
 	setClusterId: () => {},
-	setActiveKey: () => {},
 	setTabsValidated: () => {},
 };
 
-NewMyCluster.propTypes = {
+NewMyServerlessSearch.propTypes = {
 	isUsingClusterTrial: PropTypes.bool.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	isDeployTemplate: PropTypes.bool,
 	pipeline: PropTypes.string,
 	setClusterId: PropTypes.func,
-	setActiveKey: PropTypes.func,
 	setTabsValidated: PropTypes.func,
 };
 
@@ -980,4 +959,4 @@ const mapStateToProps = state => ({
 	isUsingClusterTrial: get(state, '$getUserPlan.cluster_trial') || false,
 });
 
-export default connect(mapStateToProps, null)(NewMyCluster);
+export default connect(mapStateToProps, null)(NewMyServerlessSearch);
