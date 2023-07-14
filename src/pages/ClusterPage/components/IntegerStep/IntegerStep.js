@@ -28,7 +28,7 @@ export default class IntegerStep extends React.Component {
 				<Col span={12}>
 					<Slider
 						min={defaultValue > 1 ? defaultValue - 1 : 1}
-						max={defaultValue === 5 ? 5 : defaultValue + 1}
+						max={defaultValue === 7 ? 7 : defaultValue + 1}
 						onChange={this.onChange}
 						step={1}
 						value={typeof inputValue === 'number' ? inputValue : 1}
@@ -37,7 +37,7 @@ export default class IntegerStep extends React.Component {
 				<Col span={4}>
 					<InputNumber
 						min={defaultValue > 1 ? defaultValue - 1 : 1}
-						max={defaultValue === 5 ? 5 : defaultValue + 1}
+						max={defaultValue === 7 ? 7 : defaultValue + 1}
 						style={{ marginLeft: 16 }}
 						value={inputValue}
 						onChange={this.onChange}
