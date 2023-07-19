@@ -73,6 +73,7 @@ const PipelineTemplateScreen = ({
 		}
 
 		if (
+			validateObj.headers &&
 			validateObj.headers.Authorization &&
 			validateObj.headers.Authorization.includes('Basic') &&
 			validateObj.headers.Authorization.includes('btoa')
@@ -83,6 +84,21 @@ const PipelineTemplateScreen = ({
 			)[1];
 			const creds = btoa(keyVariable);
 			obj.headers.Authorization = `Basic ${creds}`;
+		}
+
+		// Extracting credentials from validateObj.url
+		const credsRegex = /(?<=\/\/)(.*?)(?=@)/;
+		const extractedCreds = credsRegex.exec(validateObj.url);
+		if (extractedCreds && extractedCreds[1]) {
+			const [username, password] = extractedCreds[1].split(':');
+			const creds = btoa(`${username}:${password}`);
+			obj.headers.Authorization = `Basic ${creds}`;
+
+			// Remove credentials from validateObj.url
+			validateObj.url = validateObj.url.replace(
+				`${username}:${password}@`,
+				'',
+			);
 		}
 
 		fetch(validateObj.url, obj)
