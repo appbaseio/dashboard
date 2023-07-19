@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { BookOutlined } from '@ant-design/icons';
-import { Alert, Tabs, Row, Col, Link, Button } from 'antd';
+import { Tabs, Row, Col, Button } from 'antd';
 import { mainContainer } from './styles';
 import DeployCluster from './DeployCluster';
 import PipelineTemplateScreen from './PipelineTemplateScreen';
 import ErrorPage from './ErrorPage';
-import DeployLogs from './DeployLogs';
 import Loader from '../../components/Loader';
 import FullHeader from '../../components/FullHeader';
 import Header from '../../components/Header';
@@ -18,7 +17,6 @@ const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
 	const [templateUrl, setTemplateUrl] = useState('');
-	const [response, setResponse] = useState('');
 	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
 	const [activeKey, setActiveKey] = useState('1');
@@ -30,7 +28,62 @@ const DeployTemplate = ({ location }) => {
 		tab3: false,
 	});
 	const [clusterId, setClusterId] = useState('');
+	const transformValidateObj = (
+		pipelineVariable,
+		regex,
+		varRegex,
+		pipelineVariables,
+		type = 'other',
+		...attrs
+	) => {
+		let newPipelineVariable = { ...pipelineVariable };
+		if (type === 'array') {
+			newPipelineVariable = { ...pipelineVariable[0] };
+		}
 
+		// object traversal to find ${variable}
+		// eslint-disable-next-line no-restricted-syntax
+		for (const key in newPipelineVariable) {
+			if (typeof newPipelineVariable[key] === 'object') {
+				if (Array.isArray(newPipelineVariable[key])) {
+					newPipelineVariable[key] = transformValidateObj(
+						newPipelineVariable[key],
+						regex,
+						varRegex,
+						pipelineVariables,
+						'array',
+					);
+				} else {
+					newPipelineVariable[key] = transformValidateObj(
+						newPipelineVariable[key],
+						regex,
+						varRegex,
+						pipelineVariables,
+					);
+				}
+			} else if (
+				typeof newPipelineVariable[key] === 'string' &&
+				newPipelineVariable[key].match(regex)
+			) {
+				// newPipelineVariable[key].match(regex) -> returns array of ${variable} available in the string
+				newPipelineVariable[key].match(regex).map(data => {
+					// Extract variable from ${variable}
+					const keyVariable = varRegex.exec(data)[1];
+					const reqObject = pipelineVariables.filter(
+						i => i.key === keyVariable,
+					);
+					const newRegex = `\${${keyVariable}}`;
+
+					if (reqObject[0]) {
+						newPipelineVariable[key] = newPipelineVariable[
+							key
+						].replace(newRegex, reqObject[0].value);
+					}
+				});
+			}
+		}
+		return newPipelineVariable;
+	};
 	const ValidateObj = pipelineVariables => {
 		const regex = /\${[a-zA-Z0-9_]*}/gm;
 		const varRegex = /(?<=\${)(.*?)(?=\})/;
@@ -52,7 +105,6 @@ const DeployTemplate = ({ location }) => {
 			.then(resp => {
 				const json = yaml.load(resp);
 				setInitialFormData(json);
-				console.log('json', json, dataUrl.split('=')[1]);
 				const transformedFormData = {
 					...json,
 					global_envs: [...ValidateObj(json?.global_envs || [])],
@@ -109,63 +161,10 @@ const DeployTemplate = ({ location }) => {
 			formInit();
 		}
 	}, [location]);
-	const transformValidateObj = (
-		pipelineVariable,
-		regex,
-		varRegex,
-		pipelineVariables,
-		type = 'other',
-		...attrs
-	) => {
-		let newPipelineVariable = { ...pipelineVariable };
-		if (type === 'array') {
-			newPipelineVariable = { ...pipelineVariable[0] };
-		}
-
-		// object traversal to find ${variable}
-		for (const key in newPipelineVariable) {
-			if (typeof newPipelineVariable[key] === 'object') {
-				if (Array.isArray(newPipelineVariable[key])) {
-					newPipelineVariable[key] = transformValidateObj(
-						newPipelineVariable[key],
-						regex,
-						varRegex,
-						pipelineVariables,
-						'array',
-					);
-				} else {
-					newPipelineVariable[key] = transformValidateObj(
-						newPipelineVariable[key],
-						regex,
-						varRegex,
-						pipelineVariables,
-					);
-				}
-			} else if (
-				typeof newPipelineVariable[key] === 'string' &&
-				newPipelineVariable[key].match(regex)
-			) {
-				// newPipelineVariable[key].match(regex) -> returns array of ${variable} available in the string
-				newPipelineVariable[key].match(regex).map(data => {
-					// Extract variable from ${variable}
-					const keyVariable = varRegex.exec(data)[1];
-					const reqObject = pipelineVariables.filter(
-						i => i.key === keyVariable,
-					);
-					const newRegex = `\${${keyVariable}}`;
-
-					newPipelineVariable[key] = newPipelineVariable[key].replace(
-						newRegex,
-						reqObject[0].value,
-					);
-				});
-			}
-		}
-		return newPipelineVariable;
-	};
 
 	const handleFormChange = (key, val) => {
 		const newFormData = { ...initialFormData };
+		// eslint-disable-next-line no-unused-expressions
 		newFormData?.global_envs.forEach(data => {
 			if (data.key === key) {
 				data.value = val;
