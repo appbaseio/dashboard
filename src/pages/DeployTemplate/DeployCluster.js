@@ -41,32 +41,22 @@ const DeployCluster = ({ formData, location, setActiveKey, setClusterId }) => {
 				console.error(err);
 			});
 	}, []);
-	const isValidSlsCluster = cluster => {
-		console.log('cluster', cluster);
-		if (
-			cluster &&
-			cluster.tenancy_type === 'multi' &&
-			cluster.recipe === 'mtrs'
-		)
-			return true;
 
-		return false;
-	};
 	function createPipeline() {
 		getClusterData(selectedCluster.id)
 			.then(res => {
 				const { url, username, password } =
 					res?.deployment?.addons[0] || '';
-				const dataUrl = location.search.split('=')[1];
+				const dataUrl = location.search
+					.split('=')[1]
+					.replace('https://raw.githubusercontent.com/', '');
 				const newDeployTemplateData = {
 					...JSON.parse(localStorage.getItem(dataUrl)),
 				};
 				const formDataVar = new FormData();
 
 				formDataVar.append(
-					isValidSlsCluster(selectedCluster)
-						? 'pipeline_info'
-						: 'pipeline',
+					'pipeline',
 					JSON.stringify({
 						content:
 							JSON.stringify(newDeployTemplateData.formData) ||
