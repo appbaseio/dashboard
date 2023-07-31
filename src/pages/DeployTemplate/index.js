@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { BookOutlined } from '@ant-design/icons';
 import { Tabs, Row, Col, Button } from 'antd';
@@ -16,6 +16,7 @@ const yaml = require('js-yaml');
 const { TabPane } = Tabs;
 
 const DeployTemplate = ({ location }) => {
+	const hasMounted = useRef(false);
 	const [templateUrl, setTemplateUrl] = useState('');
 	const [initialFormData, setInitialFormData] = useState({});
 	const [formData, setFormData] = useState({});
@@ -99,7 +100,7 @@ const DeployTemplate = ({ location }) => {
 		});
 		return newArr;
 	};
-	const getFormData = dataUrl => {
+	const getFormData = (dataUrl, overrideStaleData = false) => {
 		fetch(dataUrl)
 			.then(res => res.text())
 			.then(resp => {
@@ -109,7 +110,10 @@ const DeployTemplate = ({ location }) => {
 					...json,
 					global_envs: [...ValidateObj(json?.global_envs || [])],
 				};
-				if (!localStorage.getItem(dataUrl.split('=')[1])) {
+				if (
+					!localStorage.getItem(dataUrl.split('=')[1]) ||
+					overrideStaleData
+				) {
 					setFormData(transformedFormData);
 					localStorage.setItem(
 						dataUrl.split('=')[1],
@@ -154,11 +158,12 @@ const DeployTemplate = ({ location }) => {
 			.split('=')[1]
 			.replace('https://raw.githubusercontent.com/', '')}`;
 		setTemplateUrl(dataUrl.split('=')[1]);
-		getFormData(dataUrl);
+		getFormData(dataUrl, !hasMounted.current);
 	};
 	useEffect(() => {
 		if (location.search) {
 			formInit();
+			hasMounted.current = true;
 		}
 	}, [location]);
 

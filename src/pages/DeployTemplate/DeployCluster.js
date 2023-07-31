@@ -73,7 +73,11 @@ const DeployCluster = ({ formData, location, setActiveKey, setClusterId }) => {
 					},
 					body: formDataVar,
 				};
-				fetch(`${url}/_pipeline`, obj)
+
+				const sanitisedURL = url.endsWith('/')
+					? `${url}_pipeline`
+					: `${url}/_pipeline`;
+				fetch(sanitisedURL, obj)
 					.then(response => response.json())
 					.then(json => {
 						if (json?.error) {

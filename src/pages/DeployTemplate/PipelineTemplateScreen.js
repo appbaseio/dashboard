@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -56,11 +57,27 @@ const PipelineTemplateScreen = ({
 		setPipelineVariables(newPipelineVariables);
 	};
 
+	const handleError = (pipelineObj, errorMsg, response = '') => {
+		const newPipelineVariables = pipelineVariables.map(obj => {
+			if (obj.key === pipelineObj.key) {
+				obj.error = true;
+				obj.errorMessage = errorMsg;
+				if (response) obj.response = response;
+			}
+			return obj;
+		});
+		setPipelineVariables(newPipelineVariables);
+	};
+
 	const validateInput = pipelineObj => {
 		setIconType('loading');
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
+		console.log(
+			'🚀 ~ file: PipelineTemplateScreen.js:62 ~ validateInput ~ validateObj:',
+			validateObj,
+		);
 		const obj = {
 			method: validateObj.method,
 			headers: {
@@ -101,7 +118,7 @@ const PipelineTemplateScreen = ({
 			);
 		}
 
-		fetch(validateObj.url, obj)
+		fetch(validateObj.url.replace(/`/g, ''), obj)
 			.then(async res => {
 				const data = await res.json();
 				return data;
@@ -120,6 +137,7 @@ const PipelineTemplateScreen = ({
 					return obj;
 				});
 				setPipelineVariables(newPipelineVariables);
+				return null;
 			})
 			.catch(err => {
 				if (err.ok && err.status === validateObj.expected_status) {
@@ -156,23 +174,15 @@ const PipelineTemplateScreen = ({
 			});
 	};
 
-	const handleError = (pipelineObj, errorMsg, response = '') => {
-		const newPipelineVariables = pipelineVariables.map(obj => {
-			if (obj.key === pipelineObj.key) {
-				obj.error = true;
-				obj.errorMessage = errorMsg;
-				if (response) obj.response = response;
-			}
-			return obj;
-		});
-		setPipelineVariables(newPipelineVariables);
-	};
-
 	const handleInputChange = (key, val) => {
 		handleFormChange(key, val);
 	};
 
 	const errorArray = pipelineVariables.filter(i => i.error === true);
+	console.log(
+		'🚀 ~ file: PipelineTemplateScreen.js:182 ~ pipelineVariables:',
+		pipelineVariables,
+	);
 
 	return (
 		<div css={deployClusterStyles}>
