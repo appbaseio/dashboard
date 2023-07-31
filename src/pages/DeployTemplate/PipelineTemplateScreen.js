@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { array, func, object } from 'prop-types';
 import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
@@ -25,37 +25,21 @@ const iconMap = {
 	loading: <LoadingOutlined />,
 };
 
-const PipelineTemplateScreen = ({
-	formData,
-	setActiveKey,
-	handleFormChange,
-	setTabsValidated,
-	tabsValidated,
-}) => {
-	const [pipelineVariables, setPipelineVariables] = useState([]);
+const ValidatedEnv = props => {
 	const [iconType, setIconType] = useState('');
-
+	const {
+		data,
+		handleInputChange,
+		setTabsValidated,
+		pipelineVariables,
+		setPipelineVariables,
+		tabsValidated,
+	} = props;
 	useEffect(() => {
 		if (tabsValidated.tab1) {
 			setIconType('check-circle');
 		}
 	}, []);
-
-	useEffect(() => {
-		validateFormData();
-	}, [formData]);
-
-	const validateFormData = () => {
-		const newPipelineVariables = formData.map(obj => {
-			const newObj = {
-				...obj,
-				error: !!obj.validate,
-				errorMessage: '',
-			};
-			return newObj;
-		});
-		setPipelineVariables(newPipelineVariables);
-	};
 
 	const handleError = (pipelineObj, errorMsg, response = '') => {
 		const newPipelineVariables = pipelineVariables.map(obj => {
@@ -74,10 +58,7 @@ const PipelineTemplateScreen = ({
 		const validateObj = Array.isArray(pipelineObj.validate)
 			? pipelineObj.validate[0]
 			: pipelineObj.validate;
-		console.log(
-			'🚀 ~ file: PipelineTemplateScreen.js:62 ~ validateInput ~ validateObj:',
-			validateObj,
-		);
+
 		const obj = {
 			method: validateObj.method,
 			headers: {
@@ -117,11 +98,14 @@ const PipelineTemplateScreen = ({
 				'',
 			);
 		}
-
+		console.log(
+			'🚀 validateObj.url.replace',
+			validateObj.url.replace(/`/g, ''),
+		);
 		fetch(validateObj.url.replace(/`/g, ''), obj)
 			.then(async res => {
-				const data = await res.json();
-				return data;
+				const dataRes = await res.json();
+				return dataRes;
 			})
 			.then(res => {
 				if (res.error) {
@@ -130,11 +114,11 @@ const PipelineTemplateScreen = ({
 				}
 				setIconType('check-circle');
 				setTabsValidated(true);
-				const newPipelineVariables = pipelineVariables.map(obj => {
-					if (obj.key === pipelineObj.key) {
-						obj.error = false;
+				const newPipelineVariables = pipelineVariables.map(obj1 => {
+					if (obj1.key === pipelineObj.key) {
+						obj1.error = false;
 					}
-					return obj;
+					return obj1;
 				});
 				setPipelineVariables(newPipelineVariables);
 				return null;
@@ -143,11 +127,11 @@ const PipelineTemplateScreen = ({
 				if (err.ok && err.status === validateObj.expected_status) {
 					setIconType('check-circle');
 					setTabsValidated(true);
-					const newPipelineVariables = pipelineVariables.map(obj => {
-						if (obj.key === pipelineObj.key) {
-							obj.error = false;
+					const newPipelineVariables = pipelineVariables.map(obj2 => {
+						if (obj2.key === pipelineObj.key) {
+							obj2.error = false;
 						}
-						return obj;
+						return obj2;
 					});
 					setPipelineVariables(newPipelineVariables);
 				} else {
@@ -174,6 +158,114 @@ const PipelineTemplateScreen = ({
 			});
 	};
 
+	return (
+		<div key={data.key} style={{ padding: 20 }}>
+			<div className="title-container">
+				{data.label}
+				{data.description ? (
+					<Tooltip
+						title={() => (
+							<div
+								// eslint-disable-next-line
+								dangerouslySetInnerHTML={{
+									__html: data.description,
+								}}
+							/>
+						)}
+					>
+						<span style={{ marginLeft: 5 }}>
+							<InfoCircleOutlined />
+						</span>
+					</Tooltip>
+				) : null}
+			</div>
+			<div>
+				<Input
+					value={data.value}
+					className="input-container"
+					onChange={e => {
+						handleInputChange(data.key, e.target.value);
+					}}
+				/>
+				{data.validate ? (
+					<Button
+						type="primary"
+						onClick={() => validateInput(data)}
+						className="validate-button"
+					>
+						validate
+						{iconType ? iconMap[iconType] : null}
+					</Button>
+				) : null}
+			</div>
+			{data.errorMessage ? (
+				<Alert
+					style={{ marginTop: 15, width: '70%' }}
+					message={
+						<div className="error-alert-container">
+							<div>{data.errorMessage}</div>
+							{data.response ? (
+								<Popover
+									content={
+										<div css={popoverContent}>
+											<JsonView json={data.response} />
+										</div>
+									}
+									trigger="click"
+								>
+									<div
+										css={{
+											cursor: 'pointer',
+											margin: '0 7px',
+											maxWidth: '95%',
+											...overflow,
+										}}
+									>
+										View the whole response
+									</div>
+								</Popover>
+							) : null}
+						</div>
+					}
+					type="error"
+				/>
+			) : null}
+		</div>
+	);
+};
+ValidatedEnv.propTypes = {
+	data: object,
+	handleInputChange: func,
+	setTabsValidated: func,
+	pipelineVariables: array,
+	setPipelineVariables: func,
+	tabsValidated: object,
+};
+
+const PipelineTemplateScreen = ({
+	formData,
+	setActiveKey,
+	handleFormChange,
+	setTabsValidated,
+	tabsValidated,
+}) => {
+	const [pipelineVariables, setPipelineVariables] = useState([]);
+	const validateFormData = () => {
+		const newPipelineVariables = formData.map(obj => {
+			const newObj = {
+				...obj,
+				error: !!obj.validate,
+				errorMessage: '',
+			};
+			return newObj;
+		});
+		setPipelineVariables(newPipelineVariables);
+	};
+
+	useEffect(() => {
+		validateFormData();
+	}, [formData]);
+
 	const handleInputChange = (key, val) => {
 		handleFormChange(key, val);
 	};
@@ -188,80 +280,15 @@ const PipelineTemplateScreen = ({
 		<div css={deployClusterStyles}>
 			{pipelineVariables.length ? (
 				pipelineVariables.map(data => (
-					<div key={data.key} style={{ padding: 20 }}>
-						<div className="title-container">
-							{data.label}
-							{data.description ? (
-								<Tooltip
-									title={() => (
-										<div
-											// eslint-disable-next-line
-											dangerouslySetInnerHTML={{
-												__html: data.description,
-											}}
-										/>
-									)}
-								>
-									<span style={{ marginLeft: 5 }}>
-										<InfoCircleOutlined />
-									</span>
-								</Tooltip>
-							) : null}
-						</div>
-						<div>
-							<Input
-								value={data.value}
-								className="input-container"
-								onChange={e => {
-									handleInputChange(data.key, e.target.value);
-								}}
-							/>
-							{data.validate ? (
-								<Button
-									type="primary"
-									onClick={() => validateInput(data)}
-									className="validate-button"
-								>
-									validate
-									{iconType ? iconMap[iconType] : null}
-								</Button>
-							) : null}
-						</div>
-						{data.errorMessage ? (
-							<Alert
-								style={{ marginTop: 15, width: '70%' }}
-								message={
-									<div className="error-alert-container">
-										<div>{data.errorMessage}</div>
-										{data.response ? (
-											<Popover
-												content={
-													<div css={popoverContent}>
-														<JsonView
-															json={data.response}
-														/>
-													</div>
-												}
-												trigger="click"
-											>
-												<div
-													css={{
-														cursor: 'pointer',
-														margin: '0 7px',
-														maxWidth: '95%',
-														...overflow,
-													}}
-												>
-													View the whole response
-												</div>
-											</Popover>
-										) : null}
-									</div>
-								}
-								type="error"
-							/>
-						) : null}
-					</div>
+					<ValidatedEnv
+						key={data.key}
+						data={data}
+						handleInputChange={handleInputChange}
+						setTabsValidated={setTabsValidated}
+						pipelineVariables={pipelineVariables}
+						setPipelineVariables={setPipelineVariables}
+						tabsValidated={tabsValidated}
+					/>
 				))
 			) : (
 				<ErrorPage
