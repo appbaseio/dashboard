@@ -98,63 +98,45 @@ const ValidatedEnv = props => {
 				'',
 			);
 		}
-		console.log(
-			'🚀 validateObj.url.replace',
-			validateObj.url.replace(/`/g, ''),
-		);
+
 		fetch(validateObj.url.replace(/`/g, ''), obj)
 			.then(async res => {
-				const dataRes = await res.json();
-				return dataRes;
-			})
-			.then(res => {
-				if (res.error) {
-					setIconType('');
-					return Promise.reject(res.error);
-				}
-				setIconType('check-circle');
-				setTabsValidated(true);
-				const newPipelineVariables = pipelineVariables.map(obj1 => {
-					if (obj1.key === pipelineObj.key) {
-						obj1.error = false;
-					}
-					return obj1;
-				});
-				setPipelineVariables(newPipelineVariables);
-				return null;
-			})
-			.catch(err => {
-				if (err.ok && err.status === validateObj.expected_status) {
+				if (res.ok && res.status === 200) {
+					// Success: Status code is 200
 					setIconType('check-circle');
 					setTabsValidated(true);
-					const newPipelineVariables = pipelineVariables.map(obj2 => {
-						if (obj2.key === pipelineObj.key) {
-							obj2.error = false;
+					const newPipelineVariables = pipelineVariables.map(obj1 => {
+						if (obj1.key === pipelineObj.key) {
+							obj1.error = false;
 						}
-						return obj2;
+						return obj1;
 					});
 					setPipelineVariables(newPipelineVariables);
 				} else {
+					// Handle non-200 status codes
 					setIconType('');
 					if (
-						err.status &&
-						err.status !== validateObj.expected_status
+						res.status &&
+						res.status !== validateObj.expected_status
 					) {
 						handleError(
 							pipelineObj,
-							`Expected status is ${validateObj.expected_status}, but received ${err.status}`,
-							err,
+							`Expected status is ${validateObj.expected_status}, but received ${res.status}`,
+							res,
 						);
 					} else {
 						handleError(
 							pipelineObj,
 							'Cannot make the API request. Is your input valid?',
-							err,
+							res,
 						);
 					}
 				}
-
-				console.error('Error in Validate api', err);
+			})
+			.catch(err => {
+				// Handle other errors
+				setIconType('');
+				handleError(pipelineObj, 'Error in Validate API', err);
 			});
 	};
 
