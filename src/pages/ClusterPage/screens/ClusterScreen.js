@@ -398,6 +398,7 @@ class ClusterScreen extends Component {
 	};
 
 	renderClusterEndpoint = (source, isOpenSearchFlavour) => {
+		const { isSLSCluster } = this.props;
 		if (
 			Object.keys(source).length &&
 			source.name &&
@@ -454,7 +455,9 @@ class ClusterScreen extends Component {
 					<CredentialsBox
 						name={name}
 						text={`${username}:${password}`}
-						rotateAPICredentials={rotateAPICredentials}
+						rotateAPICredentials={(type, clusterId) =>
+							rotateAPICredentials(type, clusterId, isSLSCluster)
+						}
 						clusterId={this.props.clusterId}
 						showRotateAPICredentials={!isViewer}
 					/>

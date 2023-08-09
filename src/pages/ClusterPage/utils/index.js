@@ -659,10 +659,11 @@ const generateRandomUsername = length => {
 	return result;
 };
 
-export const rotateAPICredentials = (type, clusterId) => {
+export const rotateAPICredentials = (type, clusterId, isSLSCluster) => {
 	const username = generateRandomUsername(9);
 	const password = uuidv4();
 	let reqBody = {};
+
 	switch (type) {
 		case 'Elasticsearch':
 			reqBody = {
@@ -685,39 +686,71 @@ export const rotateAPICredentials = (type, clusterId) => {
 		default:
 			break;
 	}
+
 	return new Promise((resolve, reject) => {
 		let hasError = false;
-		fetch(`${ACC_API}/v1/_update_credentials/${clusterId}`, {
-			method: 'POST',
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				...reqBody,
-			}),
-		})
-			.then(res => {
-				if (res.status > 300) {
-					hasError = true;
-				}
-				return res.json();
+		if (isSLSCluster) {
+			fetch(`${ACC_API}/v2/_update_mtrs_credentials/${clusterId}`, {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			})
-			.then(data => {
-				if (hasError) {
-					reject(data.status.message);
-				}
-				if (data.error) {
-					reject(data.error);
-				}
-				if (data.body && data.body.response_info.failures.length) {
-					reject(data.body.response_info.failures);
-				}
-				resolve({ ...data, username, password });
+				.then(res => {
+					if (res.status > 300) {
+						hasError = true;
+					}
+					return res.json();
+				})
+				.then(data => {
+					if (hasError) {
+						reject(data.status.message);
+					}
+					if (data.error) {
+						reject(data.error);
+					}
+					if (data.body && data.body.response_info.failures.length) {
+						reject(data.body.response_info.failures);
+					}
+					resolve({ ...data, username, password });
+				})
+				.catch(e => {
+					reject(e);
+				});
+		} else {
+			fetch(`${ACC_API}/v1/_update_credentials/${clusterId}`, {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					...reqBody,
+				}),
 			})
-			.catch(e => {
-				reject(e);
-			});
+				.then(res => {
+					if (res.status > 300) {
+						hasError = true;
+					}
+					return res.json();
+				})
+				.then(data => {
+					if (hasError) {
+						reject(data.status.message);
+					}
+					if (data.error) {
+						reject(data.error);
+					}
+					if (data.body && data.body.response_info.failures.length) {
+						reject(data.body.response_info.failures);
+					}
+					resolve({ ...data, username, password });
+				})
+				.catch(e => {
+					reject(e);
+				});
+		}
 	});
 };
 
