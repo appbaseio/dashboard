@@ -5,7 +5,6 @@ import { injectGlobal } from 'emotion';
 import { Layout } from 'antd';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Auth0Provider } from '@auth0/auth0-react';
-import AnnouncementBanner from './AnnouncementBanner';
 import configureStore from './store';
 import Dashboard from './Dashboard';
 
@@ -53,7 +52,6 @@ const App = () => {
 			<PersistGate loading={null} persistor={persistor}>
 				<Provider store={store}>
 					<>
-						<AnnouncementBanner />
 						<Dashboard />
 					</>
 				</Provider>
