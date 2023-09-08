@@ -214,7 +214,7 @@ class ConnectCluster extends React.Component {
 								title="Elasticsearch API Reference"
 							/>
 							<DirectLink
-								href="https://arc-api.appbase.io"
+								href="https://api.reactivesearch.io/"
 								title="Reactivesearch.io API Reference"
 							/>
 						</Collapse.Panel>
