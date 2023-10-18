@@ -745,7 +745,7 @@ class ClusterInfo extends Component {
 										<div>
 											<h4>Pricing Plan</h4>
 											<div>
-												{planDetails.label ||
+												{planDetails?.label ||
 													this.state.cluster
 														.pricing_plan}
 												&nbsp;&nbsp;
