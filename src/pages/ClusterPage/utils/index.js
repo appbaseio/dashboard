@@ -1,3 +1,4 @@
+/* eslint-disable import/no-mutable-exports */
 import get from 'lodash/get';
 import { v4 as uuidv4 } from 'uuid';
 import { ACC_API } from '../../../constants/config';
@@ -166,6 +167,29 @@ export const PLAN_LABEL = {
 	[CLUSTER_PLANS.STARTER_2023]: 'Starter',
 	[CLUSTER_PLANS.PRODUCTION_2023_1]: 'Production',
 };
+
+export let elasticsearch_7x;
+export let elasticsearch_8x;
+export let opensearch;
+export let sls;
+export let arc;
+
+fetch('https://accapi.appbase.io/v2/supported_versions')
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
+		}
+		return response.json();
+	})
+	.then(data => {
+		({ elasticsearch_7x, elasticsearch_8x, opensearch, sls, arc } = data);
+	})
+	.catch(error => {
+		console.log(
+			'There was a problem with the fetch operation:',
+			error.message,
+		);
+	});
 
 export function getClusters() {
 	return new Promise((resolve, reject) => {

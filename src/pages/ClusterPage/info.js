@@ -40,10 +40,31 @@ import {
 	ansibleMachineMarks,
 	V7_ARC,
 	ARC_BYOC,
+	arc,
+	elasticsearch_7x,
+	elasticsearch_8x,
+	opensearch,
 } from './utils';
 import { regions } from './utils/regions';
 import { getUrlParams } from '../../utils/helper';
 import StripeCheckout from '../../components/StripeCheckout';
+
+function isGreaterVersion(ver1, ver2) {
+	const v1Parts = ver1.split('.').map(Number);
+	const v2Parts = ver2.split('.').map(Number);
+
+	for (let i = 0; i < v1Parts.length; i++) {
+		if (v1Parts[i] > v2Parts[i]) {
+			return true;
+		}
+		if (v1Parts[i] < v2Parts[i]) {
+			return false;
+		}
+	}
+
+	// If we reach here, the versions are equal
+	return false;
+}
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
 	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
@@ -56,10 +77,40 @@ const checkIfUpdateIsAvailable = (version, recipe) => {
 		return k8sVersion !== V7_ARC;
 	}
 
-	return version && version !== V7_ARC.split('-')[0];
+	return version && isGreaterVersion(arc, version);
 };
 
 const NEW_ES_VERSIONS = { '7': '7.17.10', '8': '8.8.1', '2': '2.8.0' };
+
+const getSearchVersion = version => {
+	const majorVersion = version.split('.')[0];
+	switch (majorVersion) {
+		case '7':
+			return elasticsearch_7x;
+		case '8':
+			return elasticsearch_8x;
+		case '2':
+			return opensearch;
+		default:
+			return opensearch;
+	}
+};
+
+const getSearchEngine = version => {
+	const majorVersion = version.split('.')[0];
+	switch (majorVersion) {
+		case '7':
+			return 'Elasticsearch';
+		case '8':
+			return 'Elasticsearch';
+		case '1':
+			return 'OpenSearch';
+		case '2':
+			return 'OpenSearch';
+		default:
+			return opensearch;
+	}
+};
 
 const checkIfESUpdateIsAvailable = version => {
 	const [majorVersion, minorVersion] = version.split('.');
@@ -959,12 +1010,12 @@ class ClusterInfo extends Component {
 												>
 													<div>
 														A new version{' '}
-														{V7_ARC.split('-')[0]}{' '}
-														is available now.
+														{arc.split('-')[0]} is
+														available now.
 														You&apos;re currently on{' '}
 														{this.state.arcVersion}.
 														See what&apos;s new in{' '}
-														<a href="https://github.com/appbaseio/arc/releases">
+														<a href="https://github.com/appbaseio/reactivesearch-api/releases">
 															this release
 														</a>
 														.
@@ -997,12 +1048,9 @@ class ClusterInfo extends Component {
 									!isSLSCluster &&
 									!isExternalCluster && (
 										<Alert
-											message={`A new ${
-												this.state.cluster
-													.elasticsearch_url
-													? 'Elasticsearch'
-													: 'Opensearch'
-											} version is available!`}
+											message={`A new ${getSearchEngine(
+												this.state.cluster.es_version,
+											)} version is available!`}
 											description={
 												<div
 													style={{
@@ -1014,7 +1062,7 @@ class ClusterInfo extends Component {
 												>
 													<div>
 														A new version{' '}
-														{checkIfESUpdateIsAvailable(
+														{getSearchVersion(
 															this.state.cluster
 																.es_version,
 														)}{' '}
@@ -1024,10 +1072,6 @@ class ClusterInfo extends Component {
 															this.state.cluster
 																.es_version
 														}
-														. See what&apos;s new in{' '}
-														<a href="https://github.com/appbaseio/reactivesearch-api/releases">
-															this release
-														</a>
 														.
 													</div>
 													<Button
