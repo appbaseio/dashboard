@@ -827,9 +827,6 @@ export function updateBackend(id, body) {
 export const SSH_KEY =
 	'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCVqOPpNuX53J+uIpP0KssFRZToMV2Zy/peG3wYHvWZkDvlxLFqGTikH8MQagt01Slmn+mNfHpg6dm5NiKfmMObm5LbcJ62Nk9AtHF3BPP42WyQ3QiGZCjJOX0fVsyv3w3eB+Eq+F+9aH/uajdI+wWRviYB+ljhprZbNZyockc6V33WLeY+EeRQW0Cp9xHGQUKwJa7Ch8/lRkNi9QE6n5W/T6nRuOvu2+ThhjiDFdu2suq3V4GMlEBBS6zByT9Ct5ryJgkVJh6d/pbocVWw99mYyVm9MNp2RD9w8R2qytRO8cWvTO/KvsAZPXj6nJtB9LaUtHDzxe9o4AVXxzeuMTzx siddharth@appbase.io';
 
-export const esVersions = ['8.9.0', '7.17.10'];
-
-export const openSearchVersions = ['2.9.0'];
 export const ansibleMachineMarks = {
 	[CLUSTER_PLANS.SANDBOX_2020]: {
 		label: PLAN_LABEL[CLUSTER_PLANS.SANDBOX_2020],
@@ -1023,20 +1020,4 @@ export const regionsKeyMap = {
 	eu: 'europe',
 	us: 'america',
 	other: 'other',
-};
-
-export const V7_ARC = '8.18.0-cluster';
-export const V6_ARC = '8.18.0-cluster';
-export const ARC_BYOC = '8.18.0-byoc';
-export const V5_ARC = 'v5-0.0.1';
-export const REACTIVESEARCH_BYOC = '8.17.0-byoc';
-
-export const arcVersions = {
-	7: V7_ARC,
-	6: V6_ARC,
-	5: V5_ARC,
-	/* odfe versions start */
-	0: V6_ARC,
-	1: V7_ARC,
-	/* odfe versions end */
 };
