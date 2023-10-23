@@ -50,20 +50,51 @@ import { getUrlParams } from '../../utils/helper';
 import StripeCheckout from '../../components/StripeCheckout';
 
 function isGreaterVersion(ver1, ver2) {
-	const v1Parts = ver1.split('.').map(Number);
-	const v2Parts = ver2.split('.').map(Number);
+    // Split based on '-' to handle pre-release strings
+    const [v1Main, v1PreRelease] = ver1.split('-');
+    const [v2Main, v2PreRelease] = ver2.split('-');
 
-	for (let i = 0; i < v1Parts.length; i++) {
-		if (v1Parts[i] > v2Parts[i]) {
-			return true;
-		}
-		if (v1Parts[i] < v2Parts[i]) {
-			return false;
-		}
-	}
+    const v1Parts = v1Main.split('.').map(Number);
+    const v2Parts = v2Main.split('.').map(Number);
 
-	// If we reach here, the versions are equal
-	return false;
+    for (let i = 0; i < v1Parts.length; i++) {
+        if (v1Parts[i] > v2Parts[i]) {
+            return true;
+        }
+        if (v1Parts[i] < v2Parts[i]) {
+            return false;
+        }
+    }
+
+    // At this point, the main version numbers are equal, so we check the pre-release strings
+    if (v1PreRelease && !v2PreRelease) {
+        // ver2 is greater since it doesn't have a pre-release string
+        return false;
+    }
+    if (!v1PreRelease && v2PreRelease) {
+        // ver1 is greater since it doesn't have a pre-release string
+        return true;
+    }
+    if (v1PreRelease && v2PreRelease) {
+        const v1PreParts = v1PreRelease.split('.');
+        const v2PreParts = v2PreRelease.split('.');
+        for (let i = 0; i < Math.max(v1PreParts.length, v2PreParts.length); i++) {
+            const v1Segment = v1PreParts[i] || '';
+            const v2Segment = v2PreParts[i] || '';
+            if (isNaN(v1Segment) && isNaN(v2Segment)) {
+                if (v1Segment > v2Segment) return true;
+                if (v1Segment < v2Segment) return false;
+            } else if (!isNaN(v1Segment) && !isNaN(v2Segment)) {
+                if (Number(v1Segment) > Number(v2Segment)) return true;
+                if (Number(v1Segment) < Number(v2Segment)) return false;
+            } else {
+                return isNaN(v1Segment);
+            }
+        }
+    }
+
+    // If we reach here, the versions are exactly equal or their differences are inconclusive
+    return false;
 }
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
