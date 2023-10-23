@@ -38,8 +38,6 @@ import {
 	PRICE_BY_PLANS,
 	isSandBoxPlan,
 	ansibleMachineMarks,
-	V7_ARC,
-	ARC_BYOC,
 	arc,
 	elasticsearch_7x,
 	elasticsearch_8x,
@@ -97,20 +95,8 @@ function isGreaterVersion(ver1, ver2) {
 }
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
-	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
-
-	if (recipe === 'byoc') {
-		return version && version !== ARC_BYOC.split('-')[0];
-	}
-
-	if (k8sVersion) {
-		return k8sVersion !== V7_ARC;
-	}
-
 	return version && isGreaterVersion(arc, version);
 };
-
-const NEW_ES_VERSIONS = { '7': '7.17.10', '8': '8.8.1', '2': '2.8.0' };
 
 const getSearchVersion = version => {
 	const majorVersion = version.split('.')[0];
@@ -144,17 +130,8 @@ const getSearchEngine = version => {
 
 const checkIfESUpdateIsAvailable = version => {
 	const [majorVersion, minorVersion] = version.split('.');
-
-	if (NEW_ES_VERSIONS[majorVersion]) {
-		if (
-			Number(minorVersion) <
-			Number(NEW_ES_VERSIONS[majorVersion].split('.')[1])
-		) {
-			return NEW_ES_VERSIONS[majorVersion];
-		}
-	}
-
-	return false;
+	const latestVersion = getSearchVersion(version);
+	return version && isGreaterVersion(latestVersion, version);
 };
 
 class ClusterInfo extends Component {
@@ -440,7 +417,8 @@ class ClusterInfo extends Component {
 			const url = `${ACC_API}/v2/_deploy/${id}`;
 			const body = {
 				arc: {
-					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+					version:
+						recipe === 'byoc' ? `${arc}-byoc` : `${arc}-cluster`,
 					status: 'restarted',
 				},
 			};
