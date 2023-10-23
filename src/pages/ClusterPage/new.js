@@ -28,12 +28,13 @@ import {
 	EFFECTIVE_PRICE_BY_PLANS,
 	PRICE_BY_PLANS,
 	getDistance,
-	openSearchVersions,
-	esVersions,
 	SSH_KEY,
 	ansibleMachineMarks,
 	regionsKeyMap,
-	arcVersions,
+	arc as arc_version,
+	opensearch as opensearch_version,
+	elasticsearch_7x,
+	elasticsearch_8x,
 } from './utils';
 import plugins from './utils/plugins';
 import { regions, regionsByPlan } from './utils/regions';
@@ -86,7 +87,7 @@ class NewCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			changed: false,
-			clusterVersion: openSearchVersions[0],
+			clusterVersion: opensearch_version,
 			pricing_plan,
 			vm_size: get(
 				ansibleMachineMarks[pricing_plan],
@@ -348,9 +349,7 @@ class NewCluster extends Component {
 			const selectedMachine =
 				ansibleMachineMarks[this.state.pricing_plan];
 
-			const arcTag =
-				arcVersions[this.state.clusterVersion.split('.')[0]] ||
-				arcVersions['6'];
+			const arcTag = `${arc_version}-cluster`;
 
 			const body = {
 				elasticsearch: {
@@ -657,8 +656,8 @@ class NewCluster extends Component {
 		if (isLoading) return <Loader />;
 		const versions =
 			this.state.esFlavor === 'opensearch'
-				? openSearchVersions
-				: esVersions;
+				? [opensearch_version]
+				: [elasticsearch_8x, elasticsearch_7x];
 		const defaultVersion = this.state.clusterVersion;
 
 		const activeClusters = clusters.filter(
@@ -1034,7 +1033,7 @@ class NewCluster extends Component {
 												);
 												this.setConfig(
 													'clusterVersion',
-													openSearchVersions[0],
+													opensearch_version,
 												);
 											}}
 										>
@@ -1074,7 +1073,7 @@ class NewCluster extends Component {
 												);
 												this.setConfig(
 													'clusterVersion',
-													esVersions[0],
+													elasticsearch_7x,
 												);
 											}}
 										>

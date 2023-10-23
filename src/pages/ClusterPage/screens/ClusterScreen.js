@@ -30,7 +30,7 @@ import {
 	capitalizeWord,
 	verifyCluster,
 	updateBackend,
-	V7_ARC,
+	arc as arc_version,
 } from '../utils';
 import { machineMarks } from '../NewMyServerlessSearch';
 
@@ -268,7 +268,7 @@ class ClusterScreen extends Component {
 					...body.addons,
 					{
 						name: 'arc',
-						image: `siddharthlatest/arc:${V7_ARC}`,
+						image: `siddharthlatest/arc:${arc_version}-cluster`,
 						exposed_port: 8000,
 					},
 				];

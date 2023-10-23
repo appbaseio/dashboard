@@ -25,8 +25,7 @@ import {
 	BACKENDS,
 	capitalizeWord,
 	regionsKeyMap,
-	REACTIVESEARCH_BYOC,
-	ARC_BYOC,
+	arc,
 } from './utils';
 import { regions, regionsByPlan } from './utils/regions';
 import { clusterContainer, card, fadeOutStyles, settingsItem } from './styles';
@@ -266,11 +265,11 @@ class NewMyCluster extends Component {
 			const body = {
 				url: this.state.clusterURL,
 				backend: this.state.backend,
-				reactivesearch_image: REACTIVESEARCH_BYOC,
+				reactivesearch_image: `${arc}-byoc`,
 				cluster_name: this.state.clusterName,
 				pricing_plan: this.state.pricing_plan,
 				location: this.state.region,
-				arc_image: ARC_BYOC,
+				arc_image: `${arc}-byoc`,
 				is_multi_zone: false,
 				...obj,
 			};

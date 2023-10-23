@@ -38,8 +38,6 @@ import {
 	PRICE_BY_PLANS,
 	isSandBoxPlan,
 	ansibleMachineMarks,
-	V7_ARC,
-	ARC_BYOC,
 	arc,
 	elasticsearch_7x,
 	elasticsearch_8x,
@@ -50,8 +48,13 @@ import { getUrlParams } from '../../utils/helper';
 import StripeCheckout from '../../components/StripeCheckout';
 
 function isGreaterVersion(ver1, ver2) {
-	const v1Parts = ver1.split('.').map(Number);
-	const v2Parts = ver2.split('.').map(Number);
+	console.log('comparing between: ', ver1, ver2);
+	// Split based on '-' to handle pre-release strings
+	const [v1Main, v1PreRelease] = ver1.split('-');
+	const [v2Main, v2PreRelease] = ver2.split('-');
+
+	const v1Parts = v1Main.split('.').map(Number);
+	const v2Parts = v2Main.split('.').map(Number);
 
 	for (let i = 0; i < v1Parts.length; i++) {
 		if (v1Parts[i] > v2Parts[i]) {
@@ -62,25 +65,38 @@ function isGreaterVersion(ver1, ver2) {
 		}
 	}
 
-	// If we reach here, the versions are equal
+	// At this point, the main version numbers are equal, so we check the pre-release strings
+	if (v1PreRelease && !v2PreRelease) {
+		// ver2 is greater since it doesn't have a pre-release string
+		return false;
+	}
+	if (!v1PreRelease && v2PreRelease) {
+		// ver1 is greater since it doesn't have a pre-release string
+		return true;
+	}
+	if (ver1 === ver2) {
+		return false;
+	}
+	if (v1Parts.length < v2Parts.length) {
+		return true;
+	} else if (v1Parts.length > v2Parts.length) {
+		return false;
+	}
+	// case where both versions have pre-release strings
+	if ((v1PreRelease && v2PreRelease) || (!v1PreRelease && !v2PreRelease)) {
+		const v1PreParts = ver1.split('.')[v1Parts.length - 1];
+		const v2PreParts = ver2.split('.')[v2Parts.length - 1];
+		if (v1PreParts > v2PreParts) return true;
+		if (v1PreParts < v2PreParts) return false;
+	}
+
+	// If we reach here, the versions differences are inconclusive
 	return false;
 }
 
 const checkIfUpdateIsAvailable = (version, recipe) => {
-	const k8sVersion = (version.split('/')[1] || '').split(':')[1];
-
-	if (recipe === 'byoc') {
-		return version && version !== ARC_BYOC.split('-')[0];
-	}
-
-	if (k8sVersion) {
-		return k8sVersion !== V7_ARC;
-	}
-
 	return version && isGreaterVersion(arc, version);
 };
-
-const NEW_ES_VERSIONS = { '7': '7.17.10', '8': '8.8.1', '2': '2.8.0' };
 
 const getSearchVersion = version => {
 	const majorVersion = version.split('.')[0];
@@ -114,17 +130,8 @@ const getSearchEngine = version => {
 
 const checkIfESUpdateIsAvailable = version => {
 	const [majorVersion, minorVersion] = version.split('.');
-
-	if (NEW_ES_VERSIONS[majorVersion]) {
-		if (
-			Number(minorVersion) <
-			Number(NEW_ES_VERSIONS[majorVersion].split('.')[1])
-		) {
-			return NEW_ES_VERSIONS[majorVersion];
-		}
-	}
-
-	return false;
+	const latestVersion = getSearchVersion(version);
+	return version && isGreaterVersion(latestVersion, version);
 };
 
 class ClusterInfo extends Component {
@@ -410,7 +417,8 @@ class ClusterInfo extends Component {
 			const url = `${ACC_API}/v2/_deploy/${id}`;
 			const body = {
 				arc: {
-					version: recipe === 'byoc' ? ARC_BYOC : V7_ARC,
+					version:
+						recipe === 'byoc' ? `${arc}-byoc` : `${arc}-cluster`,
 					status: 'restarted',
 				},
 			};
