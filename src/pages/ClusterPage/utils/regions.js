@@ -193,13 +193,6 @@ export const regions = {
 		},
 	},
 	aws: {
-		'eu-west-1': {
-			name: 'Ireland',
-			flag: 'ireland.jpg',
-			continent: 'eu',
-			lat: ' 53.4152268',
-			lon: '-7.96655398901418',
-		},
 		'eu-west-2': {
 			name: 'London',
 			flag: 'london@3x.png',
@@ -221,26 +214,12 @@ export const regions = {
 			lat: '36.8529841',
 			lon: '-75.9774183',
 		},
-		'us-east-2': {
-			name: 'Ohio',
-			flag: 'united-states.png',
-			continent: 'us',
-			lat: ' 41.5575349',
-			lon: '-89.4609276',
-		},
 		'us-west-1': {
 			name: 'N. California',
 			flag: 'united-states.png',
 			continent: 'us',
 			lat: '37.8044557',
 			lon: '-122.2713563',
-		},
-		'us-west-2': {
-			name: 'Oregon',
-			flag: 'united-states.png',
-			continent: 'us',
-			lat: '42.0147513',
-			lon: '-89.3323279',
 		},
 		'ap-southeast-1': {
 			name: 'Singapore',
@@ -255,19 +234,6 @@ export const regions = {
 			continent: 'asia',
 			lat: '19.0759899',
 			lon: '72.8773928',
-		},
-		'ap-northeast-1': {
-			name: 'Tokyo',
-			flag: 'japan.png',
-			continent: 'asia',
-			lat: '35.6828387',
-			lon: '139.7594549',
-		},
-		'af-south-1': {
-			name: 'South Africa',
-			flag: 'australia.png',
-			lat: '-33.768528',
-			lon: '150.9568559523945',
 		},
 	},
 };
