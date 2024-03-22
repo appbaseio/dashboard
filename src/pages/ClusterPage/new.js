@@ -1073,7 +1073,7 @@ class NewCluster extends Component {
 												);
 												this.setConfig(
 													'clusterVersion',
-													elasticsearch_7x,
+													elasticsearch_8x,
 												);
 											}}
 										>
