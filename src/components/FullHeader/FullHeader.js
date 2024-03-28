@@ -32,6 +32,7 @@ const FullHeader = ({
 	user,
 	apps,
 	cluster,
+	isTrialEligible,
 	isUsingTrial,
 	isUsingClusterTrial,
 	daysLeft,
@@ -114,6 +115,7 @@ const FullHeader = ({
 			defaultSelectedKeys={[window.location.pathname]}
 			isUsingTrial={isUsingTrial}
 			daysLeft={daysLeft}
+			isTrialEligible={isTrialEligible}
 		/>
 	</Header>
 );
@@ -133,6 +135,7 @@ FullHeader.propTypes = {
 	cluster: string,
 	clusters: array,
 	currentApp: string.isRequired,
+	isTrialEligible: bool,
 	isCluster: bool,
 	trialMessage: string,
 	isUsingTrial: bool.isRequired,

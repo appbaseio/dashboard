@@ -271,6 +271,7 @@ class NewCluster extends Component {
 	};
 
 	setConfig = (type, value) => {
+		console.log('type', type, 'value', value);
 		this.setState({
 			[type]: value,
 		});
@@ -790,9 +791,7 @@ class NewCluster extends Component {
 					{isUsingClusterTrial && this.state.vm_machine ? (
 						<Alert
 							type="warning"
-							message={`We only support Sandbox plan for a free trial. Creating a ${pricingPlanArr.join(
-								'-',
-							)} plan cluster will require adding a payment method`}
+							message="The trial duration is updated based on the selected plan."
 							showIcon
 							size="small"
 							style={{
@@ -1073,7 +1072,7 @@ class NewCluster extends Component {
 												);
 												this.setConfig(
 													'clusterVersion',
-													elasticsearch_7x,
+													elasticsearch_8x,
 												);
 											}}
 										>
@@ -1309,32 +1308,18 @@ class NewCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{(isUsingClusterTrial &&
-									this.state.pricing_plan !==
-										CLUSTER_PLANS.SANDBOX_2023) ||
-								clusters.length > 0 ? (
-									<Button
-										type="primary"
-										size="large"
-										disabled={
-											!this.validateClusterName() ||
-											!this.state.region
-										}
-										onClick={this.handleStripeModal}
-									>
-										Add payment info and create cluster
-										<ArrowRightOutlined />
-									</Button>
-								) : (
-									<Button
-										type="primary"
-										size="large"
-										onClick={this.createCluster}
-									>
-										Create Cluster
-										<ArrowRightOutlined />
-									</Button>
-								)}
+								<Button
+									type="primary"
+									size="large"
+									disabled={
+										!this.validateClusterName() ||
+										!this.state.region
+									}
+									onClick={this.handleStripeModal}
+								>
+									Add payment info and create cluster
+									<ArrowRightOutlined />
+								</Button>
 							</div>
 						</article>
 					</section>

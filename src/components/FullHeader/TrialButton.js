@@ -112,19 +112,7 @@ class TrialButton extends React.Component {
 			);
 		}
 
-		return (
-			<>
-				<Tooltip title={tooltipTitle}>
-					<Tag color="red">
-						{daysLeftValue > 0
-							? `Trial expires in ${daysLeftValue} ${
-									daysLeftValue > 1 ? 'days' : 'day'
-							  }`
-							: 'Trial has expired'}
-					</Tag>
-				</Tooltip>
-			</>
-		);
+		return <></>;
 	}
 }
 

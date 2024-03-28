@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Slider } from 'antd';
 import AnimatedNumber from 'react-animated-number';
 import PropTypes from 'prop-types';
-
+import SubscriptionDetails from './SubscriptionDetails';
 import { clusterInfo } from '../../styles';
 
 class PricingSlider extends Component {
@@ -31,7 +31,13 @@ class PricingSlider extends Component {
 			});
 		});
 
-		this.state = { marks, active, value: 0 };
+		const trialDays = {
+			0: 14,
+			50: 7,
+			100: 3,
+		};
+
+		this.state = { marks, active, value: 0, trialDays };
 	}
 
 	onChange = active => {
@@ -75,13 +81,17 @@ class PricingSlider extends Component {
 	};
 
 	render() {
-		const { marks, active, value } = this.state;
+		const { marks, active, value, trialDays } = this.state;
+		console.log('marks', marks, 'active', active, 'value', value); // eslint-disable-line no-console
 		const mark = marks[active] || {};
 		const { sliderProps } = this.props;
 		return (
 			<Fragment>
 				<div className="col grow expanded">
 					<Slider
+						style={{
+							marginBottom: '40px',
+						}}
 						marks={marks}
 						onChange={this.onChange}
 						defaultValue={value}
@@ -89,6 +99,12 @@ class PricingSlider extends Component {
 						tooltipVisible={false}
 						value={value}
 						{...sliderProps}
+					/>
+					<SubscriptionDetails
+						startDate="Jan 23"
+						firstInvoiceDate="Feb 23"
+						trialDays={trialDays[active]}
+						trialEndDate="Jan 31"
 					/>
 				</div>
 				<div className="col grey">
@@ -164,11 +180,6 @@ class PricingSlider extends Component {
 							</div>
 							<h3>Estimated Cost</h3>
 						</div>
-					</div>
-					<div style={{ marginTop: '20px' }}>
-						{this.props.showNoCardNeeded && (
-							<code>No card needed for the trial</code>
-						)}
 					</div>
 				</div>
 			</Fragment>

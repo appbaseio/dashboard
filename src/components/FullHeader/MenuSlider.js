@@ -61,7 +61,7 @@ class MenuSlider extends React.Component {
 	render() {
 		const { visible } = this.state;
 		const {
-			defaultSelectedKeys, isHomepage, isUsingTrial, daysLeft,
+			defaultSelectedKeys, isHomepage, isUsingTrial, daysLeft, isTrialEligible
 		} = this.props; // prettier-ignore
 		return (
 			<div className={menuSlider}>

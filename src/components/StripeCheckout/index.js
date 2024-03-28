@@ -31,6 +31,11 @@ const StripeCheckout = ({
 		loading: true,
 		methods: [],
 	});
+	const trialDays = {
+		Sandbox: 14,
+		Starter: 7,
+		Production: 3,
+	};
 	const [view, setView] = useState(VIEWS.CARD);
 	useEffect(() => {
 		let isCancelled = false;
@@ -73,7 +78,7 @@ const StripeCheckout = ({
 					<p style={{ marginTop: 15, color: 'rgba(0, 0, 0, 0.65)' }}>
 						{isSLSCluster
 							? `Billed at $${monthlyPrice}/mo at the start of the subscription cycle`
-							: `Billed at $${price}/hr which comes to $${monthlyPrice}/mo at the end of the subscription cycle based on actual usage`}
+							: `You will ${trialDays[plan]} trial days. Thereafter, usage is billed at $${price}/hr which comes to $${monthlyPrice}/mo at the end of the subscription cycle based on actual usage`}
 					</p>
 				</div>
 			}

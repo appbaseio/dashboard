@@ -933,53 +933,28 @@ class NewMyCluster extends Component {
 										{this.state.error}
 									</p>
 								) : null}
-								{(isUsingClusterTrial &&
-									this.state.pricing_plan !==
-										ARC_PLANS.HOSTED_ARC_BASIC_V2) ||
-								clusters.length > 0 ? (
-									<Button
-										type="primary"
-										size="large"
-										disabled={
-											!this.validateClusterName() ||
-											!this.state.region ||
-											!this.state.clusterURL ||
-											!this.state.verifiedCluster
-										}
-										onClick={this.handleStripeModal}
-									>
-										{isDeployTemplate ? (
-											<>
-												Add payment info and Deploy
-												cluster with pipeline&nbsp;
-												{pipeline}
-											</>
-										) : (
-											<>
-												Add payment info and create
-												cluster
-											</>
-										)}
-										<ArrowRightOutlined />
-									</Button>
-								) : (
-									<Button
-										type="primary"
-										size="large"
-										onClick={this.createCluster}
-									>
-										{isDeployTemplate ? (
-											<>
-												Deploy cluster with pipeline
-												&nbsp;
-												{pipeline}
-											</>
-										) : (
-											<>Create Cluster</>
-										)}
-										<ArrowRightOutlined />
-									</Button>
-								)}
+								<Button
+									type="primary"
+									size="large"
+									disabled={
+										!this.validateClusterName() ||
+										!this.state.region ||
+										!this.state.clusterURL ||
+										!this.state.verifiedCluster
+									}
+									onClick={this.handleStripeModal}
+								>
+									{isDeployTemplate ? (
+										<>
+											Add payment info and Deploy cluster
+											with pipeline&nbsp;
+											{pipeline}
+										</>
+									) : (
+										<>Add payment info and create cluster</>
+									)}
+									<ArrowRightOutlined />
+								</Button>
 							</div>
 						</article>
 					</section>
