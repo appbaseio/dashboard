@@ -484,17 +484,31 @@ class NewCluster extends Component {
 		} = this.state;
 		const allowedRegions = regionsByPlan[provider][pricingPlan];
 
-		const asiaRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'asia',
+		// Filter regions based on provider
+		// For AWS, only show N. Virginia and Mumbai
+		let regionsToShow = {};
+		if (provider === 'aws') {
+			const limitedRegions = ['us-east-1', 'ap-south-1'];
+			Object.keys(regions[provider]).forEach(region => {
+				if (limitedRegions.includes(region)) {
+					regionsToShow[region] = regions[provider][region];
+				}
+			});
+		} else {
+			regionsToShow = regions[provider];
+		}
+
+		const asiaRegions = Object.keys(regionsToShow).filter(
+			item => regionsToShow[item].continent === 'asia',
 		);
-		const euRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'eu',
+		const euRegions = Object.keys(regionsToShow).filter(
+			item => regionsToShow[item].continent === 'eu',
 		);
-		const usRegions = Object.keys(regions[provider]).filter(
-			item => regions[provider][item].continent === 'us',
+		const usRegions = Object.keys(regionsToShow).filter(
+			item => regionsToShow[item].continent === 'us',
 		);
-		const otherRegions = Object.keys(regions[provider]).filter(
-			item => !regions[provider][item].continent,
+		const otherRegions = Object.keys(regionsToShow).filter(
+			item => !regionsToShow[item].continent,
 		);
 
 		const regionsToRender = data => (
@@ -562,11 +576,25 @@ class NewCluster extends Component {
 		const style = {
 			width: '100%',
 		};
+
 		if (provider === 'azure') {
 			return (
 				<ul style={style} className="region-list">
 					{regionsToRender(Object.keys(regions[provider]))}
 				</ul>
+			);
+		}
+
+		// For AWS, show a single tab titled "Regions" with the limited regions
+		if (provider === 'aws') {
+			return (
+				<Tabs size="large" style={style} activeKey="regions">
+					<TabPane tab="Regions" key="regions">
+						<ul className="regions-list-container">
+							{regionsToRender([...usRegions, ...asiaRegions])}
+						</ul>
+					</TabPane>
+				</Tabs>
 			);
 		}
 
@@ -665,7 +693,6 @@ class NewCluster extends Component {
 			cluster => cluster.status === 'active',
 		);
 
-		const pricingPlanArr = pricing_plan.split('-').slice(1);
 		const isInvalid = !this.validateClusterName();
 		return (
 			<Fragment>

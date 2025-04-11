@@ -34,6 +34,7 @@ export const regions = {
 		australiaeast: {
 			name: 'Australia East',
 			flag: 'australia.png',
+			continent: 'asia',
 		},
 		japaneast: {
 			name: 'Japan East',
@@ -193,40 +194,12 @@ export const regions = {
 		},
 	},
 	aws: {
-		'eu-west-2': {
-			name: 'London',
-			flag: 'london@3x.png',
-			continent: 'eu',
-			lat: '51.5073219',
-			lon: '-0.1276474',
-		},
-		'eu-central-1': {
-			name: 'FrankFurt',
-			flag: 'germany.png',
-			continent: 'eu',
-			lat: '50.1106444',
-			lon: '8.6820917',
-		},
 		'us-east-1': {
 			name: 'N. Virginia',
 			flag: 'united-states.png',
 			continent: 'us',
 			lat: '36.8529841',
 			lon: '-75.9774183',
-		},
-		'us-west-1': {
-			name: 'N. California',
-			flag: 'united-states.png',
-			continent: 'us',
-			lat: '37.8044557',
-			lon: '-122.2713563',
-		},
-		'ap-southeast-1': {
-			name: 'Singapore',
-			flag: 'singapore.png',
-			continent: 'asia',
-			lat: '1.2904753',
-			lon: ' 103.8520359',
 		},
 		'ap-south-1': {
 			name: 'Mumbai',
