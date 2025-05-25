@@ -76,7 +76,7 @@ const PrivateRoute = ({
 				});
 			}
 		} catch (error) {
-			console.log('Error logging out...', error);
+			// console.log('Error logging out...', error); // Debug log
 		}
 	};
 	const authUsingEmail = emailParam => {
@@ -90,7 +90,7 @@ const PrivateRoute = ({
 			});
 		} catch (error) {
 			setLoadingState(false);
-			console.log(error);
+			// console.log(error); // Debug log
 			message.error("Couldn't log you in!!!");
 			setTimeout(() => {
 				loginWithRedirect();
@@ -149,7 +149,7 @@ const PrivateRoute = ({
 				fetchUserPlan();
 			}
 		} catch (error) {
-			console.error('🚀 Error getting user from ACCAPI', error);
+			// console.error('🚀 Error getting user from ACCAPI', error); // Debug log
 		}
 	};
 
@@ -219,7 +219,13 @@ const PrivateRoute = ({
 								css={`
 									padding-left: 0;
 								`}
-								onClick={() => window.Intercom('show')}
+								onClick={() => {
+									if (window.Tawk_API) {
+										window.Tawk_API.toggle();
+									} else if (window.Intercom) {
+										window.Intercom('show');
+									}
+								}}
 								type="link"
 							>
 								Contact Support{' '}

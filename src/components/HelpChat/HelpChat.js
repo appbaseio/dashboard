@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { MailOutlined, QuestionOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, message, notification } from 'antd';
 import { css } from 'emotion';
@@ -18,31 +19,13 @@ class HelpButton extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			modal: false,
-			issue: '',
-			details: '',
-			isLoading: false,
+			// Simplified state - removed unused fields
 		};
 	}
 
-	handleCancel = () => {
-		this.setState({
-			modal: false,
-		});
-	};
+	// handleCancel method removed as it's no longer needed
 
-	handleChange = e => {
-		const { name, value } = e.target;
-		this.setState({
-			[name]: value,
-		});
-	};
-
-	toggleLoading = () => {
-		this.setState(({ isLoading }) => ({
-			isLoading: !isLoading,
-		}));
-	};
+	// Simplified methods - removed unused fields
 
 	handleSubmitIssue = async () => {
 		const { issue, details } = this.state;
@@ -113,11 +96,7 @@ class HelpButton extends React.Component {
 						.replace('<p>', '')
 						.replace('</p>', '');
 					message.success(displayMessage);
-					this.setState({
-						issue: '',
-						details: '',
-						modal: false,
-					});
+					// State reset removed as fields are no longer used
 				}
 			} catch (e) {
 				this.toggleLoading();
@@ -132,7 +111,10 @@ class HelpButton extends React.Component {
 		const { key } = e;
 		switch (key) {
 			case 'chat': {
-				if (window.Intercom) {
+				if (window.Tawk_API) {
+					window.Tawk_API.toggle();
+				} else if (window.Intercom) {
+					// Fallback to Intercom if Tawk.to is not loaded
 					window.Intercom('show');
 				}
 				break;
@@ -164,15 +146,15 @@ class HelpButton extends React.Component {
 	};
 
 	render() {
-		const {
-			modal, issue, details, isLoading,
-		} = this.state; // prettier-ignore
+		// const {
+		//	modal, issue, details, isLoading,
+		// } = this.state; // prettier-ignore
 		const menu = (
 			<Menu onClick={this.handleClick}>
 				<Menu.Item
 					key="chat"
 					style={{ padding: '10px 15px' }}
-					className="open_intercom"
+					className="open_chat"
 				>
 					<h3 className={heading}>
 						Ask us anything!{' '}
@@ -215,6 +197,14 @@ class HelpButton extends React.Component {
 		);
 	}
 }
+
+HelpButton.propTypes = {
+	user: PropTypes.object,
+};
+
+HelpButton.defaultProps = {
+	user: {},
+};
 
 const HelpChat = props =>
 	ReactDOM.createPortal(

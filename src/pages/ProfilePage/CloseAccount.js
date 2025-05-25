@@ -42,10 +42,10 @@ const deleteUser = async () => {
 		notification.success({
 			message: data.message,
 		});
-		if (window.Intercom) {
-			window.Intercom('update', {
-				plan: 'free',
-				cluster_plan: 'unsubscribed',
+		if (window.Tawk_API && window.Tawk_API.setAttributes) {
+			window.Tawk_API.setAttributes({
+				Plan: 'free',
+				'Cluster Plan': 'unsubscribed',
 			});
 		}
 		localStorage.clear();
@@ -71,8 +71,8 @@ const CloseAccount = () => {
 				);
 				if (activeClusters.length) setAvailableActiveClusters(true);
 			})
-			.catch(err => {
-				console.error(err);
+			.catch(() => {
+				// console.error(err); // Debug log
 			});
 	}, []);
 

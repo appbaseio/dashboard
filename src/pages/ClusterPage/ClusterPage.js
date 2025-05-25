@@ -116,7 +116,7 @@ class ClusterPage extends Component {
 					deleteClusterId: '',
 					deleteClusterName: '',
 				});
-				console.log(e);
+				// console.log(e); // Debug log
 			});
 	};
 
@@ -176,15 +176,18 @@ class ClusterPage extends Component {
 		return getClusters()
 			.then(clusters => this.setClusterPlan(clusters))
 			.then(clusters => {
-				if (window.Intercom) {
-					window.Intercom('update', {
-						total_clusters: clusters.length,
-						trial_end_date: moment
+				if (window.Tawk_API && window.Tawk_API.setAttributes) {
+					window.Tawk_API.setAttributes({
+						'Total Clusters': clusters.length,
+						'Trial End Date': moment
 							.unix(this.props.clusterTrialEndDate)
-							.toDate(),
-						trial_end_at: this.props.clusterTrialEndDate,
-						plan: this.state.paidPlan ? 'paid' : 'free',
-						cluster_plan: this.getPlanLabel(this.state.clusterPlan),
+							.toDate()
+							.toString(),
+						'Trial End Timestamp': this.props.clusterTrialEndDate,
+						Plan: this.state.paidPlan ? 'paid' : 'free',
+						'Cluster Plan': this.getPlanLabel(
+							this.state.clusterPlan,
+						),
 					});
 				}
 				if (!clusters.length) {
@@ -554,6 +557,7 @@ class ClusterPage extends Component {
 											margin: '10px 0 12px 0',
 										}}
 									>
+										{' '}
 										Need a trial extension?{' '}
 										<span
 											style={{
@@ -561,7 +565,9 @@ class ClusterPage extends Component {
 												cursor: 'pointer',
 											}}
 											onClick={() => {
-												if (window.Intercom) {
+												if (window.Tawk_API) {
+													window.Tawk_API.toggle();
+												} else if (window.Intercom) {
 													window.Intercom('show');
 												}
 											}}
@@ -605,7 +611,9 @@ class ClusterPage extends Component {
 							<Button
 								type="primary"
 								onClick={() => {
-									if (window.Intercom) {
+									if (window.Tawk_API) {
+										window.Tawk_API.toggle();
+									} else if (window.Intercom) {
 										window.Intercom('show');
 									}
 								}}

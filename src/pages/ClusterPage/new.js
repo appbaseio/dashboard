@@ -128,13 +128,14 @@ class NewCluster extends Component {
 
 		getClusters()
 			.then(clusters => {
-				if (window.Intercom) {
-					window.Intercom('update', {
-						total_clusters: clusters.length,
-						trial_end_date: moment
+				if (window.Tawk_API && window.Tawk_API.setAttributes) {
+					window.Tawk_API.setAttributes({
+						'Total Clusters': clusters.length,
+						'Trial End Date': moment
 							.unix(this.props.clusterTrialEndDate)
-							.toDate(),
-						trial_end_at: this.props.clusterTrialEndDate,
+							.toDate()
+							.toString(),
+						'Trial End Timestamp': this.props.clusterTrialEndDate,
 					});
 				}
 				const activeClusters = clusters.filter(

@@ -11,7 +11,7 @@ export async function createUserIfNew(idToken) {
 	if (response.status === 200) {
 		return response;
 	}
-	console.log(response);
+	// console.log(response); // Debug log
 	return response;
 }
 export async function getUser() {
@@ -52,34 +52,39 @@ export async function getUser() {
 	// 	console.error('Unable to fetch Metrics');
 	// }
 
-	if (window.Intercom) {
-		window.Intercom('boot', {
-			app_id: 'f9514ssx',
-			custom_launcher_selector: '#intercom',
-			email: user.email,
-			name: user.name,
-			use_case: user.usecase,
-			timeframe: user['deployment-timeframe'],
-			phone: user.phone,
-			total_apps: user.apps && Object.keys(user.apps).length,
-			context: 'appbase.io',
-			api_calls:
-				(metrics &&
-					metrics.body &&
-					metrics.body.month &&
-					metrics.body.month.apiCalls) ||
-				0,
-			storage:
-				(metrics &&
-					metrics.body &&
-					metrics.body.overall &&
-					metrics.body.overall.storage / 1048576) ||
-				0,
-			company: {
-				name: user.company,
-				id: user.company,
+	if (window.Tawk_API) {
+		// Set visitor attributes for Tawk.to
+		window.Tawk_API.visitor = {
+			name: user.name || 'Unknown',
+			email: user.email || '',
+		};
+
+		// Set additional attributes
+		window.Tawk_API.setAttributes(
+			{
+				Company: user.company || '',
+				'Use Case': user.usecase || '',
+				'Deployment Timeframe': user['deployment-timeframe'] || '',
+				Phone: user.phone || '',
+				'Total Apps': user.apps ? Object.keys(user.apps).length : 0,
+				Context: 'appbase.io',
+				'API Calls':
+					(metrics &&
+						metrics.body &&
+						metrics.body.month &&
+						metrics.body.month.apiCalls) ||
+					0,
+				Storage:
+					(metrics &&
+						metrics.body &&
+						metrics.body.overall &&
+						metrics.body.overall.storage / 1048576) ||
+					0,
 			},
-		});
+			function errorHandler() {
+				// Handle error if needed
+			},
+		);
 	}
 
 	const { apps } = data.body;
@@ -116,9 +121,9 @@ export async function getAppsOverview() {
 	});
 	const data = await response.json();
 	if (data.body) {
-		if (window.Intercom) {
-			window.Intercom('update', {
-				app_id: 'f9514ssx',
+		if (window.Tawk_API && window.Tawk_API.setAttributes) {
+			window.Tawk_API.setAttributes({
+				'Apps Overview': 'Updated',
 			});
 		}
 	}
