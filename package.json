@@ -67,10 +67,10 @@
 	},
 	"dependencies": {
 		"@ant-design/icons": "^4.8.0",
-		"@appbaseio/dejavu-browser": "^3.8.1",
+		"@appbaseio/dejavu-browser": "^3.8.2",
 		"@appbaseio/designkit": "^0.9.1",
 		"@appbaseio/reactivecore": "^8.2.6",
-		"@appbaseio/reactivesearch": "^3.24.1",
+		"@appbaseio/reactivesearch": "^3.45.0",
 		"@auth0/auth0-react": "^1.12.0",
 		"@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
 		"@monaco-editor/react": "^4.4.1",
@@ -85,11 +85,11 @@
 		"can-ndjson-stream": "^1.0.2",
 		"codesandbox": "1.2.16",
 		"d3-scale": "^2.1.2",
-		"dompurify": "^2.5.4",
+		"dompurify": "^2.3.6",
 		"dotenv": "^8.0.0",
 		"emotion": "^9.2.6",
 		"hex-rgb": "^3.0.0",
-		"ip": "^1.1.9",
+		"ip": "^1.1.5",
 		"js-yaml": "^4.1.0",
 		"lodash": "^4.17.21",
 		"lzma": "^2.3.2",
@@ -129,5 +129,10 @@
 		"url-search-params": "^1.1.0",
 		"urlsafe-base64": "https://github.com/farhan687/urlsafe-base64.git",
 		"uuid": "^8.3.2"
-	}
+	},
+	"resolutions": {
+		"redux": "4.1.2",
+		"@appbaseio/dejavu-browser/redux": "4.1.2"
+	},
+	"packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
