@@ -37,6 +37,7 @@ module.exports = {
 		publicPath: '/',
 		filename: isProduction ? '[name].[contenthash].js' : '[name].js',
 		chunkFilename: '[name].[contenthash].bundle.js',
+		hashFunction: 'sha256',
 	},
 	plugins,
 	devtool: 'source-map',
