@@ -171,6 +171,7 @@ export const PLAN_LABEL = {
 export let elasticsearch_7x;
 export let elasticsearch_8x;
 export let opensearch;
+export let opensearch_3x;
 export let sls;
 export let arc;
 
@@ -182,7 +183,14 @@ fetch('https://accapi.appbase.io/v2/supported_versions')
 		return response.json();
 	})
 	.then(data => {
-		({ elasticsearch_7x, elasticsearch_8x, opensearch, sls, arc } = data);
+		({
+			elasticsearch_7x,
+			elasticsearch_8x,
+			opensearch,
+			opensearch_3x,
+			sls,
+			arc,
+		} = data);
 	})
 	.catch(error => {
 		console.log(

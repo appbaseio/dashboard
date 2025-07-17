@@ -33,6 +33,7 @@ import {
 	regionsKeyMap,
 	arc as arc_version,
 	opensearch as opensearch_version,
+	opensearch_3x,
 	elasticsearch_7x,
 	elasticsearch_8x,
 } from './utils';
@@ -87,7 +88,7 @@ class NewCluster extends Component {
 			isLoading: false,
 			clusterName: '',
 			changed: false,
-			clusterVersion: opensearch_version,
+			clusterVersion: opensearch_3x || opensearch_version,
 			pricing_plan,
 			vm_size: get(
 				ansibleMachineMarks[pricing_plan],
@@ -686,9 +687,8 @@ class NewCluster extends Component {
 		if (isLoading) return <Loader />;
 		const versions =
 			this.state.esFlavor === 'opensearch'
-				? [opensearch_version]
+				? [opensearch_3x, opensearch_version].filter(Boolean)
 				: [elasticsearch_8x, elasticsearch_7x];
-		const defaultVersion = this.state.clusterVersion;
 
 		const activeClusters = clusters.filter(
 			cluster => cluster.status === 'active',
@@ -1102,6 +1102,7 @@ class NewCluster extends Component {
 										</h4>
 										<select
 											className="form-control"
+											value={this.state.clusterVersion}
 											onChange={e =>
 												this.setConfig(
 													'clusterVersion',
@@ -1113,10 +1114,6 @@ class NewCluster extends Component {
 												<option
 													key={version}
 													value={version}
-													defaultChecked={
-														defaultVersion ===
-														version
-													}
 												>
 													{version}
 												</option>
