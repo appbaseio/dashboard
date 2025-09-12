@@ -354,10 +354,17 @@ class NewCluster extends Component {
 
 			const arcTag = `${arc_version}-cluster`;
 
+			// Resolve a version to ensure it's always set in payload
+			const resolvedVersion =
+				this.state.clusterVersion ||
+				(this.state.esFlavor === 'opensearch'
+					? opensearch_3x || opensearch_version
+					: elasticsearch_8x || elasticsearch_7x);
+
 			const body = {
 				elasticsearch: {
 					nodes: selectedMachine.nodes,
-					version: this.state.clusterVersion,
+					version: resolvedVersion,
 					volume_size:
 						selectedMachine.storage / selectedMachine.nodes,
 					plugins: Object.keys(plugins).filter(
@@ -397,7 +404,7 @@ class NewCluster extends Component {
 			if (this.state.visualization === 'kibana') {
 				body.kibana = {
 					create_node: false,
-					version: this.state.clusterVersion,
+					version: resolvedVersion,
 					odfe: false,
 				};
 			}
@@ -680,7 +687,6 @@ class NewCluster extends Component {
 			clusters,
 			clusterName,
 			changed,
-			pricing_plan,
 		} = this.state;
 		const { isUsingClusterTrial, isTrialEligible } = this.props;
 
@@ -1030,7 +1036,8 @@ class NewCluster extends Component {
 												);
 												this.setConfig(
 													'clusterVersion',
-													opensearch_version,
+													opensearch_3x ||
+														opensearch_version,
 												);
 											}}
 										>
